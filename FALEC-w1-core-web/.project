@@ -3,6 +3,7 @@
 	<name>FALEC-w1-core-web</name>
 	<comment></comment>
 	<projects>
+		<project>FALEC-e1-core-ejb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
