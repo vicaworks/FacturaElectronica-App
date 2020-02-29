@@ -3,6 +3,6 @@
   <runtime name="WildFly 18.0 Runtime"/>
   <fixed facet="jst.ejb"/>
   <fixed facet="java"/>
-  <installed facet="java" version="11"/>
   <installed facet="jst.ejb" version="3.2"/>
+  <installed facet="java" version="9"/>
 </faceted-project>
