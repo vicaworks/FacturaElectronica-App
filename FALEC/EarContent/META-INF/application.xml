@@ -4,10 +4,11 @@
   <module>
     <web>
       <web-uri>FALEC-w1-core-web.war</web-uri>
-      <context-root>FALEC-w1-core-web</context-root>
+      <context-root>falec</context-root>
     </web>
   </module>
   <module>
     <ejb>FALEC-e1-core-ejb.jar</ejb>
   </module>
+  <library-directory>lib</library-directory>
 </application>

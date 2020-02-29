@@ -4,6 +4,8 @@
 	<comment></comment>
 	<projects>
 		<project>FALEC-e1-core-ejb</project>
+		<project>ServitecCommonJsf</project>
+		<project>ServitecCommonUtil</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -40,5 +42,6 @@
 		<nature>org.jboss.tools.jst.web.kb.kbnature</nature>
 		<nature>org.jboss.tools.cdi.core.cdinature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
+		<nature>org.jboss.tools.jsf.jsfnature</nature>
 	</natures>
 </projectDescription>

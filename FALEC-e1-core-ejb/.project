@@ -3,6 +3,9 @@
 	<name>FALEC-e1-core-ejb</name>
 	<comment></comment>
 	<projects>
+		<project>ServitecCommonDao</project>
+		<project>ServitecCommonJsf</project>
+		<project>ServitecCommonUtil</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
