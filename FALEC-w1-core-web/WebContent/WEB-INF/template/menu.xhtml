@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html" 
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:po="http://primefaces.org/roma">
+
+    <div class="layout-menu-container">
+        <div class="nano">
+            <div class="nano-content menu-scroll-content">
+                <h:form id="menuform">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' ? true : false}">
+                        <div class="layout-profile">
+                            <a class="layout-profile-button" href="#">
+                                <p:graphicImage name="images/avatar/avatar.png" library="roma-layout" />
+                                <div class="layout-profile-userinfo">
+                                    <span class="layout-profile-name">Arlene Welch</span>
+                                    <span class="layout-profile-role">Design Ops</span>
+                                </div>
+                            </a>
+                            <ul class="layout-profile-menu">
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-fw fa-user"></i><span>Profile</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-fw fa-cog"></i><span>Settings</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-fw fa-envelope-o"></i><span>Messages</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-fw fa-bell-o"></i><span>Notifications</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </ui:fragment>
+                    <po:menu widgetVar="RomaMenuWidget">
+                        <p:menuitem id="om_dashboard" value="Dashboard" icon="fa fa-fw fa-dashboard" outcome="/sample" />
+                        <p:submenu id="om_components" label="Components" icon="fa fa-fw fa-bars">
+                            <p:menuitem id="om_sample" value="Sample Page" icon="fa fa-fw fa-columns" outcome="/sample" />
+                            <p:menuitem id="om_forms" value="Forms" icon="fa fa-fw fa-code" outcome="/sample" />
+                            <p:menuitem id="om_data" value="Data" icon="fa fa-fw fa-table" outcome="/sample" />
+                            <p:menuitem id="om_panels" value="Panels" icon="fa fa-fw fa-list-alt" outcome="/sample" />
+                            <p:menuitem id="om_overlays" value="Overlays" icon="fa fa-fw fa-square" outcome="/sample" />
+                            <p:menuitem id="om_menus" value="Menus" icon="fa fa-fw fa-minus-square-o" outcome="/sample" />
+                            <p:menuitem id="om_messages" value="Messages" icon="fa fa-fw fa-circle-o-notch" outcome="/sample" />
+                            <p:menuitem id="om_charts" value="Charts" icon="fa fa-fw fa-area-chart" outcome="/sample" />
+                            <p:menuitem id="om_file" value="File" icon="fa fa-fw fa-arrow-circle-o-up" outcome="/sample" />
+                            <p:menuitem id="om_misc" value="Misc" icon="fa fa-fw fa-user-secret" outcome="/sample" />
+                        </p:submenu>
+                        <p:submenu id="om_default" label="Pages" icon="fa fa-fw fa-cube">
+                            <p:menuitem id="om_empty" value="Empty" icon="fa fa-fw fa-square-o" outcome="/sample" />
+                            <p:menuitem id="om_login" value="Login" icon="fa fa-fw fa-sign-in" outcome="/sample" />
+                            <p:menuitem id="om_db_landing" value="Landing" icon="fa fa-fw fa-certificate" outcome="/sample" />
+                            <p:menuitem id="om_error" value="Error" icon="fa fa-fw fa-exclamation-circle" outcome="/sample" />
+                            <p:menuitem id="om_404" value="404" icon="fa fa-fw fa-times" outcome="/sample" />
+                            <p:menuitem id="om_access" value="Access Denied" icon="fa fa-fw fa-exclamation-triangle" outcome="/sample" />
+                        </p:submenu>
+                        <p:submenu id="om_hierarchy" label="Hierarchy" icon="fa fa-fw fa-sitemap">
+                            <p:submenu id="om_sm1" label="Submenu 1" icon="fa fa-fw fa-sign-in">
+                                <p:submenu id="om_sm11" label="Submenu 1.1" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk111" value="Link 1.1.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                    <p:menuitem id="om_lnk112" value="Link 1.1.2" icon="fa fa-fw fa-sign-in" url="#" />
+                                    <p:menuitem id="om_lnk113" value="Link 1.1.3" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                                <p:submenu id="om_sm12" label="Submenu 1.2" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk121" value="Link 1.2.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                            </p:submenu>
+                            <p:submenu id="om_sm2" label="Submenu 2" icon="fa fa-fw fa-sign-in">
+                                <p:submenu id="om_sm21" label="Submenu 2.1" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk211" value="Link 2.1.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                    <p:menuitem id="om_lnk212" value="Link 2.1.2" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                                <p:submenu id="om_sm22" label="Submenu 2.2" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk221" value="Link 2.2.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:menuitem id="om_doc" value="Docs" icon="fa fa-fw fa-file-code-o" outcome="/sample" />
+                        <p:menuitem id="om_buy" value="Buy Now" icon="fa fa-fw fa-credit-card-alt" url="https://www.primefaces.org/store"/>
+                    </po:menu>
+                </h:form>
+            </div>
+        </div>
+    </div>
+</ui:composition>

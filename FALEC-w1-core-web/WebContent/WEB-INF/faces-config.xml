@@ -5,6 +5,21 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
     version="2.3">
     
+    <name>primefaces_roma</name>
+    
+    <component>
+        <component-type>org.primefaces.component.RomaMenu</component-type>
+        <component-class>org.primefaces.roma.component.RomaMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RomaMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.roma.component.RomaMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    
     <application>
 		<action-listener>org.omnifaces.eventlistener.ResetInputAjaxActionListener</action-listener>
 
