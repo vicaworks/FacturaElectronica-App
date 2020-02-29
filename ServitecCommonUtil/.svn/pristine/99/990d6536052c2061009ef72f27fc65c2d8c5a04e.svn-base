@@ -1,0 +1,121 @@
+package com.servitec.common.util;
+
+
+import java.security.MessageDigest;
+import java.util.Arrays;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
+//import org.apache.commons.codec.binary.Base64;
+
+
+public class PasswordUtil {
+
+	private static final String CHARSET_UTF_8 = "utf-8";
+	private static final String SECRET_KEY_ALGORITHM = "DESede";
+	private static final String TRANSFORMATION_PADDING = "DESede/CBC/PKCS5Padding";
+
+	private static final String CLAVE_MD5 = "TKC_MD5";
+	private static final String CLAVE_SHA1 = "TKC_SHA1";
+
+	public static String encriptacion = "";
+
+	/**
+	 * @param clave
+	 * @param tipoUsuario
+	 * @return
+	 */
+	public static String encriptacionClave(String clave) {
+		TipoEncriptacionEnum tipoEncriptacion = null;
+		String secretKey = null;
+
+		switch (encriptacion) {
+		case "MD5":
+			tipoEncriptacion = TipoEncriptacionEnum.MD5;
+			secretKey = CLAVE_MD5;
+			break;
+		case "SHA1":
+			tipoEncriptacion = TipoEncriptacionEnum.SHA1;
+			secretKey = CLAVE_SHA1;
+			break;
+		default:
+			break;
+		}
+
+		if (tipoEncriptacion != null) {
+			return getTextoEncriptado(clave, tipoEncriptacion, secretKey);
+		} else
+			return clave;
+	}
+
+	/**
+	 * Encripta el texto seg&aucute;n el tipoEncriptacion pasado por
+	 * par&aacutemetro.
+	 * 
+	 * @param texto
+	 *            encriptado
+	 * @return
+	 */
+	public static String getTextoEncriptado(String texto, TipoEncriptacionEnum tipoEncriptacion, String secretKey) {
+		String base64EncryptedString = "";
+		try {
+			MessageDigest md = MessageDigest.getInstance(tipoEncriptacion.name());
+			byte[] digestOfPassword = md.digest(secretKey.getBytes(CHARSET_UTF_8));
+			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
+			final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+			SecretKey key = new SecretKeySpec(keyBytes, SECRET_KEY_ALGORITHM);
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION_PADDING);
+			cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+
+			byte[] plainTextBytes = texto.getBytes(CHARSET_UTF_8);
+			byte[] buf = cipher.doFinal(plainTextBytes);
+			byte[] base64Bytes = Base64.encodeBase64(buf);
+			base64EncryptedString = new String(base64Bytes);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return base64EncryptedString;
+	}
+
+	/**
+	 * @param textoEncriptado
+	 * @param tipoEncriptacionEnum
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getTextoDesencriptado(String textoEncriptado, TipoEncriptacionEnum tipoEncriptacionEnum) throws Exception {
+		String clave = null;
+		switch (tipoEncriptacionEnum) {
+		case MD5:
+			clave = CLAVE_MD5;
+			break;
+		case SHA1:
+			clave = CLAVE_SHA1;
+			break;
+		}
+
+		String base64EncryptedString = "";
+		try {
+			byte[] message = Base64.decodeBase64(textoEncriptado.getBytes(CHARSET_UTF_8));
+			MessageDigest md = MessageDigest.getInstance(tipoEncriptacionEnum.name());
+			byte[] digestOfPassword = md.digest(clave.getBytes(CHARSET_UTF_8));
+			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
+			final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+			SecretKey key = new SecretKeySpec(keyBytes, SECRET_KEY_ALGORITHM);
+
+			Cipher decipher = Cipher.getInstance(TRANSFORMATION_PADDING);
+			decipher.init(Cipher.DECRYPT_MODE, key, iv);
+
+			byte[] plainText = decipher.doFinal(message);
+
+			base64EncryptedString = new String(plainText, CHARSET_UTF_8);
+		} catch (Exception ex) {
+			throw new Exception();
+		}
+		return base64EncryptedString;
+	}
+}

@@ -1,0 +1,531 @@
+/**
+ * 
+ */
+package com.servitec.common.util;
+
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+
+/**
+ * @author cvillarreal
+ *
+ */
+public class FechaUtil implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9192111982212730345L;
+
+	private static SimpleDateFormat FORMATO_FECHA;
+    private static SimpleDateFormat FORMATO_FECHA_HORA;
+    private static SimpleDateFormat FORMATO_HORA;
+    private static SimpleDateFormat FORMATO_HORA_SEGUNDOS;
+    private static SimpleDateFormat FORMATO_FECHA_BASE_DATOS;
+    public static Locale LOCALE;
+    public static TimeZone TIMEZONE;
+
+    static {
+    	
+        FORMATO_FECHA = new SimpleDateFormat(AppConfiguracion.getString("formato.fecha.sistema"));
+        FORMATO_FECHA_HORA = new SimpleDateFormat(AppConfiguracion.getString("formato.fecha.hora"));
+        FORMATO_HORA = new SimpleDateFormat(AppConfiguracion.getString("formato.hora"));
+        FORMATO_HORA_SEGUNDOS = new SimpleDateFormat(AppConfiguracion.getString("formato.hora.segundo"));
+        FORMATO_FECHA_BASE_DATOS=new SimpleDateFormat(AppConfiguracion.getString("formato.fecha.basedatos"));
+        String idiomaLocale = AppConfiguracion.getString("locale");
+        LOCALE = new Locale(idiomaLocale);
+        TIMEZONE = TimeZone.getDefault();
+    }
+	
+	/**
+	 * 
+	 */
+	public FechaUtil() {
+		
+	}
+	
+	/**
+     * Permite retornar el nombre del mes a partir de un determinado numero
+     * @param mes indica el numero de mes del cual se desea consultar
+     * @return {@link String} Retorna el nombre del mes indicado
+     */
+    public static String getMes(int mes) {
+        String month = AppConfiguracion.getString("mes.no.valido");
+        String idiomaLocale = AppConfiguracion.getString("locale");
+        DateFormatSymbols symbols = new DateFormatSymbols(new Locale(idiomaLocale));
+        String[] months = symbols.getMonths();
+        if (mes >= 0 && mes <= 11) {
+            month = months[mes];
+        }
+        return month;
+    }
+	
+    /**
+     * Transforma la fecha que esta como String al formato de fecha de la BD
+     *
+     * @param strFecha
+     * @return
+     * @throws ParseException
+     */
+    public static Date formatoFecha(String strFecha) throws ParseException {
+        return FORMATO_FECHA.parse(strFecha);
+    }
+    
+    /**
+     * Transforma la fecha que esta como String al formato de fecha de la BD
+     *
+     * @param strFecha
+     * @return
+     * @throws ParseException
+     */
+    public static Date formatoFechaBaseDatos(String strFecha) throws ParseException {
+        return FORMATO_FECHA_BASE_DATOS.parse(strFecha);
+    }
+    /**
+     * Metodo para transformar la fecha de corte que esta en el nombre del archivo: ddMMyyyy a una fecha valida para la BD: yyyy-MM-dd
+     *
+     * @param strFecha
+     * @return
+     * @throws ParseException
+     */
+    public static Date formatoFechaHora(String strFecha) throws ParseException {
+        return FORMATO_FECHA_HORA.parse(strFecha);
+    }
+    
+    /**
+     * Permite setear el formato de fecha establecido a una fecha normal, entrega el valor String del formato configurado
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @return Fecha en formato {@link String}
+     */
+    public static String formatoFecha(Date fecha) {
+        return FORMATO_FECHA.format(fecha);
+    }
+    
+    /**
+     * Permite setear el formato de fecha establecido a una fecha normal, entrega el valor String del formato configurado
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @return Fecha en formato {@link String}
+     */
+    public static String formatoFechaHora(Date fecha) {
+        return FORMATO_FECHA_HORA.format(fecha);
+    }
+    
+    /**
+     * Permite truncar los milisegundos de una determinada fecha a cero
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date truncarMilisegundos(Date fecha) {
+        return truncar(fecha, Calendar.MILLISECOND, 0);
+    }
+    
+    /**
+     * Permite truncar los segundos de una determinada fecha a cero
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date truncarSegundos(Date fecha) {
+        return truncar(fecha, Calendar.SECOND, 0);
+    }
+    
+    /**
+     * Permite truncar los minutos de una determinada fecha a cero
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date truncarMinutos(Date fecha) {
+        return truncar(fecha, Calendar.MINUTE, 0);
+    }
+    
+    /**
+     * Permite truncar las horas de una determinada fecha a cero
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date truncarHoras(Date fecha) {
+        return truncar(fecha, Calendar.HOUR_OF_DAY, 0);
+    }
+    
+    /**
+     * Permite truncar la hora, minutos, segundos y milisegundos de una fecha.
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date truncarFecha(Date fecha) {
+        return truncar(truncar(truncar(truncar(fecha, Calendar.MILLISECOND, 0), Calendar.SECOND, 0),
+                Calendar.MINUTE, 0), Calendar.HOUR_OF_DAY, 0);
+    }
+    
+    /**
+     * Permite expandir los milisegundos de una determinada fecha al maximo admitido
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date expandirMilisegundos(Date fecha) {
+        return truncar(fecha, Calendar.MILLISECOND, 999);
+    }
+    
+    /**
+     * Permite expandir los segundos de una determinada fecha al maximo admitido
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date expandirSegundos(Date fecha) {
+        return truncar(fecha, Calendar.SECOND, 59);
+    }
+    
+    /**
+     * Permite expandir los minutos de una determinada fecha al maximo admitido
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date expandirMinutos(Date fecha) {
+        return truncar(fecha, Calendar.MINUTE, 59);
+    }
+    
+    /**
+     * Permite expandir la hora, minutos, segundos y milisegundos de una fecha al valor maximo admitido.
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date expandirFecha(Date fecha) {
+        return truncar(truncar(truncar(truncar(fecha, Calendar.MILLISECOND, 999), Calendar.SECOND, 59),
+                Calendar.MINUTE, 59), Calendar.HOUR_OF_DAY, 23);
+    }
+    
+    /**
+     * Permite agregar un numero determinado de anios a una fecha
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @param valor valor a agregar
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date agregarAnios(Date fecha, Integer valor) {
+        return agregar(fecha, Calendar.YEAR, valor);
+    }
+    
+    /**
+     * Permite agregar un numero determinado de meses a una fecha
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @param valor valor a agregar
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date agregarMeses(Date fecha, Integer valor) {
+        return agregar(fecha, Calendar.MONTH, valor);
+    }
+    
+    /**
+     * Permite agregar un numero determinado de dias a una fecha
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @param valor valor a agregar
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date agregarDias(Date fecha, Integer valor) {
+        return agregar(fecha, Calendar.DAY_OF_YEAR, valor);
+    }
+    
+    /**
+     * Permite agregar un numero determinado de horas a una fecha
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @param valor valor a agregar
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date agregarHoras(Date fecha, Integer valor) {
+        return agregar(fecha, Calendar.HOUR_OF_DAY, valor);
+    }
+    
+    /**
+     * Permite agregar un numero determinado de minutos a una fecha
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @param valor valor a agregar
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date agregarMinutos(Date fecha, Integer valor) {
+        return agregar(fecha, Calendar.MINUTE, valor);
+    }
+    
+    /**
+     * Permite agregar un numero determinado de segundos a una fecha
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @param valor valor a agregar
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date agregarSegundos(Date fecha, Integer valor) {
+        return agregar(fecha, Calendar.SECOND, valor);
+    }
+    
+    /**
+     * Permite agregar un numero determinado de milisegundos a una fecha
+     *
+     * @param fecha fecha fecha de tipo {@link Date} que sera truncada
+     * @param valor valor a agregar
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    public static Date agregarMilisegundos(Date fecha, Integer valor) {
+        return agregar(fecha, Calendar.MILLISECOND, valor);
+    }
+    
+    /**
+     * Permite truncar el valor numerico indicado de una determinada fecha a cero
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @param variable Variable o tipo de agregacion, es decir Anio, mes dia, etc
+     * @param valor El valor de unidades que se asignara
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    private static Date truncar(Date fecha, Integer variable, Integer valor) {
+        if (fecha == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        calendar.set(variable, valor);
+        return calendar.getTime();
+    }
+    
+    /**
+     * Permite agregar o eliminar un numero de una de las variables premitidas a una fecha
+     *
+     * @param fecha fecha de tipo {@link Date} que sera truncada
+     * @param variable Variable o tipo de agregacion, es decir Anio, mes dia, etc
+     * @param valor El valor de unidades que se agregaran o reduciran
+     * @return fecha de tipo {@link Date} resultante de la operacion
+     */
+    private static Date agregar(Date fecha, Integer variable, Integer valor) {
+        if (fecha == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        calendar.add(variable, valor);
+        return calendar.getTime();
+    }
+    
+    /**
+     * Permite obtener la hora de una fecha
+     * @param fecha
+     * @return
+     * @throws ParseException
+     */
+    public static String formatoHora(Date fecha) {
+        return FORMATO_HORA.format(fecha);
+    }
+    
+    
+    public static String formatoHoraSegundos(Date fecha) {
+        return FORMATO_HORA_SEGUNDOS.format(fecha);
+    }
+    
+    /**
+     * Metodo que obtiene formato Fecha desde la Hora
+     * @param strHora
+     * @return
+     * @throws ParseException
+     */
+    public static Date formatoFechaDeHora(String strHora) throws ParseException{
+    	return FORMATO_HORA.parse(strHora);
+    }
+    
+    /**
+     * Si la hora de el parametro <tt>date1</tt> es igual a la hora del parametro <tt>date2</tt>.<br/>
+     * Retorna 0 si la hora de <tt>date1</tt> es mayor a <tt>date2</tt> entonces se retorna un n&uacute;mero mayor que 0 y menor a cero en caso contrario
+     * 
+     * @param date1 fecha 1 a tomar la hora
+     * @param date2 fecha 2 a tomar la hora
+     * @return el valor de comparaci&oacute;n de las horas de las fechas ingresadas como par&aacute;metros
+     * @throws ParseException 
+     */
+    public static int comparaHoraFechas(Date date1, Date date2) throws ParseException {
+    	DateFormat dateFormat = new SimpleDateFormat(AppConfiguracion.getString("formato.hora"));
+    	Date comparaFecha1 = dateFormat.parse(dateFormat.format(date1));
+    	Date comparaFecha2 = dateFormat.parse(dateFormat.format(date2));
+		return comparaFecha1.compareTo(comparaFecha2);
+	}
+    
+    /**
+     * Si la fecha de el parametro <tt>date1</tt> es igual a la fecha del parametro <tt>date2</tt>.<br/>
+     * Retorna 0 si la hora de <tt>date1</tt> es mayor a <tt>date2</tt> entonces se retorna un n&uacute;mero mayor que 0 y menor a cero en caso contrario
+     * 
+     * @param date1 fecha 1 a tomar la hora
+     * @param date2 fecha 2 a tomar la hora
+     * @return el valor de comparaci&oacute;n de las horas de las fechas ingresadas como par&aacute;metros
+     * @throws ParseException 
+     */
+    public static int comparaFechas(Date date1, Date date2) throws ParseException {
+    	DateFormat dateFormat = new SimpleDateFormat(AppConfiguracion.getString("formato.fecha"));
+    	Date comparaFecha1 = dateFormat.parse(dateFormat.format(date1));
+    	Date comparaFecha2 = dateFormat.parse(dateFormat.format(date2));
+		return comparaFecha1.compareTo(comparaFecha2);
+	}
+    
+    public static void main(String[] args) {
+		try {
+			System.out.println(formatoFechaDeHora("09:00"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+    
+    /**
+     * 
+     * Determina el dia del mes de una fecha
+     * 
+     * @param fecha - fecha de consulta
+     * @return un entero con el d�a del mes
+     */
+    public static Integer getDia(Date fecha){
+    	Calendar cl = Calendar.getInstance();
+    	cl.setTime(fecha);
+    	return cl.get(Calendar.DATE);
+    }
+    
+    
+    /**
+     * @param fecha
+     * @return
+     */
+    public static Integer getDiaSemana(Date fecha){
+    	Calendar cl = Calendar.getInstance();
+    	cl.setTime(fecha);
+    	return cl.get(Calendar.DAY_OF_WEEK);
+    }
+    
+    /**
+     * 
+     * Determina el  mes de una fecha
+     * 
+     * @param fecha - fecha de consulta
+     * @return un entero con el mes
+     */
+    public static Integer getMes(Date fecha){
+    	Calendar cl = Calendar.getInstance();
+    	cl.setTime(fecha);
+    	return cl.get(Calendar.MONTH) + 1;
+    }
+
+    /**
+     * 
+     * Determina el  ano de una fecha
+     * 
+     * @param fecha - fecha de consulta
+     * @return un entero con el a�o
+     */
+    public static Integer getAnio(Date fecha){
+    	Calendar cl = Calendar.getInstance();
+    	cl.setTime(fecha);
+    	return cl.get(Calendar.YEAR);
+    }
+    
+    /**
+     * Permite setear la fecha a formato de fecha de un base de datos;
+     * @param fecha
+     * @return
+     */
+    public static String formatoFechaBaseDatos(Date fecha) {
+        return FORMATO_FECHA_BASE_DATOS.format(fecha);
+    }
+    
+    
+    /**
+     * 
+     * Calcula el rango de dias entre dos fechas
+     * 
+     * @param fechaInicial
+     * @param fechaFinal
+     * @return
+     */
+    public static Integer getDiasRangoFechas(Date d1,Date d2){
+    	if ( (d1==null || d2==null)){
+    		return null;
+    	}
+    	
+    	/*
+    	Calendar cl1 = Calendar.getInstance();
+    	cl1.setTime(fechaInicial);
+    	
+    	Calendar cl2 = Calendar.getInstance();
+    	cl1.setTime(fechaFinal);
+    	
+    	 //return (int) (cl1.getTimeInMillis() - cl2.getTimeInMillis())/MILLSECS_PER_DAY;
+    	return (int)Math.ceil((double)(cl1.getTimeInMillis() - cl2.getTimeInMillis()) / 1000 / 3600 / 24);
+    	*/
+    	
+    	return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    	
+    }
+    
+    /**
+     * @author cvillarreal
+     * @param fecha
+     * @return
+     */
+    public static String getDiaSemanaCadena(Date fecha){
+    	String dia = "";
+    	switch (getDiaSemana(fecha)) {
+		case 1:
+			dia = "DOMINGO";
+			break;
+		case 2:
+			dia = "LUNES";
+			break;
+		case 3:
+			dia = "MARTES";
+			break;
+		case 4:
+			dia = "MIERCOLES";
+			break;
+		case 5:
+			dia = "JUEVES";
+			break;	
+		case 6:
+			dia = "VIERNES";
+			break;
+		default:
+			dia = "SABADO";
+			break;
+		}
+    	
+    	return dia;
+    }
+    
+    /**
+     * @author cvillarreal
+     * 
+     * @param fecha
+     * @return
+     */
+    public static String formatoFechaddMMMMyyyy(Date fecha){
+    	
+    	String[] mes = new String[]{"ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"};
+    	
+    	return  (new SimpleDateFormat("dd")).format(fecha) + " de " + (mes[getMes(fecha)-1])  + " de " + (new SimpleDateFormat("yyyy")).format(fecha); 
+    	
+    	
+    	
+    }
+    
+}

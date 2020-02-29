@@ -1,0 +1,164 @@
+/**
+ * 
+ */
+package com.servitec.common.util;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.XPath;
+
+/**
+ * @author cvillarreal
+ *
+ */
+public class XmlCommonsUtil {
+
+	public static String ENCODE_UTF8="UTF-8";
+	public static String ENCODE_LATIN="ISO-8859-1";
+	
+	/**
+	 * 
+	 */
+	public XmlCommonsUtil() {
+	}
+	
+	/**
+	 * @param xml
+	 * @param type
+	 * @return
+	 * @throws JAXBException
+	 */
+	public static <T> String jaxbMarshall(T xml, Boolean prettyPrint, Boolean deleteXmlTag) throws JAXBException {
+
+		StringWriter sw = new StringWriter();
+		JAXBContext context = JAXBContext.newInstance(xml.getClass());
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, prettyPrint);
+		if (deleteXmlTag) {
+			m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+		}
+
+		m.marshal(xml, sw);
+		
+		String xmlContent = sw.toString();
+        xmlContent = xmlContent.replaceAll("xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "");
+        xmlContent = xmlContent.replaceAll("</ns2:", "</");
+        xmlContent = xmlContent.replaceAll(":ns2=", "=");
+        xmlContent = xmlContent.replaceAll("<ns2:", "<");
+
+		return xmlContent;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T jaxbunmarshall(String xml, T xmlType) throws JAXBException, UnsupportedEncodingException {
+
+		T objetoretorno = null;
+
+		JAXBContext context = JAXBContext.newInstance(xmlType.getClass());
+		Unmarshaller jaxbUnmarshaller = context.createUnmarshaller();
+		objetoretorno = (T) jaxbUnmarshaller
+				.unmarshal(new InputStreamReader(new ByteArrayInputStream(xml.getBytes()), "ISO-8859-1"));
+
+		return objetoretorno;
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T jaxbunmarshall(String xml, T xmlType, String encode)
+			throws JAXBException, UnsupportedEncodingException {
+
+		T objetoretorno = null;
+
+		JAXBContext context = JAXBContext.newInstance(xmlType.getClass());
+		Unmarshaller jaxbUnmarshaller = context.createUnmarshaller();
+		objetoretorno = (T) jaxbUnmarshaller
+				.unmarshal(new InputStreamReader(new ByteArrayInputStream(xml.getBytes()), encode));
+
+		return objetoretorno;
+
+	}
+	
+	/**
+	 * @param xml
+	 * @return
+	 * @throws DocumentException
+	 */
+	public static Document stringToDocument(String xml) throws DocumentException{
+		return DocumentHelper.parseText(xml);
+	}
+	
+	
+	/**
+	 * @param document
+	 * @param xmlXpath
+	 * @return
+	 */
+	public static List<Node> aplicarXpath(Document document,String xmlXpath){
+		@SuppressWarnings("unchecked")
+		List<Node> nodes = document.selectNodes(xmlXpath);
+		return nodes;
+	}
+	
+	
+	/**
+	 * @author cvillarreal
+	 * 
+	 * @param xml
+	 * @param xmlXpath
+	 * @return
+	 * @throws DocumentException
+	 */
+	public static String valorXpath(String xml, String xmlXpath) throws DocumentException{
+		
+		Document doc = stringToDocument(xml);
+		Node nodo = doc.selectSingleNode(xmlXpath);
+		try {
+			return nodo.getText();
+		} catch (NullPointerException e) {
+			return null;
+		}
+		
+	}
+	
+	
+	/**
+	 * @param pathFile
+	 * @return
+	 * @throws IOException
+	 */
+	public static String fileToString(String pathFile) throws IOException{
+		
+		File file = new File(pathFile);
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		StringBuffer sb = new StringBuffer();
+		String line = null;
+		
+		while ((line = br.readLine())!=null){
+			sb.append(line);
+		}
+		
+		br.close();
+		
+		return sb.toString();
+		
+	}
+	
+}
