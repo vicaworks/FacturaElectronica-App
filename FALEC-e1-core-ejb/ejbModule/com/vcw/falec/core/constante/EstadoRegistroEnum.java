@@ -9,7 +9,7 @@ package com.vcw.falec.core.constante;
  */
 public enum EstadoRegistroEnum {
 
-	ACTIVO("A", "Activo", 1,"ACT"), INACTIVO("I", "Inactivo", 0,"DES"), TODOS("T", "Todos", 2,"Todos");
+	ACTIVO("A", "Activo", 1, "ACT"), INACTIVO("I", "Inactivo", 0, "DES"), TODOS("T", "Todos", 2, "Todos");
 
 	private String inicial;
 	private String palabra;
