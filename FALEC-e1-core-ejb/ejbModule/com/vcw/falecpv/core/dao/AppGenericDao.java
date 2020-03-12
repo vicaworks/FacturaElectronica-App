@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falec.core.dao;
+package com.vcw.falecpv.core.dao;
 
 import java.io.Serializable;
 

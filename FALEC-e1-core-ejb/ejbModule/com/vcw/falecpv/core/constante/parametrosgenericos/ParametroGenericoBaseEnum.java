@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falec.core.constante.parametrosgenericos;
+package com.vcw.falecpv.core.constante.parametrosgenericos;
 
 /**
  * @author cvillarreal

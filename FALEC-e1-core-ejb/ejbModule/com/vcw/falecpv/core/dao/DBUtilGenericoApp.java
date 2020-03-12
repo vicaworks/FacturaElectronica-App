@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falec.core.dao;
+package com.vcw.falecpv.core.dao;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;

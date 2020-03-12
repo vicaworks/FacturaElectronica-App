@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falec.core.constante;
+package com.vcw.falecpv.core.constante;
 
 /**
  * @author Administrador

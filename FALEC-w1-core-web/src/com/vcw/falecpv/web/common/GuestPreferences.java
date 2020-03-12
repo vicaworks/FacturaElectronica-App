@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falec.web.common;
+package com.vcw.falecpv.web.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;

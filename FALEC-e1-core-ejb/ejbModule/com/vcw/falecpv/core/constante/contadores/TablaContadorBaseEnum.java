@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falec.core.constante.contadores;
+package com.vcw.falecpv.core.constante.contadores;
 
 /**
  * @author cvillarreal
