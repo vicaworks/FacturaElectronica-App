@@ -53,7 +53,7 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 	public String generarContadorTabla(TablaContadorBaseEnum tablaContador,String idEstablecimiento)throws DaoException, ParametroRequeridoException{
 		
 		ValidarParametro.validar(tablaContador, "TABLA_CONTADOR");
-		ValidarParametro.validar(tablaContador, "ESTABLECIMIENTO");
+		ValidarParametro.validar(idEstablecimiento, "ESTABLECIMIENTO");
 		
 		boolean flagSucursal = false;
 		String sucursal = null;

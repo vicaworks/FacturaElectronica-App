@@ -1,6 +1,6 @@
 <jboss-web>
 
 	<!-- contexto -->
-	<context-root>falec</context-root>
+	<context-root>falecpv</context-root>
 	
 </jboss-web>

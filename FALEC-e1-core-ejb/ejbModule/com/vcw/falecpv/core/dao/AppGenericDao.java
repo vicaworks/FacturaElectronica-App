@@ -23,7 +23,7 @@ public class AppGenericDao<T extends Serializable,PK extends Serializable> exten
 	/**
 	 * Unidad de persistencia
 	 */
-	@PersistenceContext(unitName = "falecPU")
+	@PersistenceContext(unitName = "falecpvPU")
 	private EntityManager em;
 	
 	/**
