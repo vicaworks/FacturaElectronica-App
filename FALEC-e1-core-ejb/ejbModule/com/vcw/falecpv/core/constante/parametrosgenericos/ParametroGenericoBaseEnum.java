@@ -9,6 +9,6 @@ package com.vcw.falecpv.core.constante.parametrosgenericos;
  */
 public interface ParametroGenericoBaseEnum {
 	
-	public Integer getId();
+	public String getId();
 
 }

@@ -84,4 +84,46 @@ public class ParametroGenerico implements Serializable {
 		this.idparametrogenerico = idparametrogenerico;
 	}
 
+	/**
+	 * @return the concepto
+	 */
+	public String getConcepto() {
+		return concepto;
+	}
+
+	/**
+	 * @param concepto the concepto to set
+	 */
+	public void setConcepto(String concepto) {
+		this.concepto = concepto;
+	}
+
+	/**
+	 * @return the valor
+	 */
+	public String getValor() {
+		return valor;
+	}
+
+	/**
+	 * @param valor the valor to set
+	 */
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 }

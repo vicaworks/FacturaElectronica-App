@@ -32,8 +32,8 @@ public class Categoria implements Serializable {
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 40)
-	@Column(name = "idCategoria", nullable = false, length = 40)
-	private String idCategoria;
+	@Column(name = "idcategoria", nullable = false, length = 40)
+	private String idcategoria;
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 100)
@@ -55,8 +55,8 @@ public class Categoria implements Serializable {
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 40)
-	@Column(name = "idUsuario", nullable = false, length = 40)
-	private String idUsuario;
+	@Column(name = "idusuario", nullable = false, length = 40)
+	private String idusuario;
 
 	/**
 	 * 
@@ -68,7 +68,7 @@ public class Categoria implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 0;
-		hash += (idCategoria != null ? idCategoria.hashCode() : 0);
+		hash += (idcategoria != null ? idcategoria.hashCode() : 0);
 		return hash;
 	}
 
@@ -78,8 +78,8 @@ public class Categoria implements Serializable {
 			return false;
 		}
 		Categoria other = (Categoria) object;
-		if ((this.idCategoria == null && other.idCategoria != null)
-				|| (this.idCategoria != null && !this.idCategoria.equals(other.idCategoria))) {
+		if ((this.idcategoria == null && other.idcategoria != null)
+				|| (this.idcategoria != null && !this.idcategoria.equals(other.idcategoria))) {
 			return false;
 		}
 		return true;
@@ -91,17 +91,17 @@ public class Categoria implements Serializable {
 	}
 
 	/**
-	 * @return the idCategoria
+	 * @return the idcategoria
 	 */
-	public String getIdCategoria() {
-		return idCategoria;
+	public String getIdcategoria() {
+		return idcategoria;
 	}
 
 	/**
-	 * @param idCategoria the idCategoria to set
+	 * @param idcategoria the idcategoria to set
 	 */
-	public void setIdCategoria(String idCategoria) {
-		this.idCategoria = idCategoria;
+	public void setIdcategoria(String idcategoria) {
+		this.idcategoria = idcategoria;
 	}
 
 	/**
@@ -161,17 +161,19 @@ public class Categoria implements Serializable {
 	}
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
+
+	
 
 }

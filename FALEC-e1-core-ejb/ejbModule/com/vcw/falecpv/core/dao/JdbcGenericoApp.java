@@ -31,7 +31,7 @@ public abstract class JdbcGenericoApp extends JdbcGenerico {
 	/**
 	 * datasource inyectado, se obtiene del contenedor EJB
 	 */
-	@Resource(mappedName = "java:jboss/datasources/falecDS")
+	@Resource(mappedName = "java:jboss/datasources/falecpvDS")
 	private DataSource dataSource;
 	
 	private Map<String, Object> parametros;

@@ -159,4 +159,6 @@ public class ParametroGenericoEmpresa implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	
+
 }

@@ -35,13 +35,13 @@ public class Fabricante implements Serializable {
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 40)
-	@Column(name = "idFabricante", nullable = false, length = 40)
-	private String idFabricante;
+	@Column(name = "idfabricante", nullable = false, length = 40)
+	private String idfabricante;
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 100)
-	@Column(name = "nombreComercial", nullable = false, length = 100)
-	private String nombreComercial;
+	@Column(name = "nombrecomercial", nullable = false, length = 100)
+	private String nombrecomercial;
 	@Size(max = 1)
 	@Column(name = "estado", length = 1)
 	private String estado;
@@ -53,8 +53,8 @@ public class Fabricante implements Serializable {
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 40)
-	@Column(name = "idUsuario", nullable = false, length = 40)
-	private String idUsuario;
+	@Column(name = "idusuario", nullable = false, length = 40)
+	private String idusuario;
 
 	/**
 	 * 
@@ -65,7 +65,7 @@ public class Fabricante implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 0;
-		hash += (idFabricante != null ? idFabricante.hashCode() : 0);
+		hash += (idfabricante != null ? idfabricante.hashCode() : 0);
 		return hash;
 	}
 
@@ -75,8 +75,8 @@ public class Fabricante implements Serializable {
 			return false;
 		}
 		Fabricante other = (Fabricante) object;
-		if ((this.idFabricante == null && other.idFabricante != null)
-				|| (this.idFabricante != null && !this.idFabricante.equals(other.idFabricante))) {
+		if ((this.idfabricante == null && other.idfabricante != null)
+				|| (this.idfabricante != null && !this.idfabricante.equals(other.idfabricante))) {
 			return false;
 		}
 		return true;
@@ -88,31 +88,31 @@ public class Fabricante implements Serializable {
 	}
 
 	/**
-	 * @return the idFabricante
+	 * @return the idfabricante
 	 */
-	public String getIdFabricante() {
-		return idFabricante;
+	public String getIdfabricante() {
+		return idfabricante;
 	}
 
 	/**
-	 * @param idFabricante the idFabricante to set
+	 * @param idfabricante the idfabricante to set
 	 */
-	public void setIdFabricante(String idFabricante) {
-		this.idFabricante = idFabricante;
+	public void setIdfabricante(String idfabricante) {
+		this.idfabricante = idfabricante;
 	}
 
 	/**
-	 * @return the nombreComercial
+	 * @return the nombrecomercial
 	 */
-	public String getNombreComercial() {
-		return nombreComercial;
+	public String getNombrecomercial() {
+		return nombrecomercial;
 	}
 
 	/**
-	 * @param nombreComercial the nombreComercial to set
+	 * @param nombrecomercial the nombrecomercial to set
 	 */
-	public void setNombreComercial(String nombreComercial) {
-		this.nombreComercial = nombreComercial;
+	public void setNombrecomercial(String nombrecomercial) {
+		this.nombrecomercial = nombrecomercial;
 	}
 
 	/**
@@ -144,17 +144,17 @@ public class Fabricante implements Serializable {
 	}
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
-	}
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
+	}	
 
 }

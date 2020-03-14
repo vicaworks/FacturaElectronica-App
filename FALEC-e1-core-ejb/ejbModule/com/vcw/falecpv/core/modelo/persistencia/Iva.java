@@ -32,8 +32,8 @@ public class Iva implements Serializable {
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 40)
-	@Column(name = "idIva", nullable = false, length = 40)
-	private String idIva;
+	@Column(name = "idiva", nullable = false, length = 40)
+	private String idiva;
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 1)
@@ -55,7 +55,7 @@ public class Iva implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 0;
-		hash += (idIva != null ? idIva.hashCode() : 0);
+		hash += (idiva != null ? idiva.hashCode() : 0);
 		return hash;
 	}
 
@@ -65,7 +65,7 @@ public class Iva implements Serializable {
 			return false;
 		}
 		Iva other = (Iva) object;
-		if ((this.idIva == null && other.idIva != null) || (this.idIva != null && !this.idIva.equals(other.idIva))) {
+		if ((this.idiva == null && other.idiva != null) || (this.idiva != null && !this.idiva.equals(other.idiva))) {
 			return false;
 		}
 		return true;
@@ -77,17 +77,17 @@ public class Iva implements Serializable {
 	}
 
 	/**
-	 * @return the idIva
+	 * @return the idiva
 	 */
-	public String getIdIva() {
-		return idIva;
+	public String getIdiva() {
+		return idiva;
 	}
 
 	/**
-	 * @param idIva the idIva to set
+	 * @param idiva the idiva to set
 	 */
-	public void setIdIva(String idIva) {
-		this.idIva = idIva;
+	public void setIdiva(String idiva) {
+		this.idiva = idiva;
 	}
 
 	/**
@@ -117,6 +117,8 @@ public class Iva implements Serializable {
 	public void setPorcentaje(String porcentaje) {
 		this.porcentaje = porcentaje;
 	}
+
+	
 	
 
 }

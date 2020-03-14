@@ -32,8 +32,8 @@ public class Ice implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idIce", nullable = false, length = 40)
-    private String idIce;
+    @Column(name = "idice", nullable = false, length = 40)
+    private String idice;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 4)
@@ -45,11 +45,11 @@ public class Ice implements Serializable {
     @Column(name = "descripcion", nullable = false, length = 300)
     private String descripcion;
     @Size(max = 10)
-    @Column(name = "tarifaAdValorem", length = 10)
-    private String tarifaAdValorem;
+    @Column(name = "tarifaadvalorem", length = 10)
+    private String tarifaadvalorem;
     @Size(max = 100)
-    @Column(name = "tarifaEspecifica", length = 100)
-    private String tarifaEspecifica;
+    @Column(name = "tarifaespecifica", length = 100)
+    private String tarifaespecifica;
 
 	/**
 	 * 
@@ -61,7 +61,7 @@ public class Ice implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (idIce != null ? idIce.hashCode() : 0);
+        hash += (idice != null ? idice.hashCode() : 0);
         return hash;
     }
 
@@ -71,7 +71,7 @@ public class Ice implements Serializable {
             return false;
         }
         Ice other = (Ice) object;
-        if ((this.idIce == null && other.idIce != null) || (this.idIce != null && !this.idIce.equals(other.idIce))) {
+        if ((this.idice == null && other.idice != null) || (this.idice != null && !this.idice.equals(other.idice))) {
             return false;
         }
         return true;
@@ -83,17 +83,17 @@ public class Ice implements Serializable {
     }
 
 	/**
-	 * @return the idIce
+	 * @return the idice
 	 */
-	public String getIdIce() {
-		return idIce;
+	public String getIdice() {
+		return idice;
 	}
 
 	/**
-	 * @param idIce the idIce to set
+	 * @param idice the idice to set
 	 */
-	public void setIdIce(String idIce) {
-		this.idIce = idIce;
+	public void setIdice(String idice) {
+		this.idice = idice;
 	}
 
 	/**
@@ -125,31 +125,31 @@ public class Ice implements Serializable {
 	}
 
 	/**
-	 * @return the tarifaAdValorem
+	 * @return the tarifaadvalorem
 	 */
-	public String getTarifaAdValorem() {
-		return tarifaAdValorem;
+	public String getTarifaadvalorem() {
+		return tarifaadvalorem;
 	}
 
 	/**
-	 * @param tarifaAdValorem the tarifaAdValorem to set
+	 * @param tarifaadvalorem the tarifaadvalorem to set
 	 */
-	public void setTarifaAdValorem(String tarifaAdValorem) {
-		this.tarifaAdValorem = tarifaAdValorem;
+	public void setTarifaadvalorem(String tarifaadvalorem) {
+		this.tarifaadvalorem = tarifaadvalorem;
 	}
 
 	/**
-	 * @return the tarifaEspecifica
+	 * @return the tarifaespecifica
 	 */
-	public String getTarifaEspecifica() {
-		return tarifaEspecifica;
+	public String getTarifaespecifica() {
+		return tarifaespecifica;
 	}
 
 	/**
-	 * @param tarifaEspecifica the tarifaEspecifica to set
+	 * @param tarifaespecifica the tarifaespecifica to set
 	 */
-	public void setTarifaEspecifica(String tarifaEspecifica) {
-		this.tarifaEspecifica = tarifaEspecifica;
-	}
+	public void setTarifaespecifica(String tarifaespecifica) {
+		this.tarifaespecifica = tarifaespecifica;
+	}	
 
 }

@@ -29,7 +29,7 @@ public class AppGenericDao<T extends Serializable,PK extends Serializable> exten
 	/**
 	 * datasource inyectado, se obtiene del contenedor EJB
 	 */
-	@Resource(mappedName = "java:jboss/datasources/falecDS")
+	@Resource(mappedName = "java:jboss/datasources/falecpvDS")
 	private DataSource dataSource;
 	
 	public AppGenericDao(Class<T> type) {

@@ -37,8 +37,8 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idUsuario", nullable = false, length = 40)
-    private String idUsuario;
+    @Column(name = "idusuario", nullable = false, length = 40)
+    private String idusuario;
 	
     @Basic(optional = false)
     @NotNull
@@ -60,15 +60,15 @@ public class Usuario implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 50)
     @Column(name = "clave", nullable = false, length = 20)
     private String clave;
     
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
-    @Column(name = "puntoEmision", nullable = false, length = 3)
-    private String puntoEmision;
+    @Column(name = "puntoemision", nullable = false, length = 3)
+    private String puntoemision;
     
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
@@ -94,7 +94,7 @@ public class Usuario implements Serializable {
     
     
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idEstablecimiento", referencedColumnName = "idEstablecimiento", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false,insertable = false,updatable = false)
     private Establecimiento establecimiento;
     
 
@@ -109,7 +109,7 @@ public class Usuario implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
+        hash += (idusuario != null ? idusuario.hashCode() : 0);
         return hash;
     }
 
@@ -119,7 +119,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
+        if ((this.idusuario == null && other.idusuario != null) || (this.idusuario != null && !this.idusuario.equals(other.idusuario))) {
             return false;
         }
         return true;
@@ -133,19 +133,19 @@ public class Usuario implements Serializable {
 
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
 
 
@@ -223,19 +223,19 @@ public class Usuario implements Serializable {
 
 
 	/**
-	 * @return the puntoEmision
+	 * @return the puntoemision
 	 */
-	public String getPuntoEmision() {
-		return puntoEmision;
+	public String getPuntoemision() {
+		return puntoemision;
 	}
 
 
 
 	/**
-	 * @param puntoEmision the puntoEmision to set
+	 * @param puntoemision the puntoemision to set
 	 */
-	public void setPuntoEmision(String puntoEmision) {
-		this.puntoEmision = puntoEmision;
+	public void setPuntoemision(String puntoemision) {
+		this.puntoemision = puntoemision;
 	}
 
 
@@ -327,5 +327,9 @@ public class Usuario implements Serializable {
 	public void setEstablecimiento(Establecimiento establecimiento) {
 		this.establecimiento = establecimiento;
 	}
+
+
+
+	
 
 }

@@ -39,8 +39,8 @@ public class Empresa implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idEmpresa", nullable = false, length = 40)
-    private String idEmpresa;
+    @Column(name = "idempresa", nullable = false, length = 40)
+    private String idempresa;
 	
     @Basic(optional = false)
     @NotNull
@@ -51,24 +51,24 @@ public class Empresa implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
-    @Column(name = "razonSocial", nullable = false, length = 300)
-    private String razonSocial;
+    @Column(name = "razonsocial", nullable = false, length = 300)
+    private String razonsocial;
     
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
-    @Column(name = "nombreComercial", nullable = false, length = 300)
-    private String nombreComercial;
+    @Column(name = "nombrecomercial", nullable = false, length = 300)
+    private String nombrecomercial;
     
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
-    @Column(name = "direccionMatriz", nullable = false, length = 300)
-    private String direccionMatriz;
+    @Column(name = "direccionmatriz", nullable = false, length = 300)
+    private String direccionmatriz;
     
     @Size(max = 2)
-    @Column(name = "obligadoContablidad", length = 2)
-    private String obligadoContablidad;
+    @Column(name = "obligadocontablidad", length = 2)
+    private String obligadocontablidad;
     
     @Basic(optional = false)
     @NotNull
@@ -77,12 +77,12 @@ public class Empresa implements Serializable {
     private String ambiente;
     
     @Size(max = 20)
-    @Column(name = "claveFirmaElectronica", length = 20)
-    private String claveFirmaElectronica;
+    @Column(name = "clavefirmaelectronica", length = 20)
+    private String clavefirmaelectronica;
     
     @Lob
-    @Column(name = "archivoFirmaElectronica")    
-    private byte[] archivoFirmaElectronica;
+    @Column(name = "archivofirmaelectronica")    
+    private byte[] archivofirmaelectronica;
     
     @Basic(optional = false)
     @NotNull
@@ -93,8 +93,8 @@ public class Empresa implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idUsuario", nullable = false, length = 40)
-    private String idUsuario;
+    @Column(name = "idusuario", nullable = false, length = 40)
+    private String idusuario;
     
     @OneToMany(mappedBy = "empresa",fetch = FetchType.LAZY)
     private List<Establecimiento> establecimientoList;
@@ -106,7 +106,7 @@ public class Empresa implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idEmpresa != null ? idEmpresa.hashCode() : 0);
+        hash += (idempresa != null ? idempresa.hashCode() : 0);
         return hash;
     }
 
@@ -116,7 +116,7 @@ public class Empresa implements Serializable {
             return false;
         }
         Empresa other = (Empresa) object;
-        if ((this.idEmpresa == null && other.idEmpresa != null) || (this.idEmpresa != null && !this.idEmpresa.equals(other.idEmpresa))) {
+        if ((this.idempresa == null && other.idempresa != null) || (this.idempresa != null && !this.idempresa.equals(other.idempresa))) {
             return false;
         }
         return true;
@@ -128,17 +128,17 @@ public class Empresa implements Serializable {
     }
 
 	/**
-	 * @return the idEmpresa
+	 * @return the idempresa
 	 */
-	public String getIdEmpresa() {
-		return idEmpresa;
+	public String getIdempresa() {
+		return idempresa;
 	}
 
 	/**
-	 * @param idEmpresa the idEmpresa to set
+	 * @param idempresa the idempresa to set
 	 */
-	public void setIdEmpresa(String idEmpresa) {
-		this.idEmpresa = idEmpresa;
+	public void setIdempresa(String idempresa) {
+		this.idempresa = idempresa;
 	}
 
 	/**
@@ -156,59 +156,59 @@ public class Empresa implements Serializable {
 	}
 
 	/**
-	 * @return the razonSocial
+	 * @return the razonsocial
 	 */
-	public String getRazonSocial() {
-		return razonSocial;
+	public String getRazonsocial() {
+		return razonsocial;
 	}
 
 	/**
-	 * @param razonSocial the razonSocial to set
+	 * @param razonsocial the razonsocial to set
 	 */
-	public void setRazonSocial(String razonSocial) {
-		this.razonSocial = razonSocial;
+	public void setRazonsocial(String razonsocial) {
+		this.razonsocial = razonsocial;
 	}
 
 	/**
-	 * @return the nombreComercial
+	 * @return the nombrecomercial
 	 */
-	public String getNombreComercial() {
-		return nombreComercial;
+	public String getNombrecomercial() {
+		return nombrecomercial;
 	}
 
 	/**
-	 * @param nombreComercial the nombreComercial to set
+	 * @param nombrecomercial the nombrecomercial to set
 	 */
-	public void setNombreComercial(String nombreComercial) {
-		this.nombreComercial = nombreComercial;
+	public void setNombrecomercial(String nombrecomercial) {
+		this.nombrecomercial = nombrecomercial;
 	}
 
 	/**
-	 * @return the direccionMatriz
+	 * @return the direccionmatriz
 	 */
-	public String getDireccionMatriz() {
-		return direccionMatriz;
+	public String getDireccionmatriz() {
+		return direccionmatriz;
 	}
 
 	/**
-	 * @param direccionMatriz the direccionMatriz to set
+	 * @param direccionmatriz the direccionmatriz to set
 	 */
-	public void setDireccionMatriz(String direccionMatriz) {
-		this.direccionMatriz = direccionMatriz;
+	public void setDireccionmatriz(String direccionmatriz) {
+		this.direccionmatriz = direccionmatriz;
 	}
 
 	/**
-	 * @return the obligadoContablidad
+	 * @return the obligadocontablidad
 	 */
-	public String getObligadoContablidad() {
-		return obligadoContablidad;
+	public String getObligadocontablidad() {
+		return obligadocontablidad;
 	}
 
 	/**
-	 * @param obligadoContablidad the obligadoContablidad to set
+	 * @param obligadocontablidad the obligadocontablidad to set
 	 */
-	public void setObligadoContablidad(String obligadoContablidad) {
-		this.obligadoContablidad = obligadoContablidad;
+	public void setObligadocontablidad(String obligadocontablidad) {
+		this.obligadocontablidad = obligadocontablidad;
 	}
 
 	/**
@@ -226,19 +226,33 @@ public class Empresa implements Serializable {
 	}
 
 	/**
-	 * @return the claveFirmaElectronica
+	 * @return the clavefirmaelectronica
 	 */
-	public String getClaveFirmaElectronica() {
-		return claveFirmaElectronica;
+	public String getClavefirmaelectronica() {
+		return clavefirmaelectronica;
 	}
 
 	/**
-	 * @param claveFirmaElectronica the claveFirmaElectronica to set
+	 * @param clavefirmaelectronica the clavefirmaelectronica to set
 	 */
-	public void setClaveFirmaElectronica(String claveFirmaElectronica) {
-		this.claveFirmaElectronica = claveFirmaElectronica;
-	}	
-	
+	public void setClavefirmaelectronica(String clavefirmaelectronica) {
+		this.clavefirmaelectronica = clavefirmaelectronica;
+	}
+
+	/**
+	 * @return the archivofirmaelectronica
+	 */
+	public byte[] getArchivofirmaelectronica() {
+		return archivofirmaelectronica;
+	}
+
+	/**
+	 * @param archivofirmaelectronica the archivofirmaelectronica to set
+	 */
+	public void setArchivofirmaelectronica(byte[] archivofirmaelectronica) {
+		this.archivofirmaelectronica = archivofirmaelectronica;
+	}
+
 	/**
 	 * @return the updated
 	 */
@@ -254,17 +268,17 @@ public class Empresa implements Serializable {
 	}
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
 
 	/**
@@ -281,18 +295,6 @@ public class Empresa implements Serializable {
 		this.establecimientoList = establecimientoList;
 	}
 
-	/**
-	 * @return the archivoFirmaElectronica
-	 */
-	public byte[] getArchivoFirmaElectronica() {
-		return archivoFirmaElectronica;
-	}
-
-	/**
-	 * @param archivoFirmaElectronica the archivoFirmaElectronica to set
-	 */
-	public void setArchivoFirmaElectronica(byte[] archivoFirmaElectronica) {
-		this.archivoFirmaElectronica = archivoFirmaElectronica;
-	}
+	
 
 }

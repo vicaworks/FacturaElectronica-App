@@ -38,55 +38,66 @@ public class KardexProducto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idKardexProducto", nullable = false, length = 40)
-    private String idKardexProducto;
+    @Column(name = "idkardexproducto", nullable = false, length = 40)
+    private String idkardexproducto;
+	
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
-    @Column(name = "tipoRegistro", nullable = false, length = 1)
-    private String tipoRegistro;
+    @Column(name = "tiporegistro", nullable = false, length = 1)
+    private String tiporegistro;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fechaRegistro", nullable = false)
+    @Column(name = "fecharegistro", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date fechaRegistro;
+    private Date fecharegistro;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Column(name = "costoUnitario", nullable = false, precision = 12, scale = 2)
-    private BigDecimal costoUnitario;
-    @Column(name = "fechaVencimiento")
+    @Column(name = "costounitario", nullable = false, precision = 12, scale = 2)
+    private BigDecimal costounitario;
+    
+    @Column(name = "fechavencimiento")
     @Temporal(TemporalType.DATE)
-    private Date fechaVencimiento;
-    @Column(name = "fechaFabricacion")
+    private Date fechavencimiento;
+    
+    @Column(name = "fechafabricacion")
     @Temporal(TemporalType.DATE)
-    private Date fechaFabricacion;
-    @Column(name = "fechaCompra")
+    private Date fechafabricacion;
+    
+    @Column(name = "fechacompra")
     @Temporal(TemporalType.DATE)
-    private Date fechaCompra;
+    private Date fechacompra;
+    
     @Size(max = 800)
     @Column(name = "observacion", length = 800)
     private String observacion;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "costoTotal", nullable = false, precision = 12, scale = 2)
-    private BigDecimal costoTotal;
+    @Column(name = "costototal", nullable = false, precision = 12, scale = 2)
+    private BigDecimal costototal;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "updated", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date updated;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idUsuario", nullable = false, length = 40)
-    private String idUsuario;
+    @Column(name = "idusuario", nullable = false, length = 40)
+    private String idusuario;
     
-    @JoinColumn(name = "idProducto", referencedColumnName = "idProducto", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false,insertable = false,updatable = false)
     @ManyToOne(optional = false)
     private Producto producto;
 
@@ -99,7 +110,7 @@ public class KardexProducto implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (idKardexProducto != null ? idKardexProducto.hashCode() : 0);
+        hash += (idkardexproducto != null ? idkardexproducto.hashCode() : 0);
         return hash;
     }
 
@@ -109,7 +120,7 @@ public class KardexProducto implements Serializable {
             return false;
         }
         KardexProducto other = (KardexProducto) object;
-        if ((this.idKardexProducto == null && other.idKardexProducto != null) || (this.idKardexProducto != null && !this.idKardexProducto.equals(other.idKardexProducto))) {
+        if ((this.idkardexproducto == null && other.idkardexproducto != null) || (this.idkardexproducto != null && !this.idkardexproducto.equals(other.idkardexproducto))) {
             return false;
         }
         return true;
@@ -121,31 +132,31 @@ public class KardexProducto implements Serializable {
     }
 
 	/**
-	 * @return the idKardexProducto
+	 * @return the idkardexproducto
 	 */
-	public String getIdKardexProducto() {
-		return idKardexProducto;
+	public String getIdkardexproducto() {
+		return idkardexproducto;
 	}
 
 	/**
-	 * @param idKardexProducto the idKardexProducto to set
+	 * @param idkardexproducto the idkardexproducto to set
 	 */
-	public void setIdKardexProducto(String idKardexProducto) {
-		this.idKardexProducto = idKardexProducto;
+	public void setIdkardexproducto(String idkardexproducto) {
+		this.idkardexproducto = idkardexproducto;
 	}
 
 	/**
-	 * @return the tipoRegistro
+	 * @return the tiporegistro
 	 */
-	public String getTipoRegistro() {
-		return tipoRegistro;
+	public String getTiporegistro() {
+		return tiporegistro;
 	}
 
 	/**
-	 * @param tipoRegistro the tipoRegistro to set
+	 * @param tiporegistro the tiporegistro to set
 	 */
-	public void setTipoRegistro(String tipoRegistro) {
-		this.tipoRegistro = tipoRegistro;
+	public void setTiporegistro(String tiporegistro) {
+		this.tiporegistro = tiporegistro;
 	}
 
 	/**
@@ -163,73 +174,73 @@ public class KardexProducto implements Serializable {
 	}
 
 	/**
-	 * @return the fechaRegistro
+	 * @return the fecharegistro
 	 */
-	public Date getFechaRegistro() {
-		return fechaRegistro;
+	public Date getFecharegistro() {
+		return fecharegistro;
 	}
 
 	/**
-	 * @param fechaRegistro the fechaRegistro to set
+	 * @param fecharegistro the fecharegistro to set
 	 */
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
+	public void setFecharegistro(Date fecharegistro) {
+		this.fecharegistro = fecharegistro;
 	}
 
 	/**
-	 * @return the costoUnitario
+	 * @return the costounitario
 	 */
-	public BigDecimal getCostoUnitario() {
-		return costoUnitario;
+	public BigDecimal getCostounitario() {
+		return costounitario;
 	}
 
 	/**
-	 * @param costoUnitario the costoUnitario to set
+	 * @param costounitario the costounitario to set
 	 */
-	public void setCostoUnitario(BigDecimal costoUnitario) {
-		this.costoUnitario = costoUnitario;
+	public void setCostounitario(BigDecimal costounitario) {
+		this.costounitario = costounitario;
 	}
 
 	/**
-	 * @return the fechaVencimiento
+	 * @return the fechavencimiento
 	 */
-	public Date getFechaVencimiento() {
-		return fechaVencimiento;
+	public Date getFechavencimiento() {
+		return fechavencimiento;
 	}
 
 	/**
-	 * @param fechaVencimiento the fechaVencimiento to set
+	 * @param fechavencimiento the fechavencimiento to set
 	 */
-	public void setFechaVencimiento(Date fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
+	public void setFechavencimiento(Date fechavencimiento) {
+		this.fechavencimiento = fechavencimiento;
 	}
 
 	/**
-	 * @return the fechaFabricacion
+	 * @return the fechafabricacion
 	 */
-	public Date getFechaFabricacion() {
-		return fechaFabricacion;
+	public Date getFechafabricacion() {
+		return fechafabricacion;
 	}
 
 	/**
-	 * @param fechaFabricacion the fechaFabricacion to set
+	 * @param fechafabricacion the fechafabricacion to set
 	 */
-	public void setFechaFabricacion(Date fechaFabricacion) {
-		this.fechaFabricacion = fechaFabricacion;
+	public void setFechafabricacion(Date fechafabricacion) {
+		this.fechafabricacion = fechafabricacion;
 	}
 
 	/**
-	 * @return the fechaCompra
+	 * @return the fechacompra
 	 */
-	public Date getFechaCompra() {
-		return fechaCompra;
+	public Date getFechacompra() {
+		return fechacompra;
 	}
 
 	/**
-	 * @param fechaCompra the fechaCompra to set
+	 * @param fechacompra the fechacompra to set
 	 */
-	public void setFechaCompra(Date fechaCompra) {
-		this.fechaCompra = fechaCompra;
+	public void setFechacompra(Date fechacompra) {
+		this.fechacompra = fechacompra;
 	}
 
 	/**
@@ -247,17 +258,17 @@ public class KardexProducto implements Serializable {
 	}
 
 	/**
-	 * @return the costoTotal
+	 * @return the costototal
 	 */
-	public BigDecimal getCostoTotal() {
-		return costoTotal;
+	public BigDecimal getCostototal() {
+		return costototal;
 	}
 
 	/**
-	 * @param costoTotal the costoTotal to set
+	 * @param costototal the costototal to set
 	 */
-	public void setCostoTotal(BigDecimal costoTotal) {
-		this.costoTotal = costoTotal;
+	public void setCostototal(BigDecimal costototal) {
+		this.costototal = costototal;
 	}
 
 	/**
@@ -275,17 +286,17 @@ public class KardexProducto implements Serializable {
 	}
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
 
 	/**
@@ -302,6 +313,6 @@ public class KardexProducto implements Serializable {
 		this.producto = producto;
 	}
 
-	
+		
 
 }

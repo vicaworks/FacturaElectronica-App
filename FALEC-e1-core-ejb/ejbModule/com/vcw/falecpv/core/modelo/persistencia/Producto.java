@@ -39,102 +39,126 @@ public class Producto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idProducto", nullable = false, length = 40)
-    private String idProducto;
+    @Column(name = "idproducto", nullable = false, length = 40)
+    private String idproducto;
+	
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
-    @Column(name = "codigoPrincipal", nullable = false, length = 25)
-    private String codigoPrincipal;
+    @Column(name = "codigoprincipal", nullable = false, length = 25)
+    private String codigoprincipal;
+    
     @Size(max = 25)
-    @Column(name = "codigoAuxiliar", length = 25)
-    private String codigoAuxiliar;
+    @Column(name = "codigoauxiliar", length = 25)
+    private String codigoauxiliar;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
+    
     @Size(max = 100)
-    @Column(name = "nombreGenerico", length = 100)
-    private String nombreGenerico;
+    @Column(name = "nombregenerico", length = 100)
+    private String nombregenerico;
+    
     @Size(max = 300)
     @Column(name = "descripcion", length = 300)
     private String descripcion;
+    
     @Lob
     @Column(name = "imagen")
     private byte[] imagen;
     @Basic(optional = false)
+    
     @NotNull
-    @Column(name = "precioUnitario", nullable = false, precision = 12, scale = 2)
-    private BigDecimal precioUnitario;
+    @Column(name = "preciounitario", nullable = false, precision = 12, scale = 2)
+    private BigDecimal preciounitario;
+    
+    @Basic(optional = false)    
+    @NotNull
+    @Column(name = "porcentajedescuento", nullable = false, precision = 12, scale = 2)
+    private BigDecimal porcentajedescuento;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "porcentajeDescuento", nullable = false, precision = 12, scale = 2)
-    private BigDecimal porcentajeDescuento;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "precioUno", nullable = false, precision = 12, scale = 2)
-    private BigDecimal precioUno;
-    @Column(name = "precioDos", precision = 12, scale = 2)
-    private BigDecimal precioDos;
-    @Column(name = "precioTres", precision = 12, scale = 2)
-    private BigDecimal precioTres;
-    @Column(name = "unidadesPorCajaOFrasco")
-    private Integer unidadesPorCajaOFrasco;
-    @Column(name = "unidadesPorPaquete")
-    private Integer unidadesPorPaquete;
-    @Column(name = "gramosPorUnidad", precision = 12, scale = 2)
-    private BigDecimal gramosPorUnidad;
-    @Column(name = "fechaVencimiento")
+    @Column(name = "preciouno", nullable = false, precision = 12, scale = 2)
+    private BigDecimal preciouno;
+    
+    @Column(name = "preciodos", precision = 12, scale = 2)
+    private BigDecimal preciodos;
+    
+    @Column(name = "preciotres", precision = 12, scale = 2)
+    private BigDecimal preciotres;
+    
+    @Column(name = "unidadesporcajaofrasco")
+    private Integer unidadesporcajaofrasco;
+    
+    @Column(name = "unidadesporpaquete")
+    private Integer unidadesporpaquete;
+    
+    @Column(name = "gramosporunidad", precision = 12, scale = 2)
+    private BigDecimal gramosporunidad;
+    
+    @Column(name = "fechavencimiento")
     @Temporal(TemporalType.DATE)
-    private Date fechaVencimiento;
-    @Column(name = "fechaFabricacion")
+    private Date fechavencimiento;
+    
+    @Column(name = "fechafabricacion")
     @Temporal(TemporalType.DATE)
-    private Date fechaFabricacion;
-    @Column(name = "fechaCompra")
+    private Date fechafabricacion;
+    
+    @Column(name = "fechacompra")
     @Temporal(TemporalType.DATE)
-    private Date fechaCompra;
+    private Date fechacompra;
+    
     @Column(name = "stock")
     private Integer stock;
+    
     @Size(max = 1)
     @Column(name = "tipo", length = 1)
     private String tipo;
+    
     @Size(max = 800)
     @Column(name = "observacion", length = 800)
     private String observacion;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
     @Column(name = "estado", nullable = false, length = 1)
     private String estado;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "updated", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date updated;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idUsuario", nullable = false, length = 40)
-    private String idUsuario;
+    @Column(name = "idusuario", nullable = false, length = 40)
+    private String idusuario;
     
-    @JoinColumn(name = "idCategoria", referencedColumnName = "idCategoria", nullable = false,insertable = false,updatable = false)
+    
+    @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria", nullable = false,insertable = false,updatable = false)
     @ManyToOne(optional = false)
     private Categoria categoria;
     
-    @JoinColumn(name = "idFabricante", referencedColumnName = "idFabricante", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idfabricante", referencedColumnName = "idfabricante", nullable = false,insertable = false,updatable = false)
     @ManyToOne(optional = false)
     private Fabricante fabricante;
     
-    @JoinColumn(name = "idIce", referencedColumnName = "idIce",insertable = false,updatable = false)
+    @JoinColumn(name = "idice", referencedColumnName = "idice",insertable = false,updatable = false)
     @ManyToOne
     private Ice ice;
     
-    @JoinColumn(name = "idIva", referencedColumnName = "idIva", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = false,insertable = false,updatable = false)
     @ManyToOne(optional = false)
     private Iva iva;
     
-    @JoinColumn(name = "idTipoProducto", referencedColumnName = "idTipoProducto", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idtipoproducto", referencedColumnName = "idtipoproducto", nullable = false,insertable = false,updatable = false)
     @ManyToOne(optional = false)
     private TipoProducto tipoProducto;
 
@@ -147,7 +171,7 @@ public class Producto implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (idProducto != null ? idProducto.hashCode() : 0);
+        hash += (idproducto != null ? idproducto.hashCode() : 0);
         return hash;
     }
 
@@ -157,7 +181,7 @@ public class Producto implements Serializable {
             return false;
         }
         Producto other = (Producto) object;
-        if ((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto))) {
+        if ((this.idproducto == null && other.idproducto != null) || (this.idproducto != null && !this.idproducto.equals(other.idproducto))) {
             return false;
         }
         return true;
@@ -169,45 +193,45 @@ public class Producto implements Serializable {
     }
 
 	/**
-	 * @return the idProducto
+	 * @return the idproducto
 	 */
-	public String getIdProducto() {
-		return idProducto;
+	public String getIdproducto() {
+		return idproducto;
 	}
 
 	/**
-	 * @param idProducto the idProducto to set
+	 * @param idproducto the idproducto to set
 	 */
-	public void setIdProducto(String idProducto) {
-		this.idProducto = idProducto;
+	public void setIdproducto(String idproducto) {
+		this.idproducto = idproducto;
 	}
 
 	/**
-	 * @return the codigoPrincipal
+	 * @return the codigoprincipal
 	 */
-	public String getCodigoPrincipal() {
-		return codigoPrincipal;
+	public String getCodigoprincipal() {
+		return codigoprincipal;
 	}
 
 	/**
-	 * @param codigoPrincipal the codigoPrincipal to set
+	 * @param codigoprincipal the codigoprincipal to set
 	 */
-	public void setCodigoPrincipal(String codigoPrincipal) {
-		this.codigoPrincipal = codigoPrincipal;
+	public void setCodigoprincipal(String codigoprincipal) {
+		this.codigoprincipal = codigoprincipal;
 	}
 
 	/**
-	 * @return the codigoAuxiliar
+	 * @return the codigoauxiliar
 	 */
-	public String getCodigoAuxiliar() {
-		return codigoAuxiliar;
+	public String getCodigoauxiliar() {
+		return codigoauxiliar;
 	}
 
 	/**
-	 * @param codigoAuxiliar the codigoAuxiliar to set
+	 * @param codigoauxiliar the codigoauxiliar to set
 	 */
-	public void setCodigoAuxiliar(String codigoAuxiliar) {
-		this.codigoAuxiliar = codigoAuxiliar;
+	public void setCodigoauxiliar(String codigoauxiliar) {
+		this.codigoauxiliar = codigoauxiliar;
 	}
 
 	/**
@@ -225,17 +249,17 @@ public class Producto implements Serializable {
 	}
 
 	/**
-	 * @return the nombreGenerico
+	 * @return the nombregenerico
 	 */
-	public String getNombreGenerico() {
-		return nombreGenerico;
+	public String getNombregenerico() {
+		return nombregenerico;
 	}
 
 	/**
-	 * @param nombreGenerico the nombreGenerico to set
+	 * @param nombregenerico the nombregenerico to set
 	 */
-	public void setNombreGenerico(String nombreGenerico) {
-		this.nombreGenerico = nombreGenerico;
+	public void setNombregenerico(String nombregenerico) {
+		this.nombregenerico = nombregenerico;
 	}
 
 	/**
@@ -267,157 +291,157 @@ public class Producto implements Serializable {
 	}
 
 	/**
-	 * @return the precioUnitario
+	 * @return the preciounitario
 	 */
-	public BigDecimal getPrecioUnitario() {
-		return precioUnitario;
+	public BigDecimal getPreciounitario() {
+		return preciounitario;
 	}
 
 	/**
-	 * @param precioUnitario the precioUnitario to set
+	 * @param preciounitario the preciounitario to set
 	 */
-	public void setPrecioUnitario(BigDecimal precioUnitario) {
-		this.precioUnitario = precioUnitario;
+	public void setPreciounitario(BigDecimal preciounitario) {
+		this.preciounitario = preciounitario;
 	}
 
 	/**
-	 * @return the porcentajeDescuento
+	 * @return the porcentajedescuento
 	 */
-	public BigDecimal getPorcentajeDescuento() {
-		return porcentajeDescuento;
+	public BigDecimal getPorcentajedescuento() {
+		return porcentajedescuento;
 	}
 
 	/**
-	 * @param porcentajeDescuento the porcentajeDescuento to set
+	 * @param porcentajedescuento the porcentajedescuento to set
 	 */
-	public void setPorcentajeDescuento(BigDecimal porcentajeDescuento) {
-		this.porcentajeDescuento = porcentajeDescuento;
+	public void setPorcentajedescuento(BigDecimal porcentajedescuento) {
+		this.porcentajedescuento = porcentajedescuento;
 	}
 
 	/**
-	 * @return the precioUno
+	 * @return the preciouno
 	 */
-	public BigDecimal getPrecioUno() {
-		return precioUno;
+	public BigDecimal getPreciouno() {
+		return preciouno;
 	}
 
 	/**
-	 * @param precioUno the precioUno to set
+	 * @param preciouno the preciouno to set
 	 */
-	public void setPrecioUno(BigDecimal precioUno) {
-		this.precioUno = precioUno;
+	public void setPreciouno(BigDecimal preciouno) {
+		this.preciouno = preciouno;
 	}
 
 	/**
-	 * @return the precioDos
+	 * @return the preciodos
 	 */
-	public BigDecimal getPrecioDos() {
-		return precioDos;
+	public BigDecimal getPreciodos() {
+		return preciodos;
 	}
 
 	/**
-	 * @param precioDos the precioDos to set
+	 * @param preciodos the preciodos to set
 	 */
-	public void setPrecioDos(BigDecimal precioDos) {
-		this.precioDos = precioDos;
+	public void setPreciodos(BigDecimal preciodos) {
+		this.preciodos = preciodos;
 	}
 
 	/**
-	 * @return the precioTres
+	 * @return the preciotres
 	 */
-	public BigDecimal getPrecioTres() {
-		return precioTres;
+	public BigDecimal getPreciotres() {
+		return preciotres;
 	}
 
 	/**
-	 * @param precioTres the precioTres to set
+	 * @param preciotres the preciotres to set
 	 */
-	public void setPrecioTres(BigDecimal precioTres) {
-		this.precioTres = precioTres;
+	public void setPreciotres(BigDecimal preciotres) {
+		this.preciotres = preciotres;
 	}
 
 	/**
-	 * @return the unidadesPorCajaOFrasco
+	 * @return the unidadesporcajaofrasco
 	 */
-	public Integer getUnidadesPorCajaOFrasco() {
-		return unidadesPorCajaOFrasco;
+	public Integer getUnidadesporcajaofrasco() {
+		return unidadesporcajaofrasco;
 	}
 
 	/**
-	 * @param unidadesPorCajaOFrasco the unidadesPorCajaOFrasco to set
+	 * @param unidadesporcajaofrasco the unidadesporcajaofrasco to set
 	 */
-	public void setUnidadesPorCajaOFrasco(Integer unidadesPorCajaOFrasco) {
-		this.unidadesPorCajaOFrasco = unidadesPorCajaOFrasco;
+	public void setUnidadesporcajaofrasco(Integer unidadesporcajaofrasco) {
+		this.unidadesporcajaofrasco = unidadesporcajaofrasco;
 	}
 
 	/**
-	 * @return the unidadesPorPaquete
+	 * @return the unidadesporpaquete
 	 */
-	public Integer getUnidadesPorPaquete() {
-		return unidadesPorPaquete;
+	public Integer getUnidadesporpaquete() {
+		return unidadesporpaquete;
 	}
 
 	/**
-	 * @param unidadesPorPaquete the unidadesPorPaquete to set
+	 * @param unidadesporpaquete the unidadesporpaquete to set
 	 */
-	public void setUnidadesPorPaquete(Integer unidadesPorPaquete) {
-		this.unidadesPorPaquete = unidadesPorPaquete;
+	public void setUnidadesporpaquete(Integer unidadesporpaquete) {
+		this.unidadesporpaquete = unidadesporpaquete;
 	}
 
 	/**
-	 * @return the gramosPorUnidad
+	 * @return the gramosporunidad
 	 */
-	public BigDecimal getGramosPorUnidad() {
-		return gramosPorUnidad;
+	public BigDecimal getGramosporunidad() {
+		return gramosporunidad;
 	}
 
 	/**
-	 * @param gramosPorUnidad the gramosPorUnidad to set
+	 * @param gramosporunidad the gramosporunidad to set
 	 */
-	public void setGramosPorUnidad(BigDecimal gramosPorUnidad) {
-		this.gramosPorUnidad = gramosPorUnidad;
+	public void setGramosporunidad(BigDecimal gramosporunidad) {
+		this.gramosporunidad = gramosporunidad;
 	}
 
 	/**
-	 * @return the fechaVencimiento
+	 * @return the fechavencimiento
 	 */
-	public Date getFechaVencimiento() {
-		return fechaVencimiento;
+	public Date getFechavencimiento() {
+		return fechavencimiento;
 	}
 
 	/**
-	 * @param fechaVencimiento the fechaVencimiento to set
+	 * @param fechavencimiento the fechavencimiento to set
 	 */
-	public void setFechaVencimiento(Date fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
+	public void setFechavencimiento(Date fechavencimiento) {
+		this.fechavencimiento = fechavencimiento;
 	}
 
 	/**
-	 * @return the fechaFabricacion
+	 * @return the fechafabricacion
 	 */
-	public Date getFechaFabricacion() {
-		return fechaFabricacion;
+	public Date getFechafabricacion() {
+		return fechafabricacion;
 	}
 
 	/**
-	 * @param fechaFabricacion the fechaFabricacion to set
+	 * @param fechafabricacion the fechafabricacion to set
 	 */
-	public void setFechaFabricacion(Date fechaFabricacion) {
-		this.fechaFabricacion = fechaFabricacion;
+	public void setFechafabricacion(Date fechafabricacion) {
+		this.fechafabricacion = fechafabricacion;
 	}
 
 	/**
-	 * @return the fechaCompra
+	 * @return the fechacompra
 	 */
-	public Date getFechaCompra() {
-		return fechaCompra;
+	public Date getFechacompra() {
+		return fechacompra;
 	}
 
 	/**
-	 * @param fechaCompra the fechaCompra to set
+	 * @param fechacompra the fechacompra to set
 	 */
-	public void setFechaCompra(Date fechaCompra) {
-		this.fechaCompra = fechaCompra;
+	public void setFechacompra(Date fechacompra) {
+		this.fechacompra = fechacompra;
 	}
 
 	/**
@@ -491,17 +515,17 @@ public class Producto implements Serializable {
 	}
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
 
 	/**
@@ -573,5 +597,7 @@ public class Producto implements Serializable {
 	public void setTipoProducto(TipoProducto tipoProducto) {
 		this.tipoProducto = tipoProducto;
 	}
+
+	
 
 }

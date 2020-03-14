@@ -41,26 +41,26 @@ public class Establecimiento implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idEstablecimiento", nullable = false, length = 40)
-    private String idEstablecimiento;
+    @Column(name = "idestablecimiento", nullable = false, length = 40)
+    private String idestablecimiento;
 	
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
-    @Column(name = "codigoEstablecimiento", nullable = false, length = 3)
-    private String codigoEstablecimiento;
+    @Column(name = "codigoestablecimiento", nullable = false, length = 3)
+    private String codigoestablecimiento;
     
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
-    @Column(name = "direccionEstablecimiento", nullable = false, length = 300)
-    private String direccionEstablecimiento;
+    @Column(name = "direccionestablecimiento", nullable = false, length = 300)
+    private String direccionestablecimiento;
     
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
-    @Column(name = "nombreComercial", nullable = false, length = 300)
-    private String nombreComercial;
+    @Column(name = "nombrecomercial", nullable = false, length = 300)
+    private String nombrecomercial;
     
     @Lob
     @Column(name = "logo")
@@ -69,8 +69,8 @@ public class Establecimiento implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
-    @Column(name = "puntoEmision", nullable = false, length = 3)
-    private String puntoEmision;
+    @Column(name = "puntoemision", nullable = false, length = 3)
+    private String puntoemision;
     
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
@@ -88,13 +88,13 @@ public class Establecimiento implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "secuencialFactura", nullable = false)
-    private int secuencialFactura;
+    @Column(name = "secuencialfactura", nullable = false)
+    private int secuencialfactura;
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "secuencialLiquidacionCompra", nullable = false)
-    private int secuencialLiquidacionCompra;
+    @Column(name = "secuencialliquidacioncompra", nullable = false)
+    private int secuencialliquidacioncompra;
     
     @Basic(optional = false)
     @NotNull
@@ -103,18 +103,18 @@ public class Establecimiento implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "secuencialNotaDebito", nullable = false)
-    private int secuencialNotaDebito;
+    @Column(name = "secuencialnotadebito", nullable = false)
+    private int secuencialnotadebito;
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "secuencialGuiaRemision", nullable = false)
-    private int secuencialGuiaRemision;
+    @Column(name = "secuencialguiaremision", nullable = false)
+    private int secuencialguiaremision;
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "secuencialRetencion", nullable = false)
-    private int secuencialRetencion;
+    @Column(name = "secuencialretencion", nullable = false)
+    private int secuencialretencion;
     
     @Basic(optional = false)
     @NotNull
@@ -125,11 +125,11 @@ public class Establecimiento implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idUsuario", nullable = false, length = 40)
-    private String idUsuario;
+    @Column(name = "idusuario", nullable = false, length = 40)
+    private String idusuario;
     
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idEmpresa",referencedColumnName = "idEmpresa",insertable = false,updatable = false)
+    @JoinColumn(name = "idempresa",referencedColumnName = "idempresa",insertable = false,updatable = false)
     private Empresa empresa;
     
     @OneToMany(mappedBy = "establecimiento",fetch = FetchType.LAZY)
@@ -144,7 +144,7 @@ public class Establecimiento implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (idEstablecimiento != null ? idEstablecimiento.hashCode() : 0);
+        hash += (idestablecimiento != null ? idestablecimiento.hashCode() : 0);
         return hash;
     }
 
@@ -154,7 +154,7 @@ public class Establecimiento implements Serializable {
             return false;
         }
         Establecimiento other = (Establecimiento) object;
-        if ((this.idEstablecimiento == null && other.idEstablecimiento != null) || (this.idEstablecimiento != null && !this.idEstablecimiento.equals(other.idEstablecimiento))) {
+        if ((this.idestablecimiento == null && other.idestablecimiento != null) || (this.idestablecimiento != null && !this.idestablecimiento.equals(other.idestablecimiento))) {
             return false;
         }
         return true;
@@ -166,59 +166,59 @@ public class Establecimiento implements Serializable {
     }
 
 	/**
-	 * @return the idEstablecimiento
+	 * @return the idestablecimiento
 	 */
-	public String getIdEstablecimiento() {
-		return idEstablecimiento;
+	public String getIdestablecimiento() {
+		return idestablecimiento;
 	}
 
 	/**
-	 * @param idEstablecimiento the idEstablecimiento to set
+	 * @param idestablecimiento the idestablecimiento to set
 	 */
-	public void setIdEstablecimiento(String idEstablecimiento) {
-		this.idEstablecimiento = idEstablecimiento;
+	public void setIdestablecimiento(String idestablecimiento) {
+		this.idestablecimiento = idestablecimiento;
 	}
 
 	/**
-	 * @return the codigoEstablecimiento
+	 * @return the codigoestablecimiento
 	 */
-	public String getCodigoEstablecimiento() {
-		return codigoEstablecimiento;
+	public String getCodigoestablecimiento() {
+		return codigoestablecimiento;
 	}
 
 	/**
-	 * @param codigoEstablecimiento the codigoEstablecimiento to set
+	 * @param codigoestablecimiento the codigoestablecimiento to set
 	 */
-	public void setCodigoEstablecimiento(String codigoEstablecimiento) {
-		this.codigoEstablecimiento = codigoEstablecimiento;
+	public void setCodigoestablecimiento(String codigoestablecimiento) {
+		this.codigoestablecimiento = codigoestablecimiento;
 	}
 
 	/**
-	 * @return the direccionEstablecimiento
+	 * @return the direccionestablecimiento
 	 */
-	public String getDireccionEstablecimiento() {
-		return direccionEstablecimiento;
+	public String getDireccionestablecimiento() {
+		return direccionestablecimiento;
 	}
 
 	/**
-	 * @param direccionEstablecimiento the direccionEstablecimiento to set
+	 * @param direccionestablecimiento the direccionestablecimiento to set
 	 */
-	public void setDireccionEstablecimiento(String direccionEstablecimiento) {
-		this.direccionEstablecimiento = direccionEstablecimiento;
+	public void setDireccionestablecimiento(String direccionestablecimiento) {
+		this.direccionestablecimiento = direccionestablecimiento;
 	}
 
 	/**
-	 * @return the nombreComercial
+	 * @return the nombrecomercial
 	 */
-	public String getNombreComercial() {
-		return nombreComercial;
+	public String getNombrecomercial() {
+		return nombrecomercial;
 	}
 
 	/**
-	 * @param nombreComercial the nombreComercial to set
+	 * @param nombrecomercial the nombrecomercial to set
 	 */
-	public void setNombreComercial(String nombreComercial) {
-		this.nombreComercial = nombreComercial;
+	public void setNombrecomercial(String nombrecomercial) {
+		this.nombrecomercial = nombrecomercial;
 	}
 
 	/**
@@ -236,17 +236,17 @@ public class Establecimiento implements Serializable {
 	}
 
 	/**
-	 * @return the puntoEmision
+	 * @return the puntoemision
 	 */
-	public String getPuntoEmision() {
-		return puntoEmision;
+	public String getPuntoemision() {
+		return puntoemision;
 	}
 
 	/**
-	 * @param puntoEmision the puntoEmision to set
+	 * @param puntoemision the puntoemision to set
 	 */
-	public void setPuntoEmision(String puntoEmision) {
-		this.puntoEmision = puntoEmision;
+	public void setPuntoemision(String puntoemision) {
+		this.puntoemision = puntoemision;
 	}
 
 	/**
@@ -292,31 +292,31 @@ public class Establecimiento implements Serializable {
 	}
 
 	/**
-	 * @return the secuencialFactura
+	 * @return the secuencialfactura
 	 */
-	public int getSecuencialFactura() {
-		return secuencialFactura;
+	public int getSecuencialfactura() {
+		return secuencialfactura;
 	}
 
 	/**
-	 * @param secuencialFactura the secuencialFactura to set
+	 * @param secuencialfactura the secuencialfactura to set
 	 */
-	public void setSecuencialFactura(int secuencialFactura) {
-		this.secuencialFactura = secuencialFactura;
+	public void setSecuencialfactura(int secuencialfactura) {
+		this.secuencialfactura = secuencialfactura;
 	}
 
 	/**
-	 * @return the secuencialLiquidacionCompra
+	 * @return the secuencialliquidacioncompra
 	 */
-	public int getSecuencialLiquidacionCompra() {
-		return secuencialLiquidacionCompra;
+	public int getSecuencialliquidacioncompra() {
+		return secuencialliquidacioncompra;
 	}
 
 	/**
-	 * @param secuencialLiquidacionCompra the secuencialLiquidacionCompra to set
+	 * @param secuencialliquidacioncompra the secuencialliquidacioncompra to set
 	 */
-	public void setSecuencialLiquidacionCompra(int secuencialLiquidacionCompra) {
-		this.secuencialLiquidacionCompra = secuencialLiquidacionCompra;
+	public void setSecuencialliquidacioncompra(int secuencialliquidacioncompra) {
+		this.secuencialliquidacioncompra = secuencialliquidacioncompra;
 	}
 
 	/**
@@ -334,45 +334,45 @@ public class Establecimiento implements Serializable {
 	}
 
 	/**
-	 * @return the secuencialNotaDebito
+	 * @return the secuencialnotadebito
 	 */
-	public int getSecuencialNotaDebito() {
-		return secuencialNotaDebito;
+	public int getSecuencialnotadebito() {
+		return secuencialnotadebito;
 	}
 
 	/**
-	 * @param secuencialNotaDebito the secuencialNotaDebito to set
+	 * @param secuencialnotadebito the secuencialnotadebito to set
 	 */
-	public void setSecuencialNotaDebito(int secuencialNotaDebito) {
-		this.secuencialNotaDebito = secuencialNotaDebito;
+	public void setSecuencialnotadebito(int secuencialnotadebito) {
+		this.secuencialnotadebito = secuencialnotadebito;
 	}
 
 	/**
-	 * @return the secuencialGuiaRemision
+	 * @return the secuencialguiaremision
 	 */
-	public int getSecuencialGuiaRemision() {
-		return secuencialGuiaRemision;
+	public int getSecuencialguiaremision() {
+		return secuencialguiaremision;
 	}
 
 	/**
-	 * @param secuencialGuiaRemision the secuencialGuiaRemision to set
+	 * @param secuencialguiaremision the secuencialguiaremision to set
 	 */
-	public void setSecuencialGuiaRemision(int secuencialGuiaRemision) {
-		this.secuencialGuiaRemision = secuencialGuiaRemision;
+	public void setSecuencialguiaremision(int secuencialguiaremision) {
+		this.secuencialguiaremision = secuencialguiaremision;
 	}
 
 	/**
-	 * @return the secuencialRetencion
+	 * @return the secuencialretencion
 	 */
-	public int getSecuencialRetencion() {
-		return secuencialRetencion;
+	public int getSecuencialretencion() {
+		return secuencialretencion;
 	}
 
 	/**
-	 * @param secuencialRetencion the secuencialRetencion to set
+	 * @param secuencialretencion the secuencialretencion to set
 	 */
-	public void setSecuencialRetencion(int secuencialRetencion) {
-		this.secuencialRetencion = secuencialRetencion;
+	public void setSecuencialretencion(int secuencialretencion) {
+		this.secuencialretencion = secuencialretencion;
 	}
 
 	/**
@@ -390,17 +390,17 @@ public class Establecimiento implements Serializable {
 	}
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
 
 	/**
@@ -430,5 +430,7 @@ public class Establecimiento implements Serializable {
 	public void setUsuarioList(List<Usuario> usuarioList) {
 		this.usuarioList = usuarioList;
 	}
+
+	
 
 }

@@ -35,8 +35,8 @@ public class TipoProducto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idTipoProducto", nullable = false, length = 40)
-    private String idTipoProducto;
+    @Column(name = "idtipoproducto", nullable = false, length = 40)
+    private String idtipoproducto;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
@@ -58,8 +58,8 @@ public class TipoProducto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idUsuario", nullable = false, length = 40)
-    private String idUsuario;
+    @Column(name = "idusuario", nullable = false, length = 40)
+    private String idusuario;
 	
 	/**
 	 * 
@@ -71,7 +71,7 @@ public class TipoProducto implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (idTipoProducto != null ? idTipoProducto.hashCode() : 0);
+        hash += (idtipoproducto != null ? idtipoproducto.hashCode() : 0);
         return hash;
     }
 
@@ -81,7 +81,7 @@ public class TipoProducto implements Serializable {
             return false;
         }
         TipoProducto other = (TipoProducto) object;
-        if ((this.idTipoProducto == null && other.idTipoProducto != null) || (this.idTipoProducto != null && !this.idTipoProducto.equals(other.idTipoProducto))) {
+        if ((this.idtipoproducto == null && other.idtipoproducto != null) || (this.idtipoproducto != null && !this.idtipoproducto.equals(other.idtipoproducto))) {
             return false;
         }
         return true;
@@ -93,17 +93,17 @@ public class TipoProducto implements Serializable {
     }
 
 	/**
-	 * @return the idTipoProducto
+	 * @return the idtipoproducto
 	 */
-	public String getIdTipoProducto() {
-		return idTipoProducto;
+	public String getIdtipoproducto() {
+		return idtipoproducto;
 	}
 
 	/**
-	 * @param idTipoProducto the idTipoProducto to set
+	 * @param idtipoproducto the idtipoproducto to set
 	 */
-	public void setIdTipoProducto(String idTipoProducto) {
-		this.idTipoProducto = idTipoProducto;
+	public void setIdtipoproducto(String idtipoproducto) {
+		this.idtipoproducto = idtipoproducto;
 	}
 
 	/**
@@ -163,18 +163,17 @@ public class TipoProducto implements Serializable {
 	}
 
 	/**
-	 * @return the idUsuario
+	 * @return the idusuario
 	 */
-	public String getIdUsuario() {
-		return idUsuario;
+	public String getIdusuario() {
+		return idusuario;
 	}
 
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idusuario the idusuario to set
 	 */
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
-	}
-    
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
+	}    
 
 }
