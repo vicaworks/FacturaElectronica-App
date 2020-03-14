@@ -1,0 +1,11 @@
+<security-domain name="DBAutenticacionFalecpv">
+                    <authentication>
+                        <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">                        	
+                        	<module-option name="dsJndiName" value="java:jboss/datasources/falecpvDS"/>
+                            <module-option name="principalsQuery" value="SELECT clave FROM usuario where login= ? and estado='A'"/>
+                            <module-option name="rolesQuery" value="SELECT 'USUARIO','Roles' FROM usuario WHERE login = ?"/>
+                            <module-option name="hashAlgorithm" value="MD5"/>
+                            <module-option name="hashEncoding" value="hex"/>                            
+                        </login-module>
+                    </authentication>
+                </security-domain>
