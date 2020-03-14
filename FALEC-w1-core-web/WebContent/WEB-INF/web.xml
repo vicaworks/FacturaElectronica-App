@@ -178,12 +178,8 @@
 	<!-- error pages -->
 	<error-page>
 		<error-code>404</error-code>
-		<location>/pages/404.jsf</location>
-	</error-page>
-	<error-page>
-		<error-code>403</error-code>
-		<location>/pages/403.jsf</location>
-	</error-page>
+		<location>/404.jsf</location>
+	</error-page>	
 	
 	<!-- mime types -->
 	<mime-mapping>
@@ -729,7 +725,38 @@
 		<session-timeout>4600</session-timeout> 
 	</session-config>
 	
-	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>security-farlecpv</web-resource-name>
+			<url-pattern>/pages/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>DELETE</http-method>
+			<http-method>CONNECT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>PUT</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>*</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<security-role>
+		<role-name>*</role-name>
+	</security-role>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>farlecpvSecurity</realm-name>
+		<form-login-config>
+			<form-login-page>/login.jsf</form-login-page>
+			<form-error-page>/login_error.jsf</form-error-page>
+		</form-login-config>
+	</login-config>
   
   
 </web-app>

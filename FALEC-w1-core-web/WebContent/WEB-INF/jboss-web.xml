@@ -3,4 +3,6 @@
 	<!-- contexto -->
 	<context-root>falecpv</context-root>
 	
+	<security-domain>DBAutenticacionFalecpv</security-domain>
+	
 </jboss-web>

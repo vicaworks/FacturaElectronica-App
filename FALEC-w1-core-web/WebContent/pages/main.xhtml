@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">Sample</ui:define>
+    <ui:define name="viewname">
+        <li>Components</li>
+        <li>/</li>
+        <li><p:link outcome="/sample">Sample Page</p:link></li>
+    </ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-panelgrid.form-elements .ui-grc-2 {
+                padding-left: 60px;
+            }
+
+            @media (max-width:1024px) {
+                .ui-panelgrid.form-elements .ui-grc-2 {
+                    padding-left: 20px;
+                }
+            }
+            
+            @media (max-width:640px) {
+                .ui-panelgrid.form-elements .ui-grc-2 {
+                    padding-left: 6px;
+                }
+            }
+            
+            .dialogDemo label {
+                line-height: 2.1em;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <div class="p-grid ui-fluid">
+                <div class="p-col-12">
+                    <div class="card card-w-title">
+                        <h1><span style="color:red;">MAIN</span> Form Elements</h1>
+                        <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2 ui-grc-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel for="input" value="Input"/>
+                            <p:inputText id="input"/>
+
+                            <p:outputLabel for="area" value="Textarea"/>
+                            <p:inputTextarea id="area" autoResize="false"/>
+
+                            <p:outputLabel for="calendar" value="Calendar"/>
+                            <p:calendar id="calendar"/>
+
+                            <p:outputLabel for="ac" value="Auto Complete"/>
+                            <p:inputMask id="ac" mask="99/99/9999"/>
+
+                            <p:outputLabel for="mask" value="Mask"/>
+                            <p:inputMask id="mask" mask="99/99/9999"/>
+
+                            <p:outputLabel for="pwd" value="Password"/>
+                            <p:password id="pwd" />
+
+                            <p:outputLabel for="keyboard" value="Keyboard"/>
+                            <p:keyboard id="keyboard" />
+                            
+                            <p:outputLabel for="onemenu" value="OneMenu"/>
+                            <p:selectOneMenu id="onemenu">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+                                <f:selectItem itemLabel="PS4" itemValue="PS4" />
+                                <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="spbtn" value="SplitButton" />
+                            <p:splitButton id="spbtn" value="Save" type="button" icon="fa fa-check" style="max-width:150px;">
+                                <p:menuitem value="Update" url="#" icon="fa fa-refresh" />
+                                <p:menuitem value="Delete" url="#" icon="fa fa-trash" />
+                                <p:separator />
+                                <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="fa fa-home" />
+                            </p:splitButton>
+                            
+                            
+                            <p:outputLabel for="booleanBtn" value="Boolean Button" />
+                            <p:selectBooleanButton id="booleanBtn" onLabel="Yes" offLabel="No" onIcon="fa fa-check" offIcon="fa fa-close"/>
+                            
+                            <p:outputLabel for="oneBtn" value="OneButton" />
+                            <p:selectOneButton id="oneBtn">
+                                <f:selectItem itemLabel="Spark" itemValue="Spark" />
+                                <f:selectItem itemLabel="Ronin" itemValue="Ronin" />
+                            </p:selectOneButton>
+
+                            <p:outputLabel for="manyBtn" value="Many Button"/>
+                            <p:selectManyButton id="manyBtn">
+                                <f:selectItem itemLabel="Spark" itemValue="Spark" />
+                                <f:selectItem itemLabel="Ronin" itemValue="Ronin" />
+                                <f:selectItem itemLabel="Rio" itemValue="Rio" />
+                            </p:selectManyButton>
+
+                            <p:outputLabel for="listbox" value="Listbox"/>
+                            <p:selectOneListbox id="listbox">
+                                <f:selectItem itemLabel="Sentinel" itemValue="Sentinel" />
+                                <f:selectItem itemLabel="Spark" itemValue="Spark" />
+                                <f:selectItem itemLabel="Ronin" itemValue="Ronin" />
+                                <f:selectItem itemLabel="Rio" itemValue="Rio" />
+                                <f:selectItem itemLabel="Primus" itemValue="Primus" />
+                            </p:selectOneListbox>
+
+                            <p:outputLabel for="listbox" value="Dialog"/>
+
+                            <p:commandButton id="dialog2" value="Dialog" icon="fa fa-home" type="button" onclick="PF('dlg').show()" style="max-width:150px;"/>
+
+						</p:panelGrid>
+					</div>
+				</div>
+			</div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
