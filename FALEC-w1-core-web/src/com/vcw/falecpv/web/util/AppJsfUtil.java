@@ -23,6 +23,8 @@ import org.primefaces.model.TreeNode;
 
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.FileUtil;
+import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
+import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 
 /**
  * @author cvillarreal
@@ -261,6 +263,39 @@ public class AppJsfUtil extends FacesUtil {
 		
 		Collections.sort(node.getChildren(),new TreeNodeComparator());
 		return node;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 */
+	public static String getLoginUser() {
+		return FacesUtil.getRemoteUser();
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 */
+	public Establecimiento getEstablecimiento() {
+		if(FacesUtil.getHttpSession(false).getAttribute("establecimiento")!=null) {
+			return (Establecimiento) FacesUtil.getHttpSession(false).getAttribute("establecimiento");
+		}
+		return null;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 */
+	public Usuario getUsuario() {
+		if(FacesUtil.getHttpSession(false).getAttribute("usuario")!=null) {
+			return (Usuario) FacesUtil.getHttpSession(false).getAttribute("usuario");
+		}
+		return null;
 	}
 
 }

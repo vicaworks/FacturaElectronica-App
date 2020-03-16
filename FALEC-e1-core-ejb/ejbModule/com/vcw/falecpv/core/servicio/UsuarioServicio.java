@@ -43,4 +43,11 @@ public class UsuarioServicio extends AppGenericService<Usuario, String> {
 		return usuarioDao;
 	}
 
+	/**
+	 * @return the usuarioDao
+	 */
+	public UsuarioDao getUsuarioDao() {
+		return usuarioDao;
+	}
+
 }

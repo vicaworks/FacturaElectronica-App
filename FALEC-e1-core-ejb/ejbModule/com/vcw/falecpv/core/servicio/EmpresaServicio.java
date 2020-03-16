@@ -43,5 +43,12 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 		return empresaDao;
 	}
 
+	/**
+	 * @return the empresaDao
+	 */
+	public EmpresaDao getEmpresaDao() {
+		return empresaDao;
+	}
+
 
 }

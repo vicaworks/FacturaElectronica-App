@@ -43,4 +43,11 @@ public class CategoriaServicio extends AppGenericService<Categoria, String> {
 		return categoriaDao;
 	}
 
+	/**
+	 * @return the categoriaDao
+	 */
+	public CategoriaDao getCategoriaDao() {
+		return categoriaDao;
+	}
+
 }

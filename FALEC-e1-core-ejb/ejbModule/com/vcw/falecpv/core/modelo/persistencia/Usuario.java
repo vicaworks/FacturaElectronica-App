@@ -92,6 +92,8 @@ public class Usuario implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date updated;
     
+    @Column(name = "nombrepantalla", nullable = false, length = 20)
+    private String nombrepantalla;
     
     @ManyToOne(optional = false)
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false,insertable = false,updatable = false)
@@ -326,6 +328,24 @@ public class Usuario implements Serializable {
 	 */
 	public void setEstablecimiento(Establecimiento establecimiento) {
 		this.establecimiento = establecimiento;
+	}
+
+
+
+	/**
+	 * @return the nombrepantalla
+	 */
+	public String getNombrepantalla() {
+		return nombrepantalla;
+	}
+
+
+
+	/**
+	 * @param nombrepantalla the nombrepantalla to set
+	 */
+	public void setNombrepantalla(String nombrepantalla) {
+		this.nombrepantalla = nombrepantalla;
 	}
 
 

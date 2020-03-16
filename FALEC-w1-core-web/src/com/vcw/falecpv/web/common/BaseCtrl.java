@@ -26,5 +26,22 @@ public abstract class BaseCtrl implements Serializable {
 	public BaseCtrl() {
 		
 	}
-
+	
+	public void limpiar() {
+	}
+	
+	public void buscar() {
+	}
+	
+	public void refrescar() {
+	}
+	
+	public void eliminar() {
+	}
+	
+	public void guardar() {
+	}
+	
+	
+	
 }

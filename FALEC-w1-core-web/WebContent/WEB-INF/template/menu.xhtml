@@ -43,50 +43,53 @@
                         </div>
                     </ui:fragment>
                     <po:menu widgetVar="RomaMenuWidget">
-                        <p:menuitem id="om_dashboard" value="Dashboard" icon="fa fa-fw fa-dashboard" outcome="/sample" />
-                        <p:submenu id="om_components" label="Components" icon="fa fa-fw fa-bars">
-                            <p:menuitem id="om_sample" value="Sample Page" icon="fa fa-fw fa-columns" outcome="/sample" />
-                            <p:menuitem id="om_forms" value="Forms" icon="fa fa-fw fa-code" outcome="/sample" />
-                            <p:menuitem id="om_data" value="Data" icon="fa fa-fw fa-table" outcome="/sample" />
-                            <p:menuitem id="om_panels" value="Panels" icon="fa fa-fw fa-list-alt" outcome="/sample" />
-                            <p:menuitem id="om_overlays" value="Overlays" icon="fa fa-fw fa-square" outcome="/sample" />
-                            <p:menuitem id="om_menus" value="Menus" icon="fa fa-fw fa-minus-square-o" outcome="/sample" />
-                            <p:menuitem id="om_messages" value="Messages" icon="fa fa-fw fa-circle-o-notch" outcome="/sample" />
-                            <p:menuitem id="om_charts" value="Charts" icon="fa fa-fw fa-area-chart" outcome="/sample" />
-                            <p:menuitem id="om_file" value="File" icon="fa fa-fw fa-arrow-circle-o-up" outcome="/sample" />
-                            <p:menuitem id="om_misc" value="Misc" icon="fa fa-fw fa-user-secret" outcome="/sample" />
+                        <p:menuitem id="om_inicio" value="Inicio" icon="fa fa-2x fa-home" url="#{request.contextPath}/pages/main.jsf" />
+                        
+                        <p:submenu id="om_cconfiguracion" label="#{msg['menu.configuracion']}" icon="fa fa-2x fa-cog" rendered="#{appSessionCtrl.administrador}">
+                            <p:menuitem id="om_empresa" value="Empresa" icon="fa fa-2x fa-institution"  url="#{request.contextPath}/pages/configuracion/empresa.jsf"/>
+                            <p:menuitem id="om_establecimiento" value="Establecimiento" icon="fa fa-2x fa-users"  url="#{request.contextPath}/pages/configuracion/establecimiento.jsf" />
+                            <p:menuitem id="om_usuario" value="Usuario" icon="fa fa-2x fa-user"  url="#{request.contextPath}/pages/configuracion/usuario.jsf" />                            
                         </p:submenu>
-                        <p:submenu id="om_default" label="Pages" icon="fa fa-fw fa-cube">
-                            <p:menuitem id="om_empty" value="Empty" icon="fa fa-fw fa-square-o" outcome="/sample" />
-                            <p:menuitem id="om_login" value="Login" icon="fa fa-fw fa-sign-in" outcome="/sample" />
-                            <p:menuitem id="om_db_landing" value="Landing" icon="fa fa-fw fa-certificate" outcome="/sample" />
-                            <p:menuitem id="om_error" value="Error" icon="fa fa-fw fa-exclamation-circle" outcome="/sample" />
-                            <p:menuitem id="om_404" value="404" icon="fa fa-fw fa-times" outcome="/sample" />
-                            <p:menuitem id="om_access" value="Access Denied" icon="fa fa-fw fa-exclamation-triangle" outcome="/sample" />
+                        
+                        <p:menuitem id="om_caja" value="Caja" icon="fa fa-2x fa-money" url="#{request.contextPath}/pages/puntoventa/caja.jsf" />
+                        
+                        <p:submenu id="om_productos" label="Productos" icon="fa fa-2x fa-cubes">
+                            <p:menuitem id="om_categoria" value="#{msg['menu.categoria']}" icon="fa fa-2x fa-sitemap" url="#{request.contextPath}/pages/productos/categoria.jsf" />
+                            <p:menuitem id="om_fabricante" value="Fabricante" icon="fa fa-2x fa-building-o" url="#{request.contextPath}/pages/productos/fabricante.jsf" />
+                            <p:menuitem id="om_producto" value="Producto" icon="fa fa-2x fa-cart-plus" url="#{request.contextPath}/pages/productos/producto.jsf" />
+                            <p:menuitem id="om_inventario" value="Inventario" icon="fa fa-2x fa-list-ol" url="#{request.contextPath}/pages/productos/inventario.jsf" />
                         </p:submenu>
-                        <p:submenu id="om_hierarchy" label="Hierarchy" icon="fa fa-fw fa-sitemap">
-                            <p:submenu id="om_sm1" label="Submenu 1" icon="fa fa-fw fa-sign-in">
-                                <p:submenu id="om_sm11" label="Submenu 1.1" icon="fa fa-fw fa-sign-in">
-                                    <p:menuitem id="om_lnk111" value="Link 1.1.1" icon="fa fa-fw fa-sign-in" url="#" />
-                                    <p:menuitem id="om_lnk112" value="Link 1.1.2" icon="fa fa-fw fa-sign-in" url="#" />
-                                    <p:menuitem id="om_lnk113" value="Link 1.1.3" icon="fa fa-fw fa-sign-in" url="#" />
-                                </p:submenu>
-                                <p:submenu id="om_sm12" label="Submenu 1.2" icon="fa fa-fw fa-sign-in">
-                                    <p:menuitem id="om_lnk121" value="Link 1.2.1" icon="fa fa-fw fa-sign-in" url="#" />
-                                </p:submenu>
-                            </p:submenu>
-                            <p:submenu id="om_sm2" label="Submenu 2" icon="fa fa-fw fa-sign-in">
-                                <p:submenu id="om_sm21" label="Submenu 2.1" icon="fa fa-fw fa-sign-in">
-                                    <p:menuitem id="om_lnk211" value="Link 2.1.1" icon="fa fa-fw fa-sign-in" url="#" />
-                                    <p:menuitem id="om_lnk212" value="Link 2.1.2" icon="fa fa-fw fa-sign-in" url="#" />
-                                </p:submenu>
-                                <p:submenu id="om_sm22" label="Submenu 2.2" icon="fa fa-fw fa-sign-in">
-                                    <p:menuitem id="om_lnk221" value="Link 2.2.1" icon="fa fa-fw fa-sign-in" url="#" />
-                                </p:submenu>
-                            </p:submenu>
+                        
+                        <p:submenu id="om_facturacion" label="#{msg['menu.facturacion']}" icon="fa fa-2x fa-calculator">
+                            <p:menuitem id="om_facturaemitidas" value="Facturas Emitidas" icon="fa fa-2x fa-check-circle" url="#{request.contextPath}/pages/facturacion/facemitidos.jsf" />
+                            <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-2x fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/recbemitidos.jsf" />
+                            <p:menuitem id="om_reportefacturacion" value="Reporte" icon="fa fa-2x fa-line-chart" url="#{request.contextPath}/pages/facturacion/repfacturacion.jsf" />
                         </p:submenu>
-                        <p:menuitem id="om_doc" value="Docs" icon="fa fa-fw fa-file-code-o" outcome="/sample" />
-                        <p:menuitem id="om_buy" value="Buy Now" icon="fa fa-fw fa-credit-card-alt" url="https://www.primefaces.org/store"/>
+                        
+                        <p:submenu id="om_adquisicion" label="Adquisiciones" icon="fa fa-2x fa-cart-arrow-down">
+                            <p:menuitem id="om_proveedor" value="Proveedor" icon="fa fa-2x fa-users" url="#{request.contextPath}/pages/adquisicion/proveedor.jsf" />
+                            <p:menuitem id="om_nuevaadquisicion" value="Nueva Compra" icon="fa fa-2x fa-plus" url="#{request.contextPath}/pages/adquisicion/compra.jsf" />
+                            <p:menuitem id="om_reporteadquisicion" value="Reporte Compras" icon="fa fa-2x fa-bar-chart-o" url="#{request.contextPath}/pages/adquisicion/repcompras.jsf" />
+                        </p:submenu>
+                        
+                        <p:submenu id="om_sricomprobantes" label="SRI Comprobantes" icon="fa fa-2x fa-file-excel-o">
+                            <p:menuitem id="om_retenciones" value="Retenciones" icon="fa fa-2x fa-file-text-o" url="#{request.contextPath}/pages/sridocumentos/retenciones.jsf" />
+                            <p:menuitem id="om_notacredito" value="#{msg['menu.notacredito']}" icon="fa fa-2x fa-file-text-o" url="#{request.contextPath}/pages/sridocumentos/notacredito.jsf" />
+                            <p:menuitem id="om_guiaremision" value="#{msg['menu.guiaremision']}" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/sridocumentos/guiaremision.jsf" />
+                        </p:submenu>
+                        
+                        <p:menuitem id="om_cajachica" value="Caja chica" icon="fa fa-2x fa-usd" url="#{request.contextPath}/pages/cajachica/cajachica.jsf" />
+                        
+                        <p:submenu id="om_reportes" label="Reportes" icon="fa fa-2x fa-sellsy">
+                            <p:menuitem id="om_reporte1" value="Reporte 1" icon="fa fa-2x fa-file-text-o"  />
+                            <p:menuitem id="om_reporte2" value="Reporte 2" icon="fa fa-2x fa-file-text-o"  />
+                            <p:menuitem id="om_reporte3" value="Reporte 3" icon="fa fa-2x fa-file-text-o"  />
+                        </p:submenu>
+                        
+                        <p:submenu id="om_herramientas" label="Herramientas" icon="fa fa-2x fa-gears">
+                            <p:menuitem id="om_tollsclientes" value="Cargar Datos Clientes" icon="fa fa-2x fa-user-plus" url="#{request.contextPath}/pages/tools/clientes.jsf" />
+                        </p:submenu>
+                        
                     </po:menu>
                 </h:form>
             </div>

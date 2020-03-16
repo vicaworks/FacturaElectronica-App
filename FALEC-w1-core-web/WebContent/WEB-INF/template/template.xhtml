@@ -12,19 +12,20 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
-            <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/roma-layout/images/favicon.ico" />
+            <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/roma-layout/images/favicon.ico" />
         </f:facet>
         <title><ui:insert name="title">PrimeFaces Roma</ui:insert></title>
         <h:outputScript name="js/nanoscroller.js" library="roma-layout" />
         <h:outputScript name="js/layout.js" library="roma-layout" />
         <ui:insert name="head"/>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet"></link>
     </h:head>
 
     <h:body>
     	<!-- 
         <div class="layout-wrapper #{guestPreferences.menuMode} #{guestPreferences.menuColor} #{guestPreferences.topBarColor} #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
     	 -->
-    	 <div class="layout-wrapper layout-static layout-menu-dark layout-topbar-light #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
+    	 <div class="layout-wrapper layout-static layout-menu-light layout-topbar-blue #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
             <ui:include src="./topbar.xhtml"></ui:include>
             <ui:include src="./menu.xhtml"></ui:include>
             <ui:include src="./right-panel.xhtml" />

@@ -7,6 +7,21 @@
     
     <name>farlecpv_config</name>
     
+    <application>
+		<action-listener>org.omnifaces.eventlistener.ResetInputAjaxActionListener</action-listener>
+
+		<locale-config>
+			<default-locale>es</default-locale>
+		</locale-config>
+
+		<resource-bundle>
+			<base-name>com.vcw.falecpv.web.resource.MessageResourcesWeb_es</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		
+	</application>
+	
+	
     <component>
         <component-type>org.primefaces.component.RomaMenu</component-type>
         <component-class>org.primefaces.roma.component.RomaMenu</component-class>
@@ -20,19 +35,5 @@
         </renderer>
     </render-kit>
     
-    <application>
-		<action-listener>org.omnifaces.eventlistener.ResetInputAjaxActionListener</action-listener>
-
-		<locale-config>
-			<default-locale>es</default-locale>
-		</locale-config>
-
-		<resource-bundle>
-			<base-name>com.vcw.falec.web.resource.MessageResourcesWeb_es</base-name>
-			<var>msg</var>
-		</resource-bundle>
-	</application>
-	
-	
 
 </faces-config>

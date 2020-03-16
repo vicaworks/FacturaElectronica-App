@@ -43,4 +43,11 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 		return establecimientoDao;
 	}
 
+	/**
+	 * @return the establecimientoDao
+	 */
+	public EstablecimientoDao getEstablecimientoDao() {
+		return establecimientoDao;
+	}
+
 }

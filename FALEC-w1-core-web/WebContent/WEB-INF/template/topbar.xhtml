@@ -2,6 +2,8 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:po="http://primefaces.org/roma">
 
     <div class="layout-topbar">
+    	
+    	
         <a class="layout-right-panel-button layout-topbar-icon" href="#">
             <i class="fa fa-ellipsis-v" />
         </a>
@@ -11,53 +13,48 @@
         </a>
 
         <h:link id="logo-link" styleClass="layout-topbar-logo">            
-            <p:graphicImage name="images/logo-roma.svg" library="roma-layout" />
+            <!-- <p:graphicImage name="images/logo-roma.svg" library="roma-layout" /> -->
+            <span style="color:black;font-weight: 700;font-size: 25px;font-family: 'Ubuntu', sans-serif;color:#ccc;">#{appSessionCtrl.nombreEstablecimiento}</span>
         </h:link>
-
-        <span class="layout-topbar-search">
-            <i class="fa fa-search"></i>
-            <input type="text" placeholder="Enter your search term"/>
-        </span>
+		
+		<!--
+			INPUT SERCH 
+	        <span class="layout-topbar-search">
+	            <i class="fa fa-search"></i>
+	            <input type="text" placeholder="Enter your search term"/>
+	        </span>
+		 -->
 
         <ul class="topbar-menu fadeInDown">
+        	
             <ui:fragment rendered="#{guestPreferences.profileMode == 'popup' ? true : false}">
                 <li class="user-profile">
                     <a href="#">
-                        <p:graphicImage name="images/avatar/avatar.png" library="roma-layout" />
+                        <!-- <p:graphicImage name="images/avatar/avatar.png" library="roma-layout" /> -->
+                        <!-- <i class="fa fa-user" style="font-size: 30px;margin-top: 5px;"></i> -->
+                        <i class="topbar-icon fa fa-fw fa-user" style="color:#fff;"></i>
                         <div class="layout-profile-userinfo">
-                            <span class="layout-profile-name">Arlene Welch</span>
-                            <span class="layout-profile-role">Design Ops</span>
+                            <span class="layout-profile-name" style="margin-top: 10px;">#{appSessionCtrl.nombreDisplay}</span>
+                            <!-- <span class="layout-profile-role">Design Ops</span> -->
                         </div>
                     </a>
                     <ul>
                         <li>
                             <a href="#">
                                 <i class="fa fa-fw fa-user"></i>
-                                <span>Profile</span>
+                                <span>Configuración</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fa fa-fw fa-cog"></i>
-                                <span>Settings</span>
+                            <a href="#{request.contextPath}/index.jsp">
+                                <i class="fa fa-fw fa-sign-out"></i>
+                                <span>Salir</span>
                             </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-fw fa-envelope-o"></i>
-                                <span>Messages</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-fw fa-bell-o"></i>
-                                <span>Notifications</span>
-                            </a>
-                        </li>
+                        </li>                        
                     </ul>
                 </li>
             </ui:fragment>
-            <li>
+            <!-- <li>
                 <a href="#" class="layout-topbar-icon">
                     <i class="topbar-icon fa fa-fw fa-bell"></i>
                 </a>
@@ -109,7 +106,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
         </ul>
     </div>
 
