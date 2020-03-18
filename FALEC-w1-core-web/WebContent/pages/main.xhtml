@@ -33,88 +33,138 @@
             .dialogDemo label {
                 line-height: 2.1em;
             }
+            
+            .landing-body .landing-wrapper .landing-features {
+				/* border-top: 8px solid #c7e7f2; */
+				padding: 40px !important;
+				/* background-color: #f4f4f9; */
+			}
+            
         </style>
     </ui:define>
 
     <ui:define name="content">
-        <h:form>
-            <div class="p-grid ui-fluid">
-                <div class="p-col-12">
-                    <div class="card card-w-title">
-                        <h1><span style="color:red;">MAIN</span> Form Elements</h1>
-                        <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2 ui-grc-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank">
-                            <p:outputLabel for="input" value="Input"/>
-                            <p:inputText id="input"/>
-
-                            <p:outputLabel for="area" value="Textarea"/>
-                            <p:inputTextarea id="area" autoResize="false"/>
-
-                            <p:outputLabel for="calendar" value="Calendar"/>
-                            <p:calendar id="calendar"/>
-
-                            <p:outputLabel for="ac" value="Auto Complete"/>
-                            <p:inputMask id="ac" mask="99/99/9999"/>
-
-                            <p:outputLabel for="mask" value="Mask"/>
-                            <p:inputMask id="mask" mask="99/99/9999"/>
-
-                            <p:outputLabel for="pwd" value="Password"/>
-                            <p:password id="pwd" />
-
-                            <p:outputLabel for="keyboard" value="Keyboard"/>
-                            <p:keyboard id="keyboard" />
-                            
-                            <p:outputLabel for="onemenu" value="OneMenu"/>
-                            <p:selectOneMenu id="onemenu">
-                                <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
-                                <f:selectItem itemLabel="PS4" itemValue="PS4" />
-                                <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
-                            </p:selectOneMenu>
-                            
-                            <p:outputLabel for="spbtn" value="SplitButton" />
-                            <p:splitButton id="spbtn" value="Save" type="button" icon="fa fa-check" style="max-width:150px;">
-                                <p:menuitem value="Update" url="#" icon="fa fa-refresh" />
-                                <p:menuitem value="Delete" url="#" icon="fa fa-trash" />
-                                <p:separator />
-                                <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="fa fa-home" />
-                            </p:splitButton>
-                            
-                            
-                            <p:outputLabel for="booleanBtn" value="Boolean Button" />
-                            <p:selectBooleanButton id="booleanBtn" onLabel="Yes" offLabel="No" onIcon="fa fa-check" offIcon="fa fa-close"/>
-                            
-                            <p:outputLabel for="oneBtn" value="OneButton" />
-                            <p:selectOneButton id="oneBtn">
-                                <f:selectItem itemLabel="Spark" itemValue="Spark" />
-                                <f:selectItem itemLabel="Ronin" itemValue="Ronin" />
-                            </p:selectOneButton>
-
-                            <p:outputLabel for="manyBtn" value="Many Button"/>
-                            <p:selectManyButton id="manyBtn">
-                                <f:selectItem itemLabel="Spark" itemValue="Spark" />
-                                <f:selectItem itemLabel="Ronin" itemValue="Ronin" />
-                                <f:selectItem itemLabel="Rio" itemValue="Rio" />
-                            </p:selectManyButton>
-
-                            <p:outputLabel for="listbox" value="Listbox"/>
-                            <p:selectOneListbox id="listbox">
-                                <f:selectItem itemLabel="Sentinel" itemValue="Sentinel" />
-                                <f:selectItem itemLabel="Spark" itemValue="Spark" />
-                                <f:selectItem itemLabel="Ronin" itemValue="Ronin" />
-                                <f:selectItem itemLabel="Rio" itemValue="Rio" />
-                                <f:selectItem itemLabel="Primus" itemValue="Primus" />
-                            </p:selectOneListbox>
-
-                            <p:outputLabel for="listbox" value="Dialog"/>
-
-                            <p:commandButton id="dialog2" value="Dialog" icon="fa fa-home" type="button" onclick="PF('dlg').show()" style="max-width:150px;"/>
-
-						</p:panelGrid>
-					</div>
-				</div>
-			</div>
+    	<p:breadCrumb>
+		    <p:menuitem url="#" />
+		    <p:menuitem value="Inicio" url="#{request.contextPath}/pages/main.jsf" />
+		</p:breadCrumb>
+		
+        <h:form >
+        	
+        	<!-- Lista de reportes principales -->
+        	<div class="landing-body">
+        		<div class="landing-wrapper"> 
+		        	<div id="features" class="landing-features">
+		        		
+		        		<div class="p-grid">
+		        			
+		        			<div class="p-col-12 p-lg-4">
+		                        <div class="feature-box">
+		                            <p:graphicImage name="images/landing/icon-responsive@2x.png" library="roma-layout" />
+		                            <div>
+		                            	<p:commandLink action="#">
+			                                <h3>Reporte de Ventas</h3>
+			                                <p>Listado de ventas or rango de fechas.</p>
+		                            	</p:commandLink>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="p-g-12 p-lg-4">
+		                        <div class="feature-box">
+		                            <p:graphicImage name="images/landing/icon-design@2x.png" library="roma-layout" />
+		                            <div>
+		                            	<p:commandLink action="#">
+			                                <h3>Adquisiciones</h3>
+			                                <p>Lista de compras por rango de fechas.</p>
+			                            </p:commandLink>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="p-col-12 p-lg-4">
+		                        <div class="feature-box">
+		                            <p:graphicImage name="images/landing/icon-document@2x.png" library="roma-layout" />
+		                            <div>
+		                            	<p:commandLink action="#">
+			                                <h3>Reporte Ventas Cliente</h3>
+			                                <p>Reporte de vantas por Cliente.</p>
+			                            </p:commandLink>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="p-col-12 p-lg-4">
+		                        <div class="feature-box">
+		                            <p:graphicImage name="images/landing/icon-responsive@2x.png" library="roma-layout" />
+		                            <div>
+		                            	<p:commandLink action="#">
+			                                <h3>Inventario</h3>
+			                                <p>Lista de Inventario por producto.</p>
+			                           	</p:commandLink>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="p-col-12 p-lg-4">
+		                        <div class="feature-box">
+		                            <p:graphicImage name="images/landing/icon-gorgeous@2x.png" library="roma-layout" />
+		                            <div>
+		                            	<p:commandLink action="#">
+			                                <h3>Top Productos</h3>
+			                                <p>Lista de productos mas vendidos por rango de fechas.</p>
+			                            </p:commandLink>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="p-col-12 p-lg-4">
+		                        <div class="feature-box">
+		                            <p:graphicImage name="images/landing/icon-responsive@2x.png" library="roma-layout" />
+		                            <div>
+		                            	<p:commandLink action="#">
+			                                <h3>Aviso de Inventario</h3>
+			                                <p>Lista de productos sin existencia.</p>
+			                            </p:commandLink>
+		                            </div>
+		                        </div>
+		                    </div>
+		        			
+		        		</div>
+	        		</div>
+	        	</div>
+        	</div>
+        	
+        	<div style="background-color: #fff">
+	        	<p:barChart model="#{mainCtrl.barModel}" style="width: 100%; height: 400px;" />
+        	</div>
+        	
+        	<p:spacer height="20px"/>
+        	
+        	<div style="text-align: center;">
+	        	<h2 style="color:#0772B3;font-size: 2em;">VENTAS DEL DíA</h2>
+        	</div>
+		    <p:dataTable var="v" value="#{mainCtrl.ventasDtoList}" scrollable="true" scrollHeight="300">
+		    	
+		        <p:column headerText="Id" >
+		            <h:outputText value="#{v.id}" />
+		        </p:column>
+		        
+		        <p:column headerText="CLIENTE" >
+		            <h:outputText value="#{v.cliente}" />
+		        </p:column>
+		        
+		        <p:column headerText="HORA" >
+		            <h:outputText value="#{v.hora}" >
+		            	<f:convertDateTime pattern="HH:mm" locale="es_EC"/>
+		            </h:outputText>
+		        </p:column>
+		        
+		        
+		        <p:column headerText="VALOR" >
+		            <h:outputText value="#{v.valor}" >
+		            	<f:convertNumber pattern="$#.00" locale="es_EC"/>		            	
+		            </h:outputText>
+		        </p:column>
+		    </p:dataTable>
+        		
         </h:form>
+        
     </ui:define>
 
 </ui:composition>
