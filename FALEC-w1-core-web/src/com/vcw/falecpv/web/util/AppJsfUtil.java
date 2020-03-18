@@ -279,7 +279,7 @@ public class AppJsfUtil extends FacesUtil {
 	 * 
 	 * @return
 	 */
-	public Establecimiento getEstablecimiento() {
+	public static Establecimiento getEstablecimiento() {
 		if(FacesUtil.getHttpSession(false).getAttribute("establecimiento")!=null) {
 			return (Establecimiento) FacesUtil.getHttpSession(false).getAttribute("establecimiento");
 		}
@@ -291,7 +291,7 @@ public class AppJsfUtil extends FacesUtil {
 	 * 
 	 * @return
 	 */
-	public Usuario getUsuario() {
+	public static Usuario getUsuario() {
 		if(FacesUtil.getHttpSession(false).getAttribute("usuario")!=null) {
 			return (Usuario) FacesUtil.getHttpSession(false).getAttribute("usuario");
 		}
