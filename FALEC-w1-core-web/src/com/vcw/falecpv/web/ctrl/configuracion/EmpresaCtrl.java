@@ -6,7 +6,7 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
+import javax.annotation.PostConstruct;
 import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 
@@ -22,6 +22,7 @@ public class EmpresaCtrl extends BaseCtrl {
 	 * 
 	 */
 	private static final long serialVersionUID = -8788719067123516137L;
+	private boolean banderaModificar;
 	
 	@EJB
 	private EmpresaServicio empresaServicio;
@@ -30,6 +31,11 @@ public class EmpresaCtrl extends BaseCtrl {
 	 * 
 	 */
 	public EmpresaCtrl() {
+	}
+	
+	@PostConstruct
+	public void init() {
+		banderaModificar = Boolean.TRUE;
 	}
 
 	@Override
@@ -56,7 +62,26 @@ public class EmpresaCtrl extends BaseCtrl {
 	public void guardar() {
 		super.guardar();
 	}
+	
+	public void prepararModificarInformacionEmpresa() {
+        banderaModificar = Boolean.FALSE;
+    }
+	
+	public void guardarInformacionEmpresa() {
+        banderaModificar = Boolean.TRUE;
+    }
+	
+	public void cancelarEdicionEmpresa() {
+        banderaModificar = Boolean.TRUE;
+	}
 
-	
-	
+	public boolean isBanderaModificar() {
+		return banderaModificar;
+	}
+
+	public void setBanderaModificar(boolean banderaModificar) {
+		this.banderaModificar = banderaModificar;
+	}
+
+		
 }

@@ -20,43 +20,85 @@
 		    <p:menuitem value="#{msg['menu.configuracion']}" url="#" />
 		    <p:menuitem value="Empresa" url="#{request.contextPath}/pages/configuracion/establecimiento.jsf" />
 		</p:breadCrumb>
-		
-		<h:form>			
-			<h:panelGrid columns="2" cellpadding="5">
-              	<p:outputLabel value="RUC:" style="vertical-align: middle" />
-                     <p:inputText id="txtruc" />
-                     
-                     <p:outputLabel value="Razón social:" style="vertical-align: middle" />
-                     <p:inputText id="txtrazonsocial" />
-                     
-                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
-                     <p:inputText id="txtnombrecomercial" />
-                     
-                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle" />
-                     <p:inputText id="txtdireccionmatriz" />
-                     
-                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
-                     <p:selectOneMenu id="cmbobligadocontabilidad">
-			            <f:selectItem itemLabel="Seleccione" itemValue="" />
-			            <f:selectItem itemLabel="SI" itemValue="SI" />
-			            <f:selectItem itemLabel="NO" itemValue="NO" />
-			        </p:selectOneMenu>
-                     
-                    <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
-                    <p:selectOneMenu id="cmbambiente">
-			            <f:selectItem itemLabel="Seleccione" itemValue="" />
-			            <f:selectItem itemLabel="Pruebas" itemValue="1" />
-			            <f:selectItem itemLabel="Producción" itemValue="2" />
-			        </p:selectOneMenu>
-			        
-			        <p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
-                    <p:inputText id="txtclavefirmaelectrónica" />
-              		
-              		<p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
-              		<p:fileUpload mode="simple" skinSimple="true"/>
-    
-              		<p:commandButton value="Guardar" icon="ui-icon-search" id="btnguardarempresa" onclick="PF('wdlgnuevaempresa').hide()" />
-              </h:panelGrid>
+		<br />
+		<h:form enctype="multipart/form-data">
+			<div class="ui-fluid">
+				<p:fieldset id="fsinfoempresa" legend="Información Empresa">
+					<p:panelGrid id="panelMostar" rendered="#{empresaCtrl.banderaModificar}" columns="1" styleClass="ui-panelgrid-blank form-group" layout="grid">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" 
+									 cellpadding="5" width="80%">
+		              		 <p:outputLabel value="RUC:" style="vertical-align: middle" />
+		                     <p:outputLabel value="1713673406001" style="vertical-align: middle" />
+		                     
+		                     <p:outputLabel value="Razón social:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Empresa de facturación" style="vertical-align: middle" />
+		                     
+		                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Falec S.A." style="vertical-align: middle" />
+		                     
+		                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Valle de los Chillos" style="vertical-align: middle" />
+		                     
+		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
+		                     <p:outputLabel value="SI" style="vertical-align: middle" />
+		                     
+		                     <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Pruebas" style="vertical-align: middle" />
+					        
+					         <p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
+		                     <p:outputLabel value="************" style="vertical-align: middle" />
+		              		
+		              		 <p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
+		              		 <p:outputLabel value="bytes.txt" style="vertical-align: middle" />
+		        		</p:panelGrid>
+	        		</p:panelGrid>
+					
+					<p:panelGrid id="panelEditar" rendered="#{!empresaCtrl.banderaModificar}" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" cellpadding="5" width="80%">
+		              		 <p:outputLabel value="RUC:" style="vertical-align: middle" />
+		                     <p:inputText id="txtruc" />
+		                     
+		                     <p:outputLabel value="Razón social:" style="vertical-align: middle" />
+		                     <p:inputText id="txtrazonsocial" />
+		                     
+		                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
+		                     <p:inputText id="txtnombrecomercial" />
+		                     
+		                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle" />
+		                     <p:inputText id="txtdireccionmatriz" />
+		                     
+		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
+		                     <p:selectOneMenu id="cmbobligadocontabilidad">
+					            <f:selectItem itemLabel="Seleccione" itemValue="" />
+					            <f:selectItem itemLabel="SI" itemValue="SI" />
+					            <f:selectItem itemLabel="NO" itemValue="NO" />
+					         </p:selectOneMenu>
+		                     
+		                     <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
+		                     <p:selectOneMenu id="cmbambiente">
+					            <f:selectItem itemLabel="Seleccione" itemValue="" />
+					            <f:selectItem itemLabel="Pruebas" itemValue="1" />
+					            <f:selectItem itemLabel="Producción" itemValue="2" />
+					         </p:selectOneMenu>
+					        
+					         <p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
+		                     <p:inputText id="txtclavefirmaelectrónica" />
+		              		
+		              		 <p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
+		              		 <p:fileUpload label="Examinar..." mode="simple" skinSimple="true"/>
+		        		</p:panelGrid>
+	        		</p:panelGrid>
+            	</p:fieldset>
+         	</div>
+         	
+         	<div class="ui-g-12 ui-sm-12 nopad">
+	             <p:commandButton immediate="true" value="Modificar" icon="fa fa-pencil" styleClass="button-wrapper" rendered="#{empresaCtrl.banderaModificar}"
+	                              actionListener="#{empresaCtrl.prepararModificarInformacionEmpresa()}" style="margin-top: 10px;" update="@form" />
+	             <p:commandButton rendered="#{!empresaCtrl.banderaModificar}" value="Actualizar" icon="fa fa-refresh" styleClass="button-wrapper"
+	                              actionListener="#{empresaCtrl.guardarInformacionEmpresa()}" style="margin-top: 10px;" update="@form" />
+	             <p:commandButton rendered="#{!empresaCtrl.banderaModificar}" value="Cancelar" icon="fa fa-times" styleClass="neutral-btn button-wrapper-dlg"
+	                              actionListener="#{empresaCtrl.cancelarEdicionEmpresa()}" style="margin-top: 10px;" update="@form" />
+	         </div>
 		</h:form>
         
     </ui:define>
