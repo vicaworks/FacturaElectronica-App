@@ -32,7 +32,7 @@
                      <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
                      <p:inputText id="txtnombrecomercial" />
                      
-                     <p:outputLabel value="Dirección matrizl:" style="vertical-align: middle" />
+                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle" />
                      <p:inputText id="txtdireccionmatriz" />
                      
                      <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
@@ -42,14 +42,20 @@
 			            <f:selectItem itemLabel="NO" itemValue="NO" />
 			        </p:selectOneMenu>
                      
-                     <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
-                     <p:selectOneMenu id="cmbambiente">
+                    <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
+                    <p:selectOneMenu id="cmbambiente">
 			            <f:selectItem itemLabel="Seleccione" itemValue="" />
 			            <f:selectItem itemLabel="Pruebas" itemValue="1" />
 			            <f:selectItem itemLabel="Producción" itemValue="2" />
 			        </p:selectOneMenu>
-              
-              	<p:commandButton value="Guardar" icon="ui-icon-search" id="btnguardarempresa" onclick="PF('wdlgnuevaempresa').hide()" />
+			        
+			        <p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
+                    <p:inputText id="txtclavefirmaelectrónica" />
+              		
+              		<p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
+              		<p:fileUpload mode="simple" skinSimple="true"/>
+    
+              		<p:commandButton value="Guardar" icon="ui-icon-search" id="btnguardarempresa" onclick="PF('wdlgnuevaempresa').hide()" />
               </h:panelGrid>
 		</h:form>
         
