@@ -21,91 +21,36 @@
 		    <p:menuitem value="Empresa" url="#{request.contextPath}/pages/configuracion/establecimiento.jsf" />
 		</p:breadCrumb>
 		
-		<h:form>
-			<div class="p-col-12">
-				<p:toolbar>
-					<f:facet name="left">
-						<p:commandButton type="button" value="Nueva empresa" icon="pi pi-file" id="btnnuevaempresa" onclick="PF('wdlgnuevaempresa').show()" />
-					</f:facet>
-				</p:toolbar>
-			</div>
-			
-			<div class="p-col-12">
-				<p:dataTable var="emp" >
-					<p:column headerText="RUC" priority="1">
-						<h:outputText value="#{emp.ruc}" />
-					</p:column>
-					
-					<p:column headerText="Razón social" priority="2">
-						<h:outputText value="#{emp.razonsocial}" />
-					</p:column>
-					
-					<p:column headerText="Nombre comercial" priority="3">
-						<h:outputText value="#{emp.nombrecomercial}" />
-					</p:column>
-					
-					<p:column headerText="Dirección matriz" priority="6">
-						<h:outputText value="#{emp.direccionmatriz}" />
-					</p:column>
-					
-					<p:column headerText="Obligado contabilidad" priority="4">
-						<h:outputText value="#{emp.obligadocontabilidad}" />
-					</p:column>
-					
-					<p:column headerText="Ambiente" priority="5">
-						<h:outputText value="#{emp.ambiente}" />
-					</p:column>
-
-                    <p:column style="width: 5%">
-                        <div align="center">
-                            <p:commandButton title="Eliminar" id="enfEli" icon="ui-icon-trash">
-                                <p:confirm header="Confirmación" message="¿Desea eliminar esta empresa?" icon="ui-icon-alert" />
-                            </p:commandButton>
-
-                            <p:confirmDialog global="true" >
-                                <p:commandButton value="#{msg['boton.si']}" type="button"
-                                        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-
-                                <p:commandButton value="#{msg['boton.no']}" type="button"
-                                    styleClass="ui-confirmdialog-no CyanButton" icon="ui-icon-close" />
-                            </p:confirmDialog>
-                        </div>
-                    </p:column>
-				</p:dataTable>
-				
-				<p:dialog header="Nueva empresa" widgetVar="wdlgnuevaempresa" id="dlgnuevaempresa" width="auto" height="auto">
-	                <h:panelGrid columns="2" cellpadding="5">
-	                	<p:outputLabel value="RUC:" style="vertical-align: middle" />
-                        <p:inputText id="txtruc" />
-                        
-                        <p:outputLabel value="Razón social:" style="vertical-align: middle" />
-                        <p:inputText id="txtrazonsocial" />
-                        
-                        <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
-                        <p:inputText id="txtnombrecomercial" />
-                        
-                        <p:outputLabel value="Dirección matrizl:" style="vertical-align: middle" />
-                        <p:inputText id="txtdireccionmatriz" />
-                        
-                        <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
-                        <p:selectOneMenu id="cmbobligadocontabilidad">
-				            <f:selectItem itemLabel="Seleccione" itemValue="" />
-				            <f:selectItem itemLabel="SI" itemValue="SI" />
-				            <f:selectItem itemLabel="NO" itemValue="NO" />
-				        </p:selectOneMenu>
-                        
-                        <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
-                        <p:selectOneMenu id="cmbambiente">
-				            <f:selectItem itemLabel="Seleccione" itemValue="" />
-				            <f:selectItem itemLabel="Pruebas" itemValue="1" />
-				            <f:selectItem itemLabel="Producción" itemValue="2" />
-				        </p:selectOneMenu>
-	                
-	                	<p:commandButton value="Guardar" icon="ui-icon-search" id="btnguardarempresa" onclick="PF('wdlgnuevaempresa').hide()" />
-               			<p:commandButton value="Cancelar" icon="ui-icon-search" id="btncancelarguardarempresa" onclick="PF('wdlgnuevaempresa').hide()" />
-	                </h:panelGrid>
-                 </p:dialog>
-			</div>
+		<h:form>			
+			<h:panelGrid columns="2" cellpadding="5">
+              	<p:outputLabel value="RUC:" style="vertical-align: middle" />
+                     <p:inputText id="txtruc" />
+                     
+                     <p:outputLabel value="Razón social:" style="vertical-align: middle" />
+                     <p:inputText id="txtrazonsocial" />
+                     
+                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
+                     <p:inputText id="txtnombrecomercial" />
+                     
+                     <p:outputLabel value="Dirección matrizl:" style="vertical-align: middle" />
+                     <p:inputText id="txtdireccionmatriz" />
+                     
+                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
+                     <p:selectOneMenu id="cmbobligadocontabilidad">
+			            <f:selectItem itemLabel="Seleccione" itemValue="" />
+			            <f:selectItem itemLabel="SI" itemValue="SI" />
+			            <f:selectItem itemLabel="NO" itemValue="NO" />
+			        </p:selectOneMenu>
+                     
+                     <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
+                     <p:selectOneMenu id="cmbambiente">
+			            <f:selectItem itemLabel="Seleccione" itemValue="" />
+			            <f:selectItem itemLabel="Pruebas" itemValue="1" />
+			            <f:selectItem itemLabel="Producción" itemValue="2" />
+			        </p:selectOneMenu>
+              
+              	<p:commandButton value="Guardar" icon="ui-icon-search" id="btnguardarempresa" onclick="PF('wdlgnuevaempresa').hide()" />
+              </h:panelGrid>
 		</h:form>
         
     </ui:define>
