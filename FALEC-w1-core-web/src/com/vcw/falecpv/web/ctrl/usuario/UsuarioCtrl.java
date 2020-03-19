@@ -93,7 +93,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			if(usuarioSelected.isActualizarCredenciales()) {
 				if(!usuarioSelected.getClave().equals(usuarioSelected.getClave2())) {
 					AppJsfUtil.addErrorMessage("frmUsuario", "ERROR","LAS CREDENCIALES NO COINCIDEN.");
-					AppJsfUtil.addErrorMessage("frmUsuario:intClave1","ERROR CONFIRMACIÓN (LAS CREDENCIALES NO COINCIDEN).");
+					AppJsfUtil.addErrorMessage("frmUsuario:intClave1","ERROR CONFIRMACION (LAS CREDENCIALES NO COINCIDEN).");
 					return;
 				}
 			}
