@@ -9,7 +9,7 @@ package com.vcw.falecpv.core.constante.contadores;
  */
 public enum TCUsuario implements TablaContadorBaseEnum {
 	
-	TIPOPRODUCTO("TIPOPRODUCTO");
+	USUARIO("USUARIO");
 	
 	private String nombreTabla;
 

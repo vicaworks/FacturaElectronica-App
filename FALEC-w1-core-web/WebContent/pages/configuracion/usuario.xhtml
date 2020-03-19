@@ -11,23 +11,16 @@
     
     <ui:define name="head">
         <style type="text/css">
-			.Wid100{
-				width: 100%;
-			}
-			.Wid90{
-				width: 90%;
-			}
-			.MLeft10{
-				margin-left: 10px !important;
-			}
-			.MRight10{
-				margin-right: 10px !important;
-			}
-			
-			.usuariosDT .ui-datatable-scrollable-body{
+        	
+        	.usuariosDT .ui-datatable-scrollable-body{
 				min-height:400px !important;
 				max-height: 400px !important;
+			}	
+			
+			.Fs16{
+				font-size: 16px !important;
 			}
+			
         </style>
     </ui:define>
 
@@ -42,7 +35,7 @@
 		    <p:menuitem value="Usuario" url="#{request.contextPath}/pages/configuracion/usuario.jsf" />
 		</p:breadCrumb>
 		
-	    <p:spacer height="5px"/>
+	    <p:spacer height="2px"/>
         
 	    <!-- OPCIONES -->
 	    <h:form id="formMain">	    
@@ -74,12 +67,12 @@
 						
 						<p:commandButton id="cmdRefrecar"
 							value="CONSULTAR" icon="fa fa-search" 
-							action="#{usuarioCtrl.refrescar()}" styleClass="MRight10" update="@form"
+							action="#{usuarioCtrl.refrescar()}" styleClass="MRight10 secondary-button" update="@form"
 							/>
 							
 						<p:commandButton id="cmdNuevo"
 							value="NUEVO" icon="fa fa-plus" styleClass="MRight10" 
-							action="#" 
+							action="#{usuarioCtrl.nuevo()}" inline="true" 
 							/>
 						
 						<p:commandButton id="cmdExcel"
@@ -99,37 +92,63 @@
 			</p:messages>
 		    
 		    <!-- LISTA DE USUARIOS -->
-		    <p:spacer height="5px"/>
+		    <p:spacer height="2px"/>
 		    <div class="card card-w-title">
-		    	<h1>Lista de Usuarios</h1>
-		    	<p:dataTable id="usuariosDT" var="u" value="#{usuarioCtrl.usuarioList}" scrollable="true" scrollHeight="400" emptyMessage="#{msg['mensaje.noexistenDatos']}" styleClass="usuariosDT">
-		    		<p:column headerText="ID" style="width:20px;">
-			            <h:outputText value="#{u.idusuario}" />
-			        </p:column>
-			        
-			        <p:column headerText="EST" style="width:10px;">
-			            <h:outputText value="#{u.estado}" />
-			        </p:column>
-			        
-			        <p:column headerText="#{msg['label.identificacion']}" style="width:40px;">
-			            <h:outputText value="#{u.identificacion}" />
-			        </p:column>
-			        
-			        <p:column headerText="NOMBRE" style="width:100px;">
-			            <h:outputText value="#{u.nombre}" />
-			        </p:column>
-			        
-			        <p:column headerText="#{msg['label.puntoemision']}" style="width:10px;">
-			            <h:outputText value="#{u.puntoemision}" />
-			        </p:column>
-			        
-			        <p:column headerText="ADMIN" style="width:10px;">
-			            <h:outputText value="#{u.administrador}" />
-			        </p:column>
-			        
-		    	</p:dataTable>
-		    </div>
+		    	<h1>Lista de Usuarios : <span style="color:green;">#{appSessionCtrl.nombreEstablecimiento}</span></h1>
+				<p:dataTable id="usuariosDT" var="u"
+					value="#{usuarioCtrl.usuarioList}" scrollable="true"
+					scrollHeight="400" emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="usuariosDT"  
+					rowKey="#{u.idusuario}">
+					
+					
+					<p:column headerText="OPC" style="width:30px;">
+						
+						<p:commandLink id="clkEditar" action="#{usuarioCtrl.editar()}">
+							<i class="fa fa-edit Fs16"></i>
+							<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
+						</p:commandLink>
+						
+						
+					</p:column>
+					
+					<p:column headerText="ID" style="width:20px;">
+						<h:outputText value="#{u.idusuario}" />
+					</p:column>
+
+					<p:column headerText="EST" style="width:10px;">
+						<h:outputText value="#{u.estado}" />
+					</p:column>
+
+					<p:column headerText="#{msg['label.identificacion']}"
+						style="width:40px;">
+						<h:outputText value="#{u.identificacion}" />
+					</p:column>
+
+					<p:column headerText="NOMBRE" style="width:100px;">
+						<h:outputText value="#{u.nombre}" />
+					</p:column>
+
+					<p:column headerText="ESTABLECIMIENTO" style="width:100px;">
+						<h:outputText value="#{u.establecimiento.nombrecomercial}" />
+					</p:column>
+
+					<p:column headerText="#{msg['label.puntoemision']}"
+						style="width:10px;">
+						<h:outputText value="#{u.puntoemision}" />
+					</p:column>
+
+					<p:column headerText="ADMIN" style="width:10px;">
+						<h:outputText value="#{u.administrador}" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
 	    </h:form>
+	    
+	    <!-- formulario usuario -->
+	    <ui:include src="incl_usuario_form.xhtml" />
+	    
     </ui:define>
     
     

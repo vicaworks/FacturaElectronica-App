@@ -162,6 +162,10 @@ public class Establecimiento implements Serializable {
 
     @Override
     public String toString() {
+    	return String.format("[%s, %s]", idestablecimiento, nombrecomercial);
+    }
+    
+    public String toStringObject() {
         return PojoUtil.toString(this);
     }
 
