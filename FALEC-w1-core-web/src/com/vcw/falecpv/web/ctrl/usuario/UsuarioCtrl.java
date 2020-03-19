@@ -9,9 +9,14 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
  * @author cristianvillarreal
@@ -42,18 +47,25 @@ public class UsuarioCtrl extends BaseCtrl {
 
 	@Override
 	public void limpiar() {
-		super.limpiar();
+		usuarioList = null;
+		estadoRegBusqueda = "A";
 	}
 
 
 
 	@Override
 	public void refrescar() {
-		super.refrescar();
+		try {
+			usuarioList = null;
+			consultarUsuario();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
-	private void consultarUsuario() {
-		//usuarioList = UsuarioServicio.get
+	private void consultarUsuario() throws DaoException {
+		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda));
 	}
 
 	@Override
@@ -61,14 +73,18 @@ public class UsuarioCtrl extends BaseCtrl {
 		super.eliminar();
 	}
 
-
-
 	@Override
 	public void guardar() {
 		super.guardar();
 	}
 
-
+	public void nuevo() {
+		
+	}
+	
+	public void editar() {
+		
+	}
 	/**
 	 * @return the usuarioList
 	 */

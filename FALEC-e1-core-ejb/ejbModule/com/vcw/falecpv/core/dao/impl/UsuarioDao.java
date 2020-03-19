@@ -61,7 +61,7 @@ public class UsuarioDao extends AppGenericDao<Usuario, String> {
 	public List<Usuario> getByEstado(EstadoRegistroEnum estadoRegistroEnum)throws DaoException{
 		try {
 			Query q = null;
-			if(estadoRegistroEnum!=null) {
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
 				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE u.estado=:estado ORDER BY u.nombre");
 				q.setParameter("estado", estadoRegistroEnum.getInicial());
 			}else {
