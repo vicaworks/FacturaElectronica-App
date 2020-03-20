@@ -31,11 +31,10 @@
 		    <p:menuitem value="Usuario" url="#{request.contextPath}/pages/configuracion/usuario.jsf" />
 		</p:breadCrumb>
 		
-	    <p:spacer height="2px"/>
-        
+	    
 	    <!-- OPCIONES -->
 	    <h:form id="formMain">	    
-	   		<div class="card card-w-title">
+	   		<div class="card card-w-title" style="margin-top:10px;">
 				<div class="p-grid">
 					
 					<div class="p-grid p-col-12 p-md-6 p-align-center">
@@ -57,10 +56,45 @@
 					<div class="p-col-12 p-md-6" style="text-align:right;">
 						
 						
-						<span class="ui-separator MRight10"> 
+						<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+								
+							<p:panelGrid columns="4" style="border:none !important;margin:0px;width:100%;" 
+								columnClasses="ui-g-1,
+											   ui-g-10 ui-md-3,
+											   ui-g-12 ui-md-3,
+											   ui-g-12 ui-md-3">
+							
+								<span class="ui-separator MRight10"> 
+									<span class="fa fa-ellipsis-v leaden" />
+								</span>
+		                        
+								<p:commandButton id="cmdRefrecar"
+									value="CONSULTAR" icon="fa fa-search" 
+									action="#{usuarioCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
+									/>
+									
+								<p:commandButton id="cmdNuevo"
+									value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+									action="#{usuarioCtrl.nuevo()}" inline="true" 
+									/>
+								
+								<p:commandButton id="cmdExcel"
+									value="REPORTE" icon="fa fa-file-excel-o"
+									action="#" styleClass="success-btn Wid90"
+									/>
+						
+							</p:panelGrid>
+						</p:panelGrid>
+						
+						
+						<!-- <span class="ui-separator MRight10"> 
 							<span class="fa fa-ellipsis-v leaden" />
 						</span>
 						
+						    
 						<p:commandButton id="cmdRefrecar"
 							value="CONSULTAR" icon="fa fa-search" 
 							action="#{usuarioCtrl.refrescar()}" styleClass="MRight10 secondary-button" update="@form"
@@ -74,8 +108,8 @@
 						<p:commandButton id="cmdExcel"
 							value="REPORTE" icon="fa fa-file-excel-o"
 							action="#" styleClass="success-btn MRight10"
-							/>
-						
+							/> -->
+							
 					</div>
 					
 				</div>
@@ -88,9 +122,10 @@
 			</p:messages>
 		    
 		    <!-- LISTA DE USUARIOS -->
-		    <p:spacer height="2px"/>
+		    
 		    <div class="card card-w-title">
-		    	<h1>Lista de Usuarios : <span style="color:green;">#{appSessionCtrl.nombreEstablecimiento}</span></h1>
+		    	<!-- <h1>Lista de Usuarios : <span style="color:green;">#{appSessionCtrl.nombreEstablecimiento}</span></h1> -->
+		    	<h1>Usuarios</h1>
 				<p:dataTable id="usuariosDT" var="u"
 					value="#{usuarioCtrl.usuarioList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"

@@ -6,7 +6,15 @@
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions">
 	
-	<p:dialog header="Usuario" widgetVar="dlgUsuario" modal="true" responsive="true" width="90%" closeOnEscape="true">
+	<style type="text/css">
+		
+		.heightFrmUsuario {
+				/* height: 560px; */
+		}
+		
+	</style>
+	
+	<p:dialog header="Usuario" widgetVar="dlgUsuario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmUsuario">
 			
@@ -37,7 +45,10 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="form-ui Wid100">
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmUsuario contenedorFormulario">
+			
 				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 					
 					<h:outputText value="ID" />
