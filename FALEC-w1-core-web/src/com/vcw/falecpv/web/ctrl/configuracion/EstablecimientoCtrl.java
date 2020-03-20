@@ -3,12 +3,16 @@
  */
 package com.vcw.falecpv.web.ctrl.configuracion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -26,6 +30,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	 */
 	private static final long serialVersionUID = -8788719067123516137L;
 	
+	
+	
+	private List<Establecimiento> establecimientoAllList;
+	
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
 
@@ -33,6 +41,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	 * 
 	 */
 	public EstablecimientoCtrl() {
+		establecimientoAllList= new ArrayList<>();
 	}
 
 	@Override
@@ -72,6 +81,17 @@ public class EstablecimientoCtrl extends BaseCtrl {
 		}
 		
 	}
+
+	public List<Establecimiento> getEstablecimientoAllList() {
+		return establecimientoAllList;
+	}
+
+	public void setEstablecimientoAllList(List<Establecimiento> establecimientoAllList) {
+		this.establecimientoAllList = establecimientoAllList;
+	}
+	
+	
+	
 	
 	
 

@@ -29,6 +29,7 @@ public class AppSessionCtrl implements Serializable {
 	private UsuarioServicio usuarioServicio;
 	
 	private String nombreEstablecimiento;
+	private String nombreEmpresa;
 	private String nombreDisplay;
 	private Boolean administrador;
 	
@@ -52,6 +53,7 @@ public class AppSessionCtrl implements Serializable {
 				nombreDisplay = usuario.getNombrepantalla();
 				administrador = usuario.getAdministrador().equals("S")?true:false;
 				nombreEstablecimiento = usuario.getEstablecimiento().getNombrecomercial();
+				nombreEmpresa = usuario.getEstablecimiento().getEmpresa().getNombrecomercial();
 				
 				// 2. guardar en session los datos de empresa y establecimeinto
 				FacesUtil.getHttpSession(false).setAttribute("establecimiento", usuario.getEstablecimiento());
@@ -131,6 +133,23 @@ public class AppSessionCtrl implements Serializable {
 	 */
 	public void setAdministrador(Boolean administrador) {
 		this.administrador = administrador;
+	}
+
+	/**
+	 * @return the nombreEmpresa
+	 */
+	public String getNombreEmpresa() {
+		if(nombreEmpresa==null) {
+			establecerdatosIniciales();
+		}
+		return nombreEmpresa;
+	}
+
+	/**
+	 * @param nombreEmpresa the nombreEmpresa to set
+	 */
+	public void setNombreEmpresa(String nombreEmpresa) {
+		this.nombreEmpresa = nombreEmpresa;
 	}	
 
 }

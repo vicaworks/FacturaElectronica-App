@@ -20,7 +20,56 @@
 		    <p:menuitem value="#{msg['menu.configuracion']}" url="#" />
 		    <p:menuitem value="Establecimiento" url="#{request.contextPath}/pages/configuracion/empresa.jsf" />
 		</p:breadCrumb>
-        
+        <h:form> 
+	        <div class="p-col-12">
+		        <p:toolbar>
+			        <f:facet name="left">
+				            <p:commandButton id="editEstablecim" type="button" value="Nuevo" icon="pi pi-file"  onclick="PF('wdlgNuevoEstableciemiento').show()" />
+				 
+			        </f:facet>
+	    	  	</p:toolbar>
+	   	  	</div>	
+	   	  	<div class="p-col-12">
+	   	  	
+		  		<p:dataTable var="estab" value="#{establecimientoCtrl.establecimientoAllList}">
+		  		 
+		  		
+				    <p:column headerText="Codigo" priority="2">
+				        <h:outputText value="#{estab.codigoestablecimiento}" />
+				    </p:column>
+				
+				    <p:column headerText="Direccion"  priority="2">
+				        <h:outputText value="#{estab.direccionestablecimiento}" />
+				    </p:column>
+				
+				    <p:column headerText="Nombre Comercial" priority="2">
+				        <h:outputText value="#{estab.nombrecomercial}" />
+				    </p:column>
+				
+				    <p:column headerText="Punto Emsion" priority="4">
+				        <h:outputText value="#{estab.puntoemision}" />
+				    </p:column>
+				 
+				     <p:column headerText="Telefono" priority="4">
+				        <h:outputText value="#{estab.telefono}" />
+				    </p:column>
+				
+				    <p:column headerText="Correo" priority="4">
+				        <h:outputText value="#{estab.correo}" />
+				    </p:column>
+				 
+				    <p:column headerText="Matriz" priority="4">
+				        <h:outputText value="#{estab.matriz}" />
+				    </p:column>
+				
+				</p:dataTable>       
+			</div>
+			<p:dialog header="Nuevo" widgetVar="wdlgNuevoEstableciemiento" id="dlgNuevoEstab" width="70%" height="auto" 
+                                      style="text-height: font-size; text-height: font-size; text-align: left; font-weight: bold">
+                                <ui:include src="editEstablecimiento.xhtml" />
+                            </p:dialog>
+   	  	</h:form>
+   	  	
     </ui:define>
 
 </ui:composition>

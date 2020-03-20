@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -96,10 +97,18 @@ public class Usuario implements Serializable {
     private String nombrepantalla;
     
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     private Establecimiento establecimiento;
     
+    @Transient
+    private Empresa empresa;
 
+    @Transient
+    private String clave2;
+    
+    @Transient
+    private boolean actualizarCredenciales = false;
+    
 	/**
 	 * 
 	 */
@@ -346,6 +355,60 @@ public class Usuario implements Serializable {
 	 */
 	public void setNombrepantalla(String nombrepantalla) {
 		this.nombrepantalla = nombrepantalla;
+	}
+
+
+
+	/**
+	 * @return the empresa
+	 */
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+
+
+	/**
+	 * @return the clave2
+	 */
+	public String getClave2() {
+		return clave2;
+	}
+
+
+
+	/**
+	 * @param clave2 the clave2 to set
+	 */
+	public void setClave2(String clave2) {
+		this.clave2 = clave2;
+	}
+
+
+
+	/**
+	 * @return the actualizarCredenciales
+	 */
+	public boolean isActualizarCredenciales() {
+		return actualizarCredenciales;
+	}
+
+
+
+	/**
+	 * @param actualizarCredenciales the actualizarCredenciales to set
+	 */
+	public void setActualizarCredenciales(boolean actualizarCredenciales) {
+		this.actualizarCredenciales = actualizarCredenciales;
 	}
 
 

@@ -129,7 +129,7 @@ public class Establecimiento implements Serializable {
     private String idusuario;
     
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idempresa",referencedColumnName = "idempresa",insertable = false,updatable = false)
+    @JoinColumn(name = "idempresa",referencedColumnName = "idempresa")
     private Empresa empresa;
     
     @OneToMany(mappedBy = "establecimiento",fetch = FetchType.LAZY)
@@ -162,6 +162,10 @@ public class Establecimiento implements Serializable {
 
     @Override
     public String toString() {
+    	return String.format("[%s, %s]", idestablecimiento, nombrecomercial);
+    }
+    
+    public String toStringObject() {
         return PojoUtil.toString(this);
     }
 

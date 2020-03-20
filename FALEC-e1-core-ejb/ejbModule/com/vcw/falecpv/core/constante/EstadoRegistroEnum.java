@@ -42,4 +42,18 @@ public enum EstadoRegistroEnum {
 		return mediaPalabra;
 	}
 
+	/**
+	 * @author cristianvillarreal
+	 * @param inicial
+	 * @return
+	 */
+	public static EstadoRegistroEnum getByInicial(String inicial) {
+		for (EstadoRegistroEnum e : EstadoRegistroEnum.values()) {
+			if(inicial.equals(e.getInicial())) {
+				return e;
+			}
+		}
+		return null;
+	}
+	
 }

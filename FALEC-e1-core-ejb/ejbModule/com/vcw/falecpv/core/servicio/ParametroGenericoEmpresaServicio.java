@@ -129,7 +129,7 @@ public class ParametroGenericoEmpresaServicio extends AppGenericService<Parametr
 		ParametroGenericoEmpresa parametrosGenericos = null;
 
 		try {
-			parametrosGenericos = parametroGenericoEmpresaDao.getByEmpresa(idEstablecimiento, parametroId);
+			parametrosGenericos = parametroGenericoEmpresaDao.getByEstablecimiento(idEstablecimiento, parametroId);
 		} catch (NoResultException e) {
 			throw new DaoException("No existe el parametro generico : " + parametroId.toString() + " id: "
 					+ parametroId.getId() + " del establecimiento id: " + idEstablecimiento);
