@@ -127,7 +127,7 @@
 				</p:panelGrid>
 				<p:panelGrid id="grid2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 					<h:outputText value="LOGIN * : " styleClass="cpoRequerido" id="intLogin1" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
-					<p:inputText id="intLogin" value="#{usuarioCtrl.usuarioSelected.login}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
+					<p:inputText id="intLogin" value="#{usuarioCtrl.usuarioSelected.login}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" readonly="#{usuarioCtrl.usuarioSelected.idusuario!=null}"/>
 					<p:message for="intLogin"  id="intLogin2" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
 					
 					<h:outputText value="CLAVE * : " styleClass="cpoRequerido" id="intClave11" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>

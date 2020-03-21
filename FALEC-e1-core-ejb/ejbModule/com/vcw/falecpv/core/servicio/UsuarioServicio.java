@@ -82,5 +82,16 @@ public class UsuarioServicio extends AppGenericService<Usuario, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idUsuario
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean dependencias(String idUsuario)throws DaoException{
+		return false;
+	}
 
 }

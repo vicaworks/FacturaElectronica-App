@@ -80,10 +80,20 @@
 										action="#{usuarioCtrl.nuevo()}" inline="true" 
 										/>
 									
-									<p:commandButton id="cmdExcel"
+									<!-- <p:commandButton id="cmdExcel"
 										value="REPORTE" icon="fa fa-file-excel-o"
-										action="#" styleClass="success-btn Wid90"
-										/>
+										action="#" 
+										
+										/> -->
+										
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid90">
+										<p:fileDownload value="#{usuarioCtrl.fileUsuarios}"/>
+									</p:commandButton>	
 							
 								</p:panelGrid>
 						</p:panelGrid>
@@ -141,7 +151,7 @@
 						
 						<p:spacer width="5px"></p:spacer>
 												
-						<p:commandLink id="clkEliminar" action="#">
+						<p:commandLink id="clkEliminar" action="#{usuarioCtrl.eliminar()}" update="@form">
 							<i class="fa fa-close Fs18" style="color:red;"></i>
 							<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
 							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
