@@ -5,10 +5,13 @@ package com.vcw.falecpv.core.servicio;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
+import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.contadores.TCCategoria;
 import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 
@@ -21,6 +24,9 @@ public class CategoriaServicio extends AppGenericService<Categoria, String> {
 
 	@Inject
 	private CategoriaDao categoriaDao;
+	
+	@EJB
+	private ContadorPkServicio contadorPkServicio;
 	
 	/**
 	 * 
@@ -48,6 +54,40 @@ public class CategoriaServicio extends AppGenericService<Categoria, String> {
 	 */
 	public CategoriaDao getCategoriaDao() {
 		return categoriaDao;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idcategoria
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean tieneDependencias(String idcategoria)throws DaoException{
+		return false;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param categoria
+	 * @return
+	 * @throws DaoException
+	 */
+	public Categoria guardar(Categoria categoria,String idEstablecimiento)throws DaoException{
+		try {
+			
+			if(categoria.getIdcategoria()==null) {
+				categoria.setIdcategoria(contadorPkServicio.generarContadorTabla(TCCategoria.CATEGORIA, idEstablecimiento));
+				crear(categoria);
+			}else {
+				actualizar(categoria);
+			}
+			
+			return categoria;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

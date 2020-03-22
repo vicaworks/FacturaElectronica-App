@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -500,6 +501,34 @@ public class UtilExcel implements Serializable {
 		style.setBorderLeft(CellStyle.BORDER_THIN);
 		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
 
+		cell.setCellStyle(style);
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param cell
+	 * @param formatoFecha
+	 */
+	public static void setHSSBordeCell(Cell cell,String formatoFecha) {
+		Sheet sheet = cell.getSheet();
+		HSSFCellStyle style = (HSSFCellStyle) sheet.getWorkbook().createCellStyle();
+
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		
+		CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();  
+		style.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yyyy HH:mm"));
+		
 		cell.setCellStyle(style);
 	}
 

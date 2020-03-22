@@ -3,8 +3,13 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
-import javax.ejb.Stateless;
+import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+
+import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 
@@ -22,4 +27,58 @@ public class CategoriaDao extends AppGenericDao<Categoria, String> {
 		super(Categoria.class);
 	}
 
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param estadoRegistroEnum
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Categoria> getByEstado(EstadoRegistroEnum estadoRegistroEnum)throws DaoException{
+		try {
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE c.estado=:estado ORDER BY c.categoria");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c ORDER BY c.categoria");
+			}
+			return q.getResultList();
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param categoria
+	 * @param idcategoria
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeCategoria(String categoria,String idcategoria)throws DaoException{
+		Query q = null;
+		
+		if(idcategoria!=null) {
+			
+			q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria AND c.idcategoria<>:idcategoria");
+			q.setParameter("idcategoria", idcategoria);
+			
+		}else {
+			
+			q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria");
+			
+		}
+		
+		q.setParameter("categoria", categoria.toUpperCase());
+		
+		if(q.getResultList().size()>0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }

@@ -42,6 +42,12 @@ public abstract class BaseCtrl implements Serializable {
 	public void guardar() {
 	}
 	
+	public void editar() {
+	}
+	
+	public void nuevo() {
+	}
+	
 	
 	
 }
