@@ -73,4 +73,41 @@ public class UsuarioDao extends AppGenericDao<Usuario, String> {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idUsuario
+	 * @param login
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeLogin(String idUsuario,String login)throws DaoException{
+		try {
+			
+			Query q = null;
+			
+			if(idUsuario!=null) {
+				
+				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE u.login=:login AND u.idusuario<>:idusuario");
+				q.setParameter("idusuario", idUsuario);
+				
+			}else {
+				
+				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE u.login=:login");
+				
+			}
+			
+			q.setParameter("login", login);
+			
+			if(q.getResultList().size()>0) {
+				return true;
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 }

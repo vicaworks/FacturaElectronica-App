@@ -13,6 +13,7 @@ import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -447,6 +448,57 @@ public class UtilExcel implements Serializable {
 
 		style.setBorderLeft(CellStyle.BORDER_THIN);
 		style.setLeftBorderColor(new XSSFColor(borde));
+
+		cell.setCellStyle(style);
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param cell
+	 */
+	public static void setXSSFBordeCell(Cell cell) {
+		Sheet sheet = cell.getSheet();
+		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
+
+		Color borde = new Color(255, 255, 255, 255);
+
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBottomBorderColor(new XSSFColor(borde));
+
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setTopBorderColor(new XSSFColor(borde));
+
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setRightBorderColor(new XSSFColor(borde));
+
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setLeftBorderColor(new XSSFColor(borde));
+
+		cell.setCellStyle(style);
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param cell
+	 */
+	public static void setHSSBordeCell(Cell cell) {
+		Sheet sheet = cell.getSheet();
+		HSSFCellStyle style = (HSSFCellStyle) sheet.getWorkbook().createCellStyle();
+
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
 
 		cell.setCellStyle(style);
 	}
