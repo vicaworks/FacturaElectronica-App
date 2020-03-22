@@ -4,12 +4,15 @@
 package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -50,6 +53,16 @@ public class Ice implements Serializable {
     @Size(max = 100)
     @Column(name = "tarifaespecifica", length = 100)
     private String tarifaespecifica;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 40)
+	@Column(name = "idusuario", nullable = false, length = 40)
+	private String idusuario;
 
 	/**
 	 * 
@@ -150,6 +163,34 @@ public class Ice implements Serializable {
 	 */
 	public void setTarifaespecifica(String tarifaespecifica) {
 		this.tarifaespecifica = tarifaespecifica;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}	
 
 }

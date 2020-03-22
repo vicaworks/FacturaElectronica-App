@@ -46,10 +46,10 @@ public class Fabricante implements Serializable {
 	@Column(name = "estado", length = 1)
 	private String estado;
 	@Basic(optional = false)
-	@NotNull
-	@Column(name = "updated", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date updated;
+    @NotNull
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 40)

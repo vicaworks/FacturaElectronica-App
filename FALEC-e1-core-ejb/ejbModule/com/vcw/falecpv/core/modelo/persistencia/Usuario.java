@@ -90,7 +90,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "updated", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
     
     @Column(name = "nombrepantalla", nullable = false, length = 20)
