@@ -4,12 +4,15 @@
 package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -48,10 +51,10 @@ public class Categoria implements Serializable {
 	@Column(name = "estado", nullable = false, length = 1)
 	private String estado;
 	@Basic(optional = false)
-	@NotNull
-	@Size(min = 1, max = 2147483647)
-	@Column(name = "updated", nullable = false, length = 2147483647)
-	private String updated;
+    @NotNull
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 40)
@@ -147,20 +150,6 @@ public class Categoria implements Serializable {
 	}
 
 	/**
-	 * @return the updated
-	 */
-	public String getUpdated() {
-		return updated;
-	}
-
-	/**
-	 * @param updated the updated to set
-	 */
-	public void setUpdated(String updated) {
-		this.updated = updated;
-	}
-
-	/**
 	 * @return the idusuario
 	 */
 	public String getIdusuario() {
@@ -172,6 +161,20 @@ public class Categoria implements Serializable {
 	 */
 	public void setIdusuario(String idusuario) {
 		this.idusuario = idusuario;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 
 	

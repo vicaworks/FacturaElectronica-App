@@ -147,7 +147,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			}
 			
 			usuarioSelected.setUpdated(new Date());			
-			usuarioServicio.guardar(usuarioSelected);
+			usuarioSelected = usuarioServicio.guardar(usuarioSelected);
 			usuarioList = null;
 			consultarUsuario();
 			AppJsfUtil.addInfoMessage("frmUsuario","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
@@ -188,6 +188,13 @@ public class UsuarioCtrl extends BaseCtrl {
 	public StreamedContent getFileUsuarios()  {
 		try {
 			
+			
+			if(usuarioList==null || usuarioList.size()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				return null;
+			}
+			
+			
 			String path = FacesUtil.getServletContext().getRealPath(
 					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-listausuarios.xls");
 			
@@ -196,8 +203,8 @@ public class UsuarioCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			usuarioList = null;
-			usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.getByInicial(EstadoRegistroEnum.TODOS.getInicial()));
+//			usuarioList = null;
+//			usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.getByInicial(EstadoRegistroEnum.TODOS.getInicial()));
 			
 			@SuppressWarnings("resource")
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));

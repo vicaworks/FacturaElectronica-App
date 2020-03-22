@@ -139,6 +139,23 @@
 					<p:message for="intClave2" id="intClave22" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
 				</p:panelGrid>
 				
+				<p:panelGrid id="grid3" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+					<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
+					<h:panelGroup>
+						<p:selectOneMenu id="somEstadoUsu"
+							value="#{usuarioCtrl.usuarioSelected.estado}"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100" disabled="#{usuarioCtrl.usuarioSelected.idusuario==null}">
+							
+							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+			    			
+						</p:selectOneMenu>
+					</h:panelGroup>
+					<p:message for="somEstadoUsu" />	
+				</p:panelGrid>
+				
 			</div>
 			
 			<!-- <div class="form-p-grid">
