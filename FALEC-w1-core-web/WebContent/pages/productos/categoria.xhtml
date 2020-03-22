@@ -138,7 +138,12 @@
 						<h:outputText value="#{c.estado}" />
 					</p:column>
 					
-					<p:column headerText="NOMBRE" style="width:100px;">
+					<p:column style="width:100px;" filterBy="#{c.categoria}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="NOMBRE" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+							
+						</f:facet>
 						<h:outputText value="#{c.categoria}" />
 					</p:column>
 					

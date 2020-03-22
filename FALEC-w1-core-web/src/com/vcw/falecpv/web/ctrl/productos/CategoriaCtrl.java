@@ -79,7 +79,8 @@ public class CategoriaCtrl extends BaseCtrl {
 		}
 	}
 
-	private void consultar() throws DaoException {		
+	private void consultar() throws DaoException {
+		AppJsfUtil.limpiarFiltrosDataTable(":formMain:categoiaDT");
 		categoriaList = null;
 		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda));
 	}
