@@ -433,8 +433,6 @@ public class Establecimiento implements Serializable {
 	 */
 	public void setUsuarioList(List<Usuario> usuarioList) {
 		this.usuarioList = usuarioList;
-	}
-
-	
+	}		
 
 }
