@@ -53,16 +53,18 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 	public String generarContadorTabla(TablaContadorBaseEnum tablaContador,String idEstablecimiento)throws DaoException, ParametroRequeridoException{
 		
 		ValidarParametro.validar(tablaContador, "TABLA_CONTADOR");
-		ValidarParametro.validar(idEstablecimiento, "ESTABLECIMIENTO");
+//		ValidarParametro.validar(idEstablecimiento, "ESTABLECIMIENTO");
 		
 		boolean flagSucursal = false;
 		String sucursal = null;
 		
 		// 1 verifica si el establecimiento tiene generacion sucursal
-		flagSucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.GENERAR_SUCURSAL, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento);
-		if(flagSucursal) {
-			// 2. consulta la sucursal
-			sucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.SUCURSAL, TipoRetornoParametroGenerico.STRING, idEstablecimiento);
+		if(idEstablecimiento!=null) {
+			flagSucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.GENERAR_SUCURSAL, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento);
+			if(flagSucursal) {
+				// 2. consulta la sucursal
+				sucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.SUCURSAL, TipoRetornoParametroGenerico.STRING, idEstablecimiento);
+			}
 		}
 		
 		Connection cnn = null;
