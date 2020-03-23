@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
-
+import javax.persistence.NoResultException;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
@@ -51,5 +51,4 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 			throw new DaoException(e);
 		}
 	}
-
 }

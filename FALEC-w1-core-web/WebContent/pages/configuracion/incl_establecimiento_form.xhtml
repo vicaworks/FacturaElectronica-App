@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmEstablecimiento {
+				/* height: 560px; */
+		}
+		
+	</style>
+	
+	<p:dialog header="Establecimiento" widgetVar="dlgEstable" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmEstable">
+			
+			<!-- OPCIONES -->
+			
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					
+					<p:commandButton id="cmdGuardar"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{establecimientoCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEstable"
+						/>
+						
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgEstable').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstable"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmEstablecimiento contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+					
+					<h:outputText value="ID" />
+					<h:outputText value="#{establecimientoCtrl.establecimientoSelected.idestablecimiento}" />
+					<h:outputText value="" />
+					
+					<h:outputText value="ID EMPRESA" />
+					<h:outputText value="#{establecimientoCtrl.establecimientoSelected.empresa.idempresa}" />
+					<h:outputText value="" />
+					
+					<h:outputText value="CODIGO * : " styleClass="cpoRequerido"/>
+					<h:panelGroup>
+						<p:inputText id="intCodigoEst" value="#{establecimientoCtrl.establecimientoSelected.codigoestablecimiento}"  styleClass="Wid100" maxlength="3"/>
+					</h:panelGroup>	
+			        <p:message for="intCodigoEst"/>
+					
+<!-- 					<h:outputText value="DIRECCION * : " styleClass="cpoRequerido"/> -->
+<!-- 					<h:panelGroup> -->
+<!-- 						<p:inputText id="intDirreccionEst" value="#{establecimientoCtrl.establecimientoSelected.direccionestablecimiento}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/> -->
+<!-- 					</h:panelGroup>	 -->
+<!-- 					<p:message for="intDirreccionEst"/> -->
+					
+<!-- 					<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido"/> -->
+<!-- 					<h:panelGroup> -->
+<!-- 						<p:inputText id="intNombreComerEst" value="#{establecimientoCtrl.establecimientoSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/> -->
+<!-- 					</h:panelGroup>	 -->
+<!-- 					<p:message for="intNombreComerEst"/> -->
+					
+<!-- 					<h:outputText value="PUNTO DE EMISION * : " styleClass="cpoRequerido"/> -->
+<!-- 					<h:panelGroup> -->
+<!-- 						<p:inputText id="intPuntoEmisionEst" value="#{establecimientoCtrl.establecimientoSelected.puntoemision}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/> -->
+<!-- 					</h:panelGroup>	 -->
+<!-- 					<p:message for="intPuntoEmisionEst"/> -->
+					
+<!-- 					<h:outputText value="TELEFONO * : " styleClass="cpoRequerido"/> -->
+<!-- 					<h:panelGroup> -->
+<!-- 						<p:inputText id="intTelefonoEst" value="#{establecimientoCtrl.establecimientoSelected.telefono}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/> -->
+<!-- 					</h:panelGroup>	 -->
+<!-- 					<p:message for="intTelefonoEst"/> -->
+					
+<!-- 					<h:outputText value="CORREO * : " styleClass="cpoRequerido"/> -->
+<!-- 					<h:panelGroup> -->
+<!-- 						<p:inputText id="intCorreoEst" value="#{establecimientoCtrl.establecimientoSelected.correo}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/> -->
+<!-- 					</h:panelGroup>	 -->
+<!-- 					<p:message for="intCorreoEst"/> -->
+					
+<!-- 					<h:outputText value="MATRIZ * : " styleClass="cpoRequerido"/> -->
+<!-- 					<h:panelGroup> -->
+<!-- 						<p:inputText id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/> -->
+<!-- 					</h:panelGroup>	 -->
+<!-- 					<p:message for="intMatrizEst"/> -->
+					
+	            </p:panelGrid>
+				
+				
+			</div>
+	
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>
