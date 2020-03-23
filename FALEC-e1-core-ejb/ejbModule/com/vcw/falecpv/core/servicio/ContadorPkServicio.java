@@ -59,10 +59,12 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 		String sucursal = null;
 		
 		// 1 verifica si el establecimiento tiene generacion sucursal
-		flagSucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.GENERAR_SUCURSAL, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento);
-		if(flagSucursal) {
-			// 2. consulta la sucursal
-			sucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.SUCURSAL, TipoRetornoParametroGenerico.STRING, idEstablecimiento);
+		if(idEstablecimiento!=null) {
+			flagSucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.GENERAR_SUCURSAL, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento);
+			if(flagSucursal) {
+				// 2. consulta la sucursal
+				sucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.SUCURSAL, TipoRetornoParametroGenerico.STRING, idEstablecimiento);
+			}
 		}
 		
 		Connection cnn = null;
