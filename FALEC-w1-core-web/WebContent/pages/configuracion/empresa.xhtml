@@ -3,6 +3,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
     <ui:define name="title">#{msg['title.empresa']}</ui:define>
@@ -18,64 +20,107 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="#{msg['menu.configuracion']}" url="#" />
-		    <p:menuitem value="Empresa" url="#{request.contextPath}/pages/configuracion/establecimiento.jsf" />
+		    <p:menuitem value="Empresa" url="#{request.contextPath}/pages/configuracion/empresa.jsf" />
 		</p:breadCrumb>
-		<br />
-		<h:form enctype="multipart/form-data">
-			<div class="ui-fluid">
-				<p:fieldset id="fsinfoempresa" legend="Información Empresa">
-					<p:panelGrid id="panelMostar" rendered="#{empresaCtrl.banderaModificar}" columns="1" styleClass="ui-panelgrid-blank form-group" layout="grid">
+		
+		<h:form id="formMainEmpresa" enctype="multipart/form-data">	
+			<div class="card card-w-title" style="margin-top:12px;">
+				<div class="p-grid">
+					<div class="p-col-12 p-md-6" style="text-align:center;">
+						
+						<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+							
+								<p:panelGrid columns="3" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4">
+									<h:panelGroup>
+										<span class="ui-separator MRight10"> 
+											<span class="fa fa-ellipsis-v leaden" />
+										</span>
+										<p:spacer width="5px"/>				                        
+										<p:commandButton id="cmdEditarEmp"
+											value="EDITAR"
+											icon="fa fa-edit" styleClass=" Wid90"
+											action="#{empresaCtrl.editar()}" inline="true"
+											rendered="#{empresaCtrl.bandera}"
+										/>
+									</h:panelGroup>
+
+									<p:commandButton id="cmdGuardarEmp"
+													 value="GUARDAR" icon="fa fa-check" 
+													 rendered="#{!empresaCtrl.bandera}"
+									        		 action="#{empresaCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEmpresa"
+									/>
+							
+								</p:panelGrid>
+						
+						</p:panelGrid>
+				
+					</div>
+					
+				</div>
+			</div>
+			
+			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formEmpresa"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+		    
+		    <!-- EMPRESA -->
+			<div class="card card-w-title">
+				<h1>Empresa</h1>
+				<p:fieldset id="fsEmpresa">
+					<p:panelGrid id="panelMostrar" rendered="#{empresaCtrl.bandera}" columns="1" styleClass="ui-panelgrid-blank form-group" layout="grid">
 						<p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" 
-									 cellpadding="5" width="80%">
+									 cellpadding="5">
 		              		 <p:outputLabel value="RUC:" style="vertical-align: middle" />
-		                     <p:outputLabel value="1713673406001" style="vertical-align: middle" />
+		                     <p:outputLabel value="#{empresaCtrl.empresa.ruc}" style="vertical-align: middle" />
 		                     
 		                     <p:outputLabel value="Razón social:" style="vertical-align: middle" />
-		                     <p:outputLabel value="Empresa de facturación" style="vertical-align: middle" />
+		                     <p:outputLabel value="#{empresaCtrl.empresa.razonsocial}" style="vertical-align: middle" />
 		                     
 		                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
-		                     <p:outputLabel value="Falec S.A." style="vertical-align: middle" />
+		                     <p:outputLabel value="#{empresaCtrl.empresa.nombrecomercial}" style="vertical-align: middle" />
 		                     
 		                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle" />
-		                     <p:outputLabel value="Valle de los Chillos" style="vertical-align: middle" />
+		                     <p:outputLabel value="#{empresaCtrl.empresa.direccionmatriz}" style="vertical-align: middle" />
 		                     
 		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
-		                     <p:outputLabel value="SI" style="vertical-align: middle" />
+		                     <p:outputLabel value="#{empresaCtrl.empresa.obligadocontablidad}" style="vertical-align: middle" />
 		                     
 		                     <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
-		                     <p:outputLabel value="Pruebas" style="vertical-align: middle" />
-					        
-					         <p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
-		                     <p:outputLabel value="************" style="vertical-align: middle" />
-		              		
-		              		 <p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
-		              		 <p:outputLabel value="bytes.txt" style="vertical-align: middle" />
+		                     <p:outputLabel value="#{empresaCtrl.empresa.ambiente}" style="vertical-align: middle" />
 		        		</p:panelGrid>
 	        		</p:panelGrid>
-					
-					<p:panelGrid id="panelEditar" rendered="#{!empresaCtrl.banderaModificar}" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+	        		
+	        		<p:panelGrid id="panelNuevaEmp" rendered="#{!empresaCtrl.bandera}" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
 						<p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" cellpadding="5" width="80%">
 		              		 <p:outputLabel value="RUC:" style="vertical-align: middle" />
-		                     <p:inputText id="txtruc" />
+		                     <p:inputText id="txtruc" value="#{empresaCtrl.empresaSelected.ruc}" />
 		                     
 		                     <p:outputLabel value="Razón social:" style="vertical-align: middle" />
-		                     <p:inputText id="txtrazonsocial" />
+		                     <p:inputText id="txtrazonsocial" value="#{empresaCtrl.empresaSelected.razonsocial}" />
 		                     
 		                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
-		                     <p:inputText id="txtnombrecomercial" />
+		                     <p:inputText id="txtnombrecomercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" />
 		                     
 		                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle" />
-		                     <p:inputText id="txtdireccionmatriz" />
+		                     <p:inputText id="txtdireccionmatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" />
 		                     
 		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
-		                     <p:selectOneMenu id="cmbobligadocontabilidad">
+		                     <p:selectOneMenu id="cmbobligadocontabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="SI" itemValue="SI" />
 					            <f:selectItem itemLabel="NO" itemValue="NO" />
 					         </p:selectOneMenu>
 		                     
 		                     <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
-		                     <p:selectOneMenu id="cmbambiente">
+		                     <p:selectOneMenu id="cmbambiente" value="#{empresaCtrl.empresaSelected.ambiente}">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="Pruebas" itemValue="1" />
 					            <f:selectItem itemLabel="Producción" itemValue="2" />
@@ -88,19 +133,13 @@
 		              		 <p:fileUpload label="Examinar..." mode="simple" skinSimple="true"/>
 		        		</p:panelGrid>
 	        		</p:panelGrid>
-            	</p:fieldset>
+        		</p:fieldset>
          	</div>
-         	
-         	<div class="ui-g-12 ui-sm-12 nopad">
-	             <p:commandButton immediate="true" value="Modificar" icon="fa fa-pencil" styleClass="button-wrapper" rendered="#{empresaCtrl.banderaModificar}"
-	                              actionListener="#{empresaCtrl.prepararModificarInformacionEmpresa()}" style="margin-top: 10px;" update="@form" />
-	             <p:commandButton rendered="#{!empresaCtrl.banderaModificar}" value="Actualizar" icon="fa fa-refresh" styleClass="button-wrapper"
-	                              actionListener="#{empresaCtrl.guardarInformacionEmpresa()}" style="margin-top: 10px;" update="@form" />
-	             <p:commandButton rendered="#{!empresaCtrl.banderaModificar}" value="Cancelar" icon="fa fa-times" styleClass="neutral-btn button-wrapper-dlg"
-	                              actionListener="#{empresaCtrl.cancelarEdicionEmpresa()}" style="margin-top: 10px;" update="@form" />
-	         </div>
 		</h:form>
         
+        <!-- formulario usuario -->
+	    <ui:include src="incl_empresa_form.xhtml" />
+	    
     </ui:define>
 
 </ui:composition>
