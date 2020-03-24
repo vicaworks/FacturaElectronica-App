@@ -55,7 +55,7 @@ public class CategoriaCtrl extends BaseCtrl {
 	
 	private List<Categoria> categoriaList;
 	private Categoria categoriaSelected;
-	private String estadoRegBusqueda;
+	private String estadoRegBusqueda = EstadoRegistroEnum.ACTIVO.getInicial();
 
 	/**
 	 * 

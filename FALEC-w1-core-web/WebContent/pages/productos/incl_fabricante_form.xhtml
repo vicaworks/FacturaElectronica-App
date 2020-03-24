@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmFabricante {
+				/* height: 560px; */
+		}
+		
+	</style>
+	
+	<p:dialog header="Fabricante" widgetVar="dlgFabricante" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmFabricante">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					
+					<p:commandButton id="cmdGuardar"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{fabricanteCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
+						/>
+						
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgFabricante').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmFabricante"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmFabricante contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+					
+					<h:outputText value="ID" />
+					<h:outputText value="#{fabricanteCtrl.fabricanteSelected.idfabricante}" />
+					<h:outputText value="" />
+					
+					<h:outputText value="NOMBRE * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intNombre" value="#{fabricanteCtrl.fabricanteSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:message for="intNombre"/>
+					
+					
+					<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
+					<h:panelGroup>
+						<p:selectOneMenu id="somEstado"
+							value="#{fabricanteCtrl.fabricanteSelected.estado}"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100" disabled="#{fabricanteCtrl.fabricanteSelected.idfabricante==null}">
+							
+							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+			    			
+						</p:selectOneMenu>
+					</h:panelGroup>
+					<p:message for="somEstado" />
+					
+				</p:panelGrid>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>

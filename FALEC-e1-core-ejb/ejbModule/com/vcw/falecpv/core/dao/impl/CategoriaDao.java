@@ -59,26 +59,32 @@ public class CategoriaDao extends AppGenericDao<Categoria, String> {
 	 * @throws DaoException
 	 */
 	public boolean existeCategoria(String categoria,String idcategoria)throws DaoException{
-		Query q = null;
-		
-		if(idcategoria!=null) {
+		try {
 			
-			q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria AND c.idcategoria<>:idcategoria");
-			q.setParameter("idcategoria", idcategoria);
+			Query q = null;
 			
-		}else {
+			if(idcategoria!=null) {
+				
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria AND c.idcategoria<>:idcategoria");
+				q.setParameter("idcategoria", idcategoria);
+				
+			}else {
+				
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria");
+				
+			}
 			
-			q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria");
+			q.setParameter("categoria", categoria.toUpperCase());
 			
+			if(q.getResultList().size()>0) {
+				return true;
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
 		}
-		
-		q.setParameter("categoria", categoria.toUpperCase());
-		
-		if(q.getResultList().size()>0) {
-			return true;
-		}
-		
-		return false;
 	}
 	
 }
