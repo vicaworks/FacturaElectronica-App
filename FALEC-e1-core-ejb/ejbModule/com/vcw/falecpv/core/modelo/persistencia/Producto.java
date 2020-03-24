@@ -161,6 +161,10 @@ public class Producto implements Serializable {
     @JoinColumn(name = "idtipoproducto", referencedColumnName = "idtipoproducto", nullable = false,insertable = false,updatable = false)
     @ManyToOne(optional = false)
     private TipoProducto tipoProducto;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
+    private Establecimiento establecimiento;
 
 	/**
 	 * 
@@ -596,6 +600,20 @@ public class Producto implements Serializable {
 	 */
 	public void setTipoProducto(TipoProducto tipoProducto) {
 		this.tipoProducto = tipoProducto;
+	}
+
+	/**
+	 * @return the establecimiento
+	 */
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
+	}
+
+	/**
+	 * @param establecimiento the establecimiento to set
+	 */
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
 	}
 
 	

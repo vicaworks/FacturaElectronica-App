@@ -152,6 +152,7 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 			categoriaSelected = new Categoria();
 			categoriaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+			categoriaSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 			AppJsfUtil.showModalRender("dlgCategoria", "frmCategoria");
 			
 		} catch (Exception e) {
@@ -206,22 +207,26 @@ public class CategoriaCtrl extends BaseCtrl {
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(1);
-				cell.setCellValue(c.getCategoria());
+				cell.setCellValue(c.getEstablecimiento().getNombrecomercial());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(2);
-				cell.setCellValue(c.getDescripcion());
+				cell.setCellValue(c.getCategoria());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(3);
-				cell.setCellValue(c.getEstado());
+				cell.setCellValue(c.getDescripcion());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(4);
+				cell.setCellValue(c.getEstado());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(5);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(c.getIdusuario()).getNombre());
 				UtilExcel.setHSSBordeCell(cell);
 				
-				cell = row.createCell(5);				
+				cell = row.createCell(6);				
 				cell.setCellValue(c.getUpdated());
 				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
 				
