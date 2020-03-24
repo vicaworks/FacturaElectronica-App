@@ -7,9 +7,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import com.vcw.falecpv.core.servicio.EmpresaServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.servitec.common.dao.exception.DaoException;
@@ -17,6 +20,8 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
+import org.primefaces.model.UploadedFile;
+import org.primefaces.shaded.commons.io.IOUtils;
 
 /**
  * @author cristianvillarreal
@@ -34,10 +39,14 @@ public class EmpresaCtrl extends BaseCtrl {
 	@EJB
 	private EmpresaServicio empresaServicio;
 	
+	@EJB
+	private UsuarioServicio usuarioServicio;
+	
 	private List<Empresa> empresaList;
 	private Empresa empresa;
 	private Empresa empresaSelected;
 	private boolean bandera;
+	private UploadedFile file;
 
 	/**
 	 * 
@@ -75,7 +84,7 @@ public class EmpresaCtrl extends BaseCtrl {
 	
 	private void consultarEmpresa() throws DaoException {
 		empresaList = empresaServicio.getEmpresaDao().getEmpresaActual();
-//		empresaList.clear();
+//		empresaList.clear(); // simular que no hay empresas en bdd
 		if(!empresaList.isEmpty()) {
 			bandera = true;
 			empresa = empresaList.get(0);
@@ -100,13 +109,30 @@ public class EmpresaCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
-			empresaSelected.setUpdated(new Date());			
+			upload();
+			empresaSelected.setUpdated(new Date());
+			Usuario usuarioactual = usuarioServicio.getUsuarioDao().getByLogin(AppJsfUtil.getRemoteUser()); // Obtiene el usuario que inició sesión
+			empresaSelected.setIdusuario(usuarioactual.getIdusuario());
 			empresaSelected = empresaServicio.guardar(empresaSelected);
 			consultarEmpresa();
 			AppJsfUtil.addInfoMessage("frmEmpresa","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 		} catch (Exception e) {
 			e.printStackTrace();			
 			AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void upload() {
+		try {
+			if(file != null)
+            {
+				byte[] bytes;
+		        bytes = IOUtils.toByteArray(file.getInputstream());
+		        empresaSelected.setArchivofirmaelectronica(bytes);
+            }
+		} catch (IOException e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("formMainEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -140,5 +166,13 @@ public class EmpresaCtrl extends BaseCtrl {
 
 	public void setBandera(boolean bandera) {
 		this.bandera = bandera;
+	}
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
 	}
 }

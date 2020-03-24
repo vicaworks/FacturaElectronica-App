@@ -6,7 +6,6 @@ package com.vcw.falecpv.core.modelo.persistencia;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -75,8 +74,8 @@ public class Empresa implements Serializable {
     @Column(name = "ambiente", nullable = false, length = 1)
     private String ambiente;
     
-    @Size(max = 20)
-    @Column(name = "clavefirmaelectronica", length = 20)
+    @Size(max = 128)
+    @Column(name = "clavefirmaelectronica", length = 128)
     private String clavefirmaelectronica;
     
     @Lob

@@ -16,7 +16,7 @@
 	
 	<p:dialog header="Empresa" widgetVar="dlgEmpresa" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
-		<h:form id="frmEmpresa">
+		<h:form id="frmEmpresa" enctype="multipart/form-data">
 			
 			<!-- OPCIONES -->
 			
@@ -26,7 +26,7 @@
 				<div class="p-col-12 p-md-6" style="text-align:left;">					
 					
 					<p:commandButton id="cmdGuardarEmp"
-						value="GUARDAR" icon="fa fa-check" 
+						value="GUARDAR" icon="fa fa-check" ajax="false"
 						action="#{empresaCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEmpresa"
 						/>
 						
@@ -51,19 +51,27 @@
 				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 					
 					<h:outputText value="RUC * : " styleClass="cpoRequerido" />
-					<h:outputText value="#{empresaCtrl.empresaSelected.ruc}" />
+					<h:panelGroup>
+						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
+					</h:panelGroup>
 					<h:outputText value="" />
 					
 					<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" />
-					<h:outputText value="#{empresaCtrl.empresaSelected.nombrecomercial}" />
+					<h:panelGroup>
+						<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+					</h:panelGroup>
 					<h:outputText value="" />
 					
 					<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido"/>
-					<h:outputText value="#{empresaCtrl.empresaSelected.nombrecomercial}" />
+					<h:panelGroup>
+						<p:inputText id="intNombreComercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					</h:panelGroup>
 					<h:outputText value="" />
 					
 					<h:outputText value="DIRECCIÓN MATRIZ * : " styleClass="cpoRequerido"/>
-					<h:outputText value="#{empresaCtrl.empresaSelected.direccionmatriz}" />
+					<h:panelGroup>
+						<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					</h:panelGroup>
 					<h:outputText value="" />
 					
 					<h:outputText value="OBLIGADO CONTABILIDAD : " />
@@ -79,6 +87,14 @@
 						<f:selectItem itemLabel="Producción" itemValue="2"/>
 					</p:selectOneMenu>
 					<p:message for="somObligadoContabilidad"/>
+					
+					<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA :" style="vertical-align: middle" />
+                    <p:inputText id="intclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="Wid100" />
+                    <h:outputText value="" />
+             		
+	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle" />
+	           		<p:fileUpload label="Examinar..." mode="simple" skinSimple="true" value="#{empresaCtrl.file}" />
+	           		<h:outputText value="" />
 					
 				</p:panelGrid>
 				

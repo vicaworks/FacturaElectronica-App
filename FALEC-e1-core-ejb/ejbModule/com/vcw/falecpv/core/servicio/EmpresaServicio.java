@@ -62,11 +62,11 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 	public Empresa guardar(Empresa empresa)throws DaoException{
 		try {
 			if (empresa.getIdempresa()==null) {
-				empresa.setIdempresa(contadorPkServicio.generarContadorTabla(TCEmpresa.EMPRESA, ""));
+				empresa.setIdempresa(contadorPkServicio.generarContadorTabla(TCEmpresa.EMPRESA, null));
 				crear(empresa);
 			}
 			else {
-//			empresa.setClave(UtilMd5.hash(empresa.getClave()));
+				empresa.setClavefirmaelectronica(UtilMd5.hash(empresa.getClavefirmaelectronica()));
 				actualizar(empresa);
 			}
 			return empresa;
