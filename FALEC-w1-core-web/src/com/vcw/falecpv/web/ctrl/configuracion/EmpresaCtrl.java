@@ -5,6 +5,8 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -84,7 +86,7 @@ public class EmpresaCtrl extends BaseCtrl {
 	
 	private void consultarEmpresa() throws DaoException {
 		empresaList = empresaServicio.getEmpresaDao().getEmpresaActual();
-//		empresaList.clear(); // simular que no hay empresas en bdd
+		empresaList.clear(); // simular que no hay empresas en bdd
 		if(!empresaList.isEmpty()) {
 			bandera = true;
 			empresa = empresaList.get(0);
@@ -116,6 +118,8 @@ public class EmpresaCtrl extends BaseCtrl {
 			empresaSelected = empresaServicio.guardar(empresaSelected);
 			consultarEmpresa();
 			AppJsfUtil.addInfoMessage("frmEmpresa","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+			context.redirect("/falecpv/pages/configuracion/empresa.jsf");
 		} catch (Exception e) {
 			e.printStackTrace();			
 			AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

@@ -127,10 +127,10 @@
 					         </p:selectOneMenu>
 					        
 					         <p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
-		                     <p:inputText id="txtclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" />
+		                     <p:password id="txtclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" />
 		              		
 		              		 <p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
-		              		 <p:fileUpload label="Examinar..." mode="simple" skinSimple="true" value="#{empresaCtrl.file}" />
+		              		 <p:fileUpload label="Examinar..." mode="simple" skinSimple="true" value="#{empresaCtrl.file}" styleClass="secondary-button" />
 		        		</p:panelGrid>
 	        		</p:panelGrid>
         		</p:fieldset>
