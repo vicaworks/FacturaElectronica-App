@@ -22,6 +22,8 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
+
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.shaded.commons.io.IOUtils;
 
@@ -111,7 +113,6 @@ public class EmpresaCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
-			upload();
 			empresaSelected.setUpdated(new Date());
 			Usuario usuarioactual = usuarioServicio.getUsuarioDao().getByLogin(AppJsfUtil.getRemoteUser()); // Obtiene el usuario que inició sesión
 			empresaSelected.setIdusuario(usuarioactual.getIdusuario());
@@ -126,7 +127,9 @@ public class EmpresaCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void upload() {
+	public void upload(FileUploadEvent event)
+	{
+		file = event.getFile();
 		try {
 			if(file != null)
             {

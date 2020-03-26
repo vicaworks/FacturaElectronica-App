@@ -26,7 +26,7 @@
 				<div class="p-col-12 p-md-6" style="text-align:left;">					
 					
 					<p:commandButton id="cmdGuardarEmp"
-						value="GUARDAR" icon="fa fa-check" ajax="false"
+						value="GUARDAR" icon="fa fa-check" ajax="true"
 						action="#{empresaCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEmpresa"
 						/>
 						
@@ -52,9 +52,11 @@
 					
 					<h:outputText value="RUC * : " styleClass="cpoRequerido" />
 					<h:panelGroup>
-						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
+						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" validatorMessage="SOLO NÚMEROS">
+							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+						</p:inputText>
 					</h:panelGroup>
-					<h:outputText value="" />
+					<p:message for="intRuc"/>
 					
 					<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" />
 					<h:panelGroup>
@@ -93,7 +95,7 @@
                     <h:outputText value="" />
              		
 	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle" />
-	           		<p:fileUpload label="Examinar..." mode="simple" skinSimple="true" value="#{empresaCtrl.file}" />
+	           		<p:fileUpload label="Examinar..." mode="advanced" skinSimple="true" fileUploadListener="#{empresaCtrl.upload}" auto="true" uploadLabel="Cargar" />
 	           		<h:outputText value="" />
 					
 				</p:panelGrid>

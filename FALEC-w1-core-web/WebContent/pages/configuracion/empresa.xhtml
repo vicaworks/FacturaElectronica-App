@@ -52,7 +52,7 @@
 
 									<p:commandButton id="cmdGuardarNuevaEmp"
 													 value="GUARDAR" icon="fa fa-check" 
-													 rendered="#{!empresaCtrl.bandera}" ajax="false"
+													 rendered="#{!empresaCtrl.bandera}" ajax="true"
 									        		 action="#{empresaCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEmpresa"
 									/>
 							
@@ -99,38 +99,48 @@
 	        		</p:panelGrid>
 	        		
 	        		<p:panelGrid id="panelNuevaEmp" rendered="#{!empresaCtrl.bandera}" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-						<p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" cellpadding="5" width="80%">
-		              		 <p:outputLabel value="RUC * :" style="vertical-align: middle" />
-		                     <p:inputText id="txtruc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
+						<p:panelGrid columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2" layout="grid" cellpadding="5" width="80%">
+	              		 	<p:outputLabel value="RUC * :" style="vertical-align: middle" />
+	                     	<p:inputText id="txtruc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" validatorMessage="SOLO NÚMEROS">
+								<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+							</p:inputText>
+							<p:message for="txtruc"/>
 		                     
-		                     <p:outputLabel value="Razón social * :" style="vertical-align: middle" />
-		                     <p:inputText id="txtrazonsocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+	                     	<p:outputLabel value="Razón social * :" style="vertical-align: middle" />
+	                     	<p:inputText id="txtrazonsocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+	                     	<h:outputText value="" />
 		                     
-		                     <p:outputLabel value="Nombre comercial * :" style="vertical-align: middle" />
-		                     <p:inputText id="txtnombrecomercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+	                     	<p:outputLabel value="Nombre comercial * :" style="vertical-align: middle" />
+	                     	<p:inputText id="txtnombrecomercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+	                     	<h:outputText value="" />
 		                     
-		                     <p:outputLabel value="Dirección matriz * :" style="vertical-align: middle" />
-		                     <p:inputText id="txtdireccionmatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+	                     	<p:outputLabel value="Dirección matriz * :" style="vertical-align: middle" />
+	                     	<p:inputText id="txtdireccionmatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+	                     	<h:outputText value="" />
 		                     
-		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
-		                     <p:selectOneMenu id="cmbobligadocontabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}">
+	                     	<p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
+	                     	<p:selectOneMenu id="cmbobligadocontabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="SI" itemValue="SI" />
 					            <f:selectItem itemLabel="NO" itemValue="NO" />
-					         </p:selectOneMenu>
+				         	</p:selectOneMenu>
+	                     	<p:message for="cmbobligadocontabilidad"/>
 		                     
-		                     <p:outputLabel value="Ambiente * :" style="vertical-align: middle" />
-		                     <p:selectOneMenu id="cmbambiente" value="#{empresaCtrl.empresaSelected.ambiente}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
+	                     	<p:outputLabel value="Ambiente * :" style="vertical-align: middle" />
+	                     	<p:selectOneMenu id="cmbambiente" value="#{empresaCtrl.empresaSelected.ambiente}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="Pruebas" itemValue="1" />
 					            <f:selectItem itemLabel="Producción" itemValue="2" />
-					         </p:selectOneMenu>
+				         	</p:selectOneMenu>
+					        <p:message for="cmbambiente" />
 					        
-					         <p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
-		                     <p:password id="txtclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" />
+				         	<p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
+	                     	<p:password id="txtclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" />
+		              		<h:outputText value="" />
 		              		
-		              		 <p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
-		              		 <p:fileUpload label="Examinar..." mode="simple" skinSimple="true" value="#{empresaCtrl.file}" styleClass="secondary-button" />
+	              		 	<p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
+	              		 	<p:fileUpload label="Examinar..." mode="advanced" skinSimple="true" fileUploadListener="#{empresaCtrl.upload}" auto="true" uploadLabel="Cargar" styleClass="secondary-button" />
+        					<h:outputText value="" />
 		        		</p:panelGrid>
 	        		</p:panelGrid>
         		</p:fieldset>
