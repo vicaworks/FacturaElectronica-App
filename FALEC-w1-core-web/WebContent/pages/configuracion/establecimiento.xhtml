@@ -7,14 +7,14 @@
 
 	<ui:define name="title">#{msg['title.establecimiento']}</ui:define>
 
-	<ui:define name="head">
-		<style type="text/css">
-.establecimientoDT .ui-datatable-scrollable-body {
-	min-height: 400px !important;
-	max-height: 400px !important;
-}
-</style>
-	</ui:define>
+		<ui:define name="head">
+			<style type="text/css">
+				.establecimientoDT .ui-datatable-scrollable-body {
+					min-height: 400px !important;
+					max-height: 400px !important;
+				}
+			</style>
+		</ui:define>
 
 	<ui:define name="content">
 
@@ -63,7 +63,7 @@
 									icon="fa fa-file-excel-o" ajax="false"
 									onclick="PrimeFaces.monitorDownload(start,stop)"
 									value="REPORTE" styleClass="success-btn Wid90">
-									<p:fileDownload value="#{usuarioCtrl.fileUsuarios}" />
+									<p:fileDownload value="#{establecimientoCtrl.fileEstablecimientos}" />
 								</p:commandButton>
 
 							</p:panelGrid>
@@ -99,8 +99,8 @@
 						<p:commandLink id="clkEliminar"
 							action="#{establecimientoCtrl.eliminar()}" update="@form">
 							<i class="fa fa-close Fs18" style="color: red;"></i>
-							<f:setPropertyActionListener value="#{u}"
-								target="#{usuarioCtrl.usuarioSelected}" />
+							<f:setPropertyActionListener value="#{estab}"
+								target="#{establecimientoCtrl.establecimientoSelected}" />
 							<p:confirm header="#{msg['label.confirmacion']}"
 								message="#{msg['mensaje.confimacion']}"
 								icon="fa fw-3x fa-exclamation-triangle" />

@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
-import javax.persistence.NoResultException;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
@@ -46,6 +45,42 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e ORDER BY e.nombrecomercial");
 			}
 			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+
+	/**
+	 * @author Isabel Lobato
+	 * @param idestablecimiento
+	 * @param matriz
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeMatriz(String idestablecimiento, String matriz)throws DaoException{
+		try {
+			
+			Query q = null;
+			
+			if(idestablecimiento!=null) {
+				
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz AND e.idestablecimiento<>:idestablecimiento");
+				q.setParameter("matriz", matriz);
+				q.setParameter("idestablecimiento", idestablecimiento);
+			}else {
+				
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz");
+				q.setParameter("matriz", matriz);
+			}
+			
+			if(q.getResultList().size()>0) {
+				return true;
+			}
+			
+			return false;
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

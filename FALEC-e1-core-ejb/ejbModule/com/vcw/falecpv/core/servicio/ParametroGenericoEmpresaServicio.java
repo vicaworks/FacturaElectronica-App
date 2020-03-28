@@ -25,6 +25,14 @@ import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 @Stateless
 public class ParametroGenericoEmpresaServicio extends AppGenericService<ParametroGenericoEmpresa, String> {
 	
+	public ParametroGenericoEmpresaDao getParametroGenericoEmpresaDao() {
+		return parametroGenericoEmpresaDao;
+	}
+
+	public void setParametroGenericoEmpresaDao(ParametroGenericoEmpresaDao parametroGenericoEmpresaDao) {
+		this.parametroGenericoEmpresaDao = parametroGenericoEmpresaDao;
+	}
+
 	public enum TipoRetornoParametroGenerico {
 		INTEGER, STRING, LONG, BIGDECIMAL, FLOAT,BOOLEAN;
 	}
@@ -186,5 +194,7 @@ public class ParametroGenericoEmpresaServicio extends AppGenericService<Parametr
 	public DaoGenerico<ParametroGenericoEmpresa, String> getDao() {
 		return parametroGenericoEmpresaDao;
 	}
+	
+	
 
 }

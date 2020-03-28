@@ -4,16 +4,24 @@
 package com.vcw.falecpv.core.servicio;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
+
+import org.apache.velocity.runtime.directive.Foreach;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.ValidarParametro;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
+import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
+import com.vcw.falecpv.core.constante.contadores.TCParametroGenerico;
 import com.vcw.falecpv.core.constante.parametrosgenericos.ParametroGenericoBaseEnum;
 import com.vcw.falecpv.core.dao.impl.ParametroGenericoDao;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenerico;
@@ -31,6 +39,10 @@ public class ParametroGenericoServicio extends AppGenericService<ParametroGeneri
 
 	@Inject
 	private ParametroGenericoDao parametroGenericoDao;
+	
+	@EJB
+	private ContadorPkServicio contadorPkServicio;
+	
 	
 	/**
 	 * 
@@ -103,6 +115,29 @@ public class ParametroGenericoServicio extends AppGenericService<ParametroGeneri
 
 		return null;
 		
+	}
+	
+	
+     /**
+     * @author isitk 
+     * @param listaParam
+     * @return
+     * @throws DaoException
+     */
+    public ParametroGenerico insertListParamEstableciemto(ParametroGenerico param) throws DaoException  {
+		try {
+			
+			param.setIdparametrogenerico(
+					contadorPkServicio.generarContadorTabla(TCParametroGenerico.PARAMETROGENERICO, null));
+
+			crear(param);
+
+			return param;
+
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+
 	}
 
 	@Override
