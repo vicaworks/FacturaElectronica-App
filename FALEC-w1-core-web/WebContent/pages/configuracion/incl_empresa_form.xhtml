@@ -19,8 +19,6 @@
 		<h:form id="frmEmpresa" enctype="multipart/form-data">
 			
 			<!-- OPCIONES -->
-			
-			
 			<div class="p-grid toolBarPopUp" >
 				
 				<div class="p-col-12 p-md-6" style="text-align:left;">					
@@ -50,7 +48,7 @@
 			
 				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 					
-					<h:outputText value="RUC * : " styleClass="cpoRequerido" />
+					<h:outputText value="RUC * : " styleClass="cpoRequerido" style="font-weight: bold" />
 					<h:panelGroup>
 						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" validatorMessage="SOLO NÚMEROS">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
@@ -58,43 +56,43 @@
 					</h:panelGroup>
 					<p:message for="intRuc"/>
 					
-					<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" />
+					<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
 					<h:panelGroup>
 						<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
 					</h:panelGroup>
 					<h:outputText value="" />
 					
-					<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido"/>
+					<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
 					<h:panelGroup>
 						<p:inputText id="intNombreComercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 					</h:panelGroup>
 					<h:outputText value="" />
 					
-					<h:outputText value="DIRECCIÓN MATRIZ * : " styleClass="cpoRequerido"/>
+					<h:outputText value="DIRECCIÓN MATRIZ * : " styleClass="cpoRequerido" style="font-weight: bold" />
 					<h:panelGroup>
 						<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 					</h:panelGroup>
 					<h:outputText value="" />
 					
-					<h:outputText value="OBLIGADO CONTABILIDAD : " />
+					<h:outputText value="OBLIGADO CONTABILIDAD : " style="font-weight: bold" />
 					<p:selectOneMenu id="somObligadoContabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}" styleClass="Wid100">
 						<f:selectItem itemLabel="SI" itemValue="SI"/>
-						<f:selectItem itemLabel="NO" itemValue="NO"/>
+						<f:selectItem itemLabel="NO" itemValue="NO" />
 					</p:selectOneMenu>
 					<p:message for="somObligadoContabilidad"/>
 					
-					<h:outputText value="AMBIENTE * : " styleClass="cpoRequerido"/>
+					<h:outputText value="AMBIENTE * : " styleClass="cpoRequerido" style="font-weight: bold" />
 					<p:selectOneMenu id="somAmbiente" value="#{empresaCtrl.empresaSelected.ambiente}" styleClass="Wid100">
 						<f:selectItem itemLabel="Pruebas" itemValue="1"/>
 						<f:selectItem itemLabel="Producción" itemValue="2"/>
 					</p:selectOneMenu>
-					<p:message for="somObligadoContabilidad"/>
+					<p:message for="somAmbiente" />
 					
-					<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA :" style="vertical-align: middle" />
+					<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
                     <p:password id="intclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="Wid100" />
                     <h:outputText value="" />
              		
-	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle" />
+	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
 	           		<p:fileUpload label="Examinar..." mode="advanced" skinSimple="true" fileUploadListener="#{empresaCtrl.upload}" auto="true" uploadLabel="Cargar" />
 	           		<h:outputText value="" />
 					
@@ -106,5 +104,4 @@
 		
    </p:dialog>  
     
-
 </ui:composition>

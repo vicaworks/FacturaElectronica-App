@@ -88,7 +88,7 @@ public class EmpresaCtrl extends BaseCtrl {
 	
 	private void consultarEmpresa() throws DaoException {
 		empresaList = empresaServicio.getEmpresaDao().getEmpresaActual();
-		empresaList.clear(); // simular que no hay empresas en bdd
+//		empresaList.clear(); // simular que no hay empresas en BDD
 		if(!empresaList.isEmpty()) {
 			bandera = true;
 			empresa = empresaList.get(0);
@@ -136,6 +136,7 @@ public class EmpresaCtrl extends BaseCtrl {
 				byte[] bytes;
 		        bytes = IOUtils.toByteArray(file.getInputstream());
 		        empresaSelected.setArchivofirmaelectronica(bytes);
+		        AppJsfUtil.addInfoMessage("frmEmpresa", "OK", "IMAGEN CARGADA CORRECTAMENTE.");
             }
 		} catch (IOException e) {
 			e.printStackTrace();			

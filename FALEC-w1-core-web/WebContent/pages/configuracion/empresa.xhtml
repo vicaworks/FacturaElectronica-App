@@ -24,16 +24,17 @@
 		</p:breadCrumb>
 		
 		<h:form id="formMainEmpresa" enctype="multipart/form-data">	
-			<div class="card card-w-title" style="margin-top:12px;">
-				<div class="p-grid p-justify-end">
-					<div class="p-grid p-col-12 p-md-6 p-align-center" style="text-align:center;">
+			<div class="card card-w-title" style="margin-top: 12px;">
+				<div class="p-grid">
+					<div class="p-grid p-col-12 p-md-6 p-align-center"></div>
+					<div class="p-col-12 p-md-6 p-align-center">
 						
 						<p:panelGrid columns="1"
 								style="margin:0px;border:none !important;width:100%;"
 								layout="grid"
 								columnClasses="ui-g-12">
 							
-								<p:panelGrid columns="3" style="border:none !important;margin:0px;width:100%;" 
+								<p:panelGrid columns="4" style="border:none !important;margin:0px;width:100%;" 
 									columnClasses="ui-g-12 ui-lg-4,
 												   ui-g-12 ui-lg-4,
 												   ui-g-12 ui-lg-4">
@@ -44,24 +45,22 @@
 										<p:spacer width="5px"/>				                        
 										<p:commandButton id="cmdEditarEmp"
 											value="EDITAR"
-											icon="fa fa-edit" styleClass=" Wid90"
-											action="#{empresaCtrl.editar()}" inline="true"
+											icon="fa fa-edit" styleClass="secondary-button Wid80"
 											rendered="#{empresaCtrl.bandera}"
+											action="#{empresaCtrl.editar()}"
+										/>
+										
+										<p:commandButton id="cmdGuardarNuevaEmp"
+											 value="GUARDAR" icon="fa fa-check" 
+											 rendered="#{!empresaCtrl.bandera}" ajax="true"
+							        		 action="#{empresaCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEmpresa"
 										/>
 									</h:panelGroup>
-
-									<p:commandButton id="cmdGuardarNuevaEmp"
-													 value="GUARDAR" icon="fa fa-check" 
-													 rendered="#{!empresaCtrl.bandera}" ajax="true"
-									        		 action="#{empresaCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEmpresa"
-									/>
-							
 								</p:panelGrid>
 						
 						</p:panelGrid>
 				
 					</div>
-					
 				</div>
 			</div>
 			
@@ -78,22 +77,22 @@
 					<p:panelGrid id="panelMostrar" rendered="#{empresaCtrl.bandera}" columns="1" styleClass="ui-panelgrid-blank form-group" layout="grid">
 						<p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" 
 									 cellpadding="5">
-		              		 <p:outputLabel value="RUC:" style="vertical-align: middle" />
+		              		 <p:outputLabel value="RUC:" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.ruc}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Razón social:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Razón social:" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.razonsocial}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.nombrecomercial}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.direccionmatriz}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.obligadocontablidad}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Ambiente:" style="vertical-align: middle" />
+		                     <p:outputLabel value="Ambiente:" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.ambiente}" style="vertical-align: middle" />
 		        		</p:panelGrid>
 	        		</p:panelGrid>
