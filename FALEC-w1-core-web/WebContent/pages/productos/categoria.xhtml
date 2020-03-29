@@ -118,6 +118,7 @@
 						<p:commandLink id="clkEditar" action="#{categoriaCtrl.editar()}">
 							<i class="fa fa-edit Fs16"></i>
 							<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
+							<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
 						</p:commandLink>
 						
 						<p:spacer width="5px"></p:spacer>

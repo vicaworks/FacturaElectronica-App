@@ -117,6 +117,7 @@
 						<p:commandLink id="clkEditar" action="#{fabricanteCtrl.editar()}">
 							<i class="fa fa-edit Fs16"></i>
 							<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
+							<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
 						</p:commandLink>
 						
 						<p:spacer width="5px"></p:spacer>
