@@ -14,6 +14,8 @@ import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCCategoria;
 import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
+import com.vcw.falecpv.core.modelo.persistencia.Producto;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author cristianvillarreal
@@ -63,8 +65,25 @@ public class CategoriaServicio extends AppGenericService<Categoria, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean tieneDependencias(String idcategoria)throws DaoException{
-		return false;
+	public boolean tieneDependencias(String idcategoria,String idestablecimiento)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(categoriaDao.getEntityManager());
+			
+			if(q.select("p")
+					.from(Producto.class,"p")
+					.equals("p.establecimiento.idestablecimiento", idestablecimiento)
+					.equals("p.categoria.idcategoria",idcategoria).count()>0) {
+				
+				return true;
+				
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 	
 	/**

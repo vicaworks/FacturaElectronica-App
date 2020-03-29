@@ -35,15 +35,16 @@ public class CategoriaDao extends AppGenericDao<Categoria, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Categoria> getByEstado(EstadoRegistroEnum estadoRegistroEnum)throws DaoException{
+	public List<Categoria> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idEstablecimiento)throws DaoException{
 		try {
 			Query q = null;
 			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
-				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE c.estado=:estado ORDER BY c.categoria");
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE c.establecimiento.idestablecimiento=:idestablecimiento AND c.estado=:estado ORDER BY c.categoria");
 				q.setParameter("estado", estadoRegistroEnum.getInicial());
 			}else {
-				q = getEntityManager().createQuery("SELECT c FROM Categoria c ORDER BY c.categoria");
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE c.establecimiento.idestablecimiento=:idestablecimiento ORDER BY c.categoria");
 			}
+			q.setParameter("idestablecimiento", idEstablecimiento);
 			return q.getResultList();
 		} catch (Exception e) {
 			throw new DaoException(e);
@@ -58,23 +59,24 @@ public class CategoriaDao extends AppGenericDao<Categoria, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeCategoria(String categoria,String idcategoria)throws DaoException{
+	public boolean existeCategoria(String categoria,String idcategoria,String idEstablecimiento)throws DaoException{
 		try {
 			
 			Query q = null;
 			
 			if(idcategoria!=null) {
 				
-				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria AND c.idcategoria<>:idcategoria");
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE c.establecimiento.idestablecimiento=:idestablecimiento AND upper(c.categoria)=:categoria AND c.idcategoria<>:idcategoria");
 				q.setParameter("idcategoria", idcategoria);
 				
 			}else {
 				
-				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE upper(c.categoria)=:categoria");
+				q = getEntityManager().createQuery("SELECT c FROM Categoria c WHERE c.establecimiento.idestablecimiento=:idestablecimiento AND upper(c.categoria)=:categoria");
 				
 			}
 			
 			q.setParameter("categoria", categoria.toUpperCase());
+			q.setParameter("idestablecimiento", idEstablecimiento);
 			
 			if(q.getResultList().size()>0) {
 				return true;

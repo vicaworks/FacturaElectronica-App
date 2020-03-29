@@ -56,6 +56,9 @@ public class FabricanteCtrl extends BaseCtrl {
 	private List<Fabricante> fabricanteList;
 	private Fabricante fabricanteSelected;
 	private String estadoRegBusqueda = EstadoRegistroEnum.ACTIVO.getInicial();
+	private String moduloCall;
+	private String updateView;
+	private ProductoCtrl productoCtrl;
 
 	/**
 	 * 
@@ -76,7 +79,7 @@ public class FabricanteCtrl extends BaseCtrl {
 	private void consultar() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable(":formMain:fabricanteDT");
 		fabricanteList = null;
-		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda));
+		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 	}
 	
 	@Override
@@ -100,7 +103,7 @@ public class FabricanteCtrl extends BaseCtrl {
 			}
 			
 			// si tiene dependencias
-			if(fabricanteServicio.tieneDependencias(fabricanteSelected.getIdfabricante())) {
+			if(fabricanteServicio.tieneDependencias(fabricanteSelected.getIdfabricante(),fabricanteSelected.getEstablecimiento().getIdestablecimiento())) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR TIENE DEPENDENCIAS.");
 				return;
 			}
@@ -122,7 +125,7 @@ public class FabricanteCtrl extends BaseCtrl {
 		try {
 			
 			// validar si existe el nombre
-			if(fabricanteServicio.getFabricanteDao().existeNombre(fabricanteSelected.getNombrecomercial(), fabricanteSelected.getIdfabricante())) {
+			if(fabricanteServicio.getFabricanteDao().existeNombre(fabricanteSelected.getNombrecomercial(), fabricanteSelected.getIdfabricante(),AppJsfUtil.getEstablecimiento().getIdestablecimiento())) {
 				AppJsfUtil.addErrorMessage("frmFabricante", "ERROR","EL NOMBRE DE LA CATEGORIA YA EXISTE.");
 				AppJsfUtil.addErrorMessage("frmFabricante:intNombre","YA EXISTE.");
 				return;
@@ -131,7 +134,23 @@ public class FabricanteCtrl extends BaseCtrl {
 			fabricanteSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			fabricanteSelected.setUpdated(new Date());
 			fabricanteSelected = fabricanteServicio.guardar(fabricanteSelected, fabricanteSelected.getEstablecimiento().getIdestablecimiento());
-			consultar();
+			
+			switch (moduloCall) {
+			
+				case "PRODUCTO":
+					
+					productoCtrl.consultarFabrica();
+					productoCtrl.getProductoSelected().setFabricante(fabricanteSelected);
+					//AppJsfUtil.ajaxUpdate("frmProducto:somFrmProductoEstablecimiento");
+					AppJsfUtil.ajaxUpdate(updateView);
+					break;
+				default:
+					
+					consultar();
+					break;
+					
+			}
+			
 			AppJsfUtil.addInfoMessage("frmFabricante","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 			
 		} catch (Exception e) {
@@ -155,7 +174,7 @@ public class FabricanteCtrl extends BaseCtrl {
 		try {
 			fabricanteSelected = new Fabricante();
 			fabricanteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-			fabricanteSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+			fabricanteSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());			
 			AppJsfUtil.showModalRender("dlgFabricante", "frmFabricante");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -291,6 +310,48 @@ public class FabricanteCtrl extends BaseCtrl {
 	 */
 	public void setEstadoRegBusqueda(String estadoRegBusqueda) {
 		this.estadoRegBusqueda = estadoRegBusqueda;
+	}
+
+	/**
+	 * @return the moduloCall
+	 */
+	public String getModuloCall() {
+		return moduloCall;
+	}
+
+	/**
+	 * @param moduloCall the moduloCall to set
+	 */
+	public void setModuloCall(String moduloCall) {
+		this.moduloCall = moduloCall;
+	}
+
+	/**
+	 * @return the updateView
+	 */
+	public String getUpdateView() {
+		return updateView;
+	}
+
+	/**
+	 * @param updateView the updateView to set
+	 */
+	public void setUpdateView(String updateView) {
+		this.updateView = updateView;
+	}
+
+	/**
+	 * @return the productoCtrl
+	 */
+	public ProductoCtrl getProductoCtrl() {
+		return productoCtrl;
+	}
+
+	/**
+	 * @param productoCtrl the productoCtrl to set
+	 */
+	public void setProductoCtrl(ProductoCtrl productoCtrl) {
+		this.productoCtrl = productoCtrl;
 	}
 	
 	

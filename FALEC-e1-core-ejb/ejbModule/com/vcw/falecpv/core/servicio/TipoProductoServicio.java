@@ -43,4 +43,11 @@ public class TipoProductoServicio extends AppGenericService<TipoProducto, String
 		return tipoProductoDao;
 	}
 
+	/**
+	 * @return the tipoProductoDao
+	 */
+	public TipoProductoDao getTipoProductoDao() {
+		return tipoProductoDao;
+	}
+
 }

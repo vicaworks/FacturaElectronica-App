@@ -56,6 +56,9 @@ public class CategoriaCtrl extends BaseCtrl {
 	private List<Categoria> categoriaList;
 	private Categoria categoriaSelected;
 	private String estadoRegBusqueda = EstadoRegistroEnum.ACTIVO.getInicial();
+	private String moduloCall;
+	private String updateView;
+	private ProductoCtrl productoCtrl;
 
 	/**
 	 * 
@@ -82,7 +85,7 @@ public class CategoriaCtrl extends BaseCtrl {
 	private void consultar() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable(":formMain:categoiaDT");
 		categoriaList = null;
-		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda));
+		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 	}
 	
 	@Override
@@ -95,9 +98,12 @@ public class CategoriaCtrl extends BaseCtrl {
 			}
 			
 			// si tiene dependencias
-			if (categoriaServicio.tieneDependencias(categoriaSelected.getIdcategoria())) {
+			if (categoriaServicio.tieneDependencias(categoriaSelected.getIdcategoria(),
+					categoriaSelected.getEstablecimiento().getIdestablecimiento())) {
+				
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR TIENE DEPENDENCIAS.");
 				return;
+				
 			}
 			
 			categoriaServicio.eliminar(categoriaSelected);
@@ -116,7 +122,7 @@ public class CategoriaCtrl extends BaseCtrl {
 		try {
 			
 			// validar si existe el nombre de la categoria
-			if(categoriaServicio.getCategoriaDao().existeCategoria(categoriaSelected.getCategoria(), categoriaSelected.getIdcategoria())){
+			if(categoriaServicio.getCategoriaDao().existeCategoria(categoriaSelected.getCategoria(), categoriaSelected.getIdcategoria(),AppJsfUtil.getEstablecimiento().getIdestablecimiento())){
 				AppJsfUtil.addErrorMessage("frmCategoria", "ERROR","EL NOMBRE DE LA CATEGORIA YA EXISTE.");
 				AppJsfUtil.addErrorMessage("frmCategoria:intCategoria","YA EXISTE.");
 				return;
@@ -125,7 +131,21 @@ public class CategoriaCtrl extends BaseCtrl {
 			categoriaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			categoriaSelected.setUpdated(new Date());
 			categoriaSelected = categoriaServicio.guardar(categoriaSelected, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
-			consultar();
+			
+			switch (moduloCall) {
+			case "PRODUCTO":
+				
+				productoCtrl.consultarCategoria();
+				productoCtrl.getProductoSelected().setCategoria(categoriaSelected);
+				//AppJsfUtil.ajaxUpdate("frmProducto:somFrmProductoCategoria");
+				AppJsfUtil.ajaxUpdate(updateView);
+				break;
+
+			default:
+				consultar();
+				break;
+			}
+			
 			AppJsfUtil.addInfoMessage("frmCategoria","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 			
 		} catch (Exception e) {
@@ -294,6 +314,48 @@ public class CategoriaCtrl extends BaseCtrl {
 	 */
 	public void setEstadoRegBusqueda(String estadoRegBusqueda) {
 		this.estadoRegBusqueda = estadoRegBusqueda;
+	}
+
+	/**
+	 * @return the moduloCall
+	 */
+	public String getModuloCall() {
+		return moduloCall;
+	}
+
+	/**
+	 * @param moduloCall the moduloCall to set
+	 */
+	public void setModuloCall(String moduloCall) {
+		this.moduloCall = moduloCall;
+	}
+
+	/**
+	 * @return the updateView
+	 */
+	public String getUpdateView() {
+		return updateView;
+	}
+
+	/**
+	 * @param updateView the updateView to set
+	 */
+	public void setUpdateView(String updateView) {
+		this.updateView = updateView;
+	}
+
+	/**
+	 * @return the productoCtrl
+	 */
+	public ProductoCtrl getProductoCtrl() {
+		return productoCtrl;
+	}
+
+	/**
+	 * @param productoCtrl the productoCtrl to set
+	 */
+	public void setProductoCtrl(ProductoCtrl productoCtrl) {
+		this.productoCtrl = productoCtrl;
 	}	
 
 }

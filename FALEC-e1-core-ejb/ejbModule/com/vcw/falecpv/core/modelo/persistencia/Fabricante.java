@@ -88,9 +88,13 @@ public class Fabricante implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return PojoUtil.toString(this);
-	}
+    public String toString() {
+    	return String.format("[%s,%s]", idfabricante,nombrecomercial);
+    }
+    
+    public String toStringObject() {
+        return PojoUtil.toString(this);
+    }
 
 	/**
 	 * @return the idfabricante

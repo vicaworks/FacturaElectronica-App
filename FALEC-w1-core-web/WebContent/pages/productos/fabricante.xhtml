@@ -74,8 +74,9 @@
 										
 									<p:commandButton id="cmdNuevo"
 										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
-										action="#{fabricanteCtrl.nuevo()}" inline="true" 
-										/>
+										action="#{fabricanteCtrl.nuevo()}" inline="true">
+										<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
+									</p:commandButton>
 											
 									<p:commandButton  id="cmdExcel" 
 										title="EXPORTAR"

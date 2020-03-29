@@ -14,6 +14,8 @@ import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCFabricante;
 import com.vcw.falecpv.core.dao.impl.FabricanteDao;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
+import com.vcw.falecpv.core.modelo.persistencia.Producto;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author cristianvillarreal
@@ -56,8 +58,25 @@ public class FabricanteServicio extends AppGenericService<Fabricante, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean tieneDependencias(String idfabricante)throws DaoException{
-		return false;
+	public boolean tieneDependencias(String idfabricante,String idEstablecimiento)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(fabricanteDao.getEntityManager());
+			
+			if(q.select("p")
+				.from(Producto.class,"p")
+				.equals("p.establecimiento.idestablecimiento", idEstablecimiento)
+				.equals("p.fabricante.idfabricante",idfabricante).count()>0) {
+				
+				return true;
+				
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 	
 	/**
