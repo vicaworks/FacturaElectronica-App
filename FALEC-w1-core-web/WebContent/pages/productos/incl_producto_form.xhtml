@@ -420,10 +420,10 @@
 									action="#{productoCtrl.limpiarImagen()}" 
 									immediate="true"  
 									update=":frmProducto:gridProductoIMG"
-									disabled="#{productoCtrl.imageProdutoFile==null}"
+									disabled="#{productoCtrl.productoSelected.imagen==null}"
 								/>
 							</h:panelGroup>
-							<h:outputText value="#{msg['label.imagen']} : #{productoCtrl.nombreImagen}"/>
+							<h:outputText value="#{msg['label.imagen']} : #{productoCtrl.productoSelected.nombreimagen}"/>
 							
 							<h:panelGroup>								
 								<p:fileUpload id="fileUploadComponent"
@@ -447,8 +447,8 @@
 							
 							<h:outputText value=""/>
 							<h:outputText value=""/>
-							<h:outputText value="" rendered="#{productoCtrl.imageProducto==null}"/>
-							<p:graphicImage value="#{productoCtrl.imageProducto}" stream="false" width="250" height="300" rendered="#{productoCtrl.imageProducto!=null}"/>
+							<h:outputText value="" rendered="#{productoCtrl.productoSelected.imagen==null}"/>
+							<p:graphicImage value="#{productoCtrl.imageProducto}" stream="false" width="250" height="300" rendered="#{productoCtrl.productoSelected.imagen!=null}"/>
 							
 							
 						</p:panelGrid>
