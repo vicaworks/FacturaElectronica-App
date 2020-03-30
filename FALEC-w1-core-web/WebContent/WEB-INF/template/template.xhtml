@@ -19,6 +19,44 @@
         <h:outputScript name="js/layout.js" library="roma-layout" />
         <ui:insert name="head"/>
         <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet"></link>
+        <script type="text/javascript"> 
+
+			PrimeFaces.locales['es'] = {
+			    closeText: 'Cerrar',
+			    prevText: 'Anterior',
+			    nextText: 'Siguiente',
+			    monthNames: ['Enero','Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+			    dayNames: ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
+			    dayNamesShort: ['dom','lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+			    dayNamesMin: ['D','L','M','X','J','V','S'],
+			    weekHeader: 'Semana',
+			    firstDay: 1,
+			    isRTL: false,
+			    showMonthAfterYear: false,
+			    yearSuffix: '',
+			    timeOnlyTitle: 'Sólo hora',
+			    timeText: 'Tiempo',
+			    hourText: 'Hora',
+			    minuteText: 'Minuto',
+			    secondText: 'Segundo',
+			    currentText: 'Fecha actual',
+			    ampm: false,
+			    month: 'Mes',
+			    week: 'Semana',
+			    day: 'Día',
+			    allDayText : 'Todo el día'
+			};
+
+			function dtSeleccionPaginator(widgetVar){	
+				var checked = $(document).find(":checkbox")["0"].checked; ///Find checkbox header and verify if checkbox is checked
+				if(checked == true){
+					PF(widgetVar).selectAllRows(); // if true, selectAllRows from datatable
+				} else {
+					PF(widgetVar).unselectAllRows(); //
+				}		
+			}
+		</script>    
     </h:head>
 
     <h:body>

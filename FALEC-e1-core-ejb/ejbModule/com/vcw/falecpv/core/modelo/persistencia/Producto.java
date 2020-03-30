@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Type;
+
 import com.servitec.common.util.PojoUtil;
 
 /**
@@ -42,10 +44,8 @@ public class Producto implements Serializable {
     @Column(name = "idproducto", nullable = false, length = 40)
     private String idproducto;
 	
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
-    @Column(name = "codigoprincipal", nullable = false, length = 25)
+    @Basic(optional = true)
+    @Column(name = "codigoprincipal", nullable = true, length = 25)
     private String codigoprincipal;
     
     @Size(max = 25)
@@ -67,10 +67,11 @@ public class Producto implements Serializable {
     private String descripcion;
     
     @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     @Column(name = "imagen")
     private byte[] imagen;
-    @Basic(optional = false)
     
+    @Basic(optional = false)
     @NotNull
     @Column(name = "preciounitario", nullable = false, precision = 12, scale = 2)
     private BigDecimal preciounitario;
@@ -115,10 +116,6 @@ public class Producto implements Serializable {
     @Column(name = "stock")
     private Integer stock;
     
-    @Size(max = 1)
-    @Column(name = "tipo", length = 1)
-    private String tipo;
-    
     @Size(max = 800)
     @Column(name = "observacion", length = 800)
     private String observacion;
@@ -141,26 +138,39 @@ public class Producto implements Serializable {
     @Column(name = "idusuario", nullable = false, length = 40)
     private String idusuario;
     
+    @Column(name = "medida",length = 10)
+    private String medida;
     
-    @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria", nullable = false,insertable = false,updatable = false)
+    @Column(name = "nombreimagen",length = 200)
+    private String nombreimagen;
+    
+    @Column(name = "conversionmedida", precision = 10, scale = 5)
+    private BigDecimal conversionmedida;
+    
+    @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria", nullable = false)
     @ManyToOne(optional = false)
     private Categoria categoria;
     
-    @JoinColumn(name = "idfabricante", referencedColumnName = "idfabricante", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idfabricante", referencedColumnName = "idfabricante", nullable = false)
     @ManyToOne(optional = false)
     private Fabricante fabricante;
     
-    @JoinColumn(name = "idice", referencedColumnName = "idice",insertable = false,updatable = false)
+    @JoinColumn(name = "idice", referencedColumnName = "idice")
     @ManyToOne
     private Ice ice;
     
-    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = false)
     @ManyToOne(optional = false)
     private Iva iva;
     
-    @JoinColumn(name = "idtipoproducto", referencedColumnName = "idtipoproducto", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "idtipoproducto", referencedColumnName = "idtipoproducto", nullable = false)
     @ManyToOne(optional = false)
     private TipoProducto tipoProducto;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
+    private Establecimiento establecimiento;
+    
 
 	/**
 	 * 
@@ -189,6 +199,10 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
+    	return String.format("%s[id=%s]",nombregenerico , idproducto);
+    }
+    
+    public String toStringObject() {
         return PojoUtil.toString(this);
     }
 
@@ -459,20 +473,6 @@ public class Producto implements Serializable {
 	}
 
 	/**
-	 * @return the tipo
-	 */
-	public String getTipo() {
-		return tipo;
-	}
-
-	/**
-	 * @param tipo the tipo to set
-	 */
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	/**
 	 * @return the observacion
 	 */
 	public String getObservacion() {
@@ -596,6 +596,62 @@ public class Producto implements Serializable {
 	 */
 	public void setTipoProducto(TipoProducto tipoProducto) {
 		this.tipoProducto = tipoProducto;
+	}
+
+	/**
+	 * @return the establecimiento
+	 */
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
+	}
+
+	/**
+	 * @param establecimiento the establecimiento to set
+	 */
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
+	}
+
+	/**
+	 * @return the medida
+	 */
+	public String getMedida() {
+		return medida;
+	}
+
+	/**
+	 * @param medida the medida to set
+	 */
+	public void setMedida(String medida) {
+		this.medida = medida;
+	}
+
+	/**
+	 * @return the conversionmedida
+	 */
+	public BigDecimal getConversionmedida() {
+		return conversionmedida;
+	}
+
+	/**
+	 * @param conversionmedida the conversionmedida to set
+	 */
+	public void setConversionmedida(BigDecimal conversionmedida) {
+		this.conversionmedida = conversionmedida;
+	}
+
+	/**
+	 * @return the nombreimagen
+	 */
+	public String getNombreimagen() {
+		return nombreimagen;
+	}
+
+	/**
+	 * @param nombreimagen the nombreimagen to set
+	 */
+	public void setNombreimagen(String nombreimagen) {
+		this.nombreimagen = nombreimagen;
 	}
 
 	

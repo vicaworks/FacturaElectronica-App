@@ -3,23 +3,247 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
     <ui:define name="title">Producto</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
-
+			
+			.productoDT .ui-datatable-scrollable-body{
+				/* min-height:800px !important;
+				max-height: 800px !important; */
+				min-height: 60vh !important;
+				max-height: 60vh !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			.imgSize{
+				height: 75%;
+				width: 75%;
+			}
+			
         </style>
     </ui:define>
 
     <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Productos" url="#" />
 		    <p:menuitem value="Producto" url="#{request.contextPath}/pages/productos/producto.jsf"/>
 		</p:breadCrumb>
+		
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	
+	    		<div class="p-grid p-align-center">
+	    			
+	    			<!-- criterio de busqueda -->
+	    			<div class="p-col-12 p-md-6">
+						
+						<div class="p-col-12">
+							<h:outputText value="Buscar por :" styleClass="TextBold"/><br/>
+							<h:outputText value="#{msg['criterio.busquedaproducto']}" style="color:gray;" styleClass="Fs11"/>
+						</div>
+						
+						<div class="p-col-12">
+							<p:inputText id="intCriterio" value="#{productoCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="#{msg['criterio.busquedaproducto']}"/>
+						</div>
+						
+					</div>
+	    			
+	    			<!-- opciones -->
+	    			<div class="p-col-12 p-md-6" style="text-align:center;">
+	    				
+	    				<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+								
+								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-6,
+												   ui-g-12 ui-lg-6">
+												   
+									<p:commandButton id="cmdRefrecar"
+											value="CONSULTAR" icon="fa fa-search" 
+											action="#{productoCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
+											/>
+									
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid90">
+										<p:fileDownload value="#{fabricanteCtrl.fileFabricante}"/>
+									</p:commandButton>
+									
+									<p:commandButton id="cmdNuevo"
+										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										action="#{productoCtrl.nuevo()}" inline="true" 
+										/>
+									
+									<p:commandButton  id="cmdExcelCargar" 
+										title="CARGAR ARCHIVO EXCEL PRODUCTOS"
+										icon="fa fa-file-excel-o"
+										value="CARGAR PRODUCTOS"
+										styleClass="success-btn Wid90">
+									</p:commandButton>
+								
+								</p:panelGrid>
+								
+						</p:panelGrid>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="card card-w-title">
+				<h1 class="cardTitle">Producto</h1>
+				<p:dataTable id="productoDT" var="p"
+					value="#{productoCtrl.productoList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="productoDT Fs11"  
+					rowKey="#{p.idproducto}"
+					rows="10"
+	                paginator="true"
+	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	                paginatorPosition="bottom">
+	                
+	                
+	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:10px;">
+						
+						<p:splitButton id="plbOpc" action="#" icon="fa fa-list-ul Fs14">
+							<p:menuitem value="Editar Producto" action="#{productoCtrl.editarProducto(p.idproducto)}" icon="fa fa-edit" >
+							</p:menuitem>
+				            <p:menuitem value="Eliminar Producto" action="#{productoCtrl.eliminar()}" icon="fa fa-close" process="productoDT" update="@parent">
+				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+				            	<f:setPropertyActionListener value="#{p}" target="#{productoCtrl.productoSelected}"/>
+				            </p:menuitem>
+				            <p:separator />
+						</p:splitButton>
+						
+					</p:column>
+					
+					<p:column headerText="#{msg['label.codigo']}" style="width:30px;">
+						<div class="p-grid">
+							<div class="p-col-5">
+								<h:outputText value="ID:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{p.idproducto}" >
+								</h:outputText>
+							</div>
+							<div class="p-col-5">
+								<h:outputText value="COD BAR:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{p.codigoprincipal}" >
+								</h:outputText>
+							</div>
+						</div>
+					</p:column>
+					
+					<p:column style="width:50px;" filterBy="#{p.categoria}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{msg['label.categoria']}" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+							
+						</f:facet>
+						<h:outputText value="#{p.categoria.categoria}" />
+					</p:column>
+					
+					<p:column style="width:90px;" filterBy="#{p.nombregenerico}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="NOMBRE" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+							
+						</f:facet>
+						<h:outputText value="#{p.nombregenerico}" />
+					</p:column>
+					
+					<p:column headerText="STOCK" style="width:20px;">
+						<h:outputText value="#{p.stock}" />
+					</p:column>
+					
+					<p:column headerText="VALORES" style="width:80px;">
+						<div class="p-grid">
+							<div class="p-col-5">
+								<h:outputText value="Costo Unit:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{p.preciounitario}" >
+									<f:convertNumber locale="es_EC" pattern="$0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-5">
+								<h:outputText value="Precio Venta #1:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{p.preciouno}" >
+									<f:convertNumber locale="es_EC" pattern="$0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-5">
+								<h:outputText value="Precio Venta #2:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{p.preciodos}" >
+									<f:convertNumber locale="es_EC" pattern="$0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-5">
+								<h:outputText value="Precio Venta #3:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{p.preciotres}" >
+									<f:convertNumber locale="es_EC" pattern="$0.00"/>
+								</h:outputText>
+							</div>
+						</div>
+					</p:column>
+					<p:column headerText="IMAGEN" style="width:60px;">
+						<h:outputText value="" rendered="#{p.imagen==null}"/>
+						<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" rendered="#{p.imagen!=null}" styleClass="imgSize"/>
+					</p:column>
+	                
+				</p:dataTable>
+			</div>
+	    	
+	    </h:form>
+	    
+	    <!-- Form Producto -->
+	    <ui:include src="incl_producto_form.xhtml" />
+	    
+	    <!-- Form Fabricante -->
+	    <ui:include src="incl_fabricante_form.xhtml" />
+	    
+	    <!-- Form Categoria -->
+	    <ui:include src="incl_categoria_form.xhtml" />
         
     </ui:define>
 

@@ -100,6 +100,10 @@ public class KardexProducto implements Serializable {
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false,insertable = false,updatable = false)
     @ManyToOne(optional = false)
     private Producto producto;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
+    private Establecimiento establecimiento;
 
 	/**
 	 * 
@@ -311,6 +315,20 @@ public class KardexProducto implements Serializable {
 	 */
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+
+	/**
+	 * @return the establecimiento
+	 */
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
+	}
+
+	/**
+	 * @param establecimiento the establecimiento to set
+	 */
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
 	}
 
 		

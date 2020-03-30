@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -63,6 +65,9 @@ public class Ice implements Serializable {
 	@Size(min = 1, max = 40)
 	@Column(name = "idusuario", nullable = false, length = 40)
 	private String idusuario;
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "idempresa",referencedColumnName = "idempresa")
+    private Empresa empresa;
 
 	/**
 	 * 
@@ -92,6 +97,10 @@ public class Ice implements Serializable {
 
     @Override
     public String toString() {
+    	return String.format("[%s, %s]", idice, descripcion);
+    }
+    
+    public String toStringObject() {
         return PojoUtil.toString(this);
     }
 
@@ -191,6 +200,20 @@ public class Ice implements Serializable {
 	 */
 	public void setIdusuario(String idusuario) {
 		this.idusuario = idusuario;
+	}
+
+	/**
+	 * @return the empresa
+	 */
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}	
 
 }

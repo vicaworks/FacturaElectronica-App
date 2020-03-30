@@ -48,14 +48,16 @@
                         <p:submenu id="om_cconfiguracion" label="#{msg['menu.configuracion']}" icon="fa fa-2x fa-cog" rendered="#{appSessionCtrl.administrador}">
                             <p:menuitem id="om_empresa" value="Empresa" icon="fa fa-2x fa-institution"  url="#{request.contextPath}/pages/configuracion/empresa.jsf"/>
                             <p:menuitem id="om_establecimiento" value="Establecimiento" icon="fa fa-2x fa-users"  url="#{request.contextPath}/pages/configuracion/establecimiento.jsf" />
+                            <p:menuitem id="om_iva" value="Iva" icon="fa fa-2x fa-money"  url="#{request.contextPath}/pages/configuracion/iva.jsf" />
+                            <p:menuitem id="om_ice" value="Ice" icon="fa fa-2x fa-building-o"  url="#{request.contextPath}/pages/configuracion/ce.jsf" />
                             <p:menuitem id="om_usuario" value="Usuario" icon="fa fa-2x fa-user"  url="#{request.contextPath}/pages/configuracion/usuario.jsf" />                            
                         </p:submenu>
                         
                         <p:menuitem id="om_caja" value="Caja" icon="fa fa-2x fa-money" url="#{request.contextPath}/pages/puntoventa/caja.jsf" />
                         
                         <p:submenu id="om_productos" label="Productos" icon="fa fa-2x fa-cubes">
-                            <p:menuitem id="om_categoria" value="#{msg['menu.categoria']}" icon="fa fa-2x fa-sitemap" url="#{request.contextPath}/pages/productos/categoria.jsf" />
                             <p:menuitem id="om_fabricante" value="Fabricante" icon="fa fa-2x fa-building-o" url="#{request.contextPath}/pages/productos/fabricante.jsf" />
+                            <p:menuitem id="om_categoria" value="#{msg['menu.categoria']}" icon="fa fa-2x fa-sitemap" url="#{request.contextPath}/pages/productos/categoria.jsf" />
                             <p:menuitem id="om_producto" value="Producto" icon="fa fa-2x fa-cart-plus" url="#{request.contextPath}/pages/productos/producto.jsf" />
                             <p:menuitem id="om_inventario" value="Inventario" icon="fa fa-2x fa-list-ol" url="#{request.contextPath}/pages/productos/inventario.jsf" />
                         </p:submenu>
