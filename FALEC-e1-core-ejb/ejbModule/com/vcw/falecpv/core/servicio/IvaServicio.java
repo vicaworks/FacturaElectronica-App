@@ -43,4 +43,12 @@ public class IvaServicio extends AppGenericService<Iva, String> {
 		return ivaDao;
 	}
 
+	/**
+	 * @return the ivaDao
+	 */
+	public IvaDao getIvaDao() {
+		return ivaDao;
+	}
+
+
 }

@@ -3,8 +3,13 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
-import javax.ejb.Stateless;
+import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+
+import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 
@@ -21,5 +26,211 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 	public ProductoDao() {
 		super(Producto.class);
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param estadoRegistroEnum
+	 * @param idEstablecimiento
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Producto> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND  p.estado=:estado ORDER BY p.nombregenerico");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento ORDER BY p.nombregenerico");
+			}
+			
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param estadoRegistroEnum
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Producto> getByQuery(EstadoRegistroEnum estadoRegistroEnum,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+//				q = getEntityManager().createQuery("SELECT p.idproducto, p.nombre, p.nombregenerico FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND  p.estado=:estado ORDER BY p.nombregenerico");
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND  p.estado=:estado ORDER BY p.nombregenerico");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+//				q = getEntityManager().createQuery("SELECT p.idproducto, p.nombre, p.nombregenerico FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento ORDER BY p.nombregenerico");
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento ORDER BY p.nombregenerico");
+			}
+			
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Producto> consultarAllImageEager(String idEstablecimiento,String criteria)
+			throws DaoException {
+		try {
+			
+			String sql = "SELECT DISTINCT p "
+					+ "FROM Producto p "
+					+ "WHERE "
+					+ "p.establecimiento.idestablecimiento=:idestablecimiento ";
+			
+			if(criteria!=null && criteria.trim().length()>0) {
+				sql += "AND (";
+				sql += " p.fabricante.nombrecomercial like :fabricante ";
+				sql += " OR p.nombregenerico like :nombregenerico ";
+				sql += " OR p.categoria.categoria like :categoria  ";
+				sql += " OR p.codigoprincipal like :codigoprincipal ";
+				sql += ") ";
+			}
+			sql += "ORDER BY p.nombregenerico";
+			
+			Query q = getEntityManager().createQuery(sql);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			if(criteria!=null && criteria.trim().length()>0) {
+				q.setParameter("fabricante", "%".concat(criteria).concat("%"));
+				q.setParameter("nombregenerico", "%".concat(criteria).concat("%"));
+				q.setParameter("categoria", "%".concat(criteria).concat("%"));
+				q.setParameter("codigoprincipal", "%".concat(criteria).concat("%"));
+			}
+			
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param nombreGenerico
+	 * @param idProducto
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeNombreGenerico(String nombreGenerico,String idProducto,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			
+			if(idProducto!=null) {
+				q = getEntityManager().createQuery("SELECT p.idproducto FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND upper(p.nombregenerico)=:nombregenerico AND p.idproducto<>:idproducto");
+				q.setParameter("idproducto", idProducto);
+			}else {
+				q = getEntityManager().createQuery("SELECT p.idproducto FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND upper(p.nombregenerico)=:nombregenerico ");
+			}
+			q.setParameter("nombregenerico", nombreGenerico);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			
+			if(q.getResultList().size()>0) {
+				return true;
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param nombre
+	 * @param idProducto
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeNombre(String nombre,String idProducto,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			
+			if(idProducto!=null) {
+				q = getEntityManager().createQuery("SELECT p.idproducto FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND upper(p.nombre)=:nombre AND p.idproducto<>:idproducto");
+				q.setParameter("idproducto", idProducto);
+			}else {
+				q = getEntityManager().createQuery("SELECT p.idproducto FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND upper(p.nombre)=:nombre ");
+			}
+			
+			q.setParameter("nombre", nombre);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			
+			if(q.getResultList().size()>0) {
+				return true;
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param codigoproducto
+	 * @param idProducto
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeCodigoProducto(String codigoproducto,String idProducto,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			
+			if(idProducto!=null) {
+				q = getEntityManager().createQuery("SELECT p.idproducto FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND upper(p.codigoprincipal)=:codigoprincipal AND p.idproducto<>:idproducto");
+				q.setParameter("idproducto", idProducto);
+			}else {
+				q = getEntityManager().createQuery("SELECT p.idproducto FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND upper(p.codigoprincipal)=:codigoprincipal ");
+			}
+			
+			q.setParameter("codigoprincipal", codigoproducto);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			
+			if(q.getResultList().size()>0) {
+				return true;
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 
 }

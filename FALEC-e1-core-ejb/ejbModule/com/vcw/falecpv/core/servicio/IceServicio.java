@@ -43,4 +43,11 @@ public class IceServicio extends AppGenericService<Ice, String> {
 		return iceDao;
 	}
 
+	/**
+	 * @return the iceDao
+	 */
+	public IceDao getIceDao() {
+		return iceDao;
+	}
+
 }

@@ -75,8 +75,9 @@
 										
 									<p:commandButton id="cmdNuevo"
 										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
-										action="#{categoriaCtrl.nuevo()}" inline="true" 
-										/>
+										action="#{categoriaCtrl.nuevo()}" inline="true">
+										<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
+									</p:commandButton>
 											
 									<p:commandButton  id="cmdExcel" 
 										title="EXPORTAR"
@@ -117,6 +118,7 @@
 						<p:commandLink id="clkEditar" action="#{categoriaCtrl.editar()}">
 							<i class="fa fa-edit Fs16"></i>
 							<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
+							<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
 						</p:commandLink>
 						
 						<p:spacer width="5px"></p:spacer>
@@ -131,7 +133,11 @@
 					</p:column>
 					
 					<p:column headerText="ID" style="width:20px;">
-						<h:outputText value="#{c.idusuario}" />
+						<h:outputText value="#{c.idcategoria}" />
+					</p:column>
+					
+					<p:column headerText="ESTABLECIMIENTO" style="width:60px;">
+						<h:outputText value="#{c.establecimiento.nombrecomercial}" />
 					</p:column>
 					
 					<p:column headerText="EST" style="width:10px;">

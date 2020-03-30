@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,6 +59,15 @@ public class Iva implements Serializable {
 	@Size(min = 1, max = 40)
 	@Column(name = "idusuario", nullable = false, length = 40)
 	private String idusuario;
+	
+	@Basic(optional = false)
+	@NotNull
+	@Column(name = "defecto", nullable = false)
+	private Integer defecto;
+	
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "idempresa",referencedColumnName = "idempresa")
+    private Empresa empresa;
 
 	/**
 	 * 
@@ -85,9 +96,13 @@ public class Iva implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return PojoUtil.toString(this);
-	}
+    public String toString() {
+    	return String.format("[%s, %s]", idiva, porcentaje);
+    }
+    
+    public String toStringObject() {
+        return PojoUtil.toString(this);
+    }
 
 	/**
 	 * @return the idiva
@@ -157,6 +172,34 @@ public class Iva implements Serializable {
 	 */
 	public void setIdusuario(String idusuario) {
 		this.idusuario = idusuario;
+	}
+
+	/**
+	 * @return the defecto
+	 */
+	public Integer getDefecto() {
+		return defecto;
+	}
+
+	/**
+	 * @param defecto the defecto to set
+	 */
+	public void setDefecto(Integer defecto) {
+		this.defecto = defecto;
+	}
+
+	/**
+	 * @return the empresa
+	 */
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	
