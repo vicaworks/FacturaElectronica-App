@@ -3,23 +3,162 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
     <ui:define name="title">#{msg['title.categoria']}</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
-
+			.fabricanteDT .ui-datatable-scrollable-body{
+				min-height:400px !important;
+				max-height: 400px !important;
+			}
         </style>
     </ui:define>
 
     <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Productos" url="#" />
 		    <p:menuitem value="Fabricante" url="#{request.contextPath}/pages/productos/fabricante.jsf"/>
 		</p:breadCrumb>
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" style="margin-top:12px;">
+				<div class="p-grid">
+					<div class="p-grid p-col-12 p-md-6 p-align-center">
+						
+						<div class="p-col-4">
+							<h:outputText value="Estado :" />
+						</div>
+						
+						<div class="p-col-8">
+							<p:selectOneMenu id="somCategoria" value="#{categoriaCtrl.estadoRegBusqueda}" style="width:100%">
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
+				    		</p:selectOneMenu>
+						</div>
+						
+					</div>
+					
+					<div class="p-col-12 p-md-6" style="text-align:center;">
+						
+						<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+							
+								<p:panelGrid columns="3" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4">
+									<h:panelGroup>
+										<span class="ui-separator MRight10"> 
+											<span class="fa fa-ellipsis-v leaden" />
+										</span>
+										<p:spacer width="5px"/>				                        
+										<p:commandButton id="cmdRefrecar"
+											value="CONSULTAR" icon="fa fa-search" 
+											action="#{fabricanteCtrl.refrescar()}" styleClass="secondary-button Wid80" update="@form"
+											/>
+									</h:panelGroup>
+										
+									<p:commandButton id="cmdNuevo"
+										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										action="#{fabricanteCtrl.nuevo()}" inline="true">
+										<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
+									</p:commandButton>
+											
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid90">
+										<p:fileDownload value="#{fabricanteCtrl.fileFabricante}"/>
+									</p:commandButton>	
+							
+								</p:panelGrid>
+						</p:panelGrid>
+						
+					</div>
+					
+				</div>
+			</div>
+			
+			
+			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!-- Lista fabricantes -->
+			<div class="card card-w-title">
+				<h1>#{msg['card.categoria']}</h1>
+				<p:dataTable id="fabricanteDT" var="f"
+					value="#{fabricanteCtrl.fabricanteList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="fabricanteDT"  
+					rowKey="#{f.idfabricante}">
+					
+					
+					<p:column headerText="OPC" style="width:30px;">
+						
+						<p:commandLink id="clkEditar" action="#{fabricanteCtrl.editar()}">
+							<i class="fa fa-edit Fs16"></i>
+							<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
+							<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
+						</p:commandLink>
+						
+						<p:spacer width="5px"></p:spacer>
+												
+						<p:commandLink id="clkEliminar" action="#{fabricanteCtrl.eliminar()}" update="@form">
+							<i class="fa fa-close Fs18" style="color:red;"></i>
+							<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+						</p:commandLink>
+						
+						
+					</p:column>
+					
+					<p:column headerText="ID" style="width:20px;">
+						<h:outputText value="#{f.idfabricante}" />
+					</p:column>
+					
+					<p:column headerText="ESTABLECIMIENTO" style="width:60px;">
+						<h:outputText value="#{f.establecimiento.nombrecomercial}" />
+					</p:column>
+					
+					<p:column headerText="EST" style="width:10px;">
+						<h:outputText value="#{f.estado}" />
+					</p:column>
+					
+					<p:column style="width:100px;" filterBy="#{f.nombrecomercial}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="NOMBRE" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+							
+						</f:facet>
+						<h:outputText value="#{f.nombrecomercial}" />
+					</p:column>
+					
+				</p:dataTable>
+			</div>
+	    	
+	    </h:form>
+	    
+	    <!-- Formulario -->
+	    <ui:include src="incl_fabricante_form.xhtml" />
         
     </ui:define>
 

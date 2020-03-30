@@ -56,7 +56,7 @@ public class UsuarioCtrl extends BaseCtrl {
 	
 	
 	private List<Usuario> usuarioList;
-	private String estadoRegBusqueda;
+	private String estadoRegBusqueda = EstadoRegistroEnum.ACTIVO.getInicial();
 	private Usuario usuarioSelected;
 	private List<Establecimiento> establecimientoList;
 	

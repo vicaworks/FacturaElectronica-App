@@ -1,0 +1,423 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.contenedorFormulario {
+				height: 75vh;
+				/* min-height: 560px; */
+		}
+			
+			
+		body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+		}	
+		
+		body .ui-fileupload .ui-fileupload-content {
+			/* display: none; */
+			border: none;
+			
+			padding: 0px;
+			border-top: 0 none;
+			line-height: 1.5;
+		}
+		
+		@media screen and (max-width: 40em ) {
+		  .visualizar{display: none;}
+		  }
+		
+		@media screen and (max-height: 35.5em ) {
+		  .visualizar{display: none;}
+		  }
+		  
+		@media screen and (max-height: 26em ) {
+		  .visualizar{display: none;}
+		  }
+		
+		@media screen and (height: 46em ) {
+		  .visualizar{display: none;}
+		  }
+		
+		@media screen and (max-height: 42em ) {
+		  .visualizar{display: none;}
+		  }
+		  
+		 @media screen and (max-width: 896px) {  
+		  .visualizar{display: none;}
+		}
+		
+		
+		
+		
+	</style>
+	
+	<p:dialog header="Producto" widgetVar="dlgProducto" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmProducto">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp p-align-center" >
+				
+				<div class="p-grid p-col-12" style="text-align:left;" >					
+					
+					<div class="p-grid p-col-12 p-md-6 visualizar">						
+						<div class="p-col-12">
+							<p:selectOneMenu id="somFrmListaProducto"
+											value="#{productoCtrl.productoSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="PRODUCTO [seleccionar] ..."
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+		
+								<f:selectItems value="#{productoCtrl.productoFormList}" var="pro"
+									itemLabel="#{pro.nombregenerico}" itemValue="#{pro}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="p-col-12 p-md-6">
+					
+						<p:commandButton id="cmdBuscarProductoForm"
+							value="BUSCAR" icon="fa fa-search" 
+							action="#" styleClass="MRight10" update="@form :formMain"
+							/>
+					
+						<p:commandButton id="cmdGuardarProductoForm"
+							value="GUARDAR" icon="fa fa-check" 
+							action="#{productoCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
+							/>
+							
+						<p:commandButton id="cmdCerrarProductoForm"
+							value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+							onclick="PF('dlgProducto').hide()" immediate="true"  
+							/>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmProducto"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll contenedorFormulario form-p-grid">
+				
+				<div class="p-grid">
+					
+					<!-- Datos Generales -->	
+					<div class="p-col-12 p-md-6">
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Generales</div>
+						
+						<p:panelGrid id="gridProductoDG" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+							
+							<h:panelGroup>
+								<h:outputText value="FABRICANTE : " styleClass="cpoRequerido"/><br/>
+								<p:commandLink action="#{fabricanteCtrl.nuevo()}" immediate="true" style="color:green;">
+									<i class="fa fa-plus-square-o" > Agregar Fabricante</i>
+									<f:setPropertyActionListener value="PRODUCTO" target="#{fabricanteCtrl.moduloCall}"/>
+									<f:setPropertyActionListener value="#{productoCtrl}" target="#{fabricanteCtrl.productoCtrl}"/>
+									<f:setPropertyActionListener value="frmProducto:somFrmProductoEstablecimiento" target="#{fabricanteCtrl.updateView}"/>
+								</p:commandLink>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:selectOneMenu id="somFrmProductoEstablecimiento"
+									value="#{productoCtrl.productoSelected.fabricante}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+			
+									<f:selectItems value="#{productoCtrl.fabricanteList}" var="fab"
+										itemLabel="#{fab.nombrecomercial}" itemValue="#{fab}" />
+								</p:selectOneMenu>
+								<p:message for="somFrmProductoEstablecimiento" />
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="#{msg['label.categoria']} : " styleClass="cpoRequerido"/><br/>
+								<p:commandLink action="#{categoriaCtrl.nuevo()}" immediate="true" style="color:green;">
+									<i class="fa fa-plus-square-o"> Agregar #{msg['label.categoria2']}</i>
+									<f:setPropertyActionListener value="PRODUCTO" target="#{categoriaCtrl.moduloCall}"/>
+									<f:setPropertyActionListener value="#{productoCtrl}" target="#{categoriaCtrl.productoCtrl}"/>
+									<f:setPropertyActionListener value="frmProducto:somFrmProductoCategoria" target="#{categoriaCtrl.updateView}"/>
+								</p:commandLink>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:selectOneMenu id="somFrmProductoCategoria"
+									value="#{productoCtrl.productoSelected.categoria}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+			
+									<f:selectItems value="#{productoCtrl.categoriaList}" var="c"
+										itemLabel="#{c.categoria}" itemValue="#{c}" />
+								</p:selectOneMenu>
+								<p:message for="somFrmProductoCategoria" />
+							</h:panelGroup>
+							
+							<h:outputText value="NOMBRE * : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="intNombreProducto" value="#{productoCtrl.productoSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:message for="intNombreProducto"/>
+							</h:panelGroup>
+							
+							<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="intNombreProductoComercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:message for="intNombreProductoComercial"/>
+							</h:panelGroup>
+							
+							<h:outputText value="#{msg['label.codigo']} : " />
+							<h:panelGroup>
+								<p:inputText id="intCodigoProducto" value="#{productoCtrl.productoSelected.codigoprincipal}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="25"/>
+								<p:message for="intCodigoProducto"/>
+							</h:panelGroup>
+							
+							<h:outputText value="#{msg['label.descripcion']} : "/>
+							<h:panelGroup>
+								<p:inputTextarea id="intDescripcionProducto" value="#{productoCtrl.productoSelected.observacion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="800" converter="omnifaces.ToUpperCaseConverter" style="height:30px;"/>
+								<p:message for="intDescripcionProducto"/>			
+							</h:panelGroup>
+					
+						</p:panelGrid>
+					
+					</div>
+					
+					
+					<!-- Lista de precios -->
+					<div class="p-col-12 p-md-6">
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Valores</div>
+						
+						<p:panelGrid id="gridProductoPV" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+							
+							<h:outputText value="Precio Unitario : "/>
+							<h:panelGroup>
+								<p:inputText id="intPuProducto"
+									value="#{productoCtrl.productoSelected.preciounitario}"
+									required="true" requiredMessage="REQUERIDO"
+									styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
+									<f:validateDoubleRange minimum="0"/>
+								</p:inputText>
+									
+								<p:message for="intPuProducto"/>			
+							</h:panelGroup>
+							
+							<h:outputText value="IVA % : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:selectOneMenu id="somFrmIvaProducto"
+									value="#{productoCtrl.productoSelected.iva}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+			
+									<f:selectItems value="#{productoCtrl.ivaList}" var="iva"
+										itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+								</p:selectOneMenu>
+								<p:message for="somFrmIvaProducto" />
+							</h:panelGroup>
+							
+							<h:outputText value="ICE % : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:selectOneMenu id="somFrmIceProducto"
+									value="#{productoCtrl.productoSelected.ice}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+			
+									<f:selectItems value="#{productoCtrl.iceList}" var="ice"
+										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
+								</p:selectOneMenu>
+								<p:message for="somFrmIceProducto" />
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Precio 1 : "/>
+								<h:outputText value="[Sin Iva] " style="color:gray;" styleClass="Fs10"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="intPreVenta1Producto"
+									value="#{productoCtrl.productoSelected.preciouno}"
+									required="false" requiredMessage="REQUERIDO"
+									styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0"/>
+									<!-- <f:validateDoubleRange minimum="0.01"/> -->
+								<p:message for="intPreVenta1Producto"/>			
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Precio 2 : "/>
+								<h:outputText value="[Sin Iva] " style="color:gray;" styleClass="Fs10"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="intPreVenta2Producto"
+									value="#{productoCtrl.productoSelected.preciodos}"
+									required="false" requiredMessage="REQUERIDO"
+									styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0"/>
+									<!-- <f:validateDoubleRange minimum="0"/> -->
+								<p:message for="intPreVenta2Producto"/>			
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Precio 3 : "/>
+								<h:outputText value="[Sin Iva] " style="color:gray;" styleClass="Fs10"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="intPreVenta3Producto"
+									value="#{productoCtrl.productoSelected.preciotres}"
+									required="false" requiredMessage="REQUERIDO"
+									styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0"/>
+									<!-- <f:validateDoubleRange minimum="0"/> -->
+								<p:message for="intPreVenta3Producto"/>			
+							</h:panelGroup>
+							
+							
+						</p:panelGrid>
+						
+					</div>
+				
+					<!-- Unidades -->	
+					<div class="p-col-12 p-md-6">
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Unidades</div>
+						<p:panelGrid id="gridProductoUN" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+						
+							<h:outputText value="UNIDADES x CAJA / EMBASE * : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="intUniCajaProducto"
+									value="#{productoCtrl.productoSelected.unidadesporcajaofrasco}"
+									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+									maxlength="10" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+									<f:validateDoubleRange minimum="0"/>									
+								</p:inputText>
+								<p:message for="intUniCajaProducto"/>
+							</h:panelGroup>
+							
+							<h:outputText value="UNIDADES x EMPAQUE * : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="intUniEmpaqueProducto"
+									value="#{productoCtrl.productoSelected.unidadesporpaquete}"
+									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+									maxlength="10" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+									<f:validateDoubleRange minimum="0"/>
+								</p:inputText>
+								<p:message for="intUniEmpaqueProducto"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="MEDIDA : " />
+								<h:outputText value="[kg, g, lt, etc] " style="color:gray;" styleClass="Fs10"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="intUniMedidaProducto" value="#{productoCtrl.productoSelected.medida}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="10"/>
+								<p:message for="intUniMedidaProducto"/>
+							</h:panelGroup>
+							
+							<h:outputText value="#{msg['label.conversion']} MEDIDA : "/>
+							<h:panelGroup>
+								<p:inputText id="intUniConversionProducto"
+									value="#{productoCtrl.productoSelected.conversionmedida}"
+									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+									maxlength="11" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+									<f:validateDoubleRange minimum="0"/>
+								</p:inputText>
+								<p:message for="intUniConversionProducto"/>
+							</h:panelGroup>
+							
+							<h:outputText value="FECHA #{msg['label.fabricacion']} : "/>
+							<h:panelGroup>
+								<p:calendar id="claFechaFabricacionProducto" value="#{productoCtrl.productoSelected.fechafabricacion}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="false" styleClass="Wid100">
+									</p:calendar>
+								<p:message for="claFechaFabricacionProducto"/>
+							</h:panelGroup>
+							
+							<h:outputText value="STOCK : "/>
+							<h:outputText value="#{productoCtrl.productoSelected.stock}"/>
+													
+						</p:panelGrid>	
+					</div>
+					<!-- Unidades -->	
+					<div class="p-col-12 p-md-6">
+						<div class="Wid100 titulo">
+							<i class="fa fa-check-circle Fs16"></i> #{msg['label.imagen']} 
+							<span class="Fs12" style="color: green;">
+								[#{msg['mensaje.imagenproducto']}] 
+							</span>
+						</div>
+						<!-- <p:panelGrid id="gridProductoIMG" columns="2"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+							
+							<h:panelGroup>
+								styleClass="ui-fileupload-upload"
+								<p:fileUpload fileUploadListener="#{productoCtrl.handleUpload}"
+									mode="advanced" auto="true"   label="Seleccionar ..." style="" sizeLimit="25000000"/>
+								<p:fileUpload id="fileUploadComponent"
+									fileUploadListener="#{productoCtrl.handleUpload}"
+									allowTypes="/(\.|\/)(jpg|gif|jpe?g|png|tif)$/"
+									invalidFileMessage="SOLO FORMATOS [png,jpg,svg,tif,gif]" 
+									required="true"
+									requiredMessage="REQUERIDO" 
+									label="Seleccionar ..." 
+									sizeLimit="25242880"
+									invalidSizeMessage="#{msg['file.size']} 2MB" 
+									mode="advanced" 
+									dragDropSupport="true" 
+									auto="true"
+									update=":frmProducto:gridProductoIMG"
+									previewWidth="0">
+								</p:fileUpload>
+							</h:panelGroup>
+							
+							<h:outputText value="#{msg['label.imagen']} : #{productoCtrl.nombreImagen}"/>
+							
+							<h:outputText value=""/>
+							<h:outputText value="" rendered="#{productoCtrl.imageProducto==null}"/>
+							<p:graphicImage value="#{productoCtrl.imageProducto}" stream="false" width="250" height="300" rendered="#{productoCtrl.imageProducto!=null}"/>
+							
+							
+						</p:panelGrid> -->
+		
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>
