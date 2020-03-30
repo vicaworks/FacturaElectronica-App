@@ -4,20 +4,15 @@
 package com.vcw.falecpv.web.ctrl.productos;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -80,9 +75,6 @@ public class ProductoCtrl extends BaseCtrl {
 	private List<Ice> iceList;
 	private List<Iva> ivaList;
 	private List<Producto> productoFormList;
-	private File imageProdutoFile;
-	private String fileName;
-	
 
 	/**
 	 * 
@@ -131,9 +123,6 @@ public class ProductoCtrl extends BaseCtrl {
 	@Override
 	public void nuevo() {
 		try {
-			imageProdutoFile = null;
-			fileName = null;
-			
 			productoFormSelected = new Producto();
 			productoSelected = new Producto();
 			productoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
@@ -201,31 +190,29 @@ public class ProductoCtrl extends BaseCtrl {
 	public void handleUpload(FileUploadEvent event) throws IOException {
 		
 		UploadedFile uploadedFile = event.getFile();
-		fileName = uploadedFile.getFileName();
-		String path = FilenameUtils.getBaseName(fileName) + " " + UUID.randomUUID().toString() + " "
-				+ FilenameUtils.getExtension(fileName);
-		System.out.println(path);
-		File parent = new File("uploads");
-		parent.mkdirs();
-		imageProdutoFile = new File(parent, fileName);
-		FileUtils.writeByteArrayToFile(imageProdutoFile, uploadedFile.getContents());
-		System.out.println(imageProdutoFile.getAbsolutePath());
+		productoSelected.setImagen(uploadedFile.getContents());
+		productoSelected.setNombreimagen(uploadedFile.getFileName());
+		
 	}
 	
 	public String getNombreImagen() {
-		if(imageProdutoFile!=null) {
-			return fileName;
+		
+		if(productoSelected!=null) {
+			return productoSelected.getNombreimagen();
 		}
+		
 		return "";
 	}
 	
 	public StreamedContent getImageProducto() {
 		try {
 			
-			if(imageProdutoFile==null) {
+			if(productoSelected!=null && productoSelected.getImagen()==null) {
 				return null;
 			}
-			return  new DefaultStreamedContent(new FileInputStream(imageProdutoFile));
+			
+			return new DefaultStreamedContent(new ByteArrayInputStream(productoSelected.getImagen()));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -238,7 +225,9 @@ public class ProductoCtrl extends BaseCtrl {
 			if(img==null) {
 				return null;
 			}
+			
 			return  new DefaultStreamedContent(new ByteArrayInputStream(img));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -282,11 +271,6 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			productoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			productoSelected.setUpdated(new Date());
-			productoSelected.setImagen(null);
-			if(imageProdutoFile!=null) {
-				productoSelected.setImagen(FileUtils.readFileToByteArray(imageProdutoFile));
-			}
-			productoSelected.setNombreimagen(getNombreImagen());
 			productoServicio.guardar(productoSelected);
 			
 			// lista del combo popup
@@ -339,13 +323,6 @@ public class ProductoCtrl extends BaseCtrl {
 	private void editarFacade(String id) throws DaoException, IOException {
 		
 		productoSelected = productoServicio.getProductoDao().cargar(id);
-		// imagen
-		imageProdutoFile = null;
-		if(productoSelected.getImagen()!=null) {
-			imageProdutoFile = new File(FileUtils.getTempDirectory(),productoSelected.getNombreimagen()); 
-			FileUtils.writeByteArrayToFile(imageProdutoFile, productoSelected.getImagen());;
-		}
-		fileName = productoSelected.getNombreimagen();
 		consultarFabrica();
 		consultarCategoria();
 		consultarIce();
@@ -357,8 +334,8 @@ public class ProductoCtrl extends BaseCtrl {
 	public void limpiarImagen() {
 		try {
 			
-			imageProdutoFile = null;
-			fileName = null;
+			productoSelected.setImagen(null);
+			productoSelected.setNombreimagen(null);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -531,24 +508,5 @@ public class ProductoCtrl extends BaseCtrl {
 	public void setTipoProductoList(List<TipoProducto> tipoProductoList) {
 		this.tipoProductoList = tipoProductoList;
 	}
-
-
-
-	/**
-	 * @return the imageProdutoFile
-	 */
-	public File getImageProdutoFile() {
-		return imageProdutoFile;
-	}
-
-
-
-	/**
-	 * @param imageProdutoFile the imageProdutoFile to set
-	 */
-	public void setImageProdutoFile(File imageProdutoFile) {
-		this.imageProdutoFile = imageProdutoFile;
-	}
-
 
 }
