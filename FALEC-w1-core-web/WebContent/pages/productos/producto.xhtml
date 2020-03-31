@@ -34,6 +34,29 @@
 				width: 75%;
 			}
 			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				/* display: none; */
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
+			}
+			
+			@media screen and (max-width: 40em){
+					.ui-fileupload-buttonbar .ui-button .ui-button-text {
+					display: block !important;
+				}
+			}
+			
         </style>
     </ui:define>
 
@@ -104,8 +127,15 @@
 									<p:commandButton  id="cmdExcelCargar" 
 										title="CARGAR ARCHIVO EXCEL PRODUCTOS"
 										icon="fa fa-file-excel-o"
-										value="CARGAR PRODUCTOS"
-										styleClass="success-btn Wid90">
+										value="IMPORTAR PRODUCTOS"
+										styleClass="secondary-button Wid90"
+										onclick="PF('dlgImportProducto').show()"
+										update=":frmImportProducto"
+										immediate="true">
+										<f:setPropertyActionListener value="#{null}" target="#{productoCtrl.nombreFileProducto}"/>
+										<f:setPropertyActionListener value="#{null}" target="#{productoCtrl.fileProductos}"/>
+										<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.existeNovedades}"/>
+										<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.renderResultadoImportProducto}"/>
 									</p:commandButton>
 								
 								</p:panelGrid>
@@ -244,6 +274,9 @@
 	    
 	    <!-- Form Categoria -->
 	    <ui:include src="incl_categoria_form.xhtml" />
+	    
+	    <!-- Form carga productos -->
+	    <ui:include src="incl_cargarproducto_form.xhtml" />
         
     </ui:define>
 
