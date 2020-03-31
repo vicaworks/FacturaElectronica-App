@@ -197,7 +197,7 @@ public class ParametroGenericoEmpresaServicio extends AppGenericService<Parametr
     public ParametroGenericoEmpresa insertListParamEstableciemto(ParametroGenericoEmpresa param) throws DaoException  {
 		try {
 			
-			param.setIdparametroempresa(
+			param.setId(
 					contadorPkServicio.generarContadorTabla(TCParametroEmpresa.PARAMETROEMPRESA, null));
 
 			crear(param);

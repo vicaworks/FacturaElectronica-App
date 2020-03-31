@@ -421,6 +421,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			paramGeneric.setDescripcion(x.getDescripcion());
 			paramGeneric.setValor(x.getValor());
 			paramGeneric.setIdestablecimiento(idEstablecimiento);
+			paramGeneric.setIdparametroempresa(x.getIdparametroempresa());
 			paramGenericoList.add(paramGeneric);
 		}
 		
