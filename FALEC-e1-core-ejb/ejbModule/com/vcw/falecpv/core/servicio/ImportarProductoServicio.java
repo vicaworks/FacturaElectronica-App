@@ -107,6 +107,7 @@ public class ImportarProductoServicio {
 			producto.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 			producto.setIdusuario(idUsuario);
 			producto.setUpdated(new Date());
+			producto.setStock(0);
 			
 			// datos negocios 
 			producto.setCategoria(categoria(p,e,idUsuario));
