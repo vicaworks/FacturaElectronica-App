@@ -6,7 +6,6 @@ package com.vcw.falecpv.core.modelo.persistencia;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
 
 import com.servitec.common.util.PojoUtil;
 
@@ -76,12 +77,13 @@ public class Empresa implements Serializable {
     @Column(name = "ambiente", nullable = false, length = 1)
     private String ambiente;
     
-    @Size(max = 20)
-    @Column(name = "clavefirmaelectronica", length = 20)
+    @Size(max = 128)
+    @Column(name = "clavefirmaelectronica", length = 128)
     private String clavefirmaelectronica;
     
     @Lob
-    @Column(name = "archivofirmaelectronica")    
+    @Type(type="org.hibernate.type.BinaryType")
+    @Column(name = "archivofirmaelectronica")
     private byte[] archivofirmaelectronica;
     
     @Basic(optional = false)

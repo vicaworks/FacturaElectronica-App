@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		body .ui-fileupload .ui-fileupload-buttonbar {
+		 	border: none;
+		 	padding: 0px !important;
+		}	
+		
+		body .ui-fileupload .ui-fileupload-content {
+			border: none;
+			padding: 0px;
+			border-top: 0 none;
+			line-height: 1.5;
+		}
+		
+		body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+			width: 100%;
+		}
+	</style>
+	
+	<p:dialog header="Empresa" widgetVar="dlgEmpresa" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmEmpresa" enctype="multipart/form-data">
+			
+			<!-- OPCIONES -->
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdGuardarEmp"
+						value="GUARDAR" icon="fa fa-check" ajax="true"
+						action="#{empresaCtrl.guardar()}" styleClass="MRight10" update="@form :formMainEmpresa"
+						/>
+						
+					<p:commandButton id="cmdCerrarEmp"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgEmpresa').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEmpresa"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmEmpresa contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+					
+					<h:outputText value="RUC * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" validatorMessage="SOLO NÚMEROS">
+							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+						</p:inputText>
+					</h:panelGroup>
+					<p:message for="intRuc"/>
+					
+					<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+					</h:panelGroup>
+					<h:outputText value="" />
+					
+					<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intNombreComercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					</h:panelGroup>
+					<h:outputText value="" />
+					
+					<h:outputText value="DIRECCIÓN MATRIZ * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					</h:panelGroup>
+					<h:outputText value="" />
+					
+					<h:outputText value="OBLIGADO CONTABILIDAD : " style="font-weight: bold" />
+					<p:selectOneMenu id="somObligadoContabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}" styleClass="Wid100">
+						<f:selectItem itemLabel="SI" itemValue="SI"/>
+						<f:selectItem itemLabel="NO" itemValue="NO" />
+					</p:selectOneMenu>
+					<p:message for="somObligadoContabilidad"/>
+					
+					<h:outputText value="AMBIENTE * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<p:selectOneMenu id="somAmbiente" value="#{empresaCtrl.empresaSelected.ambiente}" styleClass="Wid100">
+						<f:selectItem itemLabel="Pruebas" itemValue="1"/>
+						<f:selectItem itemLabel="Producción" itemValue="2"/>
+					</p:selectOneMenu>
+					<p:message for="somAmbiente" />
+					
+					<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
+                    <p:password id="intclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="Wid100" />
+                    <h:outputText value="" />
+             		
+	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
+	           		<p:fileUpload label="Examinar..." 
+	           					  mode="advanced" 
+	           					  skinSimple="true" 
+	           					  fileUploadListener="#{empresaCtrl.upload}" 
+	           					  auto="true" 
+	           					  sizeLimit="25242880"
+								  invalidSizeMessage="#{msg['file.size']} 2MB" 
+	           					  uploadLabel="Cargar" 
+	           					  styleClass="Wid100" />
+	           		<h:outputText value="" />
+					
+				</p:panelGrid>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+</ui:composition>

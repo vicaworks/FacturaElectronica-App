@@ -4,7 +4,6 @@
 package com.vcw.falecpv.core.util;
 
 import java.sql.Types;
-
 import org.hibernate.dialect.PostgreSQL9Dialect;
 import org.hibernate.type.descriptor.sql.BinaryTypeDescriptor;
 import org.hibernate.type.descriptor.sql.SqlTypeDescriptor;
@@ -30,6 +29,4 @@ public class CustomPostgreSQLDialect extends PostgreSQL9Dialect {
         }
         return super.remapSqlTypeDescriptor(sqlTypeDescriptor);
     }
-
 }
-	
