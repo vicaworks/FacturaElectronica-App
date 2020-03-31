@@ -7,11 +7,21 @@
 				xmlns:of="http://omnifaces.org/functions">
 	
 	<style type="text/css">
+		body .ui-fileupload .ui-fileupload-buttonbar {
+		 	border: none;
+		 	padding: 0px !important;
+		}	
 		
-		.heightFrmEmpresa {
-				/* height: 560px; */
+		body .ui-fileupload .ui-fileupload-content {
+			border: none;
+			padding: 0px;
+			border-top: 0 none;
+			line-height: 1.5;
 		}
 		
+		body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+			width: 100%;
+		}
 	</style>
 	
 	<p:dialog header="Empresa" widgetVar="dlgEmpresa" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
@@ -93,7 +103,15 @@
                     <h:outputText value="" />
              		
 	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
-	           		<p:fileUpload label="Examinar..." mode="advanced" skinSimple="true" fileUploadListener="#{empresaCtrl.upload}" auto="true" uploadLabel="Cargar" />
+	           		<p:fileUpload label="Examinar..." 
+	           					  mode="advanced" 
+	           					  skinSimple="true" 
+	           					  fileUploadListener="#{empresaCtrl.upload}" 
+	           					  auto="true" 
+	           					  sizeLimit="25242880"
+								  invalidSizeMessage="#{msg['file.size']} 2MB" 
+	           					  uploadLabel="Cargar" 
+	           					  styleClass="Wid100" />
 	           		<h:outputText value="" />
 					
 				</p:panelGrid>

@@ -136,11 +136,20 @@ public class EmpresaCtrl extends BaseCtrl {
 				byte[] bytes;
 		        bytes = IOUtils.toByteArray(file.getInputstream());
 		        empresaSelected.setArchivofirmaelectronica(bytes);
-		        AppJsfUtil.addInfoMessage("frmEmpresa", "OK", "IMAGEN CARGADA CORRECTAMENTE.");
+		        AppJsfUtil.addInfoMessage("frmEmpresa", "OK", "ARCHIVO DE FIRMA ELECTRÓNICA CARGADO CORRECTAMENTE.");
             }
 		} catch (IOException e) {
 			e.printStackTrace();			
 			AppJsfUtil.addErrorMessage("formMainEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void limpiarArchivo() {
+		try {
+			empresaSelected.setArchivofirmaelectronica(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

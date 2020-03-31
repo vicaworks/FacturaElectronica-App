@@ -18,6 +18,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+
 import com.servitec.common.util.PojoUtil;
 
 /**
@@ -79,6 +82,7 @@ public class Empresa implements Serializable {
     private String clavefirmaelectronica;
     
     @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     @Column(name = "archivofirmaelectronica")
     private byte[] archivofirmaelectronica;
     
