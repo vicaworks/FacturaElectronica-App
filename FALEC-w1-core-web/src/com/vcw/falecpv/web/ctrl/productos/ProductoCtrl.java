@@ -773,7 +773,7 @@ public class ProductoCtrl extends BaseCtrl {
 					// pinta de rojo la 1era celda
 					cell = row.getCell(0);
 					if(cell==null) cell = row.createCell(0);
-					cell.setCellStyle(myStyle);					
+					//cell.setCellStyle(myStyle);					
 					
 					
 				}
