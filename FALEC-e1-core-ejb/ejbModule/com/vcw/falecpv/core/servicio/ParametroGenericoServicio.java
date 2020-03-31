@@ -21,10 +21,11 @@ import com.servitec.common.util.ValidarParametro;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
 import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
-import com.vcw.falecpv.core.constante.contadores.TCParametroGenerico;
+import com.vcw.falecpv.core.constante.contadores.TCParametroEmpresa;
 import com.vcw.falecpv.core.constante.parametrosgenericos.ParametroGenericoBaseEnum;
 import com.vcw.falecpv.core.dao.impl.ParametroGenericoDao;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenerico;
+import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 
 /**
  * @author cristianvillarreal
@@ -118,27 +119,6 @@ public class ParametroGenericoServicio extends AppGenericService<ParametroGeneri
 	}
 	
 	
-     /**
-     * @author isitk 
-     * @param listaParam
-     * @return
-     * @throws DaoException
-     */
-    public ParametroGenerico insertListParamEstableciemto(ParametroGenerico param) throws DaoException  {
-		try {
-			
-			param.setIdparametrogenerico(
-					contadorPkServicio.generarContadorTabla(TCParametroGenerico.PARAMETROGENERICO, null));
-
-			crear(param);
-
-			return param;
-
-		} catch (Exception e) {
-			throw new DaoException(e);
-		}
-
-	}
 
 	@Override
 	public List<ParametroGenerico> consultarActivos() {

@@ -83,9 +83,9 @@ public class ParametroGenericoEmpresaDao extends AppGenericDao<ParametroGenerico
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ParametroGenericoEmpresa>  getParamEmpresa(String idEmpresa) throws DaoException {
-		Query q = getEntityManager().createQuery("SELECT p FROM ParametroGenericoEmpresa p WHERE p.idempresa=:idEmpresa ");
-		q.setParameter("idEmpresa", idEmpresa);
+	public List<ParametroGenericoEmpresa>  getParamEmpresa(String idestablecimiento) throws DaoException {
+		Query q = getEntityManager().createQuery("SELECT p FROM ParametroGenericoEmpresa p WHERE p.idestablecimiento=:idestablecimiento ");
+		q.setParameter("idestablecimiento", idestablecimiento);
 		
 		try {
 			return q.getResultList();

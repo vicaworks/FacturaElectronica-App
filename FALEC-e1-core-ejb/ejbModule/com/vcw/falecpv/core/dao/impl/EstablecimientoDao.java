@@ -86,4 +86,24 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public  List<Establecimiento> getEstablecimientobyMatriz(String matriz) throws DaoException{
+		try {
+
+			Query q = null;
+
+			q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz");
+			q.setParameter("matriz", matriz);
+
+			if (q.getResultList().size() > 0) {
+				return q.getResultList();
+			}
+
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		return null;
+		
+	}
 }

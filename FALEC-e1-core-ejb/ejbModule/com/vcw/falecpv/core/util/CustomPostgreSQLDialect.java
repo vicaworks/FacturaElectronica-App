@@ -32,3 +32,4 @@ public class CustomPostgreSQLDialect extends PostgreSQL9Dialect {
     }
 
 }
+	

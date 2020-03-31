@@ -3,13 +3,16 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+
 import javax.ejb.EJB;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.inject.Named;
+
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 
@@ -18,7 +21,7 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
  *
  */
 
-@ManagedBean
+@Named
 @ApplicationScoped
 public class ImagenCtrl implements Serializable {
 

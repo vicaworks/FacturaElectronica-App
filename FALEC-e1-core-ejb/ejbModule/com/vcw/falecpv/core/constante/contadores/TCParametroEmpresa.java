@@ -7,13 +7,13 @@ package com.vcw.falecpv.core.constante.contadores;
  * @author isitk
  *
  */
-public enum TCParametroGenerico implements TablaContadorBaseEnum {
+public enum TCParametroEmpresa implements TablaContadorBaseEnum {
 	
-	PARAMETROGENERICO("PARAMETROGENERICO");
+	PARAMETROEMPRESA("PARAMETROEMPRESA");
 	
 	private String nombreTabla;
 
-	private TCParametroGenerico(String nombreTabla) {
+	private TCParametroEmpresa(String nombreTabla) {
 		this.nombreTabla = nombreTabla;
 	}
 

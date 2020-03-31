@@ -4,6 +4,7 @@
 package com.vcw.falecpv.web.ctrl.configuracion;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.shaded.commons.io.IOUtils;
@@ -67,6 +69,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	private Establecimiento establecimientoSelected;
 	private boolean flagEstablecimiento;
     private UploadedFile file;
+    public final static String matriz="S";
 
 	/**
 	 * 
@@ -124,53 +127,56 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
-        
-			List<ParametroGenericoEmpresa> paramempresaList=new ArrayList<>();
-			List<ParametroGenerico> paramGenericoList= new ArrayList<>();
-			ParametroGenerico paramGeneric= new  ParametroGenerico();
-			
-			// validar si es Matriz
-			if ("S".equals(establecimientoSelected.getMatriz())) {
-				if (establecimientoServicio.getEstablecimientoDao().existeMatriz(
-						establecimientoSelected.getIdestablecimiento(), establecimientoSelected.getMatriz())) {
-					AppJsfUtil.addErrorMessage("frmEstable", "ERROR", "MATRIZ YA EXISTE.");
-					return;
+			Establecimiento establecimientoUpdate = new Establecimiento();
+			// Validar si existe Matriz
+			if (establecimientoServicio.getEstablecimientoDao().existeMatriz(null, matriz)) {
+				if (matriz.equals(establecimientoSelected.getMatriz())) {
+					// consulto el id de la matriz
+					establecimientoUpdate = establecimientoServicio.getEstablecimientoDao()
+							.getEstablecimientobyMatriz(matriz).get(0);
+					// actualizo el campo matriz del actual
+					establecimientoUpdate.setMatriz("N");
+					// actualiza establecimiento existente
+					establecimientoServicio.guardar(establecimientoUpdate);
+					// guarda establecimiento nuevo
+					establecimientoSelected.setUpdated(new Date());
+					establecimientoSelected.setIdusuario(AppJsfUtil.getRemoteUser());
+					establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
+					// guarda parametros genericos
+					if(flagEstablecimiento) {
+					insertParamEmpresa(establecimientoUpdate.getIdestablecimiento(),
+							establecimientoSelected.getIdestablecimiento());
+					}
+
+				} else {
+					// consulto el id de la matriz
+					establecimientoUpdate = establecimientoServicio.getEstablecimientoDao()
+							.getEstablecimientobyMatriz(matriz).get(0);
+					// inserto normal
+					establecimientoSelected.setUpdated(new Date());
+					establecimientoSelected.setIdusuario(AppJsfUtil.getRemoteUser());
+					establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
+					// guarda parametros genericos
+					if(flagEstablecimiento) {
+					insertParamEmpresa(establecimientoUpdate.getIdestablecimiento(),
+							establecimientoSelected.getIdestablecimiento());
+					}
 				}
+
+			} else {
+				
+				// Asigno 1ra vez matriz
+				establecimientoSelected.setMatriz("S");
+				establecimientoSelected.setUpdated(new Date());
+				establecimientoSelected.setIdusuario(AppJsfUtil.getRemoteUser());
+				establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
+				// guarda parametros genericos
+			if(flagEstablecimiento) {
+				insertParamEmpresa(establecimientoUpdate.getIdestablecimiento(),
+						establecimientoSelected.getIdestablecimiento());}
+
 			}
 
-			establecimientoSelected.setUpdated(new Date());
-			establecimientoSelected.setIdusuario(AppJsfUtil.getRemoteUser());
-			establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
-			//guarda parametros genericos
-			if ("S".equals(establecimientoSelected.getMatriz())) {
-				// consulta parametro empresa
-				paramempresaList = consultaParamEmpresa(establecimientoSelected.getEmpresa().getIdempresa());
-				
-				// seteo parametros
-				for (ParametroGenericoEmpresa x : paramempresaList) {
-					paramGeneric= new ParametroGenerico();
-					paramGeneric.setConcepto(x.getConcepto());
-					paramGeneric.setDescripcion(x.getDescripcion());
-					paramGeneric.setValor(x.getValor());
-					paramGeneric.setIdparametrogenerico(x.getIdparametroempresa());
-					paramGenericoList.add(paramGeneric);
-				}
-				
-				// inserta la lista de los parametros
-				paramGenericoList.forEach((y) ->{
-					 try {
-						parametroGenericoServicio.insertListParamEstableciemto(y);
-					} catch (DaoException e) {
-						e.printStackTrace();
-						AppJsfUtil.addErrorMessage("frmEstable", "ERROR AL INSERTAR PARAMETROS GENERICOS",
-								TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-					}
-					});
-			
-				AppJsfUtil.addInfoMessage("frmEstable", "OK", "REGISTRO,PARAMETROS ALMACENADOS CORRECTAMENTE.");
-			}
-			
-			
 			establecimientoAllList = null;
 			consultarEstablecimiento();
 			AppJsfUtil.addInfoMessage("frmEstable", "OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
@@ -180,16 +186,14 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("frmEstable", "ERROR",
 					TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
-
+		
 	}
 	
 	@Override
 	public void nuevo() {
 		try {
-			
+			flagEstablecimiento=true;
 			establecimientoSelected = new Establecimiento();
-			flagEstablecimiento=false;
-			
 			establecimientoSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 	
 			AppJsfUtil.showModalRender("dlgEstable", "frmEstable");
@@ -209,15 +213,13 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	
 	public void editar() {
 		try {
-			flagEstablecimiento=true;
+			flagEstablecimiento=false;
 			AppJsfUtil.showModalRender("dlgEstable", "frmEstable");
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-	
-	
 	
 	/**
 	 * 
@@ -238,6 +240,67 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("frmEstable", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	
+	public void handleUpload(FileUploadEvent event) throws IOException {
+		
+		UploadedFile uploadedFile = event.getFile();
+		establecimientoSelected.setLogo(uploadedFile.getContents());
+		establecimientoSelected.setNombreimagen(uploadedFile.getFileName());
+		
+	}
+	
+	public String getNombreImagen() {
+		
+		if(establecimientoSelected!=null) {
+			return establecimientoSelected.getNombreimagen();
+		}
+		
+		return "";
+	}
+	
+	public StreamedContent getImageEstablecimiento() {
+		try {
+			
+			if(establecimientoSelected!=null && establecimientoSelected.getLogo()==null) {
+				return null;
+			}
+			
+			return new DefaultStreamedContent(new ByteArrayInputStream(establecimientoSelected.getLogo()));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public StreamedContent getImageToStream(byte[] img) {
+		try {
+			
+			if(img==null) {
+				return null;
+			}
+			
+			return  new DefaultStreamedContent(new ByteArrayInputStream(img));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public void limpiarImagen() {
+		try {
+			
+			establecimientoSelected.setLogo(null);
+			establecimientoSelected.setNombreimagen(null);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmEstable", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	
 	/**
 	 * @return
@@ -335,6 +398,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 		
 		return null;
 	}
+
 	
 	
 	/**
@@ -342,13 +406,36 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<ParametroGenericoEmpresa> consultaParamEmpresa(String idEmpresa) throws DaoException {
+	public void insertParamEmpresa(String idEstablecimientoMatriz, String idEstablecimiento) throws DaoException {
+		
 		List<ParametroGenericoEmpresa> listaParamEmpresa = new ArrayList<>();
-
+		ParametroGenericoEmpresa paramGeneric= new  ParametroGenericoEmpresa();
+		List<ParametroGenericoEmpresa> paramGenericoList=new ArrayList<>();
 		listaParamEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao()
-				.getParamEmpresa(idEmpresa);
-
-		return listaParamEmpresa;
+				.getParamEmpresa(idEstablecimientoMatriz);
+		
+		// seteo parametros
+		for (ParametroGenericoEmpresa x : listaParamEmpresa) {
+			paramGeneric= new ParametroGenericoEmpresa();
+			paramGeneric.setConcepto(x.getConcepto());
+			paramGeneric.setDescripcion(x.getDescripcion());
+			paramGeneric.setValor(x.getValor());
+			paramGeneric.setIdestablecimiento(idEstablecimiento);
+			paramGenericoList.add(paramGeneric);
+		}
+		
+		// inserta la lista de los parametros
+		paramGenericoList.forEach((y) ->{
+			 try {
+				 parametroGenericoEmpresaServicio.insertListParamEstableciemto(y);
+			} catch (DaoException e) {
+				e.printStackTrace();
+				AppJsfUtil.addErrorMessage("frmEstable", "ERROR AL INSERTAR PARAMETROS GENERICOS",
+						TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			}
+			});
+	
+		AppJsfUtil.addInfoMessage("frmEstable", "OK", "REGISTRO,PARAMETROS ALMACENADOS CORRECTAMENTE.");
 
 	}
 	

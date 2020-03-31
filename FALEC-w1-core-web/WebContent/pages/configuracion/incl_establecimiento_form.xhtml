@@ -11,7 +11,22 @@
 		.heightFrmEstablecimiento {
 				/* height: 560px; */
 		}
+		body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+		}	
 		
+		body .ui-fileupload .ui-fileupload-content {
+			/* display: none; */
+			border: none;
+			padding: 0px;
+			border-top: 0 none;
+			line-height: 1.5;
+		}
+		
+		body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+			width: 100%;
+		}
 	</style>
 	
 	<p:dialog header="Establecimiento" widgetVar="dlgEstable" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
@@ -130,7 +145,6 @@
 					<h:outputText value="MATRIZ * : " styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intMatrizEst"
-							disabled="#{establecimientoCtrl.flagEstablecimiento}"
 							value="#{establecimientoCtrl.establecimientoSelected.matriz}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
 							maxlength="10" converter="omnifaces.ToUpperCaseConverter" />
@@ -197,26 +211,77 @@
 					</h:panelGroup>
 					<p:message for="intSecReten" />
 
-					<p:panelGrid id="gridLogo" columns="2"
-						styleClass="ui-panelgrid-blank Wid100"
-						columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10">
+<!-- 					<p:panelGrid id="gridLogo" columns="2" -->
+<!-- 						styleClass="ui-panelgrid-blank Wid100" -->
+<!-- 						columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10"> -->
 
-						<h:outputText value="LOGO : " />
-						<p:graphicImage value="#{imagenCtrl.getImage()}" width="77"
-							height="102" cache="false">
-							<f:param name="id"
-								value="#{establecimientoCtrl.establecimientoSelected.idestablecimiento}" />
-						</p:graphicImage>
+<!-- 						<h:outputText value="LOGO : " /> -->
+<!-- 						<p:graphicImage value="#{imagenCtrl.getImage()}" width="77" -->
+<!-- 							height="102" cache="false"> -->
+<!-- 							<f:param name="id" -->
+<!-- 								value="#{establecimientoCtrl.establecimientoSelected.idestablecimiento}" /> -->
+<!-- 						</p:graphicImage> -->
 
-					</p:panelGrid>
-					<p:fileUpload id="fileLogo" label="Examinar..." mode="advanced"
-						skinSimple="true"
-						fileUploadListener="#{establecimientoCtrl.upload}" auto="false"
-						uploadLabel="Cargar" styleClass="secondary-button" />
+<!-- 					</p:panelGrid> -->
+<!-- 					<p:fileUpload id="fileLogo" label="Examinar..." mode="advanced" -->
+<!-- 						skinSimple="true" -->
+<!-- 						fileUploadListener="#{establecimientoCtrl.upload}" auto="false" -->
+<!-- 						uploadLabel="Cargar" styleClass="secondary-button" /> -->
 
-				</p:panelGrid>
+				</p:panelGrid> 
 
-			</div>
+					<div class="p-col-12 p-md-6">
+						<div class="Wid100 titulo">
+							<i class="fa fa-check-circle Fs16"></i> #{msg['label.imagen']} 
+							<span class="Fs12" style="color: green;">
+								[#{msg['mensaje.imagenproducto']}] 
+							</span>
+						</div>
+						<p:panelGrid id="gridEstabIMG" columns="2"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+							
+							<h:panelGroup>
+								<p:commandButton id="cmdLimpiarImagenProductoForm"
+									value="Limpiar" icon="fa fa-eraser" styleClass="secondary-button Wid100"
+									action="#{establecimientoCtrl.limpiarImagen()}" 
+									immediate="true"  
+									update=":frmEstable:gridEstabIMG"
+									disabled="#{establecimientoCtrl.establecimientoSelected.logo==null}"
+								/>
+							</h:panelGroup>
+							<h:outputText value="#{msg['label.imagen']} : #{establecimientoCtrl.establecimientoSelected.nombreimagen}"/>
+							
+							<h:panelGroup>								
+								<p:fileUpload id="fileUploadComponent"
+									fileUploadListener="#{establecimientoCtrl.handleUpload}"
+									allowTypes="/(\.|\/)(jpg|gif|jpe?g|png|tif)$/"
+									invalidFileMessage="SOLO FORMATOS [png,jpg,svg,tif,gif]" 
+									required="true"
+									requiredMessage="REQUERIDO" 
+									label="Seleccionar ..." 
+									sizeLimit="25242880"
+									invalidSizeMessage="#{msg['file.size']} 2MB" 
+									mode="advanced" 
+									dragDropSupport="true" 
+									auto="true"
+									update=":frmEstable:gridEstabIMG"
+									previewWidth="0"
+									styleClass="Wid100">
+								</p:fileUpload>
+							</h:panelGroup>
+							
+							
+							<h:outputText value=""/>
+							<h:outputText value=""/>
+							<h:outputText value="" rendered="#{establecimientoCtrl.establecimientoSelected.logo==null}"/>
+							<p:graphicImage value="#{establecimientoCtrl.imageEstablecimiento}" stream="false" width="250" height="300" rendered="#{establecimientoCtrl.establecimientoSelected.logo!=null}"/>
+							
+							
+						</p:panelGrid>
+		
+					</div>	</div>
+		
 
 		</h:form>
 		

@@ -22,6 +22,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Type;
+
 import com.servitec.common.util.PojoUtil;
 
 /**
@@ -63,6 +65,7 @@ public class Establecimiento implements Serializable {
     private String nombrecomercial;
     
     @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     @Column(name = "logo")
     private byte[] logo;
     
@@ -115,6 +118,9 @@ public class Establecimiento implements Serializable {
     @NotNull
     @Column(name = "secuencialretencion", nullable = false)
     private int secuencialretencion;
+    
+    @Column(name = "nombreimagen",length = 200)
+    private String nombreimagen;
     
     @Basic(optional = false)
     @NotNull
@@ -433,6 +439,22 @@ public class Establecimiento implements Serializable {
 	 */
 	public void setUsuarioList(List<Usuario> usuarioList) {
 		this.usuarioList = usuarioList;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getNombreimagen() {
+		return nombreimagen;
+	}
+
+	/**
+	 * @param nombreimagen
+	 */
+	public void setNombreimagen(String nombreimagen) {
+		this.nombreimagen = nombreimagen;
 	}		
+	
+	
 
 }
