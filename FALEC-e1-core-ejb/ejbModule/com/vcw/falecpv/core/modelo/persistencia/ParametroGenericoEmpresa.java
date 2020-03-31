@@ -26,6 +26,11 @@ public class ParametroGenericoEmpresa implements Serializable {
 	private static final long serialVersionUID = -4968008098828734957L;
 	
 	@Id
+	@Column(name = "id")
+	private String id;
+	
+
+	
 	@Column(name = "idparametroempresa")
 	private String idparametroempresa;
 	
@@ -157,6 +162,14 @@ public class ParametroGenericoEmpresa implements Serializable {
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	
