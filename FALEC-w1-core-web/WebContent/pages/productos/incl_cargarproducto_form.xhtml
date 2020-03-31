@@ -1,0 +1,161 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmImportProducto {
+				/* height: 200px; */
+		}
+		.divMensaje{
+			margin:0.5em !important;
+			padding:1em !important;
+			background-color: rgba(240, 243, 244,0.5); 
+			border: 1px solid #D0D3D4;
+			width: 100%;
+		}
+		
+		.divOpciones{
+			margin:0.5em !important;
+			padding:1em !important;			
+		}
+		
+	</style>
+	
+	<p:dialog header="#{msg['label.importarcatalogoproducto']}" widgetVar="dlgImportProducto" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmImportProducto">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdCerrarImportProducto"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgImportProducto').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmImportProducto"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmImportProducto contenedorFormulario">
+				
+				<div class="p-grid p-justify-center">
+					<div class="p-col-12 p-md-8">
+						<div class="divMensaje">
+							<h2 style="margin: 0px;">Instrucciones</h2>
+							<ol>
+								<li>Llenar los datos con el formato adjunto :
+									<!-- <p:commandLink style="color:green;" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
+										<i class="fa fa-download Fs14 FontBold"> Descargar.</i>
+										<p:fileDownload value="#{productoCtrl.plantillaImportarProducto}" />
+									</p:commandLink> -->
+									<p:commandButton ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" value="Descargar" icon="fa fa-download">
+										<p:fileDownload value="#{productoCtrl.plantillaImportarProducto}" />
+									</p:commandButton>
+									
+								</li>
+								<li>Los datos se deben completar desde la fila <strong class="Fs16" style="color:red;">3</strong> de la 1era hoja del libro de excel.</li>
+								<li>Tomar en consideración los catálogos:
+									<ul>
+										<li> <strong>FABRICANTE:</strong> Si el identificador existe ya en el sistema colocarlo, caso contrario solo colocar el nombre, al cargar el archivo también se creará el fabricante.</li>
+										<li> <strong>CATEGORíA:</strong> Si el identificador existe ya en el sistema colocarlo, caso contrario solo colocar el nombre, al cargar el archivo también se creará la categoría.</li>
+										<li> <strong>TIPO PRODUCTO:</strong> El catálogo es:
+											<ul>
+												<li>PRODUCTO : código 1.</li>
+												<li>SERVICIO : código 2.</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>Seleccionar el archivo a importar.</li>
+								<li>El sistema informará si no existe novedades en la importación, en caso de existir novedades en el mismo archivo seleccionado se indicará las novedades existentes.</li>
+							</ol>
+						</div>
+						
+						<div class="p-col-12">
+							
+							<div class="p-grid">
+								<div class="p-col-12 p-md-4">
+									<p:fileUpload id="filUImportProductos"
+										fileUploadListener="#{productoCtrl.handleUpload_Productos}"
+										allowTypes="/(\.|\/)(xls)$/"
+										invalidFileMessage="SOLO FORMATOS [.xls]" 
+										required="true"
+										requiredMessage="REQUERIDO" 
+										label="Seleccionar ..." 
+										sizeLimit="25242880"
+										invalidSizeMessage="#{msg['file.size']} 2MB" 
+										mode="advanced" 
+										dragDropSupport="true" 
+										auto="true"
+										update="@form"
+										previewWidth="0"
+										styleClass="Wid100">
+									</p:fileUpload>
+									<p:commandButton id="cmdImportProductos"
+										value="Importar Productos" icon="fa fa-floppy-o" styleClass="secondary-button Wid100"
+										action="#{productoCtrl.importarProductos()}"  
+										update="@form"
+										disabled="#{productoCtrl.fileProductos==null}"
+									/>
+								</div>
+								<div class="p-col-12 p-md-8">
+									<div class="p-grid p-justify-center">
+										<div class="p-col-12 p-md-4">
+											<strong>Archivo Seleccionado :</strong>
+										</div>
+										<div class="p-col-12 p-md-8">
+											<h:outputText value="#{productoCtrl.nombreFileProducto}" />
+										</div>
+										<div class="p-col-12 p-md-4">
+											<strong>Resultado :</strong>
+										</div>
+										<div class="p-col-12 p-md-8">
+											<f:subview rendered="#{productoCtrl.renderResultadoImportProducto and not productoCtrl.existeNovedades}">
+												<h4>Los datos se cargaron correctamente y no existen novedades.</h4>
+											</f:subview>
+											
+											<f:subview rendered="#{productoCtrl.renderResultadoImportProducto and productoCtrl.existeNovedades}">
+												<h4 style="color:red;">Existen novedades</h4>
+												<p>Debe descargar el archivo, y cada fila de color rojo, al final de la fila en la columna 24 está descrita la novedad.</p>
+												
+												<p:commandButton id="cmdImportProductosNovedades"
+													value="Archivo Novedades" icon="fa fa-download" styleClass="secondary-button"
+													ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" disabled="#{productoCtrl.fileProductos==null}">
+													<p:fileDownload value="#{productoCtrl.plantillaImportarProductoNovedades}" />
+												</p:commandButton>
+												
+											</f:subview>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>		
+					
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>

@@ -1,75 +1,153 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template/template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">#{msg['title.establecimiento']}</ui:define>
-    
-    <ui:define name="head">
-        <style type="text/css">
+	<ui:define name="title">#{msg['title.establecimiento']}</ui:define>
 
-        </style>
-    </ui:define>
+		<ui:define name="head">
+			<style type="text/css">
+				.establecimientoDT .ui-datatable-scrollable-body {
+					min-height: 400px !important;
+					max-height: 400px !important;
+				}
+			</style>
+		</ui:define>
 
-    <ui:define name="content">
-    
-    	<p:breadCrumb>
-		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="#{msg['menu.configuracion']}" url="#" />
-		    <p:menuitem value="Establecimiento" url="#{request.contextPath}/pages/configuracion/empresa.jsf" />
+	<ui:define name="content">
+
+		<p:breadCrumb>
+			<p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+			<p:menuitem value="#{msg['menu.configuracion']}" url="#" />
+			<p:menuitem value="Establecimiento"
+				url="#{request.contextPath}/pages/configuracion/empresa.jsf" />
 		</p:breadCrumb>
-        <h:form> 
-	        <div class="p-col-12">
-		        <p:toolbar>
-			        <f:facet name="left">
-				            <p:commandButton id="editEstablecim" type="button" value="Nuevo" icon="pi pi-file"  onclick="PF('wdlgNuevoEstableciemiento').show()" />
-				 
-			        </f:facet>
-	    	  	</p:toolbar>
-	   	  	</div>	
-	   	  	<div class="p-col-12">
-	   	  	
-		  		<p:dataTable var="estab" value="#{establecimientoCtrl.establecimientoAllList}">
-		  		 
-		  		
-				    <p:column headerText="Codigo" priority="2">
-				        <h:outputText value="#{estab.codigoestablecimiento}" />
-				    </p:column>
-				
-				    <p:column headerText="Direccion"  priority="2">
-				        <h:outputText value="#{estab.direccionestablecimiento}" />
-				    </p:column>
-				
-				    <p:column headerText="Nombre Comercial" priority="2">
-				        <h:outputText value="#{estab.nombrecomercial}" />
-				    </p:column>
-				
-				    <p:column headerText="Punto Emsion" priority="4">
-				        <h:outputText value="#{estab.puntoemision}" />
-				    </p:column>
-				 
-				     <p:column headerText="Telefono" priority="4">
-				        <h:outputText value="#{estab.telefono}" />
-				    </p:column>
-				
-				    <p:column headerText="Correo" priority="4">
-				        <h:outputText value="#{estab.correo}" />
-				    </p:column>
-				 
-				    <p:column headerText="Matriz" priority="4">
-				        <h:outputText value="#{estab.matriz}" />
-				    </p:column>
-				
-				</p:dataTable>       
+
+		<!--OPCIONES -->
+		<h:form id="formMain">
+			<div class="card card-w-title" style="margin-top: 12px;">
+				<div class="p-grid">
+					<div class="p-grid p-col-12 p-md-6 p-align-center"></div>
+
+					<div class="p-col-12 p-md-6 p-align-center">
+						<p:panelGrid columns="1"
+							style="margin:0px;border:none !important;width:100%;"
+							layout="grid" columnClasses="ui-g-12">
+
+							<p:panelGrid columns="4"
+								style="border:none !important;margin:0px;width:100%;"
+								columnClasses="ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4">
+								<h:panelGroup>
+									<span class="ui-separator MRight10"> <span
+										class="fa fa-ellipsis-v leaden" />
+									</span>
+									<p:spacer width="5px" />
+									<p:commandButton id="cmdRefrecar" value="CONSULTAR"
+										icon="fa fa-search"
+										action="#{establecimientoCtrl.refrescar()}"
+										styleClass="secondary-button Wid80" update="@form" />
+								</h:panelGroup>
+
+								<p:commandButton id="nuevoEstablecim"
+									value="NUEVO"
+								 icon="fa fa-plus" 
+								 styleClass=" Wid90"
+								 action="#{establecimientoCtrl.nuevo()}" inline="true"
+									 />
+
+								<p:commandButton id="cmdExcelEstab" title="EXPORTAR"
+									icon="fa fa-file-excel-o" ajax="false"
+									onclick="PrimeFaces.monitorDownload(start,stop)"
+									value="REPORTE" styleClass="success-btn Wid90">
+									<p:fileDownload value="#{establecimientoCtrl.fileEstablecimientos}" />
+								</p:commandButton>
+
+							</p:panelGrid>
+						</p:panelGrid>
+					</div>
+				</div>
 			</div>
-			<p:dialog header="Nuevo" widgetVar="wdlgNuevoEstableciemiento" id="dlgNuevoEstab" width="70%" height="auto" 
-                                      style="text-height: font-size; text-height: font-size; text-align: left; font-weight: bold">
-                                <ui:include src="editEstablecimiento.xhtml" />
-                            </p:dialog>
-   	  	</h:form>
-   	  	
-    </ui:define>
+			
+			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			
+			<div class="card card-w-title">
+				<p:dataTable var="estab"
+					value="#{establecimientoCtrl.establecimientoAllList}"
+					scrollable="true" styleClass="establecimientoDT"
+					rowKey="#{estab.codigoestablecimiento}">
+
+					<p:column headerText="OPC" style="width:30px;">
+
+						<p:commandLink id="clkEditar"
+							action="#{establecimientoCtrl.editar()}">
+							<i class="fa fa-edit Fs16"></i>
+							<f:setPropertyActionListener value="#{estab}"
+								target="#{establecimientoCtrl.establecimientoSelected}" />
+						</p:commandLink>
+
+						<p:spacer width="5px"></p:spacer>
+
+						<p:commandLink id="clkEliminar"
+							action="#{establecimientoCtrl.eliminar()}" update="@form">
+							<i class="fa fa-close Fs18" style="color: red;"></i>
+							<f:setPropertyActionListener value="#{estab}"
+								target="#{establecimientoCtrl.establecimientoSelected}" />
+							<p:confirm header="#{msg['label.confirmacion']}"
+								message="#{msg['mensaje.confimacion']}"
+								icon="fa fw-3x fa-exclamation-triangle" />
+						</p:commandLink>
+
+
+					</p:column>
+					<p:column headerText="Codigo"
+						style="width:10px; text-align: center;">
+						<h:outputText value="#{estab.codigoestablecimiento}" />
+					</p:column>
+
+					<p:column headerText="Direccion" style="width:60px;">
+						<h:outputText value="#{estab.direccionestablecimiento}" />
+					</p:column>
+
+					<p:column headerText="Nombre Comercial" priority="1"
+						style="width:40px; ">
+						<h:outputText value="#{estab.nombrecomercial}" />
+					</p:column>
+
+					<p:column headerText="Punto Emsion"
+						style="width:10px; text-align: center; ">
+						<h:outputText value="#{estab.puntoemision}" />
+					</p:column>
+
+					<p:column headerText="Telefono" style="width:25px;">
+						<h:outputText value="#{estab.telefono}" />
+					</p:column>
+
+					<p:column headerText="Correo" style="width:45px;">
+						<h:outputText value="#{estab.correo}" />
+					</p:column>
+
+					<p:column headerText="Matriz"
+						style="width:20px; text-align: center;">
+						<h:outputText value="#{estab.matriz}" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
+						
+		</h:form>		
+		 
+	    <!-- formulario usuario -->
+	    <ui:include src="incl_establecimiento_form.xhtml" />
+
+	</ui:define>
 
 </ui:composition>

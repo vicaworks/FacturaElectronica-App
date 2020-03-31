@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -64,6 +65,11 @@ public class Iva implements Serializable {
 	@NotNull
 	@Column(name = "defecto", nullable = false)
 	private Integer defecto;
+	
+	@Basic(optional = false)
+    @NotNull
+    @Column(name = "valor", nullable = false, precision = 6, scale = 3)
+    private BigDecimal valor;
 	
 	@ManyToOne(optional = false)
     @JoinColumn(name = "idempresa",referencedColumnName = "idempresa")
@@ -200,6 +206,20 @@ public class Iva implements Serializable {
 	 */
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the valor
+	 */
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	/**
+	 * @param valor the valor to set
+	 */
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
 	
