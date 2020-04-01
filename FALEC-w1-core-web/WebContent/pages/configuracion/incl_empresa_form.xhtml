@@ -13,6 +13,7 @@
 		}	
 		
 		body .ui-fileupload .ui-fileupload-content {
+			/* display: none; */
 			border: none;
 			padding: 0px;
 			border-top: 0 none;
@@ -21,6 +22,13 @@
 		
 		body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
 			width: 100%;
+		}
+		
+		@media screen and (max-width: 40em){
+			.ui-fileupload-buttonbar .ui-button .ui-button-text {
+ 				display: block !important;
+ 				padding: 0px !important;
+			}
 		}
 	</style>
 	
@@ -103,15 +111,18 @@
                     <h:outputText value="" />
              		
 	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
-	           		<p:fileUpload label="Examinar..." 
-	           					  mode="advanced" 
-	           					  skinSimple="true" 
-	           					  fileUploadListener="#{empresaCtrl.upload}" 
-	           					  auto="true" 
-	           					  sizeLimit="25242880"
-								  invalidSizeMessage="#{msg['file.size']} 2MB" 
-	           					  uploadLabel="Cargar" 
-	           					  styleClass="Wid100" />
+	           		<h:panelGroup>
+		           		<p:fileUpload label="Examinar..." 
+		           					  mode="advanced" 
+		           					  skinSimple="true" 
+		           					  fileUploadListener="#{empresaCtrl.upload}" 
+		           					  auto="true" 
+		           					  sizeLimit="25242880"
+									  invalidSizeMessage="#{msg['file.size']} 2MB" 
+		           					  uploadLabel="Cargar" 
+		           					  styleClass="Wid100">
+				  		</p:fileUpload>
+				  	</h:panelGroup>
 	           		<h:outputText value="" />
 					
 				</p:panelGrid>
