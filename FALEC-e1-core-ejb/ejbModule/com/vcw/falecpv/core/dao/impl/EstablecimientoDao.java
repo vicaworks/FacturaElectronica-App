@@ -87,6 +87,48 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 		}
 	}
 	
+	/**
+	 * @author Isabel Lobato
+	 * @param idestablecimiento
+	 * @param matriz
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeCodEstablecimiento(String idestablecimiento, String codigoestablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			
+			if(idestablecimiento!=null) {
+				
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.codigoestablecimiento=:codigoestablecimiento AND e.idestablecimiento<>:idestablecimiento");
+				q.setParameter("codigoestablecimiento", codigoestablecimiento);
+				q.setParameter("idestablecimiento", idestablecimiento);
+			}else {
+				
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.codigoestablecimiento=:codigoestablecimiento");
+				q.setParameter("codigoestablecimiento", codigoestablecimiento);
+			}
+			
+			if(q.getResultList().size()>0) {
+				return true;
+			}
+			
+			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	
+	/**
+	 * @author Isabel Lobato
+	 * @param matriz
+	 * @return
+	 * @throws DaoException
+	 */
 	@SuppressWarnings("unchecked")
 	public  List<Establecimiento> getEstablecimientobyMatriz(String matriz) throws DaoException{
 		try {

@@ -14,6 +14,8 @@ import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
 import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
+import com.vcw.falecpv.core.modelo.persistencia.Producto;
+import com.xpert.persistence.query.QueryBuilder;
 
 
 /**
@@ -87,6 +89,28 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 				actualizar(establecimiento);
 			}
 			return establecimiento;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	public boolean tieneDependenciasEst(String idestablecimiento,String idempresa)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(establecimientoDao.getEntityManager());
+			
+			if(q.select("e")
+					.from(Establecimiento.class,"e")
+					.equals("e.establecimiento.idestablecimiento", idestablecimiento)
+					.equals("e.categoria.idcategoria","1").count()>0) {
+				
+				return true;
+				
+			}
+			
+			return false;
+			
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}

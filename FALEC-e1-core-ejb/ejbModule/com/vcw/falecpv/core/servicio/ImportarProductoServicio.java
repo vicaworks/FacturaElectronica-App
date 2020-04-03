@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.core.servicio;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -107,7 +108,7 @@ public class ImportarProductoServicio {
 			producto.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 			producto.setIdusuario(idUsuario);
 			producto.setUpdated(new Date());
-			producto.setStock(0);
+			producto.setStock(BigDecimal.ZERO);
 			
 			// datos negocios 
 			producto.setCategoria(categoria(p,e,idUsuario));
