@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -52,6 +54,7 @@ import com.vcw.falecpv.core.servicio.TipoProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
+import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -103,6 +106,16 @@ public class ProductoCtrl extends BaseCtrl {
 	 */
 	public ProductoCtrl() {
 		
+	}
+	
+	@PostConstruct
+	private void init() {
+		try {
+			consultarProducto();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	@Override
@@ -858,7 +871,27 @@ public class ProductoCtrl extends BaseCtrl {
 		}
 		return null;
 	}
+	
+	public String redirectKardex2(Producto p) {
+		
+		System.out.println(p.toStringObject());
+		
+		return "kdx/kardexProducto.jsf?idProd=111&faces-redirect=true";
+	}
 
+	public void redirectKardex(Producto p) {
+		try {
+			ExternalContext e = FacesUtil.getExternalContext();
+//			e.getSessionMap().put("producto", p);
+			FacesUtils.addToSession("producto", p);
+			e.redirect("kdx/kardexProducto.jsf");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+	}
 	/**
 	 * @return the productoList
 	 */

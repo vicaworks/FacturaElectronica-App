@@ -152,6 +152,7 @@ public class KardexProductoServicio extends AppGenericService<KardexProducto, St
 			throw new DaoException(e);
 		}
 	}
+	
 
 	@Override
 	public List<KardexProducto> consultarActivos() {

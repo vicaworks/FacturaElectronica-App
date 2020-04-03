@@ -184,6 +184,7 @@
 								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
 								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
 								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
 							</p:menuitem>
 							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" >
 								<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
@@ -192,8 +193,9 @@
 								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
 								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
 								<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
+								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
 							</p:menuitem>
-							<p:menuitem value="Kardex" action="#" icon="fa fa-tags">
+							<p:menuitem value="Kardex" action="#{productoCtrl.redirectKardex(p)}" icon="fa fa-tags">
 							</p:menuitem>
 							<!-- <p:menuitem value="Rep. Inventario" action="#" icon="fa fa-file-excel-o">
 							</p:menuitem> -->

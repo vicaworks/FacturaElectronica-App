@@ -40,7 +40,7 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Productos" url="#" />
-		    <p:menuitem value="Producto" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf"/>
+		    <p:menuitem value="Kardex Producto" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf"/>
 		</p:breadCrumb>
 		
 		
@@ -205,20 +205,7 @@
 						</h:outputText>
 					</p:column>
 	                
-	                <p:column headerText="TIPO" style="width:20px;" >
-						<h:outputText value="ENTRADA" rendered="#{k.tiporegistro=='E'}" styleClass="markRed">
-						</h:outputText>
-						<h:outputText value="SALIDA" rendered="#{k.tiporegistro=='S'}" styleClass="markGreen">
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="CANTIDAD" style="width:40px;" styleClass="TexAlCenter">
-						<h:outputText value="#{k.cantidad}" >
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="FECHA" style="width:110px;">
+	                <p:column headerText="FECHA" style="width:110px;">
 						
 						<div class="p-grid">
 							<div class="p-col-5">
@@ -253,6 +240,19 @@
 							</div>
 						</div>
 					
+					</p:column>
+	                
+	                <p:column headerText="TIPO" style="width:20px;" >
+						<h:outputText value="ENTRADA" rendered="#{k.tiporegistro=='E'}" styleClass="markRed">
+						</h:outputText>
+						<h:outputText value="SALIDA" rendered="#{k.tiporegistro=='S'}" styleClass="markGreen">
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CANTIDAD" style="width:40px;" styleClass="TexAlCenter">
+						<h:outputText value="#{k.cantidad}" >
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="COST UNIT" style="width:30px;" styleClass="TexAlRight">

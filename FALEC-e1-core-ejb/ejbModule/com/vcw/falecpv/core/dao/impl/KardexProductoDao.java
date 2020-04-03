@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -51,6 +52,28 @@ public class KardexProductoDao extends AppGenericDao<KardexProducto, String> {
 			q.setParameter("hasta", hasta);
 			
 			return q.getResultList();
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idProducto
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public Date getMaxFechaRegistro(String idProducto,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT MAX(k.fecharegistro) FROM KardexProducto k WHERE k.producto.idproducto=:idproducto AND k.establecimiento.idestablecimiento=:idestablecimiento ");
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("idproducto", idProducto);
+			return (Date) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}

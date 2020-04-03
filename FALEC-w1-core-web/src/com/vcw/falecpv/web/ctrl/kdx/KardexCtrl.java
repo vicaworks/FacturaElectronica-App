@@ -37,6 +37,7 @@ import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.productos.ProductoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
+import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -82,11 +83,42 @@ public class KardexCtrl extends BaseCtrl {
 			consultarProductoForm();
 			fechaFinal = new Date();
 			fechaInicial = FechaUtil.agregarDias(fechaFinal, -30);
+			
+			Producto p = (Producto) FacesUtils.getFromSession("producto");
+			if(p!=null) {
+				// carga el producto desde pantalla de productos
+				valoresRedirectProducto(p);
+				// remueve la variable de session
+				FacesUtils.removeFromSession("producto");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
+	}
+	
+	private void valoresRedirectProducto(Producto p) {
+		try {
+			
+			Date fechaUltimoKardex = kardexProductoServicio.getKardexProductoDao()
+					.getMaxFechaRegistro(p.getIdproducto(), p.getEstablecimiento().getIdestablecimiento());
+			
+			if (fechaUltimoKardex!=null) {
+				
+				fechaFinal = fechaUltimoKardex;
+				fechaInicial = FechaUtil.agregarDias(fechaFinal, -30);
+				
+			}
+			
+			codProducto = p.getCodigoprincipal();
+			consultarProductoByCodBarra();
+			consultarKardex();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	public void consultarProductoForm()throws DaoException{
@@ -152,8 +184,9 @@ public class KardexCtrl extends BaseCtrl {
 				break;
 			case "PRODUCTO":
 				
+				productoCtrl.consultarProducto();
+				break;
 				
-				break;	
 			default:
 				break;
 			}
