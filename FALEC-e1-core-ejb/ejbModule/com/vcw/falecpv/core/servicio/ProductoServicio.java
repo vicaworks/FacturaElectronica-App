@@ -77,6 +77,9 @@ public class ProductoServicio extends AppGenericService<Producto, String> {
 				
 				producto.setIdproducto(contadorPkServicio.generarContadorTabla(TCProducto.PRODUCTO,
 						producto.getEstablecimiento().getIdestablecimiento()));
+				if(producto.getCodigoprincipal()==null || producto.getCodigoprincipal().trim().length()==0) {
+					producto.setCodigoprincipal(producto.getIdproducto());
+				}
 				crear(producto);
 				
 			}else {

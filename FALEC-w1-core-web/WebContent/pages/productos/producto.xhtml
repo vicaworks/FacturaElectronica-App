@@ -174,7 +174,29 @@
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 				            	<f:setPropertyActionListener value="#{p}" target="#{productoCtrl.productoSelected}"/>
 				            </p:menuitem>
+				            
 				            <p:separator />
+				            
+				            <p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" >
+				            	<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
+				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+				            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+							</p:menuitem>
+							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" >
+								<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
+				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+								<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
+							</p:menuitem>
+							<p:menuitem value="Kardex" action="#" icon="fa fa-tags">
+							</p:menuitem>
+							<!-- <p:menuitem value="Rep. Inventario" action="#" icon="fa fa-file-excel-o">
+							</p:menuitem> -->
 						</p:splitButton>
 						
 					</p:column>
@@ -217,7 +239,9 @@
 					</p:column>
 					
 					<p:column headerText="STOCK" style="width:20px;">
-						<h:outputText value="#{p.stock}" />
+						<h:outputText value="#{p.stock}" styleClass="FontBold Fs12">
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="VALORES" style="width:80px;">
@@ -277,6 +301,12 @@
 	    
 	    <!-- Form carga productos -->
 	    <ui:include src="incl_cargarproducto_form.xhtml" />
+	    
+	    <!-- Form EntradaInventario -->
+	    <ui:include src="kdx/incl_kardex_entrada_form.xhtml" />
+	    
+	    <!-- Form SalidaInventario -->
+	    <ui:include src="kdx/incl_kardex_salida_form.xhtml" />
         
     </ui:define>
 

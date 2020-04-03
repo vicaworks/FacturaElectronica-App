@@ -149,7 +149,7 @@ public class ProductoCtrl extends BaseCtrl {
 			productoSelected = new Producto();
 			productoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 			productoSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-			productoSelected.setStock(Integer.valueOf(0));
+			productoSelected.setStock(BigDecimal.ZERO);
 			productoSelected.setUnidadesporpaquete(Integer.valueOf(0));
 			productoSelected.setUnidadesporcajaofrasco(Integer.valueOf(0));
 			productoSelected.setPreciouno(BigDecimal.ZERO);
