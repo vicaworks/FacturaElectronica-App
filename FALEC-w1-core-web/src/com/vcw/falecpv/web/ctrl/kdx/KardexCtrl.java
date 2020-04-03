@@ -29,7 +29,6 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
-import com.vcw.falecpv.core.constante.ExcelEnum;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.KardexProductoServicio;
