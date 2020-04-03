@@ -50,7 +50,7 @@ public class KardexProducto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad", nullable = false)
-    private int cantidad;
+    private BigDecimal cantidad;
     
     @Basic(optional = false)
     @NotNull
@@ -97,7 +97,17 @@ public class KardexProducto implements Serializable {
     @Column(name = "idusuario", nullable = false, length = 40)
     private String idusuario;
     
-    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false,insertable = false,updatable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "saldo", nullable = false)
+    private BigDecimal saldo;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "orden", nullable = false)
+    private Integer orden;
+    
+    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false)
     @ManyToOne(optional = false)
     private Producto producto;
     
@@ -161,20 +171,6 @@ public class KardexProducto implements Serializable {
 	 */
 	public void setTiporegistro(String tiporegistro) {
 		this.tiporegistro = tiporegistro;
-	}
-
-	/**
-	 * @return the cantidad
-	 */
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	/**
-	 * @param cantidad the cantidad to set
-	 */
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
 	}
 
 	/**
@@ -329,6 +325,48 @@ public class KardexProducto implements Serializable {
 	 */
 	public void setEstablecimiento(Establecimiento establecimiento) {
 		this.establecimiento = establecimiento;
+	}
+
+	/**
+	 * @return the cantidad
+	 */
+	public BigDecimal getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	/**
+	 * @return the saldo
+	 */
+	public BigDecimal getSaldo() {
+		return saldo;
+	}
+
+	/**
+	 * @param saldo the saldo to set
+	 */
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
+	}
+
+	/**
+	 * @return the orden
+	 */
+	public Integer getOrden() {
+		return orden;
+	}
+
+	/**
+	 * @param orden the orden to set
+	 */
+	public void setOrden(Integer orden) {
+		this.orden = orden;
 	}
 
 		

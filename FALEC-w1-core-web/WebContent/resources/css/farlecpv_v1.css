@@ -1,4 +1,9 @@
 @charset "UTF-8";
+
+.cardTitle{
+	margin: 0px 0px 5px 0px !important;
+}
+
 /* font */
 
 .Fs16 {
@@ -192,8 +197,23 @@
 	margin-bottom: 1em;
 }
 
+.markRed{
+	color: #fff !important;
+	background-color: red !important;
+	padding: 0.2em 0.5em !important;
+	border-radius: 3px;
+	font-weight: bold;
+}
+.markGreen{
+	color: #fff !important;
+	background-color: green !important;
+	padding: 0.2em 0.5em !important;
+	border-radius: 3px;
+	font-weight: bold;
+}
+
 /* FLEXGRID CSS formulario */
-.form-p-grid .p-grid .p-sm-1, .p-sm-2, .p-sm-3, .p-sm-4, .p-sm-5, .p-sm-6,
+.p-grid .p-sm-1, .p-sm-2, .p-sm-3, .p-sm-4, .p-sm-5, .p-sm-6,
 	.p-sm-7, .p-sm-8, .p-sm-9, .p-sm-10, .p-sm-11, .p-sm-12, .p-md-1,
 	.p-md-2, .p-md-3, .p-md-4, .p-md-5, .p-md-6, .p-md-7, .p-md-8, .p-md-9,
 	.p-md-10, .p-md-11, .p-md-12, .p-lg-1, .p-lg-2, .p-lg-3, .p-lg-4,

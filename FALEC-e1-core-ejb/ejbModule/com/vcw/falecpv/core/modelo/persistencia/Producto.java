@@ -114,7 +114,7 @@ public class Producto implements Serializable {
     private Date fechacompra;
     
     @Column(name = "stock")
-    private Integer stock;
+    private BigDecimal stock;
     
     @Size(max = 800)
     @Column(name = "observacion", length = 800)
@@ -459,20 +459,6 @@ public class Producto implements Serializable {
 	}
 
 	/**
-	 * @return the stock
-	 */
-	public Integer getStock() {
-		return stock;
-	}
-
-	/**
-	 * @param stock the stock to set
-	 */
-	public void setStock(Integer stock) {
-		this.stock = stock;
-	}
-
-	/**
 	 * @return the observacion
 	 */
 	public String getObservacion() {
@@ -652,6 +638,20 @@ public class Producto implements Serializable {
 	 */
 	public void setNombreimagen(String nombreimagen) {
 		this.nombreimagen = nombreimagen;
+	}
+
+	/**
+	 * @return the stock
+	 */
+	public BigDecimal getStock() {
+		return stock;
+	}
+
+	/**
+	 * @param stock the stock to set
+	 */
+	public void setStock(BigDecimal stock) {
+		this.stock = stock;
 	}
 
 	

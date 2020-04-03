@@ -128,6 +128,14 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			Establecimiento establecimientoUpdate = new Establecimiento();
+			// Validar el codigo establecimiento
+			if (establecimientoServicio.getEstablecimientoDao().existeCodEstablecimiento(
+					establecimientoSelected.getIdestablecimiento(),
+					establecimientoSelected.getCodigoestablecimiento())) {
+				AppJsfUtil.addErrorMessage("frmEstable", "ERROR", "CODIGO DUPLICADO");
+				return;
+			}
+				
 			// Validar si existe Matriz
 			if (establecimientoServicio.getEstablecimientoDao().existeMatriz(null, matriz)) {
 				if (matriz.equals(establecimientoSelected.getMatriz())) {

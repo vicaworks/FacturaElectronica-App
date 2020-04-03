@@ -1,0 +1,297 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">Kardex</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.kardexDT .ui-datatable-scrollable-body{
+				/* min-height:800px !important;
+				max-height: 800px !important; */
+				min-height: 55vh !important;
+				max-height: 55vh !important;
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Productos" url="#" />
+		    <p:menuitem value="Kardex Producto" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf"/>
+		</p:breadCrumb>
+		
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	
+	    		<div class="p-grid p-align-center">
+	    			
+	    			<!-- criterio de busqueda -->
+	    			<div class="p-col-12 p-md-6">
+						
+						<div class="p-grid p-col-12 p-align-center">
+							
+							<div class="p-col-12 p-md-6">
+								<h:outputText value="DESDE * : " styleClass="cpoRequerido"/><br/>
+								<p:calendar id="claKardexFechaDesde" value="#{kardexCtrl.fechaInicial}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+								</p:calendar>
+								<p:message for="claKardexFechaHasta" style="padding:0em;"/>
+							</div>
+							
+							<div class="p-col-12 p-md-6">
+								<h:outputText value="HASTA * : " styleClass="cpoRequerido"/><br/>
+								<p:calendar id="claKardexFechaHasta" value="#{kardexCtrl.fechaFinal}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+								</p:calendar>
+								<p:message for="claKardexFechaHasta" style="padding:0em;"/>
+							</div>
+							
+						</div>
+						
+						<div class="p-col-12">
+						
+							<p:selectOneMenu id="somFrmListaProducto"
+											value="#{kardexCtrl.productoSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Seleccionar Producto  "
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+								<f:selectItems value="#{kardexCtrl.productoList}" var="prof"
+									itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
+								<p:ajax event="change" listener="#{kardexCtrl.cambioProducto}"></p:ajax>
+							</p:selectOneMenu>
+							<p:message for="somFrmListaProducto" />
+						</div>
+						
+						<div class="p-col-12">
+							<p:inputText id="intCodProducto" value="#{kardexCtrl.codProducto}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="BUSCAR POR : #{msg['label.codigo']} PRODUCTO"/>
+							<p:message for="intCodProducto" />
+						</div>
+						
+					</div>
+	    			
+	    			<!-- opciones -->
+	    			<div class="p-col-12 p-md-6" style="text-align:center;vertical-align: top;">
+	    				
+	    				<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+								
+								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-6,
+												   ui-g-12 ui-lg-6">
+												   
+									<p:commandButton id="cmdRefrecar"
+											value="CONSULTAR" icon="fa fa-search" 
+											action="#{kardexCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
+											/>
+									
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid90"
+										disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
+										<p:fileDownload value="#{kardexCtrl.fileKardex}"/>
+									</p:commandButton>
+									
+									<p:commandButton  id="cmdKardexEntrada" 
+										title="REG. ENTRADA KARDEX"
+										icon="fa fa-sign-in"
+										value="REGISTRAR ENTRADA"
+										styleClass="Wid90"
+										action="#{kardexCtrl.nuevo()}">
+										<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+										<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+										<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+									</p:commandButton>
+									
+									<p:commandButton  id="cmdKardexSalida" 
+										title="REGISTRAR SALIDA KARDEX"
+										icon="fa fa-sign-out"
+										value="REGISTRAR SALIDA"
+										styleClass="Wid90"
+										action="#{kardexCtrl.nuevo()}">
+										<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+										<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+										<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
+									</p:commandButton>
+								
+								</p:panelGrid>
+								
+						</p:panelGrid>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="card card-w-title">
+				<h1 class="cardTitle">Kardex</h1>
+				<p:dataTable id="kardexDT" var="k"
+					value="#{kardexCtrl.kardexProductoList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="kardexDT Fs11"  
+					rowKey="#{k.idkardexproducto}">
+	                
+	                <p:column headerText="ID" style="width:20px;">
+						<h:outputText value="#{k.idkardexproducto}" />
+					</p:column>
+					
+					<p:column headerText="FECHA / HORA" style="width:40px;" styleClass="TexAlCenter">
+						<h:outputText value="#{k.updated}" >
+							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+						</h:outputText>
+						<br/>
+						<h:outputText value="#{k.updated}" >
+							<f:convertDateTime locale="es_EC" pattern="HH:mm"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="FECHA REGISTRO INV" style="width:40px;">
+						<h:outputText value="#{k.fecharegistro}" >
+							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+	                
+	                <!-- <p:column headerText="COD" style="width:30px;">
+						<h:outputText value="#{k.producto.idproducto}" >
+						</h:outputText>
+					</p:column> -->
+	                
+	                <p:column headerText="#{msg['label.descripcion']}" style="width:130px;">
+						<h:outputText value="#{k.observacion}" >
+						</h:outputText>
+					</p:column>
+	                
+	                <p:column headerText="FECHA" style="width:110px;">
+						
+						<div class="p-grid">
+							<div class="p-col-5">
+								<h:outputText value="F. FABRI:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{k.fechafabricacion}" >
+									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
+						</div>
+						
+						<div class="p-grid">
+							<div class="p-col-5">
+								<h:outputText value="F. COMP:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{k.fechacompra}" >
+									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
+						</div>
+						
+						<div class="p-grid">
+							<div class="p-col-5">
+								<h:outputText value="F. VENCI:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{k.fechavencimiento}" >
+									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
+						</div>
+					
+					</p:column>
+	                
+	                <p:column headerText="TIPO" style="width:20px;" >
+						<h:outputText value="ENTRADA" rendered="#{k.tiporegistro=='E'}" styleClass="markRed">
+						</h:outputText>
+						<h:outputText value="SALIDA" rendered="#{k.tiporegistro=='S'}" styleClass="markGreen">
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CANTIDAD" style="width:40px;" styleClass="TexAlCenter">
+						<h:outputText value="#{k.cantidad}" >
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="COST UNIT" style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{k.costounitario}" >
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="COST TOT" style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{k.costototal}" >
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="PREC VENTA" style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{k.producto.preciouno}" >
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="EXISTENCIA" style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{k.saldo}" >
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</p:column>
+	                
+	                
+	                
+				</p:dataTable>
+			</div>
+	    	
+	    </h:form>
+	    
+	    <!-- Form Entrada -->
+	    <ui:include src="incl_kardex_entrada_form.xhtml" />
+	    
+	    <!-- Form Salida -->
+	    <ui:include src="incl_kardex_salida_form.xhtml" />
+        
+    </ui:define>
+
+</ui:composition>

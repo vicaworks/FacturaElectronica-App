@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmKdxSalida {
+				height: 250px;
+		}
+		
+	</style>
+	
+	<p:dialog  widgetVar="dlgSalidaInventario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		<f:facet name="header">
+			<i class="fa fa-sign-out"> Salida Inventario</i>
+			
+		</f:facet>
+		
+		<h:form id="frmKardexSalida">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					
+					<p:commandButton id="cmdKrxSalidaGuardar"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{kardexCtrl.guardar()}" styleClass="MRight10" update="@form #{kardexCtrl.updateView}"
+						/>
+						
+					<p:commandButton id="cmdKrxSalidaCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgSalidaInventario').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmKardexSalida"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmKdxSalida contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+					
+					<h:outputText value="ID PRODUCTO : " styleClass="FontBold"/>
+					<h:outputText value="#{kardexCtrl.productoSelected.idproducto}" styleClass="FontBold FS12"/>
+					<h:outputText value="" />
+					
+					<h:outputText value="PRODUCTO : " styleClass="FontBold"/>
+					<h:outputText value="#{kardexCtrl.productoSelected.nombregenerico}" styleClass="FontBold FS12"/>
+					<h:outputText value="" />
+					
+					<h:outputText value="#{msg['label.codigo']} : " styleClass="FontBold"/>
+					<h:outputText value="#{kardexCtrl.productoSelected.codigoprincipal}" styleClass="FontBold FS12"/>
+					<h:outputText value="" />
+					
+					<h:outputText value="STOCK : " styleClass="FontBold"/>
+					<h:outputText value="#{kardexCtrl.productoSelected.stock}" styleClass="FontBold FS12">
+						<f:convertNumber locale="es_EC" pattern="0.##"/>
+					</h:outputText>
+					<h:outputText value="" />
+					
+					<h:outputText value="CANTIDAD * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intKrxSalidaCantidad"
+						value="#{kardexCtrl.kardexProductoSelected.cantidad}"
+						required="true" requiredMessage="REQUERIDO"
+						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
+						<f:validateDoubleRange minimum="0"/>
+					</p:inputText>
+					<p:message for="intKrxSalidaCantidad"/>
+					
+					<h:outputText value="FECHA REGISTRO * : "/>
+					<p:calendar id="claKrxSalidaFechaRegistro" value="#{kardexCtrl.kardexProductoSelected.fecharegistro}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+					</p:calendar>
+					<p:message for="claKrxSalidaFechaRegistro"/>
+					
+					<h:outputText value="#{msg['label.observacion']} : "/>
+					<p:inputTextarea id="intKrxSalidaObservacion"
+						value="#{kardexCtrl.kardexProductoSelected.observacion}"
+						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="800" converter="omnifaces.ToUpperCaseConverter"
+						style="height:30px;" />
+					<p:message for="intKrxSalidaObservacion"/>
+					
+				</p:panelGrid>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>
