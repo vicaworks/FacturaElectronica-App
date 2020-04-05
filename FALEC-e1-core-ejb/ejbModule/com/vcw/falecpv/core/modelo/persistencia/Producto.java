@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -171,7 +173,10 @@ public class Producto implements Serializable {
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     private Establecimiento establecimiento;
     
-
+    
+    @Transient
+    private BigDecimal costototal;
+    
 	/**
 	 * 
 	 */
@@ -652,6 +657,24 @@ public class Producto implements Serializable {
 	 */
 	public void setStock(BigDecimal stock) {
 		this.stock = stock;
+	}
+
+	/**
+	 * @return the costototal
+	 */
+	public BigDecimal getCostototal() {
+		costototal = BigDecimal.ZERO;
+		if(stock!=null && preciounitario!=null) {
+			costototal = stock.multiply(preciounitario).setScale(2, RoundingMode.HALF_UP);
+		}
+		return costototal;
+	}
+
+	/**
+	 * @param costototal the costototal to set
+	 */
+	public void setCostototal(BigDecimal costototal) {
+		this.costototal = costototal;
 	}
 
 	

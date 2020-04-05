@@ -14,11 +14,7 @@
 		
 	</style>
 	
-	<p:dialog  widgetVar="dlgEntradaInventario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
-		<f:facet name="header">
-			<i class="fa fa-sign-in"> Entrada Inventario</i>
-			
-		</f:facet>
+	<p:dialog header="Entrada Inventario" widgetVar="dlgEntradaInventario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmKardex">
 			
@@ -123,7 +119,7 @@
 					</p:calendar>
 					<p:message for="claKardexFechaVencimiento"/>
 					
-					<h:outputText value="#{msg['label.observacion']} : "/>
+					<h:outputText value="#{msg['label.observacion']} * : "/>
 					<p:inputTextarea id="intKardexObservacion"
 						value="#{kardexCtrl.kardexProductoSelected.observacion}"
 						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"

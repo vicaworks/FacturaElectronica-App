@@ -34,6 +34,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.KardexProductoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.productos.InventarioCtrl;
 import com.vcw.falecpv.web.ctrl.productos.ProductoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -70,6 +71,7 @@ public class KardexCtrl extends BaseCtrl {
 	private Date fechaInicial;
 	private Date fechaFinal;
 	private ProductoCtrl productoCtrl;
+	private InventarioCtrl inventarioCtrl;
 
 	/**
 	 * 
@@ -182,11 +184,13 @@ public class KardexCtrl extends BaseCtrl {
 				consultarKardex();
 				
 				break;
-			case "PRODUCTO":
+			case "PRODUCTO" :
 				
 				productoCtrl.consultarProducto();
 				break;
-				
+			case "INVENTARIO":
+				inventarioCtrl.buscarDispacher();
+				break;
 			default:
 				break;
 			}
@@ -240,7 +244,12 @@ public class KardexCtrl extends BaseCtrl {
 				
 				kardexProductoSelected.setProducto(kardexProductoServicio.getProducto(productoSelected.getIdproducto(), null, null));
 				
-				break;	
+				break;
+			case "INVENTARIO":
+				
+				kardexProductoSelected.setProducto(kardexProductoServicio.getProducto(productoSelected.getIdproducto(), null, null));
+				
+				break;
 			default:
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE MODULE CALL");
 				return;
@@ -563,6 +572,20 @@ public class KardexCtrl extends BaseCtrl {
 	 */
 	public void setProductoCtrl(ProductoCtrl productoCtrl) {
 		this.productoCtrl = productoCtrl;
+	}
+
+	/**
+	 * @return the inventarioCtrl
+	 */
+	public InventarioCtrl getInventarioCtrl() {
+		return inventarioCtrl;
+	}
+
+	/**
+	 * @param inventarioCtrl the inventarioCtrl to set
+	 */
+	public void setInventarioCtrl(InventarioCtrl inventarioCtrl) {
+		this.inventarioCtrl = inventarioCtrl;
 	}
 	
 
