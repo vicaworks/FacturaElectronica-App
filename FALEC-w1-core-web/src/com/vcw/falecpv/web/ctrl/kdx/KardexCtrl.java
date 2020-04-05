@@ -232,6 +232,7 @@ public class KardexCtrl extends BaseCtrl {
 			kardexProductoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 			kardexProductoSelected.setProducto(productoSelected);
 			kardexProductoSelected.setSaldo(BigDecimal.ZERO);
+			kardexProductoSelected.setCostounitario(productoSelected.getPreciounitario());
 			
 			switch (callMOdule) {
 			case "KARDEX":
