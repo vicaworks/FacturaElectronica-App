@@ -3,23 +3,366 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">Producto</ui:define>
+    <ui:define name="title">Inventario</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
-
+			
+			.inventarioDT .ui-datatable-scrollable-body{
+				/* min-height:800px !important;
+				max-height: 800px !important; */
+				min-height: 55vh !important;
+				max-height: 55vh !important;
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-message {
+				padding: 0em !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				/* display: none; */
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
+			}
+			
+			@media screen and (max-width: 40em){
+					.ui-fileupload-buttonbar .ui-button .ui-button-text {
+					display: block !important;
+				}
+			}
+			
+			
         </style>
     </ui:define>
 
     <ui:define name="content">
-    
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Productos" url="#" />
 		    <p:menuitem value="Inventario" url="#{request.contextPath}/pages/productos/inventario.jsf"/>
 		</p:breadCrumb>
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    		
+	    		<div class="p-grid p-justify-center p-align-top vertical-container">
+	    			
+	    			<div class="p-col-12 p-md-8">
+	    				
+	    				<div class="p-grid">
+	    					
+	    					<div class="p-col-12">
+	    						<div class="EmptyBox5"/>
+	    						<h:outputText value="Buscar Por * :" styleClass="FontBold"/>
+	    						<h:outputText value=" [Selecionar una de las opciones de busqueda.]" styleClass="color:gray;" style="Fs10"/>
+	    						<div class="EmptyBox5"/>
+	    						<p:selectOneMenu id="somInvOpcionBusqueda"
+											value="#{inventarioCtrl.opcionBusqueda}"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100">
+											
+									<f:selectItem itemLabel="TODO EL INVENTARIO"
+											itemValue="INVENTARIO"/>
+									
+									<f:selectItem itemLabel="STOCK MAYOR A 0"
+											itemValue="STOCKMAYORZERO"/>
+											
+									<f:selectItem itemLabel="STOCK MENOR O IGUAL"
+											itemValue="STOCKMENORIGUAL"/>
+											
+									<f:selectItem itemLabel="FECHA DE CADUCIDAD MENOR O IGUAL"
+											itemValue="FECHACADUCIDAD"/>
+									
+									<f:selectItem itemLabel="POR PRODUCTO"
+											itemValue="PRODUCTO"/>
+									
+									<f:selectItem itemLabel="POR CODIGO PRODUCTO"
+											itemValue="CODPRODUCTO"/>
+									
+									<f:selectItem itemLabel="POR #{msg['label.categoria']}"
+											itemValue="CATEGORIA"/>
+									
+									<f:selectItem itemLabel="POR FABRICANTE"
+											itemValue="FABRICANTE"/>
+											
+									<p:ajax event="change" update="@form" process="@this :formMain:somInvOpcionBusqueda"/>
+								</p:selectOneMenu>	
+								<p:message for="somInvOpcionBusqueda" />
+	    					</div>
+	    					
+	    					<div class="p-col-12">
+	    						
+	    						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'STOCKMENORIGUAL'}">
+
+									<p:inputText id="intinvStock" value="#{inventarioCtrl.stock}"
+										required="true" requiredMessage="REQUERIDO"
+										styleClass="Wid100" maxlength="1000"
+										placeholder="STOCK MENOR O IGUAL A ..."
+										converterMessage="#{msg['converter.solonumeros']}" />
+									<p:message for="intinvStock" />
+	    							
+	    						</f:subview>
+	    						
+	    						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'FECHACADUCIDAD'}">
+	    							
+	    							<p:calendar id="claInvFechaCaducidad" value="#{inventarioCtrl.fechaCaducidad}"
+										pattern="dd/MM/yyyy"
+										locale="es" 
+										requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+									</p:calendar>
+									<p:message for="claInvFechaCaducidad" style="padding:0em;"/>
+	    							
+	    						</f:subview>
+	    						
+	    						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'PRODUCTO'}">
+	    							
+	    							<p:selectOneMenu id="somInvListaProducto"
+											value="#{inventarioCtrl.productoFormSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="Seleccionar Producto ... "
+												itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+										<f:selectItems value="#{inventarioCtrl.productoFormList}" var="prof"
+											itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
+										<!-- <p:ajax event="change" listener="#{kardexCtrl.cambioProducto}"></p:ajax> -->
+									</p:selectOneMenu>
+									<p:message for="somInvListaProducto" />
+	    							
+	    						</f:subview>
+	    						
+	    						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'CODPRODUCTO'}">
+	    							<p:inputText id="intInvCodProducto" value="#{inventarioCtrl.codProducto}"
+										required="true" requiredMessage="REQUERIDO"
+										styleClass="Wid100" maxlength="1000"
+										placeholder="CODIGO DEL PRODUCTO .."/>
+									<p:message for="intInvCodProducto" />
+	    						</f:subview>
+	    						
+	    						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'CATEGORIA'}">
+	    						
+	    							<p:selectOneMenu id="somInvListaCategoria"
+											value="#{inventarioCtrl.categoriaSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="Seleccionar Categoria ... "
+												itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+										<f:selectItems value="#{inventarioCtrl.categoriaList}" var="c"
+											itemLabel="#{c.categoria}" itemValue="#{c}" />
+									</p:selectOneMenu>
+									<p:message for="somInvListaCategoria" />
+									
+	    						</f:subview>
+	    						
+	    						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'FABRICANTE'}">
+	    							
+	    							<p:selectOneMenu id="somInvListaFabricante"
+											value="#{inventarioCtrl.fabricanteSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="Seleccionar Fabricante ... "
+												itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+										<f:selectItems value="#{inventarioCtrl.fabricanteList}" var="f"
+											itemLabel="#{f.nombrecomercial}" itemValue="#{f}" />
+									</p:selectOneMenu>
+									<p:message for="somInvListaFabricante" />
+	    							
+	    						</f:subview>
+	    						
+	    					</div>
+	    					
+	    				</div>
+	    				
+	    				
+	    			</div>
+	    			
+	    			<div class="p-col-12 p-md-4">
+	    				<div class="EmptyBox5"/>
+	    				<div class="EmptyBox5"/>
+	    				<p:commandButton id="cmdInvRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{inventarioCtrl.refrescar()}" styleClass="secondary-button Wid100" update="@form"
+						/>
+						<div class="EmptyBox5"/>
+						<p:commandButton id="cmdInvNuevoProducto"
+							value="NUEVO PRODUCTO" icon="fa fa-plus" 
+							action="#{productoCtrl.nuevo()}" styleClass="Wid100" update="@form">
+							<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
+							<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{productoCtrl.inventarioCtrl}"/>
+						</p:commandButton>
+						<div class="EmptyBox5"/>
+						<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid100"
+										disabled="#{empty inventarioCtrl.productoList}">
+							<p:fileDownload value="#{inventarioCtrl.fileInventario}"/>
+						</p:commandButton>
+						
+	    			</div>
+	    			
+	    		</div>
+	    		
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			
+			<div class="card card-w-title">
+				
+				<h1 class="cardTitle">Inventario</h1>
+				
+				<p:dataTable id="inventarioDT" var="i"
+					value="#{inventarioCtrl.productoList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="inventarioDT Fs11"  
+					rowKey="#{i.idproducto}">
+					
+					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+						
+						<p:commandLink id="clkInvEditProducto" action="#{productoCtrl.editarProducto(i.idproducto)}" title="EDITAR PRODUCTO">
+							<i class="fa fa-edit Fs16" style="color:gray;"></i>
+						</p:commandLink>
+						
+						<p:spacer width="10px"></p:spacer>
+						
+						<p:commandLink id="clkInvEntrada" action="#{kardexCtrl.nuevo()}" title="ENTRADA DE INVENTARIO">
+							<i class="fa fa-sign-in Fs16"></i>
+							<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
+			            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+			            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+							<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+							<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+							<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
+						</p:commandLink>
+						
+						<p:spacer width="10px"></p:spacer>
+												
+						<p:commandLink id="clkInvSalida" action="#{kardexCtrl.nuevo()}" title="SALIDA DE INVENTARIO">
+							<i class="fa fa-sign-out Fs16" style="color:red;"></i>
+							<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
+			            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+			            	<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+							<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+							<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+							<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
+						</p:commandLink>
+						
+						
+					</p:column>
+					
+					<p:column headerText="ID" style="width:20px;">
+						<h:outputText value="#{i.idproducto}" />
+					</p:column>
+					
+					<p:column headerText="#{msg['label.codigo']}" style="width:30px;" filterBy="#{i.codigoprincipal}" filterMatchMode="contains">
+						<h:outputText value="#{i.codigoprincipal}" />
+					</p:column>
+					
+					<p:column headerText="NOMBRE" style="width:120px;"  filterBy="#{i.nombregenerico}" filterMatchMode="contains">
+						<h:outputText value="#{i.nombregenerico}" />
+					</p:column>
+					
+					<p:column headerText="FECHA VENCIMIENTO" style="width:60px;" styleClass="TexAlCenter" rendered="#{inventarioCtrl.opcionBusqueda=='FECHACADUCIDAD'}">
+						<h:outputText value="#{i.fechavencimiento}" styleClass="markRed">
+							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="STOCK" style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{i.stock}" styleClass="#{i.stock.doubleValue()==0.0?'markRed':'markGreen'}">
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="COST. UNIT." style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{i.preciounitario}" >
+							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="COST. TOTAL." style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{i.costototal}" >
+							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					
+				</p:dataTable>
+				
+			</div>
+			
+			
+	    </h:form>
+	    
+	    <!-- Form Entrada -->
+	    <ui:include src="kdx/incl_kardex_entrada_form.xhtml" />
+	    
+	    <!-- Form Salida -->
+	    <ui:include src="kdx/incl_kardex_salida_form.xhtml" />
+	    
+	    <!-- Form Producto -->
+	    <ui:include src="incl_producto_form.xhtml" />
         
     </ui:define>
 

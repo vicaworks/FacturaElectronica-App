@@ -19,6 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.contadores.TCCategoria;
@@ -31,12 +32,14 @@ import com.vcw.falecpv.core.dao.impl.IceDao;
 import com.vcw.falecpv.core.dao.impl.IvaDao;
 import com.vcw.falecpv.core.dao.impl.ProductoDao;
 import com.vcw.falecpv.core.dao.impl.TipoProductoDao;
+import com.vcw.falecpv.core.dao.impl.UsuarioDao;
 import com.vcw.falecpv.core.modelo.dto.ImportProductoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
+import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.TipoProducto;
 import com.vcw.falecpv.core.util.EncoderUtil;
@@ -71,6 +74,12 @@ public class ImportarProductoServicio {
 	
 	@Inject
 	private IceDao iceDao;
+	
+	@Inject
+	private UsuarioDao usuarioDao;
+	
+	@Inject
+	private KardexProductoServicio kardexProductoServicio;
 	
 	@EJB
 	private ContadorPkServicio contadorPkServicio;
@@ -108,15 +117,14 @@ public class ImportarProductoServicio {
 			producto.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 			producto.setIdusuario(idUsuario);
 			producto.setUpdated(new Date());
-			producto.setStock(BigDecimal.ZERO);
 			
 			// datos negocios 
+			producto.setStock(BigDecimal.ZERO);
 			producto.setCategoria(categoria(p,e,idUsuario));
 			producto.setFabricante(fabricante(p,e,idUsuario));
 			producto.setTipoProducto(tipoProducto(p));
 			producto.setNombre(p.getNombre());
 			producto.setNombregenerico(p.getNombreComercial());
-			producto.setCodigoprincipal(p.getCodigoPrincipal());
 			producto.setDescripcion(p.getDescripcion());
 			producto.setPreciounitario(p.getPrecioUnitario());
 			producto.setIva(iva(p,e));
@@ -153,7 +161,10 @@ public class ImportarProductoServicio {
 			
 			// crear el producto
 			producto.setIdproducto(contadorPkServicio.generarContadorTabla(TCProducto.PRODUCTO, idEstablecimiento));
+			producto.setCodigoprincipal(p.getCodigoPrincipal()==null?producto.getIdproducto():p.getCodigoPrincipal());
 			productoDao.guardar(producto);
+			p.setIdProducto(producto.getIdproducto());
+			
 		}
 		
 		return lista;
