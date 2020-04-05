@@ -77,7 +77,7 @@
 					
 						<p:commandButton id="cmdGuardarProductoForm"
 							value="GUARDAR" icon="fa fa-check" 
-							action="#{productoCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
+							action="#{productoCtrl.guardar()}" styleClass="MRight10" update="@form #{productoCtrl.viewUpdate}"
 							/>
 							
 						<p:commandButton id="cmdCerrarProductoForm"
@@ -107,6 +107,15 @@
 						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Generales</div>
 						
 						<p:panelGrid id="gridProductoDG" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+							
+							<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:selectOneMenu id="somInvEstado" value="#{productoCtrl.productoSelected.estado}" style="width:100%" disabled="#{productoCtrl.productoSelected.idproducto==null}">
+					    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+					    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+					    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
+					    		</p:selectOneMenu>
+							</h:panelGroup>
 							
 							<h:panelGroup>
 								<h:outputText value="FABRICANTE * : " styleClass="cpoRequerido"/><br/>
@@ -263,7 +272,7 @@
 							</h:panelGroup>
 							
 							<h:panelGroup>
-								<h:outputText value="Precio 1 : "/>
+								<h:outputText value="Precio Venta 1 : "/>
 								<h:outputText value="[Sin Iva] " style="color:gray;" styleClass="Fs10"/>
 							</h:panelGroup>
 							<h:panelGroup>
@@ -277,7 +286,7 @@
 							</h:panelGroup>
 							
 							<h:panelGroup>
-								<h:outputText value="Precio 2 : "/>
+								<h:outputText value="Precio Venta 2 : "/>
 								<h:outputText value="[Sin Iva] " style="color:gray;" styleClass="Fs10"/>
 							</h:panelGroup>
 							<h:panelGroup>
@@ -291,7 +300,7 @@
 							</h:panelGroup>
 							
 							<h:panelGroup>
-								<h:outputText value="Precio 3 : "/>
+								<h:outputText value="Precio Venta 3 : "/>
 								<h:outputText value="[Sin Iva] " style="color:gray;" styleClass="Fs10"/>
 							</h:panelGroup>
 							<h:panelGroup>
