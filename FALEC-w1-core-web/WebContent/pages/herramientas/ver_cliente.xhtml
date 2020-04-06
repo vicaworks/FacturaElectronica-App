@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+	</style>
+	
+	<p:dialog header="Cliente" widgetVar="dlgVerCliente" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmVerCliente">
+			
+			<!-- OPCIONES -->
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+
+					<p:commandButton id="cmdCerrarVerCli"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgVerCliente').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmEmpresa contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6">
+					
+					<h:outputText value="ID : " style="font-weight: bold" />
+					<h:outputText value="#{clienteCtrl.clienteSelected.idcliente}" />
+					
+					<h:outputText value="Tipo identificación : " style="font-weight: bold" />
+					<h:outputText value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" />
+					
+					<h:outputText value="Identificación : " style="font-weight: bold" />
+					<h:outputText value="#{clienteCtrl.clienteSelected.identificacion}" />
+					
+					<h:outputText value="Razón social : " style="font-weight: bold" />
+					<h:outputText value="#{clienteCtrl.clienteSelected.razonsocial}" />
+					
+					<h:outputText value="Dirección : " style="font-weight: bold" />
+					<h:outputText value="#{clienteCtrl.clienteSelected.direccion}" />
+					
+					<h:outputText value="Correo electrónico : " style="font-weight: bold" />
+					<h:outputText value="#{clienteCtrl.clienteSelected.correoelectronico}" />
+					
+					<h:outputText value="Teléfono : " style="font-weight: bold" />
+					<h:outputText value="#{clienteCtrl.clienteSelected.telefono}" />
+					
+				</p:panelGrid>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+</ui:composition>

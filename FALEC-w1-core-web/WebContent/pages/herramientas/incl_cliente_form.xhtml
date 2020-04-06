@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+
+	</style>
+	
+	<p:dialog header="Cliente" widgetVar="dlgCliente" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmCliente">
+			
+			<!-- OPCIONES -->
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdGuardarCli"
+						value="GUARDAR" icon="fa fa-check" ajax="true"
+						action="#{clienteCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
+						/>
+						
+					<p:commandButton id="cmdCerrarCli"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgCliente').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCliente"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmEmpresa contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+					
+					<h:outputText value="Tipo identificación * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<p:selectOneMenu id="somTipoIdentificacion" value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" 
+									 styleClass="Wid100" converter="omnifaces.SelectItemsConverter">
+						<f:selectItem itemLabel="TIPO IDENTIFICACIÓN [seleccionar] ..."
+								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+
+						<f:selectItems value="#{tipoIdentificacionCtrl.tipoIdentificacionList}" var="ident"
+							itemLabel="#{ident.tipoidentificacion}" itemValue="#{ident}" />
+					</p:selectOneMenu>
+					<p:message for="somTipoIdentificacion"/>
+					
+					<h:outputText value="IDENTIFICACIÓN * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intIdentificacion" value="#{clienteCtrl.clienteSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
+					</h:panelGroup>
+					<p:message for="intIdentificacion"/>
+					
+					<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intRazonSocial" value="#{clienteCtrl.clienteSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
+					</h:panelGroup>
+					<p:message for="intRazonSocial"/>
+					
+					<h:outputText value="DIRECCIÓN : " style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" />
+					</h:panelGroup>
+					<h:outputText value="" />
+					
+					<h:outputText value="CORREO ELECTRÓNICO : " style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="Wid100" maxlength="50" />
+					</h:panelGroup>
+					<h:outputText value="" />
+					
+					<h:outputText value="TELEFÓNO : " style="font-weight: bold" />
+					<h:panelGroup>
+						<p:inputText id="intTelefono" value="#{clienteCtrl.clienteSelected.telefono}" styleClass="Wid100" maxlength="20" />
+					</h:panelGroup>
+					<h:outputText value="" />
+					
+				</p:panelGrid>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+</ui:composition>

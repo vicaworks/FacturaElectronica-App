@@ -1,0 +1,216 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">Cliente</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.clienteDT .ui-datatable-scrollable-body{
+				min-height: 60vh !important;
+				max-height: 60vh !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
+			}
+			
+			@media screen and (max-width: 40em){
+				.ui-fileupload-buttonbar .ui-button .ui-button-text {
+					display: block !important;
+				}
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Herramientas" url="#" />
+		    <p:menuitem value="Cliente" url="#{request.contextPath}/pages/herramientas/cliente.jsf"/>
+		</p:breadCrumb>
+		
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	
+	    		<div class="p-grid p-align-center">
+	    			
+	    			<!-- criterio de búsqueda -->
+	    			<div class="p-col-12 p-md-6">
+						
+						<div class="p-col-12">
+							<h:outputText value="Buscar por:" styleClass="TextBold"/><br/>
+							<h:outputText value="#{msg['criterio.busquedacliente']}" style="color:gray;" styleClass="Fs11"/>
+						</div>
+						
+						<div class="p-col-12">
+							<p:inputText id="intCriterio" value="#{productoCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="#{msg['criterio.busquedacliente']}"/>
+						</div>
+						
+					</div>
+	    			
+	    			<!-- Opciones -->
+	    			<div class="p-col-12 p-md-6" style="text-align:center;">
+	    				
+	    				<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+								
+								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-6,
+												   ui-g-12 ui-lg-6">
+												   
+									<p:commandButton id="cmdRefrescar"
+											value="CONSULTAR" icon="fa fa-search" 
+											action="#{clienteCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
+											/>
+									
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid90">
+										<p:fileDownload value="#{fabricanteCtrl.fileFabricante}"/>
+									</p:commandButton>
+									
+									<p:commandButton id="cmdNuevo"
+										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										action="#{clienteCtrl.nuevo()}" inline="true" 
+										/>
+									
+									<p:commandButton  id="cmdExcelCargar" 
+										title="CARGAR ARCHIVO EXCEL CLIENTES"
+										icon="fa fa-file-excel-o"
+										value="IMPORTAR CLIENTES"
+										styleClass="secondary-button Wid90"
+										onclick="PF('dlgImportCliente').show()"
+										update=""
+										immediate="true">
+										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.nombreFileCliente}"/>
+										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.fileClientes}"/>
+										<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.existenNovedades}"/>
+										<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.renderResultadoImportCliente}"/>
+									</p:commandButton>
+								
+								</p:panelGrid>
+								
+						</p:panelGrid>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="card card-w-title">
+				<h1 class="cardTitle">Cliente</h1>
+				<p:dataTable id="clienteDT" var="c"
+					value="#{clienteCtrl.clienteList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="clienteDT Fs11"  
+					rowKey="#{c.idcliente}"
+					rows="10"
+	                paginator="true"
+	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	                paginatorPosition="bottom">
+	                
+	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:10px;">
+						
+						<p:splitButton id="clbOpc" action="#" icon="fa fa-list-ul Fs14">
+							<p:menuitem value="Ver Cliente" action="#{clienteCtrl.verCliente(c.idcliente)}" icon="fa fa-edit" >
+							</p:menuitem>
+							<p:menuitem value="Editar Cliente" action="#{clienteCtrl.editarCliente(c.idcliente)}" icon="fa fa-edit" rendered="#{c.identificacion ne '9999999999999'}">
+							</p:menuitem>
+				            <p:menuitem value="Eliminar Cliente" action="#{clienteCtrl.eliminar()}" icon="fa fa-close" process="clienteDT" update="@parent" rendered="#{c.identificacion ne '9999999999999'}">
+				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+				            	<f:setPropertyActionListener value="#{c}" target="#{clienteCtrl.clienteSelected}"/>
+				            </p:menuitem>
+						</p:splitButton>
+						
+					</p:column>
+					
+					<p:column headerText="CÓDIGO" style="width:30px;">
+						<h:outputText value="#{c.idcliente}" styleClass="FontBold Fs12" />
+					</p:column>
+					
+					<p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="IDENTIFICACIÓN" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+						<h:outputText value="#{c.identificacion}" />
+					</p:column>
+					
+					<p:column style="width:90px;" filterBy="#{c.razonsocial}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="RAZÓN SOCIAL" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+						<h:outputText value="#{c.razonsocial}" />
+					</p:column>
+					
+					<p:column headerText="DIRECCIÓN" style="width:50px;">
+						<h:outputText value="#{c.direccion}" styleClass="FontBold Fs12" />
+					</p:column>
+					
+					<p:column headerText="CORREO ELECTRÖNICO" style="width:50px;">
+						<h:outputText value="#{c.correoelectronico}" styleClass="FontBold Fs12" />
+					</p:column>
+					
+					<p:column headerText="TELÉFONO" style="width:50px;">
+						<h:outputText value="#{c.telefono}" styleClass="FontBold Fs12" />
+					</p:column>
+	                
+				</p:dataTable>
+			</div>
+	    	
+	    </h:form>
+	    
+	    <!-- Form Ver Cliente -->
+	    <ui:include src="ver_cliente.xhtml" />
+	    
+	    <!-- Form Cliente -->
+	    <ui:include src="incl_cliente_form.xhtml" />
+
+    </ui:define>
+
+</ui:composition>
