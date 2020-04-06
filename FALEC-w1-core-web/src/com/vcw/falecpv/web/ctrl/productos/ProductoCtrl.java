@@ -309,6 +309,12 @@ public class ProductoCtrl extends BaseCtrl {
 				}
 			}
 			
+			// valida si el medida tiene espacios en blanco 
+			if(productoSelected.getMedida()!=null && productoSelected.getMedida().trim().length()==0) {
+				productoSelected.setMedida(null);
+				productoSelected.setConversionmedida(BigDecimal.ZERO);
+			}
+			
 			//4. si existe medida de conversion
 			if(productoSelected.getMedida()!=null && productoSelected.getConversionmedida().floatValue()<0.001f) {
 				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","AL EXISTIR MEDIDA DE " + msg.getString("label.conversion") +   " DEBE EXISTIR UN VALOR > 0.");
