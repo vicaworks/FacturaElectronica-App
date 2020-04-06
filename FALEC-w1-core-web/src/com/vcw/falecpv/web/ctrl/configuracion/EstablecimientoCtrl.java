@@ -373,7 +373,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			cell = row.getCell(1);
 			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
 			
-			// lista de usuarios
+			// lista de Establecimientos
 			int fila = 8;
 			
 			for (Establecimiento e : establecimientoAllList) {

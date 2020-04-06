@@ -28,10 +28,119 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="#{msg['menu.configuracion']}" url="#" />
-		    <p:menuitem value="Usuario" url="#{request.contextPath}/pages/configuracion/iva.jsf" />
+		    <p:menuitem value="Iva" url="#{request.contextPath}/pages/configuracion/iva.jsf" />
 		</p:breadCrumb>
 	    
-	    
+	    <!--OPCIONES -->
+		<h:form id="formMain">
+			<div class="card card-w-title" style="margin-top: 12px;">
+				<div class="p-grid">
+					<div class="p-grid p-col-12 p-md-6 p-align-center"></div>
+
+					<div class="p-col-12 p-md-6 p-align-center">
+						<p:panelGrid columns="1"
+							style="margin:0px;border:none !important;width:100%;"
+							layout="grid" columnClasses="ui-g-12">
+
+							<p:panelGrid columns="4"
+								style="border:none !important;margin:0px;width:100%;"
+								columnClasses="ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4">
+								<h:panelGroup>
+									<span class="ui-separator MRight10"> <span
+										class="fa fa-ellipsis-v leaden" />
+									</span>
+									<p:spacer width="5px" />
+									<p:commandButton id="cmdRefrecar" value="CONSULTAR"
+										icon="fa fa-search"
+										action="#{ivaCtrl.refrescar()}"
+										styleClass="secondary-button Wid80" update="@form" />
+								</h:panelGroup>
+
+								<p:commandButton id="nuevoIva"
+									value="NUEVO"
+								 icon="fa fa-plus" 
+								 styleClass=" Wid90"
+								 action="#{ivaCtrl.nuevo()}" inline="true"
+									 />
+
+								<p:commandButton id="cmdExcelEstab" title="EXPORTAR"
+									icon="fa fa-file-excel-o" ajax="false"
+									onclick="PrimeFaces.monitorDownload(start,stop)"
+									value="REPORTE" styleClass="success-btn Wid90">
+									<p:fileDownload value="#{ivaCtrl.fileIva}" />
+								</p:commandButton>
+
+							</p:panelGrid>
+						</p:panelGrid>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="card card-w-title">
+				<p:dataTable var="iva"
+					value="#{ivaCtrl.ivaAllList}"
+					scrollable="true" styleClass="ivaDT"
+					rowKey="#{iva.idiva}">
+
+					<p:column headerText="OPC" style="width:30px;">
+
+						<p:commandLink id="clkEditar"
+							action="#{ivaCtrl.editar()}">
+							<i class="fa fa-edit Fs16"></i>
+							<f:setPropertyActionListener value="#{iva}"
+								target="#{ivaCtrl.ivaSelected}" />
+						</p:commandLink>
+
+						<p:spacer width="5px"></p:spacer>
+
+						<p:commandLink id="clkEliminar"
+							action="#{ivaCtrl.eliminar()}" update="@form">
+							<i class="fa fa-close Fs18" style="color: red;"></i>
+							<f:setPropertyActionListener value="#{iva}"
+								target="#{ivaCtrl.ivaSelected}" />
+							<p:confirm header="#{msg['label.confirmacion']}"
+								message="#{msg['mensaje.confimacion']}"
+								icon="fa fw-3x fa-exclamation-triangle" />
+						</p:commandLink>
+					</p:column>
+					
+					<p:column headerText="Id"
+						style="width:10px; text-align: center;">
+						<h:outputText value="#{iva.idiva}" />
+					</p:column>
+
+					<p:column headerText="Codigo" style="width:60px;">
+						<h:outputText value="#{iva.codigo}" />
+					</p:column>
+
+					<p:column headerText="Porcentaje" priority="1"
+						style="width:40px; ">
+						<h:outputText value="#{iva.porcentaje}" />
+					</p:column>
+
+					<p:column headerText="Valor"
+						style="width:10px; text-align: center; ">
+						<h:outputText value="#{iva.valor}" />
+					</p:column>
+
+					<p:column headerText="Usuario" style="width:25px;">
+						<h:outputText value="#{iva.idusuario}" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
+			
+	    </h:form>
+	     <!-- formulario iva -->
+	    <ui:include src="incl_iva_form.xhtml" />
     </ui:define>
     
     

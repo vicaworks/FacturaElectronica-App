@@ -135,7 +135,7 @@
 						<p:inputText id="intCorreoEst"
 							value="#{establecimientoCtrl.establecimientoSelected.correo}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="50" >
+							maxlength="50" validatorMessage="CORREO INCORRECTO" >
 							<f:validateRegex
 								pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"></f:validateRegex>
 						</p:inputText>
@@ -143,12 +143,11 @@
 					<p:message for="intCorreoEst" />
 
 					<h:outputText value="MATRIZ * : " styleClass="cpoRequerido" />
-					<h:panelGroup>
-						<p:inputText id="intMatrizEst"
-							value="#{establecimientoCtrl.establecimientoSelected.matriz}"
-							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="10" converter="omnifaces.ToUpperCaseConverter" />
-					</h:panelGroup>
+						<p:selectOneMenu id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}">
+					            <f:selectItem itemLabel="Seleccione" itemValue="" />
+					            <f:selectItem itemLabel="SI" itemValue="S" />
+					            <f:selectItem itemLabel="NO" itemValue="N" />
+			         	</p:selectOneMenu>
 					<p:message for="intMatrizEst" />
 
 					<h:outputText value="SECUENCIAL FACTURA * : "
