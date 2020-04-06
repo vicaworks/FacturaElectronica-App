@@ -11,13 +11,9 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
-import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
 import com.vcw.falecpv.core.constante.contadores.TCIva;
-import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
 import com.vcw.falecpv.core.dao.impl.IvaDao;
 import com.vcw.falecpv.core.dao.impl.ProductoDao;
-import com.vcw.falecpv.core.modelo.persistencia.Categoria;
-import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.xpert.persistence.query.QueryBuilder;
@@ -115,4 +111,5 @@ public class IvaServicio extends AppGenericService<Iva, String> {
 		}
 	}
 
+	
 }

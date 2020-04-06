@@ -1,0 +1,170 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">ICE</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+        	
+        	.iceDT .ui-datatable-scrollable-body{
+				min-height:400px !important;
+				max-height: 400px !important;
+			}	
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="#{msg['menu.configuracion']}" url="#" />
+		    <p:menuitem value="ICE" url="#{request.contextPath}/pages/configuracion/ice.jsf" />
+		</p:breadCrumb>
+	    
+	    <!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	
+	    		<div class="p-grid p-align-center">
+	    			
+	    			<!-- criterio de busqueda -->
+	    			<div class="p-col-12 p-md-6"></div>
+	    			
+	    			<!-- opciones -->
+	    			<div class="p-col-12 p-md-6" style="text-align:center;">
+	    				
+	    				<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+								
+								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-6,
+												   ui-g-12 ui-lg-6">
+												   
+									<p:commandButton id="cmdRefrecar"
+											value="CONSULTAR" icon="fa fa-search" 
+											action="#{iceCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
+											/>
+									
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid90">
+										<p:fileDownload value="#{iceCtrl.fileIce}"/>
+									</p:commandButton>
+									
+									<p:commandButton id="cmdNuevo"
+										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										action="#{iceCtrl.nuevo()}" inline="true">
+									</p:commandButton>
+									
+									
+								</p:panelGrid>
+								
+						</p:panelGrid>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+		
+		<div class="card card-w-title">
+			<p:dataTable var="ice" value="#{iceCtrl.iceAllList}" widgetVar="icedt"
+		                 emptyMessage="No existen concidencias" filteredValue="#{iceCtrl.iceAllFilterList}">
+		  
+		  		<p:column headerText="OPC" style="width:50px;">
+
+						<p:commandLink id="clkEditar"
+							action="#{iceCtrl.editar()}">
+							<i class="fa fa-edit Fs16"></i>
+							<f:setPropertyActionListener value="#{ice}"
+								target="#{iceCtrl.iceSelected}" />
+						</p:commandLink>
+
+						<p:spacer width="5px"></p:spacer>
+
+						<p:commandLink id="clkEliminar"
+							action="#{iceCtrl.eliminar()}" update="@form">
+							<i class="fa fa-close Fs18" style="color: red;"></i>
+							<f:setPropertyActionListener value="#{ice}"
+								target="#{iceCtrl.iceSelected}" />
+							<p:confirm header="#{msg['label.confirmacion']}"
+								message="#{msg['mensaje.confimacion']}"
+								icon="fa fw-3x fa-exclamation-triangle" />
+						</p:commandLink>
+					</p:column>
+		  		
+		        <p:column headerText="Id"  filterMatchMode="contains" style="width:50px;">
+		            <h:outputText value="#{ice.idice}" />
+		        </p:column>
+		        
+		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" >
+						<f:facet name="header">
+							<h:outputText value="Codigo" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+						<h:outputText value="#{ice.codigo}" />
+				</p:column>
+					
+		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains">
+		                <f:facet name="header">
+							<h:outputText value="Descripcion" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+						 <h:outputText value="#{ice.descripcion}" />
+		        </p:column>
+		        
+		         <p:column filterBy="#{ice.tarifaadvalorem}"  filterMatchMode="contains" >
+		             <f:facet name="header">
+							<h:outputText value="Tarifa Ad Valorem" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+		            <h:outputText value="#{ice.tarifaadvalorem}" />
+		        </p:column>
+		        
+		        <p:column filterBy="#{ice.tarifaespecifica}"  filterMatchMode="contains" >
+		             <f:facet name="header">
+							<h:outputText value="Tarifa Especifica" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+		            <h:outputText value="#{ice.tarifaespecifica}" />
+		        </p:column>
+		        
+		        <p:column  headerText="Valor"  filterMatchMode="contains" >
+		            <h:outputText value="#{ice.valor}" />
+		        </p:column>
+		 
+				 <p:column  headerText="Usuario"  filterMatchMode="contains" >
+		            <h:outputText value="#{ice.idusuario}" />
+		        </p:column>
+		        
+           </p:dataTable>
+	    </div>
+	    </h:form>
+	     <!-- formulario iva -->
+	    <ui:include src="incl_ice_form.xhtml" />
+	    
+    </ui:define>
+    
+    
+    
+
+</ui:composition>
