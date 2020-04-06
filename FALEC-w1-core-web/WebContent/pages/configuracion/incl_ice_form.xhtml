@@ -62,15 +62,15 @@
 					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter"/>
 					<p:message for="intDescripcion"/>
 					
-					<h:outputText value="TARIFA AD VALOREM * : " styleClass="cpoRequerido"/>
+					<h:outputText value="TARIFA AD VALOREM : " styleClass="cpoRequerido"/>
 					<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="Wid100" />
 					<p:message for="intTarifaAdValorem"/>
 					
-					<h:outputText value="TARIFA ESPECIFICA * : " styleClass="cpoRequerido"/>
+					<h:outputText value="TARIFA ESPECIFICA : " styleClass="cpoRequerido"/>
 					<p:inputText id="intTarifaEspecifica" value="#{iceCtrl.iceSelected.tarifaespecifica}"  styleClass="Wid100" />
 					<p:message for="intTarifaEspecifica"/>
 					
-					<h:outputText value="VALOR* : " styleClass="cpoRequerido"/>
+					<h:outputText value="VALOR * : " styleClass="cpoRequerido" required="true" requiredMessage="REQUERIDO" />
 					<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  styleClass="Wid100" />
 					<p:message for="intValor"/>
 					
