@@ -30,8 +30,8 @@
 			}
 			
 			.imgSize{
-				height: 75%;
-				width: 75%;
+				height: 50%;
+				width: 50%;
 			}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
@@ -172,6 +172,9 @@
 						
 						<p:splitButton id="plbOpc" action="#" icon="fa fa-list-ul Fs14">
 							<p:menuitem value="Editar Producto" action="#{productoCtrl.editarProducto(p.idproducto)}" icon="fa fa-edit" >
+								<f:setPropertyActionListener value="PRODUCTO" target="#{productoCtrl.callModule}"/>
+								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
 							</p:menuitem>
 				            <p:menuitem value="Eliminar Producto" action="#{productoCtrl.eliminar()}" icon="fa fa-close" process="productoDT" update="@parent">
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

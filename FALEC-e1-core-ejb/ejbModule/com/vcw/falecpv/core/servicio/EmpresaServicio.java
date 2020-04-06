@@ -12,11 +12,9 @@ import javax.inject.Inject;
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.UtilMd5;
-import com.vcw.falecpv.core.constante.contadores.TCUsuario;
+import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
 import com.vcw.falecpv.core.dao.impl.EmpresaDao;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
-import com.vcw.falecpv.core.modelo.persistencia.Usuario;
-import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
 
 /**
  * @author cristianvillarreal

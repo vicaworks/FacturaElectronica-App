@@ -10,10 +10,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.servitec.common.dao.exception.DaoException;
-import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.ParametroGenericoBaseEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
-import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 
 /**

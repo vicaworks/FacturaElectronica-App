@@ -38,7 +38,6 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
-import com.vcw.falecpv.core.dao.impl.UsuarioDao;
 import com.vcw.falecpv.core.modelo.dto.ImportProductoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
