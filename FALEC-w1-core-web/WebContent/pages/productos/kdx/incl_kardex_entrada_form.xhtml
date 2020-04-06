@@ -14,11 +14,7 @@
 		
 	</style>
 	
-	<p:dialog  widgetVar="dlgEntradaInventario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
-		<f:facet name="header">
-			<i class="fa fa-sign-in"> Entrada Inventario</i>
-			
-		</f:facet>
+	<p:dialog header="Entrada Inventario" widgetVar="dlgEntradaInventario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmKardex">
 			
@@ -47,11 +43,23 @@
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
+			<p:message for="claKardexFechaFabricacion_Val" closable="true">
+				<p:autoUpdate></p:autoUpdate>
+			</p:message>
+			<p:message for="claKardexFechaCompFechRegistro_Val" closable="true">
+				<p:autoUpdate></p:autoUpdate>
+			</p:message>
 			
 			<!--  wraper del formulario para responsive -->
 			
 			<div class="form-ui Wid100 OvYScroll heightFrmKdxEntrada contenedorFormulario">
-			
+				
+				<o:validateMultiple id="claKardexFechaFabricacion_Val" components="claKardexFechaCompra claKardexFechaFabricacion" validator="#{validatorDateBeforeThan}" 
+        						message="FECHA DE FABRICACION NO PUEDE SER MAYOR A LA FECHA DE COMPRA" />
+        		<o:validateMultiple id="claKardexFechaCompFechRegistro_Val" components="claKardexFechaRegistro claKardexFechaCompra" validator="#{validatorDateBeforeThan}" 
+        						message="FECHA DE COMPRA NO PUEDE SER MAYOR A LA FECHA DE REGISTRO" />
+        		
+				
 				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 					
 					<h:outputText value="ID PRODUCTO : " styleClass="FontBold"/>
@@ -76,8 +84,9 @@
 					<p:inputText id="intKardexCantidad"
 						value="#{kardexCtrl.kardexProductoSelected.cantidad}"
 						required="true" requiredMessage="REQUERIDO"
-						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
-						<f:validateDoubleRange minimum="0"/>
+						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+						<f:convertNumber locale="es_EC" pattern="0.##"/>
+						<f:validateDoubleRange minimum="0.1"/>
 					</p:inputText>
 					<p:message for="intKardexCantidad"/>
 					
@@ -93,8 +102,9 @@
 					<p:inputText id="intKardexCostoUnitario"
 						value="#{kardexCtrl.kardexProductoSelected.costounitario}"
 						required="true" requiredMessage="REQUERIDO"
-						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
-						<f:validateDoubleRange minimum="0"/>
+						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+						<f:convertNumber locale="es_EC" pattern="0.##"/>
+						<f:validateDoubleRange minimum="0.01" />
 					</p:inputText>
 					<p:message for="intKardexCostoUnitario"/>
 					
@@ -121,9 +131,11 @@
 									locale="es" 
 									requiredMessage="REQUERIDO" required="false" styleClass="Wid100">
 					</p:calendar>
-					<p:message for="claKardexFechaVencimiento"/>
+					<h:panelGroup>
+						<p:message for="claKardexFechaVencimiento"/>						
+					</h:panelGroup>
 					
-					<h:outputText value="#{msg['label.observacion']} : "/>
+					<h:outputText value="#{msg['label.observacion']} * : "/>
 					<p:inputTextarea id="intKardexObservacion"
 						value="#{kardexCtrl.kardexProductoSelected.observacion}"
 						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"

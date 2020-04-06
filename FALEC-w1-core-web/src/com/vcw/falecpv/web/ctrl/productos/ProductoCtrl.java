@@ -35,13 +35,16 @@ import org.primefaces.model.UploadedFile;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.dao.impl.UsuarioDao;
 import com.vcw.falecpv.core.modelo.dto.ImportProductoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
+import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.TipoProducto;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
@@ -49,8 +52,10 @@ import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.ImportarProductoServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
+import com.vcw.falecpv.core.servicio.KardexProductoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipoProductoServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -83,6 +88,10 @@ public class ProductoCtrl extends BaseCtrl {
 	private TipoProductoServicio tipoProductoServicio;
 	@EJB
 	private ImportarProductoServicio importarProductoServicio;
+	@EJB
+	private KardexProductoServicio kardexProductoServicio;
+	@EJB
+	private UsuarioServicio usuarioServicio;
 	
 	
 	
@@ -100,6 +109,10 @@ public class ProductoCtrl extends BaseCtrl {
 	private String nombreFileProducto;
 	private boolean existeNovedades;
 	private boolean renderResultadoImportProducto;
+	private String callModule;
+	private String formModule;
+	private String viewUpdate;
+	private InventarioCtrl inventarioCtrl;
 
 	/**
 	 * 
@@ -310,8 +323,18 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			// lista del combo popup
 			consultarProductoForm();
-			// lista principal
-			consultarProducto();
+			
+			switch (callModule) {
+			case "PRODUCTO":
+				// lista principal
+				consultarProducto();
+				break;
+			case "INVENTARIO":
+				inventarioCtrl.buscarDispacher();
+				break;
+			default:
+				break;
+			}
 			
 			AppJsfUtil.addInfoMessage("frmProducto","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 			
@@ -577,6 +600,18 @@ public class ProductoCtrl extends BaseCtrl {
 					
 					cell = row.getCell(col++);
 					try {
+						p.setStock(cell!=null?BigDecimal.valueOf(cell.getNumericCellValue()):BigDecimal.ZERO);
+					} catch (Exception e) {
+						p.setError(true);
+						p.setNovedad("FORMATO STOCK ERROR");
+						importProductoDtoList.add(p);
+						e.printStackTrace();
+							fila++;
+							continue conti1;
+					}
+					
+					cell = row.getCell(col++);
+					try {
 						p.setPrecioUnitario(cell!=null?BigDecimal.valueOf(cell.getNumericCellValue()):BigDecimal.ZERO);
 					} catch (Exception e) {
 						p.setError(true);
@@ -766,6 +801,32 @@ public class ProductoCtrl extends BaseCtrl {
 			// cargar los datos
 			importProductoDtoList = importarProductoServicio.importarProductoFacade(importProductoDtoList,
 					AppJsfUtil.getEstablecimiento().getIdestablecimiento(), AppJsfUtil.getUsuario().getIdusuario());
+			
+			// crear kardex
+			
+			for (ImportProductoDto p : importProductoDtoList) {
+				if(p.getStock().doubleValue()>0d) {
+					// si el stock > 0 se registra la entrada
+					Producto producto = productoServicio.getProductoDao().cargar(p.getIdProducto());
+					if(producto!=null) {
+						KardexProducto kardexProducto = new KardexProducto();
+						kardexProducto.setProducto(producto);
+						kardexProducto.setEstablecimiento(producto.getEstablecimiento());
+						kardexProducto.setCantidad(p.getStock());
+						kardexProducto.setCostounitario(producto.getPreciounitario());
+						kardexProducto.setFechacompra(producto.getFechacompra());
+						kardexProducto.setFechafabricacion(producto.getFechafabricacion());
+						kardexProducto.setFecharegistro(new Date());
+						kardexProducto.setFechavencimiento(producto.getFechavencimiento());
+						kardexProducto.setIdusuario(producto.getIdusuario());
+						kardexProducto.setSaldo(BigDecimal.ZERO);
+						kardexProducto.setTiporegistro("E");
+						kardexProducto.setUpdated(new Date());
+						kardexProducto.setObservacion("CARGA PRODUCTO EXCEL / USUARIO : " + usuarioServicio.getUsuarioDao().cargar(kardexProducto.getIdusuario()).getNombre() + " FECHA : " + FechaUtil.formatoFecha(new Date()));
+						kardexProductoServicio.registrarKardexFacade(kardexProducto);
+					}
+				}
+			}
 			
 			// colocar los errores en el archivo
 			for (ImportProductoDto p : importProductoDtoList) {
@@ -1112,6 +1173,62 @@ public class ProductoCtrl extends BaseCtrl {
 	 */
 	public void setRenderResultadoImportProducto(boolean renderResultadoImportProducto) {
 		this.renderResultadoImportProducto = renderResultadoImportProducto;
+	}
+
+	/**
+	 * @return the callModule
+	 */
+	public String getCallModule() {
+		return callModule;
+	}
+
+	/**
+	 * @param callModule the callModule to set
+	 */
+	public void setCallModule(String callModule) {
+		this.callModule = callModule;
+	}
+
+	/**
+	 * @return the formModule
+	 */
+	public String getFormModule() {
+		return formModule;
+	}
+
+	/**
+	 * @param formModule the formModule to set
+	 */
+	public void setFormModule(String formModule) {
+		this.formModule = formModule;
+	}
+
+	/**
+	 * @return the viewUpdate
+	 */
+	public String getViewUpdate() {
+		return viewUpdate;
+	}
+
+	/**
+	 * @param viewUpdate the viewUpdate to set
+	 */
+	public void setViewUpdate(String viewUpdate) {
+		this.viewUpdate = viewUpdate;
+	}
+
+	/**
+	 * @return the inventarioCtrl
+	 */
+	public InventarioCtrl getInventarioCtrl() {
+		return inventarioCtrl;
+	}
+
+	/**
+	 * @param inventarioCtrl the inventarioCtrl to set
+	 */
+	public void setInventarioCtrl(InventarioCtrl inventarioCtrl) {
+		this.inventarioCtrl = inventarioCtrl;
 	}
 
 }

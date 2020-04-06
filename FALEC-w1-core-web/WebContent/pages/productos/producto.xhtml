@@ -121,8 +121,11 @@
 									
 									<p:commandButton id="cmdNuevo"
 										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
-										action="#{productoCtrl.nuevo()}" inline="true" 
-										/>
+										action="#{productoCtrl.nuevo()}" inline="true">
+										<f:setPropertyActionListener value="PRODUCTO" target="#{productoCtrl.callModule}"/>
+										<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
+										<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
+									</p:commandButton>
 									
 									<p:commandButton  id="cmdExcelCargar" 
 										title="CARGAR ARCHIVO EXCEL PRODUCTOS"
@@ -240,10 +243,12 @@
 						<h:outputText value="#{p.nombregenerico}" />
 					</p:column>
 					
-					<p:column headerText="STOCK" style="width:20px;">
-						<h:outputText value="#{p.stock}" styleClass="FontBold Fs12">
+					<p:column headerText="STOCK" style="width:20px;" styleClass="TexAlCenter">
+					
+						<h:outputText value="#{p.stock}" styleClass="#{p.stock.doubleValue()==0.0?'markRed':'markGreen'}">
 							<f:convertNumber locale="es_EC" pattern="0.##"/>
 						</h:outputText>
+						
 					</p:column>
 					
 					<p:column headerText="VALORES" style="width:80px;">
