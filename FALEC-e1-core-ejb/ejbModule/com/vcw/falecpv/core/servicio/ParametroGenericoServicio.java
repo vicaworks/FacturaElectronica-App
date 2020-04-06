@@ -4,8 +4,6 @@
 package com.vcw.falecpv.core.servicio;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -13,19 +11,13 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
-import org.apache.velocity.runtime.directive.Foreach;
-
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.ValidarParametro;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
-import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
-import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
-import com.vcw.falecpv.core.constante.contadores.TCParametroEmpresa;
 import com.vcw.falecpv.core.constante.parametrosgenericos.ParametroGenericoBaseEnum;
 import com.vcw.falecpv.core.dao.impl.ParametroGenericoDao;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenerico;
-import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 
 /**
  * @author cristianvillarreal
