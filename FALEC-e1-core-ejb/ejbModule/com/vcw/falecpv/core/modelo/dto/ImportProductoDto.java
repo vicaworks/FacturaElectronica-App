@@ -40,6 +40,7 @@ public class ImportProductoDto implements Serializable {
 	private BigDecimal descuento;
 	private BigDecimal unidadesCaja;
 	private BigDecimal unidadesEmbase;
+	private BigDecimal stock;
 	private String medida;
 	private BigDecimal conversionMedida;
 	private Date fechaFabricacion;
@@ -47,6 +48,7 @@ public class ImportProductoDto implements Serializable {
 	private String imagen;
 	private boolean error = false;
 	private String novedad;
+	private String idProducto;
 	
 	/**
 	 * 
@@ -444,6 +446,42 @@ public class ImportProductoDto implements Serializable {
 	 */
 	public void setFechaFabricacion(Date fechaFabricacion) {
 		this.fechaFabricacion = fechaFabricacion;
+	}
+
+
+
+	/**
+	 * @return the stock
+	 */
+	public BigDecimal getStock() {
+		return stock;
+	}
+
+
+
+	/**
+	 * @param stock the stock to set
+	 */
+	public void setStock(BigDecimal stock) {
+		this.stock = stock;
+	}
+
+
+
+	/**
+	 * @return the idProducto
+	 */
+	public String getIdProducto() {
+		return idProducto;
+	}
+
+
+
+	/**
+	 * @param idProducto the idProducto to set
+	 */
+	public void setIdProducto(String idProducto) {
+		this.idProducto = idProducto;
 	}
 
 
