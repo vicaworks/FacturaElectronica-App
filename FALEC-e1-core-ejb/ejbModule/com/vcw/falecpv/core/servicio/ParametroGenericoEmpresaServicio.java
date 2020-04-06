@@ -196,9 +196,8 @@ public class ParametroGenericoEmpresaServicio extends AppGenericService<Parametr
      */
     public ParametroGenericoEmpresa insertListParamEstableciemto(ParametroGenericoEmpresa param) throws DaoException  {
 		try {
-			
-			param.setId(
-					contadorPkServicio.generarContadorTabla(TCParametroEmpresa.PARAMETROEMPRESA, null));
+
+			param.setId(contadorPkServicio.generarContadorTabla(TCParametroEmpresa.PARAMETROEMPRESA, null));
 
 			crear(param);
 
@@ -207,7 +206,30 @@ public class ParametroGenericoEmpresaServicio extends AppGenericService<Parametr
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
+	}
+    
+    
+    /**
+     * @author isitk 
+     * @param listaParam
+     * @return
+     * @throws DaoException
+     */
+    public boolean deleteParamEstableciemto(List<ParametroGenericoEmpresa> param) throws DaoException  {
+		try {
+			boolean flag = false;
+			for (ParametroGenericoEmpresa parametroGenericoEmpresa : param) {
 
+				eliminar(parametroGenericoEmpresa);
+			}
+			flag = true;
+
+			return flag;
+
+		} catch (Exception e) {
+			throw new DaoException(e);
+
+		}
 	}
 
 	@Override

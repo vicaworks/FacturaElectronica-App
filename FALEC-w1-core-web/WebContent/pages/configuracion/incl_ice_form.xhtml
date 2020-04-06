@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmIce {
+				height: 200px;
+		}
+		
+	</style>
+	
+	<p:dialog header="Ice" widgetVar="dlgIce" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmIce">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					
+					<p:commandButton id="cmdGuardar"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{iceCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
+						/>
+						
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgIce').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmIce"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100  heightFrmIce contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+					
+					<h:outputText value="ID" />
+					<h:outputText value="#{iceCtrl.iceSelected.idice}" />
+					<h:outputText value="" />
+					
+					<h:outputText value="CODIGO * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="4" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:message for="intCodigo"/>
+					
+					<h:outputText value="DESCRIPCION * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:message for="intDescripcion"/>
+					
+					<h:outputText value="TARIFA AD VALOREM * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="Wid100" />
+					<p:message for="intTarifaAdValorem"/>
+					
+					<h:outputText value="TARIFA ESPECIFICA * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTarifaEspecifica" value="#{iceCtrl.iceSelected.tarifaespecifica}"  styleClass="Wid100" />
+					<p:message for="intTarifaEspecifica"/>
+					
+					<h:outputText value="VALOR* : " styleClass="cpoRequerido"/>
+					<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  styleClass="Wid100" />
+					<p:message for="intValor"/>
+					
+					</p:panelGrid>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>

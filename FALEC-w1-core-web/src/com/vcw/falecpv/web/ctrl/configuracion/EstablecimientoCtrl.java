@@ -104,26 +104,47 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			if(establecimientoSelected==null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
 				return;
-			}
-			
-			// si es matriz
-			if("S".equals(establecimientoSelected.getMatriz())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR EL ESTABLECIMIENTO MATRIZ");
+			}			
+			//tiene referencias
+			if(establecimientoServicio.tieneDependenciasEst(establecimientoSelected.getIdestablecimiento())) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR EXISTE REFERENCIAS");
 				return;
 			}
-			
+			//elimina establecimiento
 			establecimientoServicio.eliminar(establecimientoSelected);
+			
+			//Eliminar parametros genericos
+			if(eliminaParametros(establecimientoSelected)) {
+				AppJsfUtil.addInfoMessage("formMain","OK", "PARAMETROS ELIMINADOS CORRECTAMENTE.");	
+			}
+			
+			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
 			establecimientoSelected = null;
 			establecimientoAllList = null;
 			consultarEstablecimiento();
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-
+	
+	/**
+	 * @param establecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean eliminaParametros(Establecimiento establecimiento) throws DaoException{
+		
+		List<ParametroGenericoEmpresa> paramEmpresaList = new ArrayList<>();
+			// consulta parametros genericos empresa
+			paramEmpresaList = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getParamEmpresa(establecimiento.getIdestablecimiento());
+			// Elimina los parametros
+			return parametroGenericoEmpresaServicio.deleteParamEstableciemto(paramEmpresaList);
+	
+	}
+	
 	@Override
 	public void guardar() {
 		try {
@@ -219,6 +240,9 @@ public class EstablecimientoCtrl extends BaseCtrl {
 		establecimientoAllList  = establecimientoServicio.getEstablecimientoDao().getByEstado(EstadoRegistroEnum.ACTIVO);
 	}
 	
+	/**
+	 * Edita el establecimiento
+	 */
 	public void editar() {
 		try {
 			flagEstablecimiento=false;
@@ -349,7 +373,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			cell = row.getCell(1);
 			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
 			
-			// lista de usuarios
+			// lista de Establecimientos
 			int fila = 8;
 			
 			for (Establecimiento e : establecimientoAllList) {
@@ -410,6 +434,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	
 	
 	/**
+	 * Metodo que inserta los parametros genericos al crear unn establecimiento
 	 * @param idEmpresa
 	 * @return
 	 * @throws DaoException
