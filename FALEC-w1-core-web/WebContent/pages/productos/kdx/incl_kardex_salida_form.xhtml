@@ -72,8 +72,9 @@
 					<p:inputText id="intKrxSalidaCantidad"
 						value="#{kardexCtrl.kardexProductoSelected.cantidad}"
 						required="true" requiredMessage="REQUERIDO"
-						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
-						<f:validateDoubleRange minimum="0"/>
+						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+						<f:convertNumber locale="es_EC" pattern="0.##"/>
+						<f:validateDoubleRange minimum="0.01" />
 					</p:inputText>
 					<p:message for="intKrxSalidaCantidad"/>
 					
