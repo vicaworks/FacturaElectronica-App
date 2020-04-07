@@ -94,7 +94,7 @@
 									columnClasses="ui-g-12 ui-lg-6,
 												   ui-g-12 ui-lg-6">
 												   
-									<p:commandButton id="cmdRefrescar"
+									<p:commandButton id="cmdRefrescarCli"
 											value="CONSULTAR" icon="fa fa-search" 
 											action="#{clienteCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
 											/>
@@ -109,18 +109,18 @@
 										<p:fileDownload value="#{clienteCtrl.fileCliente}" />
 									</p:commandButton>
 									
-									<p:commandButton id="cmdNuevo"
+									<p:commandButton id="cmdNuevoCli"
 										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
 										action="#{clienteCtrl.nuevo()}" inline="true" 
 										/>
 									
-									<p:commandButton  id="cmdExcelCargar" 
+									<p:commandButton id="cmdExcelCargarCli" 
 										title="CARGAR ARCHIVO EXCEL CLIENTES"
 										icon="fa fa-file-excel-o"
 										value="IMPORTAR CLIENTES"
 										styleClass="secondary-button Wid90"
 										onclick="PF('dlgImportCliente').show()"
-										update=""
+										update=":frmImportCliente"
 										immediate="true">
 										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.nombreFileCliente}"/>
 										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.fileClientes}"/>
@@ -211,6 +211,9 @@
 	    
 	    <!-- Form Cliente -->
 	    <ui:include src="incl_cliente_form.xhtml" />
+	    
+	    <!-- Form Carga clientes -->
+	    <ui:include src="incl_cargarcliente_form.xhtml" />
 
     </ui:define>
 

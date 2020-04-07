@@ -11,21 +11,26 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellAddress;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.modelo.dto.ImportClienteDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ImportarClienteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -41,6 +46,8 @@ public class ClienteCtrl extends BaseCtrl {
 	
 	@EJB
 	private ClienteServicio clienteServicio;
+	@EJB
+	private ImportarClienteServicio importarClienteServicio;
 	
 	private String criterioBusqueda;
 	private File fileClientes;
@@ -172,6 +179,235 @@ public class ClienteCtrl extends BaseCtrl {
 
 	}
 	
+	public StreamedContent getPlantillaImportarCliente() {
+		try {
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-importarClientes.xls");
+			
+			return AppJsfUtil.downloadFile(new File(path), "FALECPV-importarClientes.xls");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public void handleUpload_Clientes(FileUploadEvent event) throws IOException {
+		
+		try {
+			existenNovedades = false;
+			renderResultadoImportCliente = false;
+			
+			UploadedFile uploadedFile = event.getFile();
+			nombreFileCliente = uploadedFile.getFileName();
+			File parent = new File("uploads");
+			parent.mkdirs();
+			fileClientes = new File(parent, nombreFileCliente);
+			FileUtils.writeByteArrayToFile(fileClientes, uploadedFile.getContents());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+	}
+	
+	public void importarClientes() {
+		
+		try {
+			
+			existenNovedades = false;
+			renderResultadoImportCliente = false;
+			
+			@SuppressWarnings("resource")
+			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(fileClientes));
+			HSSFSheet sheet=wb.getSheetAt(0);
+			
+			List<ImportClienteDto> importClienteDtoList = new ArrayList<>();
+			int fila = 2;
+			conti1:while(true) {
+				HSSFRow row = sheet.getRow(fila);
+				if(row==null) break;
+				
+				ImportClienteDto c = new ImportClienteDto();
+					
+				int col = 0;
+				
+				c.setFila(fila);
+				
+				HSSFCell cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setIdTipoIdentificacion(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO ID TIPO IDENTIFICACIÓN ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setIdentificacion(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO IDENTIFICACIÓN ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setRazonSocial(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO RAZÓN SOCIAL ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setDireccion(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO DIRECCIÓN ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setCorreoElectronico(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO CORREO ELECTRÓNICO ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setTelefono(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO TELÉFONO ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+					
+				importClienteDtoList.add(c);
+				fila++;
+				
+			}
+			
+			// validación formato
+			validarFormatoImportCliente(importClienteDtoList);
+			
+			// cargar los datos
+			importClienteDtoList = importarClienteServicio.importarClienteFacade(importClienteDtoList,
+					AppJsfUtil.getEstablecimiento().getEmpresa(), AppJsfUtil.getUsuario().getIdusuario());
+			
+			// colocar los errores en el archivo
+			for (ImportClienteDto c : importClienteDtoList) {
+				if(c.isError()) {
+					
+					// color
+					HSSFCellStyle myStyle = wb.createCellStyle();
+					myStyle.setFillForegroundColor(HSSFColor.ORANGE.index);
+					myStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+					
+					// coloca el error
+					HSSFRow row = sheet.getRow(c.getFila());
+					HSSFCell cell = row.createCell(6);
+					
+					cell.setCellValue(c.getNovedad());
+					cell.setCellStyle(myStyle);
+					
+					// pinta de rojo la 1era celda
+					cell = row.getCell(0);
+					if(cell==null) cell = row.createCell(0);		
+					
+				}
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+			
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(fileClientes);
+			wb.write(out);
+			out.close();
+			
+			// existen novedades 
+			existenNovedades = importClienteDtoList.stream().filter(x->x.isError()==true).count()>0?true:false;
+			renderResultadoImportCliente = true;
+			if(existenNovedades) {
+				byte[] file = FileUtils.readFileToByteArray(fileClientes);
+				fileClientes = File.createTempFile("FALECPV-importarClientes", ".xls");
+				FileUtils.writeByteArrayToFile(fileClientes, file);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+	}
+	
+	private void validarFormatoImportCliente(List<ImportClienteDto> lista) throws DaoException {
+		conti1:for (ImportClienteDto c : lista) {
+			
+			if(c.isError()) continue conti1;
+			
+			// datos obligatorios
+			if(c.getIdTipoIdentificacion()==null) {
+				c.setError(true);
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO ID TIPO IDENTIFICACIÓN OBLIGATORIO"):"CAMPO ID TIPO IDENTIFICACIÓN OBLIGATORIO");
+			}
+			if(c.getIdentificacion()==null) {
+				c.setError(true);
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACIÓN OBLIGATORIO"):"CAMPO IDENTIFICACIÓN OBLIGATORIO");
+			}
+			if(c.getRazonSocial()==null) {
+				c.setError(true);
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO RAZÓN SOCIAL OBLIGATORIO"):"CAMPO RAZÓN SOCIAL OBLIGATORIO");
+			}
+			
+		}
+	}
 
 	/**
 	 * @return
@@ -257,6 +493,18 @@ public class ClienteCtrl extends BaseCtrl {
 		
 		}
 		
+		return null;
+	}
+	
+	public StreamedContent getPlantillaImportarClienteNovedades() {
+		try {
+				
+			return AppJsfUtil.downloadFile(fileClientes, "FALECPV-importarClientes.xls");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 		return null;
 	}
 	
