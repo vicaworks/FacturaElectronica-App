@@ -201,7 +201,9 @@
 					<p:inputText id="intProveedorZip"
 						value="#{proveedorCtrl.proveedorSelected.codigopostal}"
 						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
-						maxlength="40" converter="omnifaces.ToUpperCaseConverter" />
+						maxlength="40" converter="omnifaces.ToUpperCaseConverter" validatorMessage="SOLO NUMEROS">
+							<f:validateRegex pattern="^\d+$"/>
+					</p:inputText>
 					<p:message for="intProveedorZip"/>
 					
 					

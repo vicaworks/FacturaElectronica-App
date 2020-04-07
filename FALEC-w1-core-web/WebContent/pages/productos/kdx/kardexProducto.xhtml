@@ -29,6 +29,19 @@
 				vertical-align: top;
 			}
 			
+			body .ui-message {
+				padding: 0em !important;
+			}
+			
+			.ui-buttonset .ui-button {
+				width: 100%;
+			}
+			
+			/* .ui-splitbutton .ui-button {
+				background-color: green;
+				border: 1px solid green;
+			} */
+			
         </style>
     </ui:define>
 
@@ -104,9 +117,19 @@
 					</div>
 	    			
 	    			<!-- opciones -->
+	    			<!--
+	    			<p:splitButton id="cmdExcel" action="#" icon="fa fa-file-excel-o" value="REPORTE" styleClass="success-btn Wid90">
+										<p:menuitem value="Pantalla" icon="fa fa-file-excel-o" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)" disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
+											<p:fileDownload value="#{kardexCtrl.fileKardex}"/>
+										</p:menuitem>
+										<p:menuitem value="Todos los Productos" icon="fa fa-file-excel-o" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+											<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>
+										</p:menuitem>
+									</p:splitButton> 
+	    			 -->
 	    			<div class="p-col-12 p-md-6" style="text-align:center;vertical-align: top;">
 	    				
-	    				<p:panelGrid columns="1"
+	    				<p:panelGrid columns="1" id="pngKardexOpciones"
 								style="margin:0px;border:none !important;width:100%;"
 								layout="grid"
 								columnClasses="ui-g-12">
@@ -119,7 +142,6 @@
 											value="CONSULTAR" icon="fa fa-search" 
 											action="#{kardexCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
 											/>
-									
 									<p:commandButton  id="cmdExcel" 
 										title="EXPORTAR"
 										icon="fa fa-file-excel-o"
@@ -130,29 +152,42 @@
 										<p:fileDownload value="#{kardexCtrl.fileKardex}"/>
 									</p:commandButton>
 									
+									
 									<p:commandButton  id="cmdKardexEntrada" 
 										title="REG. ENTRADA KARDEX"
 										icon="fa fa-sign-in"
 										value="REGISTRAR ENTRADA"
-										styleClass="Wid90"
-										action="#{kardexCtrl.nuevo()}">
+										styleClass="Wid90 warning-btn"
+										action="#{kardexCtrl.nuevo()}"
+										disabled="#{kardexCtrl.productoSelected==null}">
 										<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
 										<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
 										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
 										<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
 									</p:commandButton>
 									
+									<p:commandButton  id="cmdExcel2" 
+										title="EXPORTAR TODOS"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE TODOS POR FECHAS"
+										styleClass="success-btn Wid90">
+										<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>
+									</p:commandButton>
+									
 									<p:commandButton  id="cmdKardexSalida" 
 										title="REGISTRAR SALIDA KARDEX"
 										icon="fa fa-sign-out"
 										value="REGISTRAR SALIDA"
-										styleClass="Wid90"
-										action="#{kardexCtrl.nuevo()}">
+										styleClass="Wid90 danger-btn"
+										action="#{kardexCtrl.nuevo()}"
+										disabled="#{kardexCtrl.productoSelected==null}">
 										<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
 										<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
 										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
 										<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
 									</p:commandButton>
+																			
 								
 								</p:panelGrid>
 								
@@ -274,7 +309,7 @@
 					</p:column>
 					
 					<p:column headerText="EXISTENCIA" style="width:30px;" styleClass="TexAlRight">
-						<h:outputText value="#{k.saldo}" >
+						<h:outputText value="#{k.saldo}" styleClass="#{kardexCtrl.getCompararValoresDouble(k.saldo.doubleValue(),0)?'markRed':'markGreen'}">
 							<f:convertNumber locale="es_EC" pattern="0.##"/>
 						</h:outputText>
 					</p:column>

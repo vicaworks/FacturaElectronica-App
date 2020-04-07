@@ -45,7 +45,7 @@ public class ProveedorDao extends AppGenericDao<Proveedor, String> {
 			}
 			
 			if(criterioBusqueda!=null && criterioBusqueda.trim().length()>0) {
-				sql += " AND (p.identificacion like :identificacion OR  p.razonsocial like :razonsocial OR p.nombrecomercial like :nombrecomercial OR p.nombrecontacto like :nombrecontacto) ";
+				sql += " AND (p.identificacion like :identificacion OR  upper(p.razonsocial) like :razonsocial OR upper(p.nombrecomercial) like :nombrecomercial OR upper(p.contactonombre) like :nombrecontacto) ";
 			}
 			
 			sql += " ORDER BY p.nombrecomercial";
@@ -58,10 +58,10 @@ public class ProveedorDao extends AppGenericDao<Proveedor, String> {
 			}
 			
 			if(criterioBusqueda!=null && criterioBusqueda.trim().length()>0) {
-				q.setParameter("identificacion", "%".concat(criterioBusqueda).concat("%"));
-				q.setParameter("razonsocial", "%".concat(criterioBusqueda).concat("%"));
-				q.setParameter("nombrecomercial", "%".concat(criterioBusqueda).concat("%"));
-				q.setParameter("nombrecontacto", "%".concat(criterioBusqueda).concat("%"));
+				q.setParameter("identificacion", "%".concat(criterioBusqueda.toUpperCase()).concat("%"));
+				q.setParameter("razonsocial", "%".concat(criterioBusqueda.toUpperCase()).concat("%"));
+				q.setParameter("nombrecomercial", "%".concat(criterioBusqueda.toUpperCase()).concat("%"));
+				q.setParameter("nombrecontacto", "%".concat(criterioBusqueda.toUpperCase()).concat("%"));
 			}
 			
 			return q.getResultList();

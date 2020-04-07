@@ -3,6 +3,9 @@
  */
 package com.vcw.falecpv.web.ctrl.adquisicion;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -11,17 +14,27 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.model.StreamedContent;
 
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Proveedor;
 import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
 import com.vcw.falecpv.core.servicio.ProveedorServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
  * @author cristianvillarreal
@@ -38,6 +51,9 @@ public class ProveedorCtrl extends BaseCtrl {
 	
 	@EJB
 	private ProveedorServicio proveedorServicio;
+	
+	@EJB
+	private UsuarioServicio usuarioServicio;
 	
 	
 	private List<Proveedor> proveedorList;
@@ -75,7 +91,9 @@ public class ProveedorCtrl extends BaseCtrl {
 	public void consultarProveedores()throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:adquisicionDT");
 		proveedorList = null;
-		proveedorList = proveedorServicio.getProveedorDao().getByConsulta(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), EstadoRegistroEnum.getByInicial(estado), criteriBusqueda);
+		if(AppJsfUtil.getEstablecimiento()!=null) {
+			proveedorList = proveedorServicio.getProveedorDao().getByConsulta(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), EstadoRegistroEnum.getByInicial(estado), criteriBusqueda);
+		}
 	}
 
 	@Override
@@ -189,6 +207,126 @@ public class ProveedorCtrl extends BaseCtrl {
 	
 	public StreamedContent getFileProveedor() {
 		try {
+			
+			if(proveedorList==null || proveedorList.size()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-listaproveedor.xlsx");
+			
+			// icialización
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			//datos cabecera
+			Row rowCliente = sheet.getRow(3);
+			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(new Date()));
+			
+			sheet.getRow(4);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			sheet.getRow(5);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			
+			int fila = 8;
+			
+			
+			for (Proveedor p : proveedorList) {
+				
+				int col = 0;
+				
+				rowCliente = sheet.createRow(fila);
+				
+				Cell cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getIdproveedor());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getTipoidentificacion().getTipoidentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getIdentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getEstado());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getRazonsocial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getNombrecomercial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getTelefono()!=null?p.getTelefono():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getEmail()!=null?p.getEmail():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getProvincia()!=null?p.getProvincia():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getCiudad()!=null?p.getCiudad():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getDireccion()!=null?p.getDireccion():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getCodigopostal()!=null?p.getCodigopostal():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getContactonombre()!=null?p.getContactonombre():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getContactotelefono()!=null?p.getContactotelefono():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getContactoemail()!=null?p.getContactoemail():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(usuarioServicio.consultarByPk(p.getIdusuario()).getNombre());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(p.getUpdated()));
+				
+				fila++;
+				
+			}
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-listaproveedor-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
 			
 			
 		} catch (Exception e) {
