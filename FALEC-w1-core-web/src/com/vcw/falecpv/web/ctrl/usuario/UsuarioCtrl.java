@@ -87,6 +87,7 @@ public class UsuarioCtrl extends BaseCtrl {
 	}
 
 	private void consultarUsuario() throws DaoException {
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:usuariosDT");
 		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda));
 	}
 	
