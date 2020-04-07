@@ -1,6 +1,8 @@
 package com.vcw.falecpv.web.ctrl.herramientas;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,14 +11,24 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.CellAddress;
+import org.primefaces.model.StreamedContent;
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
-import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
  * @author Jorge Toaza
@@ -158,6 +170,94 @@ public class ClienteCtrl extends BaseCtrl {
 		
 		clienteSelected = clienteServicio.getClienteDao().cargar(id);
 
+	}
+	
+
+	/**
+	 * @return
+	 */
+	public StreamedContent getFileCliente()  {
+		
+		try {
+			
+			if(clienteList == null || clienteList.size() == 0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				return null;
+			}
+			String path = FacesUtil.getServletContext().getRealPath(AppConfiguracion.getString("dir.base.reporte") + "FALECPV-clienteList.xls");
+			// inicializamos el Excel
+			File tempXls = File.createTempFile("plantillaExcel", ".xls");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));
+			// llena hoja 1 del archivo
+			HSSFSheet sheet = wb.getSheetAt(0);
+			// datos de la cabecera
+			HSSFRow row = sheet.getRow(2);
+			HSSFCell cell = row.getCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(new Date())); // fecha
+			
+			row = sheet.getRow(3);
+			cell = row.getCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getNombre()); // usuario
+			
+			row = sheet.getRow(4);
+			cell = row.getCell(1);
+			cell.setCellValue(AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial()); // empresa
+			
+			// lista de clientes
+			int fila = 7;
+			for(Cliente c: clienteList) {
+				row = sheet.createRow(fila);
+				
+				cell = row.createCell(0);
+				cell.setCellValue(c.getIdcliente());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(1);
+				cell.setCellValue(c.getIdentificacion());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(2);
+				cell.setCellValue(c.getRazonsocial());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(3);
+				cell.setCellValue(c.getDireccion());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(4);
+				cell.setCellValue(c.getCorreoelectronico());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(5);
+				cell.setCellValue(c.getTelefono());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				fila++;
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-clienteList.xls");
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		
+		}
+		
+		return null;
 	}
 	
 	/**

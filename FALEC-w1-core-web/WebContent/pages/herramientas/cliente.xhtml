@@ -99,13 +99,14 @@
 											action="#{clienteCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
 											/>
 									
-									<p:commandButton  id="cmdExcel" 
-										title="EXPORTAR"
-										icon="fa fa-file-excel-o"
-										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="REPORTE"
-										styleClass="success-btn Wid90">
-										<p:fileDownload value="#{fabricanteCtrl.fileFabricante}"/>
+									<p:commandButton id="cmdExcelCli" 
+													 title="EXPORTAR"
+													 icon="fa fa-file-excel-o"
+													 ajax="false" 
+													 onclick="PrimeFaces.monitorDownload(start,stop)"
+													 value="REPORTE"
+													 styleClass="success-btn Wid90">
+										<p:fileDownload value="#{clienteCtrl.fileCliente}" />
 									</p:commandButton>
 									
 									<p:commandButton id="cmdNuevo"
