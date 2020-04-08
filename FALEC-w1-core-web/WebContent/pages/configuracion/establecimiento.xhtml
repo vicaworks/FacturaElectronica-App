@@ -13,6 +13,12 @@
 					min-height: 400px !important;
 					max-height: 400px !important;
 				}
+				@media screen and (max-width: 40em){
+					.ui-fileupload-buttonbar .ui-button .ui-button-text {
+		 				display: block !important;
+		 				padding: 0px !important;
+					}
+				}
 			</style>
 		</ui:define>
 
@@ -31,7 +37,7 @@
 				<div class="p-grid">
 					<div class="p-grid p-col-12 p-md-6 p-align-center"></div>
 
-					<div class="p-col-12 p-md-6 p-align-center">
+					<div class="p-col-12 p-justify-center">
 						<p:panelGrid columns="1"
 							style="margin:0px;border:none !important;width:100%;"
 							layout="grid" columnClasses="ui-g-12">
@@ -85,7 +91,7 @@
 					scrollable="true" styleClass="establecimientoDT"
 					rowKey="#{estab.codigoestablecimiento}">
 
-					<p:column headerText="OPC" style="width:30px;">
+					<p:column headerText="OPC" style="width:40px;">
 
 						<p:commandLink id="clkEditar"
 							action="#{establecimientoCtrl.editar()}">
@@ -113,25 +119,25 @@
 						<h:outputText value="#{estab.codigoestablecimiento}" />
 					</p:column>
 
-					<p:column headerText="Direccion" style="width:60px;">
+					<p:column headerText="Direccion" style="width:80px;">
 						<h:outputText value="#{estab.direccionestablecimiento}" />
 					</p:column>
 
 					<p:column headerText="Nombre Comercial" priority="1"
-						style="width:40px; ">
+						style="width:100px; ">
 						<h:outputText value="#{estab.nombrecomercial}" />
 					</p:column>
 
 					<p:column headerText="Punto Emsion"
-						style="width:10px; text-align: center; ">
+						style="width:30px; text-align: center; ">
 						<h:outputText value="#{estab.puntoemision}" />
 					</p:column>
 
-					<p:column headerText="Telefono" style="width:25px;">
+					<p:column headerText="Telefono" style="width:70px;">
 						<h:outputText value="#{estab.telefono}" />
 					</p:column>
 
-					<p:column headerText="Correo" style="width:45px;">
+					<p:column headerText="Correo" style="width:80px;">
 						<h:outputText value="#{estab.correo}" />
 					</p:column>
 

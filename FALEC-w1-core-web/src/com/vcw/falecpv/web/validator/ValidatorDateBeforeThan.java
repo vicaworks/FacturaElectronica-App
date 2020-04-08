@@ -4,6 +4,7 @@
 package com.vcw.falecpv.web.validator;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.faces.component.UIInput;
@@ -12,6 +13,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.omnifaces.validator.MultiFieldValidator;
+
+import com.servitec.common.util.FechaUtil;
 
 /**
  * @author cristianvillarreal
@@ -42,9 +45,13 @@ public class ValidatorDateBeforeThan implements Serializable, MultiFieldValidato
 		
 		if(strFecha1.trim().length()==0 || strFecha2.trim().length()==0) return true;
 		
-		System.out.println(strFecha2.compareTo(strFecha1));
-		
-		return  strFecha2.compareTo(strFecha1)<=0;
+		try {
+//			System.out.println(FechaUtil.formatoFecha(strFecha2).compareTo(FechaUtil.formatoFecha(strFecha1))<=0);
+			return  FechaUtil.formatoFecha(strFecha2).compareTo(FechaUtil.formatoFecha(strFecha1))<=0;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return false;
+		}
 		
 	}
 

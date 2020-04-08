@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -64,6 +65,16 @@ public class FabricanteCtrl extends BaseCtrl {
 	 * 
 	 */
 	public FabricanteCtrl() {
+	}
+	
+	@PostConstruct
+	private void init() {
+		try {
+			consultar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	@Override

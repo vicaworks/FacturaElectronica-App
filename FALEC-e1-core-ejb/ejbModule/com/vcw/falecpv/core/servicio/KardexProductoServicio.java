@@ -3,7 +3,6 @@
  */
 package com.vcw.falecpv.core.servicio;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +82,7 @@ public class KardexProductoServicio extends AppGenericService<KardexProducto, St
 		case "S":
 			kardexProducto.setSaldo(producto.getStock().add(kardexProducto.getCantidad().negate()));
 			if(kardexProducto.getSaldo().doubleValue()<0.0d) {
-				kardexProducto.setSaldo(BigDecimal.ZERO);
+				throw new DaoException("NO EXISTE SALDO, ACTUAL : " + kardexProducto.getSaldo());
 			}
 			break;	
 		default:

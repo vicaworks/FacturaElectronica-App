@@ -7,9 +7,12 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
 import com.vcw.falecpv.core.servicio.TipoIdentificacionServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
  * @author Jorge Toaza
@@ -30,9 +33,15 @@ public class TipoIdentificacionCtrl extends BaseCtrl {
 	}
 	
 	@PostConstruct
-	private void init() throws DaoException {
-		tipoIdentificacionList = new ArrayList<>();
-		consultarTiposIdentificacion();
+	private void init()  {
+		try {
+			tipoIdentificacionList = new ArrayList<>();
+			consultarTiposIdentificacion();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	@Override

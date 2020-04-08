@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -26,6 +29,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.shaded.commons.io.IOUtils;
+
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
@@ -33,7 +37,6 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
-import com.vcw.falecpv.core.modelo.persistencia.ParametroGenerico;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
@@ -78,6 +81,16 @@ public class EstablecimientoCtrl extends BaseCtrl {
 		
 	}
 	
+	@PostConstruct
+	private void init() {
+		try {
+			consultarEstablecimiento();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	@Override
 	public void limpiar() {
 		super.limpiar();
@@ -91,6 +104,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	@Override
 	public void refrescar() {
 		try {
+			establecimientoSelected  = null;
 			consultarEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -221,11 +235,12 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	@Override
 	public void nuevo() {
 		try {
+			
 			flagEstablecimiento=true;
 			establecimientoSelected = new Establecimiento();
 			establecimientoSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
-	
 			AppJsfUtil.showModalRender("dlgEstable", "frmEstable");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

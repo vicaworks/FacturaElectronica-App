@@ -73,6 +73,29 @@ public class UsuarioDao extends AppGenericDao<Usuario, String> {
 		}
 	}
 	
+	
+	/**
+	 * @param estadoRegistroEnum
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Usuario> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idestablecimiento)throws DaoException{
+		try {
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE u.estado=:estado AND u.establecimiento.idestablecimiento=:idestablecimiento ORDER BY u.nombre");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE u.establecimiento.idestablecimiento=:idestablecimiento ORDER BY u.nombre");
+			}
+			q.setParameter("idestablecimiento", idestablecimiento);
+			return q.getResultList();
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 	/**
 	 * @author cristianvillarreal
 	 * 

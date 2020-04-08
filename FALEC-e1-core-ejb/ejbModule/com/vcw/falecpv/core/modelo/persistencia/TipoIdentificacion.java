@@ -41,6 +41,11 @@ public class TipoIdentificacion implements Serializable{
 	@Column(name = "codigo", nullable = false, length = 2)
 	private String codigo;
 	
+	@NotNull
+	@Size(min = 1, max = 1)
+	@Column(name = "proveedor", nullable = false, length = 1)
+	private String proveedor;
+	
 	/**
 	 * 
 	 */
@@ -115,5 +120,19 @@ public class TipoIdentificacion implements Serializable{
 	 */
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+
+	/**
+	 * @return the proveedor
+	 */
+	public String getProveedor() {
+		return proveedor;
+	}
+
+	/**
+	 * @param proveedor the proveedor to set
+	 */
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
 	}
 }

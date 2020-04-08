@@ -17,6 +17,7 @@ import com.servitec.common.util.exceptions.ValidarExpresionException;
  * @author cvillarreal
  *
  */
+@SuppressWarnings("rawtypes")
 @FacesValidator("emailValidator")
 public class EmailValidator implements Validator {
 

@@ -55,18 +55,18 @@
                         
                         <p:menuitem id="om_caja" value="Caja" icon="fa fa-2x fa-money" url="#{request.contextPath}/pages/puntoventa/caja.jsf" />
                         
+                        <p:submenu id="om_facturacion" label="#{msg['menu.facturacion']}" icon="fa fa-2x fa-calculator">
+                            <p:menuitem id="om_facturaemitidas" value="Facturas Emitidas" icon="fa fa-2x fa-check-circle" url="#{request.contextPath}/pages/facturacion/facemitidos.jsf" />
+                            <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-2x fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/recbemitidos.jsf" />
+                            <p:menuitem id="om_reportefacturacion" value="Reporte" icon="fa fa-2x fa-line-chart" url="#{request.contextPath}/pages/facturacion/repfacturacion.jsf" />
+                        </p:submenu>
+                        
                         <p:submenu id="om_productos" label="Productos" icon="fa fa-2x fa-cubes">
                             <p:menuitem id="om_fabricante" value="Fabricante" icon="fa fa-2x fa-building-o" url="#{request.contextPath}/pages/productos/fabricante.jsf" />
                             <p:menuitem id="om_categoria" value="#{msg['menu.categoria']}" icon="fa fa-2x fa-sitemap" url="#{request.contextPath}/pages/productos/categoria.jsf" />
                             <p:menuitem id="om_producto" value="Producto" icon="fa fa-2x fa-cart-plus" url="#{request.contextPath}/pages/productos/producto.jsf" />
                             <p:menuitem id="om_kardex" value="Kardex" icon="fa fa-2x fa-tags" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf" />
                             <p:menuitem id="om_inventario" value="Inventario" icon="fa fa-2x fa-list-ol" url="#{request.contextPath}/pages/productos/inventario.jsf" />
-                        </p:submenu>
-                        
-                        <p:submenu id="om_facturacion" label="#{msg['menu.facturacion']}" icon="fa fa-2x fa-calculator">
-                            <p:menuitem id="om_facturaemitidas" value="Facturas Emitidas" icon="fa fa-2x fa-check-circle" url="#{request.contextPath}/pages/facturacion/facemitidos.jsf" />
-                            <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-2x fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/recbemitidos.jsf" />
-                            <p:menuitem id="om_reportefacturacion" value="Reporte" icon="fa fa-2x fa-line-chart" url="#{request.contextPath}/pages/facturacion/repfacturacion.jsf" />
                         </p:submenu>
                         
                         <p:submenu id="om_adquisicion" label="Adquisiciones" icon="fa fa-2x fa-cart-arrow-down">

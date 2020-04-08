@@ -31,7 +31,7 @@
 	
 	<p:dialog header="Establecimiento" widgetVar="dlgEstable" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
-		<h:form id="frmEstable" enctype="multipart/form-data">
+		<h:form id="frmEstable">
 			
 			<!-- OPCIONES -->
 			
@@ -143,7 +143,7 @@
 					<p:message for="intCorreoEst" />
 
 					<h:outputText value="MATRIZ * : " styleClass="cpoRequerido" />
-						<p:selectOneMenu id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}">
+						<p:selectOneMenu id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}" required="true" requiredMessage="REQUERIDO">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="SI" itemValue="S" />
 					            <f:selectItem itemLabel="NO" itemValue="N" />
@@ -156,7 +156,9 @@
 						<p:inputText id="intSecFact"
 							value="#{establecimientoCtrl.establecimientoSelected.secuencialfactura}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="10" />
+							maxlength="10" converterMessage="SOLO NUMEROS">
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+						</p:inputText>
 					</h:panelGroup>
 					<p:message for="intSecFact" />
 
@@ -166,7 +168,9 @@
 						<p:inputText id="intSecND"
 							value="#{establecimientoCtrl.establecimientoSelected.secuencialnotadebito}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="10" />
+							maxlength="10"  converterMessage="SOLO NUMEROS">
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+						</p:inputText>
 					</h:panelGroup>
 					<p:message for="intSecND" />
 
@@ -176,9 +180,12 @@
 						<p:inputText id="intSecNC"
 							value="#{establecimientoCtrl.establecimientoSelected.secuencialNotaCredito}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="10" />
+							maxlength="10"  converterMessage="SOLO NUMEROS" validatorMessage="MAYOR a 0">
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+						</p:inputText>
 					</h:panelGroup>
-					<p:message for="intMatrizEst" />
+					<p:message for="intSecNC" />
 
 					<h:outputText value="SECUENCIAL LIQUIDACION COMPRA * : "
 						styleClass="cpoRequerido" />
@@ -186,7 +193,9 @@
 						<p:inputText id="intSecliqComp"
 							value="#{establecimientoCtrl.establecimientoSelected.secuencialliquidacioncompra}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="10" />
+							maxlength="10"  converterMessage="SOLO NUMEROS">
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+						</p:inputText>
 					</h:panelGroup>
 					<p:message for="intSecliqComp" />
 
@@ -196,7 +205,9 @@
 						<p:inputText id="intSecGuiRem"
 							value="#{establecimientoCtrl.establecimientoSelected.secuencialguiaremision}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="10" />
+							maxlength="10"  converterMessage="SOLO NUMEROS">
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+						</p:inputText>
 					</h:panelGroup>
 					<p:message for="intSecGuiRem" />
 
@@ -206,7 +217,9 @@
 						<p:inputText id="intSecReten"
 							value="#{establecimientoCtrl.establecimientoSelected.secuencialretencion}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-							maxlength="10" />
+							maxlength="10"  converterMessage="SOLO NUMEROS">
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+						</p:inputText>
 					</h:panelGroup>
 					<p:message for="intSecReten" />
 

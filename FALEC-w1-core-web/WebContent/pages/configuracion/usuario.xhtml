@@ -176,8 +176,12 @@
 					<p:column headerText="NOMBRE" style="width:100px;">
 						<h:outputText value="#{u.nombre}" />
 					</p:column>
+					
+					<p:column headerText="USUARIO" style="width:50px;">
+						<h:outputText value="#{u.login}" />
+					</p:column>
 
-					<p:column headerText="ESTABLECIMIENTO" style="width:100px;">
+					<p:column headerText="ESTABLECIMIENTO" style="width:100px;" filterBy="#{u.establecimiento.nombrecomercial}" filterMatchMode="contains">
 						<h:outputText value="#{u.establecimiento.nombrecomercial}" />
 					</p:column>
 

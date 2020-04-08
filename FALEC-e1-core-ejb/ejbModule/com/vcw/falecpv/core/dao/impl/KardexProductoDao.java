@@ -60,6 +60,33 @@ public class KardexProductoDao extends AppGenericDao<KardexProducto, String> {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param idEstablecimiento
+	 * @param desde
+	 * @param hasta
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<KardexProducto> consultar(String idEstablecimiento,Date desde,Date hasta)throws DaoException{
+		try {
+			String sql = "SELECT k FROM KardexProducto k WHERE  "
+					+ "k.establecimiento.idestablecimiento=:idestablecimiento "
+					+ "AND k.fecharegistro BETWEEN :desde AND :hasta "
+					+ "ORDER BY k.producto.nombregenerico ASC, k.orden DESC";
+			Query q = getEntityManager().createQuery(sql);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("desde", desde);
+			q.setParameter("hasta", hasta);
+			
+			return q.getResultList();
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param idProducto
 	 * @param idEstablecimiento
 	 * @return

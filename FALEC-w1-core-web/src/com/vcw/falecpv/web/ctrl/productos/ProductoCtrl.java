@@ -38,7 +38,6 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
-import com.vcw.falecpv.core.dao.impl.UsuarioDao;
 import com.vcw.falecpv.core.modelo.dto.ImportProductoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
@@ -308,6 +307,12 @@ public class ProductoCtrl extends BaseCtrl {
 					AppJsfUtil.addErrorMessage("frmProducto:intCodigoProducto","YA EXISTE.");
 					return;
 				}
+			}
+			
+			// valida si el medida tiene espacios en blanco 
+			if(productoSelected.getMedida()!=null && productoSelected.getMedida().trim().length()==0) {
+				productoSelected.setMedida(null);
+				productoSelected.setConversionmedida(BigDecimal.ZERO);
 			}
 			
 			//4. si existe medida de conversion

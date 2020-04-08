@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -31,8 +32,10 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
+import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.KardexProductoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.productos.InventarioCtrl;
 import com.vcw.falecpv.web.ctrl.productos.ProductoCtrl;
@@ -59,6 +62,9 @@ public class KardexCtrl extends BaseCtrl {
 	@EJB
 	private KardexProductoServicio kardexProductoServicio;
 	
+	@EJB
+	private UsuarioServicio usuarioServicio;
+	
 	private List<KardexProducto> kardexProductoList;
 	private List<Producto> productoList;
 	private Producto productoSelected;
@@ -84,7 +90,7 @@ public class KardexCtrl extends BaseCtrl {
 		try {
 			consultarProductoForm();
 			fechaFinal = new Date();
-			fechaInicial = FechaUtil.agregarDias(fechaFinal, -30);
+			fechaInicial = FechaUtil.agregarDias(fechaFinal, -60);
 			
 			Producto p = (Producto) FacesUtils.getFromSession("producto");
 			if(p!=null) {
@@ -132,6 +138,7 @@ public class KardexCtrl extends BaseCtrl {
 		try {
 			codProducto = productoSelected.getCodigoprincipal();
 			AppJsfUtil.updateComponente("formMain:intCodProducto");
+			AppJsfUtil.updateComponente("formMain:pngKardexOpciones");
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -177,7 +184,16 @@ public class KardexCtrl extends BaseCtrl {
 		try {
 			
 			kardexProductoSelected.setUpdated(new Date());
+			productoSelected = productoServicio.getProductoDao().cargar(kardexProductoSelected.getProducto().getIdproducto());
+			
+			// valida si existe saldo
+			if(productoSelected.getStock().doubleValue()<kardexProductoSelected.getCantidad().doubleValue() && kardexProductoSelected.getTiporegistro().equals("S")) {
+				AppJsfUtil.addErrorMessage(formView, "ERROR", "NO EXISTE SALDO PARA EL EGRESO, SALDO ACTUAL : " + productoSelected.getStock());
+				return;
+			}
+			
 			kardexProductoSelected = kardexProductoServicio.registrarKardexFacade(kardexProductoSelected);
+			
 			
 			switch (callMOdule) {
 			case "KARDEX":
@@ -328,62 +344,55 @@ public class KardexCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getIdkardexproducto());
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(FechaUtil.formatoFechaHora(k.getUpdated()));
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(FechaUtil.formatoFecha(k.getFecharegistro()));
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getObservacion());
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				
 				cell = row.createCell(col++);
 				if(k.getFechafabricacion()!=null) {
 					cell.setCellValue(FechaUtil.formatoFecha(k.getFechafabricacion()));
 				}
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				if(k.getFechacompra()!=null) {
 					cell.setCellValue(FechaUtil.formatoFecha(k.getFechacompra()));
 				}
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				if(k.getFechavencimiento()!=null) {
 					cell.setCellValue(FechaUtil.formatoFecha(k.getFechavencimiento()));
 				}
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getTiporegistro().equals("E")?"ENTRADA":"SALIDA");
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getCantidad().doubleValue());
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getCostounitario().doubleValue());
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getCostototal().doubleValue());
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getProducto().getPreciouno().doubleValue());
-//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getSaldo().doubleValue());
-//				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(usuarioServicio.consultarByPk(k.getIdusuario()).getNombre());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(k.getUpdated()));
 				
 				fila++;
 			}
@@ -405,6 +414,143 @@ public class KardexCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		return null;
+	}
+	
+	
+	public StreamedContent getFileKardexAll() {
+		try {
+			
+			// consulta todos los productos en un rango de fechas
+			List<KardexProducto> kardexProductoTodosList = kardexProductoServicio.getKardexProductoDao().consultar(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), fechaInicial, fechaFinal);
+			List<Usuario> usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.TODOS);
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-kardexProductoTodos.xls");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xls");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));
+			// llenaa hoja 1 del archivo
+			HSSFSheet sheet=wb.getSheetAt(0);
+			
+			// datos de la cabecera
+			HSSFRow row = sheet.getRow(3);
+			HSSFCell cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(fechaInicial));
+			
+			row = sheet.getRow(4);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(fechaFinal));
+			
+			row = sheet.getRow(5);
+			cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			int fila = 8;
+			
+			for (KardexProducto k : kardexProductoTodosList) {
+				
+				row = sheet.createRow(fila);
+				
+				int col =0;
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getIdkardexproducto());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFechaHora(k.getUpdated()));
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(k.getFecharegistro()));
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getObservacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getNombregenerico());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getCodigoprincipal());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getStock().doubleValue());
+				
+				cell = row.createCell(col++);
+				if(k.getFechafabricacion()!=null) {
+					cell.setCellValue(FechaUtil.formatoFecha(k.getFechafabricacion()));
+				}
+				
+				cell = row.createCell(col++);
+				if(k.getFechacompra()!=null) {
+					cell.setCellValue(FechaUtil.formatoFecha(k.getFechacompra()));
+				}
+				
+				cell = row.createCell(col++);
+				if(k.getFechavencimiento()!=null) {
+					cell.setCellValue(FechaUtil.formatoFecha(k.getFechavencimiento()));
+				}
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getTiporegistro().equals("E")?"ENTRADA":"SALIDA");
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getCantidad().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getCostounitario().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getCostototal().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getPreciouno().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getSaldo().doubleValue());
+				
+				cell = row.createCell(col++);
+				Usuario u = usuarioList.stream().filter(x->x.getIdusuario().equals(k.getIdusuario())).collect(Collectors.toList()).get(0);
+				cell.setCellValue(u.getNombre());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(k.getUpdated()));
+				
+				fila++;
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+			
+
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-kardexProductoTodos.xls");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
+	public boolean getCompararValoresDouble(Double v1,Double v2) {
+		if(v1<=v2) return true;
+		
+		return false;
 	}
 	
 	/**
