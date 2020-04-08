@@ -6,6 +6,8 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,11 +18,15 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellAddress;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
@@ -53,6 +59,10 @@ public class IceCtrl extends BaseCtrl {
 	private List<Ice> iceAllFilterList;
 	
 	private Ice iceSelected;
+	private File fileIces;
+	private String nombreFileIce;
+	private boolean existeNovedadesIce;
+	private boolean renderResultadoImportIce;
 
 	/**
 	 * 
@@ -240,6 +250,282 @@ public class IceCtrl extends BaseCtrl {
 	}
 
 	
+	public StreamedContent getPlantillaImportarIce() {
+		try {
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-importarIce.xls");
+			
+			return AppJsfUtil.downloadFile(new File(path), "FALECPV-importarIce.xls");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmImportIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public StreamedContent getPlantillaImportarIceNovedades() {
+		try {
+			
+						
+			return AppJsfUtil.downloadFile(fileIces, "FALECPV-importarIce.xls");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmImportIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public void handleUpload_Ice(FileUploadEvent event) throws IOException {
+			
+			try {
+				existeNovedadesIce = false;
+				renderResultadoImportIce = false;
+				
+				UploadedFile uploadedFile = event.getFile();
+				nombreFileIce = uploadedFile.getFileName();
+				File parent = new File("uploads");
+				parent.mkdirs();
+				fileIces = new File(parent, nombreFileIce);
+				FileUtils.writeByteArrayToFile(fileIces, uploadedFile.getContents());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				AppJsfUtil.addErrorMessage("frmImportIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			}
+			
+	}
+	
+	public void importarIce() {
+		
+		try {
+			
+			existeNovedadesIce = false;
+			renderResultadoImportIce = false;
+			
+			@SuppressWarnings("resource")
+			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(fileIces));
+			HSSFSheet sheet=wb.getSheetAt(0);
+			
+			List<Ice> importIceList = new ArrayList<>();
+			int fila=2;
+			conti1:while(true) {
+				HSSFRow row = sheet.getRow(fila);
+				if(row==null) break;
+				
+				Ice ice = new Ice();
+					
+					int col = 0;
+					
+					ice.setFila(fila);
+					
+					HSSFCell cell = row.getCell(col++);
+					if(cell!=null) {
+						try {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							ice.setCodigo(cell.getStringCellValue());
+						} catch (Exception e) {
+							ice.setError(true);
+							ice.setNovedad("FORMATO CODIGO ERROR");
+							importIceList.add(ice);
+							e.printStackTrace();
+							fila++;
+							continue conti1;
+						}
+					}
+					
+					cell = row.getCell(col++);
+					if(cell!=null) {
+						try {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							ice.setDescripcion(cell.getStringCellValue());
+						} catch (Exception e) {
+							ice.setError(true);
+							ice.setNovedad("FORMATO DESCCRIPCION ERROR");
+							importIceList.add(ice);
+							e.printStackTrace();
+							fila++;
+							continue conti1;
+						}
+					}
+					
+					cell = row.getCell(col++);
+					if(cell!=null) {
+						try {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							ice.setTarifaadvalorem(cell.getStringCellValue());
+							
+						} catch (Exception e) {
+							ice.setError(true);
+							ice.setNovedad("FORMATO TARIFA AD VALOREM ERROR");
+							importIceList.add(ice);
+							e.printStackTrace();
+							fila++;
+							continue conti1;
+						}
+					}
+					
+					cell = row.getCell(col++);
+					if(cell!=null) {
+						try {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							ice.setTarifaespecifica(cell.getStringCellValue());
+						} catch (Exception e) {
+							ice.setError(true);
+							ice.setNovedad("FORMATO TARIFA ESPECIFICA ERROR");
+							importIceList.add(ice);
+							e.printStackTrace();
+							fila++;
+							continue conti1;
+						}
+					}
+					
+					importIceList.add(ice);
+				fila++;
+				
+			}
+			
+			// validacion formato
+			validarFormatoImportIce(importIceList);
+			
+			// cargar los datos
+			importIceList = iceServicio.getIceDao().importarProductoFacade(importIceList,AppJsfUtil.getEstablecimiento().getEmpresa(), AppJsfUtil.getUsuario().getIdusuario());
+			
+			
+			// colocar los errores en el archivo
+			for (Ice p : importIceList) {
+				if(p.isError()) {
+					
+					// color
+					HSSFCellStyle myStyle = wb.createCellStyle();
+					myStyle.setFillForegroundColor(HSSFColor.ORANGE.index);
+					myStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+					
+					// coloca el error
+					HSSFRow row = sheet.getRow(p.getFila());
+					HSSFCell cell = row.createCell(4);
+					
+					cell.setCellValue(p.getNovedad());
+					cell.setCellStyle(myStyle);
+					
+					// pinta de rojo la 1era celda
+					cell = row.getCell(0);
+					if(cell==null) cell = row.createCell(0);
+				
+					
+				}
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+			
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(fileIces);
+			wb.write(out);
+			out.close();
+			
+			// existe novedades 
+			existeNovedadesIce = importIceList.stream().filter(x->x.isError()==true).count()>0?true:false;
+			renderResultadoImportIce = true;
+			if(existeNovedadesIce) {
+				byte[] file = FileUtils.readFileToByteArray(fileIces);
+				fileIces = File.createTempFile("FALECPV-importarIce", ".xls");
+				FileUtils.writeByteArrayToFile(fileIces, file);
+			}
+			
+			consultarIce();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmImportIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	
+		
+		
+	}
+	
+	
+	private void validarFormatoImportIce(List<Ice> lista) throws DaoException {
+		
+	
+		conti1:for (Ice ice : lista) {
+			 
+			if(ice.isError()) continue conti1;
+			
+			// datos obligatorios
+			if(ice.getCodigo()==null) {
+				ice.setError(true);
+				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO CODIGO OBLIGATORIO"):"CAMPO CODIGO OBLIGATORIO");
+			}
+			if(ice.getDescripcion()==null) {
+				ice.setError(true);
+				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO DESCRIPCION OBLIGATORIO"):"CAMPO DESCRIPCION OBLIGATORIO");
+			}
+			if((ice.getTarifaadvalorem()==null || ice.getTarifaadvalorem().compareTo("")==0) && (ice.getTarifaespecifica()==null ||ice.getTarifaespecifica().compareTo("")==0) ) {
+				ice.setError(true);
+				ice.setNovedad(ice.getNovedad() != null
+						? ice.getNovedad()
+								.concat(", UNO DE LOS CAMPOS TARIFA AD VALOREM Y TARIFA ESPECIFICA SON OBLIGATORIOS")
+						: "UNO DE LOS CAMPOS TARIFA AD VALOREM Y TARIFA ESPECIFICA SON OBLIGATORIOS");
+			}
+			if(ice.getTarifaespecifica()!=null) {
+			if(!validaTarEspecif(ice.getTarifaespecifica())) {
+				ice.setError(true);
+				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO TARIFA ESPECIFICA FORMATO INCORRECTO"):"CAMPO TARIFA ESPECIFICA FORMATO INCORRECTO");
+			}}
+			if(ice.getTarifaadvalorem()!=null) {
+			if(!validaTarifa(ice.getTarifaadvalorem())) {
+				ice.setError(true);
+				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO TARIFA VALOREM FORMATO INCORRECTO"):"CAMPO TARIFA VALOREM FORMATO INCORRECTO");
+			}}
+			
+			if(ice.getCodigo()!=null) {
+				
+				if(iceServicio.getIceDao().existeCodigo(ice.getCodigo(), ice.getIdice())) {
+					ice.setError(true);
+					ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO CODIGO  YA EXISTE"):"CAMPO CODIGO  YA EXISTE");
+				}
+				
+			}
+			
+		}
+	}
+	
+	public boolean validaTarifa(String valor) 
+	{
+		//valida tarifa valorem
+		boolean flag=false;
+		try {
+			BigDecimal tarifa=new BigDecimal(valor);
+			
+			flag= true;
+		} catch (NumberFormatException e) {
+			
+		}
+		return flag;
+		
+	}
+	
+	public boolean validaTarEspecif(String valor) 
+	{
+		//valida tarifa valorem
+		boolean flag=false;
+		int size= valor.length();
+		
+		try {
+			BigDecimal tarifa=new BigDecimal(valor);
+			
+			flag= true;
+		} catch (NumberFormatException e) {
+			
+		}
+		return flag;
+		
+	}
+	
 	public List<Ice> getIceAllList() {
 		return iceAllList;
 	}
@@ -262,6 +548,40 @@ public class IceCtrl extends BaseCtrl {
 
 	public void setIceAllFilterList(List<Ice> iceAllFilterList) {
 		this.iceAllFilterList = iceAllFilterList;
+	}
+
+	public String getNombreFileIce() {
+		return nombreFileIce;
+	}
+
+	public void setNombreFileIce(String nombreFileIce) {
+		this.nombreFileIce = nombreFileIce;
+	}
+
+	public boolean isExisteNovedadesIce() {
+		return existeNovedadesIce;
+	}
+
+	public void setExisteNovedadesIce(boolean existeNovedadesIce) {
+		this.existeNovedadesIce = existeNovedadesIce;
+	}
+
+
+
+	public boolean isRenderResultadoImportIce() {
+		return renderResultadoImportIce;
+	}
+
+	public void setRenderResultadoImportIce(boolean renderResultadoImportIce) {
+		this.renderResultadoImportIce = renderResultadoImportIce;
+	}
+
+	public File getFileIces() {
+		return fileIces;
+	}
+
+	public void setFileIces(File fileIces) {
+		this.fileIces = fileIces;
 	}
 	
 

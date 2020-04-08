@@ -39,19 +39,18 @@
 	    		<div class="p-grid p-align-center">
 	    			
 	    			<!-- criterio de busqueda -->
-	    			<div class="p-col-12 p-md-6"></div>
+<!-- 	    			<div class="p-col-12 p-md-6"></div> -->
 	    			
 	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-6" style="text-align:center;">
+	    			<div class="p-col-12" style="text-align:center;">
 	    				
 	    				<p:panelGrid columns="1"
 								style="margin:0px;border:none !important;width:100%;"
 								layout="grid"
 								columnClasses="ui-g-12">
 								
-								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
-									columnClasses="ui-g-12 ui-lg-6,
-												   ui-g-12 ui-lg-6">
+								<p:panelGrid columns="4" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-3,ui-g-12 ui-lg-3,ui-g-12 ui-lg-3,ui-g-12 ui-lg-3">
 												   
 									<p:commandButton id="cmdRefrecar"
 											value="CONSULTAR" icon="fa fa-search" 
@@ -70,6 +69,20 @@
 									<p:commandButton id="cmdNuevo"
 										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
 										action="#{iceCtrl.nuevo()}" inline="true">
+									</p:commandButton>
+									
+									<p:commandButton  id="cmdExcelCargar" 
+										title="CARGAR ARCHIVO EXCEL ICE"
+										icon="fa fa-file-excel-o"
+										value="IMPORTAR VALORES ICE"
+										styleClass="secondary-button Wid90"
+										onclick="PF('dlgImportIce').show()"
+										update=":frmImportIce"
+										immediate="true">
+										<f:setPropertyActionListener value="#{null}" target="#{iceCtrl.nombreFileIce}"/>
+										<f:setPropertyActionListener value="#{null}" target="#{iceCtrl.fileIces}"/>
+										<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.existeNovedadesIce}"/>
+										<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.renderResultadoImportIce}"/>
 									</p:commandButton>
 									
 									
@@ -132,19 +145,11 @@
 						 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		         <p:column filterBy="#{ice.tarifaadvalorem}"  filterMatchMode="contains" >
-		             <f:facet name="header">
-							<h:outputText value="Tarifa Ad Valorem" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
-						</f:facet>
-		            <h:outputText value="#{ice.tarifaadvalorem}" />
+		         <p:column  headerText="Tarifa Ad Valorem"  filterMatchMode="contains" >
+		             <h:outputText value="#{ice.tarifaadvalorem}" />
 		        </p:column>
 		        
-		        <p:column filterBy="#{ice.tarifaespecifica}"  filterMatchMode="contains" >
-		             <f:facet name="header">
-							<h:outputText value="Tarifa Especifica" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
-						</f:facet>
+		        <p:column  headerText="Tarifa Especifica" filterMatchMode="contains" >
 		            <h:outputText value="#{ice.tarifaespecifica}" />
 		        </p:column>
 		        
@@ -152,15 +157,15 @@
 		            <h:outputText value="#{ice.valor}" />
 		        </p:column>
 		 
-				 <p:column  headerText="Usuario"  filterMatchMode="contains" >
-		            <h:outputText value="#{ice.idusuario}" />
-		        </p:column>
 		        
            </p:dataTable>
 	    </div>
 	    </h:form>
 	     <!-- formulario iva -->
 	    <ui:include src="incl_ice_form.xhtml" />
+	    
+	        <!-- Form carga productos -->
+	    <ui:include src="incl_cargarIce_form.xhtml" />
 	    
     </ui:define>
     

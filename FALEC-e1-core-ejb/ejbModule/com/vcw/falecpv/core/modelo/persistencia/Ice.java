@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -74,6 +75,13 @@ public class Ice implements Serializable {
 	@ManyToOne(optional = false)
     @JoinColumn(name = "idempresa",referencedColumnName = "idempresa")
     private Empresa empresa;
+	
+	@Transient
+	private boolean error = false;
+	@Transient
+	private String novedad;
+	@Transient
+	private int fila;
 
 	/**
 	 * 
@@ -234,6 +242,30 @@ public class Ice implements Serializable {
 	 */
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+
+	public boolean isError() {
+		return error;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
+	}
+
+	public String getNovedad() {
+		return novedad;
+	}
+
+	public void setNovedad(String novedad) {
+		this.novedad = novedad;
+	}
+
+	public int getFila() {
+		return fila;
+	}
+
+	public void setFila(int fila) {
+		this.fila = fila;
 	}	
 
 }
