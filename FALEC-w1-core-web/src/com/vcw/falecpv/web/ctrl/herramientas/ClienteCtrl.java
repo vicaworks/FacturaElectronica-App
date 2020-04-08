@@ -393,7 +393,7 @@ public class ClienteCtrl extends BaseCtrl {
 			if(c.isError()) continue conti1;
 			
 			// datos obligatorios
-			if(c.getIdTipoIdentificacion()==null) {
+			if(c.getIdTipoIdentificacion()==null || c.getIdTipoIdentificacion().compareTo("")==0) {
 				c.setError(true);
 				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO ID TIPO IDENTIFICACIÓN OBLIGATORIO"):"CAMPO ID TIPO IDENTIFICACIÓN OBLIGATORIO");
 			}
