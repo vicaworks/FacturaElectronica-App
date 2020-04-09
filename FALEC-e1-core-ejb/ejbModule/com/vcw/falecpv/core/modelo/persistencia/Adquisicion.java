@@ -56,6 +56,10 @@ public class Adquisicion implements Serializable {
     @Column(name = "numfactura", length = 50)
     private String numfactura;
     
+    @Size(max = 20)
+    @Column(name = "estado", length = 50)
+    private String estado;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -327,6 +331,20 @@ public class Adquisicion implements Serializable {
 	 */
 	public void setTipopago(Tipopago tipopago) {
 		this.tipopago = tipopago;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public String getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 }
