@@ -91,22 +91,22 @@
 					<p:panelGrid id="panelMostrar" rendered="#{empresaCtrl.bandera}" columns="1" styleClass="ui-panelgrid-blank form-group" layout="grid">
 						<p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" 
 									 cellpadding="5">
-		              		 <p:outputLabel value="RUC:" style="vertical-align: middle; font-weight: bold;" />
+		              		 <p:outputLabel value="RUC * :" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.ruc}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Razón social:" style="vertical-align: middle; font-weight: bold;" />
+		                     <p:outputLabel value="#{msg['label.razonsocial']} * :" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.razonsocial}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Nombre comercial:" style="vertical-align: middle; font-weight: bold;" />
+		                     <p:outputLabel value="NOMBRE COMERCIAL * :" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.nombrecomercial}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Dirección matriz:" style="vertical-align: middle; font-weight: bold;" />
+		                     <p:outputLabel value="#{msg['label.direccionmatriz']} * :" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.direccionmatriz}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle; font-weight: bold;" />
+		                     <p:outputLabel value="OBLIGADO A CONTABILIDAD :" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.obligadocontablidad}" style="vertical-align: middle" />
 		                     
-		                     <p:outputLabel value="Ambiente:" style="vertical-align: middle; font-weight: bold;" />
+		                     <p:outputLabel value="AMBIENTE * :" style="vertical-align: middle; font-weight: bold;" />
 		                     <p:outputLabel value="#{empresaCtrl.empresa.ambiente}" style="vertical-align: middle" />
 		        		</p:panelGrid>
 	        		</p:panelGrid>
@@ -119,19 +119,19 @@
 							</p:inputText>
 							<p:message for="txtruc"/>
 		                     
-	                     	<p:outputLabel value="Razón social * :" style="vertical-align: middle" />
+	                     	<p:outputLabel value="#{msg['label.razonsocial']} * :" style="vertical-align: middle" />
 	                     	<p:inputText id="txtrazonsocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
 	                     	<h:outputText value="" />
 		                     
-	                     	<p:outputLabel value="Nombre comercial * :" style="vertical-align: middle" />
+	                     	<p:outputLabel value="NOMBRE COMERCIAL * :" style="vertical-align: middle" />
 	                     	<p:inputText id="txtnombrecomercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
 	                     	<h:outputText value="" />
 		                     
-	                     	<p:outputLabel value="Dirección matriz * :" style="vertical-align: middle" />
+	                     	<p:outputLabel value="#{msg['label.direccionmatriz']} * :" style="vertical-align: middle" />
 	                     	<p:inputText id="txtdireccionmatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
 	                     	<h:outputText value="" />
 		                     
-	                     	<p:outputLabel value="Obligado a contabilidad:" style="vertical-align: middle" />
+	                     	<p:outputLabel value="OBLIGADO A CONTABILIDAD :" style="vertical-align: middle" />
 	                     	<p:selectOneMenu id="cmbobligadocontabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="SI" itemValue="SI" />
@@ -139,7 +139,7 @@
 				         	</p:selectOneMenu>
 	                     	<p:message for="cmbobligadocontabilidad"/>
 		                     
-	                     	<p:outputLabel value="Ambiente * :" style="vertical-align: middle" />
+	                     	<p:outputLabel value="AMBIENTE * :" style="vertical-align: middle" />
 	                     	<p:selectOneMenu id="cmbambiente" value="#{empresaCtrl.empresaSelected.ambiente}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="Pruebas" itemValue="1" />
@@ -147,11 +147,11 @@
 				         	</p:selectOneMenu>
 					        <p:message for="cmbambiente" />
 					        
-				         	<p:outputLabel value="Clave firma electrónica:" style="vertical-align: middle" />
+				         	<p:outputLabel value="#{msg['label.clavefirmaelectronica']} :" style="vertical-align: middle" />
 	                     	<p:password id="txtclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" />
 		              		<h:outputText value="" />
 		              		
-	              		 	<p:outputLabel value="Archivo firma electrónica:" style="vertical-align: middle" />
+	              		 	<p:outputLabel value="#{msg['label.archivofirmaelectronica']} :" style="vertical-align: middle" />
 	              		 	<p:fileUpload label="Examinar..." mode="advanced" skinSimple="true" fileUploadListener="#{empresaCtrl.upload}" auto="true" uploadLabel="Cargar" styleClass="secondary-button" />
         					<h:outputText value="" />
 		        		</p:panelGrid>

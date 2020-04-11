@@ -59,10 +59,16 @@ public class ClienteCtrl extends BaseCtrl {
 	
 	public ClienteCtrl() {
 	}
-	
+
 	@PostConstruct
 	private void init() {
 		clienteList = new ArrayList<>();
+		try {
+			consultarClientes();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	@Override

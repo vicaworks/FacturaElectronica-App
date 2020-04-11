@@ -74,7 +74,7 @@
 					</h:panelGroup>
 					<p:message for="intRuc"/>
 					
-					<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:outputText value="#{msg['label.razonsocial']} * : " styleClass="cpoRequerido" style="font-weight: bold" />
 					<h:panelGroup>
 						<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
 					</h:panelGroup>
@@ -86,7 +86,7 @@
 					</h:panelGroup>
 					<h:outputText value="" />
 					
-					<h:outputText value="DIRECCIÓN MATRIZ * : " styleClass="cpoRequerido" style="font-weight: bold" />
+					<h:outputText value="#{msg['label.direccionmatriz']} * : " styleClass="cpoRequerido" style="font-weight: bold" />
 					<h:panelGroup>
 						<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 					</h:panelGroup>

@@ -136,7 +136,7 @@ public class EmpresaCtrl extends BaseCtrl {
 				byte[] bytes;
 		        bytes = IOUtils.toByteArray(file.getInputstream());
 		        empresaSelected.setArchivofirmaelectronica(bytes);
-		        AppJsfUtil.addInfoMessage("frmEmpresa", "OK", "ARCHIVO DE FIRMA ELECTRÓNICA CARGADO CORRECTAMENTE.");
+		        AppJsfUtil.addInfoMessage("frmEmpresa", "OK", msg.getString("mensaje.archivofirmaelectronica"));
             }
 		} catch (IOException e) {
 			e.printStackTrace();			
