@@ -90,7 +90,7 @@
 					scrollable="true" styleClass="ivaDT"
 					rowKey="#{iva.idiva}">
 
-					<p:column headerText="OPC" style="width:30px;">
+					<p:column headerText="OPC" style="width:40px;">
 
 						<p:commandLink id="clkEditar"
 							action="#{ivaCtrl.editar()}">
@@ -113,26 +113,29 @@
 					</p:column>
 					
 					<p:column headerText="Id"
-						style="width:10px; text-align: center;">
+						style="width:20px; text-align: center;">
 						<h:outputText value="#{iva.idiva}" />
 					</p:column>
 
-					<p:column headerText="Codigo" style="width:60px;">
+					<p:column headerText="Codigo" style="width:80px;">
 						<h:outputText value="#{iva.codigo}" />
 					</p:column>
 
 					<p:column headerText="Porcentaje" priority="1"
-						style="width:40px; ">
+						style="width:80px; ">
 						<h:outputText value="#{iva.porcentaje}" />
 					</p:column>
 
 					<p:column headerText="Valor"
-						style="width:10px; text-align: center; ">
-						<h:outputText value="#{iva.valor}" />
+						style="width:30px; text-align: center; ">
+						<h:outputText value="#{iva.valor}" >
+						 <f:convertNumber locale="es_EC" pattern="0.###"/>
+						</h:outputText>
 					</p:column>
-
-					<p:column headerText="Usuario" style="width:25px;">
-						<h:outputText value="#{iva.idusuario}" />
+					
+					<p:column headerText="Defecto"
+						style="width:30px; text-align: center; ">
+						<h:outputText value="#{iva.defecto==0? 'No':'Si'}" styleClass="#{iva.defecto==0?'markRed':'markGreen'}"/>
 					</p:column>
 
 				</p:dataTable>

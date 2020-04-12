@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.heightFrmIce {
-				height: 200px;
+/* 				height: 200px; */
 		}
 		
 	</style>
@@ -55,7 +55,11 @@
 					<h:outputText value="" />
 					
 					<h:outputText value="CODIGO * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="4" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" 
+					requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="4" 
+					validatorMessage="SOLO NÚMEROS">
+							<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+							</p:inputText>
 					<p:message for="intCodigo"/>
 					
 					<h:outputText value="DESCRIPCION * : " styleClass="cpoRequerido"/>
@@ -71,7 +75,11 @@
 					<p:message for="intTarifaEspecifica"/>
 					
 					<h:outputText value="VALOR * : " styleClass="cpoRequerido" required="true" requiredMessage="REQUERIDO" />
-					<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  styleClass="Wid100" />
+					<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  requiredMessage="REQUERIDO" styleClass="Wid100" 
+						 converterMessage="SOLO NUMEROS">
+						    <f:convertNumber locale="es_EC" pattern="0.###"/>
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+					</p:inputText>
 					<p:message for="intValor"/>
 					
 					</p:panelGrid>

@@ -48,23 +48,43 @@
 			
 			<div class="form-ui Wid100  heightFrmIva contenedorFormulario">
 			
-				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" 
+					columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 					
 					<h:outputText value="ID" />
 					<h:outputText value="#{ivaCtrl.ivaSelected.idiva}" />
 					<h:outputText value="" />
 					
 					<h:outputText value="CODIGO * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intCodigo" value="#{ivaCtrl.ivaSelected.codigo}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:inputText id="intCodigo" value="#{ivaCtrl.ivaSelected.codigo}" 
+					required="true" requiredMessage="REQUERIDO" styleClass="Wid100" 
+					maxlength="1" 
+					 validatorMessage="SOLO NÚMEROS">
+							<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+							</p:inputText>
 					<p:message for="intCodigo"/>
 					
 					<h:outputText value="PORCENTAJE * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intPorcentaje" value="#{ivaCtrl.ivaSelected.porcentaje}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:inputText id="intPorcentaje" value="#{ivaCtrl.ivaSelected.porcentaje}" required="true" 
+						requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter"/>
 					<p:message for="intPorcentaje"/>
 					
 					<h:outputText value="VALOR * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intValor" value="#{ivaCtrl.ivaSelected.valor}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" />
+					<p:inputText id="intValor" value="#{ivaCtrl.ivaSelected.valor}" required="true" 
+						requiredMessage="REQUERIDO" styleClass="Wid100" 
+						 converterMessage="SOLO NUMEROS">
+						    <f:convertNumber locale="es_EC" pattern="0.###"/>
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+					</p:inputText>
 					<p:message for="intValor"/>
+					
+					<h:outputText value="DEFECTO * : " styleClass="cpoRequerido"/>
+						<p:selectOneMenu id="intDefecto" value="#{ivaCtrl.ivaSelected.defecto}" required="true" requiredMessage="REQUERIDO">
+					            <f:selectItem itemLabel="Seleccione" itemValue="" />
+					            <f:selectItem itemLabel="SI" itemValue="1" />
+					            <f:selectItem itemLabel="NO" itemValue="0" />
+			         	</p:selectOneMenu>
+					<p:message for="intDefecto"/>
 					
 					</p:panelGrid>
 				

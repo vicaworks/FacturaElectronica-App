@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -38,6 +39,10 @@ import com.vcw.falecpv.web.util.UtilExcel;
  * @author cristianvillarreal
  *
  */
+/**
+ * @author Isabel Lobato
+ *
+ */
 @Named
 @ViewScoped
 public class IvaCtrl extends BaseCtrl {
@@ -53,7 +58,20 @@ public class IvaCtrl extends BaseCtrl {
 	private List<Iva> ivaAllList;
 	
 	private Iva ivaSelected;
+    public final static int defecto=1;
 			
+	
+	@PostConstruct
+	public void init() {
+		try {
+			consultarIva();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	
 	/**
 	 * 
 	 */
@@ -96,6 +114,7 @@ public class IvaCtrl extends BaseCtrl {
 	public void guardar() {
 		
 		try {
+			Iva ivaUpdate= new Iva();
 			//validar unico codigo iva
 			if (ivaServicio.getIvaDao().existeCodigo(ivaSelected.getCodigo(), ivaSelected.getIdiva())) {
 				AppJsfUtil.addErrorMessage("frmIva", "ERROR", "CODIGO DUPLICADO");
@@ -112,15 +131,23 @@ public class IvaCtrl extends BaseCtrl {
 						return;
 					}						
 			}
-				//guarda-edita
-				ivaSelected.setDefecto(0);
-				ivaSelected.setUpdated(new Date());
-				ivaSelected.setIdusuario(AppJsfUtil.getRemoteUser());
-				ivaSelected = ivaServicio.guardar(ivaSelected);
-				
-				ivaAllList = null;
-				consultarIva();
-				AppJsfUtil.addInfoMessage("frmIva", "OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			//valida si el valor es x defecto 
+			if(ivaSelected.getDefecto()==1) {
+				ivaUpdate=ivaServicio.getIvaDao().existeValorDefecto(defecto, ivaSelected.getIdiva());
+			if (ivaUpdate!= null) {
+				// actualizo objeto
+				ivaUpdate.setDefecto(0);
+				ivaServicio.actualizar(ivaUpdate);
+			}}	
+			
+			//guarda-edita
+			ivaSelected.setUpdated(new Date());
+			ivaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			ivaSelected = ivaServicio.guardar(ivaSelected);
+			
+			ivaAllList = null;
+			consultarIva();
+			AppJsfUtil.addInfoMessage("frmIva", "OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 										
 		} catch (DaoException e) {
 			e.printStackTrace();
@@ -228,6 +255,10 @@ public class IvaCtrl extends BaseCtrl {
 				cell = row.createCell(4);
 				cell.setCellValue(e.getIdusuario());
 				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(5);
+				cell.setCellValue(e.getUpdated());
+				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
 				
 				
 				fila++;
