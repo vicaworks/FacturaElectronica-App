@@ -31,6 +31,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.servicio.IvaServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -54,6 +55,9 @@ public class IvaCtrl extends BaseCtrl {
 	
 	@EJB
 	private IvaServicio ivaServicio;
+	
+	@EJB
+	private UsuarioServicio usuarioServicio;
 
 	private List<Iva> ivaAllList;
 	
@@ -253,7 +257,7 @@ public class IvaCtrl extends BaseCtrl {
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(4);
-				cell.setCellValue(e.getIdusuario());
+				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(5);
