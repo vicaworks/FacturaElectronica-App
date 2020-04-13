@@ -17,6 +17,28 @@
 				max-height: 400px !important;
 			}	
 			
+			@media screen and (max-width: 40em){
+					.ui-fileupload-buttonbar .ui-button .ui-button-text {
+					display: block !important;
+				}
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				/* display: none; */
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
+			}
         </style>
     </ui:define>
 
@@ -56,6 +78,11 @@
 											value="CONSULTAR" icon="fa fa-search" 
 											action="#{iceCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
 											/>
+																									
+									<p:commandButton id="cmdNuevo"
+										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										action="#{iceCtrl.nuevo()}" inline="true">
+									</p:commandButton>
 									
 									<p:commandButton  id="cmdExcel" 
 										title="EXPORTAR"
@@ -64,11 +91,6 @@
 										value="REPORTE"
 										styleClass="success-btn Wid90">
 										<p:fileDownload value="#{iceCtrl.fileIce}"/>
-									</p:commandButton>
-									
-									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
-										action="#{iceCtrl.nuevo()}" inline="true">
 									</p:commandButton>
 									
 									<p:commandButton  id="cmdExcelCargar" 
@@ -100,10 +122,10 @@
 			</p:messages>
 		
 		<div class="card card-w-title">
-			<p:dataTable var="ice" value="#{iceCtrl.iceAllList}" widgetVar="icedt"
+			<p:dataTable id="iceDT" var="ice" value="#{iceCtrl.iceAllList}" widgetVar="icedt"
 		                 emptyMessage="No existen concidencias" filteredValue="#{iceCtrl.iceAllFilterList}">
 		  
-		  		<p:column headerText="OPC" style="width:50px;">
+		  		<p:column headerText="OPC" style="width:80px;">
 
 						<p:commandLink id="clkEditar"
 							action="#{iceCtrl.editar()}">
@@ -125,11 +147,11 @@
 						</p:commandLink>
 					</p:column>
 		  		
-		        <p:column headerText="Id"  filterMatchMode="contains" style="width:50px;">
+		        <p:column headerText="Id"  filterMatchMode="contains" style="width:80px;">
 		            <h:outputText value="#{ice.idice}" />
 		        </p:column>
 		        
-		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" >
+		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:80px;">
 						<f:facet name="header">
 							<h:outputText value="Codigo" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>
@@ -137,7 +159,7 @@
 						<h:outputText value="#{ice.codigo}" />
 				</p:column>
 					
-		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains">
+		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:420px;">
 		                <f:facet name="header">
 							<h:outputText value="Descripcion" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>
@@ -145,15 +167,15 @@
 						 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		         <p:column  headerText="Tarifa Ad Valorem"  filterMatchMode="contains" >
+		         <p:column  headerText="Tarifa Ad Valorem"  filterMatchMode="contains" style="width:120px;">
 		             <h:outputText value="#{ice.tarifaadvalorem}" />
 		        </p:column>
 		        
-		        <p:column  headerText="Tarifa Especifica" filterMatchMode="contains" >
+		        <p:column  headerText="Tarifa Especifica" filterMatchMode="contains" style="width:120px;" >
 		            <h:outputText value="#{ice.tarifaespecifica}" />
 		        </p:column>
 		        
-		        <p:column  headerText="Valor"  filterMatchMode="contains" >
+		        <p:column  headerText="Valor"  filterMatchMode="contains" style="width:120px;" >
 		            <h:outputText value="#{ice.valor}" />
 		        </p:column>
 		 

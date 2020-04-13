@@ -84,7 +84,9 @@
 					<h:panelGroup>
 						<p:inputText id="intCodigoEst"
 							value="#{establecimientoCtrl.establecimientoSelected.codigoestablecimiento}"
-							styleClass="Wid100" maxlength="3" />
+							styleClass="Wid100" maxlength="3" validatorMessage="SOLO NÚMEROS">
+							<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+							</p:inputText>
 					</h:panelGroup>
 					<p:message for="intCodigoEst" />
 
@@ -181,7 +183,6 @@
 							value="#{establecimientoCtrl.establecimientoSelected.secuencialNotaCredito}"
 							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
 							maxlength="10"  converterMessage="SOLO NUMEROS" validatorMessage="MAYOR a 0">
-							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 						</p:inputText>
 					</h:panelGroup>

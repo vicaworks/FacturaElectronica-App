@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -70,6 +71,15 @@ public class IceCtrl extends BaseCtrl {
 	public IceCtrl() {
 	}
 
+	@PostConstruct
+	public void init() {
+		try {
+			consultarIce();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 	@Override
 	public void refrescar() {
 		try {
@@ -112,7 +122,7 @@ public class IceCtrl extends BaseCtrl {
 			
 			//guarda-edita
 			iceSelected.setUpdated(new Date());
-			iceSelected.setIdusuario(AppJsfUtil.getRemoteUser());
+			iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			iceSelected = iceServicio.guardar(iceSelected);
 				
 				iceAllList = null;
@@ -153,6 +163,7 @@ public class IceCtrl extends BaseCtrl {
 	 * @throws DaoException
 	 */
 	private void consultarIce() throws DaoException {
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:iceDT");
 		iceAllList= new ArrayList<>();
 		iceAllList  = iceServicio.getIceDao().getAllIce(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
@@ -224,6 +235,15 @@ public class IceCtrl extends BaseCtrl {
 				cell = row.createCell(5);
 				cell.setCellValue(e.getValor().doubleValue());
 				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(6);
+				cell.setCellValue(e.getIdusuario());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(7);
+				cell.setCellValue(e.getUpdated());
+				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
+				
 				
 				fila++;
 			}

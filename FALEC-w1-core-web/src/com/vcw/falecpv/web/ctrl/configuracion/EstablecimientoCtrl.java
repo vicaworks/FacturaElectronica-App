@@ -197,7 +197,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 							.getEstablecimientobyMatriz(matriz).get(0);
 					// inserto normal
 					establecimientoSelected.setUpdated(new Date());
-					establecimientoSelected.setIdusuario(AppJsfUtil.getRemoteUser());
+					establecimientoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 					establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
 					// guarda parametros genericos
 					if(flagEstablecimiento) {
@@ -421,6 +421,15 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				cell = row.createCell(6);
 				cell.setCellValue(e.getMatriz());
 				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(7);
+				cell.setCellValue(e.getIdusuario());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(8);
+				cell.setCellValue(e.getUpdated());
+				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
+				
 				
 				fila++;
 			}

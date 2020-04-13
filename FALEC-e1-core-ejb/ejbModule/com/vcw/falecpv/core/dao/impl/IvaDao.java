@@ -140,7 +140,7 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 
 			Query q = null;
 
-			if (valor != null) {
+			if (idiva != null) {
 				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.valor=:valor AND i.idiva<>:idiva");
 				q.setParameter("valor", valor);
 				q.setParameter("idiva", idiva);
@@ -153,6 +153,39 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 			}
 			return false;
 
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	/**
+	 * @author Isabel Lobato
+	 * @param codigo
+	 * @return
+	 * @throws DaoException
+	 */
+	public Iva existeValorDefecto(int defecto, String idiva)throws DaoException{
+		try {
+			Iva iva= new Iva();
+			Query q = null;
+			
+			if(idiva!=null) {
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.defecto=:defecto AND i.idiva<>:idiva");
+				q.setParameter("defecto", defecto);
+				q.setParameter("idiva", idiva);
+				
+			}else {
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.defecto=:defecto ");
+				q.setParameter("defecto", defecto);
+			}
+		
+			if(q.getResultList().size()>0) {
+				return (Iva) q.getSingleResult();
+				}
+			
+			return null;
+			
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
