@@ -82,26 +82,28 @@
 					
 							<h:outputText value="Tipo identificación * : " styleClass="cpoRequerido" style="font-weight: bold" />
 							<p:selectOneMenu id="somTipoIdentificacion" value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" 
-											 styleClass="Wid100" converter="omnifaces.SelectItemsConverter">
+											 styleClass="Wid100" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="REQUERIDO">
 								<f:selectItem itemLabel="TIPO IDENTIFICACIÓN [seleccionar] ..."
 										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 		
 								<f:selectItems value="#{tipoIdentificacionCtrl.tipoIdentificacionList}" var="ident"
 									itemLabel="#{ident.tipoidentificacion}" itemValue="#{ident}" />
 							</p:selectOneMenu>
-							<p:message for="somTipoIdentificacion"/>
+							<p:message for="somTipoIdentificacion" />
 							
 							<h:outputText value="IDENTIFICACIÓN * : " styleClass="cpoRequerido" style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intIdentificacion" value="#{clienteCtrl.clienteSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
+								<p:inputText id="intIdentificacion" value="#{clienteCtrl.clienteSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
 							</h:panelGroup>
-							<p:message for="intIdentificacion"/>
+							<p:message for="intIdentificacion" />
 							
 							<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
 							<h:panelGroup>
 								<p:inputText id="intRazonSocial" value="#{clienteCtrl.clienteSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
 							</h:panelGroup>
-							<p:message for="intRazonSocial"/>
+							<p:message for="intRazonSocial" />
 							
 							<h:outputText value="DIRECCIÓN : " style="font-weight: bold" />
 							<h:panelGroup>
@@ -117,19 +119,21 @@
 							
 							<h:outputText value="TELEFÓNO : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intTelefono" value="#{clienteCtrl.clienteSelected.telefono}" styleClass="Wid100" maxlength="20" />
+								<p:inputText id="intTelefono" value="#{clienteCtrl.clienteSelected.telefono}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intTelefono" />
 							
-							<h:outputText value="ESTADO : " style="font-weight: bold" />
+							<h:outputText value="ESTADO * : " styleClass="cpoRequerido" style="font-weight: bold" />
 							<p:selectOneMenu id="somEstado" value="#{clienteCtrl.clienteSelected.estado}" 
-											 styleClass="Wid100" converter="omnifaces.SelectItemsConverter">
+											 styleClass="Wid100" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="REQUERIDO">
 								<f:selectItem itemLabel="ESTADO [seleccionar] ..."
 										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 								<f:selectItem itemLabel="ACTIVO" itemValue="A" />
 								<f:selectItem itemLabel="INACTIVO" itemValue="I" />
 							</p:selectOneMenu>
-							<p:message for="somEstado"/>
+							<p:message for="somEstado" />
 							
 						</p:panelGrid>
 						
@@ -152,9 +156,11 @@
 							
 							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intCedGar1" value="#{clienteCtrl.clienteSelected.cedulagarante1}" styleClass="Wid100" maxlength="20" />
+								<p:inputText id="intCedGar1" value="#{clienteCtrl.clienteSelected.cedulagarante1}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intCedGar1" />
 							
 							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
 							<h:panelGroup>
@@ -164,9 +170,11 @@
 							
 							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intTelGar1" value="#{clienteCtrl.clienteSelected.telefonogarante1}" styleClass="Wid100" maxlength="20" />
+								<p:inputText id="intTelGar1" value="#{clienteCtrl.clienteSelected.telefonogarante1}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intTelGar1" />
 							
 							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
 							<h:panelGroup>
@@ -190,9 +198,11 @@
 							
 							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intCedGar2" value="#{clienteCtrl.clienteSelected.cedulagarante2}" styleClass="Wid100" maxlength="20" />
+								<p:inputText id="intCedGar2" value="#{clienteCtrl.clienteSelected.cedulagarante2}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intCedGar2" />
 							
 							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
 							<h:panelGroup>
@@ -202,9 +212,11 @@
 							
 							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intTelGar2" value="#{clienteCtrl.clienteSelected.telefonogarante2}" styleClass="Wid100" maxlength="20" />
+								<p:inputText id="intTelGar2" value="#{clienteCtrl.clienteSelected.telefonogarante2}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intTelGar2" />
 							
 							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
 							<h:panelGroup>
