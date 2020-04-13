@@ -552,17 +552,22 @@ public class ClienteCtrl extends BaseCtrl {
 			if(c.isError()) continue conti1;
 			
 			// datos obligatorios
-			if(c.getIdTipoIdentificacion()==null || c.getIdTipoIdentificacion().compareTo("")==0) {
+			if(c.getIdTipoIdentificacion()==null) {
 				c.setError(true);
-				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO ID TIPO IDENTIFICACIÓN OBLIGATORIO"):"CAMPO ID TIPO IDENTIFICACIÓN OBLIGATORIO");
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO ID TIPO IDENTIFICACION OBLIGATORIO"):"CAMPO ID TIPO IDENTIFICACION OBLIGATORIO");
 			}
 			if(c.getIdentificacion()==null) {
 				c.setError(true);
-				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACIÓN OBLIGATORIO"):"CAMPO IDENTIFICACIÓN OBLIGATORIO");
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION OBLIGATORIO"):"CAMPO IDENTIFICACION OBLIGATORIO");
+			} else {
+				if (clienteServicio.getClienteDao().existeIdentificacion(c.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
+					c.setError(true);
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION YA EXISTE"):"CAMPO IDENTIFICACION YA EXISTE");
+				}
 			}
 			if(c.getRazonSocial()==null) {
 				c.setError(true);
-				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO RAZÓN SOCIAL OBLIGATORIO"):"CAMPO RAZÓN SOCIAL OBLIGATORIO");
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO RAZON SOCIAL OBLIGATORIO"):"CAMPO RAZON SOCIAL OBLIGATORIO");
 			}
 			
 		}
