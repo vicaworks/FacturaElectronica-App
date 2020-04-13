@@ -31,6 +31,7 @@ import com.vcw.falecpv.core.modelo.dto.ImportClienteDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ImportarClienteServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -48,6 +49,8 @@ public class ClienteCtrl extends BaseCtrl {
 	private ClienteServicio clienteServicio;
 	@EJB
 	private ImportarClienteServicio importarClienteServicio;
+	@EJB
+	private UsuarioServicio usuarioServicio;
 	
 	private String criterioBusqueda;
 	private File fileClientes;
@@ -332,6 +335,156 @@ public class ClienteCtrl extends BaseCtrl {
 						continue conti1;
 					}
 				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setNombreGarante1(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO NOMBRE GARANTE 1 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setCedulaGarante1(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO CÉDULA GARANTE 1 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setDireccionGarante1(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO DIRECCIÓN GARANTE 1 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setTelefonoGarante1(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO TELÉFONO GARANTE 1 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setOcupacionGarante1(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO OCUPACIÓN GARANTE 1 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setNombreGarante2(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO NOMBRE GARANTE 2 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setCedulaGarante2(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO CÉDULA GARANTE 2 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setDireccionGarante2(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO DIRECCIÓN GARANTE 2 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setTelefonoGarante2(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO TELÉFONO GARANTE 2 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
+				
+				cell = row.getCell(col++);
+				if(cell!=null) {
+					try {
+						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						c.setOcupacionGarante2(cell.getStringCellValue());
+					} catch (Exception e) {
+						c.setError(true);
+						c.setNovedad("FORMATO OCUPACIÓN GARANTE 2 ERROR");
+						importClienteDtoList.add(c);
+						e.printStackTrace();
+						fila++;
+						continue conti1;
+					}
+				}
 					
 				importClienteDtoList.add(c);
 				fila++;
@@ -356,7 +509,7 @@ public class ClienteCtrl extends BaseCtrl {
 					
 					// coloca el error
 					HSSFRow row = sheet.getRow(c.getFila());
-					HSSFCell cell = row.createCell(6);
+					HSSFCell cell = row.createCell(16);
 					
 					cell.setCellValue(c.getNovedad());
 					cell.setCellStyle(myStyle);
@@ -479,7 +632,60 @@ public class ClienteCtrl extends BaseCtrl {
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(6);
-				cell.setCellValue(c.getIdusuario());
+				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(c.getIdusuario()).getNombre());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(7);
+				cell.setCellValue(c.getUpdated());
+				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
+				
+				cell = row.createCell(8);
+				if(c.getEstado().compareTo("A") == 0) {
+					cell.setCellValue("ACTIVO");
+				}
+				else {
+					cell.setCellValue("INACTIVO");
+				}
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(9);
+				cell.setCellValue(c.getNombregarante1());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(10);
+				cell.setCellValue(c.getCedulagarante1());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(11);
+				cell.setCellValue(c.getDirecciongarante1());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(12);
+				cell.setCellValue(c.getTelefonogarante1());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(13);
+				cell.setCellValue(c.getOcupaciongarante1());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(14);
+				cell.setCellValue(c.getNombregarante2());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(15);
+				cell.setCellValue(c.getCedulagarante2());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(16);
+				cell.setCellValue(c.getDirecciongarante2());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(17);
+				cell.setCellValue(c.getTelefonogarante2());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(18);
+				cell.setCellValue(c.getOcupaciongarante2());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				fila++;

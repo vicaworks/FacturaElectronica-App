@@ -96,6 +96,7 @@ public class ImportarClienteServicio {
 			cliente.setEmpresa(empresa);
 			cliente.setIdusuario(idUsuario);
 			cliente.setUpdated(new Date());
+			cliente.setEstado("A");
 			
 			// datos negocios
 			TipoIdentificacion t = tipoIdentificacionDao.cargar(c.getIdTipoIdentificacion());
@@ -105,6 +106,16 @@ public class ImportarClienteServicio {
 			cliente.setDireccion(c.getDireccion());
 			cliente.setCorreoelectronico(c.getCorreoElectronico());
 			cliente.setTelefono(c.getTelefono());
+			cliente.setNombregarante1(c.getNombreGarante1());
+			cliente.setCedulagarante1(c.getCedulaGarante1());
+			cliente.setDirecciongarante1(c.getDireccionGarante1());
+			cliente.setTelefonogarante1(c.getTelefonoGarante1());
+			cliente.setOcupaciongarante1(c.getOcupacionGarante1());
+			cliente.setNombregarante2(c.getNombreGarante2());
+			cliente.setCedulagarante2(c.getCedulaGarante2());
+			cliente.setDirecciongarante2(c.getDireccionGarante2());
+			cliente.setTelefonogarante2(c.getTelefonoGarante2());
+			cliente.setOcupaciongarante2(c.getOcupacionGarante2());
 			
 			// crear el producto
 			cliente.setIdcliente(contadorPkServicio.generarContadorTabla(TCCliente.CLIENTE, null));
