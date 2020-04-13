@@ -88,9 +88,9 @@ public class ClienteCtrl extends BaseCtrl {
 		try {
 			// validación 
 			
-			// 1. Identificacion
+			// 1. Identificación
 			if(clienteServicio.getClienteDao().existeIdentificacion(clienteSelected.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
-				AppJsfUtil.addErrorMessage("frmCliente", "ERROR","LA IDENTIFICACIÓN YA EXISTE.");
+				AppJsfUtil.addErrorMessage("frmCliente", "ERROR", msg.getString("mensaje.identificacionexiste"));
 				AppJsfUtil.addErrorMessage("frmCliente:intIdentificacion","YA EXISTE.");
 				return;
 			}
@@ -476,6 +476,10 @@ public class ClienteCtrl extends BaseCtrl {
 				
 				cell = row.createCell(5);
 				cell.setCellValue(c.getTelefono());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(6);
+				cell.setCellValue(c.getIdusuario());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				fila++;
