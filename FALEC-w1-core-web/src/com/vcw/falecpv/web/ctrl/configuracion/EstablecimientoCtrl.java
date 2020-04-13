@@ -41,6 +41,7 @@ import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -67,6 +68,9 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	
 	@EJB
 	private ParametroGenericoServicio parametroGenericoServicio;
+	
+	@EJB
+	private UsuarioServicio usuarioServicio;
 	
 	private List<Establecimiento> establecimientoAllList;
 	private Establecimiento establecimientoSelected;
@@ -423,7 +427,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(7);
-				cell.setCellValue(e.getIdusuario());
+				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(8);

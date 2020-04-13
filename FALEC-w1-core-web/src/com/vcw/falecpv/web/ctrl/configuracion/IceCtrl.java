@@ -36,6 +36,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.servicio.IceServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -55,6 +56,9 @@ public class IceCtrl extends BaseCtrl {
 	
 	@EJB
 	private IceServicio iceServicio;
+	
+	@EJB
+	private UsuarioServicio usuarioServicio;
 
 	private List<Ice> iceAllList;
 	private List<Ice> iceAllFilterList;
@@ -237,7 +241,7 @@ public class IceCtrl extends BaseCtrl {
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(6);
-				cell.setCellValue(e.getIdusuario());
+				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(7);
