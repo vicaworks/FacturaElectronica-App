@@ -7,6 +7,35 @@
 				xmlns:of="http://omnifaces.org/functions">
 	
 	<style type="text/css">
+	
+		.contenedorFormulario {
+				height: 50vh;
+				/* min-height: 560px; */
+		}
+		
+		@media screen and (max-width: 40em ) {
+		  .visualizar{display: none;}
+		  }
+		
+		@media screen and (max-height: 35.5em ) {
+		  .visualizar{display: none;}
+		  }
+		  
+		@media screen and (max-height: 26em ) {
+		  .visualizar{display: none;}
+		  }
+		
+		@media screen and (height: 46em ) {
+		  .visualizar{display: none;}
+		  }
+		
+		@media screen and (max-height: 42em ) {
+		  .visualizar{display: none;}
+		  }
+		  
+		 @media screen and (max-width: 896px) {  
+		  .visualizar{display: none;}
+		}
 		
 	</style>
 	
@@ -30,32 +59,97 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmEmpresa contenedorFormulario">
+			<div class="form-ui Wid100 OvYScroll contenedorFormulario form-p-grid">
 			
-				<p:panelGrid id="grid" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6">
+				<div class="p-grid">
 					
-					<h:outputText value="ID : " style="font-weight: bold" />
-					<h:outputText value="#{clienteCtrl.clienteSelected.idcliente}" />
+					<!-- Datos del cliente -->	
+					<div class="p-col-12 p-md-6">
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos del cliente</div>
+			
+						<p:panelGrid id="gridClienteDat" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-4">
+				
+							<h:outputText value="ID : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.idcliente}" />
+							
+							<h:outputText value="TIPO #{msg['label.identificacion']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" />
+							
+							<h:outputText value="#{msg['label.identificacion']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.identificacion}" />
+							
+							<h:outputText value="#{msg['label.razonsocial']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.razonsocial}" />
+							
+							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.direccion}" />
+							
+							<h:outputText value="#{msg['label.correoelectronico']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.correoelectronico}" />
+							
+							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.telefono}" />
+							
+							<h:outputText value="ESTADO : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.estado}" />
+				
+						</p:panelGrid>
+							
+					</div>
+						
+					<!-- Garantes -->
+					<div class="p-col-12 p-md-6">
 					
-					<h:outputText value="Tipo identificación : " style="font-weight: bold" />
-					<h:outputText value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" />
+						<!-- Garante 1 -->
 					
-					<h:outputText value="Identificación : " style="font-weight: bold" />
-					<h:outputText value="#{clienteCtrl.clienteSelected.identificacion}" />
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Garante 1</div>
 					
-					<h:outputText value="Razón social : " style="font-weight: bold" />
-					<h:outputText value="#{clienteCtrl.clienteSelected.razonsocial}" />
+						<p:panelGrid id="gridClienteGar1" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6">
+							
+							<h:outputText value="NOMBRE : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.nombregarante1}" />
+							
+							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.cedulagarante1}" />
+							
+							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.direcciongarante1}" />
+							
+							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.telefonogarante1}" />
+							
+							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" />
+							
+						</p:panelGrid>
+						
+						<!-- Garante 2 -->
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Garante 2</div>
+						
+						<p:panelGrid id="gridClienteGar2" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6">
+							
+							<h:outputText value="NOMBRE : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.nombregarante2}" />
+							
+							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.cedulagarante2}" />
+							
+							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.direcciongarante2}" />
+							
+							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.telefonogarante2}" />
+							
+							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
+							<h:outputText value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" />
+							
+						</p:panelGrid>
 					
-					<h:outputText value="Dirección : " style="font-weight: bold" />
-					<h:outputText value="#{clienteCtrl.clienteSelected.direccion}" />
+					</div>
 					
-					<h:outputText value="Correo electrónico : " style="font-weight: bold" />
-					<h:outputText value="#{clienteCtrl.clienteSelected.correoelectronico}" />
-					
-					<h:outputText value="Teléfono : " style="font-weight: bold" />
-					<h:outputText value="#{clienteCtrl.clienteSelected.telefono}" />
-					
-				</p:panelGrid>
+				</div>
 				
 			</div>
 			
