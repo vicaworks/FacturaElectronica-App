@@ -96,7 +96,7 @@
 									<p:commandButton id="cmdImportClientes"
 										value="Importar Clientes" icon="fa fa-floppy-o" styleClass="secondary-button Wid100"
 										action="#{clienteCtrl.importarClientes()}"  
-										update="@form"
+										update="@form, formMain"
 										disabled="#{clienteCtrl.fileClientes==null}"
 									/>
 								</div>

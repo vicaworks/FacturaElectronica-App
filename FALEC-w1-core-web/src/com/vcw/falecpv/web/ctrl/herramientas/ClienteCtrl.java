@@ -564,12 +564,60 @@ public class ClienteCtrl extends BaseCtrl {
 					c.setError(true);
 					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION YA EXISTE"):"CAMPO IDENTIFICACION YA EXISTE");
 				}
+				if (!isNumeric(c.getIdentificacion())) {
+					c.setError(true);
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION FORMATO INCORRECTO"):"CAMPO IDENTIFICACION FORMATO INCORRECTO");
+				}
 			}
 			if(c.getRazonSocial()==null) {
 				c.setError(true);
 				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO RAZON SOCIAL OBLIGATORIO"):"CAMPO RAZON SOCIAL OBLIGATORIO");
 			}
 			
+			if(c.getTelefono()!=null) {
+				if (!isNumeric(c.getTelefono())) {
+					c.setError(true);
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO FORMATO INCORRECTO"):"CAMPO TELEFONO FORMATO INCORRECTO");
+				}
+			}
+			
+			if(c.getCedulaGarante1()!=null) {
+				if (!isNumeric(c.getCedulaGarante1())) {
+					c.setError(true);
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO");
+				}
+			}
+			
+			if(c.getTelefonoGarante1()!=null) {
+				if (!isNumeric(c.getTelefonoGarante1())) {
+					c.setError(true);
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO");
+				}
+			}
+			
+			if(c.getCedulaGarante2()!=null) {
+				if (!isNumeric(c.getCedulaGarante2())) {
+					c.setError(true);
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO");
+				}
+			}
+			
+			if(c.getTelefonoGarante2()!=null) {
+				if (!isNumeric(c.getTelefonoGarante2())) {
+					c.setError(true);
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO");
+				}
+			}
+			
+		}
+	}
+	
+	private static boolean isNumeric(String cadena) {
+		try {
+			Long.parseLong(cadena);
+			return true; // la cadena solo tiene numeros
+		} catch (NumberFormatException nfe){
+			return false; // la cadena tiene letras
 		}
 	}
 
