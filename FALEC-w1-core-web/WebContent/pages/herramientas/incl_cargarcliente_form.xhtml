@@ -39,7 +39,7 @@
 					
 					<p:commandButton id="cmdCerrarImportCliente"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgImportCliente').hide()" immediate="true"  
+						onclick="PF('dlgImportCliente').hide()" immediate="true" update=":formMain"
 						/>
 					
 				</div>
@@ -96,7 +96,7 @@
 									<p:commandButton id="cmdImportClientes"
 										value="Importar Clientes" icon="fa fa-floppy-o" styleClass="secondary-button Wid100"
 										action="#{clienteCtrl.importarClientes()}"  
-										update="@form, formMain"
+										update="@form, :formMain"
 										disabled="#{clienteCtrl.fileClientes==null}"
 									/>
 								</div>

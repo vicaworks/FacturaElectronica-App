@@ -539,6 +539,8 @@ public class ClienteCtrl extends BaseCtrl {
 				FileUtils.writeByteArrayToFile(fileClientes, file);
 			}
 			
+			refrescar();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -552,11 +554,11 @@ public class ClienteCtrl extends BaseCtrl {
 			if(c.isError()) continue conti1;
 			
 			// datos obligatorios
-			if(c.getIdTipoIdentificacion()==null) {
+			if(c.getIdTipoIdentificacion()==null || c.getIdTipoIdentificacion().compareTo("") == 0) {
 				c.setError(true);
 				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO ID TIPO IDENTIFICACION OBLIGATORIO"):"CAMPO ID TIPO IDENTIFICACION OBLIGATORIO");
 			}
-			if(c.getIdentificacion()==null) {
+			if(c.getIdentificacion()==null || c.getIdentificacion().compareTo("") == 0) {
 				c.setError(true);
 				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION OBLIGATORIO"):"CAMPO IDENTIFICACION OBLIGATORIO");
 			} else {
@@ -569,43 +571,53 @@ public class ClienteCtrl extends BaseCtrl {
 					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION FORMATO INCORRECTO"):"CAMPO IDENTIFICACION FORMATO INCORRECTO");
 				}
 			}
-			if(c.getRazonSocial()==null) {
+			if(c.getRazonSocial()==null || c.getRazonSocial().compareTo("") == 0) {
 				c.setError(true);
 				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO RAZON SOCIAL OBLIGATORIO"):"CAMPO RAZON SOCIAL OBLIGATORIO");
 			}
 			
 			if(c.getTelefono()!=null) {
-				if (!isNumeric(c.getTelefono())) {
-					c.setError(true);
-					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO FORMATO INCORRECTO"):"CAMPO TELEFONO FORMATO INCORRECTO");
+				if(c.getTelefono().compareTo("") != 0) {
+					if (!isNumeric(c.getTelefono())) {
+						c.setError(true);
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO FORMATO INCORRECTO"):"CAMPO TELEFONO FORMATO INCORRECTO");
+					}
 				}
 			}
 			
 			if(c.getCedulaGarante1()!=null) {
-				if (!isNumeric(c.getCedulaGarante1())) {
-					c.setError(true);
-					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO");
+				if(c.getCedulaGarante1().compareTo("") != 0) {
+					if (!isNumeric(c.getCedulaGarante1())) {
+						c.setError(true);
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO");
+					}
 				}
 			}
 			
 			if(c.getTelefonoGarante1()!=null) {
-				if (!isNumeric(c.getTelefonoGarante1())) {
-					c.setError(true);
-					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO");
+				if(c.getTelefonoGarante1().compareTo("") != 0) {
+					if (!isNumeric(c.getTelefonoGarante1())) {
+						c.setError(true);
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO");
+					}
 				}
 			}
 			
 			if(c.getCedulaGarante2()!=null) {
-				if (!isNumeric(c.getCedulaGarante2())) {
-					c.setError(true);
-					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO");
+				if(c.getCedulaGarante2().compareTo("") != 0) {
+					if (!isNumeric(c.getCedulaGarante2())) {
+						c.setError(true);
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO");
+					}
 				}
 			}
 			
 			if(c.getTelefonoGarante2()!=null) {
-				if (!isNumeric(c.getTelefonoGarante2())) {
-					c.setError(true);
-					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO");
+				if(c.getTelefonoGarante2().compareTo("") != 0) {
+					if (!isNumeric(c.getTelefonoGarante2())) {
+						c.setError(true);
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO");
+					}
 				}
 			}
 			
