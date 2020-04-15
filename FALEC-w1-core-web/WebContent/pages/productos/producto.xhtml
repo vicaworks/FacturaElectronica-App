@@ -30,8 +30,10 @@
 			}
 			
 			.imgSize{
-				height: 50%;
-				width: 50%;
+				/* height: 50%;
+				width: 50%; */
+				/* height: 50%;
+				width: 50%; */
 			}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
@@ -292,7 +294,7 @@
 					</p:column>
 					<p:column headerText="IMAGEN" style="width:60px;">
 						<h:outputText value="" rendered="#{p.imagen==null}"/>
-						<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" rendered="#{p.imagen!=null}" styleClass="imgSize"/>
+						<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" rendered="#{p.imagen!=null}" styleClass="imgSize" width="300" height="300"/>
 					</p:column>
 	                
 				</p:dataTable>

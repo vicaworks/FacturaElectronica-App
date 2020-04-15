@@ -47,12 +47,6 @@ public class Pagodetalle implements Serializable {
     @Column(name = "tiporegistro", nullable = false, length = 1)
     private String tiporegistro;
     
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
-    @Column(name = "idtipopago", nullable = false, length = 40)
-    private String idtipopago;
-    
     @Size(max = 150)
     @Column(name = "numerodocumento", length = 150)
     private String numerodocumento;
@@ -73,6 +67,23 @@ public class Pagodetalle implements Serializable {
     @Column(name = "valor", nullable = false, precision = 12, scale = 2)
     private BigDecimal valor;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+    
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 40)
+	@Column(name = "idusuario", nullable = false, length = 40)
+	private String idusuario;
+	
+	@Basic(optional = true)
+	@Size(min = 1, max = 100)
+	@Column(name = "nombrebanco", nullable = true, length = 100)
+	private String nombrebanco;
+    
     @JoinColumn(name = "idbanco", referencedColumnName = "idbanco")
     @ManyToOne
     private Banco banco;
@@ -80,6 +91,10 @@ public class Pagodetalle implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "idadquisicion", referencedColumnName = "idadquisicion", nullable = false)
     private Adquisicion adquisicion;
+    
+    @JoinColumn(name = "idtipopago", referencedColumnName = "idtipopago", nullable = false)
+    @ManyToOne(optional = false)
+    private Tipopago tipopago;
 	
 	
 	/**
@@ -138,20 +153,6 @@ public class Pagodetalle implements Serializable {
 	 */
 	public void setTiporegistro(String tiporegistro) {
 		this.tiporegistro = tiporegistro;
-	}
-
-	/**
-	 * @return the idtipopago
-	 */
-	public String getIdtipopago() {
-		return idtipopago;
-	}
-
-	/**
-	 * @param idtipopago the idtipopago to set
-	 */
-	public void setIdtipopago(String idtipopago) {
-		this.idtipopago = idtipopago;
 	}
 
 	/**
@@ -236,6 +237,62 @@ public class Pagodetalle implements Serializable {
 	 */
 	public void setAdquisicion(Adquisicion adquisicion) {
 		this.adquisicion = adquisicion;
+	}
+
+	/**
+	 * @return the tipopago
+	 */
+	public Tipopago getTipopago() {
+		return tipopago;
+	}
+
+	/**
+	 * @param tipopago the tipopago to set
+	 */
+	public void setTipopago(Tipopago tipopago) {
+		this.tipopago = tipopago;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
+	}
+
+	/**
+	 * @return the nombrebanco
+	 */
+	public String getNombrebanco() {
+		return nombrebanco;
+	}
+
+	/**
+	 * @param nombrebanco the nombrebanco to set
+	 */
+	public void setNombrebanco(String nombrebanco) {
+		this.nombrebanco = nombrebanco;
 	}
 	
 }

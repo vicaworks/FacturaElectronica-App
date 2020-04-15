@@ -177,6 +177,9 @@ public class Producto implements Serializable {
     @Transient
     private BigDecimal costototal;
     
+    @Transient
+    private Integer cantidad = 0;
+    
 	/**
 	 * 
 	 */
@@ -675,6 +678,20 @@ public class Producto implements Serializable {
 	 */
 	public void setCostototal(BigDecimal costototal) {
 		this.costototal = costototal;
+	}
+
+	/**
+	 * @return the cantidad
+	 */
+	public Integer getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
 	}
 
 	

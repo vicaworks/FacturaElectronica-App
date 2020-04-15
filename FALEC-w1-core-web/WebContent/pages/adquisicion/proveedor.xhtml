@@ -7,12 +7,12 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">#{msg['title.adquisicion']}</ui:define>
+    <ui:define name="title">Proveedor</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
 			
-			.adquisicionDT .ui-datatable-scrollable-body{
+			.proveedorDT .ui-datatable-scrollable-body{
 				/* min-height:800px !important;
 				max-height: 800px !important; */
 				min-height: 60vh !important;
@@ -124,10 +124,10 @@
 			
 			<div class="card card-w-title">
 				<h1 class="cardTitle">Adquisiciones</h1>
-				<p:dataTable id="adquisicionDT" var="p"
+				<p:dataTable id="proveedorDT" var="p"
 					value="#{proveedorCtrl.proveedorList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="adquisicionDT Fs11"  
+					styleClass="proveedorDT Fs11"  
 					rowKey="#{p.idproveedor}">
 	                
 	                

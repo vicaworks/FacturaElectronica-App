@@ -34,7 +34,7 @@ public class AdquisiciondetalleServicio extends AppGenericService<Adquisiciondet
 
 	@Override
 	public DaoGenerico<Adquisiciondetalle, String> getDao() {
-		return null;
+		return adquisiciondetalleDao;
 	}
 
 	/**

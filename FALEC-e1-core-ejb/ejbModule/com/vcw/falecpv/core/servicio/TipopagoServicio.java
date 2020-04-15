@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
+import com.vcw.falecpv.core.dao.impl.TipopagoDao;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 
 /**
@@ -20,7 +21,7 @@ public class TipopagoServicio extends AppGenericService<Tipopago, String> {
 
 	
 	@Inject
-	private TipopagoServicio tipopagoDao; 
+	private TipopagoDao tipopagoDao; 
 	
 	@Override
 	public List<Tipopago> consultarActivos() {
@@ -40,8 +41,9 @@ public class TipopagoServicio extends AppGenericService<Tipopago, String> {
 	/**
 	 * @return the tipopagoDao
 	 */
-	public TipopagoServicio getTipopagoDao() {
+	public TipopagoDao getTipopagoDao() {
 		return tipopagoDao;
 	}
+
 
 }

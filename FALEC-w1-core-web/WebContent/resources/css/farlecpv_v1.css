@@ -212,6 +212,23 @@
 	font-weight: bold;
 }
 
+.markOrange{
+	color: #fff !important;
+	background-color: orange !important;
+	padding: 0.2em 0.5em !important;
+	border-radius: 3px;
+	font-weight: bold;
+}
+
+.markBlack{
+	color: #fff !important;
+	background-color: black !important;
+	padding: 0.2em 0.5em !important;
+	border-radius: 3px;
+	font-weight: bold;
+}
+
+
 /* FLEXGRID CSS formulario */
 .p-grid .p-sm-1, .p-sm-2, .p-sm-3, .p-sm-4, .p-sm-5, .p-sm-6,
 	.p-sm-7, .p-sm-8, .p-sm-9, .p-sm-10, .p-sm-11, .p-sm-12, .p-md-1,

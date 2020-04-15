@@ -90,7 +90,7 @@ public class KardexCtrl extends BaseCtrl {
 		try {
 			consultarProductoForm();
 			fechaFinal = new Date();
-			fechaInicial = FechaUtil.agregarDias(fechaFinal, -60);
+			fechaInicial = FechaUtil.agregarDias(fechaFinal, -90);
 			
 			Producto p = (Producto) FacesUtils.getFromSession("producto");
 			if(p!=null) {

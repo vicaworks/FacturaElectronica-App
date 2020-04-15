@@ -61,7 +61,7 @@ public class KardexProductoServicio extends AppGenericService<KardexProducto, St
 	 * @throws ParametroRequeridoException
 	 */
 	@Lock(LockType.WRITE)
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+//	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public KardexProducto registrarKardexFacade(KardexProducto kardexProducto)throws DaoException, ParametroRequeridoException{
 		
 		// consultar el producto
@@ -152,6 +152,32 @@ public class KardexProductoServicio extends AppGenericService<KardexProducto, St
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idproducto
+	 * @param idEstablecimiento
+	 * @param idrefrencia
+	 * @param moduloreferencia
+	 * @return
+	 * @throws DaoException
+	 */
+	public KardexProducto getByEstablecimientoModulo(String idproducto,String idEstablecimiento,String idrefrencia,String moduloreferencia)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(kardexProductoDao.getEntityManager());
+			return (KardexProducto) q.select("k")
+				.from(KardexProducto.class,"k")
+				.equals("k.establecimiento.idestablecimiento",idEstablecimiento)
+				.equals("k.producto.idproducto",idproducto)
+				.equals("k.idreferencia",idrefrencia)
+				.equals("k.moduloreferencia",moduloreferencia).getSingleResult();
+				
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 	@Override
 	public List<KardexProducto> consultarActivos() {
@@ -173,6 +199,13 @@ public class KardexProductoServicio extends AppGenericService<KardexProducto, St
 	 */
 	public KardexProductoDao getKardexProductoDao() {
 		return kardexProductoDao;
+	}
+
+	/**
+	 * @return the productoDao
+	 */
+	public ProductoDao getProductoDao() {
+		return productoDao;
 	}
 
 }

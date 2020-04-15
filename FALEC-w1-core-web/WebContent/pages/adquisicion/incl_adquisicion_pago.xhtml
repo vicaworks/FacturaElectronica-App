@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmAdqPago {
+				height: 300px;
+		}
+		
+	</style>
+	
+	<p:dialog header="Detalle Pago" widgetVar="dlgAdqDetallePago" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmAdqPago">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12" style="text-align:left;color:green;">					
+					
+					<p:commandButton id="cmdAdqPagoGuardar"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{adquisicionFrmCtrl.validarPagoDetalle()}" styleClass="MRight10" update="@form"  process="@form"/>
+					
+					<p:commandButton id="cmdAdqPagoAgregar"
+						value="AGREGAR" icon="fa fa-plus" 
+						action="#{adquisicionFrmCtrl.agregarPagoDetalle()}" styleClass="MRight10 danger-btn" update="@form" process="@form"/>
+						
+					<p:commandButton id="cmdAdqPagoCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgAdqDetallePago').hide()" immediate="true"/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmAdqPago"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmAdqPago contenedorFormulario">
+				
+				<p:dataTable id="adqPagoDT" var="pa"
+					value="#{adquisicionFrmCtrl.pagodetalleList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="listaProductoDT Fs11"  
+					rowKey="#{pa.idpagodetalle}">
+	                
+	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:20px;">
+	                	<p:commandLink id="clkAdqPagoDelete" action="#{adquisicionFrmCtrl.eliminarPagoDetalle()}" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!='GEN'}">
+							<i class="fa fa-trash Fs20" style="color:red;"></i>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							<f:setPropertyActionListener value="#{pa}" target="#{adquisicionFrmCtrl.pagodetalleSelected}"/>
+						</p:commandLink>
+	                </p:column>
+	                
+	                <p:column headerText="TIPO DOCUMENTO" styleClass="TexAlCenter" style="width:110px;">
+		                <p:selectOneMenu id="somAdqTipPagoForm"
+									value="#{pa.tipopago}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+									
+							<f:selectItems value="#{adquisicionFrmCtrl.tipopagoFormList}" var="tpl2"
+								itemLabel="#{tpl2.nombre}" itemValue="#{tpl2}" />
+								
+						</p:selectOneMenu>
+						
+	                </p:column>
+	                
+	                <p:column headerText="#DOCUMENTO" styleClass="TexAlCenter" style="width:60px;">
+	                	<p:inputText id="intAdqPagoDocumento" value="#{pa.numerodocumento}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="150" placeholder="CHEQ / DEP / TRANS" converter="omnifaces.ToUpperCaseConverter"/>
+	                </p:column>
+	                
+	                <p:column headerText="BANCO" styleClass="TexAlCenter" style="width:60px;">
+	                	<p:inputText id="intAdqPagoBanco" value="#{pa.nombrebanco}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="50" placeholder="NOM BANCO" converter="omnifaces.ToUpperCaseConverter"/>
+	                </p:column>
+	                
+	                <p:column headerText="# CUENTA" styleClass="TexAlCenter" style="width:60px;">
+	                	<p:inputText id="intAdqPagoCuenta" value="#{pa.numerocuenta}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="50" placeholder="NUM CUENTA"/>
+	                </p:column>
+	                
+	                <p:column headerText="FECHA PAGO" styleClass="TexAlCenter" style="width:80px;">
+	                	<p:calendar id="intAdqPagoFecha" value="#{pa.fecha}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+						</p:calendar>
+	                </p:column>
+	                
+	                <p:column headerText="VALOR" styleClass="TexAlCenter" style="width:50px;">
+		                <p:spinner id="idadqpagodetValor" value="#{pa.valor}" min="0.01" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100" decimalPlaces="2">
+		                	<p:ajax listener="#{adquisicionFrmCtrl.totalizarPagoDetalle()}" update="@form" process="@this :frmAdqPago:adqPagoDT"/>
+		                </p:spinner>
+	                </p:column>
+	                
+	                
+	            </p:dataTable>
+	            
+	            <div class="EmptyBox10"/>
+	            
+	            <div class="p-grid">
+	            	<div class="p-col-8" style="text-align:right;">
+	            		<h:outputText value="TOTAL : " styleClass="Fs16 FontBold "/>
+	            	</div>
+	            	<div class="p-col-4" style="text-align: right;">
+	            		<h:outputText value="#{adquisicionFrmCtrl.valorTotalPago}" styleClass="Fs16">
+	            			<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+	            		</h:outputText>
+	            	</div>
+	            	<div class="p-col-8" style="text-align:right;">
+	            		<h:outputText value="Valor a Pagar : " styleClass="Fs16 FontBold" style="color:red;"/>
+	            	</div>
+	            	<div class="p-col-4" style="text-align: right;">
+	            		<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}" styleClass="Fs16" style="color:red;">
+	            			<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+	            		</h:outputText>
+	            	</div>
+	            	<div class="p-col-8" style="text-align:right;">
+	            		<h:outputText value="Saldo : " styleClass="Fs16 FontBold"/>
+	            	</div>
+	            	<div class="p-col-4" style="text-align: right;">
+	            		<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar.add(adquisicionFrmCtrl.valorTotalPago.negate())}" styleClass="Fs16" rendered="#{adquisicionFrmCtrl.adquisicionSelected != null and adquisicionFrmCtrl.valorTotalPago!=null}">
+	            			<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+	            		</h:outputText>
+	            	</div>
+				</div>
+				<div class="EmptyBox10"/>
+			</div>	
+			
+		</h:form>
+	
+	</p:dialog>
+
+</ui:composition>

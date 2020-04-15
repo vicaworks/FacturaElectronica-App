@@ -91,6 +91,18 @@ public class Adquisicion implements Serializable {
     @Column(name = "totalpagar", nullable = false, precision = 12, scale = 2)
     private BigDecimal totalpagar;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+    
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 40)
+	@Column(name = "idusuario", nullable = false, length = 40)
+	private String idusuario;
+    
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     @ManyToOne(optional = false)
     private Establecimiento establecimiento;
@@ -345,6 +357,53 @@ public class Adquisicion implements Serializable {
 	 */
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getStyle() {
+		switch (estado) {
+		case "GEN":
+			
+			return "markGreen";
+		case "ANU":
+			
+			return "markRed";
+		case "ENV":
+			
+			return "markOrange";	
+		default:
+			return "markBlack";
+		}
 	}
 
 }

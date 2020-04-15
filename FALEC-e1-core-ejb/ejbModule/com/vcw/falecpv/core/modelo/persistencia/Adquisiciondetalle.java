@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -73,9 +77,9 @@ public class Adquisiciondetalle implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "updated", nullable = false, length = 2147483647)
-    private String updated;
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
     
     @ManyToOne(optional = false)
     @JoinColumn(name = "idadquisicion", referencedColumnName = "idadquisicion", nullable = false)
@@ -85,10 +89,20 @@ public class Adquisiciondetalle implements Serializable {
     @ManyToOne(optional = false)
     private Iva iva;
     
-    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = true)
     private Producto producto;
-
+    
+    
+    @Transient
+    private BigDecimal porcentajeDescuento;
+    
+    @Transient
+    private BigDecimal precioUntarioCalculado;
+    
+    @Transient
+    private BigDecimal valorIva;
+    
 	/**
 	 * 
 	 */
@@ -218,20 +232,6 @@ public class Adquisiciondetalle implements Serializable {
 	}
 
 	/**
-	 * @return the updated
-	 */
-	public String getUpdated() {
-		return updated;
-	}
-
-	/**
-	 * @param updated the updated to set
-	 */
-	public void setUpdated(String updated) {
-		this.updated = updated;
-	}
-
-	/**
 	 * @return the iva
 	 */
 	public Iva getIva() {
@@ -271,6 +271,62 @@ public class Adquisiciondetalle implements Serializable {
 	 */
 	public void setAdquisicion(Adquisicion adquisicion) {
 		this.adquisicion = adquisicion;
+	}
+
+	/**
+	 * @return the porcentajeDescuento
+	 */
+	public BigDecimal getPorcentajeDescuento() {
+		return porcentajeDescuento;
+	}
+
+	/**
+	 * @param porcentajeDescuento the porcentajeDescuento to set
+	 */
+	public void setPorcentajeDescuento(BigDecimal porcentajeDescuento) {
+		this.porcentajeDescuento = porcentajeDescuento;
+	}
+
+	/**
+	 * @return the precioUntarioCalculado
+	 */
+	public BigDecimal getPrecioUntarioCalculado() {
+		return precioUntarioCalculado;
+	}
+
+	/**
+	 * @param precioUntarioCalculado the precioUntarioCalculado to set
+	 */
+	public void setPrecioUntarioCalculado(BigDecimal precioUntarioCalculado) {
+		this.precioUntarioCalculado = precioUntarioCalculado;
+	}
+
+	/**
+	 * @return the valorIva
+	 */
+	public BigDecimal getValorIva() {
+		return valorIva;
+	}
+
+	/**
+	 * @param valorIva the valorIva to set
+	 */
+	public void setValorIva(BigDecimal valorIva) {
+		this.valorIva = valorIva;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 
 }
