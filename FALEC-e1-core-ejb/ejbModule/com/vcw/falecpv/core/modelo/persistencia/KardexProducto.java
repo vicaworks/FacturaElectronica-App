@@ -97,6 +97,16 @@ public class KardexProducto implements Serializable {
     @Column(name = "idusuario", nullable = false, length = 40)
     private String idusuario;
     
+    @Basic(optional = true)
+    @Size(min = 1, max = 40)
+    @Column(name = "idreferencia", nullable = true, length = 40)
+    private String idreferencia;
+    
+    @Basic(optional = true)
+    @Size(min = 1, max = 40)
+    @Column(name = "moduloreferencia", nullable = true, length = 40)
+    private String moduloreferencia;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "saldo", nullable = false)
@@ -367,6 +377,34 @@ public class KardexProducto implements Serializable {
 	 */
 	public void setOrden(Integer orden) {
 		this.orden = orden;
+	}
+
+	/**
+	 * @return the idreferencia
+	 */
+	public String getIdreferencia() {
+		return idreferencia;
+	}
+
+	/**
+	 * @param idreferencia the idreferencia to set
+	 */
+	public void setIdreferencia(String idreferencia) {
+		this.idreferencia = idreferencia;
+	}
+
+	/**
+	 * @return the moduloreferencia
+	 */
+	public String getModuloreferencia() {
+		return moduloreferencia;
+	}
+
+	/**
+	 * @param moduloreferencia the moduloreferencia to set
+	 */
+	public void setModuloreferencia(String moduloreferencia) {
+		this.moduloreferencia = moduloreferencia;
 	}
 
 		

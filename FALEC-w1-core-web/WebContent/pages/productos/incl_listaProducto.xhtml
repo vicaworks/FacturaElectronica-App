@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmProveedor {
+				height: 550px;
+		}
+		 .ui-grid td {
+	        white-space: nowrap;
+	    }
+		
+	</style>
+	
+	<p:dialog header="Productos" widgetVar="dlgListaProducto" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmListProducto">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12" style="text-align:left;">					
+					
+					<div class="p-grid">
+						
+						<div class="p-col-12 p-md-6">
+							<p:inputText id="intListProCriterioBusqueda"
+								value="#{listaProductoCtrl.criterioBusqueda}" required="false"
+								requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
+								placeholder="BUSCAR POR : #{msg['label.categoria']}, NOMBRE PRODUCTO, #{msg['label.codigo']} PRODUCTO" />
+						</div>
+						<div class="p-col-12 p-md-6">
+						
+							<p:commandButton id="cmdListProductoRefrescar"
+								value="BUSCAR" icon="fa fa-search" 
+								action="#{listaProductoCtrl.refrescar()}" styleClass="MRight10" update="@form"
+								/>
+								
+							<p:commandButton id="cmdCerrar"
+								value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+								onclick="PF('dlgListaProducto').hide()" immediate="true"  
+								/>
+							
+						</div>	
+					
+					</div>
+					
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmListProducto"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmProveedor contenedorFormulario">
+				
+				<p:dataTable id="listaProductoDT" var="pr"
+					value="#{listaProductoCtrl.productoList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="listaProductoDT Fs11"  
+					rowKey="#{pr.idproducto}"
+					rows="11"
+	                paginator="true"
+	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	                paginatorPosition="bottom">
+	                
+	                
+	                <p:column headerText="#{msg['label.codigo']}" style="width:30px;" filterBy="#{pr.codigoprincipal}" filterMatchMode="contains">
+	                	<h:outputText value="#{pr.codigoprincipal}" >
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column style="width:90px;" filterBy="#{pr.nombregenerico}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="NOMBRE" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+							
+						</f:facet>
+						<h:outputText value="#{pr.nombregenerico}" />
+					</p:column>
+					
+					<p:column headerText="IMG" style="width:20px;" styleClass="TexAlCenter">
+	                	<p:commandLink id="clkListProductoImg" disabled="#{pr.imagen==null}">
+							<i class="fa fa-eye Fs30" style="color:black;"></i>
+						</p:commandLink>
+						<p:overlayPanel id="imagePanel" for="clkListProductoImg" hideEffect="fade" rendered="#{pr.imagen!=null}">
+					        <p:graphicImage value="#{productoCtrl.getImageToStream(pr.imagen)}" stream="false"  styleClass="imgSize" width="300" height="300"/>
+					    </p:overlayPanel>
+	                </p:column>
+					
+					<p:column headerText="CANTIDAD" styleClass="TexAlCenter" style="width:40px;">
+	                	<p:spinner id="idListProCantidad" value="#{pr.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0"/>
+	                	<p:message for="idListProCantidad"/>
+	                </p:column>
+	                
+	                <p:column headerText="PRE UNIT" styleClass="TexAlCenter" style="width:40px;">
+	                	<p:spinner id="idListProPUnitario" value="#{pr.preciounitario}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100" decimalPlaces="2"/>
+	                	<p:message for="idListProPUnitario"/>
+	                </p:column>
+	                
+	                <p:column headerText="DESCUENTO % Ejm 5.5" styleClass="TexAlCenter" style="width:40px;">
+	                	<p:spinner id="idListProDescuento" value="#{pr.porcentajedescuento}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2"/>
+	                	<p:message for="idListProDescuento"/>
+	                </p:column>
+					
+					
+	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:20px;">
+	                	<p:commandLink id="clkListProductoAdd" action="#{listaProductoCtrl.guardar()}" update="@form #{listaProductoCtrl.viewUpdate}">
+							<i class="fa fa-cart-plus Fs30"></i>
+							<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
+						</p:commandLink>
+	                </p:column>
+	                
+	            </p:dataTable>
+				
+				
+			</div>
+			
+		</h:form>
+	
+	</p:dialog>
+
+</ui:composition>

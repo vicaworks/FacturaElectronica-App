@@ -56,6 +56,7 @@ import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipoProductoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 import com.xpert.faces.utils.FacesUtils;
@@ -112,6 +113,7 @@ public class ProductoCtrl extends BaseCtrl {
 	private String formModule;
 	private String viewUpdate;
 	private InventarioCtrl inventarioCtrl;
+	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 
 	/**
 	 * 
@@ -336,6 +338,10 @@ public class ProductoCtrl extends BaseCtrl {
 				break;
 			case "INVENTARIO":
 				inventarioCtrl.buscarDispacher();
+				break;
+			case "ADQUISICION":
+				productoSelected.setCantidad(1);
+				adquisicionFrmCtrl.agregarProducto(productoSelected);
 				break;
 			default:
 				break;
@@ -1234,6 +1240,20 @@ public class ProductoCtrl extends BaseCtrl {
 	 */
 	public void setInventarioCtrl(InventarioCtrl inventarioCtrl) {
 		this.inventarioCtrl = inventarioCtrl;
+	}
+
+	/**
+	 * @return the adquisicionFrmCtrl
+	 */
+	public AdquisicionFrmCtrl getAdquisicionFrmCtrl() {
+		return adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @param adquisicionFrmCtrl the adquisicionFrmCtrl to set
+	 */
+	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
+		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
 	}
 
 }

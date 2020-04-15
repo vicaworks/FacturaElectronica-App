@@ -57,6 +57,42 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param idEstablecimiento
+	 * @param criteria
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Producto> getByCriteriaEstado(String idEstablecimiento,String criteria)throws DaoException{
+		try {
+			
+			String sql = "SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND p.estado='A' "; 
+			if(criteria!=null && criteria.trim().length()>0) {
+				sql +="AND ( UPPER(p.categoria.categoria) like :categoria OR UPPER(p.nombre) like :nombre OR UPPER(p.nombregenerico) like :nombregenerico OR p.codigoprincipal=:codigoprincipal) ";
+			}
+			
+			sql += " ORDER BY p.nombregenerico";
+			
+			Query q = getEntityManager().createQuery(sql);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			if(criteria!=null && criteria.trim().length()>0) {
+				q.setParameter("categoria", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("nombre", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("nombregenerico", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("codigoprincipal", criteria.toUpperCase());
+			}
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param estadoRegistroEnum
 	 * @param idEstablecimiento
 	 * @return

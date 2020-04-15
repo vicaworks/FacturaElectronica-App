@@ -64,6 +64,7 @@ public class ProveedorCtrl extends BaseCtrl {
 	private String formModule;
 	private String viewUpdate;
 	private String estado;
+	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 
 	/**
 	 * 
@@ -158,7 +159,10 @@ public class ProveedorCtrl extends BaseCtrl {
 			case "PROVEEDOR":
 				consultarProveedores();
 				break;
-
+			case "ADQUISICION":
+				adquisicionFrmCtrl.consultarProveedor();
+				adquisicionFrmCtrl.getAdquisicionSelected().setProveedor(proveedorSelected);
+				break;
 			default:
 				break;
 			}
@@ -446,6 +450,20 @@ public class ProveedorCtrl extends BaseCtrl {
 	 */
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	/**
+	 * @return the adquisicionFrmCtrl
+	 */
+	public AdquisicionFrmCtrl getAdquisicionFrmCtrl() {
+		return adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @param adquisicionFrmCtrl the adquisicionFrmCtrl to set
+	 */
+	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
+		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
 	}
 	
 	

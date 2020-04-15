@@ -1,0 +1,431 @@
+/**
+ * 
+ */
+package com.vcw.falecpv.web.ctrl.adquisicion;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.model.StreamedContent;
+
+import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
+import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
+import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
+import com.vcw.falecpv.core.modelo.persistencia.Adquisiciondetalle;
+import com.vcw.falecpv.core.modelo.persistencia.Pagodetalle;
+import com.vcw.falecpv.core.servicio.AdquisicionServicio;
+import com.vcw.falecpv.core.servicio.AdquisiciondetalleServicio;
+import com.vcw.falecpv.core.servicio.PagodetalleServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
+import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
+
+/**
+ * @author cristianvillarreal
+ *
+ */
+@Named
+@SessionScoped
+public class AdquisicionMainCtrl extends BaseCtrl {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5980287108670536653L;
+	
+	@EJB
+	private AdquisicionServicio adquisicionServicio;
+	
+	@EJB
+	private UsuarioServicio usuarioServicio;
+	
+	@EJB
+	private AdquisiciondetalleServicio adquisiciondetalleServicio;
+	
+	@EJB
+	private PagodetalleServicio pagodetalleServicio;
+	
+	
+	
+	private Date desde;
+	private Date hasta;
+	private String criterioBusqueda;
+	private List<Adquisicion> adquisicionList;
+	
+	private AdquisicionFrmCtrl adquisicionFrmCtrl;
+
+	public AdquisicionMainCtrl() {
+	}
+	
+	@PostConstruct
+	private void init() {
+		try {
+			hasta = new Date();
+			desde = FechaUtil.agregarDias(hasta, -30);
+			criterioBusqueda = null;
+			adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
+			consultarAdquisiciones();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+
+	public void consultarAdquisiciones()throws DaoException{
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:adquisicionDT");
+		adquisicionList = null;
+		adquisicionList = adquisicionServicio.getAdquisicionDao().getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda);
+	}
+	
+	@Override
+	public void refrescar() {
+		try {
+			consultarAdquisiciones();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+
+	public String nuevaCompra() {
+		try {
+			
+			adquisicionFrmCtrl.nuevaAdquisicion();
+			
+			return "./adquisicion_form.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			return null;
+		}
+		
+	}
+	
+	public String editarCompra(String idadquisicion) {
+		try {
+			
+			adquisicionFrmCtrl.editarAdquisicion(idadquisicion);
+			
+			return "./adquisicion_form.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			return null;
+		}
+		
+	}
+	
+	public void anular(String idadquisicion) {
+		try {
+			
+			Adquisicion a = adquisicionServicio.consultarByPk(idadquisicion);
+			if(a==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE LA FACTURA.");
+				consultarAdquisiciones();
+				return;
+			}
+			
+			if(a.getEstado().equals("ENV") || a.getEstado().equals("RETENCION")) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FACTURA TIENE UNA RETENCION EMITIDA, DEBE ANULAR LA RETENCION.");
+				consultarAdquisiciones();
+				return;
+			}
+			
+			if(a.getEstado().equals("ANU")) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FACTURA YA ESTA ANULADA.");
+				consultarAdquisiciones();
+				return;
+			}
+			
+			adquisicionServicio.anularCompra(idadquisicion, AppJsfUtil.getUsuario().getIdusuario(), false);
+			consultarAdquisiciones();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public StreamedContent getFileCompras() {
+		try {
+			
+			if(adquisicionList==null || adquisicionList.size()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-Compras.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			// datos de la cabecera
+			Row row = sheet.getRow(3);
+			Cell cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			row = sheet.getRow(4);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(desde));
+			
+			row = sheet.getRow(5);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			row = sheet.getRow(4);
+			cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			int fila = 10;
+			int filaPago = 10;
+			int filaDt = 10;
+			
+			for (Adquisicion a : adquisicionList) {
+				
+				row = sheet.createRow(fila);
+				
+				int col =0;
+				
+				// datos de la cabecera
+				Adquisicion adq = adquisicionServicio.consultarByPk(a.getIdadquisicion());
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(adq.getFecha()));
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getTipocomprobante().getComprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getNumfactura());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getAutorizacion()==null?"":adq.getAutorizacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getProveedor().getIdentificacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getProveedor().getNombrecomercial());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getEstado());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getSubtotal().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getTotaliva().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getTotaldescuento().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getTotalretencion().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getTotalfactura().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getTotalpagar().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(adq.getTipopago().getNombre());
+				
+				// detalle de pago
+				filaPago = fila + 1;
+				List<Pagodetalle> pdList = pagodetalleServicio.getByAdquisicion(a.getIdadquisicion());
+				for (Pagodetalle p : pdList) {
+					
+					col = 14;
+					
+					row = sheet.getRow(filaPago);
+					if(row==null) {
+						row = sheet.createRow(filaPago);
+					}
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(p.getTipopago().getNombre());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(p.getNumerodocumento()!=null?p.getNumerodocumento():"");
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(p.getNombrebanco()!=null?p.getNombrebanco():"");
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(p.getFecha()!=null?FechaUtil.formatoFecha(p.getFecha()):"");
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(p.getValor().doubleValue());
+					
+					filaPago++;
+				}
+				
+				// detalle de la compra
+				filaDt = fila + 1;
+				List<Adquisiciondetalle> adList = adquisicionServicio.getByAdquisicion(a.getIdadquisicion());
+				for (Adquisiciondetalle ad : adList) {
+					
+					col = 19;
+					
+					row = sheet.getRow(filaDt);
+					if(row==null) {
+						row = sheet.createRow(filaDt);
+					}
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getProducto()!=null?ad.getProducto().getCodigoprincipal():"");
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getDescripcion());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getCantidad());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getPreciounitario().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getDescuento().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getPreciototal().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getIva().getPorcentaje());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(ad.getIva().getValor().divide(BigDecimal.valueOf(100))
+							.multiply(ad.getPreciototal()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+					
+					filaDt++;
+					
+				}
+				
+				if(filaDt >= filaPago) {
+					fila += (filaDt - fila);
+				}else {
+					fila += (filaPago - fila);
+				}
+				
+			}
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+			
+
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Cardex_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+
+	/**
+	 * @return the desde
+	 */
+	public Date getDesde() {
+		return desde;
+	}
+
+	/**
+	 * @param desde the desde to set
+	 */
+	public void setDesde(Date desde) {
+		this.desde = desde;
+	}
+
+	/**
+	 * @return the hasta
+	 */
+	public Date getHasta() {
+		return hasta;
+	}
+
+	/**
+	 * @param hasta the hasta to set
+	 */
+	public void setHasta(Date hasta) {
+		this.hasta = hasta;
+	}
+
+	/**
+	 * @return the criterioBusqueda
+	 */
+	public String getCriterioBusqueda() {
+		return criterioBusqueda;
+	}
+
+	/**
+	 * @param criterioBusqueda the criterioBusqueda to set
+	 */
+	public void setCriterioBusqueda(String criterioBusqueda) {
+		this.criterioBusqueda = criterioBusqueda;
+	}
+
+	/**
+	 * @return the adquisicionList
+	 */
+	public List<Adquisicion> getAdquisicionList() {
+		return adquisicionList;
+	}
+
+	/**
+	 * @param adquisicionList the adquisicionList to set
+	 */
+	public void setAdquisicionList(List<Adquisicion> adquisicionList) {
+		this.adquisicionList = adquisicionList;
+	}
+
+	/**
+	 * @return the adquisicionFrmCtrl
+	 */
+	public AdquisicionFrmCtrl getAdquisicionFrmCtrl() {
+		return adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @param adquisicionFrmCtrl the adquisicionFrmCtrl to set
+	 */
+	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
+		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
+	}
+
+}

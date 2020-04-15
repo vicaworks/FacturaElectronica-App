@@ -129,7 +129,7 @@ public class Proveedor implements Serializable {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		return String.format("%s[id=%s]",nombrecomercial , idproveedor);
 	}
 	
 	public String toStringObject() {
