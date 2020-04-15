@@ -185,7 +185,7 @@
 				            
 				            <p:separator />
 				            
-				            <p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" >
+				            <p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" disabled="#{p.tipoProducto.nombre=='SERVICIO'}">
 				            	<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
 				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
 				            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
@@ -194,7 +194,7 @@
 								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
 								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
 							</p:menuitem>
-							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" >
+							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" disabled="#{p.tipoProducto.nombre=='SERVICIO'}">
 								<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
 				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
 								<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
@@ -203,7 +203,7 @@
 								<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
 								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
 							</p:menuitem>
-							<p:menuitem value="Kardex" action="#{productoCtrl.redirectKardex(p)}" icon="fa fa-tags">
+							<p:menuitem value="Kardex" action="#{productoCtrl.redirectKardex(p)}" icon="fa fa-tags" disabled="#{p.tipoProducto.nombre=='SERVICIO'}">
 							</p:menuitem>
 							<!-- <p:menuitem value="Rep. Inventario" action="#" icon="fa fa-file-excel-o">
 							</p:menuitem> -->

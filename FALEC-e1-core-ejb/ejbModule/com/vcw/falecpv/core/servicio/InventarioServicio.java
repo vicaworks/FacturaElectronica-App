@@ -47,6 +47,18 @@ public class InventarioServicio {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param tipoProducto
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Producto> getInventario(String tipoProducto,String idEstablecimiento)throws DaoException{
+		return productoDao.getByEstado(tipoProducto,EstadoRegistroEnum.ACTIVO, idEstablecimiento);
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param idEstablecimiento
 	 * @return
 	 * @throws DaoException
@@ -59,6 +71,7 @@ public class InventarioServicio {
 				.from(Producto.class,"p")	
 				.equals("p.establecimiento.idestablecimiento",idEstablecimiento)
 				.equals("p.estado","A")
+				.equals("p.tipoProducto.nombre","PRODUCTO")
 				.greaterThan("p.stock", BigDecimal.ZERO)
 				.orderBy("p.nombregenerico").getResultList();
 			
@@ -83,6 +96,7 @@ public class InventarioServicio {
 				.from(Producto.class,"p")	
 				.equals("p.establecimiento.idestablecimiento",idEstablecimiento)
 				.equals("p.estado","A")
+				.equals("p.tipoProducto.nombre","PRODUCTO")
 				.lessEqualsThan("p.stock", valor)
 				.orderBy("p.nombregenerico").getResultList();
 			
@@ -109,6 +123,7 @@ public class InventarioServicio {
 					.from(Producto.class,"p")
 					.equals("p.establecimiento.idestablecimiento",idEstablecimiento)
 					.equals("p.estado","A")
+					.equals("p.tipoProducto.nombre","PRODUCTO")
 					.greaterEqualsThan("p.stock", BigDecimal.ZERO)
 					.in("p.idproducto", getProductoKardexFechaVencimientoLessEqualsThan(fecha, idEstablecimiento))
 					.orderBy("p.nombregenerico").getResultList();
@@ -231,6 +246,7 @@ public class InventarioServicio {
 				.equals("p.establecimiento.idestablecimiento", idEstablecimiento)
 				.equals("p.categoria.idcategoria", idCategoria)
 				.equals("p.estado","A")
+				.equals("p.tipoProducto.nombre","PRODUCTO")
 				.orderBy("p.nombregenerico").getResultList();
 		} catch (Exception e) {
 			throw new DaoException(e);
@@ -254,6 +270,7 @@ public class InventarioServicio {
 				.equals("p.establecimiento.idestablecimiento", idEstablecimiento)
 				.equals("p.fabricante.idfabricante", idFabricante)
 				.equals("p.estado","A")
+				.equals("p.tipoProducto.nombre","PRODUCTO")
 				.orderBy("p.nombregenerico").getResultList();
 		} catch (Exception e) {
 			throw new DaoException(e);

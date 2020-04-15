@@ -120,7 +120,7 @@
 	   				
 	   					<p:commandButton id="cmdAdqNuevo"
 							value="NUEVA COMPRA" icon="fa fa-plus" 
-							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100" update="@form">
+							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100 danger-btn" update="@form">
 	   					</p:commandButton>
 	   					
 	   					<div class="EmptyBox5"/>
@@ -142,7 +142,7 @@
    			</div>
    			
    			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="tru	e" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
