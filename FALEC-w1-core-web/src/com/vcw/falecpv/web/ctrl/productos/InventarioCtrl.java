@@ -117,7 +117,7 @@ public class InventarioCtrl extends BaseCtrl {
 	
 	public void consultarProductoList()throws DaoException{
 		productoFormList = null;
-		productoFormList = productoServicio.getProductoDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		productoFormList = productoServicio.getProductoDao().getByEstado("PRODUCTO",EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class InventarioCtrl extends BaseCtrl {
 		
 		switch (opcionBusqueda) {
 		case "INVENTARIO":
-			productoList = inventarioServicio.getInventario(AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getInventario("PRODUCTO",AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 			break;
 		case "STOCKMAYORZERO":
 			productoList = inventarioServicio.getStokMayorZero(AppJsfUtil.getEstablecimiento().getIdestablecimiento());

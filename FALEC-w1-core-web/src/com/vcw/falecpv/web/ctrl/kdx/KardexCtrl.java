@@ -131,7 +131,7 @@ public class KardexCtrl extends BaseCtrl {
 
 	public void consultarProductoForm()throws DaoException{
 		productoList = null;
-		productoList = productoServicio.getProductoDao().getByQuery(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		productoList = productoServicio.getProductoDao().getByQuery("PRODUCTO",EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 	}
 	
 	public void cambioProducto() {

@@ -53,6 +53,36 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 			throw new DaoException(e);
 		}
 	}
+	 
+	 /**
+	  * @author cristianvillarreal
+	  * 
+	 * @param tipoproducto
+	 * @param estadoRegistroEnum
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Producto> getByEstado(String tipoproducto ,EstadoRegistroEnum estadoRegistroEnum,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.tipoProducto.nombre=:tipoproducto AND p.establecimiento.idestablecimiento=:idestablecimiento AND  p.estado=:estado ORDER BY p.nombregenerico");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.tipoProducto.nombre=:tipoproducto AND p.establecimiento.idestablecimiento=:idestablecimiento ORDER BY p.nombregenerico");
+			}
+			
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("tipoproducto", tipoproducto);
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 	
 	/**
 	 * @author cristianvillarreal
@@ -113,6 +143,38 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 			}
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param tipoProducto
+	 * @param estadoRegistroEnum
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Producto> getByQuery(String tipoProducto,EstadoRegistroEnum estadoRegistroEnum,String idEstablecimiento)throws DaoException{
+		try {
+			
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+//				q = getEntityManager().createQuery("SELECT p.idproducto, p.nombre, p.nombregenerico FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND  p.estado=:estado ORDER BY p.nombregenerico");
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.tipoProducto.nombre=:tipoproducto AND p.establecimiento.idestablecimiento=:idestablecimiento AND  p.estado=:estado ORDER BY p.nombregenerico");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+//				q = getEntityManager().createQuery("SELECT p.idproducto, p.nombre, p.nombregenerico FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento ORDER BY p.nombregenerico");
+				q = getEntityManager().createQuery("SELECT p FROM Producto p WHERE p.tipoProducto.nombre=:tipoproducto AND  p.establecimiento.idestablecimiento=:idestablecimiento ORDER BY p.nombregenerico");
+			}
+			
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("tipoproducto", tipoProducto);
 			return q.getResultList();
 			
 		} catch (Exception e) {
