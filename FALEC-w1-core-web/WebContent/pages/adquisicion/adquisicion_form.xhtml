@@ -15,7 +15,7 @@
 			.adquisicionDetDT .ui-datatable-scrollable-body{
 				/* min-height:800px !important;
 				max-height: 800px !important; */
-				min-height: 50vh !important;
+				min-height: 42vh !important;
 				/* max-height: 60vh !important; */
 			}
 			
@@ -103,7 +103,7 @@
 								<p:commandButton  id="cmdAdqProveedor" 
 										title="NUEVO PROVEEDOR"
 										icon="fa fa-plus"
-										value="AGR. PROVEEDOR"
+										value="PROVEEDOR"
 										styleClass="secondary-button Wid100"
 										action="#{proveedorCtrl.nuevo()}"
 										immediate="true">
@@ -278,7 +278,7 @@
 							
 							<p:commandButton  id="cmdAdqAgregarProducto" 
 								icon="fa fa-plus"
-								value="AGR. PRODUCTO"
+								value="PRODUCTO"
 								styleClass="Wid100 secondary-button"
 								action="#{productoCtrl.nuevo()}"
 								update="@form" 
@@ -301,7 +301,7 @@
 						</p:panelGrid>
 						
 						<!-- Detalle de la factura -->
-						
+						<div class="EmptyBox5"/>
 						<p:dataTable id="adquisicionDetDT" var="d"
 							value="#{adquisicionFrmCtrl.adquisiciondetalleList}" scrollable="true"
 							emptyMessage="#{msg['mensaje.noexistenDatos']}"
