@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -66,6 +67,16 @@ public class UsuarioCtrl extends BaseCtrl {
 	public UsuarioCtrl() {
 	}
 
+	@PostConstruct
+	private void init() {
+		try {
+			usuarioList = null;
+			consultarUsuario();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	@Override
 	public void limpiar() {

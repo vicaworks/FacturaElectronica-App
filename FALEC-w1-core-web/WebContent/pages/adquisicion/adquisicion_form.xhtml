@@ -76,7 +76,61 @@
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
+	    	<!-- OPCIONES -->
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    		
+	    		<div class="EmptyBox10"/>
+	    		
+	    		<div class="p-grid p-align-left">
+	    			
+	    			<div class="p-col-12 p-md-10">
+	    				
+	    				<div class="p-grid">
+	    					
+	    					<div class="p-col-12 p-md-3">
+			    				<p:commandButton id="cmdAdqNuevo"
+										value="NUEVA COMPRA" icon="fa fa-plus" 
+										action="#{adquisicionFrmCtrl.nuevo()}" styleClass="danger-btn Wid100" update="@form" immediate="true"/>
+	    					</div>
+		    				
+		    				<div class="p-col-12 p-md-3">
+			    				<p:commandButton id="cmdAdqGuardar"
+										value="GUARDAR" icon="fa fa-floppy-o" 
+										action="#{adquisicionFrmCtrl.guardar()}" styleClass="Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!='GEN'}"/>
+							</div>
+							
+							<div class="p-col-12 p-md-3">
+								<p:commandButton  id="cmdAdqProveedor" 
+										title="NUEVO PROVEEDOR"
+										icon="fa fa-plus"
+										value="AGR. PROVEEDOR"
+										styleClass="secondary-button Wid100"
+										action="#{proveedorCtrl.nuevo()}"
+										immediate="true">
+										<f:setPropertyActionListener value="ADQUISICION" target="#{proveedorCtrl.callModule}"/>
+										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
+										<f:setPropertyActionListener value=":formMain:somAdqProveedor :formMain:inpAdqRuc" target="#{proveedorCtrl.viewUpdate}"/>
+										<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{proveedorCtrl.adquisicionFrmCtrl}"/>
+									</p:commandButton>
+							</div>
+							
+							<div class="p-col-12 p-md-3">
+								<p:commandButton id="cmdAdqRetencion"
+									value="#{msg['label.retencion']}" icon="fa fa-plus" 
+									action="#" styleClass="warning-btn Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null}"/>
+							</div>
+	    				</div>
+	    				
+	    			
+	    			</div>
+	    			
+	    		</div>
+	    		
+	    	</div>
+	    	
+	    	
 			<!-- Mensajes -->
+			<div class="EmptyBox5"/>
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
@@ -88,39 +142,6 @@
 				<div class="p-col-12 p-md-4">
 					
 					<div class="card card-w-title">
-						
-						<!-- Opciones -->
-						
-						<p:panelGrid id="gridAdqFrmOP" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-lg-6,ui-g-12 ui-lg-6">
-							
-							<p:commandButton id="cmdAdqNuevo"
-								value="NUEVO" icon="fa fa-plus" 
-								action="#{adquisicionFrmCtrl.nuevo()}" styleClass="secondary-button Wid100" update="@form" immediate="true"
-							/>
-							
-							<p:commandButton id="cmdAdqGuardar"
-								value="GUARDAR" icon="fa fa-floppy-o" 
-								action="#{adquisicionFrmCtrl.guardar()}" styleClass="Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!='GEN'}"/>
-							
-							<p:commandButton  id="cmdAdqProveedor" 
-								title="NUEVO PROVEEDOR"
-								icon="fa fa-plus"
-								value="PROVEEDOR"
-								styleClass="secondary-button Wid100"
-								action="#{proveedorCtrl.nuevo()}"
-								immediate="true">
-								<f:setPropertyActionListener value="ADQUISICION" target="#{proveedorCtrl.callModule}"/>
-								<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
-								<f:setPropertyActionListener value=":formMain:somAdqProveedor :formMain:inpAdqRuc" target="#{proveedorCtrl.viewUpdate}"/>
-								<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{proveedorCtrl.adquisicionFrmCtrl}"/>
-							</p:commandButton>
-							
-							<p:commandButton id="cmdAdqRetencion"
-								value="#{msg['label.retencion']}" icon="fa fa-plus" 
-								action="#" styleClass="warning-btn Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null}"
-							/>
-							
-						</p:panelGrid>							
 						
 						<!-- Formulario -->
 						<div class="EmptyBox5"/>
@@ -229,7 +250,7 @@
 									title="REGISTRAR PAGO"
 									icon="fa fa-dollar"
 									value="REGISTRAR PAGO"
-									styleClass="secondary-button Wid100 Fs14"
+									styleClass="Wid100 Fs14"
 									action="#{adquisicionFrmCtrl.showDetallePago()}"
 									disabled="#{adquisicionFrmCtrl.adquisicionSelected.tipopago==null or adquisicionFrmCtrl.adquisicionSelected.tipopago.subdetalle=='N'}">
 								</p:commandButton>
@@ -257,11 +278,11 @@
 							
 							<p:commandButton  id="cmdAdqAgregarProducto" 
 								icon="fa fa-plus"
-								value="PRODUCTO"
-								styleClass="Wid100 danger-btn"
+								value="AGR. PRODUCTO"
+								styleClass="Wid100 secondary-button"
 								action="#{productoCtrl.nuevo()}"
 								update="@form" 
-								process="@this :formMain:adquisicionDetDT">
+								process="@this :formMain:adquisicionDetDT @form">
 								<f:setPropertyActionListener value="ADQUISICION" target="#{productoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales" target="#{productoCtrl.viewUpdate}"/>
@@ -271,10 +292,10 @@
 							<p:commandButton  id="cmdAdqAgregarDetalle" 
 								icon="fa fa-plus"
 								value="AGREGAR DETALLE"
-								styleClass="Wid100"
+								styleClass="secondary-button Wid100"
 								action="#{adquisicionFrmCtrl.agregarDetalle()}"
-								process="@this :formMain:adquisicionDetDT"
-								update=":formMain:adquisicionDetDT :formMain:oupTotales">
+								process="@this :formMain:adquisicionDetDT @form"
+								update="@form">
 							</p:commandButton>
 							
 						</p:panelGrid>

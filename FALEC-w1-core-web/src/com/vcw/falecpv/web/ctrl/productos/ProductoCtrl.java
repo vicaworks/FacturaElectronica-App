@@ -819,7 +819,7 @@ public class ProductoCtrl extends BaseCtrl {
 				if(p.getStock().doubleValue()>0d) {
 					// si el stock > 0 se registra la entrada
 					Producto producto = productoServicio.getProductoDao().cargar(p.getIdProducto());
-					if(producto!=null) {
+					if(producto!=null && producto.getTipoProducto().getNombre().equals("PRODUCTO")) {
 						KardexProducto kardexProducto = new KardexProducto();
 						kardexProducto.setProducto(producto);
 						kardexProducto.setEstablecimiento(producto.getEstablecimiento());

@@ -31,7 +31,6 @@ import com.vcw.falecpv.core.dao.impl.IceDao;
 import com.vcw.falecpv.core.dao.impl.IvaDao;
 import com.vcw.falecpv.core.dao.impl.ProductoDao;
 import com.vcw.falecpv.core.dao.impl.TipoProductoDao;
-import com.vcw.falecpv.core.dao.impl.UsuarioDao;
 import com.vcw.falecpv.core.modelo.dto.ImportProductoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
