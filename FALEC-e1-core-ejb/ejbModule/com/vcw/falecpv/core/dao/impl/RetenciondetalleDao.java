@@ -21,5 +21,5 @@ public class RetenciondetalleDao extends AppGenericDao<Retenciondetalle, String>
 	public RetenciondetalleDao() {
 		super(Retenciondetalle.class);
 	}
-
+	
 }

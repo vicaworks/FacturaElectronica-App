@@ -457,6 +457,15 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 				return;
 			}
 			
+			if(adquisicionSelected.getIdadquisicion()!=null) {
+				for (Pagodetalle pd : pagodetalleList) {
+					pd.setAdquisicion(adquisicionSelected);
+					pd.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+					pd.setUpdated(new Date());
+					pagodetalleServicio.guardarFacade(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), pd);
+				}
+			}
+			
 			AppJsfUtil.hideModal("dlgAdqDetallePago");
 			
 		} catch (Exception e) {

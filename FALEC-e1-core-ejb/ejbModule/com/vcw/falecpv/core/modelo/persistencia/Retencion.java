@@ -64,6 +64,20 @@ public class Retencion implements Serializable {
     @Column(name = "numcomprobante", nullable = false, length = 50)
     private String numcomprobante;
     
+    @Basic(optional = true)
+    @NotNull
+    @Size(min = 1, max = 150)
+    @Column(name = "numautorizacion", nullable = true, length = 150)
+    private String numautorizacion;
+    
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "numfactura", nullable = false, length = 50)
+    private String numfactura;
+    
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -328,12 +342,59 @@ public class Retencion implements Serializable {
 	public String getEstado() {
 		return estado;
 	}
+	
+	public String getEstadoStyle() {
+		switch (estado) {
+		case "REGISTRADO":
+			
+			return "markGreen";
+		
+		case "ANULADO":
+			
+			return "markRed";
+		
+		case "RETENCION":
+			
+			return "markOrange";	
+		default:
+			break;
+		}
+		return "";
+	}
 
 	/**
 	 * @param estado the estado to set
 	 */
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	/**
+	 * @return the numfactura
+	 */
+	public String getNumfactura() {
+		return numfactura;
+	}
+
+	/**
+	 * @param numfactura the numfactura to set
+	 */
+	public void setNumfactura(String numfactura) {
+		this.numfactura = numfactura;
+	}
+
+	/**
+	 * @return the numautorizacion
+	 */
+	public String getNumautorizacion() {
+		return numautorizacion;
+	}
+
+	/**
+	 * @param numautorizacion the numautorizacion to set
+	 */
+	public void setNumautorizacion(String numautorizacion) {
+		this.numautorizacion = numautorizacion;
 	}
 
 }

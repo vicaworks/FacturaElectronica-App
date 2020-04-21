@@ -43,15 +43,15 @@ public class RetencionDao extends AppGenericDao<Retencion, String> {
 			
 			Query q = null;
 			if(criteria!=null && criteria.trim().length()>0) {
-				q = getEntityManager().createQuery("SELECT r FROM Retencion r WHERE r.establecimiento.idestablecimiento=:idestablecimiento  AND (r.proveedor.nombrecomercial like :proveedor OR r.nomcomprobante like :numcomprobante OR ) ORDER BY r.fechaemision DESC");
-			}else {
-				q = getEntityManager().createQuery("SELECT r FROM Retencion r WHERE r.establecimiento.idestablecimiento=:idestablecimiento  AND r.fechaemision BETWEEN :desde AND :hasta AND (r.proveedor.nombrecomercial like :proveedor OR r.nomcomprobante like :numcomprobante ) ORDER BY r.fechaemision DESC");
-				
-				q.setParameter("desde", desde);
-				q.setParameter("hasta", hasta);
+				q = getEntityManager().createQuery("SELECT r FROM Retencion r WHERE r.establecimiento.idestablecimiento=:idestablecimiento  AND (r.proveedor.nombrecomercial like :proveedor OR r.proveedor.identificacion like :ruc OR r.numcomprobante like :numcomprobante OR r.numfactura like :numfactura ) ORDER BY r.fechaemision DESC");
 				q.setParameter("proveedor", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("numcomprobante", "%".concat(criteria.toUpperCase()).concat("%"));
-				
+				q.setParameter("numfactura", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("ruc", "%".concat(criteria.toUpperCase()).concat("%"));
+			}else {
+				q = getEntityManager().createQuery("SELECT r FROM Retencion r WHERE r.establecimiento.idestablecimiento=:idestablecimiento  AND r.fechaemision BETWEEN :desde AND :hasta ORDER BY r.fechaemision DESC");
+				q.setParameter("desde", desde);
+				q.setParameter("hasta", hasta);
 			}
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);

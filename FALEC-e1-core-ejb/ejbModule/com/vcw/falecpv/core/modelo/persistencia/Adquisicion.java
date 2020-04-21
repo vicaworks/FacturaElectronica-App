@@ -401,6 +401,9 @@ public class Adquisicion implements Serializable {
 		case "ENV":
 			
 			return "markOrange";	
+		case "RETENCION":
+			
+			return "markOrange";
 		default:
 			return "markBlack";
 		}

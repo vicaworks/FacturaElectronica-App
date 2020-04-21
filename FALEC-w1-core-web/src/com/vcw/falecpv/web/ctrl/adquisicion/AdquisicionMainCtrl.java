@@ -81,7 +81,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -30);
+			desde = FechaUtil.agregarDias(hasta, -90);
 			criterioBusqueda = null;
 			adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
 			consultarAdquisiciones();

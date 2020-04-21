@@ -138,15 +138,17 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 			}
 			
 			// detalle del pago
-			
-			for (Pagodetalle pd : pagodetalleList) {
-				pd.setUpdated(new Date());
-				if(pd.getIdpagodetalle().contains("MM") || pd.getIdpagodetalle()==null) {
-					pd.setIdpagodetalle(contadorPkServicio.generarContadorTabla(TCAdquisicion.ADQUISICIONDETALLE, adquisicion.getEstablecimiento().getIdestablecimiento()));
-					pagodetalleServicio.crear(pd);
-				}else {
-					pagodetalleServicio.actualizar(pd);
+			if(pagodetalleList!=null) {
+				for (Pagodetalle pd : pagodetalleList) {
+					pd.setUpdated(new Date());
+					if(pd.getIdpagodetalle().contains("MM") || pd.getIdpagodetalle()==null) {
+						pd.setIdpagodetalle(contadorPkServicio.generarContadorTabla(TCAdquisicion.ADQUISICIONDETALLE, adquisicion.getEstablecimiento().getIdestablecimiento()));
+						pagodetalleServicio.crear(pd);
+					}else {
+						pagodetalleServicio.actualizar(pd);
+					}
 				}
+				
 			}
 			
 			
@@ -292,5 +294,30 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 		return adquisicionDao;
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idProveedor
+	 * @param numFactura
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public Adquisicion getByFactura(String idProveedor,String numFactura,String idEstablecimiento)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(adquisicionDao.getEntityManager());
+			
+			return (Adquisicion) q.select("a")
+					.from(Adquisicion.class,"a")
+					.equals("a.establecimiento.idestablecimiento",idEstablecimiento)
+					.equals("a.proveedor.idproveedor",idProveedor)
+					.equals("a.numfactura",numFactura)
+					.notEquals("a.estado", "ANU").getSingleResult();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 }

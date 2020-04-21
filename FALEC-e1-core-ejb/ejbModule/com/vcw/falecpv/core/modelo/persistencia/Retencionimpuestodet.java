@@ -94,7 +94,7 @@ public class Retencionimpuestodet implements Serializable {
 
     @Override
     public String toString() {
-    	return String.format("%s[id=%s]",nombre , idretencionimpuestodet);
+    	return String.format("%s[id=%s]", nombre , idretencionimpuestodet);
     }
     
     public String toStringObject() {

@@ -65,6 +65,7 @@ public class ProveedorCtrl extends BaseCtrl {
 	private String viewUpdate;
 	private String estado;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
+	private RetencionFrmCtrl retencionFrmCtrl;
 
 	/**
 	 * 
@@ -163,6 +164,10 @@ public class ProveedorCtrl extends BaseCtrl {
 				adquisicionFrmCtrl.consultarProveedor();
 				adquisicionFrmCtrl.getAdquisicionSelected().setProveedor(proveedorSelected);
 				break;
+			case "RETENCION":
+				retencionFrmCtrl.consultarProveedor();
+				retencionFrmCtrl.getRetencionSeleccion().setProveedor(proveedorSelected);
+				break;	
 			default:
 				break;
 			}
@@ -464,6 +469,20 @@ public class ProveedorCtrl extends BaseCtrl {
 	 */
 	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
 		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @return the retencionFrmCtrl
+	 */
+	public RetencionFrmCtrl getRetencionFrmCtrl() {
+		return retencionFrmCtrl;
+	}
+
+	/**
+	 * @param retencionFrmCtrl the retencionFrmCtrl to set
+	 */
+	public void setRetencionFrmCtrl(RetencionFrmCtrl retencionFrmCtrl) {
+		this.retencionFrmCtrl = retencionFrmCtrl;
 	}
 	
 	

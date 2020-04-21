@@ -116,7 +116,16 @@
 							<div class="p-col-12 p-md-3">
 								<p:commandButton id="cmdAdqRetencion"
 									value="#{msg['label.retencion']}" icon="fa fa-plus" 
-									action="#" styleClass="warning-btn Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null}"/>
+									action="#{retencionMainCtrl.nuevaRetencion()}" 
+									styleClass="warning-btn Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null}">
+									
+									<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
+									<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
+									<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
+									<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
+									<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
+									
+								</p:commandButton>
 							</div>
 	    				</div>
 	    				
@@ -179,9 +188,14 @@
 								<h:outputText value="NUM. FACTURA *" styleClass="cpoRequerido"/>
 							</h:panelGroup>
 							<h:panelGroup>
-								<p:inputText id="inpAdqNumFac" value="#{adquisicionFrmCtrl.adquisicionSelected.numfactura}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="50" validatorMessage="SOLO NUMEROS" placeholder="Formato: 0010011123">
-									<f:validateRegex pattern="^\d+$"/>
-								</p:inputText>
+
+								<p:inputMask id="inpAdqNumFac"
+									value="#{adquisicionFrmCtrl.adquisicionSelected.numfactura}"
+									mask="999999999999999" required="true"
+									requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15"
+									validatorMessage="SOLO NUMEROS, 15 DIGITOS"
+									placeholder="FORMATO : 15 DIGITOS" />
+
 								<p:message for="inpAdqNumFac" />
 							</h:panelGroup>
 							

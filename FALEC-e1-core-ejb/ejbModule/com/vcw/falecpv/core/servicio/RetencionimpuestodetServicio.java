@@ -38,4 +38,11 @@ public class RetencionimpuestodetServicio extends AppGenericService<Retencionimp
 		return retencionimpuestodetDao;
 	}
 
+	/**
+	 * @return the retencionimpuestodetDao
+	 */
+	public RetencionimpuestodetDao getRetencionimpuestodetDao() {
+		return retencionimpuestodetDao;
+	}
+
 }

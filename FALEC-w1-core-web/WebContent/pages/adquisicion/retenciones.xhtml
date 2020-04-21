@@ -1,0 +1,239 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">#{msg['title.retencion']}</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.retencionDT .ui-datatable-scrollable-body{
+				min-height: 50vh !important;
+				height: calc(100vh - 380px);
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-message {
+				padding: 0em !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Retenciones" url="#" />
+		    <p:menuitem value="Lista de Retenciones" url="#{request.contextPath}/pages/adquisicion/retenciones.jsf"/>
+		</p:breadCrumb>
+		
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<!-- Opciones -->
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    		
+	    		<div class="p-grid p-align-center">
+	    			
+	    			<div class="p-col-12 p-md-8">
+	    				
+	    				<div class="p-grid">
+	    					
+	    					<div class="p-col-12 p-md-6">
+	    						<!-- desde -->
+	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+	    						<p:calendar id="claretencionFechaDesde" value="#{retencionMainCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+								</p:calendar>
+								<p:message for="claretencionFechaDesde" style="padding:0em;"/>
+	    						
+	    					</div>
+	    					<div class="p-col-12 p-md-6">
+	    						<!-- hasts  -->
+	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+	    						<p:calendar id="claRetencionFechaHasta" value="#{retencionMainCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+								</p:calendar>
+								<p:message for="claRetencionFechaHasta" style="padding:0em;"/>
+	    					</div>
+	    				
+	    					<div class="p-col-12">
+								<p:inputText id="intRtnCriterioBusqueda" value="#{retencionMainCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="BUSCAR: Nombre Proveedor, Ruc Proveedor, Num. Factura, Num. Comprobante"/>	    						
+	    					</div>
+	    					
+	    				</div>
+	    				
+	    			</div>
+	    			
+	    			<!-- opciones -->
+	    			<div class="p-col-12 p-md-4">
+	    				
+	    				<div class="EmptyBox5"/>
+	    				
+	    				<p:commandButton id="cmdRtnRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{retencionMainCtrl.refrescar()}" styleClass="secondary-button Wid100" update="@form"
+						/>
+						
+						<div class="EmptyBox5"/>
+	   				
+	   					<p:commandButton id="cmdRtnNuevo"
+							value="NUEVA #{msg['label.retencion']}" icon="fa fa-plus" 
+							action="#{retencionMainCtrl.nuevaRetencion()}" styleClass="Wid100 danger-btn" update="@form">
+							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
+							<f:setPropertyActionListener value="RETENCION" target="#{retencionFrmCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
+							<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
+	   					</p:commandButton>
+	   					
+	   					<div class="EmptyBox5"/>
+	   					
+	   					<p:commandButton  id="cmdRtnExcel" 
+									title="EXPORTAR"
+									icon="fa fa-file-excel-o"
+									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+									value="REPORTE"
+									styleClass="success-btn Wid100"
+									disabled="#{empty retencionMainCtrl.retencionList}">
+						</p:commandButton>
+	    				
+	    			</div>
+	    			
+    			</div>
+    			
+   			</div>
+   			
+   			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="tru	e" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+	    	
+	    	<div class="card card-w-title">
+				
+				<h1 class="cardTitle">Lista Retenciones</h1>
+				
+				<p:dataTable id="retencionDT" var="r"
+					value="#{retencionMainCtrl.retencionList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="retencionDT Fs11"  
+					rowKey="#{r.idretencion}">
+					
+					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+						
+						<p:splitButton id="rtnOpc" action="#" icon="fa fa-list-ul Fs14">
+							
+							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idretencion)}" icon="fa fa-edit" process="retencionDT" update="@form">
+								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
+								<f:setPropertyActionListener value="RETENCION" target="#{retencionFrmCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
+								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
+							</p:menuitem>
+							
+							<p:menuitem value="Anular #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-close" process="retencionDT" update="@form">
+								<f:setPropertyActionListener value="#{r}" target="#{retencionMainCtrl.retencionSelected}"/>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:menuitem>
+							
+							<p:menuitem value="Ver Factura Compra" action="#" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
+							</p:menuitem>
+							
+						</p:splitButton>
+						
+					</p:column>
+					
+					<p:column headerText="ID" style="width:40px;" filterBy="#{r.numcomprobante}" filterMatchMode="contains">
+						<h:outputText value="#{r.numcomprobante}" />
+					</p:column>
+					
+					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains">
+						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle}"/>
+					</p:column>
+					
+					<p:column headerText="RUC / CI" style="width:40px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{r.proveedor.identificacion}" />
+					</p:column>
+					
+					<p:column headerText="FACTURA" style="width:40px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
+						<h:outputText value="#{r.numfactura}" />
+					</p:column>
+					
+					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:100px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
+						<h:outputText value="#{r.proveedor.nombrecomercial}" />
+					</p:column>
+					
+					<p:column headerText="FECHA" style="width:40px;">
+						<h:outputText value="#{r.fechaemision}" >
+							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="PERIODO" style="width:40px;">
+						<h:outputText value="#{r.mes} - #{r.anio}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="VALOR" style="width:40px;">
+						<h:outputText value="#{r.totalretencion}" styleClass="markGreen">
+							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="AUTO S.R.I." style="width:100px;" filterBy="#{r.numautorizacion}" filterMatchMode="contains">
+						<h:outputText value="#{r.numautorizacion}" />
+					</p:column>					
+					
+				</p:dataTable>
+				
+			</div>
+	    	
+	    </h:form>
+        
+    </ui:define>
+
+</ui:composition>
