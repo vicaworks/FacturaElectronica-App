@@ -328,18 +328,21 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			// guarda los datos
 			retencionSeleccion = retencionServicio.guardarFacade(retencionSeleccion, retenciondetalleList, adquisicionSelected);
 			
+			// Manage de session para actualizar las pantallas
+			adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
+			adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
+			
 			switch (callModule) {
 			case "RETENCION":
 				
 				retencionMainCtrl.consultarRetenciones();
+				adquisicionMainCtrl.consultarAdquisiciones();
 				
 				break;
 			
 			case "ADQUISICION":
 				
-				adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
 				adquisicionFrmCtrl.editarAdquisicion(adquisicionSelected.getIdadquisicion());
-				adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
 				adquisicionMainCtrl.consultarAdquisiciones();
 				retencionMainCtrl.consultarRetenciones();
 				
@@ -463,6 +466,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			retencionimpuesto = null;
 			nuevaRetencionDetalle();
 			totalizar();
+			
+			if(retencionSeleccion.getIdretencion()!=null) {
+				retencionServicio.guardarFacade(retencionSeleccion, retenciondetalleList, adquisicionSelected);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

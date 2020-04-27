@@ -14,6 +14,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.hibernate.envers.internal.synchronization.work.AddWorkUnit;
+
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -371,6 +373,12 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 			adquisiciondetalleList.remove(adquisiciondetalleSelected);
 			totalizarCompra();
+			// guarda la cabecera
+			if(adquisicionSelected.getIdadquisicion()!=null) {
+				adquisicionSelected = adquisicionServicio.guadarFacade(adquisicionSelected, adquisiciondetalleList, pagodetalleList);
+			}
+			
+			
 			// pantalla principal
 			AdquisicionMainCtrl adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
 			adquisicionMainCtrl.consultarAdquisiciones();
@@ -474,6 +482,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 			if(adquisicionSelected.getIdadquisicion()!=null) {
 				adquisicionServicio.actualizar(adquisicionSelected);
+				AdquisicionFrmCtrl adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
+				adquisicionFrmCtrl.consultarProveedor();
 				for (Pagodetalle pd : pagodetalleList) {
 					pd.setAdquisicion(adquisicionSelected);
 					pd.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
