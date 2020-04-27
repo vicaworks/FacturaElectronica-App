@@ -17,6 +17,7 @@ import javax.inject.Named;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoPagoEnum;
@@ -129,11 +130,15 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 			// verifica si la adquisicion estado GEN
 			if(adquisicionSelected.getIdadquisicion()!=null) {
-				Adquisicion ad = adquisicionServicio.consultarByPk(adquisicionSelected.getIdadquisicion());
-				if(ad!=null && !ad.getEstado().equals("GEN")) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, YA QUE SE ENCUENTRA EN ESTADO :" + ad.getEstado());
+				
+				String analisisEstado = adquisicionServicio.analizarEstado(adquisicionSelected.getIdadquisicion(),
+						adquisicionSelected.getEstablecimiento().getIdestablecimiento(), "GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 					return;
 				}
+				
 			}
 			
 			// si ya existe la factura del mismo proveedor
@@ -160,6 +165,9 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			// actualiza lista de compras
 			AdquisicionMainCtrl adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
 			adquisicionMainCtrl.consultarAdquisiciones();
+			
+			// detalle de pago
+			pagodetalleList = pagodetalleServicio.getByAdquisicion(adquisicionSelected.getIdadquisicion());
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK","REGISTRO GUARDADO CORRECTAMENTE.");
 			
@@ -200,7 +208,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisicionSelected.setTotalretencion(BigDecimal.ZERO);
 		adquisicionSelected.setTotalfactura(BigDecimal.ZERO);
 		adquisicionSelected.setTotalpagar(BigDecimal.ZERO);
-		adquisicionSelected.setEstado("GEN");
+		adquisicionSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		adquisicionSelected.setTipopago(tipopagoServicio.getTipopagoDao().getByNombre(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), "EFECTIVO"));
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
 				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
@@ -292,6 +300,9 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisicionSelected.setTotalpagar(BigDecimal.ZERO);
 		int fil = 1;
 		for (Adquisiciondetalle a : adquisiciondetalleList) {
+			if(a.getValorIva()==null) {
+				a.setValorIva(BigDecimal.ZERO);
+			}
 			// totales
 			adquisicionSelected.setSubtotal(adquisicionSelected.getSubtotal().add(a.getPreciototal()));
 			adquisicionSelected.setTotaliva(adquisicionSelected.getTotaliva().add(a.getValorIva()));
@@ -376,8 +387,13 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			if(pagodetalleList==null) {
 				pagodetalleList = new ArrayList<>();
 			}
-			setTipopagoFormList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(
+			
+			
+			setTipopagoList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(
 					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), TipoPagoEnum.ADQUISICION));
+			
+			
+			
 			totalizarPagoDetalle();
 			
 			AppJsfUtil.showModalRender("dlgAdqDetallePago", "frmAdqPago");
@@ -414,16 +430,15 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		try {
 			
 			if(adquisicionSelected!=null && adquisicionSelected.getIdadquisicion()!=null) {
-				Adquisicion a = adquisicionServicio.consultarByPk(adquisicionSelected.getIdadquisicion());
-				if(a.getEstado().equals("ANU")) {
+				
+				String analisisEstado = adquisicionServicio.analizarEstado(adquisicionSelected.getIdadquisicion(),
+						adquisicionSelected.getEstablecimiento().getIdestablecimiento(), "ELIMINAR_PAGO");
+				
+				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR LA COMPRA, ESTA EN ESTADO ANULADO.");
 					return;
 				}
 				
-				if(a.getEstado().equals("ENV") || a.getEstado().equals("RETENCION")) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR LA COMPRA, TIENE RETENCION.");
-					return;
-				}
 			}
 			pagodetalleSelected.setUpdated(new Date());
 			pagodetalleServicio.eliminar(pagodetalleSelected);
@@ -458,6 +473,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			}
 			
 			if(adquisicionSelected.getIdadquisicion()!=null) {
+				adquisicionServicio.actualizar(adquisicionSelected);
 				for (Pagodetalle pd : pagodetalleList) {
 					pd.setAdquisicion(adquisicionSelected);
 					pd.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());

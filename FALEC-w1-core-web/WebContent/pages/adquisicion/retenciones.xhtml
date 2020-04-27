@@ -52,6 +52,7 @@
     
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
@@ -137,6 +138,7 @@
 									value="REPORTE"
 									styleClass="success-btn Wid100"
 									disabled="#{empty retencionMainCtrl.retencionList}">
+							<p:fileDownload value="#{retencionMainCtrl.fileRetencion}"/>
 						</p:commandButton>
 	    				
 	    			</div>
@@ -146,7 +148,7 @@
    			</div>
    			
    			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="tru	e" for="formMain"
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
@@ -191,7 +193,7 @@
 						<h:outputText value="#{r.numcomprobante}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains">
+					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
 						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle}"/>
 					</p:column>
 					

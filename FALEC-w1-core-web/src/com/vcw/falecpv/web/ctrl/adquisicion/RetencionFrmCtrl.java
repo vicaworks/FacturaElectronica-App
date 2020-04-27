@@ -18,6 +18,7 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
@@ -170,7 +171,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion = new Retencion();
 		retencionSeleccion.setAdquisicion(null);
 		retencionSeleccion.setEstablecimiento(AppJsfUtil.getEstablecimiento());
-		retencionSeleccion.setEstado("REGISTRADO");
+		retencionSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		retencionSeleccion.setFechaemision(new Date());
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setTotalbaseimponible(BigDecimal.ZERO);
@@ -231,9 +232,11 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	}
 	
 	private void calcularImpuesto() {
-		retenciondetalleSelected.setPorcentaje(retenciondetalleSelected.getRetencionimpuestodet().getValor());
-		retenciondetalleSelected.setValor(retenciondetalleSelected.getPorcentaje().divide(BigDecimal.valueOf(100))
-				.multiply(retenciondetalleSelected.getBaseimponible()).setScale(2, RoundingMode.HALF_UP));
+		if(retenciondetalleSelected.getRetencionimpuestodet()!=null) {
+			retenciondetalleSelected.setPorcentaje(retenciondetalleSelected.getRetencionimpuestodet().getValor());
+			retenciondetalleSelected.setValor(retenciondetalleSelected.getPorcentaje().divide(BigDecimal.valueOf(100))
+					.multiply(retenciondetalleSelected.getBaseimponible()).setScale(2, RoundingMode.HALF_UP));
+		}
 	}
 	
 	public void cambioCalcularImpuesto() {
@@ -254,15 +257,18 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 			// TODO datos 
 			retencionSeleccion.setNumautorizacion("111111111111111111");
-			retencionSeleccion.setNumcomprobante("222222222222222222");
+			//retencionSeleccion.setNumcomprobante("222222222222222222");
 			
-			// verificar si la compra se encuentra registrada
-			if(retencionSeleccion.getIdretencion()!=null) {
-				Retencion r = retencionServicio.consultarByPk(retencionSeleccion.getIdretencion());
-				if(r!=null && !r.getEstado().equals("REGISTRADO")) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, YA QUE SE ENCUENTRA EN ESTADO :" + r.getEstado());
-					return;
-				}
+			// verifica numfactura proveedor establecimeinto
+			if (retencionServicio.existeRetencionProveedor(retencionSeleccion.getIdretencion(),
+					retencionSeleccion.getEstablecimiento().getIdestablecimiento(),
+					retencionSeleccion.getProveedor().getIdproveedor(), retencionSeleccion.getNumfactura())) {
+				
+				AppJsfUtil.addErrorMessage("formMain", "ERROR",
+						"YA EXISTE UNA RETENCION DE LA FACTURA : " + retencionSeleccion.getNumfactura()
+								+ " DEL PROVEEDOR : " + retencionSeleccion.getProveedor().getNombrecomercial());
+				return;
+				
 			}
 			
 			// verifica si existe la adquisicion
@@ -272,27 +278,38 @@ public class RetencionFrmCtrl extends BaseCtrl {
 						retencionSeleccion.getEstablecimiento().getIdestablecimiento());
 			}
 			
-			
+			if(retencionSeleccion.getIdretencion()!=null) {
+				String analisisEstado = retencionServicio.analizarEstado(retencionSeleccion.getIdretencion(), retencionSeleccion.getEstablecimiento().getIdestablecimiento(), "GUARDAR");
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+			}
 			
 			if(adquisicionSelected!=null) {
 				
 				// validar estado de la adquisicion
 				retencionSeleccion.setAdquisicion(adquisicionSelected);
-				Adquisicion ad = adquisicionServicio.consultarByPk(adquisicionSelected.getIdadquisicion());
-				if(ad!=null && (!ad.getEstado().equals("GEN")&&!ad.getEstado().equals("RETENCION"))) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, LA ADQUISICION SE ENCUENTRA EN ESTADO :" + ad.getEstado());
+				
+				String analisisEstado = adquisicionServicio.analizarEstado(adquisicionSelected.getIdadquisicion(), adquisicionSelected.getEstablecimiento().getIdestablecimiento(), "RETENCION");
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 					return;
 				}
+				
 				// verificar si ya existe un aretencion a la adquisicion
 				Retencion r = retencionServicio.getByAdquisicionEstado(adquisicionSelected.getIdadquisicion());
 				if(r!=null && retencionSeleccion.getIdretencion()!=null) {
 					if(!r.getIdretencion().equals(retencionSeleccion.getIdretencion())) {
-						AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, YA EXISTE UNA RETENCION PARA ESTE DOCUMENTO : " + retencionSeleccion.getNumfactura());
+						AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, YA EXISTE UNA RETENCION DE LA COMPRA CONE DOCUMENTO : " + retencionSeleccion.getNumfactura());
 						return;
 					}
 				}
+				
 			}else {
+				
 				retencionSeleccion.setAdquisicion(null);
+				
 			}
 			
 			// si no existe detalle
@@ -302,6 +319,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			}
 			
 			retencionSeleccion.setUpdated(new Date());
+			
 			for (Retenciondetalle rd : retenciondetalleList) {
 				rd.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 				rd.setUpdated(new Date());
@@ -318,10 +336,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 				break;
 			
 			case "ADQUISICION":
+				
 				adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
 				adquisicionFrmCtrl.editarAdquisicion(adquisicionSelected.getIdadquisicion());
 				adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
 				adquisicionMainCtrl.consultarAdquisiciones();
+				retencionMainCtrl.consultarRetenciones();
 				
 				break;
 
@@ -426,22 +446,23 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			// verifica estado de la retencion
 			
 			if(retencionSeleccion.getIdretencion()!=null) {
-				Retencion r = retencionServicio.consultarByPk(retencionSeleccion.getIdretencion());
-				if(!r.getEstado().equals("REGISTRADO") && !r.getEstado().equals("ANULADO")) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR ESTADO ACTUAL : " + retencionSeleccion.getEstado());
+				
+				String analisisEstado = retencionServicio.analizarEstado(retencionSeleccion.getIdretencion(), retencionSeleccion.getEstablecimiento().getIdestablecimiento(), "ELIMINAR_DETALLE");
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 					return;
 				}
+				
 			}
 			
-			// validar estado
 			if(retenciondetalleSelected.getIdretenciondetalle()!=null && !retenciondetalleSelected.getIdretenciondetalle().contains("MM")) {
 				retenciondetalleServicio.eliminar(retenciondetalleSelected);
 			}
+			
 			retenciondetalleList.remove(retenciondetalleSelected);
 			retencionimpuesto = null;
 			nuevaRetencionDetalle();
 			totalizar();
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -19,7 +19,7 @@
 			}
 			
 			.adquisicionDetDT .ui-selectonemenu .ui-selectonemenu-label {
-				text-align: right;
+				text-align: center;
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -46,6 +46,23 @@
 				vertical-align: top;
 			}
 			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				/* display: none; */
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
+			}
+			
 			.subtotal{
 				/* background-color: #7F8C8D;color: #fff;border-bottom: 1px solid #ccc; */
 				/* background-color: #F2F3F4;color: #34495E;border-bottom: 1px solid #ccc; */
@@ -63,6 +80,7 @@
     
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
@@ -95,7 +113,7 @@
 		    				<div class="p-col-12 p-md-3">
 			    				<p:commandButton id="cmdAdqGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{adquisicionFrmCtrl.guardar()}" styleClass="Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!='GEN'}"/>
+										action="#{adquisicionFrmCtrl.guardar()}" styleClass="Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
 							<div class="p-col-12 p-md-3">
@@ -117,7 +135,7 @@
 								<p:commandButton id="cmdAdqRetencion"
 									value="#{msg['label.retencion']}" icon="fa fa-plus" 
 									action="#{retencionMainCtrl.nuevaRetencion()}" 
-									styleClass="warning-btn Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null}">
+									styleClass="warning-btn Wid100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
 									
 									<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 									<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
@@ -322,7 +340,7 @@
 							rowKey="#{d.idadquisiciondetalle}">
 							
 							<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
-								<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!='GEN'}">
+								<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
 									<i class="fa fa-trash-o Fs16" style="color:red;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 									<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
@@ -340,11 +358,12 @@
 								</p:spinner>
 							</p:column>
 							
-							<p:column headerText="#{msg['label.descripcion']}" style="width:100px;">
-								<p:inputText id="inpAdqDescripcion" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" rendered="#{d.producto==null}" converter="omnifaces.ToUpperCaseConverter">
-								</p:inputText>
-								<!-- <p:message for="inpAdqDescripcion" rendered="#{d.producto==null}"/> -->
+							<p:column headerText="#{msg['label.descripcion']}" style="width:150px;">
+								
+								<p:inputTextarea id="inpAdqDescripcion" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" rendered="#{d.producto==null}" converter="omnifaces.ToUpperCaseConverter" rows="1">
+								</p:inputTextarea>
 								<h:outputText value="#{d.descripcion}"  rendered="#{d.producto!=null}"/>
+								
 							</p:column>
 							
 							<p:column headerText="P. UNIT" style="width:30px;">
@@ -352,7 +371,6 @@
 								<p:spinner id="idAdqPUnitario" value="#{d.preciounitario}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2">
 									<p:ajax listener="#{adquisicionFrmCtrl.changeAdquicisionDetalle(d)}" update=":formMain:adquisicionDetDT :formMain:oupTotales" process="@this :formMain:adquisicionDetDT"/>
 								</p:spinner>
-	                			<!-- <p:message for="idAdqPUnitario"/> -->
 	                			
 							</p:column>
 							

@@ -147,16 +147,13 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				return;
 			}
 			
-			if(a.getEstado().equals("ENV") || a.getEstado().equals("RETENCION")) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FACTURA TIENE UNA RETENCION EMITIDA, DEBE ANULAR LA RETENCION.");
-				consultarAdquisiciones();
-				return;
-			}
+			String analisisEstado = adquisicionServicio.analizarEstado(a.getIdadquisicion(), a.getEstablecimiento().getIdestablecimiento(), "ANULAR"); 
 			
-			if(a.getEstado().equals("ANU")) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FACTURA YA ESTA ANULADA.");
+			if(analisisEstado!=null) {
+				AppJsfUtil.addErrorMessage("formMain", analisisEstado);
 				consultarAdquisiciones();
 				return;
+				
 			}
 			
 			adquisicionServicio.anularCompra(idadquisicion, AppJsfUtil.getUsuario().getIdusuario(), false);
@@ -200,7 +197,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			cell = row.createCell(1);
 			cell.setCellValue(FechaUtil.formatoFecha(hasta));
 			
-			row = sheet.getRow(4);
+			row = sheet.getRow(6);
 			cell = row.createCell(1);
 			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
 			
@@ -348,7 +345,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Cardex_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Compra_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {

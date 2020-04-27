@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.servicio;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.FechaUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCAdquisicion;
 import com.vcw.falecpv.core.dao.impl.AdquisicionDao;
 import com.vcw.falecpv.core.dao.impl.AdquisiciondetalleDao;
@@ -138,7 +140,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 			}
 			
 			// detalle del pago
-			if(pagodetalleList!=null) {
+			if(pagodetalleList!=null && !adquisicion.getTipopago().getNombre().equals("EFECTIVO")) {
 				for (Pagodetalle pd : pagodetalleList) {
 					pd.setUpdated(new Date());
 					if(pd.getIdpagodetalle().contains("MM") || pd.getIdpagodetalle()==null) {
@@ -151,6 +153,10 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				
 			}
 			
+			// si pago efectivo 
+			if(adquisicion.getTipopago().getNombre().equals("EFECTIVO")) {
+				pagodetalleServicio.eliminarByAdquisicion(adquisicion.getIdadquisicion());
+			}
 			
 			return adquisicion;
 			
@@ -201,7 +207,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				if(eliminar) {
 					eliminar(a);
 				}else {
-					a.setEstado("ANU");
+					a.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
 					a.setIdusuario(idUsuario);
 					a.setUpdated(new Date());
 					actualizar(a);
@@ -318,6 +324,93 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idadquisiicon
+	 * @param idEstablecimeinto
+	 * @param accion
+	 * @return
+	 * @throws DaoException
+	 */
+	public String analizarEstado(String idadquisiicon,String idEstablecimeinto,String accion)throws DaoException{
+		
+		try {
+			
+			QueryBuilder q = new QueryBuilder(adquisicionDao.getEntityManager());
+			
+			Adquisicion ad = (Adquisicion) q.select("a")
+								.from(Adquisicion.class,"a")
+								.equals("a.establecimiento.idestablecimiento",idEstablecimeinto)
+								.equals("a.idadquisicion",idadquisiicon).getSingleResult();
+			
+			if (ad==null) {
+				return "NO EXISTE LA COMPRA : " + idadquisiicon;
+			}
+			if (ad!=null && accion.equals("ANULAR")) {
+				
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
+				lista.add(ComprobanteEstadoEnum.RETENCION);
+				lista.add(ComprobanteEstadoEnum.SRI);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
+					return "NO SE PUEDE ANULAR, POR QUE SE ENCUENTRA EN ESTADO: " + ad.getEstado();
+				}
+				
+			}
+			
+			if (ad!=null && accion.equals("GUARDAR")) {
+				
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
+				lista.add(ComprobanteEstadoEnum.RETENCION);
+				lista.add(ComprobanteEstadoEnum.SRI);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
+					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + ad.getEstado();
+				}
+				
+			}
+			
+			if (ad!=null && accion.equals("ELIMINAR_PAGO")) {
+				
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
+				lista.add(ComprobanteEstadoEnum.RETENCION);
+				lista.add(ComprobanteEstadoEnum.SRI);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
+					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + ad.getEstado();
+				}
+				
+			}
+			
+			if (ad!=null && accion.equals("RETENCION")) {
+				
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
+				lista.add(ComprobanteEstadoEnum.SRI);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
+					return "NO SE PUEDE MODIFICAR LA RETENCION YA QUE LA COMPRA ASOCIADA SE ENCUENTRA EN ESTADO: " + ad.getEstado();
+				}
+				
+			}
+			
+			return null;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
+		
 	}
 
 }

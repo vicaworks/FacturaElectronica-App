@@ -67,6 +67,7 @@
     	
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
     	
     	
     	<f:subview rendered="#{retencionFrmCtrl.callModule=='RETENCION'}">
@@ -123,7 +124,7 @@
 		    				<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdrtnGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{retencionFrmCtrl.guardar()}" styleClass="Wid100" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!='REGISTRADO'}"/>
+										action="#{retencionFrmCtrl.guardar()}" styleClass="Wid100" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
 							<div class="p-col-12 p-md-4">
@@ -169,6 +170,12 @@
 						<div class="EmptyBox5"/>
 						
 						<p:panelGrid id="gridRetencionDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+							
+							<h:outputText value="NUM COMPROBANTE * : " styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputMask id="inpRtnNumComp" value="#{retencionFrmCtrl.retencionSeleccion.numcomprobante}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
+								<p:message for="inpRtnNumComp" />
+							</h:panelGroup>
 							
 							<h:outputText value="PROVEEDOR *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
@@ -242,7 +249,7 @@
 								</p:outputPanel>
 							</h:panelGroup>
 							
-							<h:outputText value="NUM COMPROBANTE * : " styleClass="cpoRequerido"/>
+							<h:outputText value="NUM FACTURA * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
 								<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
 								<!-- <p:inputText id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="Formato: 000000000000000" >
@@ -358,7 +365,7 @@
 							rowKey="#{d.idretenciondetalle}">
 							
 							<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
-								<p:commandLink id="clkRtnDelete" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:retencionDetDT" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!='REGISTRADO'}">
+								<p:commandLink id="clkRtnDelete" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:retencionDetDT" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}">
 									<i class="fa fa-trash-o Fs16" style="color:red;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 									<f:setPropertyActionListener value="#{d}" target="#{retencionFrmCtrl.retenciondetalleSelected}"/>

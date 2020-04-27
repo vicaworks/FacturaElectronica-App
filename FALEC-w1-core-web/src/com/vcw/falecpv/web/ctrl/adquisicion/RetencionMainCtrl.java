@@ -3,6 +3,9 @@
  */
 package com.vcw.falecpv.web.ctrl.adquisicion;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -11,15 +14,27 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.model.StreamedContent;
+
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Retencion;
+import com.vcw.falecpv.core.modelo.persistencia.Retenciondetalle;
 import com.vcw.falecpv.core.servicio.RetencionServicio;
+import com.vcw.falecpv.core.servicio.RetenciondetalleServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
  * @author cristianvillarreal
@@ -39,6 +54,9 @@ public class RetencionMainCtrl extends BaseCtrl {
 	
 	@EJB
 	private RetencionServicio retencionServicio;
+	
+	@EJB
+	private RetenciondetalleServicio retenciondetalleServicio;
 	
 	
 	private Date desde;
@@ -96,13 +114,19 @@ public class RetencionMainCtrl extends BaseCtrl {
 			
 			if(retencionSelected == null) return;
 			
-			if(retencionSelected.getEstado().equals("REGISTRO") || retencionSelected.getEstado().equals("RETENCION")) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ANULAR, SE ENCUENTRA EN ESTADO : " + retencionSelected.getEstado());
+			String analisisEstado = retencionServicio.analizarEstado(retencionSelected.getIdretencion(), retencionSelected.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			
+			if(analisisEstado!=null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 				return;
 			}
 			
 			retencionServicio.anularRetencion(retencionSelected.getIdretencion());
 			consultarRetenciones();
+			
+			// datos de la pantalla de comppras
+			AdquisicionMainCtrl adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
+			adquisicionMainCtrl.consultarAdquisiciones();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -138,6 +162,139 @@ public class RetencionMainCtrl extends BaseCtrl {
 		}
 		
 		return null;
+	}
+	
+	public StreamedContent getFileRetencion() {
+		
+		try {
+			
+			if(retencionList==null || retencionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-Retenciones.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			// datos de la cabecera
+			Row row = sheet.getRow(3);
+			Cell cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			row = sheet.getRow(4);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(desde));
+			
+			row = sheet.getRow(5);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			row = sheet.getRow(6);
+			cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			int fila = 10;
+			int filaDt = 10;
+			
+			for (Retencion r : retencionList) {
+				
+				row = sheet.createRow(fila);
+				int col =0;
+				
+				// datos de la cabecera
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(r.getFechaemision()));
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getAnio());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getMes());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getNumcomprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getNumautorizacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getTipocomprobante().getComprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getProveedor().getIdentificacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getProveedor().getRazonsocial());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getProveedor().getEstado());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getTotalretencion().doubleValue());
+				
+				filaDt = fila + 1;
+				for (Retenciondetalle rd : retenciondetalleServicio.getByRetencion(r.getIdretencion())) {
+					
+					col = 11;
+					
+					row = sheet.getRow(filaDt);
+					if(row==null) {
+						row = sheet.createRow(filaDt);
+					}
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getRetencionimpuestodet().getCodigo());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getRetencionimpuestodet().getNombre());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getBaseimponible().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getRetencionimpuestodet().getValor().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getValor().doubleValue());
+					
+					filaDt++;
+					
+				}
+				
+				fila += (filaDt - fila);
+				
+			}
+			
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+			
+
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Retenciones_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+		return null;
+		
 	}
 	
 	/**

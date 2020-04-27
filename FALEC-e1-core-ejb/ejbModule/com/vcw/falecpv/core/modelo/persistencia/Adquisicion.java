@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.servitec.common.util.PojoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 
 /**
  * @author cristianvillarreal
@@ -391,21 +392,11 @@ public class Adquisicion implements Serializable {
 	 * @return
 	 */
 	public String getStyle() {
-		switch (estado) {
-		case "GEN":
-			
-			return "markGreen";
-		case "ANU":
-			
-			return "markRed";
-		case "ENV":
-			
-			return "markOrange";	
-		case "RETENCION":
-			
-			return "markOrange";
-		default:
-			return "markBlack";
+		try {
+			return ComprobanteEstadoEnum.getStyleEstado(estado);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
 		}
 	}
 
