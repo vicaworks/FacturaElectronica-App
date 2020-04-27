@@ -389,7 +389,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			}
 			
 			
-			setTipopagoList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(
+			setTipopagoFormList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(
 					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), TipoPagoEnum.ADQUISICION));
 			
 			
