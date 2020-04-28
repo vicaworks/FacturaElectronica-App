@@ -1,8 +1,10 @@
 package com.vcw.falecpv.core.servicio;
 
 import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+
 import com.servitec.common.dao.DaoGenerico;
 import com.vcw.falecpv.core.dao.impl.TipoIdentificacionDao;
 import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;

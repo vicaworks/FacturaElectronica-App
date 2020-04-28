@@ -167,7 +167,6 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 	 */
 	public Iva existeValorDefecto(int defecto, String idiva)throws DaoException{
 		try {
-			Iva iva= new Iva();
 			Query q = null;
 			
 			if(idiva!=null) {

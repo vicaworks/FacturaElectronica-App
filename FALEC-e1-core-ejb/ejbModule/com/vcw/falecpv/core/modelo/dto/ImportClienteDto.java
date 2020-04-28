@@ -1,10 +1,6 @@
 package com.vcw.falecpv.core.modelo.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
-import com.servitec.common.util.PojoUtil;
 
 /**
  * @author Jorge Toaza

@@ -1,6 +1,5 @@
 package com.vcw.falecpv.core.servicio;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -16,37 +15,14 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.exception.DaoException;
-import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
-import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
-import com.vcw.falecpv.core.constante.contadores.TCCategoria;
 import com.vcw.falecpv.core.constante.contadores.TCCliente;
-import com.vcw.falecpv.core.constante.contadores.TCFabricante;
-import com.vcw.falecpv.core.constante.contadores.TCProducto;
-import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.dao.impl.ClienteDao;
-import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
-import com.vcw.falecpv.core.dao.impl.FabricanteDao;
-import com.vcw.falecpv.core.dao.impl.IceDao;
-import com.vcw.falecpv.core.dao.impl.IvaDao;
-import com.vcw.falecpv.core.dao.impl.ProductoDao;
 import com.vcw.falecpv.core.dao.impl.TipoIdentificacionDao;
-import com.vcw.falecpv.core.dao.impl.TipoProductoDao;
-import com.vcw.falecpv.core.dao.impl.UsuarioDao;
 import com.vcw.falecpv.core.modelo.dto.ImportClienteDto;
-import com.vcw.falecpv.core.modelo.dto.ImportProductoDto;
-import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
-import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
-import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
-import com.vcw.falecpv.core.modelo.persistencia.Ice;
-import com.vcw.falecpv.core.modelo.persistencia.Iva;
-import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
-import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
-import com.vcw.falecpv.core.modelo.persistencia.TipoProducto;
-import com.vcw.falecpv.core.util.EncoderUtil;
 import com.xpert.persistence.query.QueryBuilder;
 
 /**
@@ -84,10 +60,10 @@ public class ImportarClienteServicio {
 			// verifica si la fila tiene error
 			if(c.isError()) continue continuar1;
 			
-			// verifica si ya existe la identificación
+			// verifica si ya existe la identificaciï¿½n
 			if(existeIdentificacion(empresa, c.getIdentificacion())) {
 				c.setError(true);
-				c.setNovedad("IDENTIFICACÓN YA EXISTE.");
+				c.setNovedad("IDENTIFICACï¿½N YA EXISTE.");
 				continue continuar1;
 			}
 			

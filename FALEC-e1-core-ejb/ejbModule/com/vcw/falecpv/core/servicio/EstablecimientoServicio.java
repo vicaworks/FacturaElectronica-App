@@ -16,7 +16,6 @@ import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
-import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.xpert.persistence.query.QueryBuilder;
 
 
