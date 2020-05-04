@@ -60,13 +60,13 @@ public class Cabecera implements Serializable {
     private String contribuyenteespecial;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "totalsinimpuestos", precision = 12, scale = 2)
-    private BigDecimal totalsinimpuestos;
+    private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
     @Column(name = "totaldescuento", precision = 12, scale = 2)
-    private BigDecimal totaldescuento;
+    private BigDecimal totaldescuento = BigDecimal.ZERO;
     @Column(name = "totalconimpuestos", precision = 12, scale = 2)
-    private BigDecimal totalconimpuestos;
+    private BigDecimal totalconimpuestos = BigDecimal.ZERO;
     @Column(name = "importetotal", precision = 12, scale = 2)
-    private BigDecimal importetotal;
+    private BigDecimal importetotal = BigDecimal.ZERO;
     @Size(max = 15)
     @Column(name = "moneda", length = 15)
     private String moneda;
@@ -76,11 +76,11 @@ public class Cabecera implements Serializable {
     @Column(name = "secuencial", nullable = false, length = 9)
     private String secuencial;
     @Column(name = "totaliva", precision = 12, scale = 2)
-    private BigDecimal totaliva;
+    private BigDecimal totaliva = BigDecimal.ZERO;
     @Column(name = "totalice", precision = 12, scale = 2)
-    private BigDecimal totalice;
+    private BigDecimal totalice = BigDecimal.ZERO;
     @Column(name = "propina", precision = 12, scale = 2)
-    private BigDecimal propina;
+    private BigDecimal propina = BigDecimal.ZERO;
     @Size(max = 49)
     @Column(name = "numeroautorizacion", length = 49)
     private String numeroautorizacion;
@@ -91,7 +91,7 @@ public class Cabecera implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaemisiondocasociado;
     @Column(name = "valordocasociado", precision = 12, scale = 2)
-    private BigDecimal valordocasociado;
+    private BigDecimal valordocasociado = BigDecimal.ZERO;
     @Column(name = "fechainiciotransporte")
     @Temporal(TemporalType.DATE)
     private Date fechainiciotransporte;

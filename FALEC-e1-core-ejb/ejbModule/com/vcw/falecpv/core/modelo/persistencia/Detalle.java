@@ -50,6 +50,30 @@ public class Detalle implements Serializable {
     @NotNull
     @Column(name = "preciototalsinimpuesto", nullable = false, precision = 12, scale = 2)
     private BigDecimal preciototalsinimpuesto;
+    
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "preciototal")
+    private BigDecimal preciototal;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "preciounitario")
+    private BigDecimal preciounitario;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valorice")
+    private BigDecimal valorice;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valoriva")
+    private BigDecimal valoriva;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 400)
+    @Column(name = "descripcion")
+    private String descripcion;
+    
 	
     @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera")
     @ManyToOne
@@ -172,4 +196,75 @@ public class Detalle implements Serializable {
 		this.producto = producto;
 	}
 
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @return the preciounitario
+	 */
+	public BigDecimal getPreciounitario() {
+		return preciounitario;
+	}
+
+	/**
+	 * @param preciounitario the preciounitario to set
+	 */
+	public void setPreciounitario(BigDecimal preciounitario) {
+		this.preciounitario = preciounitario;
+	}
+
+	/**
+	 * @return the valorice
+	 */
+	public BigDecimal getValorice() {
+		return valorice;
+	}
+
+	/**
+	 * @param valorice the valorice to set
+	 */
+	public void setValorice(BigDecimal valorice) {
+		this.valorice = valorice;
+	}
+
+	/**
+	 * @return the valoriva
+	 */
+	public BigDecimal getValoriva() {
+		return valoriva;
+	}
+
+	/**
+	 * @param valoriva the valoriva to set
+	 */
+	public void setValoriva(BigDecimal valoriva) {
+		this.valoriva = valoriva;
+	}
+
+	/**
+	 * @return the preciototal
+	 */
+	public BigDecimal getPreciototal() {
+		return preciototal;
+	}
+
+	/**
+	 * @param preciototal the preciototal to set
+	 */
+	public void setPreciototal(BigDecimal preciototal) {
+		this.preciototal = preciototal;
+	}
+
+	
 }

@@ -34,7 +34,7 @@ public class TipocomprobanteServicio extends AppGenericService<Tipocomprobante, 
 
 	@Override
 	public DaoGenerico<Tipocomprobante, String> getDao() {
-		return null;
+		return tipocomprobanteDao;
 	}
 
 	/**

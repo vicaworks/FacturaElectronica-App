@@ -86,21 +86,26 @@ public class AppJsfUtil extends FacesUtil {
 	 * @param idDataTable
 	 */
 	public static void limpiarFiltrosDataTable(String idDataTable) {
-		DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(idDataTable);
-		if (dataTable!=null) {
-			dataTable.resetValue();
-			dataTable.reset();
-			dataTable.clearInitialState();
-			dataTable.setFilteredValue(null);
-            dataTable.setFilters(null);
-            dataTable.setSortBy(null);
-            PrimeFaces.current().ajax().update(idDataTable);
-            
-            // tomar en consideracion para otros cambios
+		try {
+			
+			DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(idDataTable);
+			if (dataTable!=null) {
+				dataTable.resetValue();
+				dataTable.reset();
+				dataTable.clearInitialState();
+				dataTable.setFilteredValue(null);
+				dataTable.setFilters(null);
+				dataTable.setSortBy(null);
+				PrimeFaces.current().ajax().update(idDataTable);
+				
+				// tomar en consideracion para otros cambios
 //            dataTable.setMultiViewState(false);
 //            RequestContext requestContext = RequestContext.getCurrentInstance();
 //            requestContext.update(idDataTable);
 //            dataTable.setMultiViewState(true);
+			}
+		} catch (Exception e) {
+			
 		}
 	}
 	
