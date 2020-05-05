@@ -98,7 +98,7 @@
 					layout="grid" paginator="true" paginatorPosition="bottom"
 					id="productoDT" rows="12">
 
-						<p:commandLink action="#{factMainCtrl.agregarProducto()}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales" process="@this :formMain:productoDT">
+						<p:commandLink action="#{factMainCtrl.agregarProducto()}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios :formMain:oupCalMenuDerecha" process="@this :formMain:productoDT">
 							<f:setPropertyActionListener value="#{p}" target="#{factMainCtrl.productoSelected}"/>
 							<div class="pricing-box">
 							
@@ -107,7 +107,7 @@
 										<div class="p-grid">
 			
 											<div class="p-col-4">
-												<h:outputText value="#{p.preciouno}" styleClass="precio">
+												<h:outputText value="#{p.preciounitario}" styleClass="precio">
 													<f:convertNumber locale="es_EC" pattern="$0.##" />
 												</h:outputText>
 											</div>

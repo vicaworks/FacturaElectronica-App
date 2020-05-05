@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -81,6 +82,9 @@ public class Detalle implements Serializable {
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false)
     @ManyToOne(optional = false)
     private Producto producto;
+    
+    @Transient
+    private String precioOpcionSeleccion;
 	
 	/**
 	 * 
@@ -264,6 +268,20 @@ public class Detalle implements Serializable {
 	 */
 	public void setPreciototal(BigDecimal preciototal) {
 		this.preciototal = preciototal;
+	}
+
+	/**
+	 * @return the precioOpcionSeleccion
+	 */
+	public String getPrecioOpcionSeleccion() {
+		return precioOpcionSeleccion;
+	}
+
+	/**
+	 * @param precioOpcionSeleccion the precioOpcionSeleccion to set
+	 */
+	public void setPrecioOpcionSeleccion(String precioOpcionSeleccion) {
+		this.precioOpcionSeleccion = precioOpcionSeleccion;
 	}
 
 	

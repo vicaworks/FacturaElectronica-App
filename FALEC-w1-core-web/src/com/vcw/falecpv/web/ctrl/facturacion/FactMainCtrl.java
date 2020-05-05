@@ -57,6 +57,10 @@ public class FactMainCtrl extends BaseCtrl {
 	private Detalle detalleSelected;
 	private List<Producto> productoList;
 	private Producto productoSelected;
+	private String precioOpcionSeleccion="PRECIO1";
+	private String opcionCantidadPrecio="CANTIDAD";
+	private boolean inicioCalculadora = false;
+	private String separadorDecimal;
 	
 	/**
 	 * 
@@ -113,7 +117,8 @@ public class FactMainCtrl extends BaseCtrl {
 				detalleSelected.setCantidad(BigDecimal.valueOf(1));
 				detalleSelected.setDescripcion(productoSelected.getNombregenerico());
 				detalleSelected.setPreciounitario(productoSelected.getPreciounitario());
-				
+				precioOpcionSeleccion = "PRECIO1";
+				detalleSelected.setPrecioOpcionSeleccion(precioOpcionSeleccion);
 			}
 			
 			calcularItem(detalleSelected);
@@ -123,6 +128,10 @@ public class FactMainCtrl extends BaseCtrl {
 			}
 			
 			totalizar();
+			
+			opcionCantidadPrecio = "CANTIDAD";
+			inicioCalculadora = true;
+			separadorDecimal = null;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -204,8 +213,234 @@ public class FactMainCtrl extends BaseCtrl {
 		SimpleDateFormat sf = new SimpleDateFormat("MM-yyyy");
 		cabeceraFac.setPeriodofiscal(sf.format(new Date()));
 		cabeceraFac.setTipocomprobante(tipocomprobanteServicio.consultarByPk("1"));
+		precioOpcionSeleccion = "PRECIO1";
+		opcionCantidadPrecio = "CANTIDAD";
+		inicioCalculadora = false;
+		separadorDecimal = null;
 	}
 
+	public void cambiarPrecio(String precio) {
+		try {
+			
+			if(detalleSelected==null || detalleFacList==null || detalleFacList.isEmpty()) {
+				return;
+			}
+			
+			precioOpcionSeleccion = precio;
+			
+			switch (precioOpcionSeleccion) {
+			case "PRECIO1":
+				detalleSelected.setPrecioOpcionSeleccion("PRECIO1");
+				detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciounitario());
+				break;
+			case "PRECIO2":
+				detalleSelected.setPrecioOpcionSeleccion("PRECIO2");
+				detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciodos());
+				break;	
+			case "PRECIO3":
+				detalleSelected.setPrecioOpcionSeleccion("PRECIO3");
+				detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciotres());
+				break;
+			default:
+				break;
+			}
+			
+			calcularItem(detalleSelected);
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void seleccionOpcionCalculadora(String opcion) {
+		try {
+			
+			if(detalleSelected==null || detalleFacList==null || detalleFacList.isEmpty()) {
+				return;
+			}
+
+			switch (opcion) {
+			case "+":
+				
+				if(opcionCantidadPrecio.equals("CANTIDAD")) {
+					detalleSelected.setCantidad(detalleSelected.getCantidad().add(BigDecimal.valueOf(1)));
+				}else {
+					detalleSelected.setPreciounitario(detalleSelected.getPreciounitario().add(BigDecimal.valueOf(1)));
+				}
+				
+				break;
+			case "-":
+				if(opcionCantidadPrecio.equals("CANTIDAD")) {
+					detalleSelected.setCantidad(detalleSelected.getCantidad().add(BigDecimal.valueOf(1).negate()));
+					if(detalleSelected.getCantidad().doubleValue()<0) {
+						detalleSelected.setCantidad(BigDecimal.ZERO);
+					}
+				}else {
+					detalleSelected.setPreciounitario(detalleSelected.getPreciounitario().add(BigDecimal.valueOf(1).negate()));
+					if(detalleSelected.getPreciounitario().doubleValue()<0) {
+						detalleSelected.setPreciounitario(BigDecimal.ZERO);
+					}
+				}
+				break;
+			case "back":
+				
+				Integer intPart = detalleSelected.getCantidad().intValue();
+				Integer decimalpart = decimalPart(detalleSelected.getCantidad());
+				BigDecimal valor = detalleSelected.getCantidad();
+				
+				if(opcionCantidadPrecio.equals("PRECIO")) {
+					intPart = detalleSelected.getPreciounitario().intValue();
+					decimalpart = decimalPart(detalleSelected.getPreciounitario());
+					valor = detalleSelected.getPreciounitario();
+							
+				}
+				
+				String valorCadena = valor.toString();
+				
+				if(decimalpart==0) {
+					valorCadena = intPart.toString(); 
+				}
+				
+				if(valorCadena.length()-1 == 0) {
+					valorCadena = "0";
+				}else {
+					valorCadena = valorCadena.substring(0, valorCadena.length()-1);
+					if(valorCadena.subSequence(valorCadena.length()-1, valorCadena.length()).equals(".")) {
+						valorCadena = valorCadena.substring(0, valorCadena.length()-1);
+					}
+				}
+				
+				if(opcionCantidadPrecio.equals("CANTIDAD")) {
+					detalleSelected.setCantidad(BigDecimal.valueOf(Double.parseDouble(valorCadena)));
+				}else {
+					detalleSelected.setPreciounitario(BigDecimal.valueOf(Double.parseDouble(valorCadena)));
+				}
+				break;	
+			case "C":
+				if(opcionCantidadPrecio.equals("CANTIDAD")) {
+					detalleSelected.setCantidad(BigDecimal.ZERO);
+				}else {
+					detalleSelected.setPreciounitario(BigDecimal.ZERO);
+				}
+				inicioCalculadora = true;
+				break;	
+			default:
+				break;
+			}
+			separadorDecimal = null;
+			calcularItem(detalleSelected);
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private Integer decimalPart(BigDecimal valor) {
+		if(!valor.toString().contains(".")) {
+			return 0;
+		}
+		String val = valor.toString().substring(valor.toString().lastIndexOf(".")+1, valor.toString().length());
+		return Integer.parseInt(val);
+	}
+	
+	public void ejecutarCalculadora(String valorCalculadora) {
+		try {
+			
+			if(detalleSelected==null || detalleFacList==null || detalleFacList.isEmpty()) {
+				return;
+			}
+			
+			if(valorCalculadora.equals(".")) {
+				separadorDecimal = ".";
+				return;
+			}
+			
+			
+			
+			switch (opcionCantidadPrecio) {
+			case "CANTIDAD":
+				
+				if(inicioCalculadora) {
+					detalleSelected.setCantidad(BigDecimal.valueOf(Double.parseDouble(valorCalculadora)));
+					inicioCalculadora = false;
+					break;
+				}
+				
+				detalleSelected.setCantidad(procesarCal(detalleSelected.getCantidad(),valorCalculadora));
+				
+				break;
+			case "PRECIO":
+				
+				if(inicioCalculadora) {
+					detalleSelected.setPreciounitario(BigDecimal.valueOf(Double.parseDouble(valorCalculadora)));
+					inicioCalculadora = false;
+					break;
+				}
+				
+				detalleSelected.setPreciounitario(procesarCal(detalleSelected.getPreciounitario(), valorCalculadora));
+				
+				break;	
+			default:
+				break;
+			}
+			
+			calcularItem(detalleSelected);
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private BigDecimal procesarCal(BigDecimal valor,String valorCalculadora) {
+		
+		Integer intPart = valor.intValue();
+		Integer decimalpart = decimalPart(valor);
+		
+		if(decimalpart==0 && separadorDecimal==null) {
+			
+			if(intPart==0) {
+				return BigDecimal.valueOf(Long.parseLong(valorCalculadora));
+			}
+			
+			return BigDecimal.valueOf(Long.parseLong(intPart.toString().concat(valorCalculadora)));
+					
+		}
+		
+		if(separadorDecimal!=null) {
+			
+			if(decimalpart==0) {
+				separadorDecimal = null;
+				return BigDecimal.valueOf(Double.parseDouble(intPart.toString().concat(".").concat(valorCalculadora)));
+			}
+			
+			separadorDecimal = null;
+			return BigDecimal.valueOf(Double.parseDouble(
+					intPart.toString().concat(".").concat(decimalpart.toString()).concat(valorCalculadora)));
+		}
+		
+		return valor;
+	}
+	
+	public void seleccionarDetalle() {
+		try {
+			
+			precioOpcionSeleccion = detalleSelected.getPrecioOpcionSeleccion();
+			opcionCantidadPrecio = "CANTIDAD";
+			inicioCalculadora = true;
+			separadorDecimal = null;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	/**
 	 * @return the productoServicio
 	 */
@@ -302,6 +537,62 @@ public class FactMainCtrl extends BaseCtrl {
 	 */
 	public void setProductoSelected(Producto productoSelected) {
 		this.productoSelected = productoSelected;
+	}
+
+	/**
+	 * @return the precioOpcionSeleccion
+	 */
+	public String getPrecioOpcionSeleccion() {
+		return precioOpcionSeleccion;
+	}
+
+	/**
+	 * @param precioOpcionSeleccion the precioOpcionSeleccion to set
+	 */
+	public void setPrecioOpcionSeleccion(String precioOpcionSeleccion) {
+		this.precioOpcionSeleccion = precioOpcionSeleccion;
+	}
+
+	/**
+	 * @return the opcionCantidadPrecio
+	 */
+	public String getOpcionCantidadPrecio() {
+		return opcionCantidadPrecio;
+	}
+
+	/**
+	 * @param opcionCantidadPrecio the opcionCantidadPrecio to set
+	 */
+	public void setOpcionCantidadPrecio(String opcionCantidadPrecio) {
+		this.opcionCantidadPrecio = opcionCantidadPrecio;
+	}
+
+	/**
+	 * @return the inicioCalculadora
+	 */
+	public boolean isInicioCalculadora() {
+		return inicioCalculadora;
+	}
+
+	/**
+	 * @param inicioCalculadora the inicioCalculadora to set
+	 */
+	public void setInicioCalculadora(boolean inicioCalculadora) {
+		this.inicioCalculadora = inicioCalculadora;
+	}
+
+	/**
+	 * @return the separadorDecimal
+	 */
+	public String getSeparadorDecimal() {
+		return separadorDecimal;
+	}
+
+	/**
+	 * @param separadorDecimal the separadorDecimal to set
+	 */
+	public void setSeparadorDecimal(String separadorDecimal) {
+		this.separadorDecimal = separadorDecimal;
 	}
 
 	
