@@ -1,0 +1,144 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">#{msg['title.puntoventa']}</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-messages,
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0.4em 0 !important;
+			}
+			
+			/* body .ui-message {
+				padding: 0em !important;
+			} */
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			
+			.command-btn{
+	    		border-radius: 2px;
+	    		width: 100%;
+	    		text-align: center;
+	    		padding: 0.39em 0.42em;
+	    		color:black;
+	    		display: inline-block;
+	    		font-size: 16px;
+	    		/* margin-bottom:4px; */
+	    	}
+	    	
+	    	.borde-secondary{
+	    		background:#0f97c7;
+	    		color: #fff;
+	    	}
+	    	
+	    	.borde-secondary:hover{
+	    		border: 1px solid #0f97c7;
+	    		background:#fff;
+	    		color: #0f97c7;
+	    	}
+	    	
+	    	.borde-gray{
+	    		border: 1px solid #252529;
+	    		background:#fff;
+	    		color: #252529;
+	    	}
+	    	
+	    	.borde-gray:hover{
+	    		background:#252529;
+	    		color: #fff;
+	    	}
+			
+			@media (max-width: 896px) {
+				.breadCrumbDisplay {
+			        display: none;
+			    }
+			}
+			
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    
+    	<p:breadCrumb styleClass="breadCrumbDisplay">
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="#{msg['menu.facturacion']}" url="#" />
+		    <p:menuitem value="Punto de venta" url="#{request.contextPath}/pages/facturacion/puntoVenta.jsf"/>
+		    <p:menuitem value="Pago" url="#{request.contextPath}/pages/facturacion/puntoVentaPago.jsf"/>
+		</p:breadCrumb>
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+	    	
+	    	<div class="p-grid">
+	    		
+	    		<div class="p-col-12 p-md-5">
+	    			
+	    			<!-- Datos de la cabecera -->
+	    			<ui:include src="incl_pvPago_cabecera.xhtml"/>
+	    			
+	    		</div>
+	    		
+	    		<div class="p-col-12 p-md-7">
+	    			
+	    			<!-- Datos del detalle de pago -->
+	    			<ui:include src="incl_pvPago_detalle.xhtml"/>
+	    			
+	    		</div>
+	    	
+	    	</div>
+	    	
+	    	
+	    </h:form>
+        
+    </ui:define>
+
+</ui:composition>

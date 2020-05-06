@@ -1,0 +1,297 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+    	
+    	.pvDetalleDT .ui-datatable-scrollable-body{
+			min-height: 20vh !important;
+			height: calc(100vh - 440px)!important;
+		}
+		
+		body .ui-datatable thead th {
+			padding: 0px !important;
+		}
+		
+		.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+			padding: 0px !important;
+		}
+    	
+    	.divValor{
+    		margin: 0px;
+    		/* border-radius: 2px; */
+    		border: 1px solid #252529; 
+    		font-weight: 800;
+    		color: #252529;
+    	}
+    	
+    	.resaltarValor{
+    		background-color: #252529;
+    		color: #F9E79F !important;
+    	}
+    	
+    	.ui-inputgroup .ui-inputgroup-addon{
+    		padding-left: 0.5em !important;
+    		padding-right: 1em !important;
+    		border-color: #252529 !important;
+    	}
+    	
+    	.digito-btn{
+    		border: 1px solid black;
+    		background-color:#ccc;
+    		border-radius: 2px;
+    		width: 30.5%;
+    		text-align: center;
+    		padding: 0.38em;
+    		color:black;
+    		display: inline-block;
+    		font-size: 24px;
+    	}
+    	
+    	.digito-btn:hover{
+    		background: black;
+    		color:#fff;
+    	}
+    	
+    	
+    	.digito-mrg-righ{
+    		margin-right:1px; 
+    	}
+    	
+    	.digito-mrg-bottom{
+    		margin-bottom:2px; 
+    	}
+    	
+    	.opcion-btn{
+    		border-radius: 2px;
+    		width: 100%;
+    		text-align: center;
+    		padding: 0.39em 0.42em;
+    		color:black;
+    		display: inline-block;
+    		font-size: 18px;
+    		margin-bottom:4px;
+    	}
+    	
+    	.back-btn{
+    		border: 1px solid #252529;
+    		color:black;
+    	}
+    	
+    	.back-btn:hover{
+    		background-color:#252529;
+    		color:#fff;
+    	}
+    	
+    	.valor-btn{
+    		border: 1px solid green;
+    		color:green;
+    	}
+    	
+    	.valor-btn:hover{
+    		background-color:green;
+    		color:#fff;
+    	}
+    	
+    	.valor-btn-seleccion{
+    		background-color:green;
+    		color:#fff;
+    	}
+    	
+    	.valor-btn-seleccion:hover{
+    		/* border: 1px solid green;
+    		background-color:#fff;
+    		color:green; */
+    	}
+    	
+    	.precio-btn {
+			border: 1px solid orange;
+			color: orange;
+			/* padding: 0.55em !important; */
+		}
+    	
+    	.precio-btn:hover{
+    		background-color:orange;
+    		color:#fff;
+    	}
+    	
+    	.precio-btn-seleccion{
+    		background-color:orange;
+    		color:#fff;
+    	}
+    	
+    	.precio-btn-seleccion:hover{
+    		/* border: 1px solid orange;
+    		background-color:#fff;
+    		color:orange; */
+    	}
+    	
+	</style>
+	
+	
+	<div class="card card-w-title">
+		
+		<div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon">
+                <h:outputText value="PAGAR" styleClass="FontBold"/> 
+            </span>
+            
+            <div class="Wid100 Fs25 divValor resaltarValor" style="text-align: center;">
+            	<h:outputText value="#{1200.25}" >
+            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+            	</h:outputText>
+            </div>
+                  
+        </div>
+        <div class="EmptyBox5"/>
+        <!-- detalle del pago -->
+        <p:dataTable id="pvDetalleDT" var="d"
+						value="#{factMainCtrl.detalleFacList}" scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvDetalleDT Fs11"  
+						rowKey="#{d.iddetalle}"
+						selectionMode="single"
+						selection="#{factMainCtrl.detalleSelected}">
+			<p:column headerText="ITEM" style="width:90%;" >
+				
+			</p:column>
+			<p:column style="width:10%;" styleClass="TexAlCenter">
+				
+			</p:column>			
+		</p:dataTable>
+		<div class="EmptyBox5"/>
+		<div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon">
+                <i class="fa fa-hand-o-right Fs20"></i> 
+            </span>
+            
+            <div class="Wid100 Fs20 divValor" style="text-align: center;">
+            	<h:outputText value="#{0}" >
+            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+            	</h:outputText>
+            </div>
+                  
+        </div>
+		<div class="EmptyBox10"/>
+		<!-- calculadora -->
+		<div class="p-grid p-justify-center">
+		
+			<!-- menu izquierda -->
+			<div class="p-col-3">
+				<p:commandLink action="#">
+					<div class="opcion-btn valor-btn-seleccion">
+						<h:outputText value="VALOR" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+					
+				<p:commandLink action="#">
+					<div class="opcion-btn precio-btn">
+						<h:outputText value="# TARJ" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+			</div>
+			
+			<!-- numeros -->
+			<div class="p-col-6" style="text-align: center;">
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{1}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{2}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>				
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{3}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{4}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{5}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{6}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{7}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{8}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{9}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="C" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="#{0}" styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+				<p:commandLink action="#">
+					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
+						<h:outputText value="." styleClass="DispBlock FontBold"/>
+					</div>
+				</p:commandLink>
+			</div>
+			
+			<!-- Menu izquierda -->
+			<div class="p-col-3">
+				<p:outputPanel id="oupCalMenuDerecha">
+					<p:commandLink action="#">
+						<div class="opcion-btn borde-gray ">
+							<h:outputText value="+1" styleClass="DispBlock FontBold"/>
+						</div>
+					</p:commandLink>
+					<p:commandLink action="#">
+						<div class="opcion-btn borde-gray ">
+							<h:outputText value="+5" styleClass="DispBlock FontBold"/>
+						</div>
+					</p:commandLink>
+					<p:commandLink action="#">
+						<div class="opcion-btn borde-gray ">
+							<h:outputText value="+10" styleClass="DispBlock FontBold"/>
+						</div>
+					</p:commandLink>
+					<p:commandLink action="#">
+						<div class="opcion-btn borde-gray ">
+							<h:outputText value="+20" styleClass="DispBlock FontBold"/>
+						</div>
+					</p:commandLink>
+					<p:commandLink action="#">
+						<div class="opcion-btn back-btn">
+							<i class="fa fa-arrow-circle-left Fs20"></i>
+						</div>
+					</p:commandLink>
+				</p:outputPanel>		
+			</div>
+				
+		</div>
+		<div class="EmptyBox20"/>
+	</div>
+	
+</ui:composition>

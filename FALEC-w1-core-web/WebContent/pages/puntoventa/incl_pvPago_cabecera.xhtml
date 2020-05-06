@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+    	
+	</style>
+	
+	
+	<div class="card card-w-title">
+		
+		<p:panelGrid id="grid" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs14" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+			
+			<h:outputText value="FECHA :" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:calendar id="claFacFecha" value="#{null}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs14">
+				</p:calendar>
+				<p:message for="claFacFecha" />
+			</h:panelGroup>
+			
+			<h:outputText value=""/>
+			
+			<h:panelGroup>
+				<p:commandLink action="#">
+					<div class="command-btn borde-secondary">
+						<h:outputText value="CONSUMIDOR FINAL" styleClass="DispBlock"/>
+					</div>
+				</p:commandLink>
+			</h:panelGroup>
+			
+			<h:outputText value="BUSCAR : " styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpCriterioCliente" value="#{null}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100 Fs14" maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR" validatorMessage="SOLO NUMEROS">
+					<f:validateRegex pattern="^\d+$"/>
+				</p:inputText>
+				<p:message for="inpCriterioCliente" />
+			</h:panelGroup>
+			
+			<h:outputText value=""/>
+			<h:panelGroup>
+				<p:commandLink action="#">
+					<div class="command-btn borde-secondary">
+						<h:outputText value="NUEVO / EDITAR CLIENTE" styleClass="DispBlock"/>
+					</div>
+				</p:commandLink>
+			</h:panelGroup>
+			
+			<h:outputText value="CLIENTE : " styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:panelGrid id="gridCliente" columns="2" style="background-color:#F0F3F4;"
+					styleClass="ui-panelgrid-blank Wid100 Fs12"
+					columnClasses="ui-md-4,
+								   ui-md-8">
+					
+					<h:outputText value="Nombre: " styleClass="FontBold"/>
+					<h:outputText value="CRISTIAN ALEX VILLARREAL ALEMAN"/>
+					
+					<h:outputText value="C.I./RUC: " styleClass="FontBold"/>
+					<h:outputText value="0400946125001"/>
+					
+					<h:outputText value="Correo: " styleClass="FontBold"/>
+					<h:outputText value="cristian.villarreal.aleman@gmail.com"/>
+					
+					<h:outputText value="Telf: " styleClass="FontBold"/>
+					<h:outputText value="0985688861"/>
+					
+					<h:outputText value="Dirección: " styleClass="FontBold"/>
+					<h:outputText value="Jorge Gonzales N77 y Hernán Vásques"/>
+								   
+				</p:panelGrid>
+			</h:panelGroup>
+			
+			<h:outputText value="TIPO DE PAGO : " styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:panelGrid id="gridTipoPago" columns="1"
+					styleClass="ui-panelgrid-blank Wid100 Fs12"
+					columnClasses="ui-g-12">
+					
+					
+					<h:panelGroup>
+						<p:commandLink action="#">
+							<div class="command-btn borde-gray">
+								<h:outputText value="EFECTIVO" styleClass="DispBlock"/>
+							</div>
+						</p:commandLink>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p:commandLink action="#">
+							<div class="command-btn borde-gray">
+								<h:outputText value="TARJETA CREDITO" styleClass="DispBlock"/>
+							</div>
+						</p:commandLink>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p:commandLink action="#">
+							<div class="command-btn borde-gray">
+								<h:outputText value="TARJETA DEBITO" styleClass="DispBlock"/>
+							</div>
+						</p:commandLink>
+					</h:panelGroup>
+					
+					
+					<h:panelGroup>
+						<p:commandLink action="#">
+							<div class="command-btn borde-gray">
+								<h:outputText value="TRANSACCIONES BANCARIAS" styleClass="DispBlock"/>
+							</div>
+						</p:commandLink>
+					</h:panelGroup>
+					
+					
+				</p:panelGrid>
+			</h:panelGroup>
+			
+		</p:panelGrid>
+		
+			
+	</div>
+	
+</ui:composition>
