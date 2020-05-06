@@ -201,9 +201,9 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 			
 			if(criteria!=null && criteria.trim().length()>0) {
 				sql += "AND (";
-				sql += " p.fabricante.nombrecomercial like :fabricante ";
-				sql += " OR p.nombregenerico like :nombregenerico ";
-				sql += " OR p.categoria.categoria like :categoria  ";
+				sql += " UPPER(p.fabricante.nombrecomercial) like :fabricante ";
+				sql += " OR UPPER(p.nombregenerico) like :nombregenerico ";
+				sql += " OR UPPER(p.categoria.categoria) like :categoria  ";
 				sql += " OR p.codigoprincipal like :codigoprincipal ";
 				sql += ") ";
 			}
@@ -212,10 +212,10 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 			Query q = getEntityManager().createQuery(sql);
 			q.setParameter("idestablecimiento", idEstablecimiento);
 			if(criteria!=null && criteria.trim().length()>0) {
-				q.setParameter("fabricante", "%".concat(criteria).concat("%"));
-				q.setParameter("nombregenerico", "%".concat(criteria).concat("%"));
-				q.setParameter("categoria", "%".concat(criteria).concat("%"));
-				q.setParameter("codigoprincipal", "%".concat(criteria).concat("%"));
+				q.setParameter("fabricante", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("nombregenerico", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("categoria", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("codigoprincipal", "%".concat(criteria.toUpperCase()).concat("%"));
 			}
 			
 			

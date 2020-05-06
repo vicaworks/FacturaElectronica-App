@@ -164,7 +164,7 @@
 	<div class="card card-w-title">
 		<div class="p-grid p-justify-center">
 			<div class="p-col-12 p-md-6">
-				<p:commandButton value=" NUEVA FACTURA " action="#{factMainCtrl.nuevo()}" process="@this" update="@form" styleClass="Fs10 Wid100"/>
+				<p:commandButton value=" NUEVA FACTURA " action="#{factMainCtrl.nuevo()}" immediate="true" update="@form" styleClass="Fs10 Wid100"/>
 			</div>
 		</div>
 		<p:dataTable id="pvDetalleDT" var="d"

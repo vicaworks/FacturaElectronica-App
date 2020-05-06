@@ -18,7 +18,6 @@ import javax.inject.Named;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
-import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
@@ -61,6 +60,7 @@ public class FactMainCtrl extends BaseCtrl {
 	private String opcionCantidadPrecio="CANTIDAD";
 	private boolean inicioCalculadora = false;
 	private String separadorDecimal;
+	private String criterioBusqueda;
 	
 	/**
 	 * 
@@ -83,11 +83,36 @@ public class FactMainCtrl extends BaseCtrl {
 		try {
 			
 			productoSelected = null;
-			consultarProductos();
 			nuevaFactura();
 			productoSelected = null;
 			detalleFacList = null;
 			detalleSelected = null;
+			criterioBusqueda = null;
+			consultarProductos();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	@Override
+	public void buscar() {
+		
+		try {
+			
+//			if(criterioBusqueda==null || criterioBusqueda.trim().length()==0) {
+//				AppJsfUtil.addErrorMessage("formMain:intCriterioBusqueda", "","REQUERIDO");
+//				return;
+//				
+//			}
+			
+			if(criterioBusqueda!=null && criterioBusqueda.trim().length()==0) {
+				criterioBusqueda = null;
+				
+			}
+			
+			consultarProductos();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,8 +122,10 @@ public class FactMainCtrl extends BaseCtrl {
 	
 	public void consultarProductos()throws DaoException{
 		productoList = null;
-		productoList = productoServicio.getProductoDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		productoList = productoServicio.getProductoDao().consultarAllImageEager(AppJsfUtil.getEstablecimiento().getIdestablecimiento(),criterioBusqueda);
 	}
+	
+	
 	
 	public void agregarProducto() {
 		try {
@@ -595,6 +622,18 @@ public class FactMainCtrl extends BaseCtrl {
 		this.separadorDecimal = separadorDecimal;
 	}
 
-	
+	/**
+	 * @return the criterioBusqueda
+	 */
+	public String getCriterioBusqueda() {
+		return criterioBusqueda;
+	}
+
+	/**
+	 * @param criterioBusqueda the criterioBusqueda to set
+	 */
+	public void setCriterioBusqueda(String criterioBusqueda) {
+		this.criterioBusqueda = criterioBusqueda;
+	}
 
 }

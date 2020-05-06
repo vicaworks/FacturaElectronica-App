@@ -65,81 +65,88 @@
     	
     </style>
 	
+	<!-- consulta los productos al precionar return keycode 13 -->
+	<p:remoteCommand name="buscarProducto"  action="#{factMainCtrl.buscar()}" process="@this :formMain:intCriterioBusqueda" update=":formMain:msgFormMain :formMain:productoDT" partialSubmit="true"/>
+	
 	<div class="card card-w-title">
 		
 		<div class="p-grid">
 				
 			<div class="p-col-12">
-			
-				<!-- <h1 class="cardTitle">Productos</h1> -->
-				<div class="EmptyBox10"/>
-				<div class="p-grid">
-					<div class="p-col-12 p-md-8">
-						<div class="ui-inputgroup">
-		                    <span class="ui-inputgroup-addon">
-		                        <i class="fa fa-search Fs14" style="margin-top: 5px;"></i>
-		                    </span>
-		                    <p:inputText placeholder="#{msg['criterio.busquedaproducto']}" styleClass="Wid100 Fs12"/>      
-		                </div>	
-					</div>
-					<div class="p-col-12 p-md-4">
-						<p:commandButton id="cmdConsultarProducto"
-						value="CONSULTAR" icon="fa fa-search" 
-						action="#" styleClass="secondary-button Wid100" update="@form"/>
-					</div>
-				</div>
 				
-				<div class="EmptyBox10"/>
+				<p:outputPanel id="outProductos">
+					<!-- <h1 class="cardTitle">Productos</h1> -->
+					<div class="EmptyBox10"/>
+					<div class="p-grid">
+						<div class="p-col-12 p-md-8">
+							<div class="ui-inputgroup">
+			                    <span class="ui-inputgroup-addon">
+			                        <i class="fa fa-search Fs14" style="margin-top: 5px;"></i>
+			                    </span>
+			                    <p:inputText id="intCriterioBusqueda" value="#{factMainCtrl.criterioBusqueda}" placeholder="#{msg['criterio.busquedaproducto']}" styleClass="Wid100 Fs12" onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}" >
+			                    </p:inputText>
+			                </div>	
+		                    <!-- <p:message for="intCriterioBusqueda" styleClass="Wid100"/> -->      
+						</div>
+						<div class="p-col-12 p-md-4">
+							<p:commandButton id="cmdConsultarProducto"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{factMainCtrl.buscar()}" styleClass="secondary-button Wid100" update=":formMain:msgFormMain :formMain:outProductos" process="@this :formMain:outProductos"/>
+						</div>
+					</div>
+					
+					<div class="EmptyBox10"/>
+					
+					<!-- <div class="Wid100 divProductos OvAuto "> -->
+	
+	
+					<p:dataGrid var="p" value="#{factMainCtrl.productoList}" columns="3"
+						layout="grid" paginator="true" paginatorPosition="bottom"
+						id="productoDT" rows="12">
+	
+							<p:commandLink action="#{factMainCtrl.agregarProducto()}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios :formMain:oupCalMenuDerecha" process="@this :formMain:productoDT">
+								<f:setPropertyActionListener value="#{p}" target="#{factMainCtrl.productoSelected}"/>
+								<div class="pricing-box">
+								
+										<div class="pricing-box-header">
+											<h2>#{p.stock.intValue()}</h2>
+											<div class="p-grid">
 				
-				<!-- <div class="Wid100 divProductos OvAuto "> -->
-
-
-				<p:dataGrid var="p" value="#{factMainCtrl.productoList}" columns="3"
-					layout="grid" paginator="true" paginatorPosition="bottom"
-					id="productoDT" rows="12">
-
-						<p:commandLink action="#{factMainCtrl.agregarProducto()}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios :formMain:oupCalMenuDerecha" process="@this :formMain:productoDT">
-							<f:setPropertyActionListener value="#{p}" target="#{factMainCtrl.productoSelected}"/>
-							<div class="pricing-box">
-							
-									<div class="pricing-box-header">
-										<h2>#{p.stock.intValue()}</h2>
-										<div class="p-grid">
-			
-											<div class="p-col-4">
-												<h:outputText value="#{p.preciounitario}" styleClass="precio">
-													<f:convertNumber locale="es_EC" pattern="$0.##" />
-												</h:outputText>
-											</div>
-											<div class="p-col-4">
-												<h:outputText value="#{p.preciodos}" styleClass="precio">
-													<f:convertNumber locale="es_EC" pattern="$0.##" />
-												</h:outputText>
-											</div>
-											<div class="p-col-4">
-												<h:outputText value="#{p.preciotres}" styleClass="precio">
-													<f:convertNumber locale="es_EC" pattern="$0.##" />
-												</h:outputText>
+												<div class="p-col-4">
+													<h:outputText value="#{p.preciounitario}" styleClass="precio">
+														<f:convertNumber locale="es_EC" pattern="$0.##" />
+													</h:outputText>
+												</div>
+												<div class="p-col-4">
+													<h:outputText value="#{p.preciodos}" styleClass="precio">
+														<f:convertNumber locale="es_EC" pattern="$0.##" />
+													</h:outputText>
+												</div>
+												<div class="p-col-4">
+													<h:outputText value="#{p.preciotres}" styleClass="precio">
+														<f:convertNumber locale="es_EC" pattern="$0.##" />
+													</h:outputText>
+												</div>
 											</div>
 										</div>
-									</div>
-			
-									<div class="pricing-box-content">
-											<p:graphicImage
-												value="#{productoCtrl.getImageToStream(p.imagen)}"
-												stream="false" rendered="#{p.imagen!=null}" width="100"
-												height="100"/>
-											<p:graphicImage library="img" name="sinimagen.png"
-												rendered="#{p.imagen==null}" width="100" height="100"/>
-										<p>
-											<h:outputText value="#{p.nombregenerico}" />
-										</p>
-									</div>
-								
-							</div>
-						</p:commandLink>
-						
-				</p:dataGrid>
+				
+										<div class="pricing-box-content">
+												<p:graphicImage
+													value="#{productoCtrl.getImageToStream(p.imagen)}"
+													stream="false" rendered="#{p.imagen!=null}" width="100"
+													height="100"/>
+												<p:graphicImage library="img" name="sinimagen.png"
+													rendered="#{p.imagen==null}" width="100" height="100"/>
+											<p>
+												<h:outputText value="#{p.nombregenerico}" />
+											</p>
+										</div>
+									
+								</div>
+							</p:commandLink>
+							
+					</p:dataGrid>
+				</p:outputPanel>
 								
 			</div>	
 			
