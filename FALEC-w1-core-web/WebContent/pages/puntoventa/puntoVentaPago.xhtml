@@ -26,6 +26,7 @@
 			body .ui-message {
 				padding: 0em !important;
 				margin: 0.4em 0 !important;
+				display: block;
 			}
 			
 			/* body .ui-message {
@@ -105,13 +106,26 @@
     	<p:breadCrumb styleClass="breadCrumbDisplay">
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="#{msg['menu.facturacion']}" url="#" />
-		    <p:menuitem value="Punto de venta" url="#{request.contextPath}/pages/facturacion/puntoVenta.jsf"/>
-		    <p:menuitem value="Pago" url="#{request.contextPath}/pages/facturacion/puntoVentaPago.jsf"/>
+		    <p:menuitem value="Punto de venta" url="#{request.contextPath}/pages/puntoventa/puntoVenta.jsf"/>
+		    <p:menuitem value="Pago" url="#{request.contextPath}/pages/puntoventa/puntoVentaPago.jsf"/>
 		</p:breadCrumb>
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
+	    	<div class="EmptyBox10"/>
+	    	<div class="p-grid p-justify-center">
+    			<div class="p-col-12 p-md-3">
+    				<p:commandButton value="ATRAS" icon="fa fa-backward" action="#" update="" immediate="" styleClass="secondary-button Wid100"/>
+    			</div>
+    			<div class="p-col-12 p-md-3">
+    				<p:commandButton value="RECIBO" icon="fa fa-file-text" action="#" update="" immediate="" styleClass="succes-btn Wid100"/>
+    			</div>
+    			<div class="p-col-12 p-md-3">
+    				<p:commandButton value="FACTURA" icon="fa fa-file-code-o" action="#" update="" immediate="" styleClass="danger-btn Wid100"/>
+    			</div>
+	    	</div>
+	    	<div class="EmptyBox5"/>
 	    	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
@@ -138,6 +152,9 @@
 	    	
 	    	
 	    </h:form>
+	    
+	    <!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
         
     </ui:define>
 

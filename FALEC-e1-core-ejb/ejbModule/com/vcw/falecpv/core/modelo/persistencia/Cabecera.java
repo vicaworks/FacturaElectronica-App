@@ -139,9 +139,6 @@ public class Cabecera implements Serializable {
     @JoinColumn(name = "idtipocomprobante", referencedColumnName = "idtipocomprobante", nullable = false)
     @ManyToOne(optional = false)
     private Tipocomprobante tipocomprobante;
-    @JoinColumn(name = "idtipoidentificacion", referencedColumnName = "idtipoidentificacion", nullable = false)
-    @ManyToOne(optional = false)
-    private TipoIdentificacion tipoidentificacion;
     
     
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
@@ -637,20 +634,6 @@ public class Cabecera implements Serializable {
 	 */
 	public void setTipocomprobante(Tipocomprobante tipocomprobante) {
 		this.tipocomprobante = tipocomprobante;
-	}
-
-	/**
-	 * @return the tipoidentificacion
-	 */
-	public TipoIdentificacion getTipoidentificacion() {
-		return tipoidentificacion;
-	}
-
-	/**
-	 * @param tipoidentificacion the tipoidentificacion to set
-	 */
-	public void setTipoidentificacion(TipoIdentificacion tipoidentificacion) {
-		this.tipoidentificacion = tipoidentificacion;
 	}
 
 	/**

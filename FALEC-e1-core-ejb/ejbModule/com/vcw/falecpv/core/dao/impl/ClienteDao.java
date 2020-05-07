@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author Jorge Toaza
@@ -72,12 +73,19 @@ public class ClienteDao extends AppGenericDao<Cliente, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeIdentificacion(String identificacion, String idempresa) throws DaoException {
+	public boolean existeIdentificacion(String id, String identificacion, String idempresa) throws DaoException {
 		try {
 			
 			Query q = null;
-
-			q = getEntityManager().createQuery("SELECT c.identificacion FROM Cliente c WHERE c.identificacion=:identificacion AND c.empresa.idempresa=:idempresa ");
+			
+			if(id!=null) {
+				q = getEntityManager().createQuery("SELECT c.identificacion FROM Cliente c WHERE c.idcliente<>:id AND c.identificacion=:identificacion AND c.empresa.idempresa=:idempresa ");
+				q.setParameter("id", id);
+			}else {
+				q = getEntityManager().createQuery("SELECT c.identificacion FROM Cliente c WHERE c.identificacion=:identificacion AND c.empresa.idempresa=:idempresa ");
+				
+			}
+			
 			q.setParameter("identificacion", identificacion);
 			q.setParameter("idempresa", idempresa);
 			
@@ -86,6 +94,26 @@ public class ClienteDao extends AppGenericDao<Cliente, String> {
 			}
 			
 			return false;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @param identificador
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	public Cliente getByIdentificador(String identificador,String idEmpresa)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(getEntityManager());
+			return (Cliente) q.select("c")
+				.from(Cliente.class,"c")
+				.equals("c.empresa.idempresa",idEmpresa)
+				.equals("c.identificacion",identificador).getSingleResult();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

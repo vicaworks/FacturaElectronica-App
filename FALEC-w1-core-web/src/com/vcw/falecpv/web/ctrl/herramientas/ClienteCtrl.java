@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ImportarClienteServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.facturacion.FactMainPagoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -59,6 +60,9 @@ public class ClienteCtrl extends BaseCtrl {
 	private boolean renderResultadoImportCliente;
 	private List<Cliente> clienteList;
 	private Cliente clienteSelected;
+	private String callModule;
+	private String updateView;	
+	
 	
 	public ClienteCtrl() {
 	}
@@ -89,10 +93,9 @@ public class ClienteCtrl extends BaseCtrl {
 	public void guardar() {
 		
 		try {
-			// validación 
 			
-			// 1. Identificación
-			if(clienteServicio.getClienteDao().existeIdentificacion(clienteSelected.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
+			// 1. Identificacion
+			if(clienteServicio.getClienteDao().existeIdentificacion(clienteSelected.getIdcliente(),clienteSelected.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmCliente", "ERROR", msg.getString("mensaje.identificacionexiste"));
 				AppJsfUtil.addErrorMessage("frmCliente:intIdentificacion","YA EXISTE.");
 				return;
@@ -101,10 +104,26 @@ public class ClienteCtrl extends BaseCtrl {
 			clienteSelected.setUpdated(new Date());
 			clienteServicio.guardar(clienteSelected);
 			
-			// lista principal
-			consultarClientes();
+			switch (callModule) {
+			case "CLIENTE":
+				
+				// lista principal
+				consultarClientes();
+				AppJsfUtil.addInfoMessage("frmCliente","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+				
+				break;
+			case "FactMainPagoCtrl":
+				
+				FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
+				fp.getCabecerSelected().setCliente(clienteSelected);
+				
+				AppJsfUtil.hideModal("dlgCliente");
+				
+				break;
+			default:
+				break;
+			}
 			
-			AppJsfUtil.addInfoMessage("frmCliente","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,6 +131,35 @@ public class ClienteCtrl extends BaseCtrl {
 		}
 		
 	}
+	
+	public void nuevoEditar(String id) {
+		try {
+			if(id!=null) {
+				editarFacade(id);
+			}
+			
+			if(clienteSelected==null) {
+				clienteSelected = new Cliente();
+				clienteSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+			}
+			
+			AppJsfUtil.showModalRender("dlgCliente", "frmCliente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void nuevoModal() {
+		try {
+			clienteSelected = new Cliente();
+			clienteSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	
 	@Override
 	public void nuevo() {
@@ -253,7 +301,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdTipoIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO ID TIPO IDENTIFICACIÓN ERROR");
+						c.setNovedad("FORMATO ID TIPO IDENTIFICACIï¿½N ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -268,7 +316,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO IDENTIFICACIÓN ERROR");
+						c.setNovedad("FORMATO IDENTIFICACIï¿½N ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -283,7 +331,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setRazonSocial(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO RAZÓN SOCIAL ERROR");
+						c.setNovedad("FORMATO RAZï¿½N SOCIAL ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -298,7 +346,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCIÓN ERROR");
+						c.setNovedad("FORMATO DIRECCIï¿½N ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -313,7 +361,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCorreoElectronico(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CORREO ELECTRÓNICO ERROR");
+						c.setNovedad("FORMATO CORREO ELECTRï¿½NICO ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -328,7 +376,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefono(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TELÉFONO ERROR");
+						c.setNovedad("FORMATO TELï¿½FONO ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -358,7 +406,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CÉDULA GARANTE 1 ERROR");
+						c.setNovedad("FORMATO Cï¿½DULA GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -373,7 +421,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCIÓN GARANTE 1 ERROR");
+						c.setNovedad("FORMATO DIRECCIï¿½N GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -388,7 +436,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TELÉFONO GARANTE 1 ERROR");
+						c.setNovedad("FORMATO TELï¿½FONO GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -403,7 +451,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACIÓN GARANTE 1 ERROR");
+						c.setNovedad("FORMATO OCUPACIï¿½N GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -433,7 +481,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CÉDULA GARANTE 2 ERROR");
+						c.setNovedad("FORMATO Cï¿½DULA GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -448,7 +496,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCIÓN GARANTE 2 ERROR");
+						c.setNovedad("FORMATO DIRECCIï¿½N GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -463,7 +511,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TELÉFONO GARANTE 2 ERROR");
+						c.setNovedad("FORMATO TELï¿½FONO GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -478,7 +526,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACIÓN GARANTE 2 ERROR");
+						c.setNovedad("FORMATO OCUPACIï¿½N GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -491,7 +539,7 @@ public class ClienteCtrl extends BaseCtrl {
 				
 			}
 			
-			// validación formato
+			// validaciï¿½n formato
 			validarFormatoImportCliente(importClienteDtoList);
 			
 			// cargar los datos
@@ -562,7 +610,7 @@ public class ClienteCtrl extends BaseCtrl {
 				c.setError(true);
 				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION OBLIGATORIO"):"CAMPO IDENTIFICACION OBLIGATORIO");
 			} else {
-				if (clienteServicio.getClienteDao().existeIdentificacion(c.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
+				if (clienteServicio.getClienteDao().existeIdentificacion(c.getIdCliente(),c.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 					c.setError(true);
 					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION YA EXISTE"):"CAMPO IDENTIFICACION YA EXISTE");
 				}
@@ -885,5 +933,33 @@ public class ClienteCtrl extends BaseCtrl {
 	 */
 	public void setClienteSelected(Cliente clienteSelected) {
 		this.clienteSelected = clienteSelected;
+	}
+
+	/**
+	 * @return the callModule
+	 */
+	public String getCallModule() {
+		return callModule;
+	}
+
+	/**
+	 * @param callModule the callModule to set
+	 */
+	public void setCallModule(String callModule) {
+		this.callModule = callModule;
+	}
+
+	/**
+	 * @return the updateView
+	 */
+	public String getUpdateView() {
+		return updateView;
+	}
+
+	/**
+	 * @param updateView the updateView to set
+	 */
+	public void setUpdateView(String updateView) {
+		this.updateView = updateView;
 	}
 }

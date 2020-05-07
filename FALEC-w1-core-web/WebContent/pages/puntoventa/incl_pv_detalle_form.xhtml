@@ -266,7 +266,7 @@
 							<p:commandButton value="Precio1" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO1'?'danger-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO1')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
 							<p:commandButton value="Precio2" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO2'?'danger-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO2')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
 							<p:commandButton value="Precio3" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO3'?'danger-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO3')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
-							<p:commandLink>
+							<p:commandLink action="#{factMainCtrl.registrarPago()}" immediate="true" update=":formMain:msgFormMain">
 								<div class="secondary-btn" style="padding: 0.75em;">
 									<i class="fa fa-dollar Fs26" style="margin-bottom:4px; color:black;"></i>
 									<h:outputText value="PAGO" styleClass="DispBlock Fs14 FontBold" style="color:black;"/>

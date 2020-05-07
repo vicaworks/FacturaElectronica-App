@@ -234,6 +234,7 @@ public class FactMainCtrl extends BaseCtrl {
 	
 	public void nuevaFactura() throws DaoException {
 		cabeceraFac = new Cabecera();
+		cabeceraFac.setFechaemision(new Date());
 		cabeceraFac.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 		cabeceraFac.setFechaemision(new Date());
 		cabeceraFac.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
@@ -466,6 +467,32 @@ public class FactMainCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public String registrarPago() {
+		try {
+			
+			if(cabeceraFac==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS PARA FACTURAR");
+				return null;
+			}
+			
+			if(cabeceraFac.getTotalsinimpuestos().doubleValue()<=0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN VALORES PARA FACTURAR");
+				return null;
+			}
+			
+			FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
+			fp.initPago(cabeceraFac);
+			
+			return "./puntoVentaPago.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+		return null;
 	}
 	
 	/**

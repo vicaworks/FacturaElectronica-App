@@ -48,14 +48,21 @@
 				
 				<div class="p-col-12 p-md-6" style="text-align:left;">					
 					
+					<p:commandButton id="cmdMdlNuevoCli"
+						value="NUEVO" icon="fa fa-plus" styleClass="secondary-button MRight10" 
+						action="#{clienteCtrl.nuevoModal()}" update="@form" inline="true" immediate="true" 
+						/>
+					
 					<p:commandButton id="cmdGuardarCli"
 						value="GUARDAR" icon="fa fa-check" ajax="true"
-						action="#{clienteCtrl.guardar()}" styleClass="MRight10" update="@form formMain:clienteDT"
+						action="#{clienteCtrl.guardar()}" styleClass="MRight10" update="@form #{clienteCtrl.updateView}"
+						 inline="true" 
 						/>
 						
 					<p:commandButton id="cmdCerrarCli"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgCliente').hide()" immediate="true" 
+						onclick="PF('dlgCliente').hide()" immediate="true"
+						 inline="true"  
 						/>
 					
 				</div>
@@ -101,13 +108,13 @@
 							
 							<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intRazonSocial" value="#{clienteCtrl.clienteSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" />
+								<p:inputText id="intRazonSocial" value="#{clienteCtrl.clienteSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<p:message for="intRazonSocial" />
 							
 							<h:outputText value="DIRECCIÓN : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" />
+								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<h:outputText value="" />
 							
@@ -150,7 +157,7 @@
 							
 							<h:outputText value="NOMBRE : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intNomGar1" value="#{clienteCtrl.clienteSelected.nombregarante1}" styleClass="Wid100" maxlength="300" />
+								<p:inputText id="intNomGar1" value="#{clienteCtrl.clienteSelected.nombregarante1}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<h:outputText value="" />
 							
@@ -164,7 +171,7 @@
 							
 							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intDirGar1" value="#{clienteCtrl.clienteSelected.direcciongarante1}" styleClass="Wid100" maxlength="300" />
+								<p:inputText id="intDirGar1" value="#{clienteCtrl.clienteSelected.direcciongarante1}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<h:outputText value="" />
 							
@@ -178,7 +185,7 @@
 							
 							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intOcupGar1" value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" styleClass="Wid100" maxlength="50" />
+								<p:inputText id="intOcupGar1" value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" styleClass="Wid100" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<h:outputText value="" />
 							
@@ -192,7 +199,7 @@
 							
 							<h:outputText value="NOMBRE : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intNomGar2" value="#{clienteCtrl.clienteSelected.nombregarante2}" styleClass="Wid100" maxlength="300" />
+								<p:inputText id="intNomGar2" value="#{clienteCtrl.clienteSelected.nombregarante2}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<h:outputText value="" />
 							
@@ -206,7 +213,7 @@
 							
 							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intDirGar2" value="#{clienteCtrl.clienteSelected.direcciongarante2}" styleClass="Wid100" maxlength="300" />
+								<p:inputText id="intDirGar2" value="#{clienteCtrl.clienteSelected.direcciongarante2}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<h:outputText value="" />
 							
@@ -214,13 +221,13 @@
 							<h:panelGroup>
 								<p:inputText id="intTelGar2" value="#{clienteCtrl.clienteSelected.telefonogarante2}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
 									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
-								</p:inputText>>
+								</p:inputText>
 							</h:panelGroup>
 							<p:message for="intTelGar2" />
 							
 							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intOcupGar2" value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" styleClass="Wid100" maxlength="50" />
+								<p:inputText id="intOcupGar2" value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" styleClass="Wid100" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
 							</h:panelGroup>
 							<h:outputText value="" />
 							

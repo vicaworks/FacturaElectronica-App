@@ -111,8 +111,10 @@
 									
 									<p:commandButton id="cmdNuevoCli"
 										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
-										action="#{clienteCtrl.nuevo()}" inline="true" 
-										/>
+										action="#{clienteCtrl.nuevo()}" inline="true">
+										<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
+										<f:setPropertyActionListener value=":formMain:clienteDT" target="#{clienteCtrl.updateView}"/>
+									</p:commandButton>
 									
 									<p:commandButton id="cmdExcelCargarCli" 
 										title="CARGAR ARCHIVO EXCEL CLIENTES"

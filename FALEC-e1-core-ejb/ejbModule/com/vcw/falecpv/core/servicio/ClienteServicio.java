@@ -41,7 +41,6 @@ public class ClienteServicio extends AppGenericService<Cliente, String> {
 	
 	@Override
 	public List<Cliente> consultarInactivos() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
