@@ -34,18 +34,35 @@ public class Pago implements Serializable{
     @Size(min = 1, max = 40)
     @Column(name = "idpago", nullable = false, length = 40)
     private String idpago;
-	 // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "total", nullable = false, precision = 12, scale = 2)
-    private BigDecimal total;
+    private BigDecimal total =  BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "plazo", nullable = false, precision = 12, scale = 2)
-    private BigDecimal plazo;
+    private BigDecimal plazo =  BigDecimal.ZERO;
     @Size(max = 10)
     @Column(name = "unidadtiempo", length = 10)
     private String unidadtiempo;
+    @Size(max = 150)
+    @Column(name = "numerodocumento", length = 150)
+    private String numerodocumento;
+    @Size(max = 100)
+    @Column(name = "nombrebanco", length = 100)
+    private String nombrebanco;
+    @Size(max = 50)
+    @Column(name = "numerocuenta", length = 50)
+    private String numerocuenta;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "cambio", nullable = false, precision = 12, scale = 2)
+    private BigDecimal cambio =  BigDecimal.ZERO;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valorentrega", nullable = false, precision = 12, scale = 2)
+    private BigDecimal valorentrega =  BigDecimal.ZERO;
     @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera", nullable = false)
     @ManyToOne(optional = false)
     private Cabecera cabecera;
@@ -95,6 +112,34 @@ public class Pago implements Serializable{
 	}
 
 	/**
+	 * @return the total
+	 */
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param total the total to set
+	 */
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	/**
+	 * @return the plazo
+	 */
+	public BigDecimal getPlazo() {
+		return plazo;
+	}
+
+	/**
+	 * @param plazo the plazo to set
+	 */
+	public void setPlazo(BigDecimal plazo) {
+		this.plazo = plazo;
+	}
+
+	/**
 	 * @return the unidadtiempo
 	 */
 	public String getUnidadtiempo() {
@@ -106,6 +151,76 @@ public class Pago implements Serializable{
 	 */
 	public void setUnidadtiempo(String unidadtiempo) {
 		this.unidadtiempo = unidadtiempo;
+	}
+
+	/**
+	 * @return the numerodocumento
+	 */
+	public String getNumerodocumento() {
+		return numerodocumento;
+	}
+
+	/**
+	 * @param numerodocumento the numerodocumento to set
+	 */
+	public void setNumerodocumento(String numerodocumento) {
+		this.numerodocumento = numerodocumento;
+	}
+
+	/**
+	 * @return the nombrebanco
+	 */
+	public String getNombrebanco() {
+		return nombrebanco;
+	}
+
+	/**
+	 * @param nombrebanco the nombrebanco to set
+	 */
+	public void setNombrebanco(String nombrebanco) {
+		this.nombrebanco = nombrebanco;
+	}
+
+	/**
+	 * @return the numerocuenta
+	 */
+	public String getNumerocuenta() {
+		return numerocuenta;
+	}
+
+	/**
+	 * @param numerocuenta the numerocuenta to set
+	 */
+	public void setNumerocuenta(String numerocuenta) {
+		this.numerocuenta = numerocuenta;
+	}
+
+	/**
+	 * @return the cambio
+	 */
+	public BigDecimal getCambio() {
+		return cambio;
+	}
+
+	/**
+	 * @param cambio the cambio to set
+	 */
+	public void setCambio(BigDecimal cambio) {
+		this.cambio = cambio;
+	}
+
+	/**
+	 * @return the valorentrega
+	 */
+	public BigDecimal getValorentrega() {
+		return valorentrega;
+	}
+
+	/**
+	 * @param valorentrega the valorentrega to set
+	 */
+	public void setValorentrega(BigDecimal valorentrega) {
+		this.valorentrega = valorentrega;
 	}
 
 	/**
@@ -134,34 +249,6 @@ public class Pago implements Serializable{
 	 */
 	public void setTipopago(Tipopago tipopago) {
 		this.tipopago = tipopago;
-	}
-
-	/**
-	 * @return the total
-	 */
-	public BigDecimal getTotal() {
-		return total;
-	}
-
-	/**
-	 * @param total the total to set
-	 */
-	public void setTotal(BigDecimal total) {
-		this.total = total;
-	}
-
-	/**
-	 * @return the plazo
-	 */
-	public BigDecimal getPlazo() {
-		return plazo;
-	}
-
-	/**
-	 * @param plazo the plazo to set
-	 */
-	public void setPlazo(BigDecimal plazo) {
-		this.plazo = plazo;
 	}
 
 }

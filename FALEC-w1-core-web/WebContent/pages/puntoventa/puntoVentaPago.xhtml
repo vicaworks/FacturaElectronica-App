@@ -102,6 +102,7 @@
     
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.TipoPagoFormularioEnum" var="TipoPagoFormularioEnum" />
     
     	<p:breadCrumb styleClass="breadCrumbDisplay">
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
@@ -134,14 +135,14 @@
 	    	
 	    	<div class="p-grid">
 	    		
-	    		<div class="p-col-12 p-md-5">
+	    		<div class="p-col-12 p-lg-5">
 	    			
 	    			<!-- Datos de la cabecera -->
 	    			<ui:include src="incl_pvPago_cabecera.xhtml"/>
 	    			
 	    		</div>
 	    		
-	    		<div class="p-col-12 p-md-7">
+	    		<div class="p-col-12 p-lg-7">
 	    			
 	    			<!-- Datos del detalle de pago -->
 	    			<ui:include src="incl_pvPago_detalle.xhtml"/>
