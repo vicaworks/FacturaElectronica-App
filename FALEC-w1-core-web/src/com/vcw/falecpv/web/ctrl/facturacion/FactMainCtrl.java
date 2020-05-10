@@ -499,6 +499,41 @@ public class FactMainCtrl extends BaseCtrl {
 		return null;
 	}
 	
+	public void eliminarDetalle() {
+		try {
+			
+			// eliminar datos de la base de datos
+			
+			// eliminar
+			
+			for (Detalle p : detalleFacList) {
+				if(detalleSelected.getIddetalle().equals(p.getIddetalle())) {
+					break;
+				}
+			}
+			
+			detalleFacList.remove(detalleSelected);
+			if(detalleFacList.isEmpty()) {
+				detalleSelected=null;
+			}else {
+				detalleSelected = detalleFacList.get(detalleFacList.size()-1);
+			}
+			
+			opcionCantidadPrecio = "CANTIDAD";
+			if(detalleSelected!=null) {
+				precioOpcionSeleccion = detalleSelected.getPrecioOpcionSeleccion();
+			}
+			inicioCalculadora = true; 
+			separadorDecimal = null;
+			
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	/**
 	 * @return the productoServicio
 	 */

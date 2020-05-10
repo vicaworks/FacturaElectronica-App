@@ -161,7 +161,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			}
 			
 			opcionSeleccionCalculadora = "VALOR";
-			inicioCalculadora = false; 
+			inicioCalculadora = true; 
 			separadorDecimal = null;
 			
 		} catch (Exception e) {
@@ -184,13 +184,16 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				if(inicioCalculadora) {
 					pagoSelected.setTotal(BigDecimal.valueOf(Double.parseDouble(valorCalculadora)));
 					inicioCalculadora = false;
+					break;
 				}
 				pagoSelected.setTotal(procesarCal(pagoSelected.getTotal(), valorCalculadora));
 				break;
 			case "CAMBIO":
 				if(inicioCalculadora) {
 					pagoSelected.setValorentrega(BigDecimal.valueOf(Double.parseDouble(valorCalculadora)));
+					calcularCambio();
 					inicioCalculadora = false;
+					break;
 				}
 				pagoSelected.setValorentrega(procesarCal(pagoSelected.getValorentrega(), valorCalculadora));
 				calcularCambio();
@@ -199,6 +202,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				if(inicioCalculadora) {
 					pagoSelected.setNumerodocumento(valorCalculadora);
 					inicioCalculadora = false;
+					break;
 				}
 				pagoSelected.setNumerodocumento(pagoSelected.getNumerodocumento().concat(valorCalculadora));
 				break;	
@@ -266,7 +270,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 					pagoSelected.setTotal(pagoSelected.getTotal().add(BigDecimal.valueOf(1)));
 					break;
 				case "CAMBIO":
-					pagoSelected.setCambio(pagoSelected.getCambio().add(BigDecimal.valueOf(1)));
+					pagoSelected.setValorentrega(pagoSelected.getValorentrega().add(BigDecimal.valueOf(1)));
 					calcularCambio();
 					break;
 
@@ -280,7 +284,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 					pagoSelected.setTotal(pagoSelected.getTotal().add(BigDecimal.valueOf(5)));
 					break;
 				case "CAMBIO":
-					pagoSelected.setCambio(pagoSelected.getCambio().add(BigDecimal.valueOf(5)));
+					pagoSelected.setValorentrega(pagoSelected.getValorentrega().add(BigDecimal.valueOf(5)));
 					calcularCambio();
 					break;
 
@@ -294,7 +298,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 					pagoSelected.setTotal(pagoSelected.getTotal().add(BigDecimal.valueOf(10)));
 					break;
 				case "CAMBIO":
-					pagoSelected.setCambio(pagoSelected.getCambio().add(BigDecimal.valueOf(10)));
+					pagoSelected.setValorentrega(pagoSelected.getValorentrega().add(BigDecimal.valueOf(10)));
 					calcularCambio();
 					break;
 
@@ -308,7 +312,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 					pagoSelected.setTotal(pagoSelected.getTotal().add(BigDecimal.valueOf(20)));
 					break;
 				case "CAMBIO":
-					pagoSelected.setCambio(pagoSelected.getCambio().add(BigDecimal.valueOf(20)));
+					pagoSelected.setValorentrega(pagoSelected.getValorentrega().add(BigDecimal.valueOf(20)));
 					calcularCambio();
 					break;
 
@@ -332,9 +336,9 @@ public class FactMainPagoCtrl extends BaseCtrl {
 					BigDecimal valor = pagoSelected.getTotal();
 					
 					if(opcionSeleccionCalculadora.equals("CAMBIO")) {
-						intPart = pagoSelected.getCambio().intValue();
-						decimalpart = decimalPart(pagoSelected.getCambio());
-						valor = pagoSelected.getCambio();
+						intPart = pagoSelected.getValorentrega().intValue();
+						decimalpart = decimalPart(pagoSelected.getValorentrega());
+						valor = pagoSelected.getValorentrega();
 					}
 					
 					String valorCadena = valor.toString();
@@ -355,7 +359,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 					if(opcionSeleccionCalculadora.equals("VALOR")) {
 						pagoSelected.setTotal(BigDecimal.valueOf(Double.parseDouble(valorCadena)));
 					}else {
-						pagoSelected.setCambio(BigDecimal.valueOf(Double.parseDouble(valorCadena)));
+						pagoSelected.setValorentrega(BigDecimal.valueOf(Double.parseDouble(valorCadena)));
 						calcularCambio();
 					}
 					
@@ -367,9 +371,11 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				switch (opcionSeleccionCalculadora) {
 				case "VALOR":
 					pagoSelected.setTotal(BigDecimal.ZERO);
-					if(pagoSelected.getValorentrega().doubleValue()>0) {
-						calcularCambio();
-					}
+					pagoSelected.setCambio(BigDecimal.ZERO);
+					pagoSelected.setValorentrega(BigDecimal.ZERO);
+//					if(pagoSelected.getValorentrega().doubleValue()>0) {
+//						calcularCambio();
+//					}
 					break;
 				case "CAMBIO":
 					pagoSelected.setCambio(BigDecimal.ZERO);
@@ -400,7 +406,56 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	
 	private void calcularCambio() {
 		pagoSelected.setCambio(pagoSelected.getValorentrega().add(pagoSelected.getTotal().negate()).setScale(2, RoundingMode.HALF_UP));
+		if(pagoSelected.getCambio().doubleValue()<=0) {
+			pagoSelected.setCambio(BigDecimal.ZERO);
+		}
 	}
+	
+	public void seleccionarDetalle() {
+		try {
+			
+			opcionSeleccionCalculadora = "VALOR";
+			inicioCalculadora = true;
+			separadorDecimal = null;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void eliminarDetalle() {
+		try {
+			
+			// eliminar datos de la base de datos
+			
+			// eliminar
+			
+			for (Pago p : pagoList) {
+				if(pagoSelected.getIdpago().equals(p.getIdpago())) {
+					break;
+				}
+			}
+			
+			pagoList.remove(pagoSelected);
+			if(pagoList.isEmpty()) {
+				pagoSelected=null;
+			}else {
+				pagoSelected = pagoList.get(pagoList.size()-1);
+			}
+			
+			opcionSeleccionCalculadora = "VALOR";
+			inicioCalculadora = true; 
+			separadorDecimal = null;
+			
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	/**
 	 * @return the cabecerSelected
 	 */

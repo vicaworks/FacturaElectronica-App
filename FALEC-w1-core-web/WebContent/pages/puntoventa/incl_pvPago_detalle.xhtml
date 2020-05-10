@@ -182,18 +182,19 @@
 						selectionMode="single"
 						selection="#{factMainPagoCtrl.pagoSelected}">
 				
-				<p:ajax event="rowSelect" update=":formMain:pvPagoDetalleDT">
+				
+				<p:ajax event="rowSelect" listener="#{factMainPagoCtrl.seleccionarDetalle()}" update=":formMain:pvPagoDetalleDT :formMain:msgFormMain :formMain:oupInicioOpcionCalculadora :formMain:oupCalMenuDerecha">
 				</p:ajax>
 						
 				<p:column headerText="ITEM" style="width:90%;">
 					<div class="EmptyBox5"/>
 					<div class="p-grid p-align-center vertical-container">
 						
-						<div class="p-col-4">
-							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold"/>
+						<div class="p-col-12 p-md-4">
+							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14"/>
 						</div>
 						
-						<div class="p-col-8">
+						<div class="p-col-12 p-md-8">
 							<div class="EmptyBox10"/>
 							<div class="p-grid Fs10">
 								
@@ -246,7 +247,7 @@
 										<p:inputText id="inpDetpagoBanco"
 											value="#{p.nombrebanco}" required="false"
 											requiredMessage="REQUERIDO" styleClass="Wid100 Fs10"
-											maxlength="50" placeholder="NOM. BANCO">
+											maxlength="50" placeholder="NOM. BANCO" converter="omnifaces.ToUpperCaseConverter">
 										</p:inputText>
 									</div>
 									
@@ -260,6 +261,15 @@
 					
 				</p:column>
 				
+				<p:column style="width:10%;" styleClass="TexAlCenter">
+					<div class="EmptyBox10"/>
+					<p:commandLink  action="#{factMainPagoCtrl.eliminarDetalle()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupInicioOpcionCalculadora">
+						<f:setPropertyActionListener value="#{p}" target="#{factMainPagoCtrl.pagoSelected}"/>
+						<i class="fa fa-trash Fs20" style="color:red;"></i>
+						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+					</p:commandLink>		
+				</p:column>
+				
 	        </p:dataTable>
 				
 			<div class="EmptyBox5"/>
@@ -268,9 +278,9 @@
 	                <i class="fa fa-hand-o-right Fs20"></i> 
 	            </span>
 	            
-	            <div class="Wid100 Fs20 divValor" style="text-align: center;">
+	            <div class="Wid100 divValor" style="text-align: center;">
 	            	<p:outputPanel id="oupTotalPagoDT">
-		            	<h:outputText value="#{factMainPagoCtrl.totalPago}" >
+		            	<h:outputText value="#{factMainPagoCtrl.totalPago}" styleClass="Fs20">
 		            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
 		            	</h:outputText>
 			        </p:outputPanel>
@@ -285,32 +295,34 @@
 		
 			<!-- menu izquierda -->
 			<div class="p-col-3">
-				<p:commandLink action="#" update="@this">
-					<f:setPropertyActionListener value="VALOR" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
-					<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
-					<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='VALOR'?'valor-btn-seleccion':'valor-btn'}">
-						<h:outputText value="VALOR" styleClass="DispBlock FontBold"/>
-					</div>
-				</p:commandLink>
-				
-				<p:commandLink action="#" update="@this">
-					<f:setPropertyActionListener value="CAMBIO" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
-					<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
-					<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='CAMBIO'?'cambio-btn-seleccion':'cambio-btn'}">
-						<h:outputText value="CAMBIO" styleClass="DispBlock FontBold"/>
-					</div>
-				</p:commandLink>
+				<p:outputPanel id="oupInicioOpcionCalculadora">
+					<p:commandLink action="#" update=":formMain:oupInicioOpcionCalculadora">
+						<f:setPropertyActionListener value="VALOR" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
+						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
+						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='VALOR'?'valor-btn-seleccion':'valor-btn'}">
+							<h:outputText value="VALOR" styleClass="DispBlock FontBold"/>
+						</div>
+					</p:commandLink>
 					
-				<p:commandLink action="#" update="@this">
-					<f:setPropertyActionListener value="DOCUMENTO" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
-					<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
-					<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='DOCUMENTO'?'documento-btn-seleccion':'documento-btn'}">
-						<h:outputText value="#DOCU" styleClass="DispBlock FontBold"/>
-					</div>
-				</p:commandLink>
+					<p:commandLink action="#" update=":formMain:oupInicioOpcionCalculadora">
+						<f:setPropertyActionListener value="CAMBIO" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
+						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
+						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='CAMBIO'?'cambio-btn-seleccion':'cambio-btn'}">
+							<h:outputText value="CAMBIO" styleClass="DispBlock FontBold"/>
+						</div>
+					</p:commandLink>
+						
+					<p:commandLink action="#" update=":formMain:oupInicioOpcionCalculadora">
+						<f:setPropertyActionListener value="DOCUMENTO" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
+						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
+						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='DOCUMENTO'?'documento-btn-seleccion':'documento-btn'}">
+							<h:outputText value="#DOCU" styleClass="DispBlock FontBold"/>
+						</div>
+					</p:commandLink>
+				</p:outputPanel>
 			</div>
 			
 			<!-- numeros -->
