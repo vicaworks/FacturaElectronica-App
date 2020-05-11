@@ -73,4 +73,5 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 			throw new DaoException(e);
 		}
 	}
+	
 }

@@ -5,7 +5,9 @@ package com.vcw.falecpv.web.ctrl.facturacion;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -15,11 +17,20 @@ import javax.inject.Named;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
+import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
+import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
+import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ContadorPkServicio;
+import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -42,6 +53,15 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	
 	@EJB
 	private TipopagoServicio tipopagoServicio;
+	
+	@EJB
+	private TipocomprobanteServicio tipocomprobanteServicio;
+	
+	@EJB
+	private ContadorPkServicio contadorPkServicio;
+	
+	@EJB
+	private CabeceraServicio cabeceraServicio;
 	
 	
 	private Cabecera cabecerSelected;
@@ -156,6 +176,8 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				pagoSelected.setCabecera(cabecerSelected);
 				pagoSelected.setTipopago(tp);
 				pagoSelected.setTotal(cabecerSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+				pagoSelected.setPlazo(BigDecimal.ZERO);
+				pagoSelected.setUnidadtiempo("DIAS");
 				pagoList.add(pagoSelected);
 				totalizar();
 			}
@@ -455,6 +477,71 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	
+	public void generarRecibo() {
+		try {
+			
+			populatefactura(GenTipoDocumentoEnum.RECIBO);
+			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			cabecerSelected.setUpdated(new Date());
+			cabecerSelected.setPagoList(pagoList);
+			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void generarFactura() {
+		try {
+			
+			populatefactura(GenTipoDocumentoEnum.FACTURA);
+			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			cabecerSelected.setUpdated(new Date());
+			cabecerSelected.setPagoList(pagoList);
+			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
+		
+		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		
+		cabecerSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		SimpleDateFormat sf = new SimpleDateFormat("MM-yyyy");
+		cabecerSelected.setPeriodofiscal(sf.format(new Date()));
+		cabecerSelected.setContribuyenteespecial("5368");
+		cabecerSelected.setMoneda("DOLAR");
+		cabecerSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		cabecerSelected.setPropina(BigDecimal.ZERO);
+		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		
+		// clave de acceso
+		cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+		
+		// tabla de total impuesto
+		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
+		totalimpuestoList.addAll(ComprobanteHelper.determinarIva(cabecerSelected.getDetalleList()));
+		totalimpuestoList.addAll(ComprobanteHelper.determinarIce(cabecerSelected.getDetalleList()));
+		
+		// detalle impuesto
+		ComprobanteHelper.determinarDetalleImpuesto(cabecerSelected.getDetalleList());
+		
+		// infromacion adicional 
+		
+		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected));
+		
+	}
+	
 	
 	/**
 	 * @return the cabecerSelected

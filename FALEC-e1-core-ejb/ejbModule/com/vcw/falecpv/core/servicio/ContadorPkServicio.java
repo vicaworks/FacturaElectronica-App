@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.ValidarParametro;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TablaContadorBaseEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.dao.DBUtilGenericoApp;
@@ -38,6 +39,9 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 	@Inject
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
+	@Inject
+	private EstablecimientoServicio establecimientoServicio;
+	
 	
 	/**
 	 * @author cristianvillarreal
@@ -50,7 +54,9 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 	 */
 	@Lock(LockType.WRITE)
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public String generarContadorTabla(TablaContadorBaseEnum tablaContador,String idEstablecimiento)throws DaoException, ParametroRequeridoException{
+	public String generarContadorTabla(TablaContadorBaseEnum tablaContador,String idEstablecimiento,Object... generarSucursal)throws DaoException, ParametroRequeridoException{
+		
+		
 		
 		ValidarParametro.validar(tablaContador, "TABLA_CONTADOR");
 //		ValidarParametro.validar(idEstablecimiento, "ESTABLECIMIENTO");
@@ -60,7 +66,14 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 		
 		// 1 verifica si el establecimiento tiene generacion sucursal
 		if(idEstablecimiento!=null) {
-			flagSucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.GENERAR_SUCURSAL, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento);
+			if(generarSucursal==null) {
+				flagSucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.GENERAR_SUCURSAL, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento);
+			}else if((boolean)generarSucursal[0]==true){
+				flagSucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.GENERAR_SUCURSAL, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento);
+			}else {
+				flagSucursal = false;
+			}
+			
 			if(flagSucursal) {
 				// 2. consulta la sucursal
 				sucursal = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.SUCURSAL, TipoRetornoParametroGenerico.STRING, idEstablecimiento);
@@ -131,5 +144,18 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 		return valor + "";
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param geTipoDocumentoEnum
+	 * @param idEStablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	@Lock(LockType.WRITE)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public String generarNumeroDocumento(GenTipoDocumentoEnum geTipoDocumentoEnum,String idEStablecimiento)throws DaoException{
+		return establecimientoServicio.generarNumeroDocumento(geTipoDocumentoEnum, idEStablecimiento);
+	}
 	
 }

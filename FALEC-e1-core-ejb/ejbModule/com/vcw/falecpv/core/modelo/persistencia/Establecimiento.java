@@ -96,6 +96,11 @@ public class Establecimiento implements Serializable {
     
     @Basic(optional = false)
     @NotNull
+    @Column(name = "secuencialrecibo", nullable = false)
+    private int secuencialrecibo;
+    
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "secuencialliquidacioncompra", nullable = false)
     private int secuencialliquidacioncompra;
     
@@ -133,6 +138,12 @@ public class Establecimiento implements Serializable {
     @Size(min = 1, max = 40)
     @Column(name = "idusuario", nullable = false, length = 40)
     private String idusuario;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
+    @Column(name = "ambiente", nullable = false, length = 1)
+    private String ambiente;
     
     @ManyToOne(optional = false)
     @JoinColumn(name = "idempresa",referencedColumnName = "idempresa")
@@ -453,6 +464,34 @@ public class Establecimiento implements Serializable {
 	 */
 	public void setNombreimagen(String nombreimagen) {
 		this.nombreimagen = nombreimagen;
+	}
+
+	/**
+	 * @return the secuencialrecibo
+	 */
+	public int getSecuencialrecibo() {
+		return secuencialrecibo;
+	}
+
+	/**
+	 * @param secuencialrecibo the secuencialrecibo to set
+	 */
+	public void setSecuencialrecibo(int secuencialrecibo) {
+		this.secuencialrecibo = secuencialrecibo;
+	}
+
+	/**
+	 * @return the ambiente
+	 */
+	public String getAmbiente() {
+		return ambiente;
+	}
+
+	/**
+	 * @param ambiente the ambiente to set
+	 */
+	public void setAmbiente(String ambiente) {
+		this.ambiente = ambiente;
 	}		
 	
 	

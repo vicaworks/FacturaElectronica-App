@@ -9,8 +9,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
+import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.dao.impl.TipocomprobanteDao;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author cristianvillarreal
@@ -42,6 +45,29 @@ public class TipocomprobanteServicio extends AppGenericService<Tipocomprobante, 
 	 */
 	public TipocomprobanteDao getTipocomprobanteDao() {
 		return tipocomprobanteDao;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param genTipoDocumentoEnum
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	public Tipocomprobante getByTipoDocumento(GenTipoDocumentoEnum genTipoDocumentoEnum,String idEmpresa)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(tipocomprobanteDao.getEntityManager());
+			
+			return (Tipocomprobante) q.select("d")
+						.from(Tipocomprobante.class,"d")
+						.equals("d.empresa.idempresa",idEmpresa)
+						.equals("d.identificador",genTipoDocumentoEnum.getIdentificador()).getSingleResult();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

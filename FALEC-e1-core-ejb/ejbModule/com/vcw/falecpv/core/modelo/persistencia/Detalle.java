@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -76,6 +77,14 @@ public class Detalle implements Serializable {
     private String descripcion;
     
 	
+    @JoinColumn(name = "idice", referencedColumnName = "idice")
+    @ManyToOne
+    private Ice ice;
+    
+    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = false)
+    @ManyToOne(optional = false)
+    private Iva iva;
+    
     @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera")
     @ManyToOne
     private Cabecera cabecera;
@@ -85,6 +94,9 @@ public class Detalle implements Serializable {
     
     @Transient
     private String precioOpcionSeleccion;
+    
+    @Transient
+    private List<Detalleimpuesto> detalleimpuestoList;
 	
 	/**
 	 * 
@@ -282,6 +294,48 @@ public class Detalle implements Serializable {
 	 */
 	public void setPrecioOpcionSeleccion(String precioOpcionSeleccion) {
 		this.precioOpcionSeleccion = precioOpcionSeleccion;
+	}
+
+	/**
+	 * @return the ice
+	 */
+	public Ice getIce() {
+		return ice;
+	}
+
+	/**
+	 * @param ice the ice to set
+	 */
+	public void setIce(Ice ice) {
+		this.ice = ice;
+	}
+
+	/**
+	 * @return the iva
+	 */
+	public Iva getIva() {
+		return iva;
+	}
+
+	/**
+	 * @param iva the iva to set
+	 */
+	public void setIva(Iva iva) {
+		this.iva = iva;
+	}
+
+	/**
+	 * @return the detalleimpuestoList
+	 */
+	public List<Detalleimpuesto> getDetalleimpuestoList() {
+		return detalleimpuestoList;
+	}
+
+	/**
+	 * @param detalleimpuestoList the detalleimpuestoList to set
+	 */
+	public void setDetalleimpuestoList(List<Detalleimpuesto> detalleimpuestoList) {
+		this.detalleimpuestoList = detalleimpuestoList;
 	}
 
 	

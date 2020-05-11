@@ -5,7 +5,6 @@ package com.vcw.falecpv.web.ctrl.facturacion;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +22,6 @@ import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
-import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -47,9 +45,6 @@ public class FactMainCtrl extends BaseCtrl {
 	
 	@EJB
 	private CabeceraServicio cabeceraServicio;
-	
-	@EJB
-	private TipocomprobanteServicio tipocomprobanteServicio;
 	
 	private Cabecera cabeceraFac;
 	private List<Detalle> detalleFacList;
@@ -146,6 +141,9 @@ public class FactMainCtrl extends BaseCtrl {
 				detalleSelected.setPreciounitario(productoSelected.getPreciounitario());
 				precioOpcionSeleccion = "PRECIO1";
 				detalleSelected.setPrecioOpcionSeleccion(precioOpcionSeleccion);
+				detalleSelected.setProducto(productoSelected);
+				detalleSelected.setIva(productoSelected.getIva());
+				detalleSelected.setIce(productoSelected.getIce());
 			}
 			
 			calcularItem(detalleSelected);
@@ -172,12 +170,10 @@ public class FactMainCtrl extends BaseCtrl {
 				.multiply(dFac.getPreciounitario()).multiply(dFac.getCantidad())
 				.setScale(2, RoundingMode.HALF_UP));
 		dFac.setPreciototalsinimpuesto(dFac.getCantidad().multiply(dFac.getPreciounitario()).add(dFac.getDescuento().negate()).setScale(2, RoundingMode.HALF_UP));
-		dFac.setProducto(productoSelected);
-		dFac.setValoriva(productoSelected.getIva().getValor().divide(BigDecimal.valueOf(100))
-				.multiply(dFac.getPreciototalsinimpuesto().add(dFac.getDescuento().negate())).setScale(2, RoundingMode.HALF_UP));
-		dFac.setValorice(productoSelected.getIce().getValor().divide(BigDecimal.valueOf(100)).multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
-		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva()).setScale(2, RoundingMode.HALF_UP));
-		
+		dFac.setValorice(dFac.getIce().getValor().divide(BigDecimal.valueOf(100)).multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
+		dFac.setValoriva(dFac.getIva().getValor().divide(BigDecimal.valueOf(100))
+				.multiply(dFac.getPreciototalsinimpuesto().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
+		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
 		
 	}
 	
@@ -235,12 +231,6 @@ public class FactMainCtrl extends BaseCtrl {
 	public void nuevaFactura() throws DaoException {
 		cabeceraFac = new Cabecera();
 		cabeceraFac.setFechaemision(new Date());
-		cabeceraFac.setEstablecimiento(AppJsfUtil.getEstablecimiento());
-		cabeceraFac.setFechaemision(new Date());
-		cabeceraFac.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-		SimpleDateFormat sf = new SimpleDateFormat("MM-yyyy");
-		cabeceraFac.setPeriodofiscal(sf.format(new Date()));
-		cabeceraFac.setTipocomprobante(tipocomprobanteServicio.consultarByPk("1"));
 		precioOpcionSeleccion = "PRECIO1";
 		opcionCantidadPrecio = "CANTIDAD";
 		inicioCalculadora = false;

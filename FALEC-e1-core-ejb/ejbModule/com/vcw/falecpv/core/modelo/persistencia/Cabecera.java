@@ -130,6 +130,12 @@ public class Cabecera implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
     
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "estado", nullable = false, length = 20)
+    private String estado;
+    
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = false)
     @ManyToOne(optional = false)
     private Cliente cliente;
@@ -156,6 +162,9 @@ public class Cabecera implements Serializable {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
     @Transient
     private List<Infoadicional> infoadicionalList;
+    
+    @Transient
+    private List<Pago> pagoList;
 
 	/**
 	 * 
@@ -704,6 +713,34 @@ public class Cabecera implements Serializable {
 	 */
 	public void setInfoadicionalList(List<Infoadicional> infoadicionalList) {
 		this.infoadicionalList = infoadicionalList;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public String getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	/**
+	 * @return the pagoList
+	 */
+	public List<Pago> getPagoList() {
+		return pagoList;
+	}
+
+	/**
+	 * @param pagoList the pagoList to set
+	 */
+	public void setPagoList(List<Pago> pagoList) {
+		this.pagoList = pagoList;
 	}
 
 }

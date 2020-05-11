@@ -11,6 +11,8 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
 import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
@@ -111,6 +113,60 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param geTipoDocumentoEnum
+	 * @param idEStablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public String generarNumeroDocumento(GenTipoDocumentoEnum geTipoDocumentoEnum,String idEStablecimiento)throws DaoException{
+		
+		try {
+			
+			Establecimiento e = consultarByPk(idEStablecimiento);
+			
+//			String numDoc =  TextoUtil.leftPadTexto(e.getCodigoestablecimiento(), 3, "0");
+//			numDoc += "001";
+			
+			String numDoc =  "";
+			
+			switch (geTipoDocumentoEnum) {
+			case FACTURA:
+				e.setSecuencialfactura(e.getSecuencialfactura()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialfactura()+"", 9, "0");
+				break;
+			case RECIBO:
+				e.setSecuencialrecibo(e.getSecuencialrecibo()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialrecibo()+"", 9, "0");
+				break;
+			case NOTA_CREDITO:
+				e.setSecuencialNotaCredito(e.getSecuencialrecibo()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialNotaCredito()+"", 9, "0");
+				break;
+			case NOTA_DEBITO:
+				e.setSecuencialnotadebito(e.getSecuencialnotadebito()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialnotadebito()+"", 9, "0");
+				break;
+			case RETENCION:
+				e.setSecuencialretencion(e.getSecuencialretencion()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialretencion()+"", 9, "0");
+				break;
+			default:
+				break;
+			}
+			
+			actualizar(e);
+			
+			return numDoc;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
 	}
 
 }
