@@ -486,11 +486,37 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	public void generarRecibo() {
 		try {
 			
+			// validar cliente
+			if(cabecerSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				return;
+			}
+			
+			// validar estado
+			if(cabecerSelected.getIdcabecera()!=null) {
+				
+				String analisisEstado = cabeceraServicio.analizarEstadoRecibo(cabecerSelected.getIdcabecera(), "GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+				
+			}
+			
+			// validar el valor
+			if(cabecerSelected.getTotalconimpuestos().doubleValue()<totalPago.doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+				return;
+			}
+			
 			populatefactura(GenTipoDocumentoEnum.RECIBO);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
 			cabecerSelected.setPagoList(pagoList);
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -501,11 +527,37 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	public void generarFactura() {
 		try {
 			
+			// validar cliente
+			if(cabecerSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				return;
+			}
+			
+			// validar estado
+			if(cabecerSelected.getIdcabecera()!=null) {
+				
+				String analisisEstado = cabeceraServicio.analizarEstadoFactura(cabecerSelected.getIdcabecera(), "GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+				
+			}
+			
+			// validar el valor
+			if(totalPago.doubleValue()<cabecerSelected.getTotalconimpuestos().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+				return;
+			}
+			
 			populatefactura(GenTipoDocumentoEnum.FACTURA);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
 			cabecerSelected.setPagoList(pagoList);			
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -525,13 +577,16 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		cabecerSelected.setPeriodofiscal(sf.format(new Date()));
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
-		cabecerSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		if(cabecerSelected.getSecuencial()==null) {
+			cabecerSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
+					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			// clave de acceso
+			cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+		}
+		
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
-		// clave de acceso
-		cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 		
 		// tabla de total impuesto
 		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();

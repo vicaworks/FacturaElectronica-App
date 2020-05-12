@@ -98,6 +98,8 @@ public class Detalle implements Serializable {
     @Transient
     private List<Detalleimpuesto> detalleimpuestoList;
 	
+    @Transient
+    private String idUsuarioEliminacion;
 	/**
 	 * 
 	 */
@@ -336,6 +338,20 @@ public class Detalle implements Serializable {
 	 */
 	public void setDetalleimpuestoList(List<Detalleimpuesto> detalleimpuestoList) {
 		this.detalleimpuestoList = detalleimpuestoList;
+	}
+
+	/**
+	 * @return the idUsuarioEliminacion
+	 */
+	public String getIdUsuarioEliminacion() {
+		return idUsuarioEliminacion;
+	}
+
+	/**
+	 * @param idUsuarioEliminacion the idUsuarioEliminacion to set
+	 */
+	public void setIdUsuarioEliminacion(String idUsuarioEliminacion) {
+		this.idUsuarioEliminacion = idUsuarioEliminacion;
 	}
 
 	

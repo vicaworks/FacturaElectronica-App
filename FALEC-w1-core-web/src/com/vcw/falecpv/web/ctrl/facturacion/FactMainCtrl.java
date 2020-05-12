@@ -503,6 +503,11 @@ public class FactMainCtrl extends BaseCtrl {
 				}
 			}
 			
+			if(cabeceraFac.getDetalleEliminarList()==null) {
+				cabeceraFac.setDetalleEliminarList(new ArrayList<>());
+			}
+			detalleSelected.setIdUsuarioEliminacion(AppJsfUtil.getUsuario().getIdusuario());
+			cabeceraFac.getDetalleEliminarList().add(detalleSelected);
 			detalleFacList.remove(detalleSelected);
 			if(detalleFacList.isEmpty()) {
 				detalleSelected=null;

@@ -165,6 +165,9 @@ public class Cabecera implements Serializable {
     
     @Transient
     private List<Pago> pagoList;
+    
+    @Transient
+    private List<Detalle> detalleEliminarList;
 
 	/**
 	 * 
@@ -741,6 +744,20 @@ public class Cabecera implements Serializable {
 	 */
 	public void setPagoList(List<Pago> pagoList) {
 		this.pagoList = pagoList;
+	}
+
+	/**
+	 * @return the detalleEliminarList
+	 */
+	public List<Detalle> getDetalleEliminarList() {
+		return detalleEliminarList;
+	}
+
+	/**
+	 * @param detalleEliminarList the detalleEliminarList to set
+	 */
+	public void setDetalleEliminarList(List<Detalle> detalleEliminarList) {
+		this.detalleEliminarList = detalleEliminarList;
 	}
 
 }
