@@ -48,14 +48,14 @@ public class ComprobanteHelper {
 		autorizacion += TextoUtil.leftPadTexto(cabecerafac.getEstablecimiento().getCodigoestablecimiento(), 3, "0");
 		//digitos 28 a 30 : punto de emision
 		autorizacion += TextoUtil.leftPadTexto(cabecerafac.getEstablecimiento().getPuntoemision(), 3, "0");
-		//digitos 28 a 30 : punto de emision
+		//digitos 31 a 39 : punto de emision
 		autorizacion += cabecerafac.getSecuencial();
-		//digitos 10 a 47 : aleatorio
+		//digitos 40 a 47 : aleatorio
 		autorizacion += TextoUtil.leftPadTexto(aleatorio, 8, "0");
 		//digitos 48 : tipo emision
 		autorizacion += "1";
 		// algoritmo mod11
-		autorizacion = mod11(autorizacion);
+		autorizacion += mod11(autorizacion);
 		
 		return autorizacion;
 	}
@@ -213,6 +213,7 @@ public class ComprobanteHelper {
 			Infoadicional ia = new Infoadicional();
 			ia.setNombre("email");
 			ia.setValor(cabeceraFac.getCliente().getCorreoelectronico());
+			infoadicionalList.add(ia);
 			
 		}
 		

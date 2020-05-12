@@ -477,6 +477,7 @@ public class FactMainCtrl extends BaseCtrl {
 			}
 			
 			FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
+			cabeceraFac.setDetalleList(detalleFacList);
 			fp.initPago(cabeceraFac);
 			
 			return "./puntoVentaPago.jsf?faces-redirect=true";

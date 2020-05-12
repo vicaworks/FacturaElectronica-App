@@ -120,10 +120,10 @@
     				<p:commandButton value="ATRAS" icon="fa fa-backward" action="./puntoVenta.jsf?faces-redirect=true" immediate="true" styleClass="secondary-button Wid100"/>
     			</div>
     			<div class="p-col-12 p-md-3">
-    				<p:commandButton value="RECIBO" icon="fa fa-file-text" action="#" update="" immediate="" styleClass="succes-btn Wid100"/>
+    				<p:commandButton value="RECIBO" icon="fa fa-file-text" action="#{factMainPagoCtrl.generarRecibo()}" update=":formMain:msgFormMain" styleClass="succes-btn Wid100"/>
     			</div>
     			<div class="p-col-12 p-md-3">
-    				<p:commandButton value="FACTURA" icon="fa fa-file-code-o" action="#" update="" immediate="" styleClass="danger-btn Wid100"/>
+    				<p:commandButton value="FACTURA" icon="fa fa-file-code-o" action="#{factMainPagoCtrl.generarFactura()}" update=":formMain:msgFormMain" styleClass="danger-btn Wid100"/>
     			</div>
 	    	</div>
 	    	<div class="EmptyBox5"/>

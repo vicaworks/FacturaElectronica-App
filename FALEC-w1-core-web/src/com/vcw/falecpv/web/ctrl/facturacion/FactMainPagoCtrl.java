@@ -30,6 +30,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -62,6 +63,9 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	
 	@EJB
 	private CabeceraServicio cabeceraServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 	
 	
 	private Cabecera cabecerSelected;
@@ -500,7 +504,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			populatefactura(GenTipoDocumentoEnum.FACTURA);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
-			cabecerSelected.setPagoList(pagoList);
+			cabecerSelected.setPagoList(pagoList);			
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			
 		} catch (Exception e) {
@@ -511,10 +515,11 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	
 	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
+		cabecerSelected.setTipoemision("1");
 		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 		
-		cabecerSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		SimpleDateFormat sf = new SimpleDateFormat("MM-yyyy");
 		cabecerSelected.setPeriodofiscal(sf.format(new Date()));
@@ -532,6 +537,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
 		totalimpuestoList.addAll(ComprobanteHelper.determinarIva(cabecerSelected.getDetalleList()));
 		totalimpuestoList.addAll(ComprobanteHelper.determinarIce(cabecerSelected.getDetalleList()));
+		cabecerSelected.setTotalimpuestoList(totalimpuestoList);
 		
 		// detalle impuesto
 		ComprobanteHelper.determinarDetalleImpuesto(cabecerSelected.getDetalleList());
