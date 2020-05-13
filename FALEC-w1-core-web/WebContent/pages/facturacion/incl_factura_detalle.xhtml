@@ -1,0 +1,204 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.pvDetalleDT .ui-datatable-scrollable-body{
+			min-height: 20vh !important;
+			height: calc(100vh - 360px)!important;
+		}
+		
+		.divTotal{
+			/* width: 100%; */
+			margin: 0px;
+			padding: auto !important;
+			background-color: #252529;
+			color: yellow;
+			text-align: center;
+			font-size: 4em;
+			border-radius: 4px;
+		}
+		
+	</style>
+	
+	<div class="card card-w-title">
+		
+		<div class="EmptyBox5"/>
+		<!-- Opciones -->
+		<div class="p-grid p-justify-center">
+			
+			<div class="p-col-12 p-md-6">
+ 				<p:commandButton id="cmdFacProducto"
+					value="AGREGAR PRODUCTO" icon="fa fa-search" 
+					action="#" styleClass="secondary-button Wid100" update="@form" immediate="true">
+				</p:commandButton>
+			</div>
+			
+			<div class="p-col-12 p-md-6">
+ 				<p:commandButton id="cmdFacDetalle"
+					value="AGREGAR DETALLE OTROS" icon="fa fa-plus" 
+					action="#" styleClass="secondary-button Wid100" update="@form" immediate="true">
+				</p:commandButton>
+			</div>
+			
+		</div>
+		
+		<div class="EmptyBox10"/>
+		
+		<div class="p-grid">
+				
+			<!-- Codigo de barra -->
+			<div class="p-col-12">
+				<div class="p-grid">
+					<div class="p-col-12 p-md-8">
+						<div class="ui-inputgroup">
+		                    <span class="ui-inputgroup-addon">
+		                        <i class="fa fa-barcode Fs16" style="margin-top: 5px;"></i>
+		                    </span>
+		                    <p:inputText id="intCriterioBusqueda" value="" placeholder="#{msg['label.codigo2']} de barra / producto" styleClass="Wid100 Fs12" onkeydown="if(event.keyCode==13){event.keyCode=123;; return false;}" >
+		                    </p:inputText>
+		                </div>	
+	                    <!-- <p:message for="intCriterioBusqueda" styleClass="Wid100"/> -->      
+					</div>
+					<div class="p-col-12 p-md-4">
+						<p:commandButton id="cmdConsultarProducto"
+						value="CONSULTAR" icon="fa fa-search" 
+						action="#" styleClass="Fs16 Wid100 displayButton" update=":formMain:msgFormMain" process="@this :formMain:intCriterioBusqueda"/>
+					</div>
+				</div>
+			</div>
+			
+			<!-- detalle factura -->
+			
+			<div class="p-col-12">
+				
+				<p:dataTable id="pvDetalleDT" var="d"
+						value="#{factMainCtrl.detalleFacList}" scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvDetalleDT Fs11"  
+						rowKey="#{d.iddetalle}"
+						selectionMode="single"
+						selection="#{factMainCtrl.detalleSelected}">
+						
+						
+					<p:column headerText="ITEM" style="width:90%;" >
+					
+						<div class="EmptyBox5"/>
+						<div class="p-grid p-align-center vertical-container">
+							<div class="p-col-9">
+								<div class="p-grid">
+									<div class="p-col-12">
+										<h:outputText value="#{d.descripcion}" styleClass="Fs12 FontBold"/>
+									</div>
+									<div class="p-md-4">
+										<h:outputText value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										
+										<h:outputText value="#{d.cantidad}" styleClass="Fs10">
+											<f:convertNumber locale="es_EC" pattern="0.##"/>
+										</h:outputText>
+										
+									</div>
+									<div class="p-md-4">
+										<h:outputText value="P.UNI" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<h:outputText value="#{d.preciounitario}" styleClass="Fs10">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+									</div>
+									<div class="p-md-4">
+										<h:outputText value="DES" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<h:outputText value="#{d.descuento}" styleClass="Fs10">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+									</div>
+								</div>
+							</div>
+							<div class="p-col-3" style="text-align: right;">
+								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
+									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+								</h:outputText>
+							</div>
+						</div>
+						
+					</p:column>			
+					
+					<p:column style="width:10%;" styleClass="TexAlCenter">
+						<div class="EmptyBox10"/>
+						<p:commandLink id="clkEliminar" action="#" update=":formMain:pvDetalleDT :formMain:msgFormMain">
+							<i class="fa fa-trash Fs18" style="color:red;"></i>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+						</p:commandLink>
+					</p:column>	
+						
+				</p:dataTable>
+				
+				
+			</div>
+			
+			<!-- Totales -->
+			
+			<div class="p-col-12">
+				<div class="p-grid">
+					<!-- Subtotales -->
+					<div class="p-col-12 p-md-5">
+
+						<p:panelGrid id="gridSubtotales" columns="2"
+							styleClass="ui-panelgrid-blank Wid100 Fs14"
+							columnClasses="ui-g-6,ui-g-6">
+							
+							<h:outputText value="SUBTOTAL:" styleClass="FontBold"/>
+							<h:outputText value="#{1500.25}" >
+								<f:convertNumber pattern="$ #,##0.00" locale="es_EC"/>
+							</h:outputText>
+							
+							<h:outputText value="DESCUENTO:" styleClass="FontBold" />
+							<h:outputText value="#{100.10}" >
+								<f:convertNumber pattern="$ #,##0.00" locale="es_EC"/>
+							</h:outputText>
+							
+							<h:outputText value="BASE IMPONIBLE:" styleClass="FontBold" />
+							<h:outputText value="#{1400.15}" >
+								<f:convertNumber pattern="$ #,##0.00" locale="es_EC"/>
+							</h:outputText>
+							
+							<h:outputText value="I.C.E.:" styleClass="FontBold" />
+							<h:outputText value="#{4.15}" >
+								<f:convertNumber pattern="$ #,##0.00" locale="es_EC"/>
+							</h:outputText>
+							
+							<h:outputText value="I.V.A.:" styleClass="FontBold" />
+							<h:outputText value="#{8.10}" >
+								<f:convertNumber pattern="$ #,##0.00" locale="es_EC"/>
+							</h:outputText>
+							
+						</p:panelGrid>
+
+
+					</div>
+					
+					<!-- Total -->
+					<div class="p-col-12 p-md-7 divTotal">
+											
+						<h:outputText value="#{1422.58}" >
+							<f:convertNumber pattern="$ #,##0.00" locale="es_EC"/>
+						</h:outputText>
+						
+					</div>
+					
+				
+				
+				</div>
+			</div>
+			
+			
+		</div>
+		
+				
+	</div>
+	
+	
+</ui:composition>
