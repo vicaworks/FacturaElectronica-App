@@ -10,6 +10,8 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.omnifaces.util.Ajax;
+
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -17,6 +19,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -42,6 +45,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	private String formModule;
 	private String viewUpdate;
 	private String criterioBusqueda;
+	private String onComplete="";
 	
 	/**
 	 * 
@@ -99,7 +103,18 @@ public class ListaProductoCtrl extends BaseCtrl {
 				adquisicionFrmCtrl.agregarProducto(productoSelected);
 				AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
 				break;
-
+			
+			case "FACTURA_FORM2":
+				CompFacCtrl compFacCtrl = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
+				compFacCtrl.setProductoSelected(productoSelected);
+				compFacCtrl.agregarProducto();
+				AppJsfUtil.hideModal("dlgListaProducto");
+				// foco a la lista
+				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
+				//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
+				//AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
+				break;
+				
 			default:
 				AppJsfUtil.hideModal("dlgListaProducto");
 				break;
@@ -207,6 +222,20 @@ public class ListaProductoCtrl extends BaseCtrl {
 	 */
 	public void setFormModule(String formModule) {
 		this.formModule = formModule;
+	}
+
+	/**
+	 * @return the onComplete
+	 */
+	public String getOnComplete() {
+		return onComplete;
+	}
+
+	/**
+	 * @param onComplete the onComplete to set
+	 */
+	public void setOnComplete(String onComplete) {
+		this.onComplete = onComplete;
 	}
 
 }
