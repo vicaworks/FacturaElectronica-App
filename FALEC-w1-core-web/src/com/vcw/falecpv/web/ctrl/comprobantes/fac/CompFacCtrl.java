@@ -14,16 +14,20 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.omnifaces.util.Ajax;
+
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
+import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
@@ -82,6 +86,7 @@ public class CompFacCtrl extends BaseCtrl {
 	private List<Pago> pagoList;
 	private Pago pagoSelected;
 	private BigDecimal totalPago = BigDecimal.ZERO;
+	private BigDecimal totalSaldo = BigDecimal.ZERO;
 	private List<Detalle> detalleFacList;
 	private Detalle detalleSelected;
 	private List<Producto> productoList;
@@ -107,6 +112,8 @@ public class CompFacCtrl extends BaseCtrl {
 			detalleSelected = null;
 			criterioBusqueda = null;
 			consultarProductos();
+			consultarIce();
+			consultarIva();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,6 +201,9 @@ public class CompFacCtrl extends BaseCtrl {
 		pagoList = null;
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
+		totalSaldo = BigDecimal.ZERO;
+		consultarIce();
+		consultarIva();
 	}
 	
 	public void agregarProducto() {
@@ -237,8 +247,9 @@ public class CompFacCtrl extends BaseCtrl {
 	}
 	
 	
-	public void calcularItemAction(boolean calcDescuento) {
+	public void calcularItemAction(boolean calcDescuento,Detalle det) {
 		try {
+			detalleSelected = det;
 			calcularItem(detalleSelected,calcDescuento);
 			totalizar();
 		} catch (Exception e) {
@@ -293,6 +304,10 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setTotalsinimpuestos(cabecerSelected.getTotalsinimpuestos().setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalconimpuestos(cabecerSelected.getTotalsinimpuestos().add(cabecerSelected.getTotaliva()).add(cabecerSelected.getTotalice()).setScale(2, RoundingMode.HALF_UP));
 		
+		if(totalPago!=null && totalPago.doubleValue()>0) {
+			totalizarPago();
+		}
+		
 	}
 	
 	private Detalle existeProductoLista() {
@@ -327,6 +342,7 @@ public class CompFacCtrl extends BaseCtrl {
 			
 			calcularItem(detalleSelected, false);
 			totalizar();
+			Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (detalleFacList.size()-1) + ":intDetNombreProducto');");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -365,6 +381,149 @@ public class CompFacCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public void agregarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) {
+		try {
+			
+			if(cabecerSelected == null) {
+				return;
+			}
+			
+			if (cabecerSelected.getTotalsinimpuestos().doubleValue()<=0) {
+				return;
+			}
+			
+			if (pagoList==null) {
+				pagoList = new ArrayList<>();
+			}
+			
+			Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum,
+					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+			
+			boolean flag = false;
+			for (Pago p : pagoList) {
+				if(p.getTipopago().equals(tp) && !tipoPagoFormularioEnum.isRepetir()) {
+					pagoSelected = p;
+					flag = true;
+					break;
+				}
+			}
+			
+			totalizarPago();
+			if(!flag) {
+				pagoSelected = new Pago();
+				pagoSelected.setTipoPagoFormularioEnum(tipoPagoFormularioEnum);
+				pagoSelected.setCabecera(cabecerSelected);
+				pagoSelected.setTipopago(tp);
+				pagoSelected.setTotal(cabecerSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+				pagoSelected.setPlazo(BigDecimal.ZERO);
+				pagoSelected.setUnidadtiempo("DIAS");
+				pagoList.add(pagoSelected);
+				totalizarPago();
+			}
+			
+			switch (tipoPagoFormularioEnum) {
+			case EFECTIVO:
+				Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
+				break;
+			case CREDITO:
+				Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
+				break;	
+			default:
+				Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
+				break;
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void totalizarPago() {
+		
+		totalPago = BigDecimal.ZERO;
+		totalSaldo = BigDecimal.ZERO;
+		if(pagoList==null) {
+			return;
+		}
+		int cont = 1;
+		for (Pago p : pagoList) {
+			if(p.getIdpago()==null || p.getIdpago().contains("MM")) {
+				p.setIdpago("MM" + cont);
+			}
+			totalPago = totalPago.add(p.getTotal());
+			cont++;
+		}
+		
+		totalPago = totalPago.setScale(2, RoundingMode.HALF_UP);
+		
+		totalSaldo = cabecerSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
+		if(totalSaldo.doubleValue()<0) {
+			totalSaldo = BigDecimal.ZERO;
+		}
+		
+	}
+	
+	public void calcularCambioAction(Pago p) {
+		try {
+			pagoSelected = p;
+			if(pagoSelected.getValorentrega().doubleValue()==0) {
+				pagoSelected.setCambio(BigDecimal.ZERO);
+			}else {
+				pagoSelected.setCambio(pagoSelected.getValorentrega().add(pagoSelected.getTotal().negate()).setScale(2, RoundingMode.HALF_UP));
+				if(pagoSelected.getCambio().doubleValue()<0) {
+					pagoSelected.setCambio(BigDecimal.ZERO);
+				}
+			}
+			totalizarPago();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void totalizarPagoaction(Pago p) {
+		try {
+			pagoSelected = p;
+			if(pagoSelected.getTipoPagoFormularioEnum().equals(TipoPagoFormularioEnum.EFECTIVO)) {
+				calcularCambioAction(p);
+			}
+			totalizarPago();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	
+	public void eliminarDetallePago() {
+		
+		try {
+			
+			for (Pago p : pagoList) {
+				if(pagoSelected.getIdpago().equals(p.getIdpago())) {
+					break;
+				}
+			}
+			
+			pagoList.remove(pagoSelected);
+			if(pagoList.isEmpty()) {
+				pagoSelected=null;
+			}else {
+				pagoSelected = pagoList.get(pagoList.size()-1);
+			}
+			
+			totalizarPago();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
 	}
 
 	/**
@@ -547,6 +706,20 @@ public class CompFacCtrl extends BaseCtrl {
 	 */
 	public void setIvaList(List<Iva> ivaList) {
 		this.ivaList = ivaList;
+	}
+
+	/**
+	 * @return the totalSaldo
+	 */
+	public BigDecimal getTotalSaldo() {
+		return totalSaldo;
+	}
+
+	/**
+	 * @param totalSaldo the totalSaldo to set
+	 */
+	public void setTotalSaldo(BigDecimal totalSaldo) {
+		this.totalSaldo = totalSaldo;
 	}
 
 }

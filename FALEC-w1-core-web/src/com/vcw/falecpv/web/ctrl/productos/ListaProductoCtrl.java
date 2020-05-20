@@ -21,6 +21,7 @@ import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -84,7 +85,8 @@ public class ListaProductoCtrl extends BaseCtrl {
 
 	public void cargarPantalla() {
 		try {
-			
+			productoSelected = null;
+			criterioBusqueda = null;
 			consultarProductos();
 			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
 			
@@ -97,6 +99,12 @@ public class ListaProductoCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
+			
+			if(productoSelected==null) {
+				AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", "NO EXISTE PRODUCTO SELECCIONADO");
+				return;
+			}
+			
 			
 			switch (callModule) {
 			case "ADQUISICION":
@@ -119,6 +127,19 @@ public class ListaProductoCtrl extends BaseCtrl {
 				AppJsfUtil.hideModal("dlgListaProducto");
 				break;
 			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void establecerFocoProducto() {
+		try {
+			
+			productoSelected = productoList.stream().filter(x->x.getIdproducto().equals(FacesUtils.getParameter("idProducto"))).findFirst().get();
+			
+			System.out.println(productoSelected.toStringObject());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

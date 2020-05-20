@@ -10,10 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.servitec.common.util.PojoUtil;
+import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 
 /**
  * @author cristianvillarreal
@@ -69,6 +71,9 @@ public class Pago implements Serializable{
     @JoinColumn(name = "idtipopago", referencedColumnName = "idtipopago", nullable = false)
     @ManyToOne(optional = false)
     private Tipopago tipopago;
+    
+    @Transient
+    private TipoPagoFormularioEnum tipoPagoFormularioEnum;
 
 	public Pago() {
 	}
@@ -249,6 +254,20 @@ public class Pago implements Serializable{
 	 */
 	public void setTipopago(Tipopago tipopago) {
 		this.tipopago = tipopago;
+	}
+
+	/**
+	 * @return the tipoPagoFormularioEnum
+	 */
+	public TipoPagoFormularioEnum getTipoPagoFormularioEnum() {
+		return tipoPagoFormularioEnum;
+	}
+
+	/**
+	 * @param tipoPagoFormularioEnum the tipoPagoFormularioEnum to set
+	 */
+	public void setTipoPagoFormularioEnum(TipoPagoFormularioEnum tipoPagoFormularioEnum) {
+		this.tipoPagoFormularioEnum = tipoPagoFormularioEnum;
 	}
 
 }

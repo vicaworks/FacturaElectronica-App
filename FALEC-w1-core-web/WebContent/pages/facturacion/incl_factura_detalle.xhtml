@@ -51,7 +51,7 @@
 			<div class="p-col-12 p-md-6">
  				<p:commandButton id="cmdFacProducto"
 					value="BUSCAR PRODUCTO" icon="fa fa-search" 
-					action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form" process="@this :formMain:pvDetalleDT">
+					action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
 					
 					<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 					<f:setPropertyActionListener value="FACTURA_FORM2" target="#{listaProductoCtrl.callModule}"/>
@@ -64,8 +64,7 @@
 			<div class="p-col-12 p-md-6">
  				<p:commandButton id="cmdFacDetalle"
 					value="AGREGAR ITEM OTROS" icon="fa fa-plus" 
-					action="#{compFacCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal" process="@this :formMain:pvDetalleDT"
-					oncomplete="PrimeFaces.focus('formMain:pvDetalleDT:' + #{compFacCtrl.detalleFacList.size()} + ':intDetNombreProducto')">
+					action="#{compFacCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal" process="@this :formMain:pvDetalleDT">
 				</p:commandButton> 
 			</div>
 			
@@ -108,7 +107,8 @@
 						selectionMode="single"
 						selection="#{compFacCtrl.detalleSelected}">
 						
-					
+					<p:ajax event="rowSelect"  update=":formMain:pvDetalleDT">
+					</p:ajax>
 					<!-- item con producto -->	
 					<p:column headerText="ITEM" style="width:90%;" rendered="#{d.producto!=null}">
 					
@@ -123,7 +123,7 @@
 										<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100">
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(true)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 										</p:spinner>
 									</div>
 									<div class="p-md-3 dt-spinner">
@@ -131,7 +131,7 @@
 										<h:outputText value="P.UNITARIO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100">
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(true)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 										</p:spinner>
 										
 									</div>
@@ -140,7 +140,7 @@
 										<h:outputText value="DESCUTO($)" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8" >
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 										</p:spinner>
 										
 									</div>
@@ -157,7 +157,7 @@
 											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
 												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
 											
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 											
 										</p:selectOneMenu>
 									</div>
@@ -174,7 +174,7 @@
 											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
 												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 												
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 											
 										</p:selectOneMenu>
 									</div>
@@ -204,7 +204,7 @@
 										<h:outputText id="intDetFacCantidad2" value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:spinner id="insDetFacCanbtidad2" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100">
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 										</p:spinner>
 									</div>
 									<div class="p-md-3 dt-spinner">
@@ -212,7 +212,7 @@
 										<h:outputText value="P.UNITARIO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100">
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 										</p:spinner>
 										
 									</div>
@@ -221,7 +221,7 @@
 										<h:outputText value="DESCUENTO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}">
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 										</p:spinner>
 										
 									</div>
@@ -239,7 +239,7 @@
 											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
 												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
 											
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 											
 										</p:selectOneMenu>
 									</div>
@@ -256,7 +256,7 @@
 											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
 												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 												
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
+											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal"/>
 											
 										</p:selectOneMenu>
 									</div>

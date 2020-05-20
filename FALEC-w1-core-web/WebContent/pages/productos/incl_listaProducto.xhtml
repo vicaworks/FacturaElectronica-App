@@ -21,9 +21,14 @@
 		
 		<h:form id="frmListProducto">
 			
+			<p:remoteCommand name="agregarProducto" action="#{listaProductoCtrl.guardar()}" update="@form #{listaProductoCtrl.viewUpdate}"/>
+			<p:remoteCommand name="buscarProducto" action="#{listaProductoCtrl.refrescar()}" update="@form"/>
+			<p:remoteCommand name="establecerProducto" action="#{listaProductoCtrl.establecerFocoProducto}" update="@form"/>
+			
+			
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp" >
+			<div class="p-grid toolBarPopUp">
 				
 				<div class="p-col-12" style="text-align:left;">					
 					
@@ -33,7 +38,9 @@
 							<p:inputText id="intListProCriterioBusqueda"
 								value="#{listaProductoCtrl.criterioBusqueda}" required="false"
 								requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
-								placeholder="BUSCAR POR : #{msg['label.categoria']}, NOMBRE PRODUCTO, #{msg['label.codigo']} PRODUCTO" />
+								placeholder="BUSCAR POR : #{msg['label.categoria']}, NOMBRE PRODUCTO, #{msg['label.codigo']} PRODUCTO" 
+								onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}">
+							</p:inputText>
 						</div>
 						<div class="p-col-12 p-md-6">
 						
@@ -74,7 +81,13 @@
 	                paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-	                paginatorPosition="bottom">
+	                paginatorPosition="bottom"
+	                selectionMode="single"
+	                selection="#{listaProductoCtrl.productoSelected}">
+	                
+	                <p:ajax event="rowSelect" listener="#{listaProductoCtrl.guardar()}" update="@form #{listaProductoCtrl.viewUpdate}">
+	                	<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
+					</p:ajax>
 	                
 	                
 	                <p:column headerText="#{msg['label.codigo']}" style="width:30px;" filterBy="#{pr.codigoprincipal}" filterMatchMode="contains">
@@ -101,17 +114,29 @@
 	                </p:column>
 					
 					<p:column headerText="CANTIDAD" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProCantidad" value="#{pr.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0"/>
+	                	<p:spinner id="idListProCantidad" value="#{pr.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])">
+	                		<p:ajax update=":frmListProducto:listaProductoDT">
+	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
+	                		</p:ajax>
+	                	</p:spinner>
 	                	<p:message for="idListProCantidad"/>
 	                </p:column>
 	                
 	                <p:column headerText="PRE UNIT" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProPUnitario" value="#{pr.preciounitario}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100" decimalPlaces="2"/>
+	                	<p:spinner id="idListProPUnitario" value="#{pr.preciounitario}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100" decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}">
+	                		<p:ajax update=":frmListProducto:listaProductoDT">
+	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
+	                		</p:ajax>
+	                	</p:spinner>
 	                	<p:message for="idListProPUnitario"/>
 	                </p:column>
 	                
 	                <p:column headerText="DESCUENTO % Ejm 5.5" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProDescuento" value="#{pr.porcentajedescuento}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2"/>
+	                	<p:spinner id="idListProDescuento" value="#{pr.porcentajedescuento}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}">
+	                		<p:ajax update=":frmListProducto:listaProductoDT">
+	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
+	                		</p:ajax>
+	                	</p:spinner>
 	                	<p:message for="idListProDescuento"/>
 	                </p:column>
 					
