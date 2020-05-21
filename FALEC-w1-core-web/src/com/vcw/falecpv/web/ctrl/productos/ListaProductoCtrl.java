@@ -105,7 +105,6 @@ public class ListaProductoCtrl extends BaseCtrl {
 				return;
 			}
 			
-			
 			switch (callModule) {
 			case "ADQUISICION":
 				adquisicionFrmCtrl.agregarProducto(productoSelected);
@@ -119,6 +118,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 				AppJsfUtil.hideModal("dlgListaProducto");
 				// foco a la lista
 				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
+				
 				//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
 				//AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
 				break;

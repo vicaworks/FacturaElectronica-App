@@ -113,6 +113,12 @@
 					    </p:overlayPanel>
 	                </p:column>
 					
+					<p:column headerText="STOCK" style="width:30px;" styleClass="TexAlCenter">
+						<h:outputText value="#{pr.stock}" styleClass="#{pr.stock.doubleValue()==0.0?'markRed':'markGreen'}" rendered="#{pr.tipoProducto.nombre=='PRODUCTO'}">
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</p:column>
+					
 					<p:column headerText="CANTIDAD" styleClass="TexAlCenter" style="width:40px;">
 	                	<p:spinner id="idListProCantidad" value="#{pr.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])">
 	                		<p:ajax update=":frmListProducto:listaProductoDT">

@@ -6,6 +6,7 @@ package com.vcw.falecpv.core.dao.impl;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -117,6 +118,31 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param codigoPrincipal
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public Producto getByCodigoPrincipal(String codigoPrincipal,String idEstablecimiento)throws DaoException{
+		try {
+			
+			String sql = "SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND p.estado='A' AND p.codigoprincipal=:codigoprincipal "; 
+			Query q = getEntityManager().createQuery(sql);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("codigoprincipal", codigoPrincipal);
+			
+			return (Producto) q.getSingleResult();
+			
+		} catch (NoResultException e) {
+			return null;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		} 
 	}
 	
 	

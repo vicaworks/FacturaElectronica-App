@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.ctrl.comprobantes.fac;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,8 +20,13 @@ import org.omnifaces.util.Ajax;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
+import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
@@ -28,6 +34,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
+import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
@@ -79,7 +86,6 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	@EJB
 	private IceServicio iceServicio;
-
 	
 	private Cabecera cabecerSelected;
 	private String criterioCliente;
@@ -195,6 +201,8 @@ public class CompFacCtrl extends BaseCtrl {
 	}
 	
 	public void nuevaFactura() throws DaoException {
+		criterioBusqueda = null;
+		criterioCliente = null;
 		cabecerSelected = new Cabecera();
 		cabecerSelected.setFechaemision(new Date());
 		criterioCliente = null;
@@ -217,7 +225,7 @@ public class CompFacCtrl extends BaseCtrl {
 			boolean existe = false;
 			if(detalleSelected!=null) {
 				detalleSelected.setCantidad(
-						productoSelected.getCantidad() != null ? BigDecimal.valueOf(productoSelected.getCantidad())
+						productoSelected.getCantidad() != null ? detalleSelected.getCantidad().add(BigDecimal.valueOf(productoSelected.getCantidad()))
 								: BigDecimal.valueOf(1));
 				existe = true;
 			}else {
@@ -523,6 +531,162 @@ public class CompFacCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+		
+	}
+	
+	public void buscarCodigoProducto() {
+		try {
+			
+			if(criterioBusqueda!=null && criterioBusqueda.trim().length()==0) {
+				return;
+			}
+			
+			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			
+			if(productoSelected==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE : " + criterioBusqueda);
+				return;
+			}
+			productoSelected.setCantidad(1);
+			agregarProducto();
+			criterioBusqueda = null;
+//			Ajax.oncomplete("PrimeFaces.focus('formMain:intCriterioBusqueda')");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void generarRecibo() {
+		try {
+			
+			// validar cliente
+			if(cabecerSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				return;
+			}
+			
+			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "FACTURA SIN DETALLE DE FACTURACION.");
+				return;
+			}
+			
+			// validar estado
+			if(cabecerSelected.getIdcabecera()!=null) {
+				
+				String analisisEstado = cabeceraServicio.analizarEstadoRecibo(cabecerSelected.getIdcabecera(), "GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+				
+			}
+			
+			// validar el valor
+			if(cabecerSelected.getTotalconimpuestos().doubleValue()<totalPago.doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+				return;
+			}
+			
+			cabecerSelected.setDetalleList(detalleFacList);
+			cabecerSelected.setPagoList(pagoList);
+			populatefactura(GenTipoDocumentoEnum.RECIBO);
+			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			cabecerSelected.setUpdated(new Date());
+			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void generarFactura() {
+		try {
+			
+			// validar cliente
+			if(cabecerSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				return;
+			}
+			
+			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "FACTURA SIN DETALLE DE FACTURACION.");
+				return;
+			}
+			
+			// validar estado
+			if(cabecerSelected.getIdcabecera()!=null) {
+				
+				String analisisEstado = cabeceraServicio.analizarEstadoFactura(cabecerSelected.getIdcabecera(), "GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+				
+			}
+			
+			// validar el valor
+			if(totalPago.doubleValue()<cabecerSelected.getTotalconimpuestos().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+				return;
+			}
+			
+			cabecerSelected.setDetalleList(detalleFacList);
+			cabecerSelected.setPagoList(pagoList);	
+			populatefactura(GenTipoDocumentoEnum.FACTURA);
+			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			cabecerSelected.setUpdated(new Date());
+			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
+		
+		cabecerSelected.setTipoemision("1");
+		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		
+		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		SimpleDateFormat sf = new SimpleDateFormat("MM-yyyy");
+		cabecerSelected.setPeriodofiscal(sf.format(new Date()));
+		cabecerSelected.setContribuyenteespecial("5368");
+		cabecerSelected.setMoneda("DOLAR");
+		if(cabecerSelected.getSecuencial()==null) {
+			cabecerSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
+					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			// clave de acceso
+			cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+		}
+		
+		cabecerSelected.setPropina(BigDecimal.ZERO);
+		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		
+		
+		// tabla de total impuesto
+		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
+		totalimpuestoList.addAll(ComprobanteHelper.determinarIva(cabecerSelected.getDetalleList()));
+		totalimpuestoList.addAll(ComprobanteHelper.determinarIce(cabecerSelected.getDetalleList()));
+		cabecerSelected.setTotalimpuestoList(totalimpuestoList);
+		
+		// detalle impuesto
+		ComprobanteHelper.determinarDetalleImpuesto(cabecerSelected.getDetalleList());
+		
+		// infromacion adicional 
+		
+		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected));
 		
 	}
 

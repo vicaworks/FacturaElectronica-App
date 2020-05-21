@@ -121,6 +121,10 @@
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	<o:importConstants type="com.vcw.falecpv.core.constante.TipoPagoFormularioEnum" var="TipoPagoFormularioEnum" />
+    	
+    	<!-- <h:form>
+    		<p:remoteCommand name="buscarProducto" actionListener="#{compFacCtrl.buscarCodigoProducto}" update=":formMain:msgFormMain :formMain:intCriterioBusqueda :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:intCriterioBusqueda"/>
+    	</h:form> -->
     
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
@@ -145,13 +149,13 @@
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenFactura"
 										value="FACTURA" icon="fa fa-floppy-o" 
-										action="#" styleClass="danger-btn Wid100" update="@form"/>
+										action="#{compFacCtrl.generarFactura()}" styleClass="danger-btn Wid100" update=":formMain:msgFormMain"/>
 							</div>
 							
 							<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenRecibo"
 										value="RECIBO" icon="fa fa-floppy-o" 
-										action="#" styleClass="secondary-button Wid100" update="@form"/>
+										action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100" update=":formMain:msgFormMain"/>
 							</div>
 							
 	    					
