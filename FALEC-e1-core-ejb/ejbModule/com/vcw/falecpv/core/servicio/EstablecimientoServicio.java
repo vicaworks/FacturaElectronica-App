@@ -34,6 +34,8 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 	@Inject
 	private CategoriaDao categoriaDao;
 
+    public final static String formato="%09d";
+    
 	public void setEstablecimientoDao(EstablecimientoDao establecimientoDao) {
 		this.establecimientoDao = establecimientoDao;
 	}
@@ -79,9 +81,11 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 	public Establecimiento guardar(Establecimiento establecimiento)throws DaoException{
 		try {
 			
+				
 			if (establecimiento.getIdestablecimiento()==null) {
 				establecimiento.setIdestablecimiento(contadorPkServicio.generarContadorTabla(TCEstablecimiento.ESTABLECIMIENTO, null));
-				
+				establecimiento.setCodigoestablecimiento(TextoUtil.rellenarCadenaConCeros("%03d", Integer.valueOf(establecimiento.getIdestablecimiento())));
+				establecimiento.setPuntoemision(TextoUtil.rellenarCadenaConCeros("%03d", Integer.valueOf(establecimiento.getPuntoemision())));
 				crear(establecimiento);
 			}else {
 					

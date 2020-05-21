@@ -223,6 +223,14 @@
 						</p:inputText>
 					</h:panelGroup>
 					<p:message for="intSecReten" />
+					
+					<h:outputText value="AMBIENTE * : " styleClass="cpoRequerido" />
+						<p:selectOneMenu id="intAmbienteEst" value="#{establecimientoCtrl.establecimientoSelected.ambiente}" required="true" requiredMessage="REQUERIDO">
+					            <f:selectItem itemLabel="Seleccione" itemValue="" />
+					            <f:selectItem itemLabel="Desarrollo" itemValue="1" />
+					            <f:selectItem itemLabel="Produccion" itemValue="2" />
+			         	</p:selectOneMenu>
+					<p:message for="intMatrizEst" />
 
 				</p:panelGrid> 
 

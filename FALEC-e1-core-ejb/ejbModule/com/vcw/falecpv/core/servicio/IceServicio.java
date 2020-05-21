@@ -34,6 +34,7 @@ public class IceServicio extends AppGenericService<Ice, String> {
 	@Inject
 	private ProductoDao productoDao;
 	
+	public static final String codigoIce="3";
 	
 	/**
 	 * 
@@ -76,7 +77,7 @@ public class IceServicio extends AppGenericService<Ice, String> {
 	 */
 	public Ice guardar(Ice ice)throws DaoException{
 		try {
-			
+			ice.setCodigoIce(codigoIce);
 			if (ice.getIdice()==null) {
 				ice.setIdice(contadorPkServicio.generarContadorTabla(TCIce.ICE, null));
 				

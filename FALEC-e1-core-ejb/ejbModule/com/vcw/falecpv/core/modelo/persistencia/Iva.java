@@ -47,6 +47,11 @@ public class Iva implements Serializable {
 	private String codigo;
 	@Basic(optional = false)
 	@NotNull
+	@Size(min = 1, max = 10)
+	@Column(name = "codigoiva", nullable = true, length = 10)
+	private String codigoIva;
+	@Basic(optional = false)
+	@NotNull
 	@Size(min = 1, max = 32)
 	@Column(name = "porcentaje", nullable = false, length = 32)
 	private String porcentaje;
@@ -220,6 +225,14 @@ public class Iva implements Serializable {
 	 */
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+
+	public String getCodigoIva() {
+		return codigoIva;
+	}
+
+	public void setCodigoIva(String codigoIva) {
+		this.codigoIva = codigoIva;
 	}
 
 	

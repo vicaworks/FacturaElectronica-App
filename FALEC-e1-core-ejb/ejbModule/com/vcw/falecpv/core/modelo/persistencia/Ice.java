@@ -47,6 +47,11 @@ public class Ice implements Serializable {
     @Column(name = "codigo", nullable = false, length = 4)
     private String codigo;
     @Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 1)
+	@Column(name = "codigoice", nullable = true, length = 1)
+	private String codigoIce;
+    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
     @Column(name = "descripcion", nullable = false, length = 300)
@@ -266,6 +271,14 @@ public class Ice implements Serializable {
 
 	public void setFila(int fila) {
 		this.fila = fila;
+	}
+
+	public String getCodigoIce() {
+		return codigoIce;
+	}
+
+	public void setCodigoIce(String codigoIce) {
+		this.codigoIce = codigoIce;
 	}	
 
 }

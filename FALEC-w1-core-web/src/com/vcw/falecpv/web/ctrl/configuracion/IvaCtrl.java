@@ -119,6 +119,7 @@ public class IvaCtrl extends BaseCtrl {
 		
 		try {
 			Iva ivaUpdate= new Iva();
+			
 			//validar unico codigo iva
 			if (ivaServicio.getIvaDao().existeCodigo(ivaSelected.getCodigo(), ivaSelected.getIdiva())) {
 				AppJsfUtil.addErrorMessage("frmIva", "ERROR", "CODIGO DUPLICADO");

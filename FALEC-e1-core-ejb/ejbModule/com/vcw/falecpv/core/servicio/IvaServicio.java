@@ -35,6 +35,8 @@ public class IvaServicio extends AppGenericService<Iva, String> {
 	
 	@EJB
 	private ContadorPkServicio contadorPkServicio;
+	
+	public static final String codigoIva="2";
 	/**
 	 * 
 	 */
@@ -96,7 +98,7 @@ public class IvaServicio extends AppGenericService<Iva, String> {
 	 */
 	public Iva guardar(Iva iva)throws DaoException{
 		try {
-			
+			iva.setCodigoIva(codigoIva);
 			if (iva.getIdiva()==null) {
 				iva.setIdiva(contadorPkServicio.generarContadorTabla(TCIva.IVA, null));
 				

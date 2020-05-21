@@ -99,7 +99,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			crear(cabecera);
 		}else {
 			actualizar(cabecera);
-		}
+		} 		
 		
 		// 2. total impuesto
 		totalimpuestoServicio.getTotalimpuestoDao().eliminarByCabecera(cabecera.getIdcabecera());

@@ -145,6 +145,11 @@
 						style="width:20px; text-align: center;">
 						<h:outputText value="#{estab.matriz}" />
 					</p:column>
+					
+					<p:column headerText="Ambiente"
+						style="width:20px; text-align: center;">
+						<h:outputText value="#{estab.ambiente==1? 'Desarrollo':'Produccion'}" />
+					</p:column>
 
 				</p:dataTable>
 			</div>
