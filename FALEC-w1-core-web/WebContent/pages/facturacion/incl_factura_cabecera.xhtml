@@ -10,27 +10,78 @@
 		
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
 			min-height: 20vh !important;
-			height: calc(100vh - 605px)!important;
+			height: calc(100vh - 625px)!important;
+		}
+		.ui-calendar .ui-inputfield{
+			font-size: 14px !important;
 		}
 		
+		.ui-inputfield-pago .ui-spinner-input{
+			font-size: 16px !important;
+			padding: 0.2em 1.2em !important;
+		}
+		
+		.ui-inputfield-pago .ui-inputfield {
+			font-size: 16px !important;
+			padding: 0.2em 0.5em;
+		}
+		
+		.divTotalPago{
+			background: #252529;
+			border-radius: 4px;
+			text-align: center;
+			
+		}
+		
+		.divTotalPagoSaldo{
+			background: #0fc763;
+			border-radius: 4px;
+			text-align: center;
+			color: white;
+		}
+		
+		.divTotalPagoSaldo .cabecera{
+			font-size: 10px;
+			font-weight: 800;
+			padding: 5px !important;;
+		}
+		
+		.divTotalPagoSaldo .detalle{
+			font-size: 14px;
+		}
+		
+		.divTotalPago .cabecera{
+			color: #ebebef;
+			font-size: 10px;
+			font-weight: 800;
+			padding: 5px !important;;
+		}
+		
+		.divTotalPago .detalle{
+			color: #ebebef;
+			font-size: 14px;
+		}
 	</style>
+	
+	<!-- consulta cliente return keycode 13 -->
+	<p:remoteCommand name="buscarCliente"  action="#{compFacCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente"/>
 	
 	<div class="card card-w-title">
 		
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
 			<h:panelGroup>
-				<p:calendar id="claFacFecha" value=""
+				<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
 					pattern="dd/MMMM/yyyy"
 					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs12" placeholder="FECHA EMISION">
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="FECHA EMISION" style="font-size:14px !important;">
 				</p:calendar>
 				<p:message for="claFacFecha" />
 			</h:panelGroup>
 			
 			
 			<h:panelGroup>
-				<p:commandLink action="#{factMainPagoCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:msgFormMain :formMain:gridCliente">
+				<p:commandLink action="#{compFacCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:msgFormMain :formMain:gridCliente">
 					<div class="command-btn borde-secondary">
 						<h:outputText value="CONSUMIDOR FINAL" styleClass="DispBlock"/>
 					</div>
@@ -42,18 +93,18 @@
 				<div class="ui-inputgroup">
 		            <div class="Wid100 Fs20 divValor" style="text-align: center;">
 		            	<p:inputText id="inpCriterioCliente"
-							value="" required="false"
+							value="#{compFacCtrl.criterioCliente}" required="false"
 							requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
 							maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
 							validatorMessage="SOLO NUMEROS"
-							onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
+							onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
 							<f:validateRegex pattern="^\d+$" />
 						</p:inputText>
 		            </div>
 		            <span class="ui-inputgroup-addon">
 		            	<p:commandLink process="@this :formMain:inpCriterioCliente"
 						update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" 
-						action="#">
+						action="#{compFacCtrl.buscarCliente()}">
 			                <i class="fa fa-search Fs12"></i> 
 		            	</p:commandLink>
 		            </span>      
@@ -62,7 +113,12 @@
 			</h:panelGroup>
 			
 			<h:panelGroup>
-				<p:commandLink action="#" immediate="true">
+				<p:commandLink action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true">
+				
+					<f:setPropertyActionListener value="CompFacCtrl" target="#{clienteCtrl.callModule}"/>
+					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+					
 					<div class="command-btn borde-secondary">
 						<h:outputText value="NUEVO / EDITAR CLIENTE" styleClass="DispBlock"/>
 					</div>
@@ -77,23 +133,23 @@
 									   ui-md-8">
 						
 						<h:outputText value="Nombre: " styleClass="FontBold"/>
-						<h:outputText value="#{'CRISTIAN ALEX VILLARREAL ALEMAN'}"/>
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.razonsocial}"/>
 						
 						<h:outputText value="C.I./RUC: " styleClass="FontBold"/>
-						<h:outputText value="#{'0400946125001'}"/>
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.identificacion}"/>
 						
 						<h:outputText value="Correo: " styleClass="FontBold"/>
 						<h:panelGroup>
 							<div class="OvHidden">
-								<h:outputText value="#{'cristian.villarreal.aleman@gmail.com'}" styleClass="Fs10"/>
+								<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico}" styleClass="Fs10"/>
 							</div>
 						</h:panelGroup>
 						
 						<h:outputText value="Telf: " styleClass="FontBold"/>
-						<h:outputText value="#{'023310115'}"/>
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.telefono}"/>
 						
 						<h:outputText value="Dirección: " styleClass="FontBold"/>
-						<h:outputText value="#{'Av. La prensa N42-95 y Marianco Echeverria Edifio Rendon Piso 2 Ofc 23'}"/>
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.direccion}"/>
 									   
 					</p:panelGrid>
 				</div>
@@ -108,43 +164,43 @@
 			 				ui-g-12 ui-md-4,
 			 				ui-g-12 ui-md-4">
 			
-			<p:commandLink action="#" update=":formMain:msgFormMain">
+			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 				<div class="command-btn borde-gray">
 					<h:outputText value="EFECTIVO" styleClass="DispBlock"/>
 				</div>
 			</p:commandLink>	
 			
-			<p:commandLink action="#" update=":formMain:msgFormMain">
+			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.TRANSFERENCIA)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 				<div class="command-btn borde-gray">
 					<h:outputText value="TRANSFERENCIA" styleClass="DispBlock"/>
 				</div>
 			</p:commandLink>
 			
-			<p:commandLink action="#" update=":formMain:msgFormMain">
+			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.TARJETA_CREDITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 				<div class="command-btn borde-gray">
 					<h:outputText value="TARJ CREDITO" styleClass="DispBlock"/>
 				</div>
 			</p:commandLink>
 			
-			<p:commandLink action="#" update=":formMain:msgFormMain">
+			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.TARJETA_DEBITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 				<div class="command-btn borde-gray">
 					<h:outputText value="TARJ DEBITO" styleClass="DispBlock"/>
 				</div>
 			</p:commandLink>
 			
-			<p:commandLink action="#" update=":formMain:msgFormMain">
+			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.DEPOSITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 				<div class="command-btn borde-gray">
 					<h:outputText value="DEPOSITO" styleClass="DispBlock"/>
 				</div>
 			</p:commandLink>
 			
-			<p:commandLink action="#" update=":formMain:msgFormMain">
+			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.CHEQUE)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 				<div class="command-btn borde-gray">
 					<h:outputText value="CHEQUE" styleClass="DispBlock"/>
 				</div>
 			</p:commandLink>
 			
-			<p:commandLink action="#" update=":formMain:msgFormMain">
+			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.CREDITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 				<div class="command-btn borde-gray">
 					<h:outputText value="CREDITO" styleClass="DispBlock"/>
 				</div>
@@ -161,97 +217,112 @@
 			
 			<p:dataTable id="pvPagoDetalleDT"
 	        			scrollable="true"
-	        			value="#{factMainPagoCtrl.pagoList}"
+	        			value="#{compFacCtrl.pagoList}"
 	        			var="p"
 	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
 						styleClass="pvPagoDetalleDT Fs11"  
 						rowKey="#{p.idpago}"
 						selectionMode="single"
-						selection="#{factMainPagoCtrl.pagoSelected}">
+						selection="#{compFacCtrl.pagoSelected}">
+				
+				<p:ajax event="rowSelect"  update=":formMain:pvPagoDetalleDT">
+				</p:ajax>
 				
 				<p:column headerText="ITEM" style="width:90%;">
 					
 					<div class="EmptyBox5"/>
-					<div class="p-grid p-align-center vertical-container">
+					<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
 						
-						<div class="p-col-12 p-md-4">
-							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14"/>
+						<div class="p-col-12">
+							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markBlack"/>
 						</div>
 						
-						<div class="p-col-12 p-md-8">
-							<div class="EmptyBox10"/>
+						<div class="p-col-12">
+						
 							<div class="p-grid Fs10">
 								
-								<div class="p-col-4">
-									<h:outputText value="Valor:" styleClass="FontBold"/>
-								</div>
-								<div class="p-col-8">
-									<h:outputText value="#{p.total}" styleClass="FontBold Fs12 markGreen">
-										<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-									</h:outputText>
+								<div class="p-col-12 p-md-4">
+								
+									<h:outputText value="VALOR" styleClass="FontBold Fs12"/>
+									
+									<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100">
+										<p:ajax listener="#{compFacCtrl.totalizarPagoaction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+									</p:spinner>
+									
 								</div>
 								
-								<f:subview rendered="#{p.tipopago.nombre=='EFECTIVO'}">
-													
-									<div class="p-col-4">
-										<h:outputText value="Entregado:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
-										<h:outputText value="#{p.valorentrega}" styleClass="FontBold">
-											<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-										</h:outputText>
-									</div>
+								<div class="p-col-12 p-md-4">
+									<!-- Efectivo -->								
+									<h:outputText value="Entrega" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
+									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}">
+										<p:ajax listener="#{compFacCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+									</p:spinner>
 									
-									<div class="p-col-4">
-										<h:outputText value="Cambio:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
-										<h:outputText value="#{p.cambio}" styleClass="FontBold markBlack">
-											<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-										</h:outputText>
-									</div>
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="# DOCUMENTO" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
+									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
 									
-								</f:subview>
+									<!-- credito -->
+									<h:outputText value="PLAZO" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}"/>
+									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}">
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
+									
+								</div>
 								
-								<f:subview rendered="#{p.tipopago.nombre!='EFECTIVO'}">
+								<div class="p-col-12 p-md-4">
+									<!-- Efectivo -->
+									<h:outputText value="Cambio" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
+									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" readonly="true">
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
 									
-									<div class="p-col-4">
-										<h:outputText value="Documento:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
-										<h:outputText value="#{p.numerodocumento}" styleClass="FontBold">
-											<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-										</h:outputText>
-									</div>
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="BANCO" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
+									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
 									
-									<div class="p-col-4">
-										<h:outputText value="Banco:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
-										<p:inputText id="inpDetpagoBanco"
-											value="#{p.nombrebanco}" required="false"
-											requiredMessage="REQUERIDO" styleClass="Wid100 Fs10"
-											maxlength="50" placeholder="NOM. BANCO" converter="omnifaces.ToUpperCaseConverter">
-										</p:inputText>
-									</div>
+									<!-- credito -->
+									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />							
+									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />
 									
-								</f:subview>
+								</div>
+								
+								
+								
 							</div>
 						</div>
 					</div>
 				</p:column>
 				
 				<p:column style="width:10%;" styleClass="TexAlCenter">
-					<div class="EmptyBox10"/>
-					<p:commandLink  action="#" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT">
-						<i class="fa fa-trash Fs20" style="color:red;"></i>
-						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-					</p:commandLink>		
+					
+					<div class="p-grid p-justify-center p-align-center">
+						<div class="p-col-12">
+							<p:commandLink  action="#{compFacCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT">
+								<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+								<i class="fa fa-trash Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>		
+						</div>
+					</div>
+				
 				</p:column>
 							
 			</p:dataTable>
 			
-			<div class="EmptyBox5"/>
+			<!-- <div class="EmptyBox5"/>
 			<div class="ui-inputgroup">
 	            <span class="ui-inputgroup-addon">
 	                <i class="fa fa-hand-o-right Fs20"></i> 
@@ -259,12 +330,43 @@
 	            
 	            <div class="Wid100 divValor" style="text-align: center;">
 	            	<p:outputPanel id="oupTotalPagoDT">
-		            	<h:outputText value="#{factMainPagoCtrl.totalPago}" styleClass="Fs20">
+		            	<h:outputText value="#{compFacCtrl.totalPago}" styleClass="Fs20">
 		            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
 		            	</h:outputText>
 			        </p:outputPanel>
 	            </div>
 	                  
+	        </div> -->
+	        
+	        <div class="EmptyBox10"/>
+	        <div class="p-grid p-justify-around p-align-center" >
+	        
+	        	<div class="p-col-12 p-md-5 divTotalPago">
+	        		<div class="p-grid p-justify-center">
+	        			<div class="p-col-12 cabecera">
+	        				TOTAL
+	        			</div>
+	        			<div class="p-col-12 detalle">
+	        				<h:outputText value="#{compFacCtrl.totalPago}" styleClass="Fs20">
+			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+			            	</h:outputText>
+	        			</div>
+	        		</div>
+	        	</div>
+	        	
+	        	<div class="p-col-12 p-md-5 divTotalPagoSaldo">
+	        		<div class="p-grid p-justify-center">
+	        			<div class="p-col-12 cabecera">
+	        				SALDO
+	        			</div>
+	        			<div class="p-col-12 detalle">
+	        				<h:outputText value="#{compFacCtrl.totalSaldo}" styleClass="Fs20">
+			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+			            	</h:outputText>
+	        			</div>
+	        		</div>
+	        	</div>
+	        	
 	        </div>
 			
 		</p:outputPanel>	

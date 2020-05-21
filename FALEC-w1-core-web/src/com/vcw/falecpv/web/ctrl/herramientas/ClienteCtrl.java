@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ImportarClienteServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FactMainPagoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -120,6 +121,15 @@ public class ClienteCtrl extends BaseCtrl {
 				AppJsfUtil.hideModal("dlgCliente");
 				
 				break;
+			
+			case "CompFacCtrl":
+				CompFacCtrl cf = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
+				cf.getCabecerSelected().setCliente(clienteSelected);
+				
+				AppJsfUtil.hideModal("dlgCliente");
+				
+				break;
+				
 			default:
 				break;
 			}

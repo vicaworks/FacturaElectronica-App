@@ -16,11 +16,11 @@
 				width: 100% !important;text-align:
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td {
+			/* body .ui-datatable .ui-datatable-data > tr > td {
 				padding: 0.3em; 
 				border: 0 none;
 				vertical-align: top;
-			}
+			} */
 			
 			body .ui-messages, 
 			body .ui-message {
@@ -58,6 +58,7 @@
 	    	}
 	    	
 	    	.borde-secondary{
+	    		border: 1px solid #0f97c7;
 	    		background:#0f97c7;
 	    		color: #fff;
 	    	}
@@ -84,11 +85,11 @@
 			}
 			
 			body .ui-datatable thead th {
-				padding: 0px !important;
+				/* padding: 0px !important; */
 			}
 			
 			.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
-				padding: 0px !important;
+				/* padding: 0px !important; */
 			}
 	    	
 	    	.divValor{
@@ -119,6 +120,11 @@
     
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.TipoPagoFormularioEnum" var="TipoPagoFormularioEnum" />
+    	
+    	<!-- <h:form>
+    		<p:remoteCommand name="buscarProducto" actionListener="#{compFacCtrl.buscarCodigoProducto}" update=":formMain:msgFormMain :formMain:intCriterioBusqueda :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:intCriterioBusqueda"/>
+    	</h:form> -->
     
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
@@ -136,20 +142,20 @@
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdfacNuevo"
 										value="NUEVO" icon="fa fa-plus" 
-										action="#" styleClass="secondary-button Wid100" update="@form" immediate="true">
+										action="#{compFacCtrl.nuevo()}" styleClass="secondary-button Wid100" update="@form" immediate="true">
 								</p:commandButton>
 	    					</div>
 	    					
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenFactura"
 										value="FACTURA" icon="fa fa-floppy-o" 
-										action="#" styleClass="danger-btn Wid100" update="@form"/>
+										action="#{compFacCtrl.generarFactura()}" styleClass="danger-btn Wid100" update=":formMain:msgFormMain"/>
 							</div>
 							
 							<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenRecibo"
 										value="RECIBO" icon="fa fa-floppy-o" 
-										action="#" styleClass="secondary-button Wid100" update="@form"/>
+										action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100" update=":formMain:msgFormMain"/>
 							</div>
 							
 	    					
@@ -190,9 +196,13 @@
 	    	
 	    	</div>
 	    	
-	    	
-	    	
 	    </h:form>
+	    
+	    <!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- Busqueda Productos -->
+	    <ui:include src="../productos/incl_listaProducto.xhtml" />
         
     </ui:define>
 

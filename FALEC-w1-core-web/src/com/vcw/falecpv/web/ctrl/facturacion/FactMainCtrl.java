@@ -189,16 +189,11 @@ public class FactMainCtrl extends BaseCtrl {
 		
 		int i= 1;
 		for (Detalle d : detalleFacList) {
-			System.out.println("=================================");
-			System.out.println(d.toString());
 			
 			cabeceraFac.setTotalsinimpuestos(cabeceraFac.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
 			cabeceraFac.setTotaliva(cabeceraFac.getTotaliva().add(d.getValoriva()));
 			cabeceraFac.setTotalice(cabeceraFac.getTotalice().add(d.getValorice()));
 			cabeceraFac.setTotaldescuento(cabeceraFac.getTotaldescuento().add(d.getDescuento()));
-			System.out.println("=================================");
-			System.out.println(cabeceraFac.toString());
-			
 			
 			if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
 				d.setIddetalle("MM" + i);
