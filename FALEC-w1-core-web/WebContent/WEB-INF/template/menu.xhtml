@@ -56,10 +56,11 @@
                         <p:menuitem id="om_caja" value="Caja" icon="fa fa-2x fa-money" url="#{request.contextPath}/pages/puntoventa/puntoVenta.jsf" />
                         
                         <p:submenu id="om_facturacion" label="#{msg['menu.facturacion']}" icon="fa fa-2x fa-calculator">
-                        	<p:menuitem id="om_factuar" value="Facturar" icon="fa fa-2x fa-plus" url="#{request.contextPath}/pages/facturacion/factura.jsf" />
-                            <p:menuitem id="om_facturaemitidas" value="Facturas Emitidas" icon="fa fa-2x fa-check-circle" url="#{request.contextPath}/pages/facturacion/facemitidos.jsf" />
-                            <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-2x fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/recbemitidos.jsf" />
-                            <p:menuitem id="om_reportefacturacion" value="Reporte" icon="fa fa-2x fa-line-chart" url="#{request.contextPath}/pages/facturacion/repfacturacion.jsf" />
+                        	<p:menuitem id="om_factuar" value="Facturar" icon="fa fa-plus" url="#{request.contextPath}/pages/facturacion/factura.jsf" />
+                            <p:menuitem id="om_facturaemitidas" value="Facturas Emitidas" icon="fa fa-check-circle" url="#{request.contextPath}/pages/facturacion/facemitidos.jsf" />
+                            <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/recbemitidos.jsf" />
+                            <p:menuitem id="om_reportefacturacion" value="Reporte Ventas" icon="fa fa-line-chart" url="#{request.contextPath}/pages/facturacion/repfacturacion.jsf" />
+                            <p:menuitem id="om_reporteventascliente" value="Reporte Ventas Cliente" icon="fa fa-user" url="#" />
                         </p:submenu>
                         
                         <p:submenu id="om_productos" label="Productos" icon="fa fa-2x fa-cubes">
@@ -86,9 +87,8 @@
                         <p:menuitem id="om_cajachica" value="Caja chica" icon="fa fa-2x fa-usd" url="#{request.contextPath}/pages/cajachica/cajachica.jsf" />
                         
                         <p:submenu id="om_reportes" label="Reportes" icon="fa fa-2x fa-sellsy">
-                            <p:menuitem id="om_reporte1" value="Reporte 1" icon="fa fa-2x fa-file-text-o"  />
-                            <p:menuitem id="om_reporte2" value="Reporte 2" icon="fa fa-2x fa-file-text-o"  />
-                            <p:menuitem id="om_reporte3" value="Reporte 3" icon="fa fa-2x fa-file-text-o"  />
+                            <p:menuitem id="om_rep_productosmasvendidos" value="- Productos mas vendidos"/>
+                            <p:menuitem id="om_rep_utilidades" value="- Reporte de utilidades"/>
                         </p:submenu>
                         
                        	<p:menuitem id="om_tollsclientes" value="Clientes" icon="fa fa-2x fa-user-plus" url="#{request.contextPath}/pages/herramientas/cliente.jsf" />
