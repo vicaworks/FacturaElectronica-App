@@ -13,10 +13,8 @@
         <style type="text/css">
 			
 			.productoDT .ui-datatable-scrollable-body{
-				/* min-height:800px !important;
-				max-height: 800px !important; */
-				min-height: 60vh !important;
-				max-height: 60vh !important;
+				min-height: 30vh !important;
+				height: calc(100vh - 400px)!important;
 			}
 			
 			.cardTitle{
@@ -118,7 +116,7 @@
 										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
 										value="REPORTE"
 										styleClass="success-btn Wid90">
-										<p:fileDownload value="#{fabricanteCtrl.fileFabricante}"/>
+										<p:fileDownload value="#{productoCtrl.fileProducto}"/>
 									</p:commandButton>
 									
 									<p:commandButton id="cmdNuevo"

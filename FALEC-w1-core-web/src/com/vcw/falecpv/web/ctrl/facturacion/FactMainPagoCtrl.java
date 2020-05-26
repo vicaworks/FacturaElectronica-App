@@ -516,7 +516,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			cabecerSelected.setPagoList(pagoList);
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR RECIBO");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -583,6 +583,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			// clave de acceso
 			cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			cabecerSelected.setNumdocumento(TextoUtil.leftPadTexto(cabecerSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(cabecerSelected.getSecuencial()));
+			cabecerSelected.setNumfactura(cabecerSelected.getNumdocumento());
 		}
 		
 		cabecerSelected.setPropina(BigDecimal.ZERO);

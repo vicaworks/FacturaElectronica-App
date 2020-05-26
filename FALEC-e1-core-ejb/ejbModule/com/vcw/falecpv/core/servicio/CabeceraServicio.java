@@ -233,7 +233,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 							.equals("c.idcabecera",idcabecera).getSingleResult();
 			
 			if(c==null) {
-				return "NO EXISTE LA FACTURA";
+				return null;
 			}
 			
 			if(c!=null && accion.equals("GUARDAR")) {

@@ -182,7 +182,8 @@
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
-							<p:menuitem value="Ver Factura Compra" action="#" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
+							<p:menuitem value="Ver Factura Compra" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
+								
 							</p:menuitem>
 							
 						</p:splitButton>

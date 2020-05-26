@@ -138,7 +138,7 @@ public class FactMainCtrl extends BaseCtrl {
 				detalleSelected = new Detalle();
 				detalleSelected.setCantidad(BigDecimal.valueOf(1));
 				detalleSelected.setDescripcion(productoSelected.getNombregenerico());
-				detalleSelected.setPreciounitario(productoSelected.getPreciounitario());
+				detalleSelected.setPreciounitario(productoSelected.getPreciouno());
 				precioOpcionSeleccion = "PRECIO1";
 				detalleSelected.setPrecioOpcionSeleccion(precioOpcionSeleccion);
 				detalleSelected.setProducto(productoSelected);
@@ -248,7 +248,7 @@ public class FactMainCtrl extends BaseCtrl {
 			switch (precioOpcionSeleccion) {
 			case "PRECIO1":
 				detalleSelected.setPrecioOpcionSeleccion("PRECIO1");
-				detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciounitario());
+				detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciouno());
 				break;
 			case "PRECIO2":
 				detalleSelected.setPrecioOpcionSeleccion("PRECIO2");

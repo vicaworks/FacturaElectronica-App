@@ -13,10 +13,9 @@
         <style type="text/css">
 			
 			.kardexDT .ui-datatable-scrollable-body{
-				/* min-height:800px !important;
-				max-height: 800px !important; */
-				min-height: 55vh !important;
-				max-height: 55vh !important;
+			
+				min-height: 30vh !important;
+				height: calc(100vh - 410px)!important;
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -53,6 +52,7 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Productos" url="#" />
+		    <p:menuitem value="Producto" url="#{request.contextPath}/pages/productos/producto.jsf"/>
 		    <p:menuitem value="Kardex Producto" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf"/>
 		</p:breadCrumb>
 		
@@ -170,7 +170,7 @@
 										title="EXPORTAR TODOS"
 										icon="fa fa-file-excel-o"
 										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="REPORTE TODOS POR FECHAS"
+										value="REPORTE TODOS"
 										styleClass="success-btn Wid90">
 										<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>
 									</p:commandButton>
@@ -303,9 +303,34 @@
 					</p:column>
 					
 					<p:column headerText="PREC VENTA" style="width:30px;" styleClass="TexAlRight">
-						<h:outputText value="#{k.producto.preciouno}" >
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
-						</h:outputText>
+						
+						<div class="p-grid">
+							<div class="p-col-4">
+								<h:outputText value="PV1:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-8" style="text-align: left;">
+								<h:outputText value="#{k.producto.preciouno}" >
+									<f:convertNumber locale="es_EC" pattern="0.##"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-4">
+								<h:outputText value="PV2:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-8" style="text-align: left;">
+								<h:outputText value="#{k.producto.preciodos}" >
+									<f:convertNumber locale="es_EC" pattern="0.##"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-4">
+								<h:outputText value="PV3:" styleClass="Fs10 FontBold"/>
+							</div>
+							<div class="p-col-8" style="text-align: left;">
+								<h:outputText value="#{k.producto.preciotres}" >
+									<f:convertNumber locale="es_EC" pattern="0.##"/>
+								</h:outputText>
+							</div>
+						</div>
+						
 					</p:column>
 					
 					<p:column headerText="EXISTENCIA" style="width:30px;" styleClass="TexAlRight">

@@ -46,6 +46,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.TipoProducto;
+import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
@@ -954,7 +955,6 @@ public class ProductoCtrl extends BaseCtrl {
 	public void redirectKardex(Producto p) {
 		try {
 			ExternalContext e = FacesUtil.getExternalContext();
-//			e.getSessionMap().put("producto", p);
 			FacesUtils.addToSession("producto", p);
 			e.redirect("kdx/kardexProducto.jsf");
 			
@@ -962,6 +962,121 @@ public class ProductoCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+		
+	}
+	
+	public StreamedContent getFileProducto() {
+		
+		try {
+			
+			if(productoList==null  || productoList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-listaproducto.xls");
+			
+			// 2. inicializamos el excel
+			File tempXls = File.createTempFile("plantillaExcel", ".xls");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			
+			@SuppressWarnings("resource")
+			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));
+			// llenaa hoja 1 del archivo
+			HSSFSheet sheet=wb.getSheetAt(0);
+			
+			// datos de la cabecera
+			HSSFRow row = sheet.getRow(3);
+			HSSFCell cell = row.getCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(new Date()));
+			
+			row = sheet.getRow(4);
+			cell = row.getCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			row = sheet.getRow(5);
+			cell = row.getCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			
+			// lista de categoria
+			int fila = 8;
+			int col = 0;
+			
+			for (Producto p : productoList) {
+				
+				row = sheet.createRow(fila);
+				col = 0;
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getIdproducto());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getCodigoprincipal());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getFabricante().getNombrecomercial());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getCategoria().getCategoria());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getNombregenerico());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getStock().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getPreciounitario().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getPorcentajedescuento().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getIva().getPorcentaje());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getIce().getTarifaadvalorem());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getPreciouno().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getPreciodos().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(p.getPreciotres().doubleValue());
+				
+				cell = row.createCell(col++);
+				Usuario u = usuarioServicio.consultarByPk(p.getIdusuario());
+				cell.setCellValue(u.getNombre());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(p.getUpdated()));
+				
+				fila++;
+				
+			}
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));			
+
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-listaproducto.xls");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
 		
 	}
 	/**

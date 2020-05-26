@@ -52,11 +52,13 @@ public class Detalleimpuesto implements Serializable {
     @JoinColumn(name = "iddetalle", referencedColumnName = "iddetalle", nullable = false)
     @ManyToOne(optional = false)
     private Detalle detalle;
-    @JoinColumn(name = "idice", referencedColumnName = "idice")
-    @ManyToOne
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idice", referencedColumnName = "idice",nullable = true)
     private Ice ice;
-    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = false)
-    @ManyToOne(optional = false)
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = true)
     private Iva iva;
 
 	/**

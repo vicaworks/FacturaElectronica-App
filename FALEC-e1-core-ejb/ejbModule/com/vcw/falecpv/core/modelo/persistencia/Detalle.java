@@ -77,19 +77,20 @@ public class Detalle implements Serializable {
     private String descripcion;
     
 	
-    @JoinColumn(name = "idice", referencedColumnName = "idice")
-    @ManyToOne
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idice", referencedColumnName = "idice", nullable = true)
     private Ice ice;
     
-    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = true)
     private Iva iva;
     
     @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera")
     @ManyToOne
     private Cabecera cabecera;
-    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false)
-    @ManyToOne(optional = false)
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = true)
     private Producto producto;
     
     @Transient

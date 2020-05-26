@@ -386,6 +386,12 @@ public class KardexCtrl extends BaseCtrl {
 				cell.setCellValue(k.getProducto().getPreciouno().doubleValue());
 				
 				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getPreciodos().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getPreciotres().doubleValue());
+				
+				cell = row.createCell(col++);
 				cell.setCellValue(k.getSaldo().doubleValue());
 				
 				cell = row.createCell(col++);
@@ -507,6 +513,12 @@ public class KardexCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getProducto().getPreciouno().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getPreciodos().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(k.getProducto().getPreciotres().doubleValue());
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(k.getSaldo().doubleValue());

@@ -129,7 +129,7 @@
 	                </p:column>
 	                
 	                <p:column headerText="PRE UNIT" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProPUnitario" value="#{pr.preciounitario}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100" decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}">
+	                	<p:spinner id="idListProPUnitario" value="#{pr.preciouno}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100" decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}">
 	                		<p:ajax update=":frmListProducto:listaProductoDT">
 	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 	                		</p:ajax>
