@@ -209,12 +209,19 @@ public class ComprobanteHelper {
 	public static List<Infoadicional> determinarInfoAdicional(Cabecera cabeceraFac) {
 		List<Infoadicional> infoadicionalList = new ArrayList<>();
 		
-		if(cabeceraFac.getCliente().getCorreoelectronico()!=null) {
+		if(cabeceraFac.getCliente()!=null && cabeceraFac.getCliente().getCorreoelectronico()!=null) {
 			Infoadicional ia = new Infoadicional();
 			ia.setNombre("email");
 			ia.setValor(cabeceraFac.getCliente().getCorreoelectronico());
 			infoadicionalList.add(ia);
 			
+		}
+		
+		if(cabeceraFac.getProveedor()!=null && cabeceraFac.getProveedor().getEmail()!=null) {
+			Infoadicional ia = new Infoadicional();
+			ia.setNombre("email");
+			ia.setValor(cabeceraFac.getProveedor().getEmail());
+			infoadicionalList.add(ia);
 		}
 		
 		return infoadicionalList;

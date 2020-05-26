@@ -7,7 +7,7 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">#{msg['title.adquisicion']}</ui:define>
+    <ui:define name="title">#{msg['title.retencion']}</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
@@ -173,8 +173,10 @@
 							
 							<h:outputText value="NUM COMPROBANTE * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputMask id="inpRtnNumComp" value="#{retencionFrmCtrl.retencionSeleccion.numcomprobante}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
-								<p:message for="inpRtnNumComp" />
+								<!-- <p:inputMask id="inpRtnNumComp" value="#{retencionFrmCtrl.retencionSeleccion.numdocumento}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
+								<p:message for="inpRtnNumComp" /> -->
+								<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.numdocumento}" styleClass="Fs16 FontBold" rendered="#{retencionFrmCtrl.retencionSeleccion.numdocumento != null}"/>
+								<h:outputText value="00000000000000" styleClass="Fs16 FontBold" rendered="#{retencionFrmCtrl.retencionSeleccion.numdocumento == null}"/>
 							</h:panelGroup>
 							
 							<h:outputText value="PROVEEDOR *" styleClass="cpoRequerido"/>
@@ -209,7 +211,7 @@
 							<h:outputText value="TIPO COMPROBANTE*" styleClass="cpoRequerido"/>
 							<h:panelGroup>
 								<p:selectOneMenu id="somRtnTipComprobante"
-											value="#{retencionFrmCtrl.retencionSeleccion.tipocomprobante}"
+											value="#{retencionFrmCtrl.retencionSeleccion.tipocomprobanteretencion}"
 											converter="omnifaces.SelectItemsConverter"
 											required="true"
 											requiredMessage="REQUERIDO"
@@ -241,20 +243,13 @@
 							<h:outputText value="PERIODO FISCAL" styleClass="cpoRequerido"/>
 							<h:panelGroup >
 								<p:outputPanel id="oupPeriodoFiscal">
-									<h:outputText value="#{msg['label.anio']} : " styleClass="cpoRequerido"/>
-									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.anio}" styleClass="cpoRequerido"/>
-									<p:spacer width="10px"></p:spacer>
-									<h:outputText value="MES : " styleClass="cpoRequerido"/>
-									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.mes}" styleClass="cpoRequerido"/>
+									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.periodofiscal}" styleClass="cpoRequerido"/>
 								</p:outputPanel>
 							</h:panelGroup>
 							
 							<h:outputText value="NUM FACTURA * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
 								<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
-								<!-- <p:inputText id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="Formato: 000000000000000" >
-									<f:validateRegex pattern="^\d{15}+$"/>
-								</p:inputText> -->
 								<p:message for="inpRtnNumFac" />
 							</h:panelGroup>
 						
@@ -327,14 +322,14 @@
 							
 							<h:outputText value="% #{msg['label.retencion']} * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:spinner id="idRtnPorcentajeRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.porcentaje}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
+								<p:spinner id="idRtnPorcentajeRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.porcentajeretener}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
 								</p:spinner>
 								<p:message for="idRtnPorcentajeRetencion" />
 							</h:panelGroup>
 							
 							<h:outputText value="VALOR ETENIDO * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:spinner id="idRtnValorRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.valor}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
+								<p:spinner id="idRtnValorRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.valorretenido}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
 								</p:spinner>
 								<p:message for="idRtnValorRetencion" />
 							</h:panelGroup>
@@ -362,7 +357,7 @@
 							value="#{retencionFrmCtrl.retenciondetalleList}" scrollable="true"
 							emptyMessage="#{msg['mensaje.noexistenDatos']}"
 							styleClass="retencionDetDT Fs11"  
-							rowKey="#{d.idretenciondetalle}">
+							rowKey="#{d.idimpuestoretencion}">
 							
 							<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 								<p:commandLink id="clkRtnDelete" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:retencionDetDT" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}">
@@ -390,13 +385,13 @@
 							
 							<p:column headerText="%" style="width:30px;">
 								<h:outputText value="% "/>
-								<h:outputText value="#{d.porcentaje}">
+								<h:outputText value="#{d.porcentajeretener}">
 									<f:convertNumber locale="es_EC" pattern="0.00"/>
 								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="TOTAL RTN." style="width:30px;">
-								<h:outputText value="#{d.valor}">
+								<h:outputText value="#{d.valorretenido}">
 									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 								</h:outputText>
 							</p:column>

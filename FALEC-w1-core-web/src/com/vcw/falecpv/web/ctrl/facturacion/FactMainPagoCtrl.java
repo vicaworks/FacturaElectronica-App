@@ -582,6 +582,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 			// clave de acceso
 			cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			cabecerSelected.setNumdocumento(TextoUtil.leftPadTexto(cabecerSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(cabecerSelected.getSecuencial()));
 		}
 		
 		cabecerSelected.setPropina(BigDecimal.ZERO);
@@ -598,7 +599,6 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		ComprobanteHelper.determinarDetalleImpuesto(cabecerSelected.getDetalleList());
 		
 		// infromacion adicional 
-		
 		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected));
 		
 	}

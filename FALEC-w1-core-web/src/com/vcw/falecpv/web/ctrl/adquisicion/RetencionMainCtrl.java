@@ -27,10 +27,10 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
-import com.vcw.falecpv.core.modelo.persistencia.Retencion;
-import com.vcw.falecpv.core.modelo.persistencia.Retenciondetalle;
-import com.vcw.falecpv.core.servicio.RetencionServicio;
-import com.vcw.falecpv.core.servicio.RetenciondetalleServicio;
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
+import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
+import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -53,18 +53,17 @@ public class RetencionMainCtrl extends BaseCtrl {
 	private UsuarioServicio usuarioServicio;
 	
 	@EJB
-	private RetencionServicio retencionServicio;
+	private CabeceraServicio cabeceraServicio;
 	
 	@EJB
-	private RetenciondetalleServicio retenciondetalleServicio;
-	
+	private CabeceraRetencionServicio cabeceraRetencionServicio;
 	
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
-	private List<Retencion> retencionList;
+	private List<Cabecera> retencionList;
 	private RetencionFrmCtrl retencionFormCtrl;
-	private Retencion retencionSelected;
+	private Cabecera retencionSelected;
 	
 	
 	/**
@@ -90,8 +89,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void consultarRetenciones()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:retencionDT");
 		retencionList = null;
-		retencionList = retencionServicio.getRetencionDao()
-				.getByCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda);
+		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 	}
 	
 	@Override
@@ -110,18 +108,18 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
-			retencionSelected = retencionServicio.consultarByPk(retencionSelected.getIdretencion());
+			retencionSelected = cabeceraServicio.consultarByPk(retencionSelected.getIdcabecera());
 			
 			if(retencionSelected == null) return;
 			
-			String analisisEstado = retencionServicio.analizarEstado(retencionSelected.getIdretencion(), retencionSelected.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			String analisisEstado = cabeceraRetencionServicio.analizarEstado(retencionSelected.getIdcabecera(), retencionSelected.getEstablecimiento().getIdestablecimiento(), "ANULAR");
 			
 			if(analisisEstado!=null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 				return;
 			}
 			
-			retencionServicio.anularRetencion(retencionSelected.getIdretencion());
+			cabeceraRetencionServicio.anularRetencion(retencionSelected.getIdcabecera());
 			consultarRetenciones();
 			
 			// datos de la pantalla de comppras
@@ -204,7 +202,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			int fila = 10;
 			int filaDt = 10;
 			
-			for (Retencion r : retencionList) {
+			for (Cabecera r : retencionList) {
 				
 				row = sheet.createRow(fila);
 				int col =0;
@@ -214,19 +212,22 @@ public class RetencionMainCtrl extends BaseCtrl {
 				cell.setCellValue(FechaUtil.formatoFecha(r.getFechaemision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getAnio());
+				cell.setCellValue(FechaUtil.getAnio(r.getFechaemision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getMes());
+				cell.setCellValue(FechaUtil.getMes(r.getFechaemision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getNumcomprobante());
+				cell.setCellValue(r.getNumdocumento());
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getNumautorizacion());
+				cell.setCellValue(r.getClaveacceso());
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getTipocomprobante().getComprobante());
+				cell.setCellValue(r.getTipocomprobanteretencion().getComprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(r.getNumfactura());
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(r.getProveedor().getIdentificacion());
@@ -235,13 +236,13 @@ public class RetencionMainCtrl extends BaseCtrl {
 				cell.setCellValue(r.getProveedor().getRazonsocial());
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getProveedor().getEstado());
+				cell.setCellValue(r.getEstado());
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(r.getTotalretencion().doubleValue());
 				
 				filaDt = fila + 1;
-				for (Retenciondetalle rd : retenciondetalleServicio.getByRetencion(r.getIdretencion())) {
+				for (Impuestoretencion rd : cabeceraRetencionServicio.getDetalleById(r.getIdcabecera())) {
 					
 					col = 11;
 					
@@ -251,7 +252,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 					}
 					
 					cell = row.createCell(col++);
-					cell.setCellValue(rd.getRetencionimpuestodet().getCodigo());
+					cell.setCellValue(rd.getCodigo());
 					
 					cell = row.createCell(col++);
 					cell.setCellValue(rd.getRetencionimpuestodet().getNombre());
@@ -263,7 +264,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 					cell.setCellValue(rd.getRetencionimpuestodet().getValor().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellValue(rd.getValor().doubleValue());
+					cell.setCellValue(rd.getValorretenido().doubleValue());
 					
 					filaDt++;
 					
@@ -352,21 +353,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
 	}
-
-	/**
-	 * @return the retencionList
-	 */
-	public List<Retencion> getRetencionList() {
-		return retencionList;
-	}
-
-	/**
-	 * @param retencionList the retencionList to set
-	 */
-	public void setRetencionList(List<Retencion> retencionList) {
-		this.retencionList = retencionList;
-	}
-
+	
 	/**
 	 * @return the retencionFormCtrl
 	 */
@@ -382,16 +369,30 @@ public class RetencionMainCtrl extends BaseCtrl {
 	}
 
 	/**
+	 * @return the retencionList
+	 */
+	public List<Cabecera> getRetencionList() {
+		return retencionList;
+	}
+
+	/**
+	 * @param retencionList the retencionList to set
+	 */
+	public void setRetencionList(List<Cabecera> retencionList) {
+		this.retencionList = retencionList;
+	}
+
+	/**
 	 * @return the retencionSelected
 	 */
-	public Retencion getRetencionSelected() {
+	public Cabecera getRetencionSelected() {
 		return retencionSelected;
 	}
 
 	/**
 	 * @param retencionSelected the retencionSelected to set
 	 */
-	public void setRetencionSelected(Retencion retencionSelected) {
+	public void setRetencionSelected(Cabecera retencionSelected) {
 		this.retencionSelected = retencionSelected;
 	}
 	

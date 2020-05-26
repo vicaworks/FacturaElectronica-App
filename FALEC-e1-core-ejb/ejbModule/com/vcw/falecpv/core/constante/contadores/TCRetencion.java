@@ -9,8 +9,6 @@ package com.vcw.falecpv.core.constante.contadores;
  */
 public enum TCRetencion implements TablaContadorBaseEnum {
 	
-	RETENCION("RETENCION"), 
-	RETENCIONDETALLE("RETENCIONDETALLE"), 
 	RETENCION_IMPUESTO("RETENCIONIMPUESTO"),
 	RETENCION_IMPUESTO_DETALLE("RETENCIONIMPUESTODET");
 	

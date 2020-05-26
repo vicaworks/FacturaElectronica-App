@@ -9,7 +9,7 @@ package com.vcw.falecpv.core.constante;
  */
 public enum GenTipoDocumentoEnum {
 	
-	FACTURA("01"),RECIBO("00"),RETENCION(""),NOTA_CREDITO(""),NOTA_DEBITO("");
+	FACTURA("01"),RECIBO("00"),RETENCION("07"),NOTA_CREDITO(""),NOTA_DEBITO("");
 	
 	private String identificador;
 	

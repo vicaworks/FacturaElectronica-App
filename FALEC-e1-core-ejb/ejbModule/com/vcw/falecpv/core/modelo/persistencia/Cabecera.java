@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.servitec.common.util.PojoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 
 /**
  * @author cristianvillarreal
@@ -136,15 +137,52 @@ public class Cabecera implements Serializable {
     @Column(name = "estado", nullable = false, length = 20)
     private String estado;
     
-    @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = false)
-    @ManyToOne(optional = false)
+    @Basic(optional = true)
+    @NotNull
+    @Size(min = 1, max = 15)
+    @Column(name = "numfactura", nullable = true, length = 15)
+    private String numfactura;
+    
+    @Basic(optional = true)
+    @NotNull
+    @Size(min = 1, max = 15)
+    @Column(name = "numdocumento", nullable = true, length = 15)
+    private String numdocumento;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = true)
     private Cliente cliente;
-    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
+    
     @ManyToOne(optional = false)
+    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     private Establecimiento establecimiento;
+    
     @JoinColumn(name = "idtipocomprobante", referencedColumnName = "idtipocomprobante", nullable = false)
     @ManyToOne(optional = false)
     private Tipocomprobante tipocomprobante;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idadquisicion", referencedColumnName = "idadquisicion", nullable = true)
+    private Adquisicion adquisicion;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = true)
+    private Proveedor proveedor;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "totalbaseimponible", nullable = false, precision = 12, scale = 2)
+    private BigDecimal totalbaseimponible = BigDecimal.ZERO;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "totalretencion", nullable = false, precision = 12, scale = 2)
+    private BigDecimal totalretencion = BigDecimal.ZERO;
+    
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
+    private Tipocomprobante tipocomprobanteretencion;
     
     
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
@@ -168,6 +206,9 @@ public class Cabecera implements Serializable {
     
     @Transient
     private List<Detalle> detalleEliminarList;
+    
+    @Transient
+    private List<Impuestoretencion> impuestoretencionList;
 
 	/**
 	 * 
@@ -724,6 +765,15 @@ public class Cabecera implements Serializable {
 	public String getEstado() {
 		return estado;
 	}
+	
+	/**
+	 * @return
+	 */
+	public String getEstadoStyle() {
+		
+		return ComprobanteEstadoEnum.getStyleEstado(estado);
+		
+	}
 
 	/**
 	 * @param estado the estado to set
@@ -758,6 +808,118 @@ public class Cabecera implements Serializable {
 	 */
 	public void setDetalleEliminarList(List<Detalle> detalleEliminarList) {
 		this.detalleEliminarList = detalleEliminarList;
+	}
+
+	/**
+	 * @return the adquisicion
+	 */
+	public Adquisicion getAdquisicion() {
+		return adquisicion;
+	}
+
+	/**
+	 * @param adquisicion the adquisicion to set
+	 */
+	public void setAdquisicion(Adquisicion adquisicion) {
+		this.adquisicion = adquisicion;
+	}
+
+	/**
+	 * @return the numfactura
+	 */
+	public String getNumfactura() {
+		return numfactura;
+	}
+
+	/**
+	 * @param numfactura the numfactura to set
+	 */
+	public void setNumfactura(String numfactura) {
+		this.numfactura = numfactura;
+	}
+
+	/**
+	 * @return the numdocumento
+	 */
+	public String getNumdocumento() {
+		return numdocumento;
+	}
+
+	/**
+	 * @param numdocumento the numdocumento to set
+	 */
+	public void setNumdocumento(String numdocumento) {
+		this.numdocumento = numdocumento;
+	}
+
+	/**
+	 * @return the proveedor
+	 */
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	/**
+	 * @param proveedor the proveedor to set
+	 */
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	/**
+	 * @return the totalbaseimponible
+	 */
+	public BigDecimal getTotalbaseimponible() {
+		return totalbaseimponible;
+	}
+
+	/**
+	 * @param totalbaseimponible the totalbaseimponible to set
+	 */
+	public void setTotalbaseimponible(BigDecimal totalbaseimponible) {
+		this.totalbaseimponible = totalbaseimponible;
+	}
+
+	/**
+	 * @return the totalretencion
+	 */
+	public BigDecimal getTotalretencion() {
+		return totalretencion;
+	}
+
+	/**
+	 * @param totalretencion the totalretencion to set
+	 */
+	public void setTotalretencion(BigDecimal totalretencion) {
+		this.totalretencion = totalretencion;
+	}
+
+	/**
+	 * @return the impuestoretencionList
+	 */
+	public List<Impuestoretencion> getImpuestoretencionList() {
+		return impuestoretencionList;
+	}
+
+	/**
+	 * @param impuestoretencionList the impuestoretencionList to set
+	 */
+	public void setImpuestoretencionList(List<Impuestoretencion> impuestoretencionList) {
+		this.impuestoretencionList = impuestoretencionList;
+	}
+
+	/**
+	 * @return the tipocomprobanteretencion
+	 */
+	public Tipocomprobante getTipocomprobanteretencion() {
+		return tipocomprobanteretencion;
+	}
+
+	/**
+	 * @param tipocomprobanteretencion the tipocomprobanteretencion to set
+	 */
+	public void setTipocomprobanteretencion(Tipocomprobante tipocomprobanteretencion) {
+		this.tipocomprobanteretencion = tipocomprobanteretencion;
 	}
 
 }

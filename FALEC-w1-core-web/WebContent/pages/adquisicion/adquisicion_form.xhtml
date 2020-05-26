@@ -14,7 +14,7 @@
 			
 			.adquisicionDetDT .ui-datatable-scrollable-body{
 				/* min-height: 42vh !important; */
-				height: calc(100vh - 450px);
+				height: calc(100vh - 455px);
 				
 			}
 			
@@ -71,6 +71,17 @@
 			
 			.subtotalValor{
 				/* background-color: #FCF3CF; */
+			}
+			
+			.divTotal{
+				/* width: 100%; */
+				margin: 0px;
+				padding: 0.3em !important;
+				background-color: #0fc763;
+				color: white;
+				text-align: center;
+				font-size: 3em;
+				border-radius: 4px;
 			}
 			
         </style>
@@ -419,6 +430,63 @@
 						<p:outputPanel id="oupTotales">
 							<div class="p-grid p-align-top">
 								
+								
+								<!-- Subtotales -->
+								<!-- <div class="p-col-12 p-md-5">
+									
+									<p:panelGrid columns="2"
+										styleClass="ui-panelgrid-blank Wid100 Fs14"
+										columnClasses="ui-g-6,ui-g-6">
+										
+										<h:outputText value="Subtotal" styleClass="FontBold Fs14" />
+										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.subtotal}" styleClass="Fs14">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+										
+										<h:outputText value="Total I.V.A." styleClass="FontBold Fs14" />
+										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaliva}" styleClass="Fs14">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+										
+										<h:outputText value="Total Descuento" styleClass="FontBold Fs14" />
+										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaldescuento}" styleClass="Fs14">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+										
+										<h:panelGroup>
+											<i class="fa fa-arrow-circle-right Fs14" style="margin-right: 10px;"/>
+											<h:outputText value="Total Factura" styleClass="FontBold Fs14" />
+										</h:panelGroup>
+										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="Fs14">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+											
+										<h:outputText value="Total Retencion" styleClass="FontBold Fs14" />
+										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalretencion}" styleClass="Fs14">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+										
+									</p:panelGrid>
+									
+								</div> -->
+								
+								<!-- Total -->
+								<!-- <div class="p-col-12 p-md-7 p-grid p-justify-center p-align-center">
+									
+									<div class="p-col-12 divTotal">
+										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}" >
+											<f:convertNumber pattern="$ #,##0.00" 
+											locale="es_EC"/>
+										</h:outputText>
+									</div>
+																					
+									
+								</div> -->
+								
+								
+								
+								
+								
 								<div class="p-col-12 p-md-6">
 									<div class="p-grid p-align-top">
 										<div class="p-col-12 p-md-8 subtotal">
@@ -452,22 +520,23 @@
 										</div>
 										
 										<div class="p-col-12 p-md-8 subtotal">
-											<h:outputText value="Total Retencion" styleClass="FontBold Fs14" />
+											<i class="fa fa-arrow-circle-right Fs14" style="margin-right: 10px;"/>
+											<h:outputText value="Total Factura" styleClass="FontBold Fs14" />
 										</div>
 										
 										<div class="p-col-12 p-md-4 subtotalValor">
-											<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalretencion}" styleClass="Fs14">
+											<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="Fs14 markGreen DispBlock Wid100">
 												<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 											</h:outputText>
 										</div>
 										
 										<div class="p-col-12 p-md-8 subtotal">
 											<i class="fa fa-arrow-circle-right Fs14" style="margin-right: 10px;"/>
-											<h:outputText value="Total Factura" styleClass="FontBold Fs14" />
+											<h:outputText value="Total Retencion" styleClass="FontBold Fs14" />
 										</div>
 										
 										<div class="p-col-12 p-md-4 subtotalValor">
-											<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="Fs14">
+											<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalretencion}" styleClass="Fs14 markOrange DispBlock Wid100">
 												<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 											</h:outputText>
 										</div>
@@ -478,7 +547,7 @@
 										</div>
 										
 										<div class="p-col-12 p-md-4 subtotalValor">
-											<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}" styleClass="Fs16">
+											<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}" styleClass="Fs16 markGreen DispBlock Wid100">
 												<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 											</h:outputText>
 										</div>

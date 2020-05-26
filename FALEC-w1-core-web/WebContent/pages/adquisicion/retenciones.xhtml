@@ -161,13 +161,13 @@
 					value="#{retencionMainCtrl.retencionList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="retencionDT Fs11"  
-					rowKey="#{r.idretencion}">
+					rowKey="#{r.idcabecera}">
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						
 						<p:splitButton id="rtnOpc" action="#" icon="fa fa-list-ul Fs14">
 							
-							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idretencion)}" icon="fa fa-edit" process="retencionDT" update="@form">
+							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form">
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
@@ -189,8 +189,8 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:40px;" filterBy="#{r.numcomprobante}" filterMatchMode="contains">
-						<h:outputText value="#{r.numcomprobante}" />
+					<p:column headerText="ID" style="width:40px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{r.numdocumento}" />
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
@@ -216,7 +216,7 @@
 					</p:column>
 					
 					<p:column headerText="PERIODO" style="width:40px;">
-						<h:outputText value="#{r.mes} - #{r.anio}" >
+						<h:outputText value="#{r.periodofiscal}" >
 						</h:outputText>
 					</p:column>
 					
@@ -226,8 +226,8 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="AUTO S.R.I." style="width:100px;" filterBy="#{r.numautorizacion}" filterMatchMode="contains">
-						<h:outputText value="#{r.numautorizacion}" />
+					<p:column headerText="AUTO S.R.I." style="width:100px;" filterBy="#{r.claveacceso}" filterMatchMode="contains">
+						<h:outputText value="#{r.claveacceso}" />
 					</p:column>					
 					
 				</p:dataTable>

@@ -75,6 +75,10 @@ public class Impuestoretencion implements Serializable {
     @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera", nullable = false)
     @ManyToOne(optional = false)
     private Cabecera cabecera;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idretencionimpuestodet", referencedColumnName = "idretencionimpuestodet", nullable = false)
+    private Retencionimpuestodet retencionimpuestodet;
 	
 	/**
 	 * 
@@ -245,6 +249,20 @@ public class Impuestoretencion implements Serializable {
 	 */
 	public void setCabecera(Cabecera cabecera) {
 		this.cabecera = cabecera;
+	}
+
+	/**
+	 * @return the retencionimpuestodet
+	 */
+	public Retencionimpuestodet getRetencionimpuestodet() {
+		return retencionimpuestodet;
+	}
+
+	/**
+	 * @param retencionimpuestodet the retencionimpuestodet to set
+	 */
+	public void setRetencionimpuestodet(Retencionimpuestodet retencionimpuestodet) {
+		this.retencionimpuestodet = retencionimpuestodet;
 	}
 
 }

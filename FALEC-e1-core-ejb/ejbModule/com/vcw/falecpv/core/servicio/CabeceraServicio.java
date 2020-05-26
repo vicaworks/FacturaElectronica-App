@@ -14,11 +14,14 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
 import com.vcw.falecpv.core.dao.impl.CabeceraDao;
+import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Detalleimpuesto;
+import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -55,6 +58,12 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	
 	@Inject
 	private ProductoServicio productoServicio;
+	
+	@Inject
+	private ImpuestoretencionServicio impuestoretencionServicio;
+	
+	@Inject
+	private AdquisicionServicio adquisicionServicio;
 	
 	
 	
@@ -103,12 +112,14 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		
 		// 2. total impuesto
 		totalimpuestoServicio.getTotalimpuestoDao().eliminarByCabecera(cabecera.getIdcabecera());
-		for (Totalimpuesto	ti : cabecera.getTotalimpuestoList()) {
-			ti.setCabecera(cabecera);
-			if(ti.getIdtotalmpuesto()==null || ti.getIdtotalmpuesto().contains("M")) {
-				ti.setIdtotalmpuesto(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.TOTALIMPUESTO, cabecera.getEstablecimiento().getIdestablecimiento()));
+		if(cabecera.getTotalimpuestoList()!=null) {
+			for (Totalimpuesto	ti : cabecera.getTotalimpuestoList()) {
+				ti.setCabecera(cabecera);
+				if(ti.getIdtotalmpuesto()==null || ti.getIdtotalmpuesto().contains("M")) {
+					ti.setIdtotalmpuesto(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.TOTALIMPUESTO, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				totalimpuestoServicio.crear(ti);
 			}
-			totalimpuestoServicio.crear(ti);
 		}
 		
 		
@@ -127,48 +138,77 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		}
 		// eliminar el detale anterior
 		detalleServicio.getDetalleDao().eliminarByCabecera(cabecera.getIdcabecera());
-		for (Detalle d : cabecera.getDetalleList()) {
-			if(d.getIddetalle()==null || d.getIddetalle().contains("M")) {
-				d.setIddetalle(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.DETALLE, cabecera.getEstablecimiento().getIdestablecimiento()));
-			}
-			d.setCabecera(cabecera);
-			detalleServicio.crear(d);
-			// kardex producto
-			if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
-				salidaKardex(d);
+		if(cabecera.getDetalleList()!=null) {
+			for (Detalle d : cabecera.getDetalleList()) {
+				if(d.getIddetalle()==null || d.getIddetalle().contains("M")) {
+					d.setIddetalle(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.DETALLE, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				d.setCabecera(cabecera);
+				detalleServicio.crear(d);
+				// kardex producto
+				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
+					salidaKardex(d);
+				}
 			}
 		}
 		
 		// 4. detalle impuesto
 		detalleimpuestoServicio.getDetalleimpuestoDao().eliminarByCabecera(cabecera.getIdcabecera());
-		for (Detalle d : cabecera.getDetalleList()) {
-			for (Detalleimpuesto di : d.getDetalleimpuestoList()) {
-				di.setDetalle(d);
-				if(di.getIddetalleimpuesto()==null || di.getIddetalleimpuesto().contains("M")) {
-					di.setIddetalleimpuesto(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.DETALLEIMPUESTO, cabecera.getEstablecimiento().getIdestablecimiento()));
+		if(cabecera.getDetalleList()!=null) {
+			for (Detalle d : cabecera.getDetalleList()) {
+				for (Detalleimpuesto di : d.getDetalleimpuestoList()) {
+					di.setDetalle(d);
+					if(di.getIddetalleimpuesto()==null || di.getIddetalleimpuesto().contains("M")) {
+						di.setIddetalleimpuesto(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.DETALLEIMPUESTO, cabecera.getEstablecimiento().getIdestablecimiento()));
+					}
+					detalleimpuestoServicio.crear(di);
 				}
-				detalleimpuestoServicio.crear(di);
 			}
 		}
 		
 		// 5. pago
 		pagoServicio.getPagoDao().eliminarByCabecera(cabecera.getIdcabecera());
-		for (Pago	p : cabecera.getPagoList()) {
-			if(p.getIdpago()==null || p.getIdpago().contains("M")) {
-				p.setIdpago(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.PAGO, cabecera.getEstablecimiento().getIdestablecimiento()));
+		if(cabecera.getPagoList()!=null) {
+			for (Pago	p : cabecera.getPagoList()) {
+				if(p.getIdpago()==null || p.getIdpago().contains("M")) {
+					p.setIdpago(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.PAGO, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				p.setCabecera(cabecera);
+				pagoServicio.crear(p);
 			}
-			p.setCabecera(cabecera);
-			pagoServicio.crear(p);
 		}
 		
 		// 6. infoadicional
 		infoadicionalServicio.getInfoadicionalDao().eliminarByCabecera(cabecera.getIdcabecera());
-		for (Infoadicional	ia : cabecera.getInfoadicionalList()) {
-			if(ia.getIdinfoadicional()==null || ia.getIdinfoadicional().contains("M")) {
-				ia.setIdinfoadicional(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.INFOADICIONAL, cabecera.getEstablecimiento().getIdestablecimiento()));
+		if(cabecera.getInfoadicionalList()!=null) {
+			for (Infoadicional	ia : cabecera.getInfoadicionalList()) {
+				if(ia.getIdinfoadicional()==null || ia.getIdinfoadicional().contains("M")) {
+					ia.setIdinfoadicional(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.INFOADICIONAL, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				ia.setCabecera(cabecera);
+				infoadicionalServicio.crear(ia);
 			}
-			ia.setCabecera(cabecera);
-			infoadicionalServicio.crear(ia);
+		}
+		
+		// 7. impuestoretencion
+		impuestoretencionServicio.getImpuestoretencionDao().eliminarByCabecera(cabecera.getIdcabecera());
+		if(cabecera.getImpuestoretencionList()!=null) {
+			for (Impuestoretencion ir : cabecera.getImpuestoretencionList()) {
+				if(ir.getIdimpuestoretencion()==null || ir.getIdimpuestoretencion().contains("M")) {
+					ir.setIdimpuestoretencion(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.IMPUESTORETENCION, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				ir.setCabecera(cabecera);
+				impuestoretencionServicio.crear(ir);
+			}
+		}
+		
+		// 8. Si es retencion y tiene una compra actualiza los datos de la compra
+		if(cabecera.getAdquisicion()!=null && cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.RETENCION.getIdentificador())) {
+			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
+			adquisicion.setTotalretencion(cabecera.getTotalretencion());
+			adquisicion.setTotalpagar(adquisicion.getTotalfactura().add(cabecera.getTotalretencion().negate()).setScale(2, RoundingMode.HALF_UP));
+			adquisicion.setEstado("RETENCION");
+			adquisicionServicio.actualizar(adquisicion);
 		}
 		
 		return cabecera;
