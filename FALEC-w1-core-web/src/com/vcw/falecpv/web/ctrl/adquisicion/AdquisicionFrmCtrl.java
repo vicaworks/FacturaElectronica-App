@@ -247,7 +247,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		ad.setPrecioUntarioCalculado(BigDecimal.ZERO);
 		ad.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		ad.setIva(p.getIva());
-		ad.setPreciounitario(p.getPreciounitario());
+		ad.setPreciounitario(p.getPreciouno());
 		ad.setProducto(p);
 		calcularAdquicisioDetalleProducto(ad);
 		adquisiciondetalleList.add(ad);

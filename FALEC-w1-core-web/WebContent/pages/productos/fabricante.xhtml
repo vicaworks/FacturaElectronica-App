@@ -7,7 +7,7 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">#{msg['title.categoria']}</ui:define>
+    <ui:define name="title">Fabricante</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
@@ -104,7 +104,7 @@
 			
 			<!-- Lista fabricantes -->
 			<div class="card card-w-title">
-				<h1>#{msg['card.categoria']}</h1>
+				<h1>Fabricante</h1>
 				<p:dataTable id="fabricanteDT" var="f"
 					value="#{fabricanteCtrl.fabricanteList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
