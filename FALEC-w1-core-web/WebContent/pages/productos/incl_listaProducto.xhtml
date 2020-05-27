@@ -108,7 +108,7 @@
 	                	<p:commandLink id="clkListProductoImg" disabled="#{pr.imagen==null}">
 							<i class="fa fa-eye Fs30" style="color:black;"></i>
 						</p:commandLink>
-						<p:overlayPanel id="imagePanel" for="clkListProductoImg" hideEffect="fade" rendered="#{pr.imagen!=null}">
+						<p:overlayPanel id="imagePanel" for="clkListProductoImg" hideEffect="fade" rendered="#{pr.imagen!=null}" showCloseIcon="true">
 					        <p:graphicImage value="#{productoCtrl.getImageToStream(pr.imagen)}" stream="false"  styleClass="imgSize" width="300" height="300"/>
 					    </p:overlayPanel>
 	                </p:column>
