@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.web.ctrl.productos;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -88,6 +89,11 @@ public class ListaProductoCtrl extends BaseCtrl {
 			productoSelected = null;
 			criterioBusqueda = null;
 			consultarProductos();
+			if(callModule.equals("ADQUISICION")) {
+				for (Producto producto : productoList) {
+					producto.setPorcentajedescuento(BigDecimal.ZERO);
+				}
+			}
 			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
 			
 		} catch (Exception e) {
