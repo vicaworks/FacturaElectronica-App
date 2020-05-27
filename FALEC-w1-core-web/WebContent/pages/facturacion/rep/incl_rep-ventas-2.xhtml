@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.pvDosDT .ui-datatable-scrollable-body{
+			min-height: 35vh !important;
+			
+		}
+		
+	</style>
+	
+	<div class="card card-w-title">
+		<h3 class="cardTitle">
+			<i class="fa fa-arrow-circle-right"/>
+			Facturas Emitidas
+		</h3>
+   		<div class="EmptyBox5"/>
+    	<div class="p-grid p-align-center vertical-container">
+    	
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<p:inputText value="#{repFacCtrl.criterioBusqueda}" placeholder="Codigo, #Factura, Cliente, Vendedor" styleClass="Wid100"/>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar value="#{repFacCtrl.desde}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="false" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+					
+				</p:calendar>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar value="#{repFacCtrl.hasta}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="false" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+					
+				</p:calendar>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-3">
+  					<div class="EmptyBox5"/>
+  					<p:commandButton icon="fa fa-search" 
+						action="#{repFacCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;"/>
+						
+  					<p:commandButton icon="fa fa-file-excel-o" 
+						styleClass="success-btn Fs18" update="@form"
+						ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+						<p:fileDownload value="#{repFacCtrl.file}"/>
+					</p:commandButton>
+    		</div>
+    		
+    	</div>
+    	
+    	<div class="EmptyBox5"/>
+    	<p:dataTable id="pvDosDT"
+       			scrollable="true"
+       			value="#{repFacCtrl.ventasQueryList}"
+       			var="f"
+       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+				styleClass="pvDosDT Fs11"
+				rows="12"
+                paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                paginatorPosition="bottom"  
+				rowKey="#{f.id}">
+			
+			<p:column headerText="N." style="width:5%;">
+			</p:column>
+			
+			<p:column headerText="FECHA" style="width:10%;">
+			</p:column>
+			
+			<p:column headerText="CLIENTE" style="width:25%;">
+			</p:column>
+			
+			<p:column headerText="PRODUCTO" style="width:30%;">
+			</p:column>
+			
+			<p:column headerText="CANT" style="width:5%;">
+			</p:column>
+			
+			<p:column headerText="SUBTOT" style="width:5%;">
+			</p:column>
+			
+			<p:column headerText="DESC" style="width:5%;">
+			</p:column>
+			
+			<p:column headerText="IVA" style="width:5%;">
+			</p:column>
+			
+			<p:column headerText="ICE" style="width:5%;">
+			</p:column>
+			
+			<p:column headerText="TOTAL" style="width:5%;">
+			</p:column>
+						
+		</p:dataTable>
+    	
+    	<div class="EmptyBox5"/>
+    	<div class="p-grid p-justify-center">
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="CANTIDAD" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.cantidad}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="#,##0"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="I.V.A." styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.iva}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="I.C.E" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.ice}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.total}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    			</h:outputText>
+    		</div>
+    	</div>
+    	
+	</div>	
+	
+</ui:composition>

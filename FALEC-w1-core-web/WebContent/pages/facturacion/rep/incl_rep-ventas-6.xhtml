@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.pvCincoDT .ui-datatable-scrollable-body{
+			min-height: 35vh !important;
+			
+		}
+		
+	</style>
+	
+	<div class="card card-w-title">
+		<h3 class="cardTitle">
+			<i class="fa fa-arrow-circle-right"/>
+			#{msg['label.grafico.capital']} #{msg['label.estadistico.capital']} 
+		</h3>
+   		<div class="EmptyBox5"/>
+    	<div class="p-grid p-align-center vertical-container">
+    	
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<p:inputText value="#{repVentEstaCtrl.criterioBusqueda}" placeholder="Codigo, Cliente, Vendedor" styleClass="Wid100"/>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar value="#{repVentEstaCtrl.desde}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="false" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+					
+				</p:calendar>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar value="#{repVentEstaCtrl.hasta}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="false" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+					
+				</p:calendar>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-3">
+  					<div class="EmptyBox5"/>
+  					<p:commandButton icon="fa fa-search" 
+						action="#{repVentEstaCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;"/>
+  					<p:commandButton icon="fa fa-file-excel-o" 
+						styleClass="success-btn Fs18">
+						<p:fileDownload value="#{repVentEstaCtrl.file}"/>
+					</p:commandButton>
+    		</div>
+    		
+    	</div>
+    	
+    	<div class="EmptyBox5"/>
+    	
+    	<div style="background-color: #fff">
+        	<p:barChart model="#{mainCtrl.barModel}" style="width: 100%; height: 500px;" />
+       	</div>
+    	
+	</div>	
+	
+</ui:composition>

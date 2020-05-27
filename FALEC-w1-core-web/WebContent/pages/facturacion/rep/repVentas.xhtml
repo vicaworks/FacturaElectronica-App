@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">REP VENTAS</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.cardTitle{
+				/* margin: 0px 0px 5px 0px !important; */
+				padding:0.5em 0px;
+				border-bottom: 1px solid #ccc;
+				font-size: 18px !important;
+				background-color: #F7F7F5;
+				border-radius: 4px;
+				/* background-color: #ccc; */
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
+    	
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Factura"  url="#{request.contextPath}/pages/facturacion/factura.jsf"/>
+		    <p:menuitem value="Reporte De Ventas" url="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf"/>
+		</p:breadCrumb>
+    	
+    	<!-- Reporte global -->
+	    <h:form id="formMain">
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<ui:include src="incl_rep-ventas-1.xhtml" />	    	
+	    	
+	    </h:form>
+	    
+	    <!-- Facturas emitidas -->
+	    <div class="EmptyBox20"/>
+	    <h:form id="formMain2">
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain2" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain2"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<ui:include src="incl_rep-ventas-2.xhtml" />	    	
+	    	
+	    </h:form>
+	    
+	    <!-- Facturas anuladas -->
+	    <div class="EmptyBox20"/>
+	    <h:form id="formMain3">
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain3" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain3"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<ui:include src="incl_rep-ventas-3.xhtml" />	    	
+	    	
+	    </h:form>
+	    
+	    <!-- Recibos -->
+	    <div class="EmptyBox20"/>
+	    <h:form id="formMain4">
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain4" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain4"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<ui:include src="incl_rep-ventas-4.xhtml" />	    	
+	    	
+	    </h:form>
+	    
+	    <!-- Recibos anuladas -->
+	    <div class="EmptyBox20"/>
+	    <h:form id="formMain5">
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain5" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain5"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<ui:include src="incl_rep-ventas-5.xhtml" />	    	
+	    	
+	    </h:form>
+	    
+	    <!-- Estadistico -->
+	    <div class="EmptyBox20"/>
+	    <h:form id="formMain6">
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain6" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain6"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<ui:include src="incl_rep-ventas-6.xhtml" />	    	
+	    	
+	    </h:form>
+	    
+	    <div class="EmptyBox20"/>
+	    
+    </ui:define>
+
+</ui:composition>

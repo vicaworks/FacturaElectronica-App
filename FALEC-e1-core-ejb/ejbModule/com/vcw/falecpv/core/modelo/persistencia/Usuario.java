@@ -138,6 +138,10 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
+    	return String.format("%s[id=%s]",nombre , idusuario);
+    }
+    
+    public String toStringObject() {
         return PojoUtil.toString(this);
     }
 
