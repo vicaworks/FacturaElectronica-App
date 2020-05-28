@@ -23,6 +23,7 @@ public class TotalesDto implements Serializable {
 	private BigDecimal iva = BigDecimal.ZERO;
 	private BigDecimal ice = BigDecimal.ZERO;
 	private BigDecimal total = BigDecimal.ZERO;
+	private BigDecimal pago = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -112,6 +113,20 @@ public class TotalesDto implements Serializable {
 	 */
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+
+	/**
+	 * @return the pago
+	 */
+	public BigDecimal getPago() {
+		return pago;
+	}
+
+	/**
+	 * @param pago the pago to set
+	 */
+	public void setPago(BigDecimal pago) {
+		this.pago = pago;
 	}
 
 }

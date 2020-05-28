@@ -25,7 +25,7 @@ public class SqlUtil {
 	 * @return
 	 */
 	public static String formatPostgresDate(Date fecha) {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 		return sf.format(fecha);
 	}
 

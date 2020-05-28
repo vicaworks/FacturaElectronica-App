@@ -1,0 +1,273 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">RECIBOS</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+        
+        	.pvUnoDT .ui-datatable-scrollable-body{
+				min-height: 30vh !important;
+				height: calc(100vh - 370px)!important;				
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.cardTitle{
+				/* margin: 0px 0px 5px 0px !important; */
+				padding:0.5em 0px;
+				/* border-bottom: 1px solid #ccc; */
+				font-size: 18px !important;
+				/* background-color: #F7F7F5; */
+				/* border-radius: 4px; */
+				/* background-color: #ccc; */
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
+				padding: 0.2em !important;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
+    	
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Punto de Venta"  url="#{request.contextPath}/pages/facturacion/factura.jsf"/>
+		    <p:menuitem value="Recibos Emitidas" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf"/>
+		</p:breadCrumb>
+    	
+    	<!-- Reporte global -->
+	    <h:form id="formMain">
+	    
+	    	<div class="card card-w-title">
+				<h3 class="cardTitle">
+					<i class="fa fa-arrow-circle-right"/>
+					Recibos emitidos
+				</h3>
+		   		<div class="EmptyBox5"/>
+		   		
+		   		<div class="p-grid p-align-end vertical-container">
+		    		<div class="p-col-12 p-md-3">
+		    			<h:outputText value="Vendedor" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+		    			<p:selectOneMenu id="somVendedor"
+									value="#{recEmitidoCtrl.usuarioSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="false"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100">
+							<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+							<f:selectItems value="#{recEmitidoCtrl.usuarioList}" var="u"
+											itemLabel="#{u.nombre}" itemValue="#{u}" />	
+						</p:selectOneMenu>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-3">
+		    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+		    			<p:inputText value="#{recEmitidoCtrl.criterioBusqueda}" placeholder="# Factura, Cliente" styleClass="Wid100"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+		    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+			    		<p:calendar id="calDesde" value="#{recEmitidoCtrl.desde}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calDesde"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+		    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+			    		<p:calendar id="calHasta" value="#{recEmitidoCtrl.hasta}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calHasta"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+	  					<p:commandButton id="cmdGlobalBuscar"
+							icon="fa fa-search"
+							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100 Fs16" update="@form" style="margin-right:5px;"/>
+						<p:spacer width="5"/>
+	  					<p:commandButton id="cmdGlobalExcel"
+							icon="fa fa-file-excel-o" 
+							styleClass="success-btn Wid100 Fs16"
+							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+							<p:fileDownload value="#{recEmitidoCtrl.file}"/>
+						</p:commandButton>
+		    		</div>
+		    		
+		   		</div>
+		   		
+		   			
+	    	</div>
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="EmptyBox10"/>
+			<div class="card card-w-title">
+		    	<p:dataTable id="pvUnoDT"
+		       			scrollable="true"
+		       			value="#{recEmitidoCtrl.ventasQueryList}"
+		       			var="v"
+		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvUnoDT Fs9"
+						rows="12"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowKey="#{v.idcabecera}">
+					
+					<p:column headerText="OPC" style="width:30px;">
+						<p:splitButton id="plbOpc" action="#" icon="fa fa-list-ul" styleClass="Fs9 menuDt">
+							<p:menuitem value="Ver" action="#" icon="fa fa-eye" >
+							</p:menuitem>
+							<p:menuitem value="Anular" action="#" icon="fa fa-trash-o" >
+							</p:menuitem>
+						</p:splitButton>
+					</p:column>
+					
+					<p:column headerText="N." style="width:40px;">
+						<h:outputText value="#{v.secuencial}" />
+					</p:column>
+					
+					<p:column headerText="FECHA" style="width:40px;">
+						<h:outputText value="#{v.fechaemision}" >
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CLIENTE" style="width:125px;">
+						<h:outputText value="#{v.razonsocial}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="VENDEDOR" style="width:40px;">
+						<h:outputText value="#{v.nombrepantalla}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="ESTADO" style="width:60px;">
+						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs8">
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.subtotal}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.totaldescuento}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.total}" styleClass="markBlack">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="PAGO" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.total.doubleValue()?'markRed':'markGreen'}">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="ENTREG" style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.licitado}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CAMBIO" style="width:30px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.cambio}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+								
+				</p:dataTable>
+				
+				<div class="EmptyBox5"/>
+		    	<div class="p-grid p-justify-center">
+		    		
+		    		<div class="p-col-6 p-md-2" style="text-align: center;">
+		    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
+		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+		    			</h:outputText>
+		    		</div>
+		    		<div class="p-col-6 p-md-2" style="text-align: center;">
+		    			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
+		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+		    			</h:outputText>
+		    		</div>
+		    		<div class="p-col-6 p-md-2" style="text-align: center;">
+		    			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.total}" styleClass="Fs16 FontBold">
+		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+		    			</h:outputText>
+		    		</div>
+		    		<div class="p-col-6 p-md-2" style="text-align: center;">
+		    			<h:outputText value="PAGO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.pago}" styleClass="Fs16 FontBold">
+		    				<f:convertNumber locale="es_EC" pattern="#,##0.00"/>
+		    			</h:outputText>
+		    		</div>
+		    	</div>
+			</div>
+	    	
+	    </h:form>
+	    
+    </ui:define>
+
+</ui:composition>
