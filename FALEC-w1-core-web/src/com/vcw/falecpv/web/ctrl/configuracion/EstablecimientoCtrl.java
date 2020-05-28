@@ -27,7 +27,7 @@ import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.commons.io.IOUtils;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -285,7 +285,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			if(file != null)
             {
 				byte[] bytes;
-		        bytes = IOUtils.toByteArray(file.getInputstream());
+		        bytes = IOUtils.toByteArray(file.getInputStream());
 		        establecimientoSelected.setLogo(bytes);
 		        AppJsfUtil.addInfoMessage("frmEstable", "OK", "IMAGEN CARGADA CORRECTAMENTE.");
             }
@@ -299,7 +299,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	public void handleUpload(FileUploadEvent event) throws IOException {
 		
 		UploadedFile uploadedFile = event.getFile();
-		establecimientoSelected.setLogo(uploadedFile.getContents());
+		establecimientoSelected.setLogo(uploadedFile.getContent());
 		establecimientoSelected.setNombreimagen(uploadedFile.getFileName());
 		
 	}
@@ -320,7 +320,9 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				return null;
 			}
 			
-			return new DefaultStreamedContent(new ByteArrayInputStream(establecimientoSelected.getLogo()));
+			return DefaultStreamedContent.builder().stream(() -> new ByteArrayInputStream(establecimientoSelected.getLogo())).build();
+			
+//			return new DefaultStreamedContent(new ByteArrayInputStream(establecimientoSelected.getLogo()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -335,7 +337,9 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				return null;
 			}
 			
-			return  new DefaultStreamedContent(new ByteArrayInputStream(img));
+			return DefaultStreamedContent.builder().stream(() -> new ByteArrayInputStream(img)).build();
+			
+//			return  new DefaultStreamedContent(new ByteArrayInputStream(img));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

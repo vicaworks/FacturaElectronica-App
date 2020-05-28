@@ -58,8 +58,10 @@ public class AppJsfUtil extends FacesUtil {
 	 * @return {@link DefaultStreamedContent}
 	 */
 	public static StreamedContent downloadFile(InputStream is, String nombreFile) throws Exception {
-
-		return new DefaultStreamedContent(is, FileUtil.getMimeType(nombreFile), nombreFile);
+		
+		return DefaultStreamedContent.builder().contentType(FileUtil.getMimeType(nombreFile)).name(nombreFile).stream(() ->  is).build();
+		
+//		return new DefaultStreamedContent(is, FileUtil.getMimeType(nombreFile), nombreFile);
 
 	}
 
@@ -77,8 +79,12 @@ public class AppJsfUtil extends FacesUtil {
 	 */
 	public static StreamedContent downloadFile(File file, String nombreFile) throws Exception {
 
+		@SuppressWarnings("resource")
 		InputStream is = new FileInputStream(file);
-		return new DefaultStreamedContent(is, FileUtil.getMimeType(nombreFile), nombreFile);
+		
+		return DefaultStreamedContent.builder().contentType(FileUtil.getMimeType(nombreFile)).name(nombreFile).stream(() ->  is).build();
+		
+//		return new DefaultStreamedContent(is, FileUtil.getMimeType(nombreFile), nombreFile);
 
 	}
 
@@ -94,7 +100,7 @@ public class AppJsfUtil extends FacesUtil {
 				dataTable.reset();
 				dataTable.clearInitialState();
 				dataTable.setFilteredValue(null);
-				dataTable.setFilters(null);
+				dataTable.setFilterBy(null);
 				dataTable.setSortBy(null);
 				PrimeFaces.current().ajax().update(idDataTable);
 				

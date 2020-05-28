@@ -371,7 +371,7 @@
 							</p:column>
 							
 							<p:column headerText="CANTIDAD" style="width:30px;">
-								<p:spinner id="idAdqCantidad" value="#{d.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0">
+								<p:spinner id="idAdqCantidad" value="#{d.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0" >
 									<p:ajax listener="#{adquisicionFrmCtrl.changeAdquicisionDetalle(d)}" update=":formMain:adquisicionDetDT :formMain:oupTotales" process="@this :formMain:adquisicionDetDT"/>
 								</p:spinner>
 							</p:column>

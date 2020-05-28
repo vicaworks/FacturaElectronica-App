@@ -27,7 +27,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
@@ -313,7 +313,7 @@ public class IceCtrl extends BaseCtrl {
 				File parent = new File("uploads");
 				parent.mkdirs();
 				fileIces = new File(parent, nombreFileIce);
-				FileUtils.writeByteArrayToFile(fileIces, uploadedFile.getContents());
+				FileUtils.writeByteArrayToFile(fileIces, uploadedFile.getContent());
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -518,6 +518,7 @@ public class IceCtrl extends BaseCtrl {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean validaTarifa(String valor) 
 	{
 		//valida tarifa valorem
@@ -533,6 +534,7 @@ public class IceCtrl extends BaseCtrl {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean validaTarEspecif(String valor) 
 	{
 		//valida tarifa valorem

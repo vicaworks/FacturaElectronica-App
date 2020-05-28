@@ -419,6 +419,11 @@ public class FactMainCtrl extends BaseCtrl {
 		Integer intPart = valor.intValue();
 		Integer decimalpart = decimalPart(valor);
 		
+		if(decimalpart.toString().length()==2) {
+			separadorDecimal = null;
+			return valor;
+		}
+		
 		if(decimalpart==0 && separadorDecimal==null) {
 			
 			if(intPart==0) {
@@ -428,6 +433,12 @@ public class FactMainCtrl extends BaseCtrl {
 			return BigDecimal.valueOf(Long.parseLong(intPart.toString().concat(valorCalculadora)));
 					
 		}
+		
+		if(decimalpart>0 && separadorDecimal==null) {
+			return BigDecimal.valueOf(Double.parseDouble(
+					intPart.toString().concat(".").concat(decimalpart.toString()).concat(valorCalculadora)));
+		}
+		
 		
 		if(separadorDecimal!=null) {
 			

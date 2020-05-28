@@ -47,7 +47,10 @@ public class ImagenCtrl implements Serializable {
         {
             String id = context.getExternalContext().getRequestParameterMap().get("id");
             Establecimiento estab = establecimientoServicio.getDao().buscar(id);
-            return new DefaultStreamedContent(new ByteArrayInputStream(estab.getLogo()));
+            
+            return DefaultStreamedContent.builder().stream(() -> new ByteArrayInputStream(estab.getLogo())).build();
+            
+//            return new DefaultStreamedContent(new ByteArrayInputStream(estab.getLogo()));
         }
     }
 }  

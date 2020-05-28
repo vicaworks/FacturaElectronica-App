@@ -120,7 +120,7 @@
 					</p:column>
 					
 					<p:column headerText="CANTIDAD" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProCantidad" value="#{pr.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])">
+	                	<p:spinner id="idListProCantidad" value="#{pr.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])" >
 	                		<p:ajax update=":frmListProducto:listaProductoDT">
 	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 	                		</p:ajax>
@@ -138,7 +138,7 @@
 	                </p:column>
 	                
 	                <p:column headerText="DESCUENTO % Ejm 5.5" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProDescuento" value="#{pr.porcentajedescuento}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}">
+	                	<p:spinner id="idListProDescuento" value="#{pr.porcentajedescuento}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" >
 	                		<p:ajax update=":frmListProducto:listaProductoDT">
 	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 	                		</p:ajax>

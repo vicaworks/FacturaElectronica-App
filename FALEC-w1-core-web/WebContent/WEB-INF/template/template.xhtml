@@ -58,51 +58,52 @@
 			}
 		</script>    
     </h:head>
-
-    <h:body>
-    	<!-- 
-        <div class="layout-wrapper #{guestPreferences.menuMode} #{guestPreferences.menuColor} #{guestPreferences.topBarColor} #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
-    	 -->
-    	 <div class="layout-wrapper layout-slim layout-menu-dark layout-topbar-blue #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
-            <ui:include src="./topbar.xhtml"></ui:include>
-            <ui:include src="./menu.xhtml"></ui:include>
-            <ui:include src="./right-panel.xhtml" />
-			
-			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-		        <p:commandButton value="Ok" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-		        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no secondary-button" icon="pi pi-times" />
-		    </p:confirmDialog>
-			
-            <div class="layout-main">        
-                <div class="layout-content" style="min-height:300px">
-                    <ui:insert name="content"></ui:insert>
-                </div>
-
-                <!-- <div class="layout-footer">
-                    <ui:include src="./footer.xhtml"></ui:include>
-                </div>
-
-                <ui:include src="./config.xhtml" /> -->
-                
-                <div class="layout-content-mask"></div>
-            </div>
-
-            <p:ajaxStatus styleClass="layout-ajax-loader">
-                <f:facet name="start">
-                    <i class="fa fa-circle-o-notch fa-spin layout-ajax-loader-icon" aria-hidden="true"></i>
-                </f:facet>
-
-                <f:facet name="complete">
-                    <h:outputText value="" />
-                </f:facet>
-            </p:ajaxStatus>
-        </div>
-       
-        <h:outputStylesheet name="css/primeflex.css" library="roma-layout" />
-        <h:outputStylesheet name="css/nanoscroller.css" library="roma-layout" />
-        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="roma-layout" />
-        <h:outputStylesheet name="farlecpv_v1.css" library="css" />
-        
-    </h:body>
+	<f:view locale="en_US">
+	    <h:body>
+	    	<!-- 
+	        <div class="layout-wrapper #{guestPreferences.menuMode} #{guestPreferences.menuColor} #{guestPreferences.topBarColor} #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
+	    	 -->
+	    	 <div class="layout-wrapper layout-slim layout-menu-dark layout-topbar-blue #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
+	            <ui:include src="./topbar.xhtml"></ui:include>
+	            <ui:include src="./menu.xhtml"></ui:include>
+	            <ui:include src="./right-panel.xhtml" />
+				
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			        <p:commandButton value="Ok" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+			        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no secondary-button" icon="pi pi-times" />
+			    </p:confirmDialog>
+				
+	            <div class="layout-main">        
+	                <div class="layout-content" style="min-height:300px">
+	                    <ui:insert name="content"></ui:insert>
+	                </div>
+	
+	                <!-- <div class="layout-footer">
+	                    <ui:include src="./footer.xhtml"></ui:include>
+	                </div>
+	
+	                <ui:include src="./config.xhtml" /> -->
+	                
+	                <div class="layout-content-mask"></div>
+	            </div>
+	
+	            <p:ajaxStatus styleClass="layout-ajax-loader">
+	                <f:facet name="start">
+	                    <i class="fa fa-circle-o-notch fa-spin layout-ajax-loader-icon" aria-hidden="true"></i>
+	                </f:facet>
+	
+	                <f:facet name="complete">
+	                    <h:outputText value="" />
+	                </f:facet>
+	            </p:ajaxStatus>
+	        </div>
+	       
+	        <h:outputStylesheet name="css/primeflex.css" library="roma-layout" />
+	        <h:outputStylesheet name="css/nanoscroller.css" library="roma-layout" />
+	        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="roma-layout" />
+	        <h:outputStylesheet name="farlecpv_v1.css" library="css" />
+	        
+	    </h:body>
+	</f:view>
 
 </html>

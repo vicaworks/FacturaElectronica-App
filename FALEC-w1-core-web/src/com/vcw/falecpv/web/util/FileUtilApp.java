@@ -138,11 +138,15 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
+	@SuppressWarnings("resource")
 	public static DefaultStreamedContent downloadZip(String nombreFisico, String nombre) throws FileNotFoundException, IOException {
 		File file = new File(nombreFisico);  //new File(tmpdir.getAbsolutePath().concat("\\" + nombreFisico + ".zip"));
 		InputStream input = new FileInputStream(file);
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), nombre + ".zip"));
+		
+		setDownload(DefaultStreamedContent.builder().contentType(externalContext.getMimeType(file.getName())).name(file.getName() + ".zip").stream(() ->  input).build());
+		
+//		setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), nombre + ".zip"));
 		clear();
 		return download;
 	}
@@ -254,6 +258,7 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 		return getFile(nombreReporte, generateList(object), exportOption);
 	}
 
+	@SuppressWarnings("resource")
 	public <T> StreamedContent getFile(String nombreReporte, List<T> lista, ExportarFileEnum exportOption) {
 		try {
 			setReportName(nombreReporte.concat(".jasper"));
@@ -275,7 +280,8 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 			// List<StreamedContent> list = new ArrayList<>();
 			// list.add(new DefaultStreamedContent(is,
 			// FileUtil.getMimeType(nameReport), nameReport));
-			return new DefaultStreamedContent(is, FileUtil.getMimeType(nameReport), nameReport);
+			return DefaultStreamedContent.builder().contentType(FileUtil.getMimeType(nameReport)).name(nameReport).stream(() -> is).build();
+//			return new DefaultStreamedContent(is, FileUtil.getMimeType(nameReport), nameReport);
 
 		} catch (Exception e) {
 			e.printStackTrace();

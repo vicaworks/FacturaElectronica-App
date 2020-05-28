@@ -30,7 +30,7 @@ import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
@@ -240,7 +240,7 @@ public class ProductoCtrl extends BaseCtrl {
 	public void handleUpload(FileUploadEvent event) throws IOException {
 		
 		UploadedFile uploadedFile = event.getFile();
-		productoSelected.setImagen(uploadedFile.getContents());
+		productoSelected.setImagen(uploadedFile.getContent());
 		productoSelected.setNombreimagen(uploadedFile.getFileName());
 		
 	}
@@ -261,7 +261,9 @@ public class ProductoCtrl extends BaseCtrl {
 				return null;
 			}
 			
-			return new DefaultStreamedContent(new ByteArrayInputStream(productoSelected.getImagen()));
+			return DefaultStreamedContent.builder().stream(() -> new ByteArrayInputStream(productoSelected.getImagen())).build();
+			
+//			return new  DefaultStreamedContent(new ByteArrayInputStream(productoSelected.getImagen()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -276,7 +278,10 @@ public class ProductoCtrl extends BaseCtrl {
 				return null;
 			}
 			
-			return  new DefaultStreamedContent(new ByteArrayInputStream(img));
+			return DefaultStreamedContent.builder().stream(() -> new ByteArrayInputStream(img)).build();
+			
+//			DefaultStreamedContent.builder().contentType("").name("").stream(() -> new ByteArrayInputStream(img)).build() 
+//			return  new DefaultStreamedContent(new ByteArrayInputStream(img));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -439,7 +444,7 @@ public class ProductoCtrl extends BaseCtrl {
 			File parent = new File("uploads");
 			parent.mkdirs();
 			fileProductos = new File(parent, nombreFileProducto);
-			FileUtils.writeByteArrayToFile(fileProductos, uploadedFile.getContents());
+			FileUtils.writeByteArrayToFile(fileProductos, uploadedFile.getContent());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

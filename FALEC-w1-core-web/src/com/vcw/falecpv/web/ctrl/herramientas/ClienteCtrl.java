@@ -7,10 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -21,7 +23,8 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
+
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
@@ -272,7 +275,7 @@ public class ClienteCtrl extends BaseCtrl {
 			File parent = new File("uploads");
 			parent.mkdirs();
 			fileClientes = new File(parent, nombreFileCliente);
-			FileUtils.writeByteArrayToFile(fileClientes, uploadedFile.getContents());
+			FileUtils.writeByteArrayToFile(fileClientes, uploadedFile.getContent());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

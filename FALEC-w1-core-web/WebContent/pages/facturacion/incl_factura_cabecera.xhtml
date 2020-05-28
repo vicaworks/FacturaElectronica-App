@@ -245,7 +245,7 @@
 								
 									<h:outputText value="VALOR" styleClass="FontBold Fs12"/>
 									
-									<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100">
+									<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" >
 										<p:ajax listener="#{compFacCtrl.totalizarPagoaction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
 									</p:spinner>
 									
@@ -254,7 +254,7 @@
 								<div class="p-col-12 p-md-4">
 									<!-- Efectivo -->								
 									<h:outputText value="Entrega" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
-									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}">
+									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" >
 										<p:ajax listener="#{compFacCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
 									</p:spinner>
 									
@@ -268,7 +268,7 @@
 									
 									<!-- credito -->
 									<h:outputText value="PLAZO" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}"/>
-									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}">
+									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" >
 										<p:ajax update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
 										</p:ajax>
@@ -279,7 +279,7 @@
 								<div class="p-col-12 p-md-4">
 									<!-- Efectivo -->
 									<h:outputText value="Cambio" styleClass="FontBold Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
-									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" readonly="true">
+									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" readonly="true" >
 										<p:ajax update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
 										</p:ajax>

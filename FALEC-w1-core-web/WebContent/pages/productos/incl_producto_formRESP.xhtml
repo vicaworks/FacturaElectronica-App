@@ -381,10 +381,10 @@
 							
 							<h:panelGroup>
 								styleClass="ui-fileupload-upload"
-								<p:fileUpload fileUploadListener="#{productoCtrl.handleUpload}"
+								<p:fileUpload listener="#{productoCtrl.handleUpload}"
 									mode="advanced" auto="true"   label="Seleccionar ..." style="" sizeLimit="25000000"/>
 								<p:fileUpload id="fileUploadComponent"
-									fileUploadListener="#{productoCtrl.handleUpload}"
+									fileUploadLl="#{productoCtrl.handleUpload}"
 									allowTypes="/(\.|\/)(jpg|gif|jpe?g|png|tif)$/"
 									invalidFileMessage="SOLO FORMATOS [png,jpg,svg,tif,gif]" 
 									required="true"
