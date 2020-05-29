@@ -3,6 +3,8 @@
  */
 package com.vcw.falecpv.web.ctrl.reporte;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -88,9 +90,10 @@ public class RepVentaCtrl extends BaseCtrl {
 			consultarTipoPago();
 			consultarFabricante();
 			consultarCategoria();
-			
 			hasta = new Date();
-			desde = FechaUtil.agregarMeses(hasta, -3);
+			desde = FechaUtil.agregarMeses(hasta, -1);
+			consultar();
+			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -117,14 +120,17 @@ public class RepVentaCtrl extends BaseCtrl {
 		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 	}
 	
+	private void consultar()throws DaoException {
+		ventasQueryList = null;
+		ventasQueryList = consultaVentaServicio.getVentasDetalleCriterio(usuarioSelected, tipopagoSelected,
+				fabricanteSelected, categoriaSelected, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),
+				criterioBusqueda, desde, hasta);
+	}
 	
 	@Override
 	public void buscar() {
 		try {
-			ventasQueryList = null;
-			ventasQueryList = consultaVentaServicio.getVentasTotales(usuarioSelected, tipopagoSelected,
-					fabricanteSelected, categoriaSelected, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),
-					criterioBusqueda, desde, hasta);
+			consultar();
 			consultarUsuario();
 			consultarTipoPago();
 			consultarFabricante();
@@ -137,7 +143,16 @@ public class RepVentaCtrl extends BaseCtrl {
 	}
 	
 	private void totalizar() {
+		totalesDto = new TotalesDto();
 		
+		if(ventasQueryList!=null) {
+			totalesDto.setCantidad(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getCantidad().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getPreciototalsinimpuesto().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setDescuento(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getDescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setIva(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getValoriva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setIce(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getValorice().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getPreciototal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+		}
 	}
 	
 	public StreamedContent getFile() {

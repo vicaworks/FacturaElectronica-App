@@ -101,16 +101,79 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<VentasQuery> getVentasTotales(Usuario usuario, Tipopago tipopago, Fabricante fabricante,
+	public List<VentasQuery> getVentasDetalleCriterio(Usuario usuario, Tipopago tipopago, Fabricante fabricante,
 			Categoria categoria, String idEstablecimiento, String criterio, Date desde, Date hasta)
 			throws DaoException {
 		try {
 			
-			String sql = "SELECT c FROM cabecera c WHERE c.fechaemision = '" + SqlUtil.formatPostgresDate(desde) + "'";
+			String sql =  "select " +
+							"	DISTINCT " +
+							"	d.iddetalle, " +
+							"	c.idcabecera, " +
+							"	c.idtipocomprobante, " +
+							"	c.estado, " +
+							"	tc.identificador, " + 
+							"	c.secuencial, " +
+							"	c.fechaemision, " +
+							"	c.idcliente, " +
+							"	cl.razonsocial, " +
+							"	d.idproducto, " +
+							"	d.descripcion, " +
+							"	d.cantidad, " +
+							"	d.preciounitario, " +
+							"	d.descuento, " +
+							"	d.preciototalsinimpuesto, " +
+							"	d.idiva, " +
+							"	iva.valor as porcentajeiva, " +
+							"	d.valoriva, " +
+							"	d.idice, " +
+							"	ice.valor as porcentajeice, " +
+							"	d.valorice,	 " +
+							"	d.preciototal  " +
+						"	from  " +
+						"		cabecera c inner join cliente cl on cl.idcliente = c.idcliente " +
+						"		inner join tipocomprobante  tc on tc.idtipocomprobante =c.idtipocomprobante " +	 
+						"		inner join usuario u on u.idusuario = c.idusuario " +
+						"		inner join detalle d on d.idcabecera = c.idcabecera " +
+						"		left join producto p on p.idproducto = d.idproducto " +
+						"		inner join iva on iva.idiva = d.idiva  " +
+						"		inner join ice on ice.idice  = d.idice  " +
+						"	where " +
+						"		c.fechaemision between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' " +
+						"		and c.idestablecimiento  = '" + idEstablecimiento + "' " +
+						"		and tc.identificador in ('00','01') " +
+						"		and c.estado <> 'ANULADO' ";
+						
+						
+				if(usuario!=null) {
+					sql +=	"		and c.idusuario = '" + usuario.getIdusuario() + "' ";
+				}
+				
+				if (tipopago!=null) {
+					sql += "		and '" + tipopago.getIdtipopago() + "' in (select pago.idtipopago from pago where pago.idcabecera = c.idcabecera ) ";	
+				}
+				
+				if(fabricante!=null) {
+					sql += "		and p.idfabricante = '" + fabricante.getIdfabricante() + "' ";
+				}
+				
+				if(categoria!=null) {
+					sql += "		and p.idcategoria = '" + categoria.getIdcategoria() + "' ";
+					
+				}
+				if(criterio!=null && !criterio.trim().isEmpty()) {
+					
+					sql += "		and (UPPER(cl.razonsocial) like '%" + criterio.toUpperCase() + "%' or c.numdocumento like '%" + criterio.toUpperCase() + "%') ";
+				}
+				
+				sql +=	"	order by " +
+						"		c.fechaemision, " +
+						"		c.secuencial,  " +
+						"		d.descripcion ";
 			
-			System.out.println(sql);
 			
-			return new ArrayList<>();
+			return resultList(sql, VentasQuery.class, false);
+			
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}

@@ -39,6 +39,21 @@ public class VentasQuery implements Serializable {
 	private BigDecimal cambio = BigDecimal.ZERO;
 	private BigDecimal totaldescuento = BigDecimal.ZERO;
 	private BigDecimal totalpago = BigDecimal.ZERO;
+	private String iddetalle;
+	private String idtipocomprobante;
+	private String identificador; 
+	private String idproducto;
+	private String descripcion;
+	private BigDecimal preciounitario = BigDecimal.ZERO;
+	private BigDecimal descuento = BigDecimal.ZERO;
+	private BigDecimal preciototalsinimpuesto = BigDecimal.ZERO;
+	private String idiva;
+	private BigDecimal porcentajeiva = BigDecimal.ZERO;
+	private BigDecimal valoriva = BigDecimal.ZERO;
+	private String idice;
+	private BigDecimal porcentajeice = BigDecimal.ZERO;
+	private BigDecimal valorice = BigDecimal.ZERO;
+	private BigDecimal preciototal = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -305,6 +320,216 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setTotalpago(BigDecimal totalpago) {
 		this.totalpago = totalpago;
+	}
+
+	/**
+	 * @return the iddetalle
+	 */
+	public String getIddetalle() {
+		return iddetalle;
+	}
+
+	/**
+	 * @param iddetalle the iddetalle to set
+	 */
+	public void setIddetalle(String iddetalle) {
+		this.iddetalle = iddetalle;
+	}
+
+	/**
+	 * @return the idtipocomprobante
+	 */
+	public String getIdtipocomprobante() {
+		return idtipocomprobante;
+	}
+
+	/**
+	 * @param idtipocomprobante the idtipocomprobante to set
+	 */
+	public void setIdtipocomprobante(String idtipocomprobante) {
+		this.idtipocomprobante = idtipocomprobante;
+	}
+
+	/**
+	 * @return the identificador
+	 */
+	public String getIdentificador() {
+		return identificador;
+	}
+
+	/**
+	 * @param identificador the identificador to set
+	 */
+	public void setIdentificador(String identificador) {
+		this.identificador = identificador;
+	}
+
+	/**
+	 * @return the idproducto
+	 */
+	public String getIdproducto() {
+		return idproducto;
+	}
+
+	/**
+	 * @param idproducto the idproducto to set
+	 */
+	public void setIdproducto(String idproducto) {
+		this.idproducto = idproducto;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @return the preciounitario
+	 */
+	public BigDecimal getPreciounitario() {
+		return preciounitario;
+	}
+
+	/**
+	 * @param preciounitario the preciounitario to set
+	 */
+	public void setPreciounitario(BigDecimal preciounitario) {
+		this.preciounitario = preciounitario;
+	}
+
+	/**
+	 * @return the descuento
+	 */
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+
+	/**
+	 * @param descuento the descuento to set
+	 */
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
+	}
+
+	/**
+	 * @return the preciototalsinimpuesto
+	 */
+	public BigDecimal getPreciototalsinimpuesto() {
+		return preciototalsinimpuesto;
+	}
+
+	/**
+	 * @param preciototalsinimpuesto the preciototalsinimpuesto to set
+	 */
+	public void setPreciototalsinimpuesto(BigDecimal preciototalsinimpuesto) {
+		this.preciototalsinimpuesto = preciototalsinimpuesto;
+	}
+
+	/**
+	 * @return the idiva
+	 */
+	public String getIdiva() {
+		return idiva;
+	}
+
+	/**
+	 * @param idiva the idiva to set
+	 */
+	public void setIdiva(String idiva) {
+		this.idiva = idiva;
+	}
+
+	/**
+	 * @return the porcentajeiva
+	 */
+	public BigDecimal getPorcentajeiva() {
+		return porcentajeiva;
+	}
+
+	/**
+	 * @param porcentajeiva the porcentajeiva to set
+	 */
+	public void setPorcentajeiva(BigDecimal porcentajeiva) {
+		this.porcentajeiva = porcentajeiva;
+	}
+
+	/**
+	 * @return the valoriva
+	 */
+	public BigDecimal getValoriva() {
+		return valoriva;
+	}
+
+	/**
+	 * @param valoriva the valoriva to set
+	 */
+	public void setValoriva(BigDecimal valoriva) {
+		this.valoriva = valoriva;
+	}
+
+	/**
+	 * @return the idice
+	 */
+	public String getIdice() {
+		return idice;
+	}
+
+	/**
+	 * @param idice the idice to set
+	 */
+	public void setIdice(String idice) {
+		this.idice = idice;
+	}
+
+	/**
+	 * @return the porcentajeice
+	 */
+	public BigDecimal getPorcentajeice() {
+		return porcentajeice;
+	}
+
+	/**
+	 * @param porcentajeice the porcentajeice to set
+	 */
+	public void setPorcentajeice(BigDecimal porcentajeice) {
+		this.porcentajeice = porcentajeice;
+	}
+
+	/**
+	 * @return the valorice
+	 */
+	public BigDecimal getValorice() {
+		return valorice;
+	}
+
+	/**
+	 * @param valorice the valorice to set
+	 */
+	public void setValorice(BigDecimal valorice) {
+		this.valorice = valorice;
+	}
+
+	/**
+	 * @return the preciototal
+	 */
+	public BigDecimal getPreciototal() {
+		return preciototal;
+	}
+
+	/**
+	 * @param preciototal the preciototal to set
+	 */
+	public void setPreciototal(BigDecimal preciototal) {
+		this.preciototal = preciototal;
 	}
 
 }

@@ -144,7 +144,7 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 		InputStream input = new FileInputStream(file);
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		
-		setDownload(DefaultStreamedContent.builder().contentType(externalContext.getMimeType(file.getName())).name(file.getName() + ".zip").stream(() ->  input).build());
+		setDownload(DefaultStreamedContent.builder().contentType(externalContext.getMimeType(file.getName())).name(nombre + ".zip").stream(() ->  input).build());
 		
 //		setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), nombre + ".zip"));
 		clear();
