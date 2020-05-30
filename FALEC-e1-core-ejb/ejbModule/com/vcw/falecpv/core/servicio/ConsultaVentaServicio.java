@@ -132,7 +132,9 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 							"	d.idice, " +
 							"	ice.valor as porcentajeice, " +
 							"	d.valorice,	 " +
-							"	d.preciototal  " +
+							"	d.preciototal,  " +
+							"   u.nombrepantalla, " +
+							"   c.estadoautorizacion " +
 						"	from  " +
 						"		cabecera c inner join cliente cl on cl.idcliente = c.idcliente " +
 						"		inner join tipocomprobante  tc on tc.idtipocomprobante =c.idtipocomprobante " +	 
