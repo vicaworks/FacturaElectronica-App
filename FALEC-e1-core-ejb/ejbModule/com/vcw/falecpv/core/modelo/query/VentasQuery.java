@@ -9,6 +9,7 @@ import java.util.Date;
 
 import com.servitec.common.util.PojoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 
 /**
  * @author cristianvillarreal
@@ -54,6 +55,9 @@ public class VentasQuery implements Serializable {
 	private BigDecimal porcentajeice = BigDecimal.ZERO;
 	private BigDecimal valorice = BigDecimal.ZERO;
 	private BigDecimal preciototal = BigDecimal.ZERO;
+	private String fabricante;
+	private String categoria;
+	private String codigoprincipal;
 	
 	/**
 	 * 
@@ -66,6 +70,10 @@ public class VentasQuery implements Serializable {
 		return PojoUtil.toString(this);
 	}
 
+	public String getTipoComprobante() {
+		return GenTipoDocumentoEnum.getByIdentificador(identificador);
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -530,6 +538,48 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setPreciototal(BigDecimal preciototal) {
 		this.preciototal = preciototal;
+	}
+
+	/**
+	 * @return the fabricante
+	 */
+	public String getFabricante() {
+		return fabricante;
+	}
+
+	/**
+	 * @param fabricante the fabricante to set
+	 */
+	public void setFabricante(String fabricante) {
+		this.fabricante = fabricante;
+	}
+
+	/**
+	 * @return the categoria
+	 */
+	public String getCategoria() {
+		return categoria;
+	}
+
+	/**
+	 * @param categoria the categoria to set
+	 */
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	/**
+	 * @return the codigoprincipal
+	 */
+	public String getCodigoprincipal() {
+		return codigoprincipal;
+	}
+
+	/**
+	 * @param codigoprincipal the codigoprincipal to set
+	 */
+	public void setCodigoprincipal(String codigoprincipal) {
+		this.codigoprincipal = codigoprincipal;
 	}
 
 }

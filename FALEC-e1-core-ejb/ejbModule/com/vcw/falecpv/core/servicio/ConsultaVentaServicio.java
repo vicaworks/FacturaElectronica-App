@@ -118,6 +118,9 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 							"	c.idcliente, " +
 							"	cl.razonsocial, " +
 							"	d.idproducto, " +
+							"   p.codigoprincipal, " +
+							"   f.nombrecomercial as fabricante, " +
+							"   ca.descripcion as categoria, " +
 							"	d.descripcion, " +
 							"	d.cantidad, " +
 							"	d.preciounitario, " +
@@ -136,6 +139,8 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"		inner join usuario u on u.idusuario = c.idusuario " +
 						"		inner join detalle d on d.idcabecera = c.idcabecera " +
 						"		left join producto p on p.idproducto = d.idproducto " +
+						"       left join fabricante f on p.idfabricante = f.idfabricante " + 
+						"       left join categoria ca on ca.idcategoria = p.idcategoria " +
 						"		inner join iva on iva.idiva = d.idiva  " +
 						"		inner join ice on ice.idice  = d.idice  " +
 						"	where " +
@@ -163,7 +168,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 				}
 				if(criterio!=null && !criterio.trim().isEmpty()) {
 					
-					sql += "		and (UPPER(cl.razonsocial) like '%" + criterio.toUpperCase() + "%' or c.numdocumento like '%" + criterio.toUpperCase() + "%') ";
+					sql += "		and (UPPER(cl.razonsocial) like '%" + criterio.toUpperCase() + "%' or c.numdocumento like '%" + criterio.toUpperCase() + "%'  or p.codigoprincipal = '" +  criterio + "' or UPPER(p.nombregenerico) like '%" + criterio.toUpperCase() + "%') ";
 				}
 				
 				sql +=	"	order by " +

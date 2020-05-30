@@ -81,7 +81,7 @@
     		
     		<div class="p-col-12 p-md-3">
     			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-    			<p:inputText value="#{repVentaCtrl.criterioBusqueda}" placeholder="# Factura, Cliente" styleClass="Wid100"/>
+    			<p:inputText value="#{repVentaCtrl.criterioBusqueda}" placeholder="#Factura, Cliente, Cod barra, producto" styleClass="Wid100"/>
     		</div>
     		
     		<div class="p-col-12 p-md-3">
@@ -128,7 +128,7 @@
        			value="#{repVentaCtrl.ventasQueryList}"
        			var="v"
        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-				styleClass="pvUnoDT Fs9"
+				styleClass="pvUnoDT Fs10"
 				rows="12"
                 paginator="true"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -138,6 +138,11 @@
 			
 			<p:column headerText="N." style="width:40px;">
 				<h:outputText value="#{v.secuencial}" />
+			</p:column>
+			
+			<p:column headerText="TIP" style="width:40px;">
+				<h:outputText value="#{v.tipoComprobante}" style="font-size:8px;" styleClass="#{v.identificador=='00'?'markBlack':'markOrange'}">
+				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="FECHA" style="width:50px;">
