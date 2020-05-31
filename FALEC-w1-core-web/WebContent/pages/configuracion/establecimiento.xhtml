@@ -114,39 +114,39 @@
 
 
 					</p:column>
-					<p:column headerText="Codigo"
+					<p:column headerText="#{msg['label.codigo']}"
 						style="width:10px; text-align: center;">
 						<h:outputText value="#{estab.codigoestablecimiento}" />
 					</p:column>
 
-					<p:column headerText="Direccion" style="width:80px;">
+					<p:column headerText="#{msg['label.direccion']}" style="width:80px;">
 						<h:outputText value="#{estab.direccionestablecimiento}" />
 					</p:column>
 
-					<p:column headerText="Nombre Comercial" priority="1"
+					<p:column headerText="NOMBRE COMERCIAL" priority="1"
 						style="width:100px; ">
 						<h:outputText value="#{estab.nombrecomercial}" />
 					</p:column>
 
-					<p:column headerText="Punto Emsion"
+					<p:column headerText="PUNTO #{msg['label.emision']}"
 						style="width:30px; text-align: center; ">
 						<h:outputText value="#{estab.puntoemision}" />
 					</p:column>
 
-					<p:column headerText="Telefono" style="width:70px;">
+					<p:column headerText="#{msg['label.telefono']}" style="width:70px;">
 						<h:outputText value="#{estab.telefono}" />
 					</p:column>
 
-					<p:column headerText="Correo" style="width:80px;">
+					<p:column headerText="CORREO" style="width:80px;">
 						<h:outputText value="#{estab.correo}" />
 					</p:column>
 
-					<p:column headerText="Matriz"
+					<p:column headerText="MATRIZ"
 						style="width:20px; text-align: center;">
 						<h:outputText value="#{estab.matriz}" />
 					</p:column>
 					
-					<p:column headerText="Ambiente"
+					<p:column headerText="AMBIENTE"
 						style="width:20px; text-align: center;">
 						<h:outputText value="#{estab.ambiente==1? 'Desarrollo':'Produccion'}" />
 					</p:column>

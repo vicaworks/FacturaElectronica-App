@@ -187,7 +187,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 					establecimientoServicio.guardar(establecimientoUpdate);
 					// guarda establecimiento nuevo
 					establecimientoSelected.setUpdated(new Date());
-					establecimientoSelected.setIdusuario(AppJsfUtil.getRemoteUser());
+					establecimientoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 					
 					
 					
