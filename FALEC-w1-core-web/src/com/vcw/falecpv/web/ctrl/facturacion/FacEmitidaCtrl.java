@@ -128,6 +128,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			totalesDto.setCantidad(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getCantidad().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getSubtotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setDescuento(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotaldescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotalsinimpuestos(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIva(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getIva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIce(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getIce().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setTotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
@@ -215,6 +216,10 @@ public class FacEmitidaCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(v.getTotalsinimpuestos().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(v.getIva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
@@ -245,10 +250,11 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			rowCliente.createCell(6).setCellValue(totalesDto.getCantidad().doubleValue());
 			rowCliente.createCell(7).setCellValue(totalesDto.getSubtotal().doubleValue());
 			rowCliente.createCell(8).setCellValue(totalesDto.getDescuento().doubleValue());
-			rowCliente.createCell(9).setCellValue(totalesDto.getIva().doubleValue());
-			rowCliente.createCell(10).setCellValue(totalesDto.getIce().doubleValue());
-			rowCliente.createCell(11).setCellValue(totalesDto.getTotal().doubleValue());
-			rowCliente.createCell(12).setCellValue(totalesDto.getPago().doubleValue());
+			rowCliente.createCell(9).setCellValue(totalesDto.getTotalsinimpuestos().doubleValue());
+			rowCliente.createCell(10).setCellValue(totalesDto.getIva().doubleValue());
+			rowCliente.createCell(11).setCellValue(totalesDto.getIce().doubleValue());
+			rowCliente.createCell(12).setCellValue(totalesDto.getTotal().doubleValue());
+			rowCliente.createCell(13).setCellValue(totalesDto.getPago().doubleValue());
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);

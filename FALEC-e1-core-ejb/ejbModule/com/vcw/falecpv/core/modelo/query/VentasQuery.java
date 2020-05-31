@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.query;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 import com.servitec.common.util.PojoUtil;
@@ -46,7 +47,6 @@ public class VentasQuery implements Serializable {
 	private String idproducto;
 	private String descripcion;
 	private BigDecimal preciounitario = BigDecimal.ZERO;
-	private BigDecimal descuento = BigDecimal.ZERO;
 	private BigDecimal preciototalsinimpuesto = BigDecimal.ZERO;
 	private String idiva;
 	private BigDecimal porcentajeiva = BigDecimal.ZERO;
@@ -58,6 +58,7 @@ public class VentasQuery implements Serializable {
 	private String fabricante;
 	private String categoria;
 	private String codigoprincipal;
+	private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -190,6 +191,7 @@ public class VentasQuery implements Serializable {
 	 * @return the subtotal
 	 */
 	public BigDecimal getSubtotal() {
+		subtotal = totalsinimpuestos.add(totaldescuento).setScale(2, RoundingMode.HALF_UP);
 		return subtotal;
 	}
 
@@ -415,20 +417,6 @@ public class VentasQuery implements Serializable {
 	}
 
 	/**
-	 * @return the descuento
-	 */
-	public BigDecimal getDescuento() {
-		return descuento;
-	}
-
-	/**
-	 * @param descuento the descuento to set
-	 */
-	public void setDescuento(BigDecimal descuento) {
-		this.descuento = descuento;
-	}
-
-	/**
 	 * @return the preciototalsinimpuesto
 	 */
 	public BigDecimal getPreciototalsinimpuesto() {
@@ -580,6 +568,20 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setCodigoprincipal(String codigoprincipal) {
 		this.codigoprincipal = codigoprincipal;
+	}
+
+	/**
+	 * @return the totalsinimpuestos
+	 */
+	public BigDecimal getTotalsinimpuestos() {
+		return totalsinimpuestos;
+	}
+
+	/**
+	 * @param totalsinimpuestos the totalsinimpuestos to set
+	 */
+	public void setTotalsinimpuestos(BigDecimal totalsinimpuestos) {
+		this.totalsinimpuestos = totalsinimpuestos;
 	}
 
 }

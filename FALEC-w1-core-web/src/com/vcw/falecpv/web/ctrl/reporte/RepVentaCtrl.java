@@ -158,8 +158,9 @@ public class RepVentaCtrl extends BaseCtrl {
 		
 		if(ventasQueryList!=null) {
 			totalesDto.setCantidad(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getCantidad().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getPreciototalsinimpuesto().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setDescuento(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getDescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getSubtotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setDescuento(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotaldescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotalsinimpuestos(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIva(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getValoriva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIce(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getValorice().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setTotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getPreciototal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
@@ -254,11 +255,15 @@ public class RepVentaCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getDescuento().doubleValue());
+				cell.setCellValue(v.getSubtotal().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getPreciototalsinimpuesto().doubleValue());
+				cell.setCellValue(v.getTotaldescuento().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(v.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -279,11 +284,12 @@ public class RepVentaCtrl extends BaseCtrl {
 			// totales
 			rowCliente = sheet.createRow(fila);
 			rowCliente.createCell(10).setCellValue(totalesDto.getCantidad().doubleValue());
-			rowCliente.createCell(12).setCellValue(totalesDto.getDescuento().doubleValue());
-			rowCliente.createCell(13).setCellValue(totalesDto.getSubtotal().doubleValue());
-			rowCliente.createCell(14).setCellValue(totalesDto.getIva().doubleValue());
-			rowCliente.createCell(15).setCellValue(totalesDto.getIce().doubleValue());
-			rowCliente.createCell(16).setCellValue(totalesDto.getTotal().doubleValue());
+			rowCliente.createCell(12).setCellValue(totalesDto.getSubtotal().doubleValue());
+			rowCliente.createCell(13).setCellValue(totalesDto.getDescuento().doubleValue());
+			rowCliente.createCell(14).setCellValue(totalesDto.getTotalsinimpuestos().doubleValue());
+			rowCliente.createCell(15).setCellValue(totalesDto.getIva().doubleValue());
+			rowCliente.createCell(16).setCellValue(totalesDto.getIce().doubleValue());
+			rowCliente.createCell(17).setCellValue(totalesDto.getTotal().doubleValue());
 			
 			
 			wb.setActiveSheet(0);

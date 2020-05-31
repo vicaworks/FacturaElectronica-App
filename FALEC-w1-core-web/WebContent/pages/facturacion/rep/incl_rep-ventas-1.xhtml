@@ -171,17 +171,24 @@
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="DESC" style="width:30px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.descuento}" >
+			<p:column headerText="SUBTOT" style="width:30px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.subtotal}" styleClass="markBlack">
 					<f:convertNumber pattern="$#,##0.00"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="SUBTOT" style="width:30px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.preciototalsinimpuesto}" styleClass="markBlack">
+			<p:column headerText="DESC" style="width:30px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.totaldescuento}" >
 					<f:convertNumber pattern="$#,##0.00"/>
 				</h:outputText>
 			</p:column>
+			
+			<p:column headerText="TOT SIN IVA" style="width:30px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.totalsinimpuestos}" styleClass="markGreen">
+					<f:convertNumber pattern="$#,##0.00"/>
+				</h:outputText>
+			</p:column>
+			
 			
 			<p:column headerText="IVA" style="width:30px;" styleClass="TexAlRight">
 				<h:outputText value="#{v.valoriva}" >
@@ -212,26 +219,26 @@
     			</h:outputText>
     		</div>
     		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repVentaCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="#,##0"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repVentaCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
     				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
     			</h:outputText>
     		</div>
     		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold markBlack">
+    			<h:outputText value="TOTAL SIN IVA" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repVentaCtrl.totalesDto.totalsinimpuestos}" styleClass="Fs16 FontBold markGreen">
     				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
     			</h:outputText>
     		</div>
     		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="I.V.A." styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="IVA" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repVentaCtrl.totalesDto.iva}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="I.C.E" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.ice}" styleClass="Fs16 FontBold">
     				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
     			</h:outputText>
     		</div>

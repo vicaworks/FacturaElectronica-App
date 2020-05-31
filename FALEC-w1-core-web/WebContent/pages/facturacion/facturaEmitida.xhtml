@@ -227,7 +227,14 @@
 						</h:outputText>
 					</p:column>
 					
-					<!-- <p:column headerText="IVA" style="width:20px;" styleClass="TexAlRight">
+					
+					<p:column headerText="TOT SIN IVA" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.totalsinimpuestos}" styleClass="markBlack">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="IVA" style="width:20px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.iva}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
@@ -237,7 +244,7 @@
 						<h:outputText value="#{v.ice}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
-					</p:column> -->
+					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.total}" styleClass="markBlack">
@@ -271,12 +278,6 @@
 		    		<div class="p-col-4 p-md-2" style="text-align: center;">
 		    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
 		    			<h:outputText value="#{facEmitidaCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
-		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-		    			</h:outputText>
-		    		</div>
-		    		<div class="p-col-4 p-md-2" style="text-align: center;">
-		    			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-		    			<h:outputText value="#{facEmitidaCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
 		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
 		    			</h:outputText>
 		    		</div>

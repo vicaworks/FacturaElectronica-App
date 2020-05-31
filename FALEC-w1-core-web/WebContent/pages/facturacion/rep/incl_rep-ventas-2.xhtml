@@ -22,13 +22,27 @@
 		</h3>
    		<div class="EmptyBox5"/>
     	<div class="p-grid p-align-center vertical-container">
-    	
+    		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-    			<p:inputText value="#{repFacCtrl.criterioBusqueda}" placeholder="Codigo, #Factura, Cliente, Vendedor" styleClass="Wid100"/>
+    			<h:outputText value="Vendedor" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<p:selectOneMenu id="somVendedorRep2"
+							value="#{repFacCtrl.usuarioSelected}"
+							converter="omnifaces.SelectItemsConverter"
+							required="false"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100">
+					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+					<f:selectItems value="#{repFacCtrl.usuarioList}" var="u2"
+									itemLabel="#{u2.nombre}" itemValue="#{u2}" />	
+				</p:selectOneMenu>
     		</div>
     		
     		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<p:inputText value="#{repFacCtrl.criterioBusqueda}" placeholder="#Factura, Cliente" styleClass="Wid100"/>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-2">
     			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
 	    		<p:calendar value="#{repFacCtrl.desde}"
 					pattern="dd/MM/yyyy"
@@ -38,7 +52,7 @@
 				</p:calendar>
     		</div>
     		
-    		<div class="p-col-12 p-md-3">
+    		<div class="p-col-12 p-md-2">
     			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
 	    		<p:calendar value="#{repFacCtrl.hasta}"
 					pattern="dd/MM/yyyy"
@@ -48,7 +62,7 @@
 				</p:calendar>
     		</div>
     		
-    		<div class="p-col-12 p-md-3">
+    		<div class="p-col-12 p-md-2">
   					<div class="EmptyBox5"/>
   					<p:commandButton icon="fa fa-search" 
 						action="#{repFacCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;"/>
@@ -76,55 +90,88 @@
                 paginatorPosition="bottom"  
 				rowKey="#{f.id}">
 			
-			<p:column headerText="N." style="width:5%;">
-			</p:column>
-			
-			<p:column headerText="FECHA" style="width:10%;">
-			</p:column>
-			
-			<p:column headerText="CLIENTE" style="width:25%;">
-			</p:column>
-			
-			<p:column headerText="PRODUCTO" style="width:30%;">
-			</p:column>
-			
-			<p:column headerText="CANT" style="width:5%;">
-			</p:column>
-			
-			<p:column headerText="SUBTOT" style="width:5%;">
-			</p:column>
-			
-			<p:column headerText="DESC" style="width:5%;">
-			</p:column>
-			
-			<p:column headerText="IVA" style="width:5%;">
-			</p:column>
-			
-			<p:column headerText="ICE" style="width:5%;">
-			</p:column>
-			
-			<p:column headerText="TOTAL" style="width:5%;">
-			</p:column>
+				<p:column headerText="N." style="width:40px;">
+					<h:outputText value="#{f.secuencial}" />
+				</p:column>
+				
+				<p:column headerText="FECHA" style="width:40px;">
+					<h:outputText value="#{f.fechaemision}" >
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="CLIENTE" style="width:125px;">
+					<h:outputText value="#{f.razonsocial}" >
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="VENDEDOR" style="width:40px;">
+					<h:outputText value="#{f.nombrepantalla}" >
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="AUT SRI" style="width:40px;">
+					<h:outputText value="#{f.estadoautorizacion}" >
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.subtotal}">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.totaldescuento}" >
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="TOT SIN IVA" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.totalsinimpuestos}" styleClass="markBlack">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="IVA" style="width:30px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.iva}" >
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="ICE" style="width:30px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.ice}" >
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.total}" styleClass="markGreen">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
 						
 		</p:dataTable>
     	
     	<div class="EmptyBox5"/>
     	<div class="p-grid p-justify-center">
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="CANTIDAD" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacCtrl.totalesDto.cantidad}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="#,##0"/>
-    			</h:outputText>
-    		</div>
+    		
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repFacCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
     				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
     			</h:outputText>
     		</div>
+    		
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repFacCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
+    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="TOT SIN IVA" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.totalsinimpuestos}" styleClass="Fs16 FontBold markBlack">
     				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
     			</h:outputText>
     		</div>
@@ -142,7 +189,7 @@
     		</div>
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacCtrl.totalesDto.total}" styleClass="Fs16 FontBold">
+    			<h:outputText value="#{repFacCtrl.totalesDto.total}" styleClass="Fs16 FontBold markGreen">
     				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
     			</h:outputText>
     		</div>
