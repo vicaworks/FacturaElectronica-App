@@ -149,7 +149,7 @@
 					
 	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:20px;">
 	                	<p:commandLink id="clkListProductoAdd" action="#{listaProductoCtrl.guardar()}" update="@form #{listaProductoCtrl.viewUpdate}">
-							<i class="fa fa-cart-plus Fs30"></i>
+							<i class="fa fa-cart-plus Fs30" style="color:#252529;"></i>
 							<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 						</p:commandLink>
 	                </p:column>
