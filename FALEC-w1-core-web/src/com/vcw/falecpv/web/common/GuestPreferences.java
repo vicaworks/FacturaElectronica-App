@@ -84,7 +84,8 @@ public class GuestPreferences implements Serializable {
     public String getTheme() {
     	//theme = "rose";
 //    	theme = "blue";
-    	theme = "bluegrey";
+//    	theme = "bluegrey";
+    	theme = "indigo";
         return theme;
     }
 

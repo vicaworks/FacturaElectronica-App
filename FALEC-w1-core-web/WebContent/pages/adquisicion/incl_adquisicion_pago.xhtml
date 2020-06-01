@@ -57,7 +57,7 @@
 	                
 	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:20px;">
 	                	<p:commandLink id="clkAdqPagoDelete" action="#{adquisicionFrmCtrl.eliminarPagoDetalle()}" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
-							<i class="fa fa-trash Fs20" style="color:red;"></i>
+							<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							<f:setPropertyActionListener value="#{pa}" target="#{adquisicionFrmCtrl.pagodetalleSelected}"/>
 						</p:commandLink>

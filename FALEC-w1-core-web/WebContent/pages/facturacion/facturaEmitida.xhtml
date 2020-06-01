@@ -29,19 +29,14 @@
 			}
 			
 			.cardTitle{
-				/* margin: 0px 0px 5px 0px !important; */
 				padding:0.5em 0px;
-				/* border-bottom: 1px solid #ccc; */
 				font-size: 18px !important;
-				/* background-color: #F7F7F5; */
-				/* border-radius: 4px; */
-				/* background-color: #ccc; */
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
 				padding: 0.3em; 
 				border: 0 none;
-				vertical-align: center;
+				vertical-align: top;
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
@@ -156,7 +151,7 @@
 		       			value="#{facEmitidaCtrl.ventasQueryList}"
 		       			var="v"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvUnoDT Fs9"
+						styleClass="pvUnoDT Fs11"
 						rows="12"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -164,19 +159,27 @@
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idcabecera}">
 					
-					<p:column headerText="OPC" style="width:30px;">
-						<p:splitButton id="plbOpc" action="#" icon="fa fa-list-ul" styleClass="Fs9 menuDt">
+					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					
+						<p:commandLink id="cmlDtFacEmitidas">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
+								
 							<p:menuitem value="Ver" action="#" icon="fa fa-eye" >
 							</p:menuitem>
 							<p:menuitem value="RIDE" action="#" icon="fa fa-file-pdf-o" >
 							</p:menuitem>
 							<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o" >
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar email" action="#" icon="fa fa-envelope" >
+							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" >
 							</p:menuitem>
 							<p:menuitem value="Anular" action="#" icon="fa fa-trash-o" >
-							</p:menuitem>
-						</p:splitButton>
+							</p:menuitem>	
+							
+						</p:menu>
+					
 					</p:column>
 					
 					<p:column headerText="N." style="width:40px;">
@@ -228,22 +231,33 @@
 					</p:column>
 					
 					
-					<p:column headerText="TOT SIN IVA" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="TOT SIN IVA" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.totalsinimpuestos}" styleClass="markBlack">
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="IVA" style="width:20px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.iva}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
+					<p:column headerText="IMPUESTO" style="width:40px;" styleClass="TexAlCenter">
+						
+						<div class="p-grid Fs10 p-justify-center">
+							<div class="p-col-8" >
+								<h:outputText value="I.V.A." styleClass="FontBold"/>
+							</div>
+							<div class="p-col-8">
+								<h:outputText value="#{v.iva}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-8">
+								<h:outputText value="I.C.E." styleClass="FontBold"/>
+							</div>
+							<div class="p-col-8">
+								<h:outputText value="#{v.ice}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+						</div>
 					
-					<p:column headerText="ICE" style="width:20px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.ice}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
@@ -252,22 +266,38 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PAGO" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.total.doubleValue()?'markRed':'markGreen'}">
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
 					
-					<p:column headerText="ENTREG" style="width:30px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.licitado}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
 					
-					<p:column headerText="CAMBIO" style="width:30px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.cambio}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
+					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlCenter">
+						
+						<div class="p-grid Fs10 p-justify-center">
+							<div class="p-col-8" >
+								<h:outputText value="PAGO" styleClass="FontBold"/>
+							</div>
+							<div class="p-col-8">
+								<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.total.doubleValue()?'markRed':'markGreen'}">
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-8" >
+								<h:outputText value="ENTREG" styleClass="FontBold"/>
+							</div>
+							<div class="p-col-8">
+								<h:outputText value="#{v.licitado}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-8" >
+								<h:outputText value="CAMBIO" styleClass="FontBold"/>
+							</div>
+							<div class="p-col-8">
+								<h:outputText value="#{v.cambio}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+							
+						</div>
+						
 					</p:column>
 								
 				</p:dataTable>

@@ -265,7 +265,7 @@
 					<div class="EmptyBox10"/>
 					<p:commandLink  action="#{factMainPagoCtrl.eliminarDetalle()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupInicioOpcionCalculadora">
 						<f:setPropertyActionListener value="#{p}" target="#{factMainPagoCtrl.pagoSelected}"/>
-						<i class="fa fa-trash Fs20" style="color:red;"></i>
+						<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 					</p:commandLink>		
 				</p:column>

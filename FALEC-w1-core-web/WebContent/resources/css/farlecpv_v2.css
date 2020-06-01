@@ -329,7 +329,31 @@
 .BordBottom{ border-top:solid 1px transparent; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;}
 .BordAll{ border:solid 1px transparent; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;}
 
+/* =============== RESUMEN =================== */
+.subtotal{
+	color: #535352;
+	text-align: right;
+}
 
+.subtotalValor{
+	text-align: right;
+	color:black !important;
+}
+
+.cpoRequerido{
+	color:#535352;
+}
+
+.bordeSubtotal{
+	border-bottom:1px solid #535352;
+	margin: 2px 0px 2px 10px;
+}
+
+.divResumen{
+	padding: 0.5em 0;
+	border: 1px solid #AEAEAC;
+	border-radius: 3px;
+}
 /* ===============  ROMA LAYOUT   ================ */
 
 .layout-wrapper .layout-main .layout-content {

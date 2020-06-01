@@ -163,13 +163,19 @@
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idcabecera}">
 					
-					<p:column headerText="OPC" style="width:30px;">
-						<p:splitButton id="plbOpc" action="#" icon="fa fa-list-ul" styleClass="Fs9 menuDt">
+					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+						
+						<p:commandLink id="cmlDtRecEmitidas">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmlDtRecEmitidas" my="left top" at="left bottom">
 							<p:menuitem value="Ver" action="#" icon="fa fa-eye" >
 							</p:menuitem>
 							<p:menuitem value="Anular" action="#" icon="fa fa-trash-o" >
 							</p:menuitem>
-						</p:splitButton>
+						</p:menu>
+					
 					</p:column>
 					
 					<p:column headerText="N." style="width:40px;">

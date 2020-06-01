@@ -74,7 +74,7 @@
 									</h:panelGroup>
 										
 									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
 										action="#{categoriaCtrl.nuevo()}" inline="true">
 										<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
 									</p:commandButton>
@@ -114,21 +114,22 @@
 					
 					
 					<p:column headerText="OPC" style="width:30px;">
+					
+					
+						<p:commandLink id="cmlDtCategoria">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+						</p:commandLink>
 						
-						<p:commandLink id="clkEditar" action="#{categoriaCtrl.editar()}">
-							<i class="fa fa-edit Fs16"></i>
-							<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
+						<p:menu overlay="true" trigger="cmlDtCategoria" my="left top" at="left bottom">
+							<p:menuitem value="Editar Categoria" action="#{categoriaCtrl.editar()}" icon="fa fa-edit" >
+								<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
 							<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
-						</p:commandLink>
-						
-						<p:spacer width="5px"></p:spacer>
-												
-						<p:commandLink id="clkEliminar" action="#{categoriaCtrl.eliminar()}" update="@form">
-							<i class="fa fa-close Fs18" style="color:red;"></i>
-							<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
-							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-						</p:commandLink>
-						
+							</p:menuitem>
+							<p:menuitem value="Eliminar Categoria" action="#{categoriaCtrl.eliminar()}" icon="fa fa-close" >
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
+							</p:menuitem>
+						</p:menu>
 						
 					</p:column>
 					

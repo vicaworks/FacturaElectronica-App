@@ -119,7 +119,7 @@
 	   				
 	   					<p:commandButton id="cmdRtnNuevo"
 							value="NUEVA #{msg['label.retencion']}" icon="fa fa-plus" 
-							action="#{retencionMainCtrl.nuevaRetencion()}" styleClass="Wid100 danger-btn" update="@form">
+							action="#{retencionMainCtrl.nuevaRetencion()}" styleClass="Wid100 secondary-button" update="@form">
 							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
 							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
@@ -164,8 +164,12 @@
 					rowKey="#{r.idcabecera}">
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					
+						<p:commandLink id="cmlDtRetencion">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+						</p:commandLink>
 						
-						<p:splitButton id="rtnOpc" action="#" icon="fa fa-list-ul Fs14">
+						<p:menu overlay="true" trigger="cmlDtRetencion" my="left top" at="left bottom">
 							
 							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form">
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
@@ -177,16 +181,15 @@
 								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Anular #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-close" process="retencionDT" update="@form">
+							<p:menuitem value="Eliminar #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form">
 								<f:setPropertyActionListener value="#{r}" target="#{retencionMainCtrl.retencionSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
-							<p:menuitem value="Ver Factura Compra" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
-								
+							<p:menuitem value="Ver Factura" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
 							</p:menuitem>
 							
-						</p:splitButton>
+						</p:menu>
 						
 					</p:column>
 					
@@ -227,9 +230,9 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="AUTO S.R.I." style="width:100px;" filterBy="#{r.claveacceso}" filterMatchMode="contains">
+					<!-- <p:column headerText="AUTO S.R.I." style="width:100px;" filterBy="#{r.claveacceso}" filterMatchMode="contains">
 						<h:outputText value="#{r.claveacceso}" />
-					</p:column>					
+					</p:column> -->					
 					
 				</p:dataTable>
 				

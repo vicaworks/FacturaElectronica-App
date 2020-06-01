@@ -73,7 +73,7 @@
 									</h:panelGroup>
 										
 									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
 										action="#{fabricanteCtrl.nuevo()}" inline="true">
 										<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
 									</p:commandButton>
@@ -112,22 +112,22 @@
 					rowKey="#{f.idfabricante}">
 					
 					
-					<p:column headerText="OPC" style="width:30px;">
+					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						
-						<p:commandLink id="clkEditar" action="#{fabricanteCtrl.editar()}">
-							<i class="fa fa-edit Fs16"></i>
-							<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
-							<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
+						<p:commandLink id="cmlDtFabricante">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
-						<p:spacer width="5px"></p:spacer>
-												
-						<p:commandLink id="clkEliminar" action="#{fabricanteCtrl.eliminar()}" update="@form">
-							<i class="fa fa-close Fs18" style="color:red;"></i>
-							<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
-							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-						</p:commandLink>
-						
+						<p:menu overlay="true" trigger="cmlDtFabricante" my="left top" at="left bottom">
+							<p:menuitem value="Editar Fabricante" action="#{fabricanteCtrl.editar()}" icon="fa fa-edit" >
+								<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
+								<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
+							</p:menuitem>
+							<p:menuitem value="Eliminar Fabricante" action="#{fabricanteCtrl.eliminar()}" icon="fa fa-close" >
+								<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:menuitem>
+						</p:menu>
 						
 					</p:column>
 					

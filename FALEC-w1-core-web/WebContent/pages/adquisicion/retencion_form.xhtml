@@ -14,7 +14,7 @@
 			
 			.retencionDetDT .ui-datatable-scrollable-body{
 				/* min-height: 42vh !important; */
-				height: calc(100vh - 550px);
+				height: calc(100vh - 525px);
 				
 			}
 			
@@ -44,16 +44,6 @@
 				padding: 0.3em; 
 				border: 0 none;
 				vertical-align: top;
-			}
-			
-			.subtotal{
-				/* background-color: #7F8C8D;color: #fff;border-bottom: 1px solid #ccc; */
-				/* background-color: #F2F3F4;color: #34495E;border-bottom: 1px solid #ccc; */
-				border-bottom: 1px solid #ccc;
-			}
-			
-			.subtotalValor{
-				/* background-color: #FCF3CF; */
 			}
 			
 			.disable .ui-inputfield{
@@ -100,14 +90,14 @@
 	    		
 	    		<div class="p-grid p-align-left">
 	    			
-	    			<div class="p-col-12 p-md-8">
+	    			<div class="p-col-12 p-md-5">
 	    				
 	    				<div class="p-grid">
 	    					
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdRtnNuevo"
 										value="NUEVA #{msg['label.retencion']}" icon="fa fa-plus" 
-										action="#{retencionFrmCtrl.nuevo()}" styleClass="danger-btn Wid100" update="@form" immediate="true">
+										action="#{retencionFrmCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true">
 										
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
@@ -124,7 +114,7 @@
 		    				<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdrtnGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{retencionFrmCtrl.guardar()}" styleClass="Wid100" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
+										action="#{retencionFrmCtrl.guardar()}" styleClass="secondary-button Wid100 Fs11" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
 							<div class="p-col-12 p-md-4">
@@ -133,7 +123,7 @@
 										title="NUEVO PROVEEDOR"
 										icon="fa fa-plus"
 										value="PROVEEDOR"
-										styleClass="secondary-button Wid100"
+										styleClass="secondary-button Wid100 Fs11"
 										action="#{proveedorCtrl.nuevo()}"
 										immediate="true">
 										<f:setPropertyActionListener value="RETENCION" target="#{proveedorCtrl.callModule}"/>
@@ -243,7 +233,7 @@
 							<h:outputText value="PERIODO FISCAL" styleClass="cpoRequerido"/>
 							<h:panelGroup >
 								<p:outputPanel id="oupPeriodoFiscal">
-									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.periodofiscal}" styleClass="cpoRequerido"/>
+									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.periodofiscal}"/>
 								</p:outputPanel>
 							</h:panelGroup>
 							
@@ -262,89 +252,96 @@
 				<div class="p-col-12 p-md-8">
 				
 					<div class="card card-w-title">
+						
+						<div class="p-grid">
+							<div class="p-col-12 p-md-6">
+								<p:panelGrid id="gridRetencionDetDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+								
+									<h:outputText value="IMPUESTO * : " styleClass="cpoRequerido"/>
+									<h:panelGroup>
+										<p:selectOneMenu id="somRtnImpuesto"
+													value="#{retencionFrmCtrl.retencionimpuesto}"
+													converter="omnifaces.SelectItemsConverter"
+													required="false"
+													requiredMessage="REQUERIDO"
+													style="width:100%;"
+													filter="true" filterMatchMode="contains">
+											<f:selectItem itemLabel="Seleccionar ..."
+													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 					
-						<p:panelGrid id="gridRetencionDetDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
-						
-							<h:outputText value="IMPUESTO * : " styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:selectOneMenu id="somRtnImpuesto"
-											value="#{retencionFrmCtrl.retencionimpuesto}"
-											converter="omnifaces.SelectItemsConverter"
-											required="false"
-											requiredMessage="REQUERIDO"
-											style="width:100%;"
-											filter="true" filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{retencionFrmCtrl.retencionimpuestoList}" var="ri"
-										itemLabel="#{ri.nombre}" itemValue="#{ri}" />
-										
-									<p:ajax event="change" listener="#{retencionFrmCtrl.cambioImpuesto()}" update=":formMain" process="@this :formMain:gridRetencionDG"/>
-										
-								</p:selectOneMenu>
-								<p:message for="somRtnImpuesto" />
-							</h:panelGroup>
-							
-							<h:outputText value="" styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:selectOneMenu id="somRtnImpuestoDet"
-											value="#{retencionFrmCtrl.retenciondetalleSelected.retencionimpuestodet}"
-											converter="omnifaces.SelectItemsConverter"
-											required="false"
-											style="width:100%;"
-											requiredMessage="REQUERIDO"
-											filter="true" filterMatchMode="contains">
+											<f:selectItems value="#{retencionFrmCtrl.retencionimpuestoList}" var="ri"
+												itemLabel="#{ri.nombre}" itemValue="#{ri}" />
+												
+											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioImpuesto()}" update=":formMain" process="@this :formMain:gridRetencionDG"/>
+												
+										</p:selectOneMenu>
+										<p:message for="somRtnImpuesto" />
+									</h:panelGroup>
+									
+									<h:outputText value="" styleClass="cpoRequerido"/>
+									<h:panelGroup>
+										<p:selectOneMenu id="somRtnImpuestoDet"
+													value="#{retencionFrmCtrl.retenciondetalleSelected.retencionimpuestodet}"
+													converter="omnifaces.SelectItemsConverter"
+													required="false"
+													style="width:100%;"
+													requiredMessage="REQUERIDO"
+													filter="true" filterMatchMode="contains">
+													
+											<f:selectItem itemLabel="Seleccionar ..."
+													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+					
+											<f:selectItems value="#{retencionFrmCtrl.retencionimpuestodetList}" var="rid"
+												itemLabel="#{rid.nombre}" itemValue="#{rid}" />
 											
-									<f:selectItem itemLabel="Seleccionar ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{retencionFrmCtrl.retencionimpuestodetList}" var="rid"
-										itemLabel="#{rid.nombre}" itemValue="#{rid}" />
+											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update="@form" process="@this"/>
+											
+										</p:selectOneMenu>
+										<p:message for="somRtnImpuestoDet" />
+									</h:panelGroup>
+								
+								</p:panelGrid>
+							</div>
+							<div class="p-col-12 p-md-6">
+								<p:panelGrid id="gridRetencionDetDG2" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 									
-									<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update="@form" process="@this"/>
+									<h:outputText value="BASE IMPONIBLE * : " styleClass="cpoRequerido"/>
+									<h:panelGroup>
+										<p:spinner id="idRtnBaseImponible" value="#{retencionFrmCtrl.retenciondetalleSelected.baseimponible}" min="0.01" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2">
+											<p:ajax listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update=":formMain:gridRetencionDetDG2 @form" process="@this"/>
+										</p:spinner>
+										<p:message for="idRtnBaseImponible" />
+									</h:panelGroup>
 									
-								</p:selectOneMenu>
-								<p:message for="somRtnImpuestoDet" />
-							</h:panelGroup>
+									<h:outputText value="% #{msg['label.retencion']} * : " styleClass="cpoRequerido"/>
+									<h:panelGroup>
+										<p:spinner id="idRtnPorcentajeRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.porcentajeretener}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
+										</p:spinner>
+										<p:message for="idRtnPorcentajeRetencion" />
+									</h:panelGroup>
+									
+									<h:outputText value="VALOR RETENIDO * : " styleClass="cpoRequerido"/>
+									<h:panelGroup>
+										<p:spinner id="idRtnValorRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.valorretenido}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
+										</p:spinner>
+										<p:message for="idRtnValorRetencion" />
+									</h:panelGroup>
+									
+								</p:panelGrid>
+							</div>
+						</div>
 						
-						</p:panelGrid>
 						
-						<p:panelGrid id="gridRetencionDetDG2" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-6,ui-g-12 ui-md-6">
-							
-							<h:outputText value="BASE IMPONIBLE * : " styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:spinner id="idRtnBaseImponible" value="#{retencionFrmCtrl.retenciondetalleSelected.baseimponible}" min="0.01" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2">
-									<p:ajax listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update=":formMain:gridRetencionDetDG2 @form" process="@this"/>
-								</p:spinner>
-								<p:message for="idRtnBaseImponible" />
-							</h:panelGroup>
-							
-							<h:outputText value="% #{msg['label.retencion']} * : " styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:spinner id="idRtnPorcentajeRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.porcentajeretener}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
-								</p:spinner>
-								<p:message for="idRtnPorcentajeRetencion" />
-							</h:panelGroup>
-							
-							<h:outputText value="VALOR ETENIDO * : " styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:spinner id="idRtnValorRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.valorretenido}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100 disable"  decimalPlaces="2" readonly="true">
-								</p:spinner>
-								<p:message for="idRtnValorRetencion" />
-							</h:panelGroup>
-							
-						</p:panelGrid>
 						
 						<!-- Opciones -->
 						<div class="EmptyBox10"/>
 						
-						<div class="p-grid p-justify-center">
+						<div class="p-grid p-justify-end">
 							<div class="p-col-12 p-md-6">
 								<p:commandButton  id="cmdAdqAgregarDetalle" 
 									icon="fa fa-plus"
 									value="AGREGAR #{msg['label.retencion']}"
-									styleClass="secondary-button Wid100"
+									styleClass="Wid100"
 									action="#{retencionFrmCtrl.agregarDetalle()}"
 									update="@form">
 								</p:commandButton>
@@ -356,7 +353,7 @@
 						<p:dataTable id="retencionDetDT" var="d"
 							value="#{retencionFrmCtrl.retenciondetalleList}" scrollable="true"
 							emptyMessage="#{msg['mensaje.noexistenDatos']}"
-							styleClass="retencionDetDT Fs11"  
+							styleClass="retencionDetDT Fs12"  
 							rowKey="#{d.idimpuestoretencion}">
 							
 							<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
@@ -402,24 +399,20 @@
 						
 						<!-- Totales -->
 						<p:outputPanel id="oupTotales">
-							<div class="p-grid p-align-top">
+							<div class="p-grid p-align-top p-justify-end">
 								
-								<div class="p-col-12 p-md-6">
-									<div class="p-grid p-align-top">
+								<div class="p-grid p-col-12 p-md-6 divResumen">
 										
-										<div class="p-col-12 p-md-8 subtotal">
-											<i class="fa fa-arrow-circle-right Fs14" style="margin-right: 10px;"/>
-											<h:outputText value="Total #{msg[label.retencion2]}" styleClass="FontBold Fs18" />
-										</div>
-										
-										<div class="p-col-12 p-md-4 subtotalValor">
-											<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs16">
-												<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-											</h:outputText>
-										</div>
-										
+									<div class="p-col-8 subtotal">
+										<h:outputText value="Total #{msg[label.retencion2]}" styleClass="FontBold Fs14" />
 									</div>
-								
+									
+									<div class="p-col-4 subtotalValor">
+										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs14">
+											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										</h:outputText>
+									</div>
+										
 								</div>
 								
 								

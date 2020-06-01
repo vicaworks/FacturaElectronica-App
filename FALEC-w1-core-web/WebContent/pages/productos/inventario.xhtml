@@ -234,7 +234,7 @@
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdInvNuevoProducto"
 							value="NUEVO PRODUCTO" icon="fa fa-plus" 
-							action="#{productoCtrl.nuevo()}" styleClass="Wid100" update="@form">
+							action="#{productoCtrl.nuevo()}" styleClass="secondary-button Wid100" update="@form">
 							<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
 							<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 							<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
@@ -276,36 +276,34 @@
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						
-						<p:commandLink id="clkInvEditProducto" action="#{productoCtrl.editarProducto(i.idproducto)}" title="EDITAR PRODUCTO">
-							<i class="fa fa-edit Fs16" style="color:gray;"></i>
+						<p:commandLink id="cmlDtInventario">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
-						<p:spacer width="10px"></p:spacer>
 						
-						<p:commandLink id="clkInvEntrada" action="#{kardexCtrl.nuevo()}" title="ENTRADA DE INVENTARIO">
-							<i class="fa fa-sign-in Fs16"></i>
-							<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
-			            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
-			            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
-							<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
-							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-							<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
-							<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
-						</p:commandLink>
-						
-						<p:spacer width="10px"></p:spacer>
-												
-						<p:commandLink id="clkInvSalida" action="#{kardexCtrl.nuevo()}" title="SALIDA DE INVENTARIO">
-							<i class="fa fa-sign-out Fs16" style="color:red;"></i>
-							<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
-			            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
-			            	<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
-							<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
-							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-							<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
-							<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
-						</p:commandLink>
-						
+						<p:menu overlay="true" trigger="cmlDtInventario" my="left top" at="left bottom">
+							
+							<p:menuitem value="Editar Producto" action="#{productoCtrl.editarProducto(i.idproducto)}" icon="fa fa-edit" >
+							</p:menuitem>
+							<p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" >
+								<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
+				            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+				            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+								<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
+							</p:menuitem>
+							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" >
+								<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
+				            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+				            	<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+								<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
+							</p:menuitem>
+						</p:menu>
 						
 					</p:column>
 					

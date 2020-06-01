@@ -75,6 +75,10 @@ public class VentasQuery implements Serializable {
 		return GenTipoDocumentoEnum.getByIdentificador(identificador);
 	}
 	
+	public String getTipoComprobanteInicual() {
+		return GenTipoDocumentoEnum.getinicialByIdentificador(identificador);
+	}
+	
 	/**
 	 * @return the id
 	 */

@@ -50,10 +50,10 @@
 	    		border-radius: 2px;
 	    		width: 100%;
 	    		text-align: center;
-	    		padding: 0.39em 0.42em;
-	    		color:black;
+	    		padding: 0.2em 0.2em;
+	    		color:#252529;
 	    		display: inline-block;
-	    		font-size: 14px;
+	    		font-size: 12px;
 	    		/* margin-bottom:4px; */
 	    	}
 	    	
@@ -99,6 +99,12 @@
 	    		font-weight: 800;
 	    		color: #252529;
 	    	}
+	    	
+	    	.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+			}
 			
 			@media (max-width: 896px) {
 				.breadCrumbDisplay {
@@ -135,27 +141,27 @@
 	    		
 	    		<div class="p-grid p-align-left">
 	    			
-	    			<div class="p-col-12 p-md-8">
+	    			<div class="p-col-12 p-md-5">
 	    				
 	    				<div class="p-grid">
 	    					
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdfacNuevo"
 										value="NUEVO" icon="fa fa-plus" 
-										action="#{compFacCtrl.nuevo()}" styleClass="secondary-button Wid100" update="@form" immediate="true">
+										action="#{compFacCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
 								</p:commandButton>
 	    					</div>
 	    					
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenFactura"
 										value="FACTURA" icon="fa fa-floppy-o" 
-										action="#{compFacCtrl.generarFactura()}" styleClass="danger-btn Wid100" update=":formMain:msgFormMain"/>
+										action="#{compFacCtrl.generarFactura()}" styleClass="secondary-button Wid100 Fs12" update=":formMain:msgFormMain"/>
 							</div>
 							
 							<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenRecibo"
 										value="RECIBO" icon="fa fa-floppy-o" 
-										action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100" update=":formMain:msgFormMain"/>
+										action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100 Fs12" update=":formMain:msgFormMain"/>
 							</div>
 							
 	    					

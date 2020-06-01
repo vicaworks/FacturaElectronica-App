@@ -224,7 +224,7 @@
 					<div class="EmptyBox10"/>
 					<p:commandLink id="clkEliminar" action="#{factMainCtrl.eliminarDetalle()}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios :formMain:oupCalMenuDerecha">
 						<f:setPropertyActionListener value="#{d}" target="#{factMainCtrl.detalleSelected}"/>
-						<i class="fa fa-trash Fs18" style="color:red;"></i>
+						<i class="fa fa-trash-o Fs18" style="color:red;"></i>
 						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 					</p:commandLink>
 				</p:column>

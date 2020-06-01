@@ -125,7 +125,7 @@
 	   				
 	   					<p:commandButton id="cmdAdqNuevo"
 							value="NUEVA COMPRA" icon="fa fa-plus" 
-							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100 danger-btn" update="@form">
+							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100 secondary-button" update="@form">
 	   					</p:commandButton>
 	   					
 	   					<div class="EmptyBox5"/>
@@ -164,16 +164,18 @@
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						
-						<p:commandLink id="clkAdqEditar" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}">
-							<i class="fa fa-edit Fs18"></i>
+						<p:commandLink id="cmlDtCompra">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
-						<p:spacer width="5px"></p:spacer>
-												
-						<p:commandLink id="clkAdqEliminar" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" update="@form">
-							<i class="fa fa-trash-o Fs18" style="color:red;"></i>
-							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmlDtCompra" my="left top" at="left bottom">
+							<p:menuitem value="Editar Compra" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" >
+							</p:menuitem>
+							<p:menuitem value="Eliminar Compra" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" >
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:menuitem>
+						</p:menu>
 						
 					</p:column>
 					
@@ -220,55 +222,55 @@
 						<div class="p-grid">
 						
 							<div class="p-col-5">
-								<h:outputText value="Subtotal:" styleClass="Fs10 FontBold"/>
+								<h:outputText value="Subtotal:" styleClass="Fs11 FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{a.subtotal}" styleClass="Fs10">
+								<h:outputText value="#{a.subtotal}" styleClass="Fs11">
 									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 								</h:outputText>
 							</div>
 							
 							<div class="p-col-5">
-								<h:outputText value="I.V.A.:" styleClass="Fs10 FontBold"/>
+								<h:outputText value="I.V.A.:" styleClass="Fs11 FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{a.totaliva}" styleClass="Fs10">
+								<h:outputText value="#{a.totaliva}" styleClass="Fs11">
 									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 								</h:outputText>
 							</div>
 							
 							<div class="p-col-5">
-								<h:outputText value="Descuento:" styleClass="Fs10 FontBold"/>
+								<h:outputText value="Descuento:" styleClass="Fs11 FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{a.totaldescuento}" styleClass="Fs10">
+								<h:outputText value="#{a.totaldescuento}" styleClass="Fs11">
 									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 								</h:outputText>
 							</div>
 							
 							<div class="p-col-5">
-								<h:outputText value="Total:" styleClass="Fs10 FontBold"/>
+								<h:outputText value="Total:" styleClass="Fs11 FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{a.totalfactura}" styleClass="Fs10">
+								<h:outputText value="#{a.totalfactura}" styleClass="Fs11">
 									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 								</h:outputText>
 							</div>
 							
 							<div class="p-col-5">
-								<h:outputText value="#{msg['label.retencion2']}:" styleClass="Fs10 FontBold"/>
+								<h:outputText value="#{msg['label.retencion2']}:" styleClass="Fs11 FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{a.totalretencion}" styleClass="Fs10">
+								<h:outputText value="#{a.totalretencion}" styleClass="Fs11">
 									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 								</h:outputText>
 							</div>
 							
 							<div class="p-col-5">
-								<h:outputText value="A Pagar:" styleClass="Fs10 FontBold"/>
+								<h:outputText value="A Pagar:" styleClass="Fs11 FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{a.totalpagar}" styleClass="Fs10">
+								<h:outputText value="#{a.totalpagar}" styleClass="Fs11">
 									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 								</h:outputText>
 							</div>
