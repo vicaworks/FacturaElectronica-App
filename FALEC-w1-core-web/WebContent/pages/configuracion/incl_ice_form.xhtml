@@ -54,7 +54,7 @@
 					<h:outputText value="#{iceCtrl.iceSelected.idice}" />
 					<h:outputText value="" />
 					
-					<h:outputText value="CODIGO * : " styleClass="cpoRequerido"/>
+					<h:outputText value="#{msg['label.codigo']} * : " styleClass="cpoRequerido"/>
 					<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" 
 					requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="4" 
 					validatorMessage="SOLO NÚMEROS">
@@ -62,7 +62,7 @@
 							</p:inputText>
 					<p:message for="intCodigo"/>
 					
-					<h:outputText value="DESCRIPCION * : " styleClass="cpoRequerido"/>
+					<h:outputText value="#{msg['label.descripcion']} * : " styleClass="cpoRequerido"/>
 					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter"/>
 					<p:message for="intDescripcion"/>
 					

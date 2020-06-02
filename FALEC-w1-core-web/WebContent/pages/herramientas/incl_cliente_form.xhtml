@@ -134,9 +134,10 @@
 							
 							<h:outputText value="ESTADO * : " styleClass="cpoRequerido" style="font-weight: bold" />
 							<p:selectOneMenu id="somEstado" value="#{clienteCtrl.clienteSelected.estado}" 
-											 styleClass="Wid100" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="REQUERIDO">
-								<f:selectItem itemLabel="ESTADO [seleccionar] ..."
-										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+											 styleClass="Wid100" 
+											 required="true" requiredMessage="REQUERIDO"
+											 disabled="#{clienteCtrl.clienteSelected.idcliente==null}">
+								
 								<f:selectItem itemLabel="ACTIVO" itemValue="A" />
 								<f:selectItem itemLabel="INACTIVO" itemValue="I" />
 							</p:selectOneMenu>

@@ -70,17 +70,17 @@
 					styleClass="ui-panelgrid-blank Wid100"
 					columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 
-					<h:outputText value="ID" />
+					<h:outputText value="ID:" />
 					<h:outputText
 						value="#{establecimientoCtrl.establecimientoSelected.idestablecimiento}" />
 					<h:outputText value="" />
 
-					<h:outputText value="ID EMPRESA" />
+					<h:outputText value="ID EMPRESA:" />
 					<h:outputText
 						value="#{establecimientoCtrl.establecimientoSelected.empresa.idempresa}" />
 					<h:outputText value="" />
 
-					<h:outputText value="CODIGO * : " styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.codigo']} * : " styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intCodigoEst"
 							value="#{establecimientoCtrl.establecimientoSelected.codigoestablecimiento}"
@@ -90,7 +90,7 @@
 					</h:panelGroup>
 					<p:message for="intCodigoEst" />
 
-					<h:outputText value="DIRECCION * : " styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.direccion']} * : " styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intDirreccionEst"
 							value="#{establecimientoCtrl.establecimientoSelected.direccionestablecimiento}"
@@ -109,7 +109,7 @@
 					</h:panelGroup>
 					<p:message for="intNombreComerEst" />
 
-					<h:outputText value="PUNTO DE EMISION * : "
+					<h:outputText value="PUNTO DE #{msg['label.emision']} * : "
 						styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intPuntoEmisionEst"
@@ -121,7 +121,7 @@
 					</h:panelGroup>
 					<p:message for="intPuntoEmisionEst" />
 
-					<h:outputText value="TELEFONO * : " styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.telefono']}* : " styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intTelefonoEst"
 							value="#{establecimientoCtrl.establecimientoSelected.telefono}"
@@ -164,7 +164,7 @@
 					</h:panelGroup>
 					<p:message for="intSecFact" />
 
-					<h:outputText value="SECUENCIAL NOTA DEBITO * : "
+					<h:outputText value="SECUENCIAL NOTA #{msg['label.debito']} * : "
 						styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intSecND"
@@ -176,7 +176,7 @@
 					</h:panelGroup>
 					<p:message for="intSecND" />
 
-					<h:outputText value="SECUENCIAL NOTA CREDITO * : "
+					<h:outputText value="SECUENCIAL NOTA #{msg['label.credito']} * : "
 						styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intSecNC"
@@ -188,7 +188,7 @@
 					</h:panelGroup>
 					<p:message for="intSecNC" />
 
-					<h:outputText value="SECUENCIAL LIQUIDACION COMPRA * : "
+					<h:outputText value="SECUENCIAL #{msg['label.liquidacion']} COMPRA * : "
 						styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intSecliqComp"
@@ -200,7 +200,7 @@
 					</h:panelGroup>
 					<p:message for="intSecliqComp" />
 
-					<h:outputText value="SECUENCIAL GUIA REMISION * : "
+					<h:outputText value="SECUENCIAL GUIA #{msg['label.remision']} * : "
 						styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intSecGuiRem"
@@ -212,7 +212,7 @@
 					</h:panelGroup>
 					<p:message for="intSecGuiRem" />
 
-					<h:outputText value="SECUENCIAL RETENCION * : "
+					<h:outputText value="SECUENCIAL #{msg['label.retencion']} * : "
 						styleClass="cpoRequerido" />
 					<h:panelGroup>
 						<p:inputText id="intSecReten"
