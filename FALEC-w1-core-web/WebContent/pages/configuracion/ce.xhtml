@@ -153,7 +153,7 @@
 		        
 		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:80px;">
 						<f:facet name="header">
-							<h:outputText value="Codigo" />
+							<h:outputText value="#{msg['label.codigo']}" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>
 						</f:facet>
 						<h:outputText value="#{ice.codigo}" />
@@ -161,21 +161,21 @@
 					
 		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:420px;">
 		                <f:facet name="header">
-							<h:outputText value="Descripcion" />
+							<h:outputText value="#{msg['label.descripcion']}" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>
 						</f:facet>
 						 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		         <p:column  headerText="Tarifa Ad Valorem"  filterMatchMode="contains" style="width:120px;">
+		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
 		             <h:outputText value="#{ice.tarifaadvalorem}" />
 		        </p:column>
 		        
-		        <p:column  headerText="Tarifa Especifica" filterMatchMode="contains" style="width:120px;" >
+		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;" >
 		            <h:outputText value="#{ice.tarifaespecifica}" />
 		        </p:column>
 		        
-		        <p:column  headerText="Valor"  filterMatchMode="contains" style="width:120px;" >
+		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" >
 		            <h:outputText value="#{ice.valor}" />
 		        </p:column>
 		 
@@ -186,7 +186,7 @@
 	     <!-- formulario iva -->
 	    <ui:include src="incl_ice_form.xhtml" />
 	    
-	        <!-- Form carga productos -->
+	        <!-- Form carga ice -->
 	    <ui:include src="incl_cargarIce_form.xhtml" />
 	    
     </ui:define>

@@ -127,6 +127,7 @@ public class IceCtrl extends BaseCtrl {
 			//guarda-edita
 			iceSelected.setUpdated(new Date());
 			iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			iceSelected.setTarifaadvalorem(iceSelected.getTarifaadvalorem().contains("%")?iceSelected.getTarifaadvalorem():iceSelected.getTarifaadvalorem()+"%");
 			iceSelected = iceServicio.guardar(iceSelected);
 				
 				iceAllList = null;

@@ -28,8 +28,10 @@ import org.primefaces.model.file.UploadedFile;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.ExpresionRegularValidador;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.exceptions.ValidarExpresionException;
 import com.vcw.falecpv.core.modelo.dto.ImportClienteDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
@@ -680,6 +682,14 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO");
 					}
 				}
+			}
+			
+			try {
+				ExpresionRegularValidador.validarEmail(c.getCorreoElectronico());
+			} catch (ValidarExpresionException e) {
+				c.setError(true);
+				c.setNovedad("CAMPO CORREO ELECTRONICO, FORMATO INCORRECTO "+e.getMessage());
+				
 			}
 			
 		}

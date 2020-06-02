@@ -105,28 +105,28 @@
 						
 					</p:column>
 					
-					<p:column headerText="Id"
+					<p:column headerText="ID"
 						style="width:20px; text-align: center;">
 						<h:outputText value="#{iva.idiva}" />
 					</p:column>
 
-					<p:column headerText="Codigo" style="width:80px;">
+					<p:column headerText="#{msg['label.codigo']}" style="width:80px;">
 						<h:outputText value="#{iva.codigo}" />
 					</p:column>
 
-					<p:column headerText="Porcentaje" priority="1"
+					<p:column headerText="PORCENTAJE" priority="1"
 						style="width:80px; ">
 						<h:outputText value="#{iva.porcentaje}" />
 					</p:column>
 
-					<p:column headerText="Valor"
+					<p:column headerText="VALOR"
 						style="width:30px; text-align: center; ">
 						<h:outputText value="#{iva.valor}" >
 						 <f:convertNumber locale="es_EC" pattern="0.###"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="Defecto"
+					<p:column headerText="DEFECTO"
 						style="width:30px; text-align: center; ">
 						<h:outputText value="#{iva.defecto==0? 'No':'Si'}" styleClass="#{iva.defecto==0?'markRed':'markGreen'}"/>
 					</p:column>
