@@ -18,7 +18,7 @@
 	
 	<div class="card card-w-title">
 		
-		<p:panelGrid id="grid" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs14" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs14" columnClasses="ui-g-12">
 			
 			<h:outputText value="FECHA :" styleClass="cpoRequerido"/>
 			<h:panelGroup>
@@ -30,17 +30,6 @@
 				<p:message for="claFacFecha" />
 			</h:panelGroup>
 			
-			<h:outputText value=""/>
-			
-			<h:panelGroup>
-				<p:commandLink action="#{factMainPagoCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:msgFormMain :formMain:gridCliente">
-					<div class="command-btn borde-secondary">
-						<h:outputText value="CONSUMIDOR FINAL" styleClass="DispBlock"/>
-					</div>
-				</p:commandLink>
-			</h:panelGroup>
-			
-			<h:outputText value="BUSCAR : " styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				
 				<div class="ui-inputgroup">
@@ -63,23 +52,30 @@
 		            </span>      
 		        </div>
 				<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+			</h:panelGroup>			
+			
+			<h:panelGroup>
+				
+				<p:commandButton value="CONSUMIDOR FINAL" action="#{factMainPagoCtrl.buscarConsumidorFinal()}" update=":formMain:msgFormMain :formMain:gridCliente" immediate="true" styleClass="secondary-button Wid100" icon="fa fa-users">
+				</p:commandButton>
+				
+				<!-- <p:commandLink action="#{factMainPagoCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:msgFormMain :formMain:gridCliente">
+					<div class="command-btn borde-secondary">
+						<h:outputText value="CONSUMIDOR FINAL" styleClass="DispBlock"/>
+					</div>
+				</p:commandLink> -->
 			</h:panelGroup>
 			
-			<h:outputText value=""/>
 			<h:panelGroup>
-				<p:commandLink action="#{clienteCtrl.nuevoEditar(factMainPagoCtrl.cabecerSelected.cliente!=null?factMainPagoCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true">
-					
+				
+				<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(factMainPagoCtrl.cabecerSelected.cliente!=null?factMainPagoCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" styleClass="secondary-button Wid100" icon="fa fa-user">
 					<f:setPropertyActionListener value="FactMainPagoCtrl" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
-					
-					<div class="command-btn borde-secondary">
-						<h:outputText value="NUEVO / EDITAR CLIENTE" styleClass="DispBlock"/>
-					</div>
-				</p:commandLink>
+				</p:commandButton>
+				
 			</h:panelGroup>
 			
-			<h:outputText value="CLIENTE : " styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:panelGrid id="gridCliente" columns="2" style="background-color:#F0F3F4;border: 1px solid #252529;"
 					styleClass="ui-panelgrid-blank Wid100 Fs12"
@@ -104,7 +100,6 @@
 				</p:panelGrid>
 			</h:panelGroup>
 			
-			<h:outputText value="TIPO DE PAGO : " styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:panelGrid id="gridTipoPago" columns="1"
 					styleClass="ui-panelgrid-blank Wid100 Fs12"

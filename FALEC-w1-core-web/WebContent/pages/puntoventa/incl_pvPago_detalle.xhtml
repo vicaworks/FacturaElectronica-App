@@ -31,7 +31,7 @@
     	
     	.resaltarValor{
     		background-color: #252529;
-    		color: #F9E79F !important;
+    		color: #fff !important;
     	}
     	
     	.ui-inputgroup .ui-inputgroup-addon{
@@ -300,8 +300,8 @@
 						<f:setPropertyActionListener value="VALOR" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
 						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
-						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='VALOR'?'valor-btn-seleccion':'valor-btn'}">
-							<h:outputText value="VALOR" styleClass="DispBlock FontBold"/>
+						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='VALOR'?'documento-btn-seleccion':'documento-btn'}">
+							<h:outputText value="VALOR" styleClass="DispBlock FontBold Fs14"/>
 						</div>
 					</p:commandLink>
 					
@@ -309,8 +309,8 @@
 						<f:setPropertyActionListener value="CAMBIO" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
 						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
-						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='CAMBIO'?'cambio-btn-seleccion':'cambio-btn'}">
-							<h:outputText value="CAMBIO" styleClass="DispBlock FontBold"/>
+						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='CAMBIO'?'documento-btn-seleccion':'documento-btn'}">
+							<h:outputText value="CAMBIO" styleClass="DispBlock FontBold Fs14"/>
 						</div>
 					</p:commandLink>
 						
@@ -319,7 +319,7 @@
 						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
 						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='DOCUMENTO'?'documento-btn-seleccion':'documento-btn'}">
-							<h:outputText value="#DOCU" styleClass="DispBlock FontBold"/>
+							<h:outputText value="#DOCU" styleClass="DispBlock FontBold Fs14"/>
 						</div>
 					</p:commandLink>
 				</p:outputPanel>

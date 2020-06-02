@@ -117,15 +117,15 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="EmptyBox10"/>
-	    	<div class="p-grid p-justify-center">
-    			<div class="p-col-12 p-md-3">
+	    	<div class="p-grid p-justify-left">
+    			<div class="p-col-12 p-md-2">
     				<p:commandButton value="ATRAS" icon="fa fa-backward" action="./puntoVenta.jsf?faces-redirect=true" immediate="true" styleClass="secondary-button Wid100"/>
     			</div>
-    			<div class="p-col-12 p-md-3">
-    				<p:commandButton value="RECIBO" icon="fa fa-file-text" action="#{factMainPagoCtrl.generarRecibo()}" update=":formMain:msgFormMain" styleClass="succes-btn Wid100"/>
+    			<div class="p-col-12 p-md-2">
+    				<p:commandButton value="RECIBO" icon="fa fa-file-text" action="#{factMainPagoCtrl.generarRecibo()}" update=":formMain:msgFormMain" styleClass="secondary-button Wid100"/>
     			</div>
-    			<div class="p-col-12 p-md-3">
-    				<p:commandButton value="FACTURA" icon="fa fa-file-code-o" action="#{factMainPagoCtrl.generarFactura()}" update=":formMain:msgFormMain" styleClass="danger-btn Wid100"/>
+    			<div class="p-col-12 p-md-2">
+    				<p:commandButton value="FACTURA" icon="fa fa-file-code-o" action="#{factMainPagoCtrl.generarFactura()}" update=":formMain:msgFormMain" styleClass="secondary-button Wid100"/>
     			</div>
 	    	</div>
 	    	<div class="EmptyBox5"/>

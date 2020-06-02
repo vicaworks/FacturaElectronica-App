@@ -9,7 +9,7 @@
 	<style type="text/css">
 		.pvDetalleDT .ui-datatable-scrollable-body{
 			min-height: 20vh !important;
-			height: calc(100vh - 460px)!important;
+			height: calc(100vh - 445px)!important;
 		}
 		
 		@media (max-width: 896px) {
@@ -26,6 +26,14 @@
 		.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
 			padding: 0px !important;
 		}
+		
+		.black-btn{
+    		border: 1px solid black;
+    		border-radius: 2px;
+    		width: 100%;
+    		text-align: center;
+    		padding: 0.5em;
+    	}
 			
 		.secondary-btn{
     		border: 1px solid #0f97c7;
@@ -162,9 +170,9 @@
 	
 	
 	<div class="card card-w-title">
-		<div class="p-grid p-justify-center">
-			<div class="p-col-12 p-md-6">
-				<p:commandButton value=" NUEVA FACTURA " action="#{factMainCtrl.nuevo()}" immediate="true" update="@form" styleClass="Fs10 Wid100"/>
+		<div class="p-grid p-justify-left">
+			<div class="p-col-12 p-md-4">
+				<p:commandButton value="NUEVA FACTURA" action="#{factMainCtrl.nuevo()}" immediate="true" update="@form" styleClass="secondary-button Wid100" icon="fa fa-plus"/>
 			</div>
 		</div>
 		<p:dataTable id="pvDetalleDT" var="d"
@@ -235,11 +243,11 @@
 		<div class="p-grid">
 			
 			<div class="p-col-6" style="text-align: right;">
-				<h:outputText value="TOTAL :" styleClass="Fs22 FontBold"/>
+				<h:outputText value="TOTAL :" styleClass="Fs18 FontBold"/>
 			</div>
 			<div class="p-col-5" style="text-align: right;">
 				<p:outputPanel id="oupTotales">
-					<h:outputText value="#{factMainCtrl.cabeceraFac!=null?factMainCtrl.cabeceraFac.totalsinimpuestos:0}" styleClass="Fs22 FontBold" style="color:red;">
+					<h:outputText value="#{factMainCtrl.cabeceraFac!=null?factMainCtrl.cabeceraFac.totalsinimpuestos:0}" styleClass="Fs18 FontBold">
 						<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 					</h:outputText>
 				</p:outputPanel>
@@ -251,24 +259,24 @@
 			<div class="p-col-12">
 				<div class="ui-inputgroup">
                     <span class="ui-inputgroup-addon">
-                        <i class="fa fa-barcode Fs18" style="margin-top: 5px;"></i>
+                        <i class="fa fa-barcode Fs14" style="margin-top: 5px;"></i>
                     </span>
-                    <p:inputText placeholder="#{msg['label.codigo2']} Producto" styleClass="Wid100 Fs18"/>      
+                    <p:inputText placeholder="#{msg['label.codigo2']} Producto" styleClass="Wid100 Fs14"/>      
                 </div>
 			</div>
 			<div class="p-col-12">
-				<div class="EmptyBox10"/>
+			<div class="EmptyBox5"/>
 				
 				<!-- calculadora -->
 				<div class="p-grid p-justify-center">
 					<div class="p-col-3">
 						<p:outputPanel id="oupPrecios">
 							<!-- precio, pago -->
-							<p:commandButton value="Precio1" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO1'?'danger-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO1')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
-							<p:commandButton value="Precio2" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO2'?'danger-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO2')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
-							<p:commandButton value="Precio3" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO3'?'danger-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO3')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
+							<p:commandButton value="Precio1" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO1'?'warning-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO1')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
+							<p:commandButton value="Precio2" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO2'?'warning-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO2')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
+							<p:commandButton value="Precio3" styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO3'?'warning-btn':'secondary-button'} Fs14 Wid100" style="margin-bottom:4px;" action="#{factMainCtrl.cambiarPrecio('PRECIO3')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios"/>
 							<p:commandLink action="#{factMainCtrl.registrarPago()}" immediate="true" update=":formMain:msgFormMain">
-								<div class="secondary-btn" style="padding: 0.75em;">
+								<div class="black-btn" style="padding: 0.75em;">
 									<i class="fa fa-dollar Fs26" style="margin-bottom:4px; color:black;"></i>
 									<h:outputText value="PAGO" styleClass="DispBlock Fs14 FontBold" style="color:black;"/>
 								</div>
@@ -353,13 +361,13 @@
 						<!-- seleccion -->
 						<p:outputPanel id="oupCalMenuDerecha">
 							<p:commandLink action="#{factMainCtrl.seleccionOpcionCalculadora('+')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupCalMenuDerecha">
-								<div class="opcion-btn borde-danger ">
+								<div class="opcion-btn back-btn ">
 									<h:outputText value="+" styleClass="DispBlock FontBold"/>
 								</div>
 							</p:commandLink>
 							
 							<p:commandLink action="#{factMainCtrl.seleccionOpcionCalculadora('-')}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupCalMenuDerecha">
-								<div class="opcion-btn borde-secondary ">
+								<div class="opcion-btn back-btn ">
 									<h:outputText value="-" styleClass="DispBlock FontBold"/>
 								</div>
 							</p:commandLink>
@@ -368,7 +376,7 @@
 								<f:setPropertyActionListener value="CANTIDAD" target="#{factMainCtrl.opcionCantidadPrecio}"/>
 								<f:setPropertyActionListener value="#{true}" target="#{factMainCtrl.inicioCalculadora}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{factMainCtrl.separadorDecimal}"/>
-								<div class="opcion-btn #{factMainCtrl.opcionCantidadPrecio=='CANTIDAD'?'cantidad-btn-seleccion':'cantidad-btn'}">
+								<div class="opcion-btn #{factMainCtrl.opcionCantidadPrecio=='CANTIDAD'?'precio-btn-seleccion':'precio-btn'}">
 									<h:outputText value="CANT" styleClass="DispBlock FontBold"/>
 								</div>
 							</p:commandLink>
