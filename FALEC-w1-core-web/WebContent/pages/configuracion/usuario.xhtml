@@ -13,8 +13,8 @@
         <style type="text/css">
         	
         	.usuariosDT .ui-datatable-scrollable-body{
-				min-height:400px !important;
-				max-height: 400px !important;
+				min-height: 30vh !important;
+				height: calc(100vh - 340px)!important;
 			}	
 			
         </style>
@@ -35,25 +35,23 @@
 	    <!-- OPCIONES -->
 	    <h:form id="formMain">	    
 	   		<div class="card card-w-title" style="margin-top:12px;">
-				<div class="p-grid">
+				<div class="p-grid p-align-center p-justify-start">
 					
-					<div class="p-grid p-col-12 p-md-6 p-align-center">
 					
-						<div class="p-col-4">
-							<h:outputText value="Estado :" />
-						</div>
-						
-						<div class="p-col-8">
-							<p:selectOneMenu id="somUsuario" value="#{usuarioCtrl.estadoRegBusqueda}" style="width:100%">
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
-				    		</p:selectOneMenu>
-						</div>
-						
+					<div class="p-col-12 p-md-1">
+						<h:outputText value="Estado :" />
 					</div>
 					
-					<div class="p-col-12 p-md-6" style="text-align:center;">
+					<div class="p-col-12 p-md-3">
+						<p:selectOneMenu id="somUsuario" value="#{usuarioCtrl.estadoRegBusqueda}" style="width:100%">
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
+			    		</p:selectOneMenu>
+					</div>
+						
+					
+					<div class="p-col-12 p-md-4" style="text-align:center;">
 						
 						<p:panelGrid columns="1"
 								style="margin:0px;border:none !important;width:100%;"
@@ -64,28 +62,17 @@
 									columnClasses="ui-g-12 ui-lg-4,
 												   ui-g-12 ui-lg-4,
 												   ui-g-12 ui-lg-4">
-									<h:panelGroup>
-										<span class="ui-separator MRight10"> 
-											<span class="fa fa-ellipsis-v leaden" />
-										</span>
-										<p:spacer width="5px"/>				                        
-										<p:commandButton id="cmdRefrecar"
-											value="CONSULTAR" icon="fa fa-search" 
-											action="#{usuarioCtrl.refrescar()}" styleClass="secondary-button Wid80" update="@form"
-											/>
-									</h:panelGroup>
+												   
+									<p:commandButton id="cmdRefrecar"
+										value="CONSULTAR" icon="fa fa-search" 
+										action="#{usuarioCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
+										/>
 										
 									<p:commandButton id="cmdNuevo"
 										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
 										action="#{usuarioCtrl.nuevo()}" inline="true" 
 										/>
 									
-									<!-- <p:commandButton id="cmdExcel"
-										value="REPORTE" icon="fa fa-file-excel-o"
-										action="#" 
-										
-										/> -->
-										
 									<p:commandButton  id="cmdExcel" 
 										title="EXPORTAR"
 										icon="fa fa-file-excel-o"
@@ -98,27 +85,6 @@
 								</p:panelGrid>
 						</p:panelGrid>
 						
-						
-						<!-- <span class="ui-separator MRight10"> 
-							<span class="fa fa-ellipsis-v leaden" />
-						</span>
-						
-						    
-						<p:commandButton id="cmdRefrecar"
-							value="CONSULTAR" icon="fa fa-search" 
-							action="#{usuarioCtrl.refrescar()}" styleClass="MRight10 secondary-button" update="@form"
-							/>
-							
-						<p:commandButton id="cmdNuevo"
-							value="NUEVO" icon="fa fa-plus" styleClass="MRight10" 
-							action="#{usuarioCtrl.nuevo()}" inline="true" 
-							/>
-						
-						<p:commandButton id="cmdExcel"
-							value="REPORTE" icon="fa fa-file-excel-o"
-							action="#" styleClass="success-btn MRight10"
-							/> -->
-							
 					</div>
 					
 				</div>
@@ -142,21 +108,21 @@
 					rowKey="#{u.idusuario}">
 					
 					
-					<p:column headerText="OPC" style="width:30px;">
-						
-						<p:commandLink id="clkEditar" action="#{usuarioCtrl.editar()}">
-							<i class="fa fa-edit Fs16"></i>
-							<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
+					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					
+						<p:commandLink id="cmlDtUsuario">
+							<i class="fa fa-plus-square Fs14" style="color:#252529;"/>
 						</p:commandLink>
 						
-						<p:spacer width="5px"></p:spacer>
-												
-						<p:commandLink id="clkEliminar" action="#{usuarioCtrl.eliminar()}" update="@form">
-							<i class="fa fa-close Fs18" style="color:red;"></i>
-							<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
-							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-						</p:commandLink>
-						
+						<p:menu overlay="true" trigger="cmlDtUsuario" my="left top" at="left bottom">
+							<p:menuitem value="Editar" action="#{usuarioCtrl.editar()}" icon="fa fa-edit">
+								<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
+							</p:menuitem>
+							<p:menuitem value="Eliminar" action="#{usuarioCtrl.eliminar()}" update="@form" icon="fa fa-trash-o" >
+								<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:menuitem>
+						</p:menu>
 						
 					</p:column>
 					

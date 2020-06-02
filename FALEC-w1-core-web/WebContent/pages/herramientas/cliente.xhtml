@@ -13,8 +13,8 @@
         <style type="text/css">
 			
 			.clienteDT .ui-datatable-scrollable-body{
-				min-height: 60vh !important;
-				max-height: 60vh !important;
+				min-height: 30vh !important;
+				height: calc(100vh - 410px)!important;
 			}
 			
 			.cardTitle{
@@ -99,23 +99,6 @@
 											action="#{clienteCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
 											/>
 									
-									<p:commandButton id="cmdExcelCli" 
-													 title="EXPORTAR"
-													 icon="fa fa-file-excel-o"
-													 ajax="false" 
-													 onclick="PrimeFaces.monitorDownload(start,stop)"
-													 value="REPORTE"
-													 styleClass="success-btn Wid90">
-										<p:fileDownload value="#{clienteCtrl.fileCliente}" />
-									</p:commandButton>
-									
-									<p:commandButton id="cmdNuevoCli"
-										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
-										action="#{clienteCtrl.nuevo()}" inline="true">
-										<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
-										<f:setPropertyActionListener value=":formMain:clienteDT" target="#{clienteCtrl.updateView}"/>
-									</p:commandButton>
-									
 									<p:commandButton id="cmdExcelCargarCli" 
 										title="CARGAR ARCHIVO EXCEL CLIENTES"
 										icon="fa fa-file-excel-o"
@@ -129,6 +112,23 @@
 										<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.existenNovedades}"/>
 										<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.renderResultadoImportCliente}"/>
 									</p:commandButton>
+									
+									<p:commandButton id="cmdNuevoCli"
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
+										action="#{clienteCtrl.nuevo()}" inline="true">
+										<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
+										<f:setPropertyActionListener value=":formMain:clienteDT" target="#{clienteCtrl.updateView}"/>
+									</p:commandButton>
+									
+									<p:commandButton id="cmdExcelCli" 
+													 title="EXPORTAR"
+													 icon="fa fa-file-excel-o"
+													 ajax="false" 
+													 onclick="PrimeFaces.monitorDownload(start,stop)"
+													 value="REPORTE"
+													 styleClass="success-btn Wid90">
+										<p:fileDownload value="#{clienteCtrl.fileCliente}" />
+									</p:commandButton>									
 								
 								</p:panelGrid>
 								
@@ -158,7 +158,11 @@
 	                
 	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:30px;">
 						
-						<p:splitButton id="clbOpc" action="#" icon="fa fa-list-ul Fs14">
+						<p:commandLink id="cmlDtCliente">
+							<i class="fa fa-plus-square Fs14" style="color:#252529;"/>
+						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmlDtCliente" my="left top" at="left bottom">
 							<p:menuitem value="Ver Cliente" action="#{clienteCtrl.verCliente(c.idcliente)}" icon="fa fa-edit" >
 							</p:menuitem>
 							<p:menuitem value="Editar Cliente" action="#{clienteCtrl.editarCliente(c.idcliente)}" icon="fa fa-edit" rendered="#{c.identificacion ne '9999999999999'}">
@@ -167,7 +171,7 @@
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 				            	<f:setPropertyActionListener value="#{c}" target="#{clienteCtrl.clienteSelected}"/>
 				            </p:menuitem>
-						</p:splitButton>
+						</p:menu>
 						
 					</p:column>
 					
