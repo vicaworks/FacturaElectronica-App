@@ -13,8 +13,8 @@
         <style type="text/css">
         	
         	.iceDT .ui-datatable-scrollable-body{
-				min-height:400px !important;
-				max-height: 400px !important;
+				min-height: 30vh !important;
+				height: calc(100vh - 310px)!important;
 			}	
 			
 			@media screen and (max-width: 40em){
@@ -60,11 +60,8 @@
 	    	
 	    		<div class="p-grid p-align-center">
 	    			
-	    			<!-- criterio de busqueda -->
-<!-- 	    			<div class="p-col-12 p-md-6"></div> -->
-	    			
 	    			<!-- opciones -->
-	    			<div class="p-col-12" style="text-align:center;">
+	    			<div class="p-col-12 p-md-8" style="text-align:center;">
 	    				
 	    				<p:panelGrid columns="1"
 								style="margin:0px;border:none !important;width:100%;"
@@ -72,32 +69,23 @@
 								columnClasses="ui-g-12">
 								
 								<p:panelGrid columns="4" style="border:none !important;margin:0px;width:100%;" 
-									columnClasses="ui-g-12 ui-lg-3,ui-g-12 ui-lg-3,ui-g-12 ui-lg-3,ui-g-12 ui-lg-3">
+									columnClasses="ui-g-12 ui-lg-2,ui-g-12 ui-lg-2,ui-g-12 ui-lg-4,ui-g-12 ui-lg-2">
 												   
 									<p:commandButton id="cmdRefrecar"
 											value="CONSULTAR" icon="fa fa-search" 
-											action="#{iceCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
+											action="#{iceCtrl.refrescar()}" styleClass="secondary-button Wid100" update="@form"
 											/>
 																									
 									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass=" Wid90" 
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid100" 
 										action="#{iceCtrl.nuevo()}" inline="true">
-									</p:commandButton>
-									
-									<p:commandButton  id="cmdExcel" 
-										title="EXPORTAR"
-										icon="fa fa-file-excel-o"
-										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="REPORTE"
-										styleClass="success-btn Wid90">
-										<p:fileDownload value="#{iceCtrl.fileIce}"/>
 									</p:commandButton>
 									
 									<p:commandButton  id="cmdExcelCargar" 
 										title="CARGAR ARCHIVO EXCEL ICE"
 										icon="fa fa-file-excel-o"
 										value="IMPORTAR VALORES ICE"
-										styleClass="secondary-button Wid90"
+										styleClass="secondary-button Wid100"
 										onclick="PF('dlgImportIce').show()"
 										update=":frmImportIce"
 										immediate="true">
@@ -106,6 +94,17 @@
 										<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.existeNovedadesIce}"/>
 										<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.renderResultadoImportIce}"/>
 									</p:commandButton>
+									
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid100">
+										<p:fileDownload value="#{iceCtrl.fileIce}"/>
+									</p:commandButton>
+									
+									
 									
 									
 								</p:panelGrid>
@@ -122,29 +121,36 @@
 			</p:messages>
 		
 		<div class="card card-w-title">
-			<p:dataTable id="iceDT" var="ice" value="#{iceCtrl.iceAllList}" widgetVar="icedt"
-		                 emptyMessage="No existen concidencias" filteredValue="#{iceCtrl.iceAllFilterList}">
+			<p:dataTable id="iceDT" 
+						var="ice" 
+						value="#{iceCtrl.iceAllList}" 
+						widgetVar="icedt" 
+						styleClass="iceDT"
+						scrollable="true"
+						rowKey="#{ice.idice}"
+		                 emptyMessage="No existen concidencias">
 		  
-		  		<p:column headerText="OPC" style="width:80px;">
-
-						<p:commandLink id="clkEditar"
-							action="#{iceCtrl.editar()}">
-							<i class="fa fa-edit Fs16"></i>
-							<f:setPropertyActionListener value="#{ice}"
-								target="#{iceCtrl.iceSelected}" />
+		  		<p:column headerText="OPC" style="width:80px;" styleClass="TexAlCenter">
+						
+						<p:commandLink id="cmlDtIce">
+							<i class="fa fa-plus-square Fs14" style="color:#252529;"/>
 						</p:commandLink>
-
-						<p:spacer width="5px"></p:spacer>
-
-						<p:commandLink id="clkEliminar"
-							action="#{iceCtrl.eliminar()}" update="@form">
-							<i class="fa fa-close Fs18" style="color: red;"></i>
-							<f:setPropertyActionListener value="#{ice}"
-								target="#{iceCtrl.iceSelected}" />
-							<p:confirm header="#{msg['label.confirmacion']}"
-								message="#{msg['mensaje.confimacion']}"
-								icon="fa fw-3x fa-exclamation-triangle" />
-						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmlDtIce" my="left top" at="left bottom">
+							
+							<p:menuitem value="Editar" action="#{iceCtrl.editar()}" icon="fa fa-edit">
+							</p:menuitem>
+							
+							<p:menuitem value="Eliminar" action="#{iceCtrl.eliminar()}" update="@form" icon="fa fa-trash-o" >
+								<f:setPropertyActionListener value="#{ice}"
+									target="#{iceCtrl.iceSelected}" />
+								<p:confirm header="#{msg['label.confirmacion']}"
+									message="#{msg['mensaje.confimacion']}"
+									icon="fa fw-3x fa-exclamation-triangle" />
+							</p:menuitem>
+							
+						</p:menu>
+						
 					</p:column>
 		  		
 		        <p:column headerText="Id"  filterMatchMode="contains" style="width:80px;">
