@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.xpert.persistence.query.QueryBuilder;
@@ -114,6 +115,36 @@ public class ClienteDao extends AppGenericDao<Cliente, String> {
 				.from(Cliente.class,"c")
 				.equals("c.empresa.idempresa",idEmpresa)
 				.equals("c.identificacion",identificador).getSingleResult();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param estadoRegistroEnum
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Cliente> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idEmpresa)throws DaoException{
+		try {
+			
+			Query q = null;
+			
+			if(estadoRegistroEnum==null) {
+				q = getEntityManager().createQuery("SELECT c FROM Cliente c WHERE c.empresa.idempresa=:idempresa ORDER BY c.razonsocial");
+			}else {
+				q = getEntityManager().createQuery("SELECT c FROM Cliente c WHERE c.estado=:estado AND c.empresa.idempresa=:idempresa ORDER BY c.razonsocial");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}
+			
+			q.setParameter("idempresa", idEmpresa);
+			
+			return q.getResultList();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

@@ -21,6 +21,7 @@ import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
 
@@ -43,6 +44,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	private List<Producto> productoList;
 	private Producto productoSelected;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
+	private NotaCreditoCtrl notaCreditoCtrl;
 	private String callModule;
 	private String formModule;
 	private String viewUpdate;
@@ -128,7 +130,14 @@ public class ListaProductoCtrl extends BaseCtrl {
 				//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
 				//AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
 				break;
+			case "NOTA_CREDITO":
 				
+				notaCreditoCtrl.setProductoSelected(productoSelected);
+				notaCreditoCtrl.agregarProducto();
+				AppJsfUtil.hideModal("dlgListaProducto");
+				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (notaCreditoCtrl.getDetalleNcList().size()-1) + ":insDetFacCanbtidad1_input')");
+				
+				break;
 			default:
 				AppJsfUtil.hideModal("dlgListaProducto");
 				break;
@@ -263,6 +272,20 @@ public class ListaProductoCtrl extends BaseCtrl {
 	 */
 	public void setOnComplete(String onComplete) {
 		this.onComplete = onComplete;
+	}
+
+	/**
+	 * @return the notaCreditoCtrl
+	 */
+	public NotaCreditoCtrl getNotaCreditoCtrl() {
+		return notaCreditoCtrl;
+	}
+
+	/**
+	 * @param notaCreditoCtrl the notaCreditoCtrl to set
+	 */
+	public void setNotaCreditoCtrl(NotaCreditoCtrl notaCreditoCtrl) {
+		this.notaCreditoCtrl = notaCreditoCtrl;
 	}
 
 }

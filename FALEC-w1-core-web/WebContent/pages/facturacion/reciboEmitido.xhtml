@@ -155,7 +155,7 @@
 		       			value="#{recEmitidoCtrl.ventasQueryList}"
 		       			var="v"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvUnoDT Fs9"
+						styleClass="pvUnoDT Fs11"
 						rows="12"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -163,10 +163,10 @@
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idcabecera}">
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtRecEmitidas">
-							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+							<i class="fa fa-plus-square Fs14" style="color:#252529;"/>
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtRecEmitidas" my="left top" at="left bottom">
@@ -198,8 +198,8 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:60px;">
-						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs8">
+					<p:column headerText="ESTADO" style="width:40px;">
+						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
 						</h:outputText>
 					</p:column>
 					

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  */
 public enum GenTipoDocumentoEnum {
 	
-	FACTURA("01","FAC"),RECIBO("00","REC"),RETENCION("07","RET"),NOTA_CREDITO("","NC"),NOTA_DEBITO("","ND");
+	FACTURA("01","FAC"),RECIBO("00","REC"),RETENCION("07","RET"),NOTA_CREDITO("04","NC"),NOTA_DEBITO("","ND");
 	
 	private String identificador;
 	private String inicial;
@@ -40,6 +40,18 @@ public enum GenTipoDocumentoEnum {
 			return gt.toString();
 		}
 		return "";
+	}
+	
+	/**
+	 * @param identificador
+	 * @return
+	 */
+	public static GenTipoDocumentoEnum getEnumByIdentificador(String identificador) {
+		GenTipoDocumentoEnum gt = Stream.of(GenTipoDocumentoEnum.values()).filter(x->x.getIdentificador().equals(identificador)).findFirst().get();
+		if (gt!=null) {
+			return gt;
+		}
+		return null;
 	}
 	
 	public static String getinicialByIdentificador(String identificador) {

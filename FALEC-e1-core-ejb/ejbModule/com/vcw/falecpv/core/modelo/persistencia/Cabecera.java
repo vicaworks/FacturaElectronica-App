@@ -138,13 +138,11 @@ public class Cabecera implements Serializable {
     private String estado;
     
     @Basic(optional = true)
-    @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "numfactura", nullable = true, length = 15)
     private String numfactura;
     
     @Basic(optional = true)
-    @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "numdocumento", nullable = true, length = 15)
     private String numdocumento;
@@ -178,6 +176,16 @@ public class Cabecera implements Serializable {
     @NotNull
     @Column(name = "totalretencion", nullable = false, precision = 12, scale = 2)
     private BigDecimal totalretencion = BigDecimal.ZERO;
+    
+    @Basic(optional = true)
+    @Size(min = 1, max = 17	)
+    @Column(name = "numdocasociado", nullable = true, length = 17)
+    private String numdocasociado;
+    
+    @Basic(optional = true)
+    @Size(min = 1, max = 40	)
+    @Column(name = "idcabecerapadre", nullable = true, length = 40)
+    private String idcabecerapadre;
     
     
     @ManyToOne(optional = true)
@@ -920,6 +928,34 @@ public class Cabecera implements Serializable {
 	 */
 	public void setTipocomprobanteretencion(Tipocomprobante tipocomprobanteretencion) {
 		this.tipocomprobanteretencion = tipocomprobanteretencion;
+	}
+
+	/**
+	 * @return the numdocasociado
+	 */
+	public String getNumdocasociado() {
+		return numdocasociado;
+	}
+
+	/**
+	 * @param numdocasociado the numdocasociado to set
+	 */
+	public void setNumdocasociado(String numdocasociado) {
+		this.numdocasociado = numdocasociado;
+	}
+
+	/**
+	 * @return the idcabecerapadre
+	 */
+	public String getIdcabecerapadre() {
+		return idcabecerapadre;
+	}
+
+	/**
+	 * @param idcabecerapadre the idcabecerapadre to set
+	 */
+	public void setIdcabecerapadre(String idcabecerapadre) {
+		this.idcabecerapadre = idcabecerapadre;
 	}
 
 }

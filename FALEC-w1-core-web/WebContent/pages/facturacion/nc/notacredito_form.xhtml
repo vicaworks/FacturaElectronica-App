@@ -1,0 +1,179 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">#{msg['title.notacredito']}</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			.pvDetalleDT .ui-datatable-scrollable-body{
+					min-height: 30vh !important;
+					height: calc(100vh - 385px);
+			}
+			
+			.pvDetalleDT .ui-selectonemenu .ui-selectonemenu-label {
+				text-align: right;
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+			 	padding: 0px !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
+		
+		<f:subview rendered="#{notaCreditoCtrl.callModule=='NOTACREDITO'}">
+	    	<p:breadCrumb>
+			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    	<p:menuitem value="Lista de Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notaCredito.jsf"/>
+		    	<p:menuitem value="Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notacredito_form.jsf"/>
+			</p:breadCrumb>
+    	</f:subview>
+    	
+    	<f:subview rendered="#{notaCreditoCtrl.callModule=='FACTURAS_EMITIDAS'}">
+    		<p:breadCrumb>
+			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+			    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+			    <p:menuitem value="Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notacredito_form.jsf"/>
+			</p:breadCrumb>
+    	</f:subview>
+    	
+    	<div class="EmptyBox5"/>
+    	<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<!-- OPCIONES -->
+	    	<div class="card card-w-title">
+	    		
+	    		<div class="EmptyBox10"/>
+	    		
+	    		<div class="p-grid p-align-left">
+	    			
+	    			<div class="p-col-12 p-md-4">
+	    				
+	    				<div class="p-grid">
+	    					
+	    					<div class="p-col-12 p-md-6">
+			    				<p:commandButton id="cmdRtnNuevo"
+										value="NUEVA NOTA #{msg['label.credito']}" icon="fa fa-plus" 
+										action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true">
+										
+								<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facturaSeleccion}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facEmitidaCtrl}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.compNcCtrl}"/>
+								<f:setPropertyActionListener value="NOTACREDITO" target="#{notaCreditoCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{notaCreditoCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="#{compNcCtrl}" target="#{notaCreditoCtrl.compNcCtrl}"/>
+								
+							</p:commandButton>
+							
+	    					</div>
+		    				
+		    				<div class="p-col-12 p-md-3">
+			    				<p:commandButton id="cmdrtnGuardar"
+										value="GUARDAR" icon="fa fa-floppy-o" 
+										action="#{notaCreditoCtrl.guardar()}" styleClass="secondary-button Wid100 Fs11" update="@form" disabled="#{notaCreditoCtrl.notaCreditoSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
+							</div>
+							
+							<div class="p-col-12 p-md-3">
+							
+								<p:commandButton  id="cmdRtnCliente" 
+										title="NUEVO CLIENTE"
+										icon="fa fa-plus"
+										value="CLIENTE"
+										styleClass="secondary-button Wid100 Fs11"
+										action="#{clienteCtrl.nuevo()}"
+										immediate="true">
+										<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
+										<f:setPropertyActionListener value=":formMain:somNcCliente :formMain:inpNcRuc" target="#{clienteCtrl.updateView}"/>
+										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+								</p:commandButton>
+									
+							</div>
+	    						
+	    				</div>
+	    				
+	    			</div>
+	    			
+	    		</div>
+	    		
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="EmptyBox10"/>
+			
+			<div class="p-grid p-align-top">
+				
+				<!-- cabecera -->
+				<ui:include src="incl_nc_cabecera_form.xhtml" />
+				
+				<!-- detalle -->
+				<ui:include src="incl_nc_detalle_form.xhtml" />
+				
+			</div>
+	    	
+        </h:form>
+        
+        <!-- Form Cliente -->
+	    <ui:include src="../../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- Busqueda Productos -->
+	    <ui:include src="../../productos/incl_listaProducto.xhtml" />
+        
+    </ui:define>
+
+</ui:composition>

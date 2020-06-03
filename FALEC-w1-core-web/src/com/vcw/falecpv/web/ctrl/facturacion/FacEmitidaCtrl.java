@@ -29,17 +29,21 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.modelo.dto.TotalesDto;
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
+import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -70,6 +74,9 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	
 	@EJB
 	private CategoriaServicio categoriaServicio;
+	
+	@EJB
+	private CabeceraServicio cabeceraServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -78,6 +85,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	private Date hasta;
 	private List<VentasQuery> ventasQueryList;
 	private TotalesDto totalesDto = new TotalesDto();
+	private VentasQuery ventasQuerySelected;
 	
 	/**
 	 * 
@@ -104,7 +112,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 	}
 	
-	private void consultar()throws DaoException {
+	public void consultar()throws DaoException {
 		ventasQueryList = null;
 		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),GenTipoDocumentoEnum.FACTURA);
 	}
@@ -272,6 +280,27 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		}
 		return null;
 	}
+	
+	public String generarNC() {
+		try {
+			
+			NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
+			notaCreditoCtrl.setCallModule("FACTURAS_EMITIDAS");
+			notaCreditoCtrl.nuevoByFacturaEmitida(ventasQuerySelected.getIdcabecera());
+			Cabecera c = cabeceraServicio.consultarByPk(ventasQuerySelected.getIdcabecera());
+			if(c.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FACTURA YA SE ENCUENTRA ANULADA");
+				return null;
+			}
+			
+			return "./nc/notacredito_form.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
 
 	/**
 	 * @return the usuarioList
@@ -369,6 +398,20 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	 */
 	public void setTotalesDto(TotalesDto totalesDto) {
 		this.totalesDto = totalesDto;
+	}
+
+	/**
+	 * @return the ventasQuerySelected
+	 */
+	public VentasQuery getVentasQuerySelected() {
+		return ventasQuerySelected;
+	}
+
+	/**
+	 * @param ventasQuerySelected the ventasQuerySelected to set
+	 */
+	public void setVentasQuerySelected(VentasQuery ventasQuerySelected) {
+		this.ventasQuerySelected = ventasQuerySelected;
 	}
 
 }

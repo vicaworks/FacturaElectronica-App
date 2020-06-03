@@ -159,23 +159,25 @@
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idcabecera}">
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtFacEmitidas">
-							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+							<i class="fa fa-plus-square Fs14" style="color:#252529;"/>
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
 								
 							<p:menuitem value="Ver" action="#" icon="fa fa-eye" >
 							</p:menuitem>
-							<p:menuitem value="RIDE" action="#" icon="fa fa-file-pdf-o" >
+							<p:menuitem value="RIDE" action="#" icon="fa fa-file-pdf-o" disabled="#{v.estado=='ANULADO'}">
 							</p:menuitem>
-							<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o" >
+							<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o" disabled="#{v.estado=='ANULADO'}">
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" >
+							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" disabled="#{v.estado=='ANULADO'}">
 							</p:menuitem>
-							<p:menuitem value="Anular" action="#" icon="fa fa-trash-o" >
+							<p:menuitem value="Anular" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-trash-o" update="@form" disabled="#{v.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>	
 							
 						</p:menu>

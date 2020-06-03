@@ -657,6 +657,11 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 	}
 	
+	private void determinarPeriodoFiscal() {
+		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
+		cabecerSelected.setPeriodofiscal(sf.format(cabecerSelected.getFechaemision()));
+	}
+	
 	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		cabecerSelected.setTipoemision("1");
@@ -665,8 +670,7 @@ public class CompFacCtrl extends BaseCtrl {
 		
 		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-		SimpleDateFormat sf = new SimpleDateFormat("MM-yyyy");
-		cabecerSelected.setPeriodofiscal(sf.format(new Date()));
+		determinarPeriodoFiscal();
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		if(cabecerSelected.getSecuencial()==null) {

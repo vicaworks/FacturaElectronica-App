@@ -147,7 +147,17 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				detalleServicio.crear(d);
 				// kardex producto
 				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
-					salidaKardex(d);
+					
+					switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
+					case FACTURA:
+						salidaKardex(d);
+						break;
+					case NOTA_CREDITO:
+						entredaKardex(d);
+						break;	
+					default:
+						break;
+					}
 				}
 			}
 		}
@@ -211,6 +221,14 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			adquisicionServicio.actualizar(adquisicion);
 		}
 		
+		// 9. si es nota de credito y tiene referencia a la cabecera anular la factura 
+		if(GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()).equals(GenTipoDocumentoEnum.NOTA_CREDITO) && cabecera.getIdcabecerapadre()!=null) {
+			Cabecera c= consultarByPk(cabecera.getIdcabecerapadre());
+			if(c!=null) {
+				c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
+			}
+		}
+		
 		return cabecera;
 	}
 	
@@ -224,6 +242,47 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @throws DaoException
 	 */
 	public String analizarEstadoFactura(String idcabecera,String accion)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(cabeceraDao.getEntityManager());
+			
+			Cabecera c = (Cabecera) q.select("c")
+							.from(Cabecera.class,"c")
+							.equals("c.idcabecera",idcabecera).getSingleResult();
+			
+			if(c==null) {
+				return null;
+			}
+			
+			if(c!=null && accion.equals("GUARDAR")) {
+				
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
+				lista.add(ComprobanteEstadoEnum.SRI);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
+				}
+				
+			}
+			
+			return null;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idcabecera
+	 * @param accion
+	 * @return
+	 * @throws DaoException
+	 */
+	public String analizarNotaCredito(String idcabecera,String accion)throws DaoException{
 		try {
 			
 			QueryBuilder q = new QueryBuilder(cabeceraDao.getEntityManager());
@@ -398,7 +457,6 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			k.setFecharegistro(detalleFac.getCabecera().getFechaemision());
 //			k.setIdreferencia(detalleFac.getIddetalle());
 //			k.setModuloreferencia("FAC");
-			k.setIdusuario(detalleFac.getIdUsuarioEliminacion());
 			k.setProducto(detalleFac.getProducto());
 			k.setTiporegistro("E");
 			k.setUpdated(new Date());
@@ -408,8 +466,22 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			StringBuilder obs = new StringBuilder();
 			obs.append("ANULACION " + detalleFac.getCabecera().getTipocomprobante().getComprobante() + " : ");
 			obs.append(" / CLIENTE : " + detalleFac.getCabecera().getCliente().getRazonsocial());
-			obs.append(" / NUM : " + detalleFac.getCabecera().getSecuencial());
-			obs.append(" / FECHA : " + FechaUtil.formatoFecha(detalleFac.getCabecera().getFechaemision()));
+			switch (GenTipoDocumentoEnum.getEnumByIdentificador(detalleFac.getCabecera().getTipocomprobante().getIdentificador())) {
+			case FACTURA:
+				obs.append(" / NUM : " + detalleFac.getCabecera().getSecuencial());
+				obs.append(" / FECHA : " + FechaUtil.formatoFecha(detalleFac.getCabecera().getFechaemision()));
+				k.setIdusuario(detalleFac.getIdUsuarioEliminacion());
+				break;
+			case NOTA_CREDITO:
+				obs.append(" / NUM : " + detalleFac.getCabecera().getNumdocasociado());
+				obs.append(" / FECHA : " + FechaUtil.formatoFecha(detalleFac.getCabecera().getFechaemisiondocasociado()));
+				k.setIdusuario(detalleFac.getCabecera().getIdusuario());
+				break;	
+
+			default:
+				break;
+			}
+			
 			if (detalleFac.getCabecera() != null && detalleFac.getCabecera().getPagoList() != null
 					&& detalleFac.getCabecera().getPagoList().size() > 0) {
 				

@@ -32,6 +32,7 @@ import com.servitec.common.util.ExpresionRegularValidador;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.servitec.common.util.exceptions.ValidarExpresionException;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.dto.ImportClienteDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
@@ -39,6 +40,7 @@ import com.vcw.falecpv.core.servicio.ImportarClienteServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FactMainPagoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -134,7 +136,12 @@ public class ClienteCtrl extends BaseCtrl {
 				AppJsfUtil.hideModal("dlgCliente");
 				
 				break;
-				
+			case "NotaCreditoCtrl":
+				NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
+				notaCreditoCtrl.consultarCliente();
+				notaCreditoCtrl.getNotaCreditoSeleccion().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
 			default:
 				break;
 			}
@@ -156,6 +163,7 @@ public class ClienteCtrl extends BaseCtrl {
 			if(clienteSelected==null) {
 				clienteSelected = new Cliente();
 				clienteSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+				clienteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 			}
 			
 			AppJsfUtil.showModalRender("dlgCliente", "frmCliente");
@@ -169,6 +177,7 @@ public class ClienteCtrl extends BaseCtrl {
 		try {
 			clienteSelected = new Cliente();
 			clienteSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+			clienteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -181,6 +190,7 @@ public class ClienteCtrl extends BaseCtrl {
 		try {
 			clienteSelected = new Cliente();
 			clienteSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+			clienteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 			AppJsfUtil.showModalRender("dlgCliente", "frmCliente");
 		} catch (Exception e) {
 			e.printStackTrace();

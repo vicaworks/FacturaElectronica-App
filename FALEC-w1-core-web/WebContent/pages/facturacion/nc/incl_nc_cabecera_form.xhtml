@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	
+	<div class="p-col-12 p-md-4">
+					
+		<div class="card card-w-title">
+			
+			<h2 class="cardTitle">Nota de #{msg['label.credito2']}</h2>
+			
+			<!-- Formulario -->
+			<p:panelGrid id="gridNotaCreditoDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+				
+				<h:outputText value="# NOTA DE #{msg['label.credito']} " styleClass="cpoRequerido"/>
+				<h:panelGroup>
+					<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.numdocumento}" styleClass="Fs16 FontBold" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.numdocumento != null}"/>
+					<h:outputText value="00000000000000" styleClass="Fs16 FontBold" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.numdocumento == null}"/>
+				</h:panelGroup>
+				
+				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+				<h:panelGroup>
+					<p:calendar id="claNcFechaEmision" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemision}"
+						pattern="dd/MM/yyyy"
+						locale="es" 
+						requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+						
+						<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
+						
+					</p:calendar>
+					<p:message for="claNcFechaEmision" />
+				</h:panelGroup>
+				
+				<h:outputText value="PERIODO FISCAL" styleClass="cpoRequerido"/>
+				<h:panelGroup >
+					<p:outputPanel id="oupPeriodoFiscal">
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.periodofiscal}"/>
+					</p:outputPanel>
+				</h:panelGroup>
+				
+				<h:outputText value="MOTIVO #{msg['label.anulacion']} *" styleClass="cpoRequerido"/>
+				<h:panelGroup>
+					<p:inputText id="intMotivoAnulacion" value="#{notaCreditoCtrl.notaCreditoSeleccion.motivo}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100"/>
+					<p:message for="intMotivoAnulacion" />
+				</h:panelGroup>
+				
+			</p:panelGrid>
+			
+		</div>	
+		
+		<div class="EmptyBox5"/>
+		
+		<div class="card card-w-title">
+			
+			<h2 class="cardTitle">Documento Asociado</h2>
+			
+			<!-- Formulario -->
+			<p:panelGrid id="gridNotaCreditoDG2" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+				
+				<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>				
+				<h:panelGroup>
+					<p:selectOneMenu id="somNcCliente"
+								value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente}"
+								converter="omnifaces.SelectItemsConverter"
+								required="true"
+								requiredMessage="REQUERIDO"
+								styleClass="Wid100"
+								filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="Seleccionar ..."
+								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+	
+						<f:selectItems value="#{notaCreditoCtrl.clienteList}" var="cl"
+							itemLabel="#{cl.razonsocial}" itemValue="#{cl}" />
+						
+						<p:ajax update=":formMain:inpNcRuc" />
+							
+					</p:selectOneMenu>
+					<p:message for="somNcCliente" />
+					
+				</h:panelGroup>
+				
+				<h:outputText value="CI / RUC *" styleClass="cpoRequerido"/>
+				<h:panelGroup>
+					<p:inputText id="inpNcRuc" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+					</p:inputText>
+					<p:message for="inpNcRuc" />
+				</h:panelGroup>
+				
+				<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>
+				<h:panelGroup>
+					<p:selectOneMenu id="somNcTipComprobante"
+								value="#{notaCreditoCtrl.notaCreditoSeleccion.tipocomprobanteretencion}"
+								converter="omnifaces.SelectItemsConverter"
+								required="true"
+								requiredMessage="REQUERIDO"
+								styleClass="Wid100"
+								filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="Seleccionar ..."
+								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+	
+						<f:selectItems value="#{notaCreditoCtrl.tipocomprobanteList}" var="tp"
+							itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
+							
+					</p:selectOneMenu>
+					<p:message for="somNcTipComprobante" />
+				</h:panelGroup>
+				
+				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+				<h:panelGroup>
+					<p:calendar id="claNcFechaEmisionAsociado" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemisiondocasociado}"
+						pattern="dd/MM/yyyy"
+						locale="es" 
+						requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+						
+						<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
+						
+					</p:calendar>
+					<p:message for="claNcFechaEmisionAsociado" />
+				</h:panelGroup>
+				
+				<h:outputText value="NUM FACTURA *" styleClass="cpoRequerido"/>
+				<h:panelGroup>
+					<div class="ui-inputgroup">
+	                    <span class="ui-inputgroup-addon">
+	                        <p:commandButton id="cmdConsultarDocu"
+								icon="fa fa-search" 
+								action="#{notaCreditoCtrl.buscarNumDocumento()}" 
+								styleClass="Fs12 Wid100 displayButton" 
+								update="@form"
+								process="@this :formMain:somNcTipComprobante :formMain:inpNcNumFac" title="BUSCAR"/>
+	                    </span>
+						<p:inputMask id="inpNcNumFac" value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
+	                </div>
+					<p:message for="inpNcNumFac" />
+				</h:panelGroup>
+				
+			</p:panelGrid>
+			
+			
+		</div>	
+		
+	</div>
+    
+
+</ui:composition>

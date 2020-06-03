@@ -3,6 +3,8 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
@@ -39,6 +41,27 @@ public class DetalleDao extends AppGenericDao<Detalle, String> {
 			q.setParameter("id", idCabecera);
 			
 			return q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Detalle> getByIdCabecera(String idCabecera)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT d FROM Detalle d WHERE d.cabecera.idcabecera=:idCabecera ORDER BY d.descripcion");
+			q.setParameter("idCabecera", idCabecera);
+			
+			return q.getResultList();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

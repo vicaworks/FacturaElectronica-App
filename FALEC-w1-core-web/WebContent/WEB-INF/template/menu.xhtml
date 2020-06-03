@@ -58,6 +58,7 @@
                         <p:submenu id="om_facturacion" label="#{msg['menu.facturacion']}" icon="fa fa-2x fa-calculator">
                         	<p:menuitem id="om_factuar" value="Facturar" icon="fa fa-plus" url="#{request.contextPath}/pages/facturacion/factura.jsf" />
                             <p:menuitem id="om_facturaemitidas" value="Facturas Emitidas" icon="fa fa-check-circle" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+                            <p:menuitem id="om_notacredito" value="Nota de #{msg['label.credito2']}" icon="fa fa-stack-overflow" url="#{request.contextPath}/pages/facturacion/nc/notaCredito.jsf"/>
                             <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf" />
                             <p:menuitem id="om_reportefacturacion" value="Reporte Ventas" icon="fa fa-line-chart" url="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf" />
                             <p:menuitem id="om_reporteventascliente" value="Reporte Ventas Cliente" icon="fa fa-user" url="#" />
@@ -80,7 +81,6 @@
                         
                         <p:submenu id="om_sricomprobantes" label="SRI Comprobantes" icon="fa fa-2x fa-file-excel-o">
                             <p:menuitem id="om_retenciones" value="Retenciones" icon="fa fa-2x fa-file-text-o" url="#{request.contextPath}/pages/sridocumentos/retenciones.jsf" />
-                            <p:menuitem id="om_notacredito" value="#{msg['menu.notacredito']}" icon="fa fa-2x fa-file-text-o" url="#{request.contextPath}/pages/sridocumentos/notacredito.jsf" />
                             <p:menuitem id="om_guiaremision" value="#{msg['menu.guiaremision']}" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/sridocumentos/guiaremision.jsf" />
                         </p:submenu>
                         
