@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 370px)!important;				
+				height: calc(100vh - 390px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -152,12 +152,13 @@
 		       			var="v"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
 						styleClass="pvUnoDT Fs11"
-						rows="12"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
-						rowKey="#{v.idcabecera}">
+						rowKey="#{v.idcabecera}"
+						rows="12"
+						rowsPerPageTemplate="10,12,20,30,40">
 					
 					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 					
@@ -199,13 +200,13 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VENDEDOR" style="width:40px;">
+					<p:column headerText="VENDEDOR" style="width:60px;">
 						<h:outputText value="#{v.nombrepantalla}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:60px;">
-						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs8">
+					<p:column headerText="ESTADO" style="width:50px;">
+						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
 						</h:outputText>
 					</p:column>
 					
@@ -239,21 +240,21 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="IMPUESTO" style="width:40px;" styleClass="TexAlCenter">
+					<p:column headerText="IMPUESTO" style="width:70px;" styleClass="TexAlCenter">
 						
-						<div class="p-grid Fs10 p-justify-center">
-							<div class="p-col-8" >
+						<div class="p-grid Fs10 p-justify-end">
+							<div class="p-col-3" >
 								<h:outputText value="I.V.A." styleClass="FontBold"/>
 							</div>
-							<div class="p-col-8">
+							<div class="p-col-7">
 								<h:outputText value="#{v.iva}" >
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-8">
+							<div class="p-col-3">
 								<h:outputText value="I.C.E." styleClass="FontBold"/>
 							</div>
-							<div class="p-col-8">
+							<div class="p-col-7">
 								<h:outputText value="#{v.ice}" >
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
@@ -263,36 +264,36 @@
 					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.total}" styleClass="markBlack">
+						<h:outputText value="#{v.total}" styleClass="markGreen">
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
 					
 					
-					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlCenter">
+					<p:column headerText="PAGO" style="width:110px;" styleClass="TexAlCenter">
 						
-						<div class="p-grid Fs10 p-justify-center">
-							<div class="p-col-8" >
-								<h:outputText value="PAGO" styleClass="FontBold"/>
+						<div class="p-grid Fs10 p-justify-end">
+							<div class="p-col-3" >
+								<h:outputText value="PAGO: " styleClass="FontBold"/>
 							</div>
-							<div class="p-col-8">
+							<div class="p-col-7">
 								<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.total.doubleValue()?'markRed':'markGreen'}">
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-8" >
-								<h:outputText value="ENTREG" styleClass="FontBold"/>
+							<div class="p-col-3" >
+								<h:outputText value="ENTREG: " styleClass="FontBold"/>
 							</div>
-							<div class="p-col-8">
+							<div class="p-col-7">
 								<h:outputText value="#{v.licitado}" >
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-8" >
-								<h:outputText value="CAMBIO" styleClass="FontBold"/>
+							<div class="p-col-3" >
+								<h:outputText value="CAMBIO: " styleClass="FontBold"/>
 							</div>
-							<div class="p-col-8">
+							<div class="p-col-7">
 								<h:outputText value="#{v.cambio}" >
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>

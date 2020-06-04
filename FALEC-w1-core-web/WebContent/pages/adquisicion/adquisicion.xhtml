@@ -13,12 +13,8 @@
         <style type="text/css">
 			
 			.adquisicionDT .ui-datatable-scrollable-body{
-				/* min-height:800px !important;
-				max-height: 800px !important; 
-				min-height: 60vh !important;
-				max-height: 60vh !important;*/
-				min-height: 50vh !important;
-				height: calc(100vh - 380px);
+				min-height: 40vh !important;
+				height: calc(100vh - 420px);
 				
 			}
 			
@@ -160,7 +156,13 @@
 					value="#{adquisicionMainCtrl.adquisicionList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="adquisicionDT Fs11"  
-					rowKey="#{a.idadquisicion}">
+					rowKey="#{a.idadquisicion}"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	                paginatorPosition="bottom"  
+					rows="6"
+					rowsPerPageTemplate="6,12,18,24,30,36">
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						

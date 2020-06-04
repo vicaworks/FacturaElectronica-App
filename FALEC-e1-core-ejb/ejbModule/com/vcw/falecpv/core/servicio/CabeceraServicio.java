@@ -464,15 +464,22 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			k.setFechafabricacion(detalleFac.getProducto().getFechafabricacion());
 			k.setFechavencimiento(detalleFac.getProducto().getFechavencimiento());
 			StringBuilder obs = new StringBuilder();
-			obs.append("ANULACION " + detalleFac.getCabecera().getTipocomprobante().getComprobante() + " : ");
 			obs.append(" / CLIENTE : " + detalleFac.getCabecera().getCliente().getRazonsocial());
 			switch (GenTipoDocumentoEnum.getEnumByIdentificador(detalleFac.getCabecera().getTipocomprobante().getIdentificador())) {
+			case RECIBO:
+				obs.append("ANULACION RECIBO : ");
+				obs.append(" / NUM : " + detalleFac.getCabecera().getSecuencial());
+				obs.append(" / FECHA : " + FechaUtil.formatoFecha(detalleFac.getCabecera().getFechaemision()));
+				k.setIdusuario(detalleFac.getCabecera().getIdusuario());
+				break;
 			case FACTURA:
+				obs.append("ANULACION " + detalleFac.getCabecera().getTipocomprobante().getComprobante() + " : ");
 				obs.append(" / NUM : " + detalleFac.getCabecera().getSecuencial());
 				obs.append(" / FECHA : " + FechaUtil.formatoFecha(detalleFac.getCabecera().getFechaemision()));
 				k.setIdusuario(detalleFac.getIdUsuarioEliminacion());
 				break;
 			case NOTA_CREDITO:
+				obs.append("ANULACION FACTURA");
 				obs.append(" / NUM : " + detalleFac.getCabecera().getNumdocasociado());
 				obs.append(" / FECHA : " + FechaUtil.formatoFecha(detalleFac.getCabecera().getFechaemisiondocasociado()));
 				k.setIdusuario(detalleFac.getCabecera().getIdusuario());

@@ -37,6 +37,7 @@ import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
+import com.vcw.falecpv.core.servicio.ReciboServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -70,6 +71,9 @@ public class RecEmitidoCtrl extends BaseCtrl {
 	
 	@EJB
 	private CategoriaServicio categoriaServicio;
+	
+	@EJB
+	private ReciboServicio reciboServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -77,6 +81,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 	private Date desde;
 	private Date hasta;
 	private List<VentasQuery> ventasQueryList;
+	private VentasQuery ventasQuerySelected;
 	private TotalesDto totalesDto = new TotalesDto();
 	
 	/**
@@ -254,6 +259,31 @@ public class RecEmitidoCtrl extends BaseCtrl {
 		}
 		return null;
 	}
+	
+	@Override
+	public void eliminar() {
+		try {
+			
+			if(ventasQuerySelected==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE RECIBO SELECCIONADO.");
+				return;
+			}
+			
+			String analizarEstado = reciboServicio.analizarEstado(ventasQuerySelected.getIdcabecera(), AppJsfUtil.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			if(analizarEstado!=null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", analizarEstado);
+				return;
+			}
+			
+			reciboServicio.anularRecibo(ventasQuerySelected.getIdcabecera(),AppJsfUtil.getUsuario().getIdusuario());
+			
+			consultar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the usuarioList
@@ -353,4 +383,17 @@ public class RecEmitidoCtrl extends BaseCtrl {
 		this.totalesDto = totalesDto;
 	}
 
+	/**
+	 * @return the ventasQuerySelected
+	 */
+	public VentasQuery getVentasQuerySelected() {
+		return ventasQuerySelected;
+	}
+
+	/**
+	 * @param ventasQuerySelected the ventasQuerySelected to set
+	 */
+	public void setVentasQuerySelected(VentasQuery ventasQuerySelected) {
+		this.ventasQuerySelected = ventasQuerySelected;
+	}
 }

@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 370px)!important;				
+				height: calc(100vh - 380px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -156,12 +156,13 @@
 		       			var="v"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
 						styleClass="pvUnoDT Fs11"
-						rows="12"
+						rowKey="#{v.idcabecera}"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
-						rowKey="#{v.idcabecera}">
+						rows="20"
+						rowsPerPageTemplate="20,30,40,50">
 					
 					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 						
@@ -172,7 +173,9 @@
 						<p:menu overlay="true" trigger="cmlDtRecEmitidas" my="left top" at="left bottom">
 							<p:menuitem value="Ver" action="#" icon="fa fa-eye" >
 							</p:menuitem>
-							<p:menuitem value="Anular" action="#" icon="fa fa-trash-o" >
+							<p:menuitem value="Anular" action="#{recEmitidoCtrl.eliminar()}" icon="fa fa-trash-o" disabled="#{v.estado=='ANULADO'}" update="@form">
+								<f:setPropertyActionListener value="#{v}" target="#{recEmitidoCtrl.ventasQuerySelected}"/>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 						</p:menu>
 					
@@ -193,29 +196,29 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VENDEDOR" style="width:40px;">
+					<p:column headerText="VENDEDOR" style="width:60px;">
 						<h:outputText value="#{v.nombrepantalla}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:40px;">
+					<p:column headerText="ESTADO" style="width:60px;">
 						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="SUBTOT" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.subtotal}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
+					<p:column headerText="DESC" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.totaldescuento}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.total}" styleClass="markBlack">
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
@@ -227,13 +230,13 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="ENTREG" style="width:30px;" styleClass="TexAlRight">
+					<p:column headerText="ENTREG" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.licitado}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CAMBIO" style="width:30px;" styleClass="TexAlRight">
+					<p:column headerText="CAMBIO" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.cambio}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
