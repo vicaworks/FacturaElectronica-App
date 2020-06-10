@@ -114,7 +114,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 			destinatarioSelected = new Destinatario();
 			destinatarioSelected.setIddestinatario("M1");
-			Cliente cl = clienteServicio.consultarByPk("7");
+			Cliente cl = clienteServicio.consultarByPk("1");
 			destinatarioSelected.setCliente(cl);
 			destinatarioSelected.setIdentificaciondestinatario(cl.getIdentificacion());
 			destinatarioSelected.setRazonsocialdestinatario(cl.getRazonsocial());
