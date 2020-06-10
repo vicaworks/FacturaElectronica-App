@@ -15,7 +15,7 @@
 			.kardexDT .ui-datatable-scrollable-body{
 			
 				min-height: 30vh !important;
-				height: calc(100vh - 450px)!important;
+				height: calc(100vh - 410px)!important;
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -208,13 +208,7 @@
 					value="#{kardexCtrl.kardexProductoList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="kardexDT Fs11"  
-					rowKey="#{k.idkardexproducto}"
-					paginator="true"
-	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-	                paginatorPosition="bottom"  
-					rows="10"
-					rowsPerPageTemplate="10,15,20,25,30,35,40">
+					rowKey="#{k.idkardexproducto}">
 	                
 	                <p:column headerText="ID" style="width:20px;">
 						<h:outputText value="#{k.idkardexproducto}" />
