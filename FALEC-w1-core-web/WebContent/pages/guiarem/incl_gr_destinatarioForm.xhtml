@@ -1,0 +1,246 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmDestinatario {
+				height: 520px;
+		}	
+		
+	</style>
+	
+	<p:dialog header="Destinatario" widgetVar="dlgDestinatario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	
+		
+		<h:form id="frmDestinatario">
+			
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdGuardarTransportista"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#" styleClass="MRight10" update="@form"/>
+						
+						
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgDestinatario').hide()" immediate="true"/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages id="msgfrmDestinatario" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmDestinatario"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmDestinatario contenedorFormulario">
+
+				<!-- Datos Generales -->	
+				<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Generales</div>
+				
+				<div class="EmptyBox5"/>
+				
+				<p:panelGrid id="gridTransportistaDG0" columns="2"
+						styleClass="ui-panelgrid-blank Wid100"
+						columnClasses="ui-g-12 ui-md-6,
+									   ui-g-12 ui-md-6">
+						<h:panelGroup>
+							<h:outputText value="BUSCAR DESTINATARIO *" styleClass="campoRequerido DispBlock"/>
+							<div class="ui-inputgroup">
+				                <span class="ui-inputgroup-addon">
+				                	
+				                	<p:commandButton process="@this @form:inpCriterioCliente" title="BUSCAR"
+										update=":frmDestinatario:msgfrmDestinatario :frmDestinatario:gridTransportistaDG0 :frmDestinatario:oupDestIdentificacion :frmDestinatario:oupDestRazonSocial" 
+										action="#{guiaRemFormCtrl.buscarCliente()}" icon="fa fa-search">
+				                	</p:commandButton>
+				                
+				                </span>
+				                
+				                <p:inputText id="inpCriterioCliente"
+									value="#{guiaRemFormCtrl.criterioCliente}" required="false"
+									requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+									maxlength="13" placeholder="C.I. o RUC"
+									validatorMessage="SOLO NUMEROS"
+									onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
+									<f:validateRegex pattern="^\d+$" />
+								</p:inputText>
+				                
+				            </div>
+				            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+						</h:panelGroup>			
+						<h:panelGroup>
+							<h:outputText value="_" styleClass="campoRequerido DispBlock" style="color:#fff;"/>
+							<p:commandButton id="cmdDesCliente"
+								value="EDITAR / NUEVO DESTINATARIO" icon="fa fa-user" styleClass="secondary-button Wid100" process="@this" 
+								action="#{clienteCtrl.nuevoEditar(guiaRemFormCtrl.destinatarioSelected.cliente!=null?guiaRemFormCtrl.destinatarioSelected.cliente.idcliente:null)}">
+								<f:setPropertyActionListener value="guiaRemFormCtrl" target="#{clienteCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":frmDestinatario:msgfrmDestinatario :frmDestinatario:gridTransportistaDG0 :frmDestinatario:oupDestIdentificacion :frmDestinatario:oupDestRazonSocial" target="#{clienteCtrl.updateView}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+							</p:commandButton>						   
+						</h:panelGroup>
+				</p:panelGrid>
+				
+				<div class="EmptyBox5"/>
+				
+				
+				<p:panelGrid id="gridTransportistaDG" columns="2"
+						styleClass="ui-panelgrid-blank Wid100"
+						columnClasses="ui-g-12 ui-md-6,
+									   ui-g-12 ui-md-6">
+					
+					<h:panelGroup>
+						<p:outputPanel id="oupDestIdentificacion">
+							<h:outputText value="#{msg['label.identificacion']} *" styleClass="campoRequerido DispBlock"/>
+							<div class="EmptyBox5"/>
+							<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.identificaciondestinatario}" styleClass="FontBold"/>
+						</p:outputPanel>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p:outputPanel id="oupDestRazonSocial">
+							<h:outputText value="#{msg['label.razonsocial']} *" styleClass="campoRequerido DispBlock"/>
+							<div class="EmptyBox5"/>
+							<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.razonsocialdestinatario}" styleClass="markBlack"/>
+						</p:outputPanel>
+					</h:panelGroup>
+					
+					
+					<h:panelGroup>
+						<h:outputText value="DESTINO *" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intGrDestDestinao" value="#{guiaRemFormCtrl.destinatarioSelected.dirdestinatario}" maxlength="300" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText>
+						<p:message for="intGrDestDestinao"/>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputText value="MOTIVO TRASLADO *" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intGrDestMotTraslado" value="#{guiaRemFormCtrl.destinatarioSelected.motivotraslado}" maxlength="300" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText>
+						<p:message for="intGrDestMotTraslado"/>
+					</h:panelGroup>
+					
+			    </p:panelGrid>
+			    
+			    <div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> #{msg['label.informacion']} COMPLEMENTARIA</div>
+			    
+			    <p:panelGrid id="gridTransportistaDG2" columns="2"
+						styleClass="ui-panelgrid-blank Wid100"
+						columnClasses="ui-g-12 ui-md-6,
+									   ui-g-12 ui-md-6">
+					
+					
+					<h:panelGroup>
+						<h:outputText value="#{msg['label.codigo']} ESTABLECIMIENTO DESTINO" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intGrDestEstDestino" value="#{guiaRemFormCtrl.destinatarioSelected.codestabdestino}" maxlength="3" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputText value="DOCUMENTO SUSTENTO" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:selectOneMenu id="somGrTipComprobante"
+									value="#{guiaRemFormCtrl.destinatarioSelected.tipocomprobante}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+									
+							<f:selectItem itemLabel="Seleccionar ..."
+									itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+	
+							<f:selectItems value="#{guiaRemFormCtrl.tipocomprobanteList}" var="tp"
+								itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
+								
+						</p:selectOneMenu>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputText value="FECHA DE #{msg['label.emision']} DOCUMENTO SUSTENTO" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:calendar id="claGrFechaEmision" value="#{guiaRemFormCtrl.destinatarioSelected.fechaemisiondocsustento}"
+							pattern="dd/MM/yyyy"
+							requiredMessage="REQUERIDO" required="false" styleClass="Wid100">
+						</p:calendar>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputText value="#{msg['label.numero']} DOCUMENTO ASOCIADO" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<!-- <p:inputText id="intGrDestNumDocAsociado" value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" maxlength="17" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText> -->
+						
+						
+						<div class="ui-inputgroup">
+			                <span class="ui-inputgroup-addon">
+			                	
+			                	<p:commandButton process="@this @form:inpCriterioCliente" title="BUSCAR"
+									update=":frmDestinatario:msgfrmDestinatario :frmDestinatario:gridTransportistaDG2" 
+									action="#" icon="fa fa-search">
+			                	</p:commandButton>
+			                
+			                </span>
+			                
+			                <p:inputText id="intGrDestNumDocAsociado"
+								value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" required="false"
+								requiredMessage="REQUERIDO" styleClass="Wid100"
+								maxlength="17" placeholder="000-000-0000000"
+								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
+							</p:inputText>
+			                
+			            </div>
+			            <p:message for="intGrDestNumDocAsociado" styleClass="Wid100"/>
+			            
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputText value="RUTA" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intGrDestRuta" value="#{guiaRemFormCtrl.destinatarioSelected.ruta}" maxlength="300" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText>
+					</h:panelGroup>		   
+					
+					<h:panelGroup>
+						<h:outputText value="DOCUMENTO ADUANERO #{msg['label.unico']}" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intGrDestDocAduanero" value="#{guiaRemFormCtrl.destinatarioSelected.docaduanerounico}" maxlength="20" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText>
+					</h:panelGroup>
+					
+				
+				</p:panelGrid>
+				
+				<p:panelGrid id="gridTransportistaDG3" columns="1"
+						styleClass="ui-panelgrid-blank Wid100"
+						columnClasses="ui-g-12">
+									   
+					<h:panelGroup>
+						<h:outputText value="#{msg['label.numero']} DE #{msg['label.autorizacion']}" styleClass="campoRequerido DispBlock"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intGrDestAutDocAduanero" value="#{guiaRemFormCtrl.destinatarioSelected.numautdocsustento}" maxlength="20" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText>
+					</h:panelGroup>
+									   
+				</p:panelGrid>				
+				
+			</div>
+		
+		</h:form>
+	
+	</p:dialog>
+	
+</ui:composition>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -166,3 +167,189 @@
     </ui:define>
 
 </ui:composition>
+=======
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">#{msg['title.guiaremision']}</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.guiaRemDT .ui-datatable-scrollable-body{
+				min-height: 40vh !important;
+				height: calc(100vh - 380px);
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-message {
+				padding: 0em !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}	
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}		
+			
+			.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+			}
+			
+			.ui-calendar .ui-inputfield{
+				font-size: 14px !important;
+			}
+			
+			.ui-inputfield-pago .ui-spinner-input{
+				font-size: 12px !important;
+			}
+			
+			.ui-inputfield-pago .ui-inputfield {
+				font-size: 12px !important;
+				padding: 0.2em 0.5em;
+			}
+			
+			
+			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+				padding: 0em;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+				padding: 0px; 
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    	
+		<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
+    	
+    	<f:subview rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
+    		
+    		<p:breadCrumb>
+			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+			    <p:menuitem value="Lista de #{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf"/>
+		    	<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
+			</p:breadCrumb>
+    		
+		</f:subview>
+		
+		<f:subview rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
+			
+			<p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+			<p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+			<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
+			
+		</f:subview>
+		
+		<h:form id="formMain">
+			
+			<!-- Opciones principales -->
+			<div class="EmptyBox5"/>
+			<div class="card card-w-title" >
+				
+	    		<div class="EmptyBox10"/>
+	    		<div class="p-grid p-align-left">
+	    			
+	    			<div class="p-col-12 p-md-4">
+	    				
+	    				<div class="p-grid">
+	    					
+	    					<div class="p-col-12 p-md-6">
+			    				<p:commandButton id="cmdfacNuevo"
+										value="NUEVO" icon="fa fa-plus" 
+										action="#{guiaRemFormCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
+								</p:commandButton>
+	    					</div>
+	    					
+							<div class="p-col-12 p-md-6">
+			    				<p:commandButton id="cmdPreliminar"
+										value="PRELIMINAR" icon="fa fa-eye" 
+										action="#" styleClass="secondary-button Wid100 Fs12" update=":formMain:msgFormMain"/>
+							</div>
+							
+	    				</div>
+	    				
+	    			</div>
+	    			
+	    		</div>
+			
+			</div>		    	
+	    	
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+	    	
+	    	<div class="EmptyBox10"/>	
+		
+			
+			<div class="p-grid p-align-start vertical-container">
+			
+				<!-- cabecera -->
+				<div class="p-col-12 p-md-4">
+					<ui:include src="incl_gr_transporte.xhtml" />
+				</div>
+				<!-- destinatarios -->
+				<div class="p-col-12 p-md-4">
+					<ui:include src="incl_gr_destinatario.xhtml" />
+				</div>
+				<!-- detalle destinatario -->
+				<div class="p-col-12 p-md-4">
+					<ui:include src="incl_gr_det_destinatario.xhtml" />
+				</div>
+				
+			</div>
+			
+		</h:form>		
+		
+		<!-- TRANBSPORTISTA FORMULARIO -->
+		<ui:include src="incl_gr_transportistaForm.xhtml" />    
+		
+		<!-- DESTINATARIO FORMULARIO -->
+		<ui:include src="incl_gr_destinatarioForm.xhtml" />
+		
+		<!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+		
+        
+    </ui:define>
+
+</ui:composition>
+>>>>>>> refs/heads/CV-DEV
