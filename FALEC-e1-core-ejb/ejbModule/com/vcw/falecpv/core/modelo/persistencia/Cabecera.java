@@ -192,6 +192,10 @@ public class Cabecera implements Serializable {
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
     private Tipocomprobante tipocomprobanteretencion;
     
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idtransportista", referencedColumnName = "idtransportista", nullable = true)
+    private Transportista transportista;
+    
     
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
     @Transient
@@ -217,6 +221,9 @@ public class Cabecera implements Serializable {
     
     @Transient
     private List<Impuestoretencion> impuestoretencionList;
+    
+    @Transient
+    private BigDecimal total = BigDecimal.ZERO;
 
 	/**
 	 * 
@@ -956,6 +963,34 @@ public class Cabecera implements Serializable {
 	 */
 	public void setIdcabecerapadre(String idcabecerapadre) {
 		this.idcabecerapadre = idcabecerapadre;
+	}
+
+	/**
+	 * @return the transportista
+	 */
+	public Transportista getTransportista() {
+		return transportista;
+	}
+
+	/**
+	 * @param transportista the transportista to set
+	 */
+	public void setTransportista(Transportista transportista) {
+		this.transportista = transportista;
+	}
+
+	/**
+	 * @return the total
+	 */
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param total the total to set
+	 */
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 
 }

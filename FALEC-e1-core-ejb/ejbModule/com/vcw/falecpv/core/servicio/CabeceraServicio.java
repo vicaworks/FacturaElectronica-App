@@ -503,5 +503,23 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @throws DaoException
+	 */
+	public void anularById(String idCabecera)throws DaoException{
+		try {
+			
+			String sql = "UPDATE cabecera SET estado='" + ComprobanteEstadoEnum.ANULADO.toString() + "' WHERE idcabecera='" + idCabecera + "'";
+			execute(sql);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
+	}
 
 }

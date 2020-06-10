@@ -79,10 +79,10 @@
                             <!-- <p:menuitem id="om_reporteadquisicion" value="Reporte Compras" icon="fa fa-2x fa-bar-chart-o" url="#{request.contextPath}/pages/adquisicion/repcompras.jsf" /> -->
                         </p:submenu>
                         
-                        <p:submenu id="om_sricomprobantes" label="SRI Comprobantes" icon="fa fa-2x fa-file-excel-o">
-                            <p:menuitem id="om_retenciones" value="Retenciones" icon="fa fa-2x fa-file-text-o" url="#{request.contextPath}/pages/sridocumentos/retenciones.jsf" />
-                            <p:menuitem id="om_guiaremision" value="#{msg['menu.guiaremision']}" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/sridocumentos/guiaremision.jsf" />
-                        </p:submenu>
+                        <p:menuitem id="om_guiaremisionadd" value="#{msg['menu.guiaremision']}" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf" />
+                        <!-- <p:submenu id="om_guiaremision" label="#{msg['menu.guiaremision']}" icon="fa fa-2x fa-truck">
+                            <p:menuitem id="om_guiaremisionrep" value="Reportes" icon="fa fa-2x fa-file-excel-o" url="#{request.contextPath}/pages/sridocumentos/retenciones.jsf" />
+                        </p:submenu> -->
                         
                         <p:menuitem id="om_cajachica" value="Caja chica" icon="fa fa-2x fa-usd" url="#{request.contextPath}/pages/cajachica/cajachica.jsf" />
                         
