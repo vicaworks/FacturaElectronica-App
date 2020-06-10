@@ -4,7 +4,9 @@
 package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -83,6 +86,16 @@ public class Destinatario implements Serializable {
     @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera", nullable = false)
     @ManyToOne(optional = false)
     private Cabecera cabecera;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = false)
+    private Cliente cliente;
+    
+    @Transient
+    private List<Detalledestinatario> detalledestinatarioList;
+    
+    @Transient
+    private BigDecimal total = BigDecimal.ZERO;
 
 	/**
 	 * 
@@ -294,6 +307,48 @@ public class Destinatario implements Serializable {
 	 */
 	public void setCabecera(Cabecera cabecera) {
 		this.cabecera = cabecera;
+	}
+
+	/**
+	 * @return the detalledestinatarioList
+	 */
+	public List<Detalledestinatario> getDetalledestinatarioList() {
+		return detalledestinatarioList;
+	}
+
+	/**
+	 * @param detalledestinatarioList the detalledestinatarioList to set
+	 */
+	public void setDetalledestinatarioList(List<Detalledestinatario> detalledestinatarioList) {
+		this.detalledestinatarioList = detalledestinatarioList;
+	}
+
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	/**
+	 * @return the total
+	 */
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param total the total to set
+	 */
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 
 }

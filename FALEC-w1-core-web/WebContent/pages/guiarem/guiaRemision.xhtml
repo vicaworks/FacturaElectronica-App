@@ -1,0 +1,286 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">#{msg['title.guiaremision']}</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.guiaRemDT .ui-datatable-scrollable-body{
+				min-height: 40vh !important;
+				height: calc(100vh - 380px);
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-message {
+				padding: 0em !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}	
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}		
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
+    
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <!-- <p:menuitem value="Retenciones" url="#" /> -->
+		    <p:menuitem value="Lista de #{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf"/>
+		</p:breadCrumb>
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	<div class="EmptyBox5"/>
+	    	<!-- Opciones -->
+	    	<div class="card card-w-title">
+	    		
+	    		<div class="p-grid p-align-center">
+	    			
+	    			<div class="p-col-12 p-md-8">
+	    				
+	    				<div class="p-grid">
+	    					
+	    					<div class="p-col-12 p-md-6">
+	    						<!-- desde -->
+	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+	    						<p:calendar id="claretencionFechaDesde" value="#{guiaRemCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+								</p:calendar>
+								<p:message for="claretencionFechaDesde" style="padding:0em;"/>
+	    						
+	    					</div>
+	    					
+	    					<div class="p-col-12 p-md-6">
+	    						<!-- hasts  -->
+	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+	    						<p:calendar id="claRetencionFechaHasta" value="#{guiaRemCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+								</p:calendar>
+								<p:message for="claRetencionFechaHasta" style="padding:0em;"/>
+	    					</div>
+	    					
+	    					<div class="p-col-12">
+								<p:inputText id="intRtnCriterioBusqueda" value="#{guiaRemCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="##{msg['label.guiaremision']}, Nom./R.U.C./C.I. Transportista, Nom. / R.U.C. / C.I. Destinatario"/>	    						
+	    					</div>
+	    					
+	    				</div>
+	    				
+	    			</div>
+	    			
+	    			<!-- opciones -->
+	    			<div class="p-col-12 p-md-4">
+	    				
+	    				<div class="EmptyBox5"/>
+	    				
+	    				<p:commandButton id="cmdRtnRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{guiaRemCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
+						/>
+						
+						<div class="EmptyBox5"/>
+	   				
+	   					<p:commandButton id="cmdRtnNuevo"
+							value="NUEVA #{msg['label.guiaremision.upper']}" icon="fa fa-plus" 
+							action="#{guiaRemCtrl.nuevaGuiaRemision()}" styleClass="Wid100 secondary-button" update="@form">
+							<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>							
+	   					</p:commandButton>
+	   					
+	   					<div class="EmptyBox5"/>
+	   					
+	   					<p:commandButton  id="cmdRtnExcel" 
+									title="EXPORTAR"
+									icon="fa fa-file-excel-o"
+									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+									value="REPORTE"
+									styleClass="success-btn Wid100"
+									disabled="#{empty retencionMainCtrl.retencionList}">
+							<p:fileDownload value="#{retencionMainCtrl.fileRetencion}"/>
+						</p:commandButton>
+	    				
+	    			</div>
+	    			
+	    		</div>
+	    	
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="EmptyBox5"/>
+			
+			<div class="card card-w-title">
+				
+				<p:dataTable id="guiaRemDT" var="r"
+					value="#{guiaRemCtrl.guiaRemisionList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="guiaRemDT Fs11"  
+					rowKey="#{r.idcabecera}"
+					paginator="true"
+	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	                paginatorPosition="bottom"  
+					rows="5"
+					rowsPerPageTemplate="5,10,15,20,25,30,35,40">
+					
+					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					
+						<p:commandLink id="cmlDtRetencion">
+							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmlDtRetencion" my="left top" at="left bottom">
+							
+							<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#" icon="fa fa-eye" process="guiaRemDT" update="@form">
+							</p:menuitem>
+							
+							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:menuitem>
+							
+						</p:menu>
+						
+					</p:column>
+					
+					<p:column headerText="ID" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{r.numdocumento}" />
+					</p:column>
+					
+					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
+					</p:column>
+					
+					<p:column headerText="RUC / CI " style="width:60px;" filterBy="#{r.transportista.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{r.transportista.identificacion}" />
+					</p:column>
+					
+					<p:column headerText="TRANSPORTISTA" style="width:120px;" filterBy="#{r.transportista.razonsocial}" filterMatchMode="contains">
+						<h:outputText value="#{r.transportista.razonsocial}" />
+					</p:column>
+					
+					<p:column headerText="FECHA RUTA" style="width:90px;">
+						
+						<div class="p-grid p-justify-between">
+							<div class="p-col-5">
+								<h:outputText value="Inicio :" styleClass="FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{r.fechainiciotransporte}">
+									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-5">
+								<h:outputText value="Fin :" styleClass="FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{r.fechafintransporte}">
+									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
+						</div>
+					</p:column>
+					
+					<p:column headerText="DESTINATARIOS" style="width:150px;" >
+						<div class="p-grid p-justify-start">
+							<p:repeat var="det" value="#{r.destinatarioList}">
+								
+								<div class="p-col-12">
+									<h:outputText value="#{msg['label.identificacion']}" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{det.identificaciondestinatario}" styleClass="FontBold"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="NOMBRE" styleClass="cpoRequerido"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{det.razonsocialdestinatario}" styleClass="FontBold"/>
+								</div>
+								
+								<div class="p-col-12">
+									<h:outputText value="DOCUMENTO SUSTENTO" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{det.numdocsustento}" styleClass="markBlack"/>
+								</div>
+								
+								<div class="p-col-12">
+									<h:outputText value="RUTA" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{det.ruta}" styleClass="FontBold"/>
+								</div>
+								
+								<div class="p-col-12">
+									<h:outputText value="DETALLE :" styleClass="cpoRequerido Fs10"/>
+									<h:outputText value="#{det.detalledestinatarioList.size()}" styleClass="markOrange"/>
+								</div>
+								
+								<f:subview rendered="#{r.destinatarioList.size()>1}">
+									<div class="p-col-12">
+										<hr/>
+									</div>
+								</f:subview>
+								
+							</p:repeat>
+						</div>
+					</p:column>
+					
+				</p:dataTable>
+			
+			</div>
+	    
+	    
+	    </h:form>
+        
+    </ui:define>
+
+</ui:composition>
