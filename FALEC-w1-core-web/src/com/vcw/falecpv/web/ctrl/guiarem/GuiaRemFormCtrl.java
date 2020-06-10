@@ -17,12 +17,15 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
+import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.persistencia.Transportista;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -46,6 +49,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	@EJB
 	private ClienteServicio clienteServicio;
 	
+	@EJB
+	private TipocomprobanteServicio tipocomprobanteServicio;
+	
 	private String callModule;
 	private Cabecera guiaRemisionSelected;
 	private List<Destinatario> destinatarioList;
@@ -53,6 +59,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	private List<Detalledestinatario> detalledestinatarioList;
 	private Detalledestinatario detalledestinatarioSeleted;
 	private List<Transportista> transportistaList;
+	private List<Tipocomprobante> tipocomprobanteList;
 	
 	/**
 	 * 
@@ -65,11 +72,17 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		try {
 			
 			nuevaGuiaRemision();
-			
+			consultarTipoComprobante();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public void consultarTipoComprobante()throws DaoException{
+		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
+				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
+						TipoComprobanteEnum.GUIA_REMISION));
 	}
 	
 	public void consultarTransportista()throws DaoException{
@@ -324,6 +337,20 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	 */
 	public void setTransportistaList(List<Transportista> transportistaList) {
 		this.transportistaList = transportistaList;
+	}
+
+	/**
+	 * @return the tipocomprobanteList
+	 */
+	public List<Tipocomprobante> getTipocomprobanteList() {
+		return tipocomprobanteList;
+	}
+
+	/**
+	 * @param tipocomprobanteList the tipocomprobanteList to set
+	 */
+	public void setTipocomprobanteList(List<Tipocomprobante> tipocomprobanteList) {
+		this.tipocomprobanteList = tipocomprobanteList;
 	}
 
 }

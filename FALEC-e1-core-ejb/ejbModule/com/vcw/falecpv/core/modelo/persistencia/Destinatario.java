@@ -91,6 +91,10 @@ public class Destinatario implements Serializable {
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = false)
     private Cliente cliente;
     
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idtipocomprobante", referencedColumnName = "idtipocomprobante", nullable = true)
+    private Tipocomprobante tipocomprobante;
+    
     @Transient
     private List<Detalledestinatario> detalledestinatarioList;
     
@@ -349,6 +353,20 @@ public class Destinatario implements Serializable {
 	 */
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+
+	/**
+	 * @return the tipocomprobante
+	 */
+	public Tipocomprobante getTipocomprobante() {
+		return tipocomprobante;
+	}
+
+	/**
+	 * @param tipocomprobante the tipocomprobante to set
+	 */
+	public void setTipocomprobante(Tipocomprobante tipocomprobante) {
+		this.tipocomprobante = tipocomprobante;
 	}
 
 }
