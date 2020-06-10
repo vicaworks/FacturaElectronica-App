@@ -60,6 +60,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	private Detalledestinatario detalledestinatarioSeleted;
 	private List<Transportista> transportistaList;
 	private List<Tipocomprobante> tipocomprobanteList;
+	private String criterioCliente;
 	
 	/**
 	 * 
@@ -241,6 +242,50 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		des.setTotal(BigDecimal.valueOf(des.getDetalledestinatarioList().stream().mapToDouble(x->x.getCantidad().doubleValue()).sum()));
 	}
 	
+	public void nuevoDestinatario() {
+		try {
+			
+			destinatarioSelected = new Destinatario();
+			criterioCliente = null;
+			AppJsfUtil.showModalRender("dlgDestinatario", "frmDestinatario");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void buscarCliente() {
+		try {
+			
+			if(criterioCliente==null || criterioCliente.trim().length()==0) {
+				AppJsfUtil.addErrorMessage("frmDestinatario:inpCriterioCliente", "ERROR", "REQUERIDO");
+				return;
+			}
+			
+			consultarCliente(criterioCliente);
+			if(destinatarioSelected.getCliente()!=null) {
+				destinatarioSelected.setIdentificaciondestinatario(destinatarioSelected.getCliente().getIdentificacion());
+				destinatarioSelected.setRazonsocialdestinatario(destinatarioSelected.getCliente().getRazonsocial());
+			}else {
+				destinatarioSelected.setIdentificaciondestinatario(null);
+				destinatarioSelected.setRazonsocialdestinatario(null);
+				AppJsfUtil.addErrorMessage("frmDestinatario:inpCriterioCliente", "ERROR", "NO EXISTE");
+				return;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void consultarCliente(String identificador) throws DaoException {
+		destinatarioSelected.setCliente(null);
+		destinatarioSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+	}
+	
 	/**
 	 * @return the callModule
 	 */
@@ -351,6 +396,20 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	 */
 	public void setTipocomprobanteList(List<Tipocomprobante> tipocomprobanteList) {
 		this.tipocomprobanteList = tipocomprobanteList;
+	}
+
+	/**
+	 * @return the criterioCliente
+	 */
+	public String getCriterioCliente() {
+		return criterioCliente;
+	}
+
+	/**
+	 * @param criterioCliente the criterioCliente to set
+	 */
+	public void setCriterioCliente(String criterioCliente) {
+		this.criterioCliente = criterioCliente;
 	}
 
 }

@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.heightFrmDestinatario {
-				height: 500px;
+				height: 520px;
 		}	
 		
 	</style>
@@ -39,7 +39,7 @@
 				
 			</div>
 			
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmDestinatario"
+			<p:messages id="msgfrmDestinatario" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmDestinatario"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
@@ -49,21 +49,70 @@
 				<!-- Datos Generales -->	
 				<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Generales</div>
 				
+				<div class="EmptyBox5"/>
+				
+				<p:panelGrid id="gridTransportistaDG0" columns="2"
+						styleClass="ui-panelgrid-blank Wid100"
+						columnClasses="ui-g-12 ui-md-6,
+									   ui-g-12 ui-md-6">
+						<h:panelGroup>
+							<h:outputText value="BUSCAR DESTINATARIO *" styleClass="campoRequerido DispBlock"/>
+							<div class="ui-inputgroup">
+				                <span class="ui-inputgroup-addon">
+				                	
+				                	<p:commandButton process="@this @form:inpCriterioCliente" title="BUSCAR"
+										update=":frmDestinatario:msgfrmDestinatario :frmDestinatario:gridTransportistaDG0 :frmDestinatario:oupDestIdentificacion :frmDestinatario:oupDestRazonSocial" 
+										action="#{guiaRemFormCtrl.buscarCliente()}" icon="fa fa-search">
+				                	</p:commandButton>
+				                
+				                </span>
+				                
+				                <p:inputText id="inpCriterioCliente"
+									value="#{guiaRemFormCtrl.criterioCliente}" required="false"
+									requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+									maxlength="13" placeholder="C.I. o RUC"
+									validatorMessage="SOLO NUMEROS"
+									onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
+									<f:validateRegex pattern="^\d+$" />
+								</p:inputText>
+				                
+				            </div>
+				            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+						</h:panelGroup>			
+						<h:panelGroup>
+							<h:outputText value="_" styleClass="campoRequerido DispBlock" style="color:#fff;"/>
+							<p:commandButton id="cmdDesCliente"
+								value="EDITAR / NUEVO DESTINATARIO" icon="fa fa-user" styleClass="secondary-button Wid100" process="@this" 
+								action="#{clienteCtrl.nuevoEditar(guiaRemFormCtrl.destinatarioSelected.cliente!=null?guiaRemFormCtrl.destinatarioSelected.cliente.idcliente:null)}">
+								<f:setPropertyActionListener value="guiaRemFormCtrl" target="#{clienteCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":frmDestinatario:msgfrmDestinatario :frmDestinatario:gridTransportistaDG0 :frmDestinatario:oupDestIdentificacion :frmDestinatario:oupDestRazonSocial" target="#{clienteCtrl.updateView}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+							</p:commandButton>						   
+						</h:panelGroup>
+				</p:panelGrid>
+				
+				<div class="EmptyBox5"/>
+				
+				
 				<p:panelGrid id="gridTransportistaDG" columns="2"
 						styleClass="ui-panelgrid-blank Wid100"
 						columnClasses="ui-g-12 ui-md-6,
 									   ui-g-12 ui-md-6">
 					
 					<h:panelGroup>
-						<h:outputText value="#{msg['label.identificacion']} *" styleClass="campoRequerido DispBlock"/>
-						<div class="EmptyBox5"/>
-						<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.identificaciondestinatario}" />
+						<p:outputPanel id="oupDestIdentificacion">
+							<h:outputText value="#{msg['label.identificacion']} *" styleClass="campoRequerido DispBlock"/>
+							<div class="EmptyBox5"/>
+							<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.identificaciondestinatario}" styleClass="FontBold"/>
+						</p:outputPanel>
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<h:outputText value="#{msg['label.razonsocial']} *" styleClass="campoRequerido DispBlock"/>
-						<div class="EmptyBox5"/>
-						<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.razonsocialdestinatario}" />
+						<p:outputPanel id="oupDestRazonSocial">
+							<h:outputText value="#{msg['label.razonsocial']} *" styleClass="campoRequerido DispBlock"/>
+							<div class="EmptyBox5"/>
+							<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.razonsocialdestinatario}" styleClass="markBlack"/>
+						</p:outputPanel>
 					</h:panelGroup>
 					
 					
@@ -132,8 +181,30 @@
 					<h:panelGroup>
 						<h:outputText value="#{msg['label.numero']} DOCUMENTO ASOCIADO" styleClass="campoRequerido DispBlock"/>
 						<div class="EmptyBox5"/>
-						<p:inputText id="intGrDestNumDocAsociado" value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" maxlength="17" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
-						</p:inputText>
+						<!-- <p:inputText id="intGrDestNumDocAsociado" value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" maxlength="17" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						</p:inputText> -->
+						
+						
+						<div class="ui-inputgroup">
+			                <span class="ui-inputgroup-addon">
+			                	
+			                	<p:commandButton process="@this @form:inpCriterioCliente" title="BUSCAR"
+									update=":frmDestinatario:msgfrmDestinatario :frmDestinatario:gridTransportistaDG2" 
+									action="#" icon="fa fa-search">
+			                	</p:commandButton>
+			                
+			                </span>
+			                
+			                <p:inputText id="intGrDestNumDocAsociado"
+								value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" required="false"
+								requiredMessage="REQUERIDO" styleClass="Wid100"
+								maxlength="17" placeholder="000-000-0000000"
+								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
+							</p:inputText>
+			                
+			            </div>
+			            <p:message for="intGrDestNumDocAsociado" styleClass="Wid100"/>
+			            
 					</h:panelGroup>
 					
 					<h:panelGroup>
@@ -160,7 +231,7 @@
 					<h:panelGroup>
 						<h:outputText value="#{msg['label.numero']} DE #{msg['label.autorizacion']}" styleClass="campoRequerido DispBlock"/>
 						<div class="EmptyBox5"/>
-						<p:inputText id="intGrDestDocAduanero" value="#{guiaRemFormCtrl.destinatarioSelected.numautdocsustento}" maxlength="20" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						<p:inputText id="intGrDestAutDocAduanero" value="#{guiaRemFormCtrl.destinatarioSelected.numautdocsustento}" maxlength="20" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
 						</p:inputText>
 					</h:panelGroup>
 									   

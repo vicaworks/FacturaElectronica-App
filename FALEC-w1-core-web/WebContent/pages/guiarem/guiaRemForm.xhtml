@@ -71,6 +71,15 @@
 				padding: 0.2em 0.5em;
 			}
 			
+			
+			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+				padding: 0em;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+				padding: 0px; 
+			}
+			
         </style>
     </ui:define>
 
@@ -165,6 +174,9 @@
 		
 		<!-- DESTINATARIO FORMULARIO -->
 		<ui:include src="incl_gr_destinatarioForm.xhtml" />
+		
+		<!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
 		
         
     </ui:define>

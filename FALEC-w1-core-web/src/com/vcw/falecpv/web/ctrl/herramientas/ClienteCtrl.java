@@ -42,6 +42,7 @@ import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FactMainPagoCtrl;
+import com.vcw.falecpv.web.ctrl.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -140,6 +141,13 @@ public class ClienteCtrl extends BaseCtrl {
 				NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
 				notaCreditoCtrl.consultarCliente();
 				notaCreditoCtrl.getNotaCreditoSeleccion().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "guiaRemFormCtrl":
+				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
+				guiaRemFormCtrl.getDestinatarioSelected().setCliente(clienteSelected);
+				guiaRemFormCtrl.getDestinatarioSelected().setIdentificaciondestinatario(clienteSelected.getIdentificacion());
+				guiaRemFormCtrl.getDestinatarioSelected().setRazonsocialdestinatario(clienteSelected.getRazonsocial());
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
 			default:
