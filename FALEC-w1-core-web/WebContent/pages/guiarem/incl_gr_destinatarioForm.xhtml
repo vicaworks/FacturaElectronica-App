@@ -28,7 +28,8 @@
 					
 					<p:commandButton id="cmdGuardarTransportista"
 						value="GUARDAR" icon="fa fa-check" 
-						action="#" styleClass="MRight10" update="@form"/>
+						action="#{guiaRemFormCtrl.guardarDestinatario()}" styleClass="MRight10" update="@form :formMain">
+					</p:commandButton>
 						
 						
 					<p:commandButton id="cmdCerrar"
@@ -155,7 +156,7 @@
 						<p:selectOneMenu id="somGrTipComprobante"
 									value="#{guiaRemFormCtrl.destinatarioSelected.tipocomprobante}"
 									converter="omnifaces.SelectItemsConverter"
-									required="true"
+									required="false"
 									requiredMessage="REQUERIDO"
 									styleClass="Wid100"
 									filter="true" filterMatchMode="contains">
@@ -181,28 +182,14 @@
 					<h:panelGroup>
 						<h:outputText value="#{msg['label.numero']} DOCUMENTO ASOCIADO" styleClass="campoRequerido DispBlock"/>
 						<div class="EmptyBox5"/>
-						<!-- <p:inputText id="intGrDestNumDocAsociado" value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" maxlength="17" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
-						</p:inputText> -->
-						
-						
-						<div class="ui-inputgroup">
-			                <span class="ui-inputgroup-addon">
-			                	
-			                	<p:commandButton process="@this @form:inpCriterioCliente" title="BUSCAR"
-									update=":frmDestinatario:msgfrmDestinatario :frmDestinatario:gridTransportistaDG2" 
-									action="#" icon="fa fa-search">
-			                	</p:commandButton>
-			                
-			                </span>
-			                
-			                <p:inputText id="intGrDestNumDocAsociado"
+							
+						<p:inputMask id="intGrDestNumDocAsociado"
+								mask="999-999-9999999"
 								value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" required="false"
 								requiredMessage="REQUERIDO" styleClass="Wid100"
 								maxlength="17" placeholder="000-000-0000000"
-								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
-							</p:inputText>
-			                
-			            </div>
+								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}"></p:inputMask>	
+						
 			            <p:message for="intGrDestNumDocAsociado" styleClass="Wid100"/>
 			            
 					</h:panelGroup>
@@ -231,7 +218,7 @@
 					<h:panelGroup>
 						<h:outputText value="#{msg['label.numero']} DE #{msg['label.autorizacion']}" styleClass="campoRequerido DispBlock"/>
 						<div class="EmptyBox5"/>
-						<p:inputText id="intGrDestAutDocAduanero" value="#{guiaRemFormCtrl.destinatarioSelected.numautdocsustento}" maxlength="20" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
+						<p:inputText id="intGrDestAutDocAduanero" value="#{guiaRemFormCtrl.destinatarioSelected.numautdocsustento}" maxlength="49" required="false" requiredMessage="REQUERIDO" styleClass="Wid100">
 						</p:inputText>
 					</h:panelGroup>
 									   

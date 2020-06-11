@@ -100,6 +100,12 @@ public class Destinatario implements Serializable {
     
     @Transient
     private BigDecimal total = BigDecimal.ZERO;
+    
+    @Transient
+    private String idVenta;
+    
+    @Transient
+    private boolean consultarDetalleFactura = false;
 
 	/**
 	 * 
@@ -367,6 +373,34 @@ public class Destinatario implements Serializable {
 	 */
 	public void setTipocomprobante(Tipocomprobante tipocomprobante) {
 		this.tipocomprobante = tipocomprobante;
+	}
+
+	/**
+	 * @return the idVenta
+	 */
+	public String getIdVenta() {
+		return idVenta;
+	}
+
+	/**
+	 * @param idVenta the idVenta to set
+	 */
+	public void setIdVenta(String idVenta) {
+		this.idVenta = idVenta;
+	}
+
+	/**
+	 * @return the consultarDetalleFactura
+	 */
+	public boolean isConsultarDetalleFactura() {
+		return consultarDetalleFactura;
+	}
+
+	/**
+	 * @param consultarDetalleFactura the consultarDetalleFactura to set
+	 */
+	public void setConsultarDetalleFactura(boolean consultarDetalleFactura) {
+		this.consultarDetalleFactura = consultarDetalleFactura;
 	}
 
 }

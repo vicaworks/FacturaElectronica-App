@@ -22,6 +22,7 @@ import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
+import com.vcw.falecpv.web.ctrl.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
 
@@ -96,6 +97,13 @@ public class ListaProductoCtrl extends BaseCtrl {
 					producto.setPorcentajedescuento(BigDecimal.ZERO);
 				}
 			}
+			if(callModule.equals("GUIA_REMISION")) {
+				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
+				if(guiaRemFormCtrl.getDestinatarioSelected()==null) {
+					AppJsfUtil.addErrorMessage(formModule, "ERROR", "NO EXISTE DESTINATARIO SELECCIONADO.");
+					return;
+				}
+			}
 			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
 			
 		} catch (Exception e) {
@@ -136,6 +144,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 				notaCreditoCtrl.agregarProducto();
 				AppJsfUtil.hideModal("dlgListaProducto");
 				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (notaCreditoCtrl.getDetalleNcList().size()-1) + ":insDetFacCanbtidad1_input')");
+				
+				break;
+			case "GUIA_REMISION" :
+				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
+				String agregar = guiaRemFormCtrl.agregarProducto(productoSelected);
+				if(agregar!=null) {
+					AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", agregar);
+				}else {
+					AppJsfUtil.addInfoMessage("frmListProducto", "OK","AGREGADO : " + productoSelected.getNombregenerico() + " CANTIDAD: " + productoSelected.getCantidad());
+				}
 				
 				break;
 			default:

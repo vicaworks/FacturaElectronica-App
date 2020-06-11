@@ -10,7 +10,7 @@
 		
 		.guiaRemDetalleDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 370px);
+				height: calc(100vh - 386px);
 		}		
 		
 	</style>
@@ -25,15 +25,18 @@
 			<div class="p-col-12">
 				<p:commandButton id="cmdGrNuevoDetalle"
 							value="DETALLE / PRODUCTO" icon="fa fa-plus" 
-							action="#" styleClass="secondary-button Wid100" process="@this">
+							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form">
+					<f:setPropertyActionListener value="GUIA_REMISION" target="#{listaProductoCtrl.callModule}"/>
+					<f:setPropertyActionListener value=":formMain" target="#{listaProductoCtrl.viewUpdate}"/>
+					<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 				</p:commandButton>
 			</div>
 		</div>
 		
-		<div class="EmptyBox5"/>
+		<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected!=null?guiaRemFormCtrl.destinatarioSelected.razonsocialdestinatario:'-'}" styleClass="DispBlock markBlack"/>
 		
 		<p:dataTable id="guiaRemDetalleDT" var="det"
-					value="#{guiaRemFormCtrl.detalledestinatarioList}" scrollable="true"
+					value="#{guiaRemFormCtrl.destinatarioSelected.detalledestinatarioList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="guiaRemDetalleDT Fs11"  
 					rowKey="#{det.iddetalledestinatario}"
@@ -64,7 +67,7 @@
 						<div class="p-md-4">
 							<h:outputText value="CANTIDAD" styleClass="DispBlock cpoRequerido Fs10"/>
 							<h:outputText value="#{det.cantidad}"  styleClass="DispBlock FontBold">
-								<f:convertNumber pattern="#,##0.00"/>
+								<f:convertNumber pattern="#,##0"/>
 							</h:outputText>
 						</div>
 					</div>
@@ -75,15 +78,17 @@
 				<p:column headerText="OPC" style="width:10%" styleClass="TexAlCenter">
 				<div class="EmptyBox10"/>
 				<div class="p-grid p-align-end vertical-container">
-					<div class="p-col-12">
+					<!-- <div class="p-col-12">
 						<p:commandLink action="#" title="Editar">
-							<i class="fa fa-edit Fs20"/>
+							<i class="fa fa-edit Fs20" style="color:black;"/>
 						</p:commandLink>
 					</div>					
-					<div class="EmptyBox5"/>
+					<div class="EmptyBox5"/> -->
 					<div class="p-col-12">
-						<p:commandLink action="#" title="Ver Detalle">
+						<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" title="Eliminar" update="@form">
 							<i class="fa fa-trash-o Fs20" style="color:red;"/>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>
 						</p:commandLink>
 					</div>
 				</div>
@@ -94,7 +99,7 @@
 		
 		<div class="EmptyBox10"/>
 		<div class="p-grid p-justify-end p-align-center">
-			<div class="p-col-2 Fs12 FontBold" style="text-align: right;color:#ccc;">
+			<div class="p-col-2 Fs12 FontBold" style="text-align: right;color:#acacac;">
 				TOTAL :
 			</div>
 			<div class="p-col-2" style="text-align: right;">

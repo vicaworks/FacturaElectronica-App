@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmVentas {
+				height: 550px;
+		}
+		 .ui-grid td {
+	        white-space: nowrap;
+	    }
+		
+	</style>
+	
+	<script >
+		PrimeFaces.widget.Dialog.prototype.applyFocus = function () {
+	        var firstInput = this.jq.find(':not(:submit):not(:button):input:visible:enabled:first');
+	        if (!firstInput.hasClass('hasDatepicker')) {
+	            firstInput.focus();
+	        }
+	    }
+	</script>
+	
+	
+	<p:dialog header="Facturas" widgetVar="dlgListaVentas" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="formVentasQuery">
+			
+			<div class="p-grid toolBarPopUp p-align-end vertical-container">
+				
+				<div class="p-col-12 p-md-3">
+					<h:outputText value="DESDE" styleClass="cpoRequerido DispBlock"/>
+					<p:calendar value="#{ventasQueryCtrl.desde}"
+						pattern="dd/MM/yyyy"
+						requiredMessage="REQUERIDO" required="false" styleClass="Wid100" showOn="focus">
+					</p:calendar>
+				</div>
+				
+				<div class="p-col-12 p-md-3">
+					<h:outputText value="HASTA" styleClass="cpoRequerido DispBlock"/>
+					<p:calendar value="#{ventasQueryCtrl.hasta}"
+						pattern="dd/MM/yyyy"
+						requiredMessage="REQUERIDO" required="false" styleClass="Wid100" tabindex="3">
+					</p:calendar>
+				</div>
+				
+				<div class="p-col-12 p-md-3">
+					<h:outputText value="BUSCAR" styleClass="cpoRequerido DispBlock"/>
+					<p:inputText id="intVentasQueryCriterio" value="#{ventasQueryCtrl.criterio}" styleClass="Wid100" placeholder="#Factura, RUC. CI. Nom. Cliente" tabindex="0"/>
+				</div>
+				
+				<div class="p-col-12 p-md-3">
+					<p:commandButton  
+							title="BUSCAR"
+							icon="fa fa-search"
+							value="BUSCAR"
+							styleClass="secondary-button Wid100"
+							action="#{ventasQueryCtrl.buscar()}" update="@form">
+					</p:commandButton>
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formVentasQuery"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmVentas contenedorFormulario">
+				
+				<p:dataTable id="listaventasDT" var="v"
+					value="#{ventasQueryCtrl.resumenCabeceraQueryList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="listaventasDT Fs11"  
+					rowKey="#{v.idcabecera}"
+					rows="11"
+	                paginator="true"
+	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	                paginatorPosition="bottom"
+	                selectionMode="single"
+	                selection="#{ventasQueryCtrl.resumenCabeceraQuery}">
+	                
+	                <p:ajax event="rowSelect" listener="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
+	                	<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>
+					</p:ajax>
+					
+					<p:column headerText="TIPO" style="width:40px;">
+	                	<h:outputText value="FACTURA" rendered="#{v.indentificadorcomprobante=='01'}" styleClass="markOrange Fs10">
+						</h:outputText>
+						<h:outputText value="RECIBO" rendered="#{v.indentificadorcomprobante=='00'}"  styleClass="markBlack Fs10">
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column headerText="# NUM DOC" style="width:50px;">
+	                	<h:outputText value="#{v.numdocumento}" >
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column headerText="ESTADO" style="width:40px;">
+	                	<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs10">
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column headerText="RUC / CI" style="width:60px;">
+	                	<h:outputText value="#{v.clienteidentificacion}">
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column headerText="CLIENTE" style="width:110px;">
+	                	<h:outputText value="#{v.cliente}">
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column headerText="SUBTOTAL" style="width:40px;">
+	                	<h:outputText value="#{v.totalsinimpuestos}">
+	                		<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column headerText="IMPUESTOS" style="width:40px;">
+	                	<h:outputText value="#{v.totalice.add(v.totaliva)}">
+	                		<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+	                </p:column>
+	            	
+	            	<p:column headerText="TOTAL" style="width:40px;">
+	                	<h:outputText value="#{v.totalconimpuestos}">
+	                		<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+	                </p:column>
+	                
+	                <p:column headerText=" " style="width:40px;">
+	                	<p:commandLink action="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
+							<i class="fa fa-hand-o-left Fs30" style="color:#252529;"></i>
+							<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>
+						</p:commandLink>
+	                </p:column>
+	                
+	             </p:dataTable>
+			
+			</div>
+			
+		</h:form>
+	
+	</p:dialog>
+	
+
+</ui:composition>
