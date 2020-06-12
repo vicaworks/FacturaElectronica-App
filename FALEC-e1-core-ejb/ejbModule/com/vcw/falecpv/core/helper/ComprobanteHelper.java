@@ -227,5 +227,15 @@ public class ComprobanteHelper {
 		return infoadicionalList;
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param numeroDocumento
+	 * @return
+	 */
+	public static String formatNumDocumento(String numeroDocumento) {
+		return numeroDocumento.substring(0, 3) + "-" + numeroDocumento.substring(3, 6) + "-" + numeroDocumento.substring(6, numeroDocumento.length()); 
+	}
+	
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -56,6 +57,9 @@ public class Detalledestinatario implements Serializable {
     @JoinColumn(name = "iddestinatario", referencedColumnName = "iddestinatario", nullable = false)
     @ManyToOne(optional = false)
     private Destinatario destinatario;
+    
+    @Transient
+    private Producto producto;
 
 	/**
 	 * 
@@ -170,6 +174,20 @@ public class Detalledestinatario implements Serializable {
 	 */
 	public void setDestinatario(Destinatario destinatario) {
 		this.destinatario = destinatario;
+	}
+
+	/**
+	 * @return the producto
+	 */
+	public Producto getProducto() {
+		return producto;
+	}
+
+	/**
+	 * @param producto the producto to set
+	 */
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
 }

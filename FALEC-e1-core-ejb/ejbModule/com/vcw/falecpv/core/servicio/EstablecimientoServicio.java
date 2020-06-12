@@ -135,29 +135,29 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			
 //			String numDoc =  TextoUtil.leftPadTexto(e.getCodigoestablecimiento(), 3, "0");
 //			numDoc += "001";
-			
+			int cantidadZero = 7;
 			String numDoc =  "";
 			
 			switch (geTipoDocumentoEnum) {
 			case FACTURA:
 				e.setSecuencialfactura(e.getSecuencialfactura()+1);
-				numDoc += TextoUtil.leftPadTexto(e.getSecuencialfactura()+"", 9, "0");
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialfactura()+"", cantidadZero, "0");
 				break;
 			case RECIBO:
 				e.setSecuencialrecibo(e.getSecuencialrecibo()+1);
-				numDoc += TextoUtil.leftPadTexto(e.getSecuencialrecibo()+"", 9, "0");
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialrecibo()+"", cantidadZero, "0");
 				break;
 			case NOTA_CREDITO:
 				e.setSecuencialNotaCredito(e.getSecuencialrecibo()+1);
-				numDoc += TextoUtil.leftPadTexto(e.getSecuencialNotaCredito()+"", 9, "0");
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialNotaCredito()+"", cantidadZero, "0");
 				break;
 			case NOTA_DEBITO:
 				e.setSecuencialnotadebito(e.getSecuencialnotadebito()+1);
-				numDoc += TextoUtil.leftPadTexto(e.getSecuencialnotadebito()+"", 9, "0");
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialnotadebito()+"", cantidadZero, "0");
 				break;
 			case RETENCION:
 				e.setSecuencialretencion(e.getSecuencialretencion()+1);
-				numDoc += TextoUtil.leftPadTexto(e.getSecuencialretencion()+"", 9, "0");
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialretencion()+"", cantidadZero, "0");
 				break;
 			default:
 				break;

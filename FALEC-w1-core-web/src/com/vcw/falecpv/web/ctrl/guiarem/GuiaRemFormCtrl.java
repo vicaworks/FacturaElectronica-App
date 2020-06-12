@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,13 +19,18 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
-import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
+import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
+import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.persistencia.Transportista;
+import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
+import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -52,11 +58,15 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	@EJB
 	private TipocomprobanteServicio tipocomprobanteServicio;
 	
+	@EJB
+	private CabeceraServicio cabeceraServicio;
+	
+	@EJB
+	private DetalleServicio detalleServicio;
+	
 	private String callModule;
 	private Cabecera guiaRemisionSelected;
-	private List<Destinatario> destinatarioList;
 	private Destinatario destinatarioSelected;
-	private List<Detalledestinatario> detalledestinatarioList;
 	private Detalledestinatario detalledestinatarioSeleted;
 	private List<Transportista> transportistaList;
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -92,12 +102,15 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	}
 	
 	public void nuevaGuiaRemision() throws DaoException {
+		destinatarioSelected = null;
+		detalledestinatarioSeleted = null;
 		consultarTransportista();
 		guiaRemisionSelected = new Cabecera();
 		guiaRemisionSelected.setDireccionpartida(AppJsfUtil.getEstablecimiento().getDireccionestablecimiento());
 		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		guiaRemisionSelected.setFechainiciotransporte(new Date());
 		guiaRemisionSelected.setFechafintransporte(new Date());
+		guiaRemisionSelected.setDestinatarioList(new ArrayList<>());
 	}
 	
 	public void cambioTransportista() {
@@ -119,100 +132,68 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	public void guardarDestinatario() {
+		try {
+			
+			asignarDestinatario();
+			totalizarGuiaRemision();
+			AppJsfUtil.hideModal("dlgDestinatario");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public String guardarDestinatarioByOtros() {
+		try {
+			
+			asignarDestinatario();
+			totalizarGuiaRemision();
+			AppJsfUtil.hideModal("dlgDestinatario");
+			return "/pages/guiarem/guiaRemForm.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	private void asignarDestinatario() throws DaoException {
+		
+		if(destinatarioSelected.getDetalledestinatarioList()==null) {
+			destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
+		}
+		
+		if(destinatarioSelected.isConsultarDetalleFactura()) {
+			destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
+			List<Detalle> lista = detalleServicio.getDetalleDao().getByIdCabecera(destinatarioSelected.getIdVenta());
+			for (Detalle d : lista) {
+				if(d.getProducto()!=null) {
+					Detalledestinatario dd = new Detalledestinatario();
+					dd.setIddetalledestinatario("M");
+					dd.setCodigointerno(d.getProducto().getCodigoprincipal());
+					dd.setCodigoadicional(d.getProducto().getIdproducto());
+					dd.setDescripcion(d.getDescripcion());
+					dd.setCantidad(d.getCantidad());
+					destinatarioSelected.getDetalledestinatarioList().add(dd);
+				}
+			}
+		}
+		destinatarioSelected.setConsultarDetalleFactura(false);
+		if(destinatarioSelected.getIddestinatario()==null) {
+			destinatarioSelected.setIddestinatario("M");
+			guiaRemisionSelected.getDestinatarioList().add(0,destinatarioSelected);
+		}
+		
+	}
 
 	@Override
 	public void nuevo() {
 		try {
 			nuevaGuiaRemision();
-			destinatarioList = new ArrayList<>();
-			
-			destinatarioSelected = new Destinatario();
-			destinatarioSelected.setIddestinatario("M1");
-			Cliente cl = clienteServicio.consultarByPk("7");
-			destinatarioSelected.setCliente(cl);
-			destinatarioSelected.setIdentificaciondestinatario(cl.getIdentificacion());
-			destinatarioSelected.setRazonsocialdestinatario(cl.getRazonsocial());
-			destinatarioSelected.setDirdestinatario("AV LA PRENSA N42-95 EDF LUBLUADA DEOP 5");
-			destinatarioSelected.setMotivotraslado("TRANSFERENCIA MERCADERIA");
-			destinatarioSelected.setDocaduanerounico("0041324846887");
-			destinatarioSelected.setCodestabdestino("012");
-			destinatarioSelected.setRuta("Quito – Cayambe - Otavalo");
-			destinatarioSelected.setCoddocsustento("01");
-			destinatarioSelected.setNumdocsustento("002-001-000000001");
-			destinatarioSelected.setNumautdocsustento("2103202001302517921467390011234567891541236987412");
-			destinatarioSelected.setFechaemisiondocsustento(new Date());
-			
-			
-			detalledestinatarioList = new ArrayList<>();
-			Detalledestinatario dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M1");
-			dd.setCantidad(BigDecimal.valueOf(10));
-			dd.setCodigointerno("XXXX100");
-			dd.setCodigoadicional("A1");
-			dd.setDescripcion("KERATINA COLOR BLANCO 24x30");
-			detalledestinatarioList.add(dd);
-			dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M2");
-			dd.setCantidad(BigDecimal.valueOf(5));
-			dd.setCodigointerno("YYYX100");
-			dd.setCodigoadicional("A2");
-			dd.setDescripcion("KERATINA COLOR ROJO 16x16");
-			
-			detalledestinatarioList.add(dd);
-			dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M3");
-			dd.setCantidad(BigDecimal.valueOf(5));
-			dd.setCodigointerno("YYYX100");
-			dd.setCodigoadicional("A2");
-			dd.setDescripcion("KERATINA COLOR ROJO 16x16");
-			
-			detalledestinatarioList.add(dd);
-			dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M4");
-			dd.setCantidad(BigDecimal.valueOf(5));
-			dd.setCodigointerno("YYYX100");
-			dd.setCodigoadicional("A2");
-			dd.setDescripcion("KERATINA COLOR ROJO 16x16");
-			
-			detalledestinatarioList.add(dd);
-			dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M5");
-			dd.setCantidad(BigDecimal.valueOf(5));
-			dd.setCodigointerno("YYYX100");
-			dd.setCodigoadicional("A2");
-			dd.setDescripcion("KERATINA COLOR ROJO 16x16");
-			
-			detalledestinatarioList.add(dd);
-			dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M6");
-			dd.setCantidad(BigDecimal.valueOf(5));
-			dd.setCodigointerno("YYYX100");
-			dd.setCodigoadicional("A2");
-			dd.setDescripcion("KERATINA COLOR ROJO 16x16");
-			
-			detalledestinatarioList.add(dd);
-			dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M7");
-			dd.setCantidad(BigDecimal.valueOf(5));
-			dd.setCodigointerno("YYYX100");
-			dd.setCodigoadicional("A2");
-			dd.setDescripcion("KERATINA COLOR ROJO 16x16");
-			detalledestinatarioList.add(dd);
-			
-			dd = new Detalledestinatario();
-			dd.setIddetalledestinatario("M8");
-			dd.setCantidad(BigDecimal.valueOf(5));
-			dd.setCodigointerno("YYYX100");
-			dd.setCodigoadicional("A2");
-			dd.setDescripcion("KERATINA COLOR ROJO 16x16");
-			detalledestinatarioList.add(dd);
-			
-			
-			
-			destinatarioSelected.setDetalledestinatarioList(detalledestinatarioList);
-			destinatarioList.add(destinatarioSelected);
-			guiaRemisionSelected.setDestinatarioList(destinatarioList);
-			
 			totalizarGuiaRemision();
 			
 		} catch (Exception e) {
@@ -226,7 +207,13 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			guiaRemisionSelected.setTotal(BigDecimal.ZERO);
 			return;
 		}
-		
+		int cont = 0;
+		for (Destinatario destinatario : guiaRemisionSelected.getDestinatarioList()) {
+			if(destinatario.getIddestinatario().contains("M")) {
+				destinatario.setIddestinatario("M" + (cont++));
+			}
+			
+		}
 		guiaRemisionSelected.getDestinatarioList().stream().forEach(x->{
 			totalizarGuiaRemisionDestinatario(x);
 		});
@@ -238,6 +225,12 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		if(des.getDetalledestinatarioList()==null || des.getDetalledestinatarioList().isEmpty()) {
 			des.setTotal(BigDecimal.ZERO);
 			return;
+		}
+		int cont = 0;
+		for (Detalledestinatario d : des.getDetalledestinatarioList()) {
+			if(d.getIddetalledestinatario().contains("M")) {
+				d.setIddetalledestinatario("M" + (cont++));
+			}
 		}
 		des.setTotal(BigDecimal.valueOf(des.getDetalledestinatarioList().stream().mapToDouble(x->x.getCantidad().doubleValue()).sum()));
 	}
@@ -267,6 +260,8 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			if(destinatarioSelected.getCliente()!=null) {
 				destinatarioSelected.setIdentificaciondestinatario(destinatarioSelected.getCliente().getIdentificacion());
 				destinatarioSelected.setRazonsocialdestinatario(destinatarioSelected.getCliente().getRazonsocial());
+				destinatarioSelected.setDirdestinatario(destinatarioSelected.getCliente().getDireccion());
+				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDestinatario:intGrDestMotTraslado')");
 			}else {
 				destinatarioSelected.setIdentificaciondestinatario(null);
 				destinatarioSelected.setRazonsocialdestinatario(null);
@@ -284,6 +279,177 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		destinatarioSelected.setCliente(null);
 		destinatarioSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+	}
+	
+	public String asignarFactura(ResumenCabeceraQuery resumenCabeceraQuery)throws DaoException {
+		
+		if(guiaRemisionSelected.getDestinatarioList()==null) {
+			guiaRemisionSelected.setDestinatarioList(new ArrayList<>());
+		}
+		
+		Cabecera c = cabeceraServicio.consultarByPk(resumenCabeceraQuery.getIdcabecera());
+		// existe ya una factura igual
+		if(guiaRemisionSelected.getDestinatarioList().stream().filter(x->x.getNumdocsustento().replace("-", "").equals(c.getNumdocumento())).collect(Collectors.toList()).size()>0) {
+			return "LA FACTURA : " + c.getNumdocumento() + " YA EXISTE, DESTINATARIO : " + c.getCliente().getRazonsocial();
+		}
+		
+		destinatarioSelected = new Destinatario();
+		destinatarioSelected.setCliente(c.getCliente());
+		destinatarioSelected.setIdentificaciondestinatario(c.getCliente().getIdentificacion());
+		destinatarioSelected.setRazonsocialdestinatario(c.getCliente().getRazonsocial());
+		destinatarioSelected.setDirdestinatario(c.getCliente().getDireccion());
+		destinatarioSelected.setMotivotraslado(null);
+		destinatarioSelected.setDocaduanerounico(null);
+		destinatarioSelected.setCodestabdestino(null);
+		destinatarioSelected.setRuta(null);
+		destinatarioSelected.setCoddocsustento(c.getTipocomprobante().getIdentificador());
+		destinatarioSelected.setTipocomprobante(c.getTipocomprobante());
+		destinatarioSelected.setNumdocsustento(ComprobanteHelper.formatNumDocumento(c.getNumdocumento()));
+		destinatarioSelected.setNumautdocsustento(c.getNumeroautorizacion());
+		destinatarioSelected.setFechaemisiondocsustento(c.getFechaemision());
+		destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
+		destinatarioSelected.setIdVenta(c.getIdcabecera());
+		destinatarioSelected.setConsultarDetalleFactura(true);
+		totalizarGuiaRemision();
+		
+		return null;
+	}
+	
+	public void editarDestinatario() {
+		try {
+			
+			AppJsfUtil.showModalRender("dlgDestinatario", "frmDestinatario");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void eliminarDestinatario() {
+		try {
+			
+			if(destinatarioSelected!=null) {
+				guiaRemisionSelected.getDestinatarioList().remove(destinatarioSelected);
+			}
+			
+			destinatarioSelected=null;
+			totalizarGuiaRemision();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void eliminarDetalleDestinatario() {
+		try {
+			
+			if(destinatarioSelected==null || detalledestinatarioSeleted==null) {
+				return;
+			}
+			
+			destinatarioSelected.getDetalledestinatarioList().remove(detalledestinatarioSeleted);
+			detalledestinatarioSeleted = null;
+			totalizarGuiaRemision();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public String agregarProducto(Producto producto) {
+		if(destinatarioSelected==null)
+			return null;
+		
+		if(destinatarioSelected.getDetalledestinatarioList()==null) {
+			destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
+		}
+		
+		detalledestinatarioSeleted = destinatarioSelected.getDetalledestinatarioList().stream().filter(x->x.getCodigoadicional().equals(producto.getIdproducto())).findFirst().orElse(null);
+		if(detalledestinatarioSeleted==null) {
+			detalledestinatarioSeleted = new Detalledestinatario();
+			detalledestinatarioSeleted.setCodigointerno(producto.getCodigoprincipal());
+			detalledestinatarioSeleted.setCodigoadicional(producto.getIdproducto());
+			detalledestinatarioSeleted.setDescripcion(producto.getNombregenerico());
+			detalledestinatarioSeleted.setIddetalledestinatario("M");
+			detalledestinatarioSeleted.setCantidad(BigDecimal.valueOf(producto.getCantidad()));
+			detalledestinatarioSeleted.setProducto(producto);
+			destinatarioSelected.getDetalledestinatarioList().add(0,detalledestinatarioSeleted);
+		}else {
+			detalledestinatarioSeleted.setCantidad(
+			detalledestinatarioSeleted.getCantidad().add(BigDecimal.valueOf(producto.getCantidad())));
+		}
+		totalizarGuiaRemision();
+		return null;
+	}
+	
+	public void agregarDetalle(boolean showModal,String callForm) {
+		try {
+			
+			detalledestinatarioSeleted = new Detalledestinatario();
+			detalledestinatarioSeleted.setCantidad(BigDecimal.valueOf(1));
+			
+			if(showModal) {
+				AppJsfUtil.showModalRender("dlgDetalleDestinatario", "frmDetDestinatario");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}	
+	
+	
+	public void editarDetalle() {
+		try {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDetDestinatario:spnDetDestCantidad_input')");
+			AppJsfUtil.showModalRender("dlgDetalleDestinatario", "frmDetDestinatario");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void guardarDetalle() {
+		try {
+			
+			if(detalledestinatarioSeleted.getIddetalledestinatario()==null) {
+				detalledestinatarioSeleted.setIddetalledestinatario("M");
+				destinatarioSelected.getDetalledestinatarioList().add(0,detalledestinatarioSeleted);
+			}
+			
+			if(detalledestinatarioSeleted.getCodigoadicional()==null) {
+				detalledestinatarioSeleted.setCodigoadicional(detalledestinatarioSeleted.getCodigointerno());
+			}
+			
+			totalizarGuiaRemision();
+			AppJsfUtil.addInfoMessage("frmDetDestinatario", "OK","AGREGADO CORRECTAMENTE");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmDetDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void nuevaGuiaRemisionByFactura(String idCabecera){
+		try {
+			
+			nuevaGuiaRemision();
+			// 1. agrega la factura
+			ResumenCabeceraQuery resumenCabeceraQuery = new ResumenCabeceraQuery();
+			resumenCabeceraQuery.setIdcabecera(idCabecera);
+			asignarFactura(resumenCabeceraQuery);
+			AppJsfUtil.showModalRender("dlgDestinatario", "frmDestinatario");
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDestinatario:intGrDestMotTraslado')");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	/**
@@ -315,20 +481,6 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	}
 
 	/**
-	 * @return the destinatarioList
-	 */
-	public List<Destinatario> getDestinatarioList() {
-		return destinatarioList;
-	}
-
-	/**
-	 * @param destinatarioList the destinatarioList to set
-	 */
-	public void setDestinatarioList(List<Destinatario> destinatarioList) {
-		this.destinatarioList = destinatarioList;
-	}
-
-	/**
 	 * @return the destinatarioSelected
 	 */
 	public Destinatario getDestinatarioSelected() {
@@ -340,20 +492,6 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	 */
 	public void setDestinatarioSelected(Destinatario destinatarioSelected) {
 		this.destinatarioSelected = destinatarioSelected;
-	}
-
-	/**
-	 * @return the detalledestinatarioList
-	 */
-	public List<Detalledestinatario> getDetalledestinatarioList() {
-		return detalledestinatarioList;
-	}
-
-	/**
-	 * @param detalledestinatarioList the detalledestinatarioList to set
-	 */
-	public void setDetalledestinatarioList(List<Detalledestinatario> detalledestinatarioList) {
-		this.detalledestinatarioList = detalledestinatarioList;
 	}
 
 	/**

@@ -80,6 +80,13 @@
 				padding: 0px; 
 			}
 			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
         </style>
     </ui:define>
 
@@ -88,7 +95,6 @@
 		<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
-    	
     	<f:subview rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
     		
     		<p:breadCrumb>
@@ -100,11 +106,11 @@
 		</f:subview>
 		
 		<f:subview rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
-			
-			<p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-			<p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
-			<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
-			
+			<p:breadCrumb>
+				<p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+				<p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+				<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
+			</p:breadCrumb>
 		</f:subview>
 		
 		<h:form id="formMain">
@@ -175,8 +181,17 @@
 		<!-- DESTINATARIO FORMULARIO -->
 		<ui:include src="incl_gr_destinatarioForm.xhtml" />
 		
+		<!-- DETALLE FORMULARIO -->
+		<ui:include src="incl_gr_det_destiForm.xhtml" />
+		
 		<!-- Form Cliente -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- Lista de ventas -->
+	    <ui:include src="../common/incl_ventas.xhtml" />
+	    
+	    <!-- Form lista productos -->
+	    <ui:include src="../productos/incl_listaProducto.xhtml" />
 		
         
     </ui:define>

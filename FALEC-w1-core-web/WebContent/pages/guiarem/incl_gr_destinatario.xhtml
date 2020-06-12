@@ -18,17 +18,21 @@
 	<div class="card card-w-title">
 		<h2 class="cardTitle">Destinatarios</h2>
 		<div class="EmptyBox5"/>
-		<div class="p-grid p-justify-center">
-			<div class="p-col-12 p-md-5">
-				<p:commandButton id="cmdGrNuevoDestinatario"
-							value="DESTINATARIO" icon="fa fa-plus" 
-							action="#{guiaRemFormCtrl.nuevoDestinatario()}" styleClass="secondary-button Wid100" update="@form">
-				</p:commandButton>
-			</div>
-			<div class="p-col-12 p-md-5">
+		<div class="p-grid p-justify-between">
+			<div class="p-col-12 p-md-6">
 				<p:commandButton id="cmdGrNuevoFacturas"
 							value="FACTURAS" icon="fa fa-search" 
-							action="#" styleClass="Wid100" process="@this">
+							action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="Wid100 Fs12" update="@form">
+					<f:setPropertyActionListener value="GUIA_REMISION" target="#{ventasQueryCtrl.callModule}"/>
+					<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
+					<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>
+				</p:commandButton>
+			</div>
+			
+			<div class="p-col-12 p-md-6">
+				<p:commandButton id="cmdGrNuevoDestinatario"
+							value="DESTINATARIO" icon="fa fa-plus" 
+							action="#{guiaRemFormCtrl.nuevoDestinatario()}" styleClass="secondary-button Wid100 Fs12" update="@form">
 				</p:commandButton>
 			</div>
 		</div>
@@ -36,7 +40,7 @@
 		<div class="EmptyBox5"/>
 		
 		<p:dataTable id="guiaRemDestinatarioDT" var="d"
-					value="#{guiaRemFormCtrl.destinatarioList}" scrollable="true"
+					value="#{guiaRemFormCtrl.guiaRemisionSelected.destinatarioList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="guiaRemDestinatarioDT Fs11"  
 					rowKey="#{d.iddestinatario}"
@@ -44,8 +48,8 @@
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"  
-					rows="2"
-					rowsPerPageTemplate="2,4,8,12,16,18">
+					rows="3"
+					rowsPerPageTemplate="3,6,9,12,15">
 			
 			<p:column headerText="DESTINATARIO" style="width:90%">
 			
@@ -56,7 +60,7 @@
 					</div>
 					<div class="p-col-12 p-md-6">
 						<h:outputText value="#{msg['label.razonsocial']}"  styleClass="DispBlock cpoRequerido Fs10"/>
-						<h:outputText value="#{d.razonsocialdestinatario}"  styleClass="DispBlock markGreen"/>
+						<h:outputText value="#{d.razonsocialdestinatario}"  styleClass="DispBlock markBlack"/>
 					</div>
 					<div class="p-col-12 p-md-6">
 						<h:outputText value="DESTINO" styleClass="DispBlock cpoRequerido Fs10"/>
@@ -68,11 +72,11 @@
 					</div>
 					<div class="p-col-12 p-md-6">
 						<h:outputText value="DOCUMENTO SUSTENTO" styleClass="DispBlock cpoRequerido Fs10"/>
-						<h:outputText value="FACTURA"  styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{d.tipocomprobante.comprobante}"  styleClass="DispBlock FontBold"/>
 					</div>
 					<div class="p-col-12 p-md-6">
 						<h:outputText value="# DOCUMENTO SUSTENTO" styleClass="DispBlock cpoRequerido Fs10"/>
-						<h:outputText value="#{d.numdocsustento}"  styleClass="DispBlock markBlack"/>
+						<h:outputText value="#{d.numdocsustento}"  styleClass="DispBlock markGreen" rendered="#{d.numdocsustento!=null}"/>
 					</div>
 					
 					<div class="p-col-12 p-md-6">
@@ -113,20 +117,24 @@
 				<div class="EmptyBox10"/>
 				<div class="p-grid p-align-end vertical-container">
 					<div class="p-col-12">
-						<p:commandLink action="#" title="Editar">
-							<i class="fa fa-edit Fs20"/>
+						<p:commandLink action="#{guiaRemFormCtrl.editarDestinatario()}" title="Editar">
+							<i class="fa fa-edit Fs20" style="color:black;"/>
+							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
 					</div>
 					<div class="EmptyBox5"/>
 					<div class="p-col-12">
-						<p:commandLink action="#" title="Ver Detalle">
+						<p:commandLink action="#" title="Ver Detalle" update="@form">
 							<i class="fa fa-list Fs20" style="color:black;"/>
+							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
 					</div>
 					<div class="EmptyBox5"/>
 					<div class="p-col-12">
-						<p:commandLink action="#" title="Ver Detalle">
+						<p:commandLink action="#{guiaRemFormCtrl.eliminarDestinatario()}" title="Eliminar" update="@form">
 							<i class="fa fa-trash-o Fs20" style="color:red;"/>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
 					</div>
 				</div>
@@ -136,7 +144,7 @@
 		
 		<div class="EmptyBox10"/>
 		<div class="p-grid p-justify-end p-align-center">
-			<div class="p-col-2 Fs12 FontBold" style="text-align: right;color:#ccc;">
+			<div class="p-col-2 Fs12 FontBold" style="text-align: right;color:#acacac;">
 				TOTAL :
 			</div>
 			<div class="p-col-2" style="text-align: right;">
