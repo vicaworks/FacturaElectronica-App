@@ -237,6 +237,8 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			if(destinatarioSelected.getCliente()!=null) {
 				destinatarioSelected.setIdentificaciondestinatario(destinatarioSelected.getCliente().getIdentificacion());
 				destinatarioSelected.setRazonsocialdestinatario(destinatarioSelected.getCliente().getRazonsocial());
+				destinatarioSelected.setDirdestinatario(destinatarioSelected.getCliente().getDireccion());
+				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDestinatario:intGrDestMotTraslado')");
 			}else {
 				destinatarioSelected.setIdentificaciondestinatario(null);
 				destinatarioSelected.setRazonsocialdestinatario(null);
@@ -352,13 +354,63 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			detalledestinatarioSeleted.setDescripcion(producto.getNombregenerico());
 			detalledestinatarioSeleted.setIddetalledestinatario("M");
 			detalledestinatarioSeleted.setCantidad(BigDecimal.valueOf(producto.getCantidad()));
-			destinatarioSelected.getDetalledestinatarioList().add(detalledestinatarioSeleted);
+			detalledestinatarioSeleted.setProducto(producto);
+			destinatarioSelected.getDetalledestinatarioList().add(0,detalledestinatarioSeleted);
 		}else {
 			detalledestinatarioSeleted.setCantidad(
 			detalledestinatarioSeleted.getCantidad().add(BigDecimal.valueOf(producto.getCantidad())));
 		}
 		totalizarGuiaRemision();
 		return null;
+	}
+	
+	public void agregarDetalle(boolean showModal,String callForm) {
+		try {
+			
+			detalledestinatarioSeleted = new Detalledestinatario();
+			detalledestinatarioSeleted.setCantidad(BigDecimal.valueOf(1));
+			
+			if(showModal) {
+				AppJsfUtil.showModalRender("dlgDetalleDestinatario", "frmDetDestinatario");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}	
+	
+	
+	public void editarDetalle() {
+		try {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDetDestinatario:spnDetDestCantidad_input')");
+			AppJsfUtil.showModalRender("dlgDetalleDestinatario", "frmDetDestinatario");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void guardarDetalle() {
+		try {
+			
+			if(detalledestinatarioSeleted.getIddetalledestinatario()==null) {
+				detalledestinatarioSeleted.setIddetalledestinatario("M");
+				destinatarioSelected.getDetalledestinatarioList().add(0,detalledestinatarioSeleted);
+			}
+			
+			if(detalledestinatarioSeleted.getCodigoadicional()==null) {
+				detalledestinatarioSeleted.setCodigoadicional(detalledestinatarioSeleted.getCodigointerno());
+			}
+			
+			totalizarGuiaRemision();
+			AppJsfUtil.addInfoMessage("frmDetDestinatario", "OK","AGREGADO CORRECTAMENTE");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmDetDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	/**

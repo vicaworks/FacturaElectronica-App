@@ -21,14 +21,19 @@
 		<h2 class="cardTitle">Detalle destinatario</h2>
 		<div class="EmptyBox5"/>
 		
-		<div class="p-grid p-justify-center">
-			<div class="p-col-12">
+		<div class="p-grid p-justify-between">
+			<div class="p-col-12 p-md-6">
 				<p:commandButton id="cmdGrNuevoDetalle"
-							value="DETALLE / PRODUCTO" icon="fa fa-plus" 
-							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form">
+							value="DETALLE / PRODUCTO" icon="fa fa-search" 
+							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100 Fs12" update="@form">
 					<f:setPropertyActionListener value="GUIA_REMISION" target="#{listaProductoCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain" target="#{listaProductoCtrl.viewUpdate}"/>
 					<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+				</p:commandButton>
+			</div>
+			<div class="p-col-12 p-md-6">
+				<p:commandButton value="DETALLE" icon="fa fa-plus" 
+							action="#{guiaRemFormCtrl.agregarDetalle(true,'formMain')}" styleClass="secondary-button Wid100 Fs12" update="@form">
 				</p:commandButton>
 			</div>
 		</div>
@@ -78,12 +83,13 @@
 				<p:column headerText="OPC" style="width:10%" styleClass="TexAlCenter">
 				<div class="EmptyBox10"/>
 				<div class="p-grid p-align-end vertical-container">
-					<!-- <div class="p-col-12">
-						<p:commandLink action="#" title="Editar">
+					<div class="p-col-12">
+						<p:commandLink action="#{guiaRemFormCtrl.editarDetalle()}" title="Editar">
 							<i class="fa fa-edit Fs20" style="color:black;"/>
+							<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>
 						</p:commandLink>
 					</div>					
-					<div class="EmptyBox5"/> -->
+					<div class="EmptyBox5"/>
 					<div class="p-col-12">
 						<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" title="Eliminar" update="@form">
 							<i class="fa fa-trash-o Fs20" style="color:red;"/>

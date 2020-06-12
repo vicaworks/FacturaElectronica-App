@@ -18,20 +18,21 @@
 	<div class="card card-w-title">
 		<h2 class="cardTitle">Destinatarios</h2>
 		<div class="EmptyBox5"/>
-		<div class="p-grid p-justify-center">
-			<div class="p-col-12 p-md-5">
-				<p:commandButton id="cmdGrNuevoDestinatario"
-							value="DESTINATARIO" icon="fa fa-plus" 
-							action="#{guiaRemFormCtrl.nuevoDestinatario()}" styleClass="secondary-button Wid100" update="@form">
-				</p:commandButton>
-			</div>
-			<div class="p-col-12 p-md-5">
+		<div class="p-grid p-justify-between">
+			<div class="p-col-12 p-md-6">
 				<p:commandButton id="cmdGrNuevoFacturas"
 							value="FACTURAS" icon="fa fa-search" 
-							action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="Wid100" update="@form">
+							action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="Wid100 Fs12" update="@form">
 					<f:setPropertyActionListener value="GUIA_REMISION" target="#{ventasQueryCtrl.callModule}"/>
 					<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
 					<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>
+				</p:commandButton>
+			</div>
+			
+			<div class="p-col-12 p-md-6">
+				<p:commandButton id="cmdGrNuevoDestinatario"
+							value="DESTINATARIO" icon="fa fa-plus" 
+							action="#{guiaRemFormCtrl.nuevoDestinatario()}" styleClass="secondary-button Wid100 Fs12" update="@form">
 				</p:commandButton>
 			</div>
 		</div>
