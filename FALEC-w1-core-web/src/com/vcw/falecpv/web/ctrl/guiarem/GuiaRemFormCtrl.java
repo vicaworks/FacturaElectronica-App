@@ -102,6 +102,8 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	}
 	
 	public void nuevaGuiaRemision() throws DaoException {
+		destinatarioSelected = null;
+		detalledestinatarioSeleted = null;
 		consultarTransportista();
 		guiaRemisionSelected = new Cabecera();
 		guiaRemisionSelected.setDireccionpartida(AppJsfUtil.getEstablecimiento().getDireccionestablecimiento());
@@ -134,30 +136,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	public void guardarDestinatario() {
 		try {
 			
-			if(destinatarioSelected.getDetalledestinatarioList()==null) {
-				destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
-			}
-			
-			if(destinatarioSelected.isConsultarDetalleFactura()) {
-				destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
-				List<Detalle> lista = detalleServicio.getDetalleDao().getByIdCabecera(destinatarioSelected.getIdVenta());
-				for (Detalle d : lista) {
-					if(d.getProducto()!=null) {
-						Detalledestinatario dd = new Detalledestinatario();
-						dd.setIddetalledestinatario("M");
-						dd.setCodigointerno(d.getProducto().getCodigoprincipal());
-						dd.setCodigoadicional(d.getProducto().getIdproducto());
-						dd.setDescripcion(d.getDescripcion());
-						dd.setCantidad(d.getCantidad());
-						destinatarioSelected.getDetalledestinatarioList().add(dd);
-					}
-				}
-			}
-			destinatarioSelected.setConsultarDetalleFactura(false);
-			if(destinatarioSelected.getIddestinatario()==null) {
-				destinatarioSelected.setIddestinatario("M");
-				guiaRemisionSelected.getDestinatarioList().add(0,destinatarioSelected);
-			}
+			asignarDestinatario();
 			totalizarGuiaRemision();
 			AppJsfUtil.hideModal("dlgDestinatario");
 			
@@ -165,6 +144,51 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public String guardarDestinatarioByOtros() {
+		try {
+			
+			asignarDestinatario();
+			totalizarGuiaRemision();
+			AppJsfUtil.hideModal("dlgDestinatario");
+//			setCallModule("FACTURA");
+			return "/pages/guiarem/guiaRemForm.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	private void asignarDestinatario() throws DaoException {
+		
+		if(destinatarioSelected.getDetalledestinatarioList()==null) {
+			destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
+		}
+		
+		if(destinatarioSelected.isConsultarDetalleFactura()) {
+			destinatarioSelected.setDetalledestinatarioList(new ArrayList<>());
+			List<Detalle> lista = detalleServicio.getDetalleDao().getByIdCabecera(destinatarioSelected.getIdVenta());
+			for (Detalle d : lista) {
+				if(d.getProducto()!=null) {
+					Detalledestinatario dd = new Detalledestinatario();
+					dd.setIddetalledestinatario("M");
+					dd.setCodigointerno(d.getProducto().getCodigoprincipal());
+					dd.setCodigoadicional(d.getProducto().getIdproducto());
+					dd.setDescripcion(d.getDescripcion());
+					dd.setCantidad(d.getCantidad());
+					destinatarioSelected.getDetalledestinatarioList().add(dd);
+				}
+			}
+		}
+		destinatarioSelected.setConsultarDetalleFactura(false);
+		if(destinatarioSelected.getIddestinatario()==null) {
+			destinatarioSelected.setIddestinatario("M");
+			guiaRemisionSelected.getDestinatarioList().add(0,destinatarioSelected);
+		}
+		
 	}
 
 	@Override
@@ -410,6 +434,23 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmDetDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void nuevaGuiaRemisionByFactura(String idCabecera){
+		try {
+			
+			nuevaGuiaRemision();
+			// 1. agrega la factura
+			ResumenCabeceraQuery resumenCabeceraQuery = new ResumenCabeceraQuery();
+			resumenCabeceraQuery.setIdcabecera(idCabecera);
+			asignarFactura(resumenCabeceraQuery);
+			AppJsfUtil.showModalRender("dlgDestinatario", "frmDestinatario");
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDestinatario:intGrDestMotTraslado')");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

@@ -95,7 +95,6 @@
 		<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
-    	
     	<f:subview rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
     		
     		<p:breadCrumb>
@@ -107,11 +106,11 @@
 		</f:subview>
 		
 		<f:subview rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
-			
-			<p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-			<p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
-			<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
-			
+			<p:breadCrumb>
+				<p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+				<p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+				<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
+			</p:breadCrumb>
 		</f:subview>
 		
 		<h:form id="formMain">

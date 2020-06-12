@@ -28,7 +28,13 @@
 					
 					<p:commandButton id="cmdGuardarTransportista"
 						value="GUARDAR" icon="fa fa-check" 
-						action="#{guiaRemFormCtrl.guardarDestinatario()}" styleClass="MRight10" update="@form :formMain">
+						action="#{guiaRemFormCtrl.guardarDestinatario()}" styleClass="MRight10" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
+					</p:commandButton>
+					
+					<p:commandButton id="cmdGuardarTransportista2"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{guiaRemFormCtrl.guardarDestinatarioByOtros()}" styleClass="MRight10" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
+						<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 					</p:commandButton>
 						
 						
@@ -55,7 +61,7 @@
 				<p:panelGrid id="gridTransportistaDG0" columns="2"
 						styleClass="ui-panelgrid-blank Wid100"
 						columnClasses="ui-g-12 ui-md-6,
-									   ui-g-12 ui-md-6">
+									   ui-g-12 ui-md-6" rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
 						<h:panelGroup>
 							<h:outputText value="BUSCAR DESTINATARIO *" styleClass="campoRequerido DispBlock"/>
 							<div class="ui-inputgroup">
