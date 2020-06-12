@@ -152,7 +152,6 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			asignarDestinatario();
 			totalizarGuiaRemision();
 			AppJsfUtil.hideModal("dlgDestinatario");
-//			setCallModule("FACTURA");
 			return "/pages/guiarem/guiaRemForm.jsf?faces-redirect=true";
 			
 		} catch (Exception e) {
@@ -295,7 +294,6 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		}
 		
 		destinatarioSelected = new Destinatario();
-//		destinatarioSelected.setIddestinatario("M");		
 		destinatarioSelected.setCliente(c.getCliente());
 		destinatarioSelected.setIdentificaciondestinatario(c.getCliente().getIdentificacion());
 		destinatarioSelected.setRazonsocialdestinatario(c.getCliente().getRazonsocial());

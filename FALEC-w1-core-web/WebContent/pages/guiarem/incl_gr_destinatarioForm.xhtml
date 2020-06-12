@@ -34,7 +34,6 @@
 					<p:commandButton id="cmdGuardarTransportista2"
 						value="GUARDAR" icon="fa fa-check" 
 						action="#{guiaRemFormCtrl.guardarDestinatarioByOtros()}" styleClass="MRight10" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
-						<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 					</p:commandButton>
 						
 						
