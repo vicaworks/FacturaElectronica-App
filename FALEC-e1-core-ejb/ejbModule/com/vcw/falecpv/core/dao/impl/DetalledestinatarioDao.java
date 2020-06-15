@@ -44,5 +44,25 @@ public class DetalledestinatarioDao extends AppGenericDao<Detalledestinatario, S
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idDestinatario
+	 * @return
+	 * @throws DaoException
+	 */
+	public int eliminarByDestinatario(String idDestinatario)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createNativeQuery("DELETE FROM detalledestinatario WHERE iddestinatario=:id");
+			q.setParameter("id", idDestinatario);
+			
+			return q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 }

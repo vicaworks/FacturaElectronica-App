@@ -147,6 +147,11 @@ public class Cabecera implements Serializable {
     @Column(name = "numdocumento", nullable = true, length = 15)
     private String numdocumento;
     
+    @Basic(optional = true)
+    @Size(min = 1, max = 40)
+    @Column(name = "idguiaremision", nullable = true, length = 40)
+    private String idguiaremision;
+    
     @ManyToOne(optional = true)
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = true)
     private Cliente cliente;
@@ -991,6 +996,20 @@ public class Cabecera implements Serializable {
 	 */
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+
+	/**
+	 * @return the idguiaremision
+	 */
+	public String getIdguiaremision() {
+		return idguiaremision;
+	}
+
+	/**
+	 * @param idguiaremision the idguiaremision to set
+	 */
+	public void setIdguiaremision(String idguiaremision) {
+		this.idguiaremision = idguiaremision;
 	}
 
 }

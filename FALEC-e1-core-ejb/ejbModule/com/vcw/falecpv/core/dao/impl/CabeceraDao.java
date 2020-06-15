@@ -199,4 +199,27 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idFactura
+	 * @param idGuiaRemision
+	 * @return
+	 * @throws DaoException
+	 */
+	public int asignarRefGuiaRemicion(String idFactura,String idGuiaRemision)throws DaoException{
+		try {
+			
+			String sql = "UPDATE cabecera SET idguiaremision=:idGuiaRemision WHERE idcabecera=:idFactura";
+			Query q = getEntityManager().createNativeQuery(sql);
+			q.setParameter("idGuiaRemision", idGuiaRemision);
+			q.setParameter("idFactura", idFactura);
+			
+			return q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 }

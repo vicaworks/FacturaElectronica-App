@@ -59,7 +59,8 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 							"		c.totalsinimpuestos, " +
 							"		c.totalice, " +
 							"		c.totaliva, " +
-							"		c.totalconimpuestos " +
+							"		c.totalconimpuestos, " +
+							"		c.idguiaremision " +
 							"	from  " +
 							"		cabecera c inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
 							"		left join cliente cl on cl.idcliente = c.idcliente " + 

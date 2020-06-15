@@ -44,6 +44,7 @@ public class ResumenCabeceraQuery implements Serializable {
 	private BigDecimal totalice = BigDecimal.ZERO;
 	private BigDecimal totaliva = BigDecimal.ZERO;
 	private BigDecimal totalconimpuestos = BigDecimal.ZERO;
+	private String idguiaremision;
 	
 
 	/**
@@ -386,6 +387,20 @@ public class ResumenCabeceraQuery implements Serializable {
 	 */
 	public void setTotalconimpuestos(BigDecimal totalconimpuestos) {
 		this.totalconimpuestos = totalconimpuestos;
+	}
+
+	/**
+	 * @return the idguiaremision
+	 */
+	public String getIdguiaremision() {
+		return idguiaremision;
+	}
+
+	/**
+	 * @param idguiaremision the idguiaremision to set
+	 */
+	public void setIdguiaremision(String idguiaremision) {
+		this.idguiaremision = idguiaremision;
 	}
 
 }

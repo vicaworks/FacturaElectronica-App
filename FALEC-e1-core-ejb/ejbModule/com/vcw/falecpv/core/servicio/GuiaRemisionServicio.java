@@ -52,7 +52,7 @@ public class GuiaRemisionServicio extends DBUtilGenericoApp {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<Cabecera> getByDateCriteria(String idEstableciiento,Date desde,Date hasta,String criteria)throws DaoException{
+	public List<Cabecera> getByDateCriteria(String idEstableciiento,Date desde,Date hasta,String criteria,String estado)throws DaoException{
 		try {
 			
 			String sql = "select " +	
@@ -74,6 +74,10 @@ public class GuiaRemisionServicio extends DBUtilGenericoApp {
 //				
 //				sql += "		and (c.fechainiciotransporte between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' or c.fechafintransporte between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "') ";
 //			}
+			
+			if(estado!=null) {
+				sql += "    and c.estado " + (estado.equals("I")?"=":"<>") + "'ANULADO' ";
+			}
 			
 			if(criteria!=null && !criteria.trim().isEmpty()) {
 				

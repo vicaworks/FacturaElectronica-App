@@ -133,8 +133,6 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			
 			Establecimiento e = consultarByPk(idEStablecimiento);
 			
-//			String numDoc =  TextoUtil.leftPadTexto(e.getCodigoestablecimiento(), 3, "0");
-//			numDoc += "001";
 			int cantidadZero = 7;
 			String numDoc =  "";
 			
@@ -158,6 +156,10 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			case RETENCION:
 				e.setSecuencialretencion(e.getSecuencialretencion()+1);
 				numDoc += TextoUtil.leftPadTexto(e.getSecuencialretencion()+"", cantidadZero, "0");
+				break;
+			case GUIA_REMISION:
+				e.setSecuencialguiaremision(e.getSecuencialguiaremision()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialguiaremision()+"", cantidadZero, "0");
 				break;
 			default:
 				break;

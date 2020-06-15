@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.Query;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
@@ -16,10 +17,13 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
+import com.vcw.falecpv.core.constante.contadores.TCGuiaRemision;
 import com.vcw.falecpv.core.dao.impl.CabeceraDao;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalleimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
@@ -65,7 +69,11 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Inject
 	private AdquisicionServicio adquisicionServicio;
 	
+	@Inject
+	private DestinatarioServicio destinatarioServicio;
 	
+	@Inject
+	private DetalledestinatarioServicio detalledestinatarioServicio;
 	
 	public CabeceraServicio() {
 	}
@@ -212,7 +220,31 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 8. Si es retencion y tiene una compra actualiza los datos de la compra
+		// 8. destinatario guia remision
+		destinatarioServicio.getDestinatarioDao().eliminarByCabecera(cabecera.getIdcabecera());
+		if(cabecera.getDestinatarioList()!=null) {
+			for (Destinatario des : cabecera.getDestinatarioList()) {
+				if(des.getIddestinatario()==null || des.getIddestinatario().contains("M")) {
+					des.setIddestinatario(contadorPkServicio.generarContadorTabla(TCGuiaRemision.DESTINATARIO, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				des.setCabecera(cabecera);
+				destinatarioServicio.crear(des);
+				// almacenar detalle
+				for (Detalledestinatario dd : des.getDetalledestinatarioList()) {
+					if(dd.getIddetalledestinatario()==null || dd.getIddetalledestinatario().contains("M")) {
+						dd.setIddetalledestinatario(contadorPkServicio.generarContadorTabla(TCGuiaRemision.DETALLE_DESTINATARIO, cabecera.getEstablecimiento().getIdestablecimiento()));
+					}
+					dd.setDestinatario(des);
+					detalledestinatarioServicio.crear(dd);
+				}
+				// actualizar la guia remision a la factura relacionada
+				if(des.getIdVenta()!=null) {
+					cabeceraDao.asignarRefGuiaRemicion(des.getIdVenta(), cabecera.getIdcabecera());
+				}
+			}
+		}
+		
+		// 9. Si es retencion y tiene una compra actualiza los datos de la compra
 		if(cabecera.getAdquisicion()!=null && cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.RETENCION.getIdentificador())) {
 			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
 			adquisicion.setTotalretencion(cabecera.getTotalretencion());
@@ -221,7 +253,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			adquisicionServicio.actualizar(adquisicion);
 		}
 		
-		// 9. si es nota de credito y tiene referencia a la cabecera anular la factura 
+		// 10. si es nota de credito y tiene referencia a la cabecera anular la factura 
 		if(GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()).equals(GenTipoDocumentoEnum.NOTA_CREDITO) && cabecera.getIdcabecerapadre()!=null) {
 			Cabecera c= consultarByPk(cabecera.getIdcabecerapadre());
 			if(c!=null) {
@@ -510,16 +542,37 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @param idCabecera
 	 * @throws DaoException
 	 */
-	public void anularById(String idCabecera)throws DaoException{
+	public int anularById(String idCabecera)throws DaoException{
 		try {
 			
 			String sql = "UPDATE cabecera SET estado='" + ComprobanteEstadoEnum.ANULADO.toString() + "' WHERE idcabecera='" + idCabecera + "'";
-			execute(sql);
+			return execute(sql);
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
 		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	public int anularGuiaRemisionFacade(String idCabecera)throws DaoException{
+		try {
+			
+			Query q = getCabeceraDao().getEntityManager().createNativeQuery("UPDATE cabecera set idguiaremision=null WHERE idguiaremision=:idcabecera");
+			q.setParameter("idcabecera", idCabecera);
+			q.executeUpdate();
+			
+			return anularById(idCabecera);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

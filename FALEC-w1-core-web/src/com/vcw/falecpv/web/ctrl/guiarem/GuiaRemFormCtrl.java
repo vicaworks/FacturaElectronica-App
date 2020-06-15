@@ -4,6 +4,7 @@
 package com.vcw.falecpv.web.ctrl.guiarem;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,11 @@ import javax.inject.Named;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -30,10 +35,13 @@ import com.vcw.falecpv.core.modelo.persistencia.Transportista;
 import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -63,6 +71,12 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	
 	@EJB
 	private DetalleServicio detalleServicio;
+	
+	@EJB
+	private ContadorPkServicio contadorPkServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 	
 	private String callModule;
 	private Cabecera guiaRemisionSelected;
@@ -127,11 +141,84 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
+			// 1. validar si todos los datos son completos
+			if(validarErrores()) {
+				return;
+			}
+			
+			// 2. populate valores
+			populatefactura(GenTipoDocumentoEnum.GUIA_REMISION);
+			guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			guiaRemisionSelected.setUpdated(new Date());
+			guiaRemisionSelected = cabeceraServicio.guardarComprobanteFacade(guiaRemisionSelected);
+			
+			switch (callModule) {
+			case "GUIA_REMISION":
+				GuiaRemCtrl guiaRemCtrl = (GuiaRemCtrl) AppJsfUtil.getManagedBean("guiaRemCtrl");
+				guiaRemCtrl.consultar();
+				break;
+			case "FACTURA":
+				FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl) AppJsfUtil.getManagedBean("facEmitidaCtrl");
+				facEmitidaCtrl.consultar();
+				break;	
+			default:
+				break;
+			}
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	
+	private boolean validarErrores() {
+		
+		for (Destinatario d : guiaRemisionSelected.getDestinatarioList()) {
+			if(d.getDetalledestinatarioList()==null || d.getDetalledestinatarioList().isEmpty()) {
+				AppJsfUtil.addErrorMessage("", "ERROR", "DESTINATARIO : " + d.getRazonsocialdestinatario() +  " NO TIENE DETALLE.");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
+		
+		guiaRemisionSelected.setTipoemision("1");
+		guiaRemisionSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		
+		guiaRemisionSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		determinarPeriodoFiscal();
+		guiaRemisionSelected.setContribuyenteespecial("5368");
+		guiaRemisionSelected.setMoneda("DOLAR");
+		if(guiaRemisionSelected.getSecuencial()==null) {
+			guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
+			guiaRemisionSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
+					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			// clave de acceso
+			guiaRemisionSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(guiaRemisionSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOGUIAREMISION, guiaRemisionSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			guiaRemisionSelected.setNumdocumento(TextoUtil.leftPadTexto(guiaRemisionSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(guiaRemisionSelected.getSecuencial()));
+			guiaRemisionSelected.setNumfactura(guiaRemisionSelected.getNumdocumento());
+		}
+		
+		guiaRemisionSelected.setPropina(BigDecimal.ZERO);
+		guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		
+		
+		// infromacion adicional 
+		guiaRemisionSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(guiaRemisionSelected));
+		
+	}
+	
+	private void determinarPeriodoFiscal() {
+		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
+		guiaRemisionSelected.setPeriodofiscal(sf.format(guiaRemisionSelected.getFechainiciotransporte()));
+	}
+	
 	
 	public void guardarDestinatario() {
 		try {

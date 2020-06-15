@@ -52,7 +52,6 @@ public class GuiaRemCtrl extends BaseCtrl {
 	private Cabecera guiaRemisionSelected;
 	private GuiaRemFormCtrl guiaRemFormCtrl;
 	
-	
 	/**
 	 * 
 	 */
@@ -75,7 +74,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 	public void consultar()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:guiaRemDT");
 		guiaRemisionList = null;
-		guiaRemisionList = guiaRemisionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda);
+		guiaRemisionList = guiaRemisionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 	}
 
 	@Override
@@ -98,9 +97,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 				return;
 			}
 			
-			cabeceraServicio.anularById(guiaRemisionSelected.getIdcabecera());
+			cabeceraServicio.anularGuiaRemisionFacade(guiaRemisionSelected.getIdcabecera());
 			consultar();
 			guiaRemisionSelected = null;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -205,8 +205,5 @@ public class GuiaRemCtrl extends BaseCtrl {
 	public void setGuiaRemFormCtrl(GuiaRemFormCtrl guiaRemFormCtrl) {
 		this.guiaRemFormCtrl = guiaRemFormCtrl;
 	}
-	
-	
-	
 
 }

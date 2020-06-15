@@ -19,7 +19,8 @@ public abstract class BaseCtrl implements Serializable {
 	private static final long serialVersionUID = -6523368854199739151L;
 	
 	protected MessageWebUtil msg = new MessageWebUtil();
-
+	protected String estado;
+	
 	/**
 	 * 
 	 */
@@ -46,6 +47,20 @@ public abstract class BaseCtrl implements Serializable {
 	}
 	
 	public void nuevo() {
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public String getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 	

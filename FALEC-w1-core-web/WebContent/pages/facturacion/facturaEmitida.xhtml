@@ -187,6 +187,10 @@
 							<p:menuitem value="#{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 							</p:menuitem>
+							
+							<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#" icon="fa fa-eye" disabled="#{v.estado=='ANULADO' or v.idguiaremision==null}">
+							</p:menuitem>
+							
 							<p:menuitem value="Anular" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-trash-o" update="@form" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -226,11 +230,14 @@
 						</h:outputText>
 					</p:column>
 					
-					<!-- <p:column headerText="CANT" style="width:15px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.cantidad}" >
-							<f:convertNumber pattern="#,##0"/>
-						</h:outputText>
-					</p:column> -->
+					<p:column headerText="GU.REM" style="width:10px;" styleClass="TexAlCenter">
+						<f:subview rendered="#{v.idguiaremision!=null}">
+							<i class="fa fa-check Fs14" style="color:green;"/>
+						</f:subview>
+						<f:subview rendered="#{v.idguiaremision==null}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
 					
 					<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.subtotal}" >

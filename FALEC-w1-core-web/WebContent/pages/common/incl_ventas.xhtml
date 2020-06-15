@@ -118,6 +118,15 @@
 						</h:outputText>
 	                </p:column>
 	                
+	                <p:column headerText="GREM" style="width:15px;" styleClass="TexAlCenter">
+	                	<f:subview rendered="#{v.idguiaremision!=null}">
+							<i class="fa fa-check Fs20" style="color:green;"/>
+						</f:subview>
+						<f:subview rendered="#{v.idguiaremision==null}">
+							<i class="fa fa-minus Fs20" style="color:#ccc;"/>
+						</f:subview>
+	                </p:column>
+	                
 	                <p:column headerText="SUBTOTAL" style="width:40px;">
 	                	<h:outputText value="#{v.totalsinimpuestos}">
 	                		<f:convertNumber pattern="$#,##0.00"/>

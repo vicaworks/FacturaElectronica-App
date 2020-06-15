@@ -202,14 +202,14 @@
 	background-color: red !important;
 	padding: 0.2em 0.5em !important;
 	border-radius: 3px;
-	font-weight: bold;
+	font-weight: 500;
 }
 .markGreen{
 	color: #fff !important;
 	background-color: green !important;
 	padding: 0.2em 0.5em !important;
 	border-radius: 3px;
-	font-weight: bold;
+	font-weight: 500;
 }
 
 .markOrange{
@@ -217,7 +217,7 @@
 	background-color: orange !important;
 	padding: 0.2em 0.5em !important;
 	border-radius: 3px;
-	font-weight: bold;
+	font-weight: 500;
 }
 
 .markBlack{
@@ -225,7 +225,15 @@
 	background-color: black !important;
 	padding: 0.2em 0.5em !important;
 	border-radius: 3px;
-	font-weight: bold;
+	font-weight: 500;
+}
+
+.markGray{
+	color: #fff !important;
+	background-color: #595959 !important;
+	padding: 0.2em 0.5em !important;
+	border-radius: 3px;
+	font-weight: 500;
 }
 
 

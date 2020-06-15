@@ -26,6 +26,13 @@ public class DestinatarioDao extends AppGenericDao<Destinatario, String> {
 		super(Destinatario.class);
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idsList
+	 * @return
+	 * @throws DaoException
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Destinatario> getIdDestinatarioByCabeceraIdList(List<String> idsList)throws DaoException{
 		try {
@@ -34,6 +41,31 @@ public class DestinatarioDao extends AppGenericDao<Destinatario, String> {
 			q.setParameter("idsList", idsList);
 			
 			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	public int eliminarByCabecera(String idCabecera)throws DaoException{
+		try {
+			
+			// encera las referencias a esta guia de remision
+			Query q = getEntityManager().createNativeQuery("UPDATE cabecera set idguiaremision=null WHERE idguiaremision=:idcabecera");
+			q.setParameter("idcabecera", idCabecera);
+			q.executeUpdate();
+			
+			q = getEntityManager().createNativeQuery("DELETE FROM destinatario WHERE idcabecera=:id");
+			q.setParameter("id", idCabecera);
+			
+			return q.executeUpdate();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
