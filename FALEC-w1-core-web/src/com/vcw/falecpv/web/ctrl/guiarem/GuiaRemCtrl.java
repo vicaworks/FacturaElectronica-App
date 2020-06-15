@@ -3,6 +3,9 @@
  */
 package com.vcw.falecpv.web.ctrl.guiarem;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -11,16 +14,28 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.model.StreamedContent;
+
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
+import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.GuiaRemisionServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
  * @author cristianvillarreal
@@ -121,6 +136,173 @@ public class GuiaRemCtrl extends BaseCtrl {
 		}
 		return null;
 	}
+	
+	public StreamedContent getFileGR() {
+		try {
+			
+			if(guiaRemisionList==null || guiaRemisionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-GuiaRemision.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			
+			//datos de la cabecera
+			Row row = sheet.getRow(3);
+			Cell cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			row = sheet.getRow(4);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(desde));
+			
+			row = sheet.getRow(5);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			row = sheet.getRow(6);
+			cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			
+			int fila = 10;
+			int filaDestinatario = 10;
+			int filaDt = 10;
+			
+			for (Cabecera gr : guiaRemisionList) {
+				
+				row = sheet.createRow(fila);
+				int col = 0;
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(gr.getNumdocumento());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(gr.getEstado());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(gr.getTransportista().getIdentificacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(gr.getTransportista().getRazonsocial());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(gr.getDireccionpartida());
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(gr.getFechainiciotransporte()));
+				
+				cell = row.createCell(col++);
+				cell.setCellValue(FechaUtil.formatoFecha(gr.getFechafintransporte()));
+				
+				filaDestinatario = (fila+1);
+				
+				for (Destinatario	de : gr.getDestinatarioList()) {
+					
+					col = 7;
+					
+					row = sheet.getRow(filaDestinatario);
+					if(row==null) {
+						row = sheet.createRow(filaDestinatario);
+					}
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getIdentificaciondestinatario());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getRazonsocialdestinatario());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getDirdestinatario());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getMotivotraslado());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getCodestabdestino());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getTipocomprobante()!=null?de.getTipocomprobante().getComprobante():"-");
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getNumdocsustento());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(FechaUtil.formatoFecha(gr.getFechaemision()));
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getRuta());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(de.getDocaduanerounico());
+					
+					filaDt =  filaDestinatario;
+					for (Detalledestinatario dt : de.getDetalledestinatarioList()) {
+						
+						col = 17;
+						
+						row = sheet.getRow(filaDt);
+						if(row==null) {
+							row = sheet.createRow(filaDt);
+						}
+						
+						cell = row.createCell(col++);
+						cell.setCellValue(dt.getCodigointerno());
+						
+						cell = row.createCell(col++);
+						cell.setCellValue(dt.getCodigoadicional());
+						
+						cell = row.createCell(col++);
+						cell.setCellValue(dt.getDescripcion());
+						
+						cell = row.createCell(col++);
+						cell.setCellValue(dt.getCantidad().doubleValue());
+						
+						filaDt++;
+						
+					}
+					
+					filaDestinatario = filaDt;
+					
+				}
+				
+				if(filaDt>filaDestinatario) {
+					fila = filaDt;
+				}else {
+					fila = filaDestinatario;
+				}
+				
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-GuiaRemision_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+		return null;
+	}
+	
 
 	/**
 	 * @return the desde
