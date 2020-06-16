@@ -73,7 +73,19 @@
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
+	    						<h:outputText value="ESTADO * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+		    					<p:selectOneMenu  value="#{retencionMainCtrl.estado}" 
+												 styleClass="Wid100" 
+												 required="false" requiredMessage="REQUERIDO">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
+									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
+									<f:selectItem itemLabel="ANULADO" itemValue="I" />
+								</p:selectOneMenu>
+							</div>
+	    					
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- desde -->
 	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -85,7 +97,7 @@
 								<p:message for="claretencionFechaDesde" style="padding:0em;"/>
 	    						
 	    					</div>
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- hasts  -->
 	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -187,7 +199,7 @@
 								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Eliminar #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form">
+							<p:menuitem value="Anular #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form">
 								<f:setPropertyActionListener value="#{r}" target="#{retencionMainCtrl.retencionSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>

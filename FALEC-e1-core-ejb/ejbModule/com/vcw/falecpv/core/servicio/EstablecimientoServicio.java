@@ -146,7 +146,7 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 				numDoc += TextoUtil.leftPadTexto(e.getSecuencialrecibo()+"", cantidadZero, "0");
 				break;
 			case NOTA_CREDITO:
-				e.setSecuencialNotaCredito(e.getSecuencialrecibo()+1);
+				e.setSecuencialNotaCredito(e.getSecuencialNotaCredito()+1);
 				numDoc += TextoUtil.leftPadTexto(e.getSecuencialNotaCredito()+"", cantidadZero, "0");
 				break;
 			case NOTA_DEBITO:

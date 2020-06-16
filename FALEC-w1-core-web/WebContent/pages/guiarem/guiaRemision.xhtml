@@ -272,9 +272,17 @@
 									<h:outputText value="#{det.ruta}" styleClass="FontBold"/>
 								</div>
 								
-								<div class="p-col-12">
+								<div class="p-col-6">
 									<h:outputText value="DETALLE :" styleClass="cpoRequerido Fs10"/>
 									<h:outputText value="#{det.detalledestinatarioList.size()}" styleClass="markBlack"/>
+								</div>
+								
+								<div class="p-col-12 p-md-6" style="text-align:center;">
+									<p:commandButton value="VER DETALLE" styleClass="Wid100 secondary-button Fs10" icon="fa fa-list" oncomplete="PF('dlgResGuiaRemision').show();" update="@form :frmDetGR">
+										<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+										<f:setPropertyActionListener value="#{det}" target="#{guiaRemCtrl.destinatarioSelected}"/>
+										<f:setPropertyActionListener value="#{det.detalledestinatarioList}" target="#{guiaRemCtrl.detalledestinatarioList}"/>
+									</p:commandButton>
 								</div>
 								
 								<f:subview rendered="#{r.destinatarioList.size()>1}">
@@ -293,6 +301,8 @@
 	    
 	    
 	    </h:form>
+        
+        <ui:include src="incl_gr_det_view.xhtml" />
         
     </ui:define>
 

@@ -94,7 +94,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 	public void consultarAdquisiciones()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:adquisicionDT");
 		adquisicionList = null;
-		adquisicionList = adquisicionServicio.getAdquisicionDao().getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda);
+		adquisicionList = adquisicionServicio.getAdquisicionDao().getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 	}
 	
 	@Override

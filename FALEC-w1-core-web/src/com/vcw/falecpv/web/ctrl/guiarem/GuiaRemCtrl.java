@@ -65,6 +65,8 @@ public class GuiaRemCtrl extends BaseCtrl {
 	private String criterioBusqueda;
 	private List<Cabecera> guiaRemisionList;
 	private Cabecera guiaRemisionSelected;
+	private Destinatario destinatarioSelected;
+	private List<Detalledestinatario> detalledestinatarioList;
 	private GuiaRemFormCtrl guiaRemFormCtrl;
 	
 	/**
@@ -386,6 +388,34 @@ public class GuiaRemCtrl extends BaseCtrl {
 	 */
 	public void setGuiaRemFormCtrl(GuiaRemFormCtrl guiaRemFormCtrl) {
 		this.guiaRemFormCtrl = guiaRemFormCtrl;
+	}
+
+	/**
+	 * @return the detalledestinatarioList
+	 */
+	public List<Detalledestinatario> getDetalledestinatarioList() {
+		return detalledestinatarioList;
+	}
+
+	/**
+	 * @param detalledestinatarioList the detalledestinatarioList to set
+	 */
+	public void setDetalledestinatarioList(List<Detalledestinatario> detalledestinatarioList) {
+		this.detalledestinatarioList = detalledestinatarioList;
+	}
+
+	/**
+	 * @return the destinatarioSelected
+	 */
+	public Destinatario getDestinatarioSelected() {
+		return destinatarioSelected;
+	}
+
+	/**
+	 * @param destinatarioSelected the destinatarioSelected to set
+	 */
+	public void setDestinatarioSelected(Destinatario destinatarioSelected) {
+		this.destinatarioSelected = destinatarioSelected;
 	}
 
 }

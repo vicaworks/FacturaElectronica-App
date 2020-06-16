@@ -41,14 +41,20 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Cabecera> getByRetencionCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento)throws DaoException{
+	public List<Cabecera> getByRetencionCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento,String estado)throws DaoException{
 		
 		try {
 			
 			Query q = null;
 			
 			if(criteria==null || criteria.trim().isEmpty()) {
-				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+				
+				if(estado!=null) {
+					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.estado"  +  (estado.equals("I")?"=":"<>") +  "'ANULADO' AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+				}else {
+					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE  c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+				}
+				
 				q.setParameter("desde", desde);
 				q.setParameter("hasta", hasta);
 			}else {
@@ -87,14 +93,19 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Cabecera> getByNotaCreditoCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento)throws DaoException{
+	public List<Cabecera> getByNotaCreditoCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento,String estado)throws DaoException{
 		
 		try {
 			
 			Query q = null;
 			
 			if(criteria==null || criteria.trim().isEmpty()) {
-				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+				
+				if(estado!=null) {
+					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.estado" + (estado.equals("I")?"=":"<>") + "'ANULADO' AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+				}else {
+					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+				}
 				q.setParameter("desde", desde);
 				q.setParameter("hasta", hasta);
 			}else {
@@ -107,7 +118,7 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 						+ " ORDER BY c.fechaemision ASC,c.idcabecera DESC");
 				q.setParameter("rucCliente", criteria.concat("%"));
 				q.setParameter("nombrecliente", "%".concat(criteria.toUpperCase()).concat("%"));
-				q.setParameter("razonsocial", "%".concat(criteria.toUpperCase()).concat("%"));
+//				q.setParameter("razonsocial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("numfactura", "%".concat(criteria).concat("%"));
 				q.setParameter("numdocumento", "%".concat(criteria).concat("%"));
 			}

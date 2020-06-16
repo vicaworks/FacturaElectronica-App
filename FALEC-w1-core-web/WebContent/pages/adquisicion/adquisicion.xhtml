@@ -58,8 +58,8 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Adquisiciones" url="#" />
-		    <p:menuitem value="Lista Adquisiciones" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf"/>
+		    <p:menuitem value="Compras" url="#" />
+		    <p:menuitem value="Lista Compras" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf"/>
 		</p:breadCrumb>
 		
 		
@@ -75,7 +75,19 @@
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
+	    						<h:outputText value="ESTADO * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+		    					<p:selectOneMenu  value="#{adquisicionMainCtrl.estado}" 
+												 styleClass="Wid100" 
+												 required="false" requiredMessage="REQUERIDO">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
+									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
+									<f:selectItem itemLabel="ANULADO" itemValue="I" />
+								</p:selectOneMenu>
+							</div>
+	    					
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- desde -->
 	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -87,7 +99,8 @@
 								<p:message for="claKardexFechaHasta" style="padding:0em;"/>
 	    						
 	    					</div>
-	    					<div class="p-col-12 p-md-6">
+	    					
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- hasts  -->
 	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -174,16 +187,16 @@
 						<p:menu overlay="true" trigger="cmlDtCompra" my="left top" at="left bottom">
 							<p:menuitem value="Editar Compra" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" >
 							</p:menuitem>
-							<p:menuitem value="Eliminar Compra" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" >
+							<p:menuitem value="Anular Compra" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" >
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 						</p:menu>
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:20px;">
+					<!-- <p:column headerText="ID" style="width:20px;">
 						<h:outputText value="#{a.idadquisicion}" />
-					</p:column>
+					</p:column> -->
 					
 					<p:column headerText="FECHA" style="width:40px;">
 						<h:outputText value="#{a.fecha}" >
@@ -200,7 +213,7 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column style="width:100px;" filterBy="#{a.proveedor.nombrecomercial}" filterMatchMode="contains">
+					<p:column style="width:120px;" filterBy="#{a.proveedor.nombrecomercial}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="PROVEEDOR" />
 							<h:outputText value=" [Filtro]" styleClass="Fs10" style="color:gray;" />

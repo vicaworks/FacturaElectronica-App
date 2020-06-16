@@ -95,7 +95,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 		try {
 			consultarUsuario();
 			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -15);
+			desde = FechaUtil.agregarDias(hasta, -30);
 			consultar();
 			totalizar();
 		} catch (Exception e) {

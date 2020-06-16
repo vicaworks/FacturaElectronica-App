@@ -17,6 +17,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.NotaCreditoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -39,6 +40,9 @@ public class CompNcCtrl extends BaseCtrl {
 	
 	@EJB
 	private CabeceraServicio cabeceraServicio;
+	
+	@EJB
+	private NotaCreditoServicio notaCreditoServicio;
 	
 	
 	private Date desde;
@@ -68,7 +72,7 @@ public class CompNcCtrl extends BaseCtrl {
 	
 	public void consultar()throws DaoException{
 		notaCreditoList = null;
-		notaCreditoList = cabeceraServicio.getCabeceraDao().getByNotaCreditoCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		notaCreditoList = cabeceraServicio.getCabeceraDao().getByNotaCreditoCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),estado);
 	}
 	
 	@Override
@@ -84,6 +88,18 @@ public class CompNcCtrl extends BaseCtrl {
 	@Override
 	public void eliminar() {
 		try {
+			
+			
+			String analizar = notaCreditoServicio.analizarEstado(notaCreditoSelected.getIdcabecera(), notaCreditoSelected.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			
+			if(analizar!=null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", analizar);
+				return;
+			}
+			
+			cabeceraServicio.anularById(notaCreditoSelected.getIdcabecera());
+			consultar();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

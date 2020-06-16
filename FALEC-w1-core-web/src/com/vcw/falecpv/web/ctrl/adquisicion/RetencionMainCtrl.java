@@ -89,7 +89,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void consultarRetenciones()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:retencionDT");
 		retencionList = null;
-		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),estado);
 	}
 	
 	@Override
@@ -395,6 +395,5 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void setRetencionSelected(Cabecera retencionSelected) {
 		this.retencionSelected = retencionSelected;
 	}
-	
 
 }

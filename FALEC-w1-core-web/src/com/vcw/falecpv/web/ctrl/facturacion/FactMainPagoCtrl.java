@@ -503,10 +503,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			}
 			
 			
-			if(cabecerSelected.getTotaliva().doubleValue()>0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "EL RECIBO NO PUEDE TENER VALOR DE IMPUESTOS  > 0.");
-				return;
-			}
+//			if(cabecerSelected.getTotaliva().doubleValue()>0) {
+//				AppJsfUtil.addErrorMessage("formMain", "ERROR", "EL RECIBO NO PUEDE TENER VALOR DE IMPUESTOS  > 0.");
+//				return;
+//			}
 			
 			// validar estado
 			if(cabecerSelected.getIdcabecera()!=null) {
