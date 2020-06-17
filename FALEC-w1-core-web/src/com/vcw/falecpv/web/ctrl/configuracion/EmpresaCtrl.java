@@ -5,7 +5,6 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -47,7 +46,6 @@ public class EmpresaCtrl extends BaseCtrl {
 	@EJB
 	private UsuarioServicio usuarioServicio;
 	
-	private List<Empresa> empresaList;
 	private Empresa empresa;
 	private Empresa empresaSelected;
 	private boolean bandera;
@@ -79,7 +77,7 @@ public class EmpresaCtrl extends BaseCtrl {
 	@Override
 	public void refrescar() {
 		try {
-			empresaList = null;
+			empresa = null;
 			consultarEmpresa();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,17 +86,13 @@ public class EmpresaCtrl extends BaseCtrl {
 	}
 	
 	private void consultarEmpresa() throws DaoException {
-		empresaList = empresaServicio.getEmpresaDao().getEmpresaActual();
-//		empresaList.clear(); // simular que no hay empresas en BDD
-		if(!empresaList.isEmpty()) {
-			bandera = true;
-			empresa = empresaList.get(0);
-		}
+		empresa = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		bandera = empresa!=null;
 	}
 	
 	public void editar() {
 		try {
-			empresaSelected = empresaServicio.getEmpresaDao().getEmpresaActual().get(0);
+			empresaSelected = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 			AppJsfUtil.showModalRender("dlgEmpresa", "frmEmpresa");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -152,14 +146,6 @@ public class EmpresaCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
-	}
-	
-	public List<Empresa> getEmpresaList() {
-		return empresaList;
-	}
-
-	public void setEmpresaList(List<Empresa> empresaList) {
-		this.empresaList = empresaList;
 	}
 	
 	public Empresa getEmpresa() {

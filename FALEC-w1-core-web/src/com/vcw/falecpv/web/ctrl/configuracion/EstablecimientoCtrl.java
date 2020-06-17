@@ -35,7 +35,6 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
-import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
@@ -170,7 +169,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			// Validar el codigo establecimiento
 			if (establecimientoServicio.getEstablecimientoDao().existeCodEstablecimiento(
 					establecimientoSelected.getIdestablecimiento(),
-					establecimientoSelected.getCodigoestablecimiento())) {
+					establecimientoSelected.getCodigoestablecimiento(),establecimientoSelected.getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmEstable", "ERROR", "CODIGO DUPLICADO");
 				return;
 			}
@@ -180,7 +179,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				if (matriz.equals(establecimientoSelected.getMatriz())) {
 					// consulto el id de la matriz
 					establecimientoUpdate = establecimientoServicio.getEstablecimientoDao()
-							.getEstablecimientobyMatriz(matriz).get(0);
+							.getEstablecimientobyMatriz(matriz,establecimientoSelected.getEmpresa().getIdempresa()).get(0);
 					// actualizo el campo matriz del actual
 					establecimientoUpdate.setMatriz("N");
 					// actualiza establecimiento existente
@@ -201,7 +200,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				} else {
 					// consulto el id de la matriz
 					establecimientoUpdate = establecimientoServicio.getEstablecimientoDao()
-							.getEstablecimientobyMatriz(matriz).get(0);
+							.getEstablecimientobyMatriz(matriz,establecimientoSelected.getEmpresa().getIdempresa()).get(0);
 					// inserto normal
 					establecimientoSelected.setUpdated(new Date());
 					establecimientoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
@@ -259,7 +258,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	 */
 	private void consultarEstablecimiento() throws DaoException {
 		establecimientoAllList= new ArrayList<>();
-		establecimientoAllList  = establecimientoServicio.getEstablecimientoDao().getByEstado(EstadoRegistroEnum.ACTIVO);
+		establecimientoAllList  = establecimientoServicio.getEstablecimientoDao().getByEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	/**
@@ -397,7 +396,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getNombrecomercial());
 			
 			// lista de Establecimientos
 			int fila = 8;
@@ -456,7 +455,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-listaestablecimiento.xls");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-listaestablecimiento" + AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

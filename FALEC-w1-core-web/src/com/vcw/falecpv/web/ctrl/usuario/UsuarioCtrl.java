@@ -99,12 +99,12 @@ public class UsuarioCtrl extends BaseCtrl {
 
 	private void consultarUsuario() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:usuariosDT");
-		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda));
+		usuarioList = usuarioServicio.getUsuarioDao().getByEmpresaEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	private void consultarEstablecimientos() throws DaoException {
 		establecimientoList = null;
-		establecimientoList = establecimientoServicio.getEstablecimientoDao().getByEstado(EstadoRegistroEnum.ACTIVO);
+		establecimientoList = establecimientoServicio.getEstablecimientoDao().getByEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 
 	@Override
@@ -172,6 +172,7 @@ public class UsuarioCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			usuarioSelected = new Usuario();
+			usuarioSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 			usuarioSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 			usuarioSelected.setAdministrador("N");
 			usuarioSelected.setActualizarCredenciales(true);
@@ -234,7 +235,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getNombrecomercial());
 			
 			// lista de usuarios
 			int fila = 8;
