@@ -139,6 +139,7 @@
 						<p:menu overlay="true" trigger="cmlDtIce" my="left top" at="left bottom">
 							
 							<p:menuitem value="Editar" action="#{iceCtrl.editar()}" icon="fa fa-edit">
+								<f:setPropertyActionListener value="#{ice}" target="#{iceCtrl.iceSelected}"/>
 							</p:menuitem>
 							
 							<p:menuitem value="Eliminar" action="#{iceCtrl.eliminar()}" update="@form" icon="fa fa-trash-o" >
@@ -173,9 +174,9 @@
 						 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
+		         <!-- <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
 		             <h:outputText value="#{ice.tarifaadvalorem}" />
-		        </p:column>
+		        </p:column> -->
 		        
 		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;" >
 		            <h:outputText value="#{ice.tarifaespecifica}" />

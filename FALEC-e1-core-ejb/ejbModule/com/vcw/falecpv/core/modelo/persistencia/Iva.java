@@ -45,11 +45,12 @@ public class Iva implements Serializable {
 	@Size(min = 1, max = 1)
 	@Column(name = "codigo", nullable = false, length = 1)
 	private String codigo;
-	@Basic(optional = false)
-	@NotNull
+	
+	@Basic(optional = true)
 	@Size(min = 1, max = 10)
 	@Column(name = "codigoiva", nullable = true, length = 10)
 	private String codigoIva;
+	
 	@Basic(optional = false)
 	@NotNull
 	@Size(min = 1, max = 32)

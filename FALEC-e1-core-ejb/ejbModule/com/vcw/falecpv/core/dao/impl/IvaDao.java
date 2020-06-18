@@ -102,20 +102,21 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeCodigo(String codigo, String idiva)throws DaoException{
+	public boolean existeCodigo(String codigo, String idiva,String idEmpresa)throws DaoException{
 		try {
 			
 			Query q = null;
 			
 			if(idiva!=null) {
-				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.codigo=:codigo AND i.idiva<>:idiva");
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.empresa.idempresa=:id and i.codigo=:codigo AND i.idiva<>:idiva");
 				q.setParameter("codigo", codigo);
 				q.setParameter("idiva", idiva);
 				
 			}else {
-				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.codigo=:codigo ");
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.empresa.idempresa=:id and i.codigo=:codigo ");
 				q.setParameter("codigo", codigo);
 			}
+			q.setParameter("id", idEmpresa);
 		
 			if(q.getResultList().size()>0) {
 				return true;
@@ -135,19 +136,20 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeValor(BigDecimal valor, String idiva)throws DaoException{
+	public boolean existeValor(BigDecimal valor, String idiva,String idEmpresa)throws DaoException{
 		try {
 
 			Query q = null;
 
 			if (idiva != null) {
-				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.valor=:valor AND i.idiva<>:idiva");
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.empresa.idempresa=:id and i.valor=:valor AND i.idiva<>:idiva");
 				q.setParameter("valor", valor);
 				q.setParameter("idiva", idiva);
 			} else {
-				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.valor=:valor ");
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.empresa.idempresa=:id and i.valor=:valor ");
 				q.setParameter("valor", valor);
 			}
+			q.setParameter("id", idEmpresa);
 			if (q.getResultList().size() > 0) {
 				return true;
 			}

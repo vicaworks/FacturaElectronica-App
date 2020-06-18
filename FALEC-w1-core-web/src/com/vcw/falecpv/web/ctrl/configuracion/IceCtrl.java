@@ -116,8 +116,11 @@ public class IceCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
+			
+			iceSelected.setTarifaadvalorem(iceSelected.getDescripcion());
+			
 			//validar unico codigo ice
-			if (iceServicio.getIceDao().existeCodigo(iceSelected.getCodigo(), iceSelected.getIdice())) {
+			if (iceServicio.getIceDao().existeCodigo(iceSelected.getCodigo(), iceSelected.getIdice(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmIce", "ERROR", "CODIGO DUPLICADO");
 				iceAllList = null;
 				consultarIce();
@@ -209,7 +212,7 @@ public class IceCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getNombrecomercial());
 			
 			// lista de IVA
 			int fila = 9;
@@ -264,7 +267,7 @@ public class IceCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-iceList.xls");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-iceList" +  AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -509,7 +512,7 @@ public class IceCtrl extends BaseCtrl {
 			
 			if(ice.getCodigo()!=null) {
 				
-				if(iceServicio.getIceDao().existeCodigo(ice.getCodigo(), ice.getIdice())) {
+				if(iceServicio.getIceDao().existeCodigo(ice.getCodigo(), ice.getIdice(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 					ice.setError(true);
 					ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO CODIGO  YA EXISTE"):"CAMPO CODIGO  YA EXISTE");
 				}

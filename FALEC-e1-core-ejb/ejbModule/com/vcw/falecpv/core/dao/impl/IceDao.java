@@ -92,21 +92,23 @@ public class IceDao extends AppGenericDao<Ice, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeCodigo(String codigo, String idice)throws DaoException{
+	public boolean existeCodigo(String codigo, String idice,String idEmpresa)throws DaoException{
 		try {
 			
 			Query q = null;
 			
 			if(idice!=null) {
-				q = getEntityManager().createQuery("SELECT i FROM Ice i  WHERE i.codigo=:codigo AND i.idice<>:idice");
+				q = getEntityManager().createQuery("SELECT i FROM Ice i  WHERE i.empresa.idempresa=:id and i.codigo=:codigo AND i.idice<>:idice");
 				q.setParameter("codigo", codigo);
 				q.setParameter("idice", idice);
 				
 			}else {
-				q = getEntityManager().createQuery("SELECT i FROM Ice i  WHERE i.codigo=:codigo ");
+				q = getEntityManager().createQuery("SELECT i FROM Ice i  WHERE i.empresa.idempresa=:id and i.codigo=:codigo ");
 				q.setParameter("codigo", codigo);
 			}
-		
+			
+			q.setParameter("id", idEmpresa); 
+			
 			if(q.getResultList().size()>0) {
 				return true;
 				}
