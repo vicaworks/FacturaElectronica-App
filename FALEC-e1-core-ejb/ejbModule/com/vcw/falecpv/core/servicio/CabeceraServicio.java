@@ -157,7 +157,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
 					
 					switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
-					case FACTURA:
+					case FACTURA: case RECIBO:
 						salidaKardex(d);
 						break;
 					case NOTA_CREDITO:

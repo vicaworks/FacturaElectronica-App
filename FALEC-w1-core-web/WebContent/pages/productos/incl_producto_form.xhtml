@@ -72,7 +72,7 @@
 					<div class="p-col-12 p-md-6">
 					
 						<p:commandButton id="cmdBuscarProductoForm"
-							value="BUSCAR" icon="fa fa-search" 
+							icon="fa fa-search" 
 							action="#{productoCtrl.editarProductoForm()}" styleClass="secondary-button MRight10" process="@this :frmProducto:somFrmListaProducto" update="@form"/>
 					
 						<p:commandButton id="cmdGuardarProductoForm"
@@ -80,6 +80,10 @@
 							action="#{productoCtrl.guardar()}" styleClass="MRight10" update="@form #{productoCtrl.viewUpdate}"
 							/>
 							
+						<p:commandButton id="cmdNuevoProductoForm"
+							value="NUEVO" icon="fa fa-check" 
+							action="#{productoCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
+								
 						<p:commandButton id="cmdCerrarProductoForm"
 							value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
 							onclick="PF('dlgProducto').hide()" immediate="true"  

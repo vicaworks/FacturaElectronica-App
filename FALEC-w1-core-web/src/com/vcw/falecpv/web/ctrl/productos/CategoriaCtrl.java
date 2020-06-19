@@ -182,15 +182,28 @@ public class CategoriaCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			
-			categoriaSelected = new Categoria();
-			categoriaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-			categoriaSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+			nuevoCategoria();
 			AppJsfUtil.showModalRender("dlgCategoria", "frmCategoria");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	private void nuevoCategoria() {
+		categoriaSelected = new Categoria();
+		categoriaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+		categoriaSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+	}
+	
+	public void nuevoForm() {
+		try {
+			nuevoCategoria();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}	
 	}
 	
 	public StreamedContent getFileCategoria() {

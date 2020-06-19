@@ -377,7 +377,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setMoneda("DOLAR");
 		if(retencionSeleccion.getSecuencial()==null) {
 			retencionSeleccion.setSecuencial(contadorPkServicio.generarNumeroDocumento(GenTipoDocumentoEnum.RETENCION,
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 			// clave de acceso
 			retencionSeleccion.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(retencionSeleccion, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIORETENCION, retencionSeleccion.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			retencionSeleccion.setNumdocumento(TextoUtil.leftPadTexto(retencionSeleccion.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(retencionSeleccion.getSecuencial()));

@@ -29,7 +29,10 @@
 						value="GUARDAR" icon="fa fa-check" 
 						action="#{fabricanteCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
 						/>
-						
+					<p:commandButton id="cmdnuevo"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{fabricanteCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"
+						/>	
 					<p:commandButton id="cmdCerrar"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
 						onclick="PF('dlgFabricante').hide()" immediate="true"  

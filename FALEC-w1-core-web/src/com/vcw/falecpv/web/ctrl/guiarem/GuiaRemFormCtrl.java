@@ -198,7 +198,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		if(guiaRemisionSelected.getSecuencial()==null) {
 			guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
 			guiaRemisionSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 			// clave de acceso
 			guiaRemisionSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(guiaRemisionSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOGUIAREMISION, guiaRemisionSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			guiaRemisionSelected.setNumdocumento(TextoUtil.leftPadTexto(guiaRemisionSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(guiaRemisionSelected.getSecuencial()));

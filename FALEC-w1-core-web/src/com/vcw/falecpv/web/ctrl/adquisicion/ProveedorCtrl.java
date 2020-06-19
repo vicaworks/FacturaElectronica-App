@@ -101,7 +101,7 @@ public class ProveedorCtrl extends BaseCtrl {
 	@Override
 	public void refrescar() {
 		try {
-			
+			AppJsfUtil.limpiarFiltrosDataTable("formMain:proveedorDT");
 			proveedorSelected = null;
 			consultarProveedores();
 			consultarTipoIdentificacion();
@@ -201,12 +201,27 @@ public class ProveedorCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			
-			proveedorSelected = new Proveedor();
-			proveedorSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
-			proveedorSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-			proveedorSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+			nuevoProveedor();
 			
 			AppJsfUtil.showModalRender("dlgProveedor", "frmProveedor");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void nuevoProveedor() {
+		proveedorSelected = new Proveedor();
+		proveedorSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+		proveedorSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		proveedorSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+	}
+	
+	public void nuevoForm() {
+		try {
+			
+			nuevoProveedor();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

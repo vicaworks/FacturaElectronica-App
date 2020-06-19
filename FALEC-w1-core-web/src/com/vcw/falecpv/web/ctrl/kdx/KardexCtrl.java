@@ -159,7 +159,8 @@ public class KardexCtrl extends BaseCtrl {
 		}
 		if(productoSelected==null) {
 			AppJsfUtil.addErrorMessage("formMain:somFrmListaProducto", "REQUERIDO");
-			throw new DaoException("NO EXISTE PRODUCTO o CODIGO SELECCIONADO : " + codProducto);
+			AppJsfUtil.addErrorMessage("formMain", "ERROR",codProducto!=null?("NO EXISTE PRODUCTO o CODIGO SELECCIONADO : " + codProducto):"NO EXISTE COD PRODUCTO.");
+			return;
 		}
 	}
 	
@@ -169,6 +170,7 @@ public class KardexCtrl extends BaseCtrl {
 			
 			consultarProductoForm();
 			consultarProductoByCodBarra();
+			if(AppJsfUtil.existErrors()) return;
 			consultarKardex();
 		} catch (Exception e) {
 			e.printStackTrace();

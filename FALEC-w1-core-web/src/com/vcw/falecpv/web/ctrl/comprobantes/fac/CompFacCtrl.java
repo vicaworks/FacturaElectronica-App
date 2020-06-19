@@ -675,7 +675,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setMoneda("DOLAR");
 		if(cabecerSelected.getSecuencial()==null) {
 			cabecerSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 			// clave de acceso
 			cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			cabecerSelected.setNumdocumento(TextoUtil.leftPadTexto(cabecerSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(cabecerSelected.getSecuencial()));

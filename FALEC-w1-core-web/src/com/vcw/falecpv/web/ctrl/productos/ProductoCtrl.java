@@ -173,28 +173,41 @@ public class ProductoCtrl extends BaseCtrl {
 	@Override
 	public void nuevo() {
 		try {
-			productoFormSelected = new Producto();
-			productoSelected = new Producto();
-			productoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
-			productoSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-			productoSelected.setStock(BigDecimal.ZERO);
-			productoSelected.setUnidadesporpaquete(Integer.valueOf(0));
-			productoSelected.setUnidadesporcajaofrasco(Integer.valueOf(0));
-			productoSelected.setPreciouno(BigDecimal.ZERO);
-			productoSelected.setPreciodos(BigDecimal.ZERO);
-			productoSelected.setPreciotres(BigDecimal.ZERO);
-			productoSelected.setPreciounitario(BigDecimal.ZERO);
-			productoSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
-			productoSelected.setConversionmedida(BigDecimal.ZERO);
-			productoSelected.setPorcentajedescuento(BigDecimal.ZERO);
-			consultarFabrica();
-			consultarCategoria();
-			consultarIce();
-			consultarIva();
-			consultarProductoForm();
-			consultarTipoProducto();
+			nuevoProducto();
 			AppJsfUtil.showModalRender("dlgProducto", "frmProducto");
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void nuevoProducto() throws DaoException {
+		productoFormSelected = new Producto();
+		productoSelected = new Producto();
+		productoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		productoSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+		productoSelected.setStock(BigDecimal.ZERO);
+		productoSelected.setUnidadesporpaquete(Integer.valueOf(0));
+		productoSelected.setUnidadesporcajaofrasco(Integer.valueOf(0));
+		productoSelected.setPreciouno(BigDecimal.ZERO);
+		productoSelected.setPreciodos(BigDecimal.ZERO);
+		productoSelected.setPreciotres(BigDecimal.ZERO);
+		productoSelected.setPreciounitario(BigDecimal.ZERO);
+		productoSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		productoSelected.setConversionmedida(BigDecimal.ZERO);
+		productoSelected.setPorcentajedescuento(BigDecimal.ZERO);
+		consultarFabrica();
+		consultarCategoria();
+		consultarIce();
+		consultarIva();
+		consultarProductoForm();
+		consultarTipoProducto();
+	}
+	
+	public void nuevoForm() {
+		try {
+			nuevoProducto();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

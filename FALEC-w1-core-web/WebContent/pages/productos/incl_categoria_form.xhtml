@@ -29,6 +29,11 @@
 						value="GUARDAR" icon="fa fa-check" 
 						action="#{categoriaCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
 						/>
+					
+					<p:commandButton id="cmdNuevo"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{categoriaCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form :formMain" process="@this"
+						/>
 						
 					<p:commandButton id="cmdCerrar"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
@@ -58,8 +63,8 @@
 					<p:inputText id="intCategoria" value="#{categoriaCtrl.categoriaSelected.categoria}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 					<p:message for="intCategoria"/>
 					
-					<h:outputText value="#{msg['label.descripcion']} * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intDscripcion" value="#{categoriaCtrl.categoriaSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					<h:outputText value="#{msg['label.descripcion']}: " styleClass="cpoRequerido"/>
+					<p:inputText id="intDscripcion" value="#{categoriaCtrl.categoriaSelected.descripcion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 					<p:message for="intDscripcion"/>
 					
 					
