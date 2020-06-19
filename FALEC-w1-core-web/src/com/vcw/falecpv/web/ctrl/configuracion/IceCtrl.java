@@ -117,8 +117,6 @@ public class IceCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
-			iceSelected.setTarifaadvalorem(iceSelected.getDescripcion());
-			
 			//validar unico codigo ice
 			if (iceServicio.getIceDao().existeCodigo(iceSelected.getCodigo(), iceSelected.getIdice(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmIce", "ERROR", "CODIGO DUPLICADO");

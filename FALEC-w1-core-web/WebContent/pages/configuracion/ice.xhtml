@@ -166,6 +166,10 @@
 						<h:outputText value="#{ice.codigo}" />
 				</p:column>
 					
+		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
+		             <h:outputText value="#{ice.tarifaadvalorem}" />
+		        </p:column>
+		        
 		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:420px;">
 		                <f:facet name="header">
 							<h:outputText value="#{msg['label.descripcion']}" />
@@ -174,9 +178,6 @@
 						 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		         <!-- <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
-		             <h:outputText value="#{ice.tarifaadvalorem}" />
-		        </p:column> -->
 		        
 		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;" >
 		            <h:outputText value="#{ice.tarifaespecifica}" />

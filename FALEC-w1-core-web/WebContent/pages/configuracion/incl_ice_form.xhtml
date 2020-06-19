@@ -62,13 +62,14 @@
 							</p:inputText>
 					<p:message for="intCodigo"/>
 					
+					<h:outputText value="TARIFA AD VALOREM * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="Wid100" maxlength="10" placeholder="VALOR EN CADENA Ejm 0%" required="true" requiredMessage="REQUERIDO"/>
+					<p:message for="intTarifaAdValorem"/>
+					
 					<h:outputText value="#{msg['label.descripcion']} * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']} ejm: 2.75%"/>
+					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']}"/>
 					<p:message for="intDescripcion"/>
 					
-					<!-- <h:outputText value="TARIFA AD VALOREM : " styleClass="cpoRequerido"/>
-					<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="Wid100" />
-					<p:message for="intTarifaAdValorem"/> -->
 					
 					<h:outputText value="TARIFA ESPECIFICA : " styleClass="cpoRequerido"/>
 					<p:inputText id="intTarifaEspecifica" value="#{iceCtrl.iceSelected.tarifaespecifica}"  styleClass="Wid100"  placeholder="VALOR ejm: 2 o 2.75">
