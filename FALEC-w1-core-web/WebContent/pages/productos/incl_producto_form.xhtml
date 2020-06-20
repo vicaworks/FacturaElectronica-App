@@ -193,13 +193,13 @@
 							
 							<h:outputText value="NOMBRE * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="intNombreProducto" value="#{productoCtrl.productoSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:inputText id="intNombreProducto" value="#{productoCtrl.productoSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 								<p:message for="intNombreProducto"/>
 							</h:panelGroup>
 							
 							<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="intNombreProductoComercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:inputText id="intNombreProductoComercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 								<p:message for="intNombreProductoComercial"/>
 							</h:panelGroup>
 							
