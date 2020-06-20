@@ -335,6 +335,11 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			ad.setPrecioUntarioCalculado(BigDecimal.ZERO);
 			ad.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			ad.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			// valida
+			if(ad.getIva()==null) {
+				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				return;
+			}
 			ad.setPreciounitario(BigDecimal.valueOf(1));
 			ad.setProducto(null);
 			calcularAdquicisioDetalle(ad);

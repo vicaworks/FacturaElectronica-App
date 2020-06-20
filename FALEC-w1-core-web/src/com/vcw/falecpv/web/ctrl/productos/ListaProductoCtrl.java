@@ -170,7 +170,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	public void establecerFocoProducto() {
 		try {
 			
-			productoSelected = productoList.stream().filter(x->x.getIdproducto().equals(FacesUtils.getParameter("idProducto"))).findFirst().get();
+			productoSelected = productoList.stream().filter(x->x.getIdproducto().equals(FacesUtils.getParameter("idProducto"))).findFirst().orElse(null);
 			
 			System.out.println(productoSelected.toStringObject());
 			

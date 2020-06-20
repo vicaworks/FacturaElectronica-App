@@ -195,6 +195,11 @@ public class ProductoCtrl extends BaseCtrl {
 		productoSelected.setPreciotres(BigDecimal.ZERO);
 		productoSelected.setPreciounitario(BigDecimal.ZERO);
 		productoSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		// valida
+		if(productoSelected.getIva()==null) {
+			AppJsfUtil.addErrorMessage("frmProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+			return;
+		}
 		productoSelected.setConversionmedida(BigDecimal.ZERO);
 		productoSelected.setPorcentajedescuento(BigDecimal.ZERO);
 		consultarFabrica();
