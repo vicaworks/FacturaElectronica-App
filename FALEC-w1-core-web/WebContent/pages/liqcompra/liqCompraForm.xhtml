@@ -1,0 +1,166 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">#{msg['title.liqcompra']}</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.divValor{
+	    		margin: 0px;
+	    		border: 1px solid #252529; 
+	    		font-weight: 800;
+	    		color: #252529;
+	    	}
+	    	
+	    	.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+			}
+			
+			.dt-selection .ui-inputfield {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.dt-selection .ui-selectonemenu-label {
+				text-align: right;
+			}
+			.ui-inputfield {
+				font-size: 12px !important;
+			}
+			
+			.divTotal{
+				margin: 0px;
+				padding: 0.3em !important;
+				background-color: #0fc763;
+				color: white;
+				text-align: center;
+				font-size: 3em;
+				border-radius: 4px;
+			}
+			
+			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+			 padding: 0px !important;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+			 padding: 0px !important;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
+    
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Lista #{msg['label.liqcompra']}" url="#{request.contextPath}/pages/liqcompra/liqcompra.jsf"/>
+		</p:breadCrumb>
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" >
+	    		<div class="EmptyBox10"/>
+	    	
+		    	<div class="p-grid p-align-left">
+		    		
+		    		<div class="p-col-12 p-md-5">
+		    				
+		   				<div class="p-grid">
+		   					
+		   					<div class="p-col-12 p-md-6">
+				    				<p:commandButton id="cmdfacNuevo"
+											value="NUEVO" icon="fa fa-plus" 
+											action="#{liqCompraFormCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
+									</p:commandButton>
+		    					</div>
+		    					
+		    					<div class="p-col-12 p-md-6">
+				    				<p:commandButton id="cmdGenFactura"
+											value="GUARDAR" icon="fa fa-floppy-o" 
+											action="#{liqCompraFormCtrl.guardar()}" styleClass="secondary-button Wid100 Fs12" update="@form:formMain:msgFormMain"/>
+								</div>
+		   					
+		   				</div>
+	   				
+	  				</div>
+		    	
+		    	</div>
+		    	
+		    </div>	    	
+			
+			<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="EmptyBox5"/>
+			
+			<div class="p-grid">
+	    		
+	    		
+	    		<div class="p-col-12 p-lg-7">
+	    			
+	    			<!-- Detalle de la factura -->
+	    			<ui:include src="./incl_liqcompra_detalle.xhtml" /> 
+	    			
+	    		</div>
+	    		
+	    		<div class="p-col-12 p-lg-5">
+	    			
+	    			<!-- Datos de la cabecera / pagos -->
+	    			
+	    		</div>
+	    	
+	    	</div>
+			
+	    </h:form>
+        
+    </ui:define>
+
+</ui:composition>
