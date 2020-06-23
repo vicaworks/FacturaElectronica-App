@@ -5,7 +5,9 @@ package com.vcw.falecpv.web.ctrl.liqcompra;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,8 +20,13 @@ import org.omnifaces.util.Ajax;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
+import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
@@ -27,12 +34,14 @@ import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Proveedor;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
+import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.LiqCompraServicio;
+import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.ProveedorServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
@@ -79,6 +88,10 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	@EJB
 	private TipopagoServicio tipopagoServicio;
 	
+	@EJB
+	private PagoServicio pagoServicio;
+	
+	
 	
 	private List<Proveedor> proveedorList;
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -119,11 +132,13 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	public void nuevaLiqCompra() throws DaoException{
 		
 		liqCompraSelected = new Cabecera();
+		liqCompraSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 		liqCompraSelected.setTotal(BigDecimal.ZERO);
 		liqCompraSelected.setTotaldescuento(BigDecimal.ZERO);
 		liqCompraSelected.setTotaliva(BigDecimal.ZERO);
 		liqCompraSelected.setTotalsinimpuestos(BigDecimal.ZERO);
 		liqCompraSelected.setDetalleList(new ArrayList<>());
+		liqCompraSelected.setFechaemision(new Date());
 		liqCompraDetalleList = null;
 		criterioProveedor = null;
 		detalleSelected = null;
@@ -147,10 +162,88 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
+			if(liqCompraSelected.getProveedor()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL PROVEEDOR");
+				return;
+			}
+			
+			// validar estado
+			if(liqCompraSelected.getIdcabecera()!=null) {
+				
+				String analisisEstado = liqCompraServicio.analizarEstado(liqCompraSelected.getIdcabecera(),liqCompraSelected.getEstablecimiento().getIdestablecimiento() ,"GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+				
+			}
+			
+			// validar el valor
+			if(totalPago.doubleValue()<liqCompraSelected.getTotalconimpuestos().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA LIQUIDACION DE COMPRA.");
+				return;
+			}
+			
+			populatefactura(GenTipoDocumentoEnum.LIQUIDACION_COMPRA);
+			liqCompraSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			liqCompraSelected.setUpdated(new Date());
+			liqCompraSelected.setPagoList(pagoList);			
+			liqCompraSelected = cabeceraServicio.guardarComprobanteFacade(liqCompraSelected);
+			
+			// main principal de la lista de liquidacion de compra 
+			LiqCompraCtrl liqCompraCtrl = (LiqCompraCtrl) AppJsfUtil.getManagedBean("liqCompraCtrl");
+			liqCompraCtrl.consultar();
+			
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
+		
+		liqCompraSelected.setTipoemision("1");
+		liqCompraSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		
+		liqCompraSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		liqCompraSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		determinarPeriodoFiscal();
+		liqCompraSelected.setContribuyenteespecial("5368");
+		liqCompraSelected.setMoneda("DOLAR");
+		if(liqCompraSelected.getSecuencial()==null) {
+			liqCompraSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
+					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+			// clave de acceso
+			liqCompraSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(liqCompraSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOLIQCOMPRA, liqCompraSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			liqCompraSelected.setNumdocumento(TextoUtil.leftPadTexto(liqCompraSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(liqCompraSelected.getSecuencial()));
+			liqCompraSelected.setNumfactura(liqCompraSelected.getNumdocumento());
+		}
+		
+		liqCompraSelected.setPropina(BigDecimal.ZERO);
+		liqCompraSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		liqCompraSelected.setDetalleList(liqCompraDetalleList);
+		
+		// tabla de total impuesto
+		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
+		totalimpuestoList.addAll(ComprobanteHelper.determinarIva(liqCompraSelected.getDetalleList()));
+//		totalimpuestoList.addAll(ComprobanteHelper.determinarIce(liqCompraSelected.getDetalleList()));
+		liqCompraSelected.setTotalimpuestoList(totalimpuestoList);
+		
+		// detalle impuesto
+		ComprobanteHelper.determinarDetalleImpuesto(liqCompraSelected.getDetalleList());
+		
+		// infromacion adicional 
+		liqCompraSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(liqCompraSelected));
+		
+	}
+	
+	private void determinarPeriodoFiscal() {
+		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
+		liqCompraSelected.setPeriodofiscal(sf.format(liqCompraSelected.getFechaemision()));
 	}
 
 
@@ -179,6 +272,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			detalleSelected.setDescripcion("");
 			detalleSelected.setPreciounitario(BigDecimal.ZERO);
 			detalleSelected.setProducto(null);
+			detalleSelected.setValorice(BigDecimal.ZERO);
+			detalleSelected.setValoriva(BigDecimal.ZERO);
 			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
@@ -289,59 +384,63 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	public void agregarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) {
 		try {
 			
-			if(liqCompraSelected == null) {
-				return;
-			}
-			
-			if (liqCompraSelected.getTotalsinimpuestos().doubleValue()<=0) {
-				return;
-			}
-			
-			if (pagoList==null) {
-				pagoList = new ArrayList<>();
-			}
-			
-			Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum,
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
-			
-			boolean flag = false;
-			for (Pago p : pagoList) {
-				if(p.getTipopago().equals(tp) && !tipoPagoFormularioEnum.isRepetir()) {
-					pagoSelected = p;
-					flag = true;
-					break;
-				}
-			}
-			
-			totalizarPago();
-			if(!flag) {
-				pagoSelected = new Pago();
-				pagoSelected.setTipoPagoFormularioEnum(tipoPagoFormularioEnum);
-				pagoSelected.setCabecera(liqCompraSelected);
-				pagoSelected.setTipopago(tp);
-				pagoSelected.setTotal(liqCompraSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-				pagoSelected.setPlazo(BigDecimal.ZERO);
-				pagoSelected.setUnidadtiempo("DIAS");
-				pagoList.add(pagoSelected);
-				totalizarPago();
-			}
-			
-			switch (tipoPagoFormularioEnum) {
-			case EFECTIVO:
-				Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
-				break;
-			case CREDITO:
-				Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
-				break;	
-			default:
-				Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
-				break;
-			}
+			aplicarPago(tipoPagoFormularioEnum);
 			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void aplicarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) throws DaoException {
+		if(liqCompraSelected == null) {
+			return;
+		}
+		
+		if (liqCompraSelected.getTotalsinimpuestos().doubleValue()<=0) {
+			return;
+		}
+		
+		if (pagoList==null) {
+			pagoList = new ArrayList<>();
+		}
+		
+		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		
+		boolean flag = false;
+		for (Pago p : pagoList) {
+			if(p.getTipopago().equals(tp) && !tipoPagoFormularioEnum.isRepetir()) {
+				pagoSelected = p;
+				flag = true;
+				break;
+			}
+		}
+		
+		totalizarPago();
+		if(!flag) {
+			pagoSelected = new Pago();
+			pagoSelected.setTipoPagoFormularioEnum(tipoPagoFormularioEnum);
+			pagoSelected.setCabecera(liqCompraSelected);
+			pagoSelected.setTipopago(tp);
+			pagoSelected.setTotal(liqCompraSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+			pagoSelected.setPlazo(BigDecimal.ZERO);
+			pagoSelected.setUnidadtiempo("DIAS");
+			pagoList.add(pagoSelected);
+			totalizarPago();
+		}
+		
+		switch (tipoPagoFormularioEnum) {
+		case EFECTIVO:
+			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
+			break;
+		case CREDITO:
+			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
+			break;	
+		default:
+			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
+			break;
 		}
 	}
 	
@@ -449,6 +548,26 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	public void consultarProveedor(String identificador) throws DaoException {
 		liqCompraSelected.setProveedor(null);
 		liqCompraSelected.setProveedor(proveedorServicio.getProveedorDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+	}
+	
+	public String editar(String idLiqCompra) throws DaoException {
+		
+		nuevaLiqCompra();
+		liqCompraSelected = cabeceraServicio.consultarByPk(idLiqCompra);
+		
+		if(liqCompraSelected==null) {
+			return "NO EXISTE LA LIQUIDACION DE COMPRA";
+		}
+		
+		liqCompraDetalleList = detalleServicio.getDetalleDao().getByIdCabecera(idLiqCompra);
+		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idLiqCompra);
+		pagoList.stream().forEach(x->{
+			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
+		});
+		totalizar();
+		totalizarPago();
+		
+		return null;
 	}
 
 	/**

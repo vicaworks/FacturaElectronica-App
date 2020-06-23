@@ -10,7 +10,7 @@
 		
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
 			min-height: 20vh !important;
-			height: calc(100vh - 635px)!important;
+			height: calc(100vh - 592px)!important;
 		}
 		
 		.ui-calendar .ui-inputfield{
@@ -146,56 +146,19 @@
 			
 		</p:panelGrid>
 		
-		<p:panelGrid id="gridOpcPagos" columns="3"
+		<p:panelGrid id="gridOpcPagos" columns="2"
 			 styleClass="ui-panelgrid-blank Wid100" 
-			 columnClasses="ui-g-12 ui-md-4,
-			 				ui-g-12 ui-md-4,
-			 				ui-g-12 ui-md-4">
-			
-			<p:commandLink action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="EFECTIVO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>	
-			
-			<p:commandLink action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.TRANSFERENCIA)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="TRANSFERENCIA" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.TARJETA_CREDITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="TARJ CREDITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.TARJETA_DEBITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="TARJ DEBITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.DEPOSITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="DEPOSITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.CHEQUE)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="CHEQUE" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.CREDITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="CREDITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<h:outputText value="" />
-			<h:outputText value="" />
+			 columnClasses="ui-g-12 ui-md-6,
+			 				ui-g-12 ui-md-6">
+			 				
+			 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" styleClass="Wid100"/>
+			 
+			 <p:commandButton value="OTROS" icon="fa fa-plus" action="#{tipoPagoCtrl.showModal()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100">
+			 	<f:setPropertyActionListener value="LIQCOMPRA" target="#{tipoPagoCtrl.callModule}"/>
+			 	<f:setPropertyActionListener value="#{liqCompraFormCtrl.liqCompraSelected.totalconimpuestos}" target="#{tipoPagoCtrl.total}"/>
+            	<f:setPropertyActionListener value="formMain" target="#{tipoPagoCtrl.callForm}"/>
+            	<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" target="#{tipoPagoCtrl.updateView}"/>
+			 </p:commandButton>
 			
 		</p:panelGrid>
 		

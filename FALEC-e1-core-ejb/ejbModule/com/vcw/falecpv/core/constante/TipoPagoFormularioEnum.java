@@ -48,6 +48,16 @@ public enum TipoPagoFormularioEnum {
 		return Stream.of(TipoPagoFormularioEnum.values()).filter(x->x.toString().equals(nombre)).findFirst().get();
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param codInterno
+	 * @return
+	 */
+	public static TipoPagoFormularioEnum getByCodInterno(String codInterno) {
+		return Stream.of(TipoPagoFormularioEnum.values()).filter(x->x.getCodInterno().equals(codInterno)).findFirst().orElse(null);
+	}
+	
 	
 
 }

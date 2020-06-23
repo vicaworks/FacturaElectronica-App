@@ -133,6 +133,7 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Lista #{msg['label.liqcompra']}" url="#{request.contextPath}/pages/liqcompra/liqcompra.jsf"/>
+		    <p:menuitem value="#{msg['label.liqcompra']}" url="#{request.contextPath}/pages/liqcompra/liqCompraForm.jsf"/>
 		</p:breadCrumb>
 		
 		<!-- OPCIONES -->
@@ -157,7 +158,7 @@
 		    					<div class="p-col-12 p-md-6">
 				    				<p:commandButton id="cmdGenFactura"
 											value="GUARDAR" icon="fa fa-floppy-o" 
-											action="#{liqCompraFormCtrl.guardar()}" styleClass="secondary-button Wid100 Fs12" update="@form:formMain:msgFormMain"/>
+											action="#{liqCompraFormCtrl.guardar()}" styleClass="Wid100 Fs12" update="@form"/>
 								</div>
 		   					
 		   				</div>
@@ -199,6 +200,9 @@
 	    
 	    <!-- Form Proveedor -->
 	    <ui:include src="../adquisicion/incl_proveedor_form.xhtml" />
+	    
+	    <!-- Modal lista tipo pago -->
+	    <ui:include src="../common/incl_tipopago.xhtml" />
         
     </ui:define>
 

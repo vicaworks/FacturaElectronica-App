@@ -3,6 +3,9 @@
  */
 package com.vcw.falecpv.web.ctrl.liqcompra;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -11,15 +14,30 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.model.StreamedContent;
+
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.DetalleServicio;
+import com.vcw.falecpv.core.servicio.LiqCompraServicio;
+import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
  * @author cristianvillarreal
@@ -39,6 +57,15 @@ public class LiqCompraCtrl extends BaseCtrl {
 	
 	@EJB
 	private UsuarioServicio usuarioServicio;
+	
+	@EJB
+	private LiqCompraServicio liqCompraServicio;
+	
+	@EJB
+	private DetalleServicio detalleServicio;
+	
+	@EJB
+	private PagoServicio pagoServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -85,6 +112,17 @@ public class LiqCompraCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
+			String analizar = liqCompraServicio.analizarEstado(liqCompraSelected.getIdcabecera(), liqCompraSelected.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			
+			if(analizar!=null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", analizar);
+				return;
+			}
+			
+			cabeceraServicio.getCabeceraDao().anularById(liqCompraSelected.getIdcabecera());
+			liqCompraSelected = null;
+			consultar();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -115,6 +153,217 @@ public class LiqCompraCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
+		return null;
+	}
+	
+	public String editarLiqCompra(String idLiqCompra) {
+		try {
+			
+			LiqCompraFormCtrl liqCompraFormCtrl = (LiqCompraFormCtrl) AppJsfUtil.getManagedBean("liqCompraFormCtrl");
+			String editar = liqCompraFormCtrl.editar(idLiqCompra);
+			
+			if(editar==null) {
+				return "./liqCompraForm.jsf?faces-redirect=true";
+			}
+			
+			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+		return null;
+	}
+	
+	public StreamedContent getFile() {
+		try {
+			
+			if(liqCompraList==null || liqCompraList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-LiqCompras.xlsx");
+			
+			// icialización
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			Row rowCliente = sheet.getRow(3);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			rowCliente = sheet.getRow(4);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			rowCliente = sheet.getRow(5);
+			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(desde));
+			
+			rowCliente = sheet.getRow(6);
+			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			
+			int fila = 10;
+			int filaDetalle = 10;
+			int filaPago = 10;
+			for (Cabecera lc : liqCompraList) {
+				
+				int col = 0;
+				rowCliente = sheet.createRow(fila);
+				
+				// datos de la cabecera
+				Cell cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getSecuencial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemision()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getProveedor().getIdentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getProveedor().getRazonsocial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getProveedor().getEstado());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getNumeroautorizacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalsinimpuestos().add(lc.getTotaldescuento()).doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotaldescuento().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalsinimpuestos().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotaliva().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalconimpuestos().doubleValue());
+				
+				// detalle de compra
+				filaDetalle = fila;
+				filaPago = fila;
+				lc.setDetalleList(detalleServicio.getDetalleDao().getByIdCabecera(lc.getIdcabecera()));
+				for (Detalle d : lc.getDetalleList()) {
+					col = 11;
+					
+					rowCliente = sheet.getRow(filaDetalle);
+					if(rowCliente==null) {
+						rowCliente = sheet.createRow(filaDetalle);
+					}
+					
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getDescripcion());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getCantidad().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciounitario().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciototalsinimpuesto().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getDescuento().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getValoriva().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciototal().doubleValue());
+					
+					filaDetalle++;
+					
+				}
+				
+				lc.setPagoList(pagoServicio.getPagoDao().getByIdCabecera(lc.getIdcabecera()));
+				for (Pago p : lc.getPagoList()) {
+					col = 18;
+					rowCliente = sheet.getRow(filaPago);
+					if(rowCliente==null) {
+						rowCliente = sheet.createRow(filaPago);
+					}
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getTipopago().getNombre());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getTotal().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getValorentrega().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getCambio().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNumerodocumento());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNombrebanco());
+					
+					filaPago++;
+					
+				}
+				
+				if(filaDetalle>filaPago) {
+					fila = filaDetalle;
+				}else {
+					fila = filaPago;
+				}
+				fila++;
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-LiqCompras-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 		return null;
 	}
 

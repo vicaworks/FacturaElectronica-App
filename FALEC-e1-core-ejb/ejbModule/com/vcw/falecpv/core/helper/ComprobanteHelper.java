@@ -128,7 +128,7 @@ public class ComprobanteHelper {
 			ti.setDescuentoadicional(BigDecimal.ZERO);
 			ti.setBaseimponible(BigDecimal
 					.valueOf(detallefacList.stream().filter(x -> x.getIva().getIdiva().equals(iva.getIdiva()))
-							.mapToDouble(x -> x.getPreciototalsinimpuesto().add(x.getValorice()).doubleValue()).sum())
+							.mapToDouble(x -> x.getPreciototalsinimpuesto().add(x.getValorice()!=null?x.getValorice():BigDecimal.ZERO).doubleValue()).sum())
 					.setScale(2, RoundingMode.HALF_UP));
 			ti.setValor(BigDecimal
 					.valueOf(detallefacList.stream().filter(x -> x.getIva().getIdiva().equals(iva.getIdiva()))
@@ -180,7 +180,7 @@ public class ComprobanteHelper {
 		
 		for (Detalle df : detalleFacList) {
 			df.setDetalleimpuestoList(new ArrayList<>());
-			if(df.getValorice().doubleValue()>0) {
+			if(df.getValorice()!=null && df.getValorice().doubleValue()>0) {
 				Detalleimpuesto di = new Detalleimpuesto();
 				di.setIce(df.getIce());
 				di.setTarifa(df.getIce().getValor());
@@ -189,11 +189,11 @@ public class ComprobanteHelper {
 				df.getDetalleimpuestoList().add(di);
 			}
 			
-			if(df.getValoriva().doubleValue()>0) {
+			if(df.getValoriva()!=null && df.getValoriva().doubleValue()>0) {
 				Detalleimpuesto di = new Detalleimpuesto();
 				di.setIva(df.getIva());
 				di.setTarifa(df.getIva().getValor());
-				di.setBaseimponible(df.getPreciototalsinimpuesto().add(df.getValorice()).setScale(2, RoundingMode.HALF_UP));
+				di.setBaseimponible(df.getPreciototalsinimpuesto().add(df.getValorice()!=null?df.getValorice():BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP));
 				di.setValor(df.getValoriva());
 				df.getDetalleimpuestoList().add(di);
 			}
