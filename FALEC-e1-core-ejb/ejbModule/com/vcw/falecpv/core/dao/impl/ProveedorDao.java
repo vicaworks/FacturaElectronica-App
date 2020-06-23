@@ -12,6 +12,7 @@ import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Proveedor;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author cristianvillarreal
@@ -65,6 +66,28 @@ public class ProveedorDao extends AppGenericDao<Proveedor, String> {
 			}
 			
 			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param identificador
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	public Proveedor getByIdentificador(String identificador,String idEmpresa)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(getEntityManager());
+			return (Proveedor) q.select("p")
+				.from(Proveedor.class,"p")
+				.equals("p.empresa.idempresa",idEmpresa)
+				.equals("p.identificacion",identificador).getSingleResult();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

@@ -90,6 +90,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	private BigDecimal totalSaldo = BigDecimal.ZERO;
 	private List<Pago> pagoList;
 	private Pago pagoSelected;
+	private String criterioProveedor;
 	
 	/**
 	 * 
@@ -123,6 +124,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTotaliva(BigDecimal.ZERO);
 		liqCompraSelected.setTotalsinimpuestos(BigDecimal.ZERO);
 		liqCompraSelected.setDetalleList(new ArrayList<>());
+		liqCompraDetalleList = null;
+		criterioProveedor = null;
+		detalleSelected = null;
 		pagoList = null;
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
@@ -153,7 +157,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	@Override
 	public void nuevo() {
 		try {
-			
+			nuevaLiqCompra();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -195,12 +199,23 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void calcularItemAction(Detalle det) {
+		try {
+			detalleSelected = det;
+			calcularItem(detalleSelected);
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	private void calcularItem(Detalle dFac) {
 		
 		dFac.setPreciototalsinimpuesto(dFac.getCantidad().multiply(dFac.getPreciounitario()).add(dFac.getDescuento().negate()).setScale(2, RoundingMode.HALF_UP));
 		dFac.setValoriva(dFac.getIva().getValor().divide(BigDecimal.valueOf(100))
-				.multiply(dFac.getPreciototalsinimpuesto().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
-		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
+				.multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
+		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva()).setScale(2, RoundingMode.HALF_UP));
 		
 	}
 	
@@ -412,6 +427,29 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 		
 	}
+	
+	public void buscarProveedor() {
+		try {
+			
+			if(liqCompraSelected==null) return;
+			
+			if(criterioProveedor==null || criterioProveedor.trim().length()==0) {
+				AppJsfUtil.addErrorMessage("formMain:inpCriterioProveedor", "ERROR", "REQUERIDO");
+				return;
+			}
+			
+			consultarProveedor(criterioProveedor);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void consultarProveedor(String identificador) throws DaoException {
+		liqCompraSelected.setProveedor(null);
+		liqCompraSelected.setProveedor(proveedorServicio.getProveedorDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+	}
 
 	/**
 	 * @return the proveedorList
@@ -569,6 +607,22 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	 */
 	public void setPagoSelected(Pago pagoSelected) {
 		this.pagoSelected = pagoSelected;
+	}
+
+
+	/**
+	 * @return the criterioProveedor
+	 */
+	public String getCriterioProveedor() {
+		return criterioProveedor;
+	}
+
+
+	/**
+	 * @param criterioProveedor the criterioProveedor to set
+	 */
+	public void setCriterioProveedor(String criterioProveedor) {
+		this.criterioProveedor = criterioProveedor;
 	}
 
 }

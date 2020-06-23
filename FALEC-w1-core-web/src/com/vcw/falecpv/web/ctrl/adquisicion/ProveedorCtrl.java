@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
 import com.vcw.falecpv.core.servicio.ProveedorServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -156,23 +157,35 @@ public class ProveedorCtrl extends BaseCtrl {
 			proveedorSelected.setUpdated(new Date());
 			proveedorSelected = proveedorServicio.guardar(proveedorSelected, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 			
+			boolean flag = false;
+			
 			switch (callModule) {
 			case "PROVEEDOR":
 				consultarProveedores();
+				flag = true;
 				break;
 			case "ADQUISICION":
 				adquisicionFrmCtrl.consultarProveedor();
 				adquisicionFrmCtrl.getAdquisicionSelected().setProveedor(proveedorSelected);
+				flag = true;
 				break;
 			case "RETENCION":
 				retencionFrmCtrl.consultarProveedor();
 				retencionFrmCtrl.getRetencionSeleccion().setProveedor(proveedorSelected);
-				break;	
+				flag = true;
+				break;
+			case "LIQCOMPRA":
+				LiqCompraFormCtrl liqCompraFormCtrl = (LiqCompraFormCtrl)AppJsfUtil.getManagedBean("liqCompraFormCtrl");
+				liqCompraFormCtrl.getLiqCompraSelected().setProveedor(proveedorSelected);
+				break;
 			default:
 				break;
 			}
-			
-			AppJsfUtil.addInfoMessage("frmProveedor","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			if(flag) {
+				AppJsfUtil.addInfoMessage("frmProveedor","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			}else {
+				AppJsfUtil.hideModal("dlgProveedor");
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -202,6 +215,27 @@ public class ProveedorCtrl extends BaseCtrl {
 		try {
 			
 			nuevoProveedor();
+			
+			AppJsfUtil.showModalRender("dlgProveedor", "frmProveedor");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void nuevoEditar(String id) {
+		try {
+			
+			proveedorSelected = null;
+			
+			if(id!=null) {
+				proveedorSelected = proveedorServicio.consultarByPk(id);
+			}
+			
+			if(proveedorSelected==null) {
+				nuevoProveedor();
+			}
 			
 			AppJsfUtil.showModalRender("dlgProveedor", "frmProveedor");
 			

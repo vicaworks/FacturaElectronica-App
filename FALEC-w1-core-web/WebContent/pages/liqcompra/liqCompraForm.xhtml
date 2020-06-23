@@ -86,6 +86,40 @@
 			 padding: 0px !important;
 			}
 			
+			.command-btn{
+	    		border-radius: 2px;
+	    		width: 100%;
+	    		text-align: center;
+	    		padding: 0.2em 0.2em;
+	    		color:#252529;
+	    		display: inline-block;
+	    		font-size: 12px;
+	    		/* margin-bottom:4px; */
+	    	}
+	    	
+	    	.borde-secondary{
+	    		border: 1px solid #0f97c7;
+	    		background:#0f97c7;
+	    		color: #fff;
+	    	}
+	    	
+	    	.borde-secondary:hover{
+	    		border: 1px solid #0f97c7;
+	    		background:#fff;
+	    		color: #0f97c7;
+	    	}
+	    	
+	    	.borde-gray{
+	    		border: 1px solid #252529;
+	    		background:#fff;
+	    		color: #252529;
+	    	}
+	    	
+	    	.borde-gray:hover{
+	    		background:#252529;
+	    		color: #fff;
+	    	}
+			
         </style>
     </ui:define>
 
@@ -94,6 +128,7 @@
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.TipoPagoFormularioEnum" var="TipoPagoFormularioEnum" />
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
@@ -154,12 +189,16 @@
 	    		<div class="p-col-12 p-lg-5">
 	    			
 	    			<!-- Datos de la cabecera / pagos -->
+	    			<ui:include src="./incl_liqcompra_cabecera.xhtml" />
 	    			
 	    		</div>
 	    	
 	    	</div>
 			
 	    </h:form>
+	    
+	    <!-- Form Proveedor -->
+	    <ui:include src="../adquisicion/incl_proveedor_form.xhtml" />
         
     </ui:define>
 
