@@ -200,7 +200,7 @@ public class InventarioCtrl extends BaseCtrl {
 			
 			
 			int fila = 8;
-			sheet.shiftRows(fila, (fila+productoFormList.size()), productoFormList.size());
+			sheet.shiftRows(fila, (fila+productoList.size()), productoList.size());
 			
 			for (Producto p : productoList) {
 				
@@ -269,11 +269,16 @@ public class InventarioCtrl extends BaseCtrl {
 			
 			// totales
 			fila+=3;
-			rowCliente = sheet.getRow(fila++);
-			rowCliente.createCell(1).setCellValue(totalStock.doubleValue());
+			rowCliente = sheet.getRow(fila);
+			if(rowCliente!=null) {
+				rowCliente.createCell(1).setCellValue(totalStock.doubleValue());
+			}
 			
-			rowCliente = sheet.getRow(fila++);
-			rowCliente.createCell(1).setCellValue(totalCosto.doubleValue());
+			fila++;
+			rowCliente = sheet.getRow(fila);
+			if(rowCliente!=null) {
+				rowCliente.createCell(1).setCellValue(totalCosto.doubleValue());
+			}
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);

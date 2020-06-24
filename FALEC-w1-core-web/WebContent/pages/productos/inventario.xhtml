@@ -326,7 +326,7 @@
 					</p:column>
 					
 					<p:column headerText="FECHA VENCIMIENTO" style="width:60px;" styleClass="TexAlCenter" rendered="#{inventarioCtrl.opcionBusqueda=='FECHACADUCIDAD'}">
-						<h:outputText value="#{i.fechavencimiento}" styleClass="markRed">
+						<h:outputText value="#{i.fechavencimiento}" styleClass="#{i.fechavencimiento!=null?'markRed':''} ">
 							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
