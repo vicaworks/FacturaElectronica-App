@@ -64,5 +64,26 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabeceraList
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Pago> getByIdCabecera(List<String> idCabeceraList)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.cabecera.idcabecera in :idCabecera");
+			q.setParameter("idCabecera", idCabeceraList);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 }

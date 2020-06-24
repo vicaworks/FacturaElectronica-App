@@ -95,7 +95,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 	public void consultar()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:liqCompraDT");
 		liqCompraList = null;
-		liqCompraList = cabeceraServicio.getCabeceraDao().getByLiqCompraCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(), estado);
+		liqCompraList = liqCompraServicio.getByLiqCompraCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(), estado);
 	}
 
 	@Override
@@ -265,7 +265,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 				// detalle de compra
 				filaDetalle = fila;
 				filaPago = fila;
-				lc.setDetalleList(detalleServicio.getDetalleDao().getByIdCabecera(lc.getIdcabecera()));
+//				lc.setDetalleList(detalleServicio.getDetalleDao().getByIdCabecera(lc.getIdcabecera()));
 				for (Detalle d : lc.getDetalleList()) {
 					col = 11;
 					
@@ -307,7 +307,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 					
 				}
 				
-				lc.setPagoList(pagoServicio.getPagoDao().getByIdCabecera(lc.getIdcabecera()));
+//				lc.setPagoList(pagoServicio.getPagoDao().getByIdCabecera(lc.getIdcabecera()));
 				for (Pago p : lc.getPagoList()) {
 					col = 18;
 					rowCliente = sheet.getRow(filaPago);
