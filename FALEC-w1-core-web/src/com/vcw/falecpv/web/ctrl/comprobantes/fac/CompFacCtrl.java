@@ -577,10 +577,12 @@ public class CompFacCtrl extends BaseCtrl {
 				return;
 			}
 			
-			if(cabecerSelected.getTotaliva().doubleValue()>0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "EL RECIBO NO PUEDE TENER VALOR DE IMPUESTOS  > 0.");
-				return;
-			}
+			// TODO revisar este cambio
+			
+//			if(cabecerSelected.getTotaliva().doubleValue()>0) {
+//				AppJsfUtil.addErrorMessage("formMain", "ERROR", "EL RECIBO NO PUEDE TENER VALOR DE IMPUESTOS  > 0.");
+//				return;
+//			}
 			
 			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "FACTURA SIN DETALLE DE FACTURACION.");

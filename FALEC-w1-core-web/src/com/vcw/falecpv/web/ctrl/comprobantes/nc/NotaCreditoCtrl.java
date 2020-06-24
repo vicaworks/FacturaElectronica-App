@@ -167,14 +167,27 @@ public class NotaCreditoCtrl extends BaseCtrl {
 				
 			}
 			
+			if(detalleNcList==null || detalleNcList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE.");
+				return;
+			}
+			
 			notaCreditoSeleccion.setDetalleList(detalleNcList);
 			populatefactura(GenTipoDocumentoEnum.NOTA_CREDITO);
 			notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			notaCreditoSeleccion.setUpdated(new Date());
 			notaCreditoSeleccion = cabeceraServicio.guardarComprobanteFacade(notaCreditoSeleccion);
-			if(callModule.equals("FACTURAS_EMITIDAS")) {
+			switch (callModule) {
+			case "FACTURAS_EMITIDAS":
 				FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
 				facEmitidaCtrl.consultar();
+				break;
+			case "NOTACREDITO":
+				CompNcCtrl compNcCtrl = (CompNcCtrl) AppJsfUtil.getManagedBean("compNcCtrl");
+				compNcCtrl.consultar();
+				break;	
+			default:
+				break;
 			}
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK", "TODO: GUARDADO IMPRIMIR");
@@ -199,7 +212,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setMoneda("DOLAR");
 		if(notaCreditoSeleccion.getSecuencial()==null) {
 			notaCreditoSeleccion.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 			// clave de acceso
 			notaCreditoSeleccion.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(notaCreditoSeleccion, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIONOTACREDITO, notaCreditoSeleccion.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			notaCreditoSeleccion.setNumdocumento(TextoUtil.leftPadTexto(notaCreditoSeleccion.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(notaCreditoSeleccion.getSecuencial()));

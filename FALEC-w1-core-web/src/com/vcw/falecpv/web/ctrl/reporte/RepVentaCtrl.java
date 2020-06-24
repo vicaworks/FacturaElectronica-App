@@ -215,7 +215,7 @@ public class RepVentaCtrl extends BaseCtrl {
 				cell.setCellValue(v.getTipoComprobante());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellValue(v.getFechaemision());
+				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);

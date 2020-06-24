@@ -219,7 +219,7 @@
 							</div>
 						</div>
 						<div class="p-col-3" style="text-align: right;">
-							<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
+							<h:outputText value="#{d.preciototal}" styleClass="Fs12 FontBold">
 								<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 							</h:outputText>
 						</div>
@@ -247,7 +247,7 @@
 			</div>
 			<div class="p-col-5" style="text-align: right;">
 				<p:outputPanel id="oupTotales">
-					<h:outputText value="#{factMainCtrl.cabeceraFac!=null?factMainCtrl.cabeceraFac.totalsinimpuestos:0}" styleClass="Fs18 FontBold">
+					<h:outputText value="#{factMainCtrl.cabeceraFac!=null?factMainCtrl.cabeceraFac.totalconimpuestos:0}" styleClass="Fs18 FontBold">
 						<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 					</h:outputText>
 				</p:outputPanel>
