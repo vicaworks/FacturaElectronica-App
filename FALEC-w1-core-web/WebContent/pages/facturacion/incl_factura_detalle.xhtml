@@ -75,7 +75,7 @@
 					<div class="p-col-12 p-md-3">
 		 				<p:commandButton id="cmdFacProducto"
 							value="AGREG PRODUCTO" icon="fa fa-search" 
-							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
+							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
 							
 							<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 							<f:setPropertyActionListener value="FACTURA_FORM2" target="#{listaProductoCtrl.callModule}"/>

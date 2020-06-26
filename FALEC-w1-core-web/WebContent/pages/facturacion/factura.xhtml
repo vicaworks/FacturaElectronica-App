@@ -155,7 +155,7 @@
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenFactura"
 										value="FACTURA" icon="fa fa-floppy-o" 
-										action="#{compFacCtrl.generarFactura()}" styleClass="secondary-button Wid100 Fs12" update="@form:formMain:msgFormMain"/>
+										action="#{compFacCtrl.generarFactura()}" styleClass="Wid100 Fs12" update="@form:formMain:msgFormMain"/>
 							</div>
 							
 							<div class="p-col-12 p-md-4">
@@ -209,6 +209,9 @@
 	    
 	    <!-- Busqueda Productos -->
 	    <ui:include src="../productos/incl_listaProducto.xhtml" />
+	    
+	    <!-- Modal lista tipo pago -->
+	    <ui:include src="../common/incl_tipopago.xhtml" />
         
     </ui:define>
 
