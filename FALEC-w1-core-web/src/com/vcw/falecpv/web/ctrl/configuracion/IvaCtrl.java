@@ -137,13 +137,15 @@ public class IvaCtrl extends BaseCtrl {
 					}						
 			}
 			//valida si el valor es x defecto 
-			if(ivaSelected.getDefecto()==1) {
-				ivaUpdate=ivaServicio.getIvaDao().existeValorDefecto(defecto, ivaSelected.getIdiva());
-			if (ivaUpdate!= null) {
-				// actualizo objeto
-				ivaUpdate.setDefecto(0);
-				ivaServicio.actualizar(ivaUpdate);
-			}}	
+			if (ivaSelected.getDefecto() == 1) {
+				ivaUpdate = ivaServicio.getIvaDao().existeValorDefecto(defecto, ivaSelected.getIdiva(),
+						AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+				if (ivaUpdate != null) {
+					// actualizo objeto
+					ivaUpdate.setDefecto(0);
+					ivaServicio.actualizar(ivaUpdate);
+				}
+			}	
 			
 			//guarda-edita
 			ivaSelected.setUpdated(new Date());

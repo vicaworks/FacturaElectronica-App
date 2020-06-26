@@ -167,20 +167,22 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public Iva existeValorDefecto(int defecto, String idiva)throws DaoException{
+	public Iva existeValorDefecto(int defecto, String idiva,String idEmpresa)throws DaoException{
 		try {
 			Query q = null;
 			
 			if(idiva!=null) {
-				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.defecto=:defecto AND i.idiva<>:idiva");
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.empresa.idempresa=:idEmpresa and i.defecto=:defecto AND i.idiva<>:idiva");
 				q.setParameter("defecto", defecto);
 				q.setParameter("idiva", idiva);
 				
 			}else {
-				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.defecto=:defecto ");
+				q = getEntityManager().createQuery("SELECT i FROM Iva i  WHERE i.empresa.idempresa=:idEmpresa and i.defecto=:defecto ");
 				q.setParameter("defecto", defecto);
 			}
-		
+			
+			q.setParameter("idEmpresa", idEmpresa);
+			
 			if(q.getResultList().size()>0) {
 				return (Iva) q.getSingleResult();
 				}

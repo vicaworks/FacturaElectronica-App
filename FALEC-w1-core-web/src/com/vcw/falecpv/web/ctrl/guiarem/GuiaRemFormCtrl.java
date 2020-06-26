@@ -176,7 +176,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		
 		for (Destinatario d : guiaRemisionSelected.getDestinatarioList()) {
 			if(d.getDetalledestinatarioList()==null || d.getDetalledestinatarioList().isEmpty()) {
-				AppJsfUtil.addErrorMessage("", "ERROR", "DESTINATARIO : " + d.getRazonsocialdestinatario() +  " NO TIENE DETALLE.");
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "DESTINATARIO : " + d.getRazonsocialdestinatario() +  " NO TIENE DETALLE.");
 				return true;
 			}
 		}
@@ -223,6 +223,12 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	public void guardarDestinatario() {
 		try {
 			
+			if(destinatarioSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("frmDestinatario","ERROR","NO EXISTE DESTINATARIO");
+				return;
+			}
+			
+			
 			asignarDestinatario();
 			totalizarGuiaRemision();
 			AppJsfUtil.hideModal("dlgDestinatario");
@@ -235,7 +241,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	
 	public String guardarDestinatarioByOtros() {
 		try {
-			
+			if(destinatarioSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("frmDestinatario","ERROR","NO EXISTE DESTINATARIO");
+				return null;
+			}
 			asignarDestinatario();
 			totalizarGuiaRemision();
 			AppJsfUtil.hideModal("dlgDestinatario");

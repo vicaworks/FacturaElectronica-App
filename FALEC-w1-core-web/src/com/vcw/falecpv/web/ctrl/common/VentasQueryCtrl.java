@@ -83,7 +83,7 @@ public class VentasQueryCtrl extends BaseCtrl {
 	
 	private void consultar() throws DaoException {
 		resumenCabeceraQueryList = null;
-		resumenCabeceraQueryList = consultaGeneralComprobanteServicio.getComprovantesVentasByDateCriteria(AppJsfUtil.getUsuario().getIdusuario(), criterio, desde, hasta);
+		resumenCabeceraQueryList = consultaGeneralComprobanteServicio.getComprovantesVentasByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), criterio, desde, hasta);
 	}
 	
 	@Override

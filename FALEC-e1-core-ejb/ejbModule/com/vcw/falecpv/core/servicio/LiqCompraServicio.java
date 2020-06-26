@@ -119,6 +119,10 @@ public class LiqCompraServicio extends DBUtilGenericoApp {
 		try {
 			
 			List<Cabecera> liqCompraList = cabeceraDao.getByLiqCompraCriteria(desde, hasta, criteria, idEstablecimiento, estado);
+			
+			if(liqCompraList.isEmpty()) return new ArrayList<>();
+			
+			
 			List<String> idCabeceraList = liqCompraList.stream().map(x->x.getIdcabecera()).distinct().collect(Collectors.toList());
 			List<Detalle> detalleList = detalleDao.getByIdCabecera(idCabeceraList);
 			List<Pago> pagoList = pagoDao.getByIdCabecera(idCabeceraList);
