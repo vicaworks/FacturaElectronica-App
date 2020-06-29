@@ -70,6 +70,32 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @param valor
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public Iva getByValor(String idEmpresa,BigDecimal valor)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT i FROM Iva i WHERE i.empresa.idempresa=:idempresa AND i.valor=:valor ORDER BY i.porcentaje");
+			q.setParameter("idempresa", idEmpresa);
+			q.setParameter("valor", valor);
+			
+			List<Iva> lista = q.getResultList();
+			
+			if(lista.size()>0) return lista.get(0);
+			
+			return null;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 	
 	
 	

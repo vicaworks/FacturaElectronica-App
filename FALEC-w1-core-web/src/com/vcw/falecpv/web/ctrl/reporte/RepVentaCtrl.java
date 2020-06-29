@@ -118,7 +118,7 @@ public class RepVentaCtrl extends BaseCtrl {
 	
 	private void consultarTipoPago()throws DaoException{
 		tipopagoList = null;
-		tipopagoList = tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), TipoPagoEnum.FACTURACION);
+		tipopagoList = tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(TipoPagoEnum.FACTURACION);
 	}
 	
 	private void consultarFabricante()throws DaoException{

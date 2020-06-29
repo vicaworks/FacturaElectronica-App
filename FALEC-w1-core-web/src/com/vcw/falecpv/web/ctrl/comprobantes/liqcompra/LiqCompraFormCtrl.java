@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falecpv.web.ctrl.liqcompra;
+package com.vcw.falecpv.web.ctrl.comprobantes.liqcompra;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -206,8 +206,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		liqCompraSelected.setTipoemision("1");
-		liqCompraSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		liqCompraSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
 		liqCompraSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		liqCompraSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
@@ -406,8 +405,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			pagoList = new ArrayList<>();
 		}
 		
-		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum);
 		
 		boolean flag = false;
 		for (Pago p : pagoList) {

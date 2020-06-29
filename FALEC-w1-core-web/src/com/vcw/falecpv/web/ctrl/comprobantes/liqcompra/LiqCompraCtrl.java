@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falecpv.web.ctrl.liqcompra;
+package com.vcw.falecpv.web.ctrl.comprobantes.liqcompra;
 
 import java.io.File;
 import java.io.FileInputStream;

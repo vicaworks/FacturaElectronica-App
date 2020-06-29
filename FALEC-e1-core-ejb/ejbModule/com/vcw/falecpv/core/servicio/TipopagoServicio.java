@@ -56,14 +56,13 @@ public class TipopagoServicio extends AppGenericService<Tipopago, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public Tipopago getByCodINterno(TipoPagoFormularioEnum tipoPagoFormularioEnum,String idEmpresa)throws DaoException{
+	public Tipopago getByCodINterno(TipoPagoFormularioEnum tipoPagoFormularioEnum)throws DaoException{
 		try {
 			
 			QueryBuilder q = new QueryBuilder(tipopagoDao.getEntityManager());
 			
 			return (Tipopago)q.select("p")
 						.from(Tipopago.class,"p")
-						.equals("p.empresa.idempresa",idEmpresa)
 						.equals("p.codinterno",tipoPagoFormularioEnum.getCodInterno()).getSingleResult();
 			
 		} catch (Exception e) {

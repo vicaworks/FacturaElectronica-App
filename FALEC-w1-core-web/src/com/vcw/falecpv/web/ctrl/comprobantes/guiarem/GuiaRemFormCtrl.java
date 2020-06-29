@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falecpv.web.ctrl.guiarem;
+package com.vcw.falecpv.web.ctrl.comprobantes.guiarem;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -106,8 +106,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	
 	public void consultarTipoComprobante()throws DaoException{
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
-				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-						TipoComprobanteEnum.GUIA_REMISION));
+				.getByEmpresaFormulario(TipoComprobanteEnum.GUIA_REMISION));
 	}
 	
 	public void consultarTransportista()throws DaoException{
@@ -187,8 +186,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		guiaRemisionSelected.setTipoemision("1");
-		guiaRemisionSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		guiaRemisionSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
 		guiaRemisionSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());

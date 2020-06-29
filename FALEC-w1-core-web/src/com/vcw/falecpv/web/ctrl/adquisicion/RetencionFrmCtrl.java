@@ -136,8 +136,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	public void consultarTipoComprobante()throws DaoException{
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
-				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-						TipoComprobanteEnum.RETENCION));
+				.getByEmpresaFormulario(TipoComprobanteEnum.RETENCION));
 	}
 	
 	public void consultarRetencionImpuesto()throws DaoException {
@@ -368,8 +367,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private void populateretencion() throws DaoException, ParametroRequeridoException {
 		
 		retencionSeleccion.setTipoemision("1");
-		retencionSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.RETENCION,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		retencionSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.RETENCION));
 		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();

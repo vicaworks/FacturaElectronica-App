@@ -55,14 +55,13 @@ public class TipocomprobanteServicio extends AppGenericService<Tipocomprobante, 
 	 * @return
 	 * @throws DaoException
 	 */
-	public Tipocomprobante getByTipoDocumento(GenTipoDocumentoEnum genTipoDocumentoEnum,String idEmpresa)throws DaoException{
+	public Tipocomprobante getByTipoDocumento(GenTipoDocumentoEnum genTipoDocumentoEnum)throws DaoException{
 		try {
 			
 			QueryBuilder q = new QueryBuilder(tipocomprobanteDao.getEntityManager());
 			
 			return (Tipocomprobante) q.select("d")
 						.from(Tipocomprobante.class,"d")
-						.equals("d.empresa.idempresa",idEmpresa)
 						.equals("d.identificador",genTipoDocumentoEnum.getIdentificador()).getSingleResult();
 			
 		} catch (Exception e) {

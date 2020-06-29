@@ -1,0 +1,359 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.pvPagoDetalleDT .ui-datatable-scrollable-body{
+			min-height: 30vh !important;
+			height: calc(100vh - 790px)!important;
+		}
+		
+		.ui-calendar .ui-inputfield{
+			font-size: 14px !important;
+		}
+		
+		.ui-inputfield-pago .ui-spinner-input{
+			font-size: 12px !important;
+		}
+		
+		.ui-inputfield-pago .ui-inputfield {
+			font-size: 12px !important;
+			padding: 0.2em 0.5em;
+		}
+		
+		.divTotalPago{
+			border-radius: 4px;
+			text-align: center;
+			
+		}
+		
+		.divTotalPagoSaldo{
+			border-radius: 4px;
+			text-align: center;
+		}
+		
+		.divTotalPagoSaldo .cabecera{
+			font-size: 10px;
+			font-weight: 800;
+			padding: 2px !important;
+		}
+		
+		.divTotalPagoSaldo .detalle{
+			font-size: 14px;
+		}
+		
+		.divTotalPago .cabecera{
+			font-size: 10px;
+			font-weight: 800;
+			padding: 2px !important;;
+		}
+		
+		.divTotalPago .detalle{
+			font-size: 14px;
+			font-weight: 800;
+		}
+		
+	</style>
+	
+	<p:remoteCommand name="buscarCliente"  action="#" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente"/>
+	
+	<div class="card card-w-title">
+	
+		<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Cliente</h3>
+		
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+			<h:panelGroup>
+				<div class="ui-inputgroup">
+	                <span class="ui-inputgroup-addon">
+	                	
+	                	<p:commandButton process="@this :formMain:inpCriterioCliente"
+							update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" 
+							action="#{liqCompraFormCtrl.buscarProveedor()}" icon="fa fa-search">
+	                	</p:commandButton>
+	                
+	                </span>
+	                
+	                <p:inputText id="inpCriterioCliente"
+						value="#{null}" required="false"
+						requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						validatorMessage="SOLO NUMEROS"
+						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
+						<f:validateRegex pattern="^\d+$" />
+					</p:inputText>
+	                
+	            </div>
+	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				
+				<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="Wid100">
+					<f:setPropertyActionListener value="CompFacCtrl" target="#{clienteCtrl.callModule}"/>
+					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+				</p:commandButton>
+				
+			</h:panelGroup>
+		
+		</p:panelGrid>
+		
+		<p:panelGrid id="gridCliente" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+		
+			<h:panelGroup>
+				<h:outputText value="#{msg['label.identificacion']} * " styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<p:inputText id="intNDIdentificacionCLiente" maxlength="20" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" validatorMessage="SOLO NUMEROS">
+					<f:validateRegex pattern="^\d+$" />
+				</p:inputText>
+				<p:message for="intNDIdentificacionCLiente"/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<h:outputText value="#{msg['label.razonsocial']} * " styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<p:inputText id="intNDRazonSocial" maxlength="300" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" validatorMessage="SOLO NUMEROS">
+				</p:inputText>
+				<p:message for="intNDRazonSocial"/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<p:calendar id="claFacFecha" value="#{null}"
+					pattern="dd/MMMM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+				</p:calendar>
+				<p:message for="claFacFecha"/>
+			</h:panelGroup>
+		
+		</p:panelGrid>
+		<div class="EmptyBox5"/>
+		<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Documento Modificado</h3>
+		<p:panelGrid id="gridDocModificado" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+		
+			<h:panelGroup>
+				<h:outputText value="TIPO COMPROBANTE * " styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<p:selectOneMenu id="somNdTipComprobante"
+								value="#{null}"
+								converter="omnifaces.SelectItemsConverter"
+								required="true"
+								requiredMessage="REQUERIDO"
+								styleClass="Wid100"
+								filter="true" filterMatchMode="contains">
+					<f:selectItem itemLabel="Seleccionar ..."
+							itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+	
+					<f:selectItems value="#{notaCreditoCtrl.tipocomprobanteList}" var="tp"
+						itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
+						
+				</p:selectOneMenu>
+				<p:message for="somNdTipComprobante" />
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<h:outputText value="NUMERO DOCUMENTO ASOCIADO *" styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon">
+                        <p:commandButton id="cmdConsultarDocu"
+							icon="fa fa-search" 
+							action="#" 
+							styleClass="Fs12 Wid100 displayButton" 
+							update=":formMain:msgFormMain :formMain:gridDocModificado"
+							process="@this :formMain:inpNcNumFac" title="BUSCAR"/>
+                    </span>
+					<p:inputMask id="inpNcNumFac" value="#{null}" mask="999-999-9999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 13 DIGITOS" placeholder="FORMATO : 000-000-0000000"/>
+                </div>
+				<p:message for="inpNcNumFac" />
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<p:calendar id="claFacFechaDocAsociado" value="#{null}"
+					pattern="dd/MMMM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+				</p:calendar>
+				<p:message for="claFacFechaDocAsociado"/>
+			</h:panelGroup>
+			
+		</p:panelGrid>
+		
+		<div class="EmptyBox5"/>
+		<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h3>
+		
+		<p:panelGrid id="gridOpcPagos" columns="2"
+			 styleClass="ui-panelgrid-blank Wid100" 
+			 columnClasses="ui-g-12 ui-md-6,
+			 				ui-g-12 ui-md-6">
+			 				
+			 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" styleClass="Wid100"/>
+			 
+			 <p:commandButton value="OTROS" icon="fa fa-plus" action="#{tipoPagoCtrl.showModal()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100">
+			 	<f:setPropertyActionListener value="LIQCOMPRA" target="#{tipoPagoCtrl.callModule}"/>
+			 	<f:setPropertyActionListener value="#{liqCompraFormCtrl.liqCompraSelected.totalconimpuestos}" target="#{tipoPagoCtrl.total}"/>
+            	<f:setPropertyActionListener value="formMain" target="#{tipoPagoCtrl.callForm}"/>
+            	<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" target="#{tipoPagoCtrl.updateView}"/>
+			 </p:commandButton>
+			
+		</p:panelGrid>
+		
+		<!-- detalle pago -->
+		<div class="EmptyBox5"/>
+		<p:outputPanel id="oupPagoDT">
+			
+			<p:dataTable id="pvPagoDetalleDT"
+	        			scrollable="true"
+	        			value="#{liqCompraFormCtrl.pagoList}"
+	        			var="p"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvPagoDetalleDT Fs12"  
+						rowKey="#{p.idpago}"
+						selectionMode="single"
+						selection="#{liqCompraFormCtrl.pagoSelected}">
+				
+				<p:ajax event="rowSelect"  update=":formMain:pvPagoDetalleDT">
+				</p:ajax>
+				
+				<p:column headerText="ITEM" style="width:90%;">
+					
+					<div class="EmptyBox5"/>
+					<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
+						
+						<div class="p-col-12">
+							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markBlack"/>
+						</div>
+						
+						<div class="p-col-12">
+						
+							<div class="p-grid Fs10">
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+								
+									<h:outputText value="VALOR" styleClass="Fs12"/>
+									
+									<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" >
+										<p:ajax listener="#{liqCompraFormCtrl.totalizarPagoaction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+									</p:spinner>
+									
+								</div>
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+									<!-- Efectivo -->								
+									<h:outputText value="Entrega" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
+									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" >
+										<p:ajax listener="#{liqCompraFormCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+									</p:spinner>
+									
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
+									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
+									
+									<!-- credito -->
+									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}"/>
+									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" >
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
+									
+								</div>
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+									<!-- Efectivo -->
+									<h:outputText value="Cambio" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
+									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" readonly="true" >
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
+									
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
+									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
+									
+									<!-- credito -->
+									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />							
+									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />
+									
+								</div>
+								
+								
+								
+							</div>
+						</div>
+					</div>
+				</p:column>
+				
+				<p:column style="width:10%;" styleClass="TexAlCenter">
+					
+					<div class="p-grid p-justify-center p-align-center">
+						<div class="p-col-12">
+							<p:commandLink  action="#{liqCompraFormCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT">
+								<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>		
+						</div>
+					</div>
+				
+				</p:column>
+							
+			</p:dataTable>
+			
+			<div class="EmptyBox10"/>
+	        <div class="p-grid p-justify-around p-align-center" >
+	        
+	        	<div class="p-col-12 p-md-5 divTotalPago">
+	        		<div class="p-grid p-justify-center">
+	        			<div class="p-col-12 cabecera">
+	        				TOTAL
+	        			</div>
+	        			<div class="p-col-12 detalle">
+	        				<h:outputText value="#{liqCompraFormCtrl.totalPago}">
+			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+			            	</h:outputText>
+	        			</div>
+	        		</div>
+	        	</div>
+	        	
+	        	<div class="p-col-12 p-md-5 divTotalPagoSaldo">
+	        		<div class="p-grid p-justify-center">
+	        			<div class="p-col-12 cabecera">
+	        				SALDO
+	        			</div>
+	        			<div class="p-col-12 detalle">
+	        				<h:outputText value="#{liqCompraFormCtrl.totalSaldo}">
+			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+			            	</h:outputText>
+	        			</div>
+	        		</div>
+	        	</div>
+	        	
+	        </div>
+			
+		</p:outputPanel>
+		
+	
+	</div>
+		
+	
+</ui:composition>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.vcw.falecpv.web.ctrl.guiarem;
+package com.vcw.falecpv.web.ctrl.comprobantes.guiarem;
 
 import java.util.Date;
 import java.util.List;

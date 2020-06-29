@@ -426,8 +426,7 @@ public class CompFacCtrl extends BaseCtrl {
 			pagoList = new ArrayList<>();
 		}
 		
-		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum);
 		
 		boolean flag = false;
 		for (Pago p : pagoList) {
@@ -681,8 +680,7 @@ public class CompFacCtrl extends BaseCtrl {
 	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		cabecerSelected.setTipoemision("1");
-		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
 		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());

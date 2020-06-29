@@ -185,11 +185,9 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		totalizarPagoDetalle();
 		
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
-				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-						TipoComprobanteEnum.ADQUICIION));
+				.getByEmpresaFormulario(TipoComprobanteEnum.ADQUICIION));
 		
-		setTipopagoList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), TipoPagoEnum.ADQUISICION));
+		setTipopagoList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(TipoPagoEnum.ADQUISICION));
 		
 		consultarProveedor();
 		consultarIva();
@@ -209,13 +207,11 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisicionSelected.setTotalfactura(BigDecimal.ZERO);
 		adquisicionSelected.setTotalpagar(BigDecimal.ZERO);
 		adquisicionSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
-		adquisicionSelected.setTipopago(tipopagoServicio.getTipopagoDao().getByNombre(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), "EFECTIVO"));
+		adquisicionSelected.setTipopago(tipopagoServicio.getTipopagoDao().getByNombre("EFECTIVO"));
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
-				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-						TipoComprobanteEnum.ADQUICIION));
+				.getByEmpresaFormulario(TipoComprobanteEnum.ADQUICIION));
 		
-		setTipopagoList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), TipoPagoEnum.ADQUISICION));
+		setTipopagoList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(TipoPagoEnum.ADQUISICION));
 		
 		consultarProveedor();
 		consultarIva();
@@ -400,8 +396,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			}
 			
 			
-			setTipopagoFormList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), TipoPagoEnum.ADQUISICION));
+			setTipopagoFormList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(TipoPagoEnum.ADQUISICION));
 			
 			
 			

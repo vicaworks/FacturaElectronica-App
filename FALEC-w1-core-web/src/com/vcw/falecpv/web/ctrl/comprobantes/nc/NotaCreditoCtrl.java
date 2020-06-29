@@ -142,8 +142,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	public void consultarTipoComprobante()throws DaoException{
 		
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
-				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-						TipoComprobanteEnum.NOTACREDITO));
+				.getByEmpresaFormulario(TipoComprobanteEnum.NOTACREDITO));
 	}
 	
 	@Override
@@ -202,8 +201,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		notaCreditoSeleccion.setTipoemision("1");
-		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
 		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());

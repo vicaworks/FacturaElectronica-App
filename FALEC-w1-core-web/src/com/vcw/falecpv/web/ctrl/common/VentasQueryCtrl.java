@@ -18,7 +18,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
 import com.vcw.falecpv.core.servicio.query.ConsultaGeneralComprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
-import com.vcw.falecpv.web.ctrl.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**

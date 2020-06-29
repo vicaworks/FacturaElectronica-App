@@ -13,7 +13,7 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
-import com.vcw.falecpv.web.ctrl.liqcompra.LiqCompraFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
