@@ -210,10 +210,12 @@
 
 								<p:inputMask id="inpAdqNumFac"
 									value="#{adquisicionFrmCtrl.adquisicionSelected.numfactura}"
-									mask="9999999999999" required="true"
+									mask="999-999-9999999" required="true"
 									requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="13"
-									validatorMessage="SOLO NUMEROS, 13 DIGITOS"
-									placeholder="FORMATO : 13 DIGITOS" />
+									validatorMessage="FORMATO 999-999-9999999"
+									placeholder="FORMATO : 999-999-9999999" >
+									<f:converter converterId="formatoNumComprobanteConverter"/>
+								</p:inputMask>
 
 								<p:message for="inpAdqNumFac" />
 							</h:panelGroup>

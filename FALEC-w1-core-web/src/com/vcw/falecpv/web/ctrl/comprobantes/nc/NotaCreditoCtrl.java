@@ -540,6 +540,8 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			Cabecera c = cabeceraServicio.getCabeceraDao().getByTipoComprobante(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), notaCreditoSeleccion.getTipocomprobanteretencion() ,notaCreditoSeleccion.getNumfactura());
 			if(c!=null) {
 				nuevoByFacturaEmitida(c.getIdcabecera());
+			}else {
+				AppJsfUtil.addErrorMessage("formMain:inpNcNumFac", "ERROR", "NO EXISTE");
 			}
 			
 		} catch (Exception e) {

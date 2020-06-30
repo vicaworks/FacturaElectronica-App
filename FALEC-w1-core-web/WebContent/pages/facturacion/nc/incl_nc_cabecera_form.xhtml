@@ -133,7 +133,9 @@
 								update="@form"
 								process="@this :formMain:somNcTipComprobante :formMain:inpNcNumFac" title="BUSCAR"/>
 	                    </span>
-						<p:inputMask id="inpNcNumFac" value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" mask="9999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 13 DIGITOS" placeholder="FORMATO : 13 DIGITOS"/>
+						<p:inputMask id="inpNcNumFac" value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" mask="999-999-9999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="FORMATO 999-999-9999999" placeholder="FORMATO : 999-999-9999999">
+							<f:converter converterId="formatoNumComprobanteConverter"/>
+						</p:inputMask>
 	                </div>
 					<p:message for="inpNcNumFac" />
 				</h:panelGroup>

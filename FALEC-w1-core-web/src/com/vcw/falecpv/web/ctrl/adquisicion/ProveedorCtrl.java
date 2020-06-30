@@ -287,10 +287,10 @@ public class ProveedorCtrl extends BaseCtrl {
 			Row rowCliente = sheet.getRow(3);
 			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(new Date()));
 			
-			sheet.getRow(4);
+			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
 			
-			sheet.getRow(5);
+			rowCliente = sheet.getRow(5);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
 			
 			

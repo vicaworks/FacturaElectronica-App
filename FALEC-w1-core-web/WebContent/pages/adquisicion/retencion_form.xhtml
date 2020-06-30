@@ -50,6 +50,10 @@
 				background-color: #ccc !important;
 			}
 			
+			.ui-selectonemenu-item {
+			    font-size: 10px;
+			}
+			
         </style>
     </ui:define>
 
@@ -212,7 +216,7 @@
 			
 									<f:selectItems value="#{retencionFrmCtrl.tipocomprobanteList}" var="tp"
 										itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
-										
+									
 								</p:selectOneMenu>
 								<p:message for="somRtnTipComprobante" />
 							</h:panelGroup>
@@ -239,7 +243,9 @@
 							
 							<h:outputText value="NUM FACTURA * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="9999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="13" validatorMessage="SOLO NUMEROS, 13 DIGITOS" placeholder="FORMATO : 13 DIGITOS"/>
+								<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999-999-9999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="13" validatorMessage="FORMATO 999-999-9999999" placeholder="FORMATO : 999-999-9999999">
+									<f:converter converterId="formatoNumComprobanteConverter"/>
+								</p:inputMask>
 								<p:message for="inpRtnNumFac" />
 							</h:panelGroup>
 						
@@ -292,7 +298,7 @@
 													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 					
 											<f:selectItems value="#{retencionFrmCtrl.retencionimpuestodetList}" var="rid"
-												itemLabel="#{rid.nombre}" itemValue="#{rid}" />
+												itemLabel="#{rid.display}" itemValue="#{rid}" itemDescription="#{rid.nombre}"/>
 											
 											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update="@form" process="@this"/>
 											

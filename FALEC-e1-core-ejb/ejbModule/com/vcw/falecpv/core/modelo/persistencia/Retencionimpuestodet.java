@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -66,6 +67,9 @@ public class Retencionimpuestodet implements Serializable {
     @ManyToOne(optional = false)
     private Retencionimpuesto retencionimpuesto;
     
+    @Transient
+    private String display;
+    
 	/**
 	 * 
 	 */
@@ -94,7 +98,7 @@ public class Retencionimpuestodet implements Serializable {
 
     @Override
     public String toString() {
-    	return String.format("%s[id=%s]", nombre , idretencionimpuestodet);
+    	return String.format("%s[id=%s]", getDisplay() , idretencionimpuestodet);
     }
     
     public String toStringObject() {
@@ -183,6 +187,24 @@ public class Retencionimpuestodet implements Serializable {
 	 */
 	public void setRetencionimpuesto(Retencionimpuesto retencionimpuesto) {
 		this.retencionimpuesto = retencionimpuesto;
+	}
+
+	/**
+	 * @return the display
+	 */
+	public String getDisplay() {
+		display = "";
+		if(nombre!=null) {
+			display = nombre.length()>130?nombre.substring(0,130):nombre;
+		}
+		return display;
+	}
+
+	/**
+	 * @param display the display to set
+	 */
+	public void setDisplay(String display) {
+		this.display = display;
 	}
 
 }
