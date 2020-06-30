@@ -87,7 +87,7 @@
 	                selectionMode="single"
 	                selection="#{ventasQueryCtrl.resumenCabeceraQuery}">
 	                
-	                <p:ajax event="rowSelect" listener="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
+	                <p:ajax event="rowDblselect" listener="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
 	                	<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>
 					</p:ajax>
 					
@@ -95,6 +95,8 @@
 	                	<h:outputText value="FACTURA" rendered="#{v.indentificadorcomprobante=='01'}" styleClass="markOrange Fs10">
 						</h:outputText>
 						<h:outputText value="RECIBO" rendered="#{v.indentificadorcomprobante=='00'}"  styleClass="markBlack Fs10">
+						</h:outputText>
+						<h:outputText value="LIQ COMPRAS" rendered="#{v.indentificadorcomprobante=='03'}"  styleClass="markBlack Fs10">
 						</h:outputText>
 	                </p:column>
 	                

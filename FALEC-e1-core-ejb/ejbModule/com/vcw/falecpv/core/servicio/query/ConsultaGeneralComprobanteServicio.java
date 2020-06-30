@@ -6,11 +6,15 @@ package com.vcw.falecpv.core.servicio.query;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGVentasPopUpEnum;
 import com.vcw.falecpv.core.dao.DBUtilGenericoApp;
 import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
+import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.util.SqlUtil;
 
 /**
@@ -19,6 +23,9 @@ import com.vcw.falecpv.core.util.SqlUtil;
  */
 @Stateless
 public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
+	
+	@EJB
+	private ParametroGenericoServicio parametroGenericoServicio;
 
 	/**
 	 * @author cristianvillarreal
@@ -32,9 +39,21 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 	 * @throws DaoException
 	 */
 	public List<ResumenCabeceraQuery> getComprovantesVentasByDateCriteria(String idEstablecimiento, String criteria,
-			Date desde, Date hasta) throws DaoException {
+			Date desde, Date hasta,String tipoComprobante) throws DaoException {
 		try {
 			
+			// consulta de parametrosgenericos los tipos de comprobantes incluidos
+			String identificadorComprobante = null;
+			switch (tipoComprobante) {
+			case "GUIA_REMISION":
+				identificadorComprobante = (String)parametroGenericoServicio.consultarParametro(PGVentasPopUpEnum.GUIA_REMISION, TipoRetornoParametroGenerico.STRING);
+				break;
+			case "NOTA_DEBITO":
+				identificadorComprobante = (String)parametroGenericoServicio.consultarParametro(PGVentasPopUpEnum.NOTA_DEBITO, TipoRetornoParametroGenerico.STRING);
+				break;	
+			default:
+				break;
+			}
 			
 			String sql = "select " +
 							"		c.fechaemision, " +
@@ -68,7 +87,8 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 							"	where " +
 							"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 							"		and c.estado <> 'ANULADO' " +
-							"		and tc.identificador in ('00','01')";
+							"		and tc.identificador in (" + identificadorComprobante + ")";
+//							"		and tc.identificador in ('00','01')";
 			
 			if(criteria!=null && !criteria.trim().isEmpty()) {
 				sql += "   and (c.secuencial like '%" + criteria.toUpperCase()  + "%' "
