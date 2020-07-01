@@ -28,6 +28,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Detalleimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
+import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
@@ -74,6 +75,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	
 	@Inject
 	private DetalledestinatarioServicio detalledestinatarioServicio;
+	
+	@Inject
+	private MotivoServicio motivoServicio;
 	
 	public CabeceraServicio() {
 	}
@@ -184,7 +188,19 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 5. pago
+		// 5. motivo
+		motivoServicio.getMotivoDao().eliminarByCabecera(cabecera.getIdcabecera());
+		if(cabecera.getMotivoList()!=null) {
+			for (Motivo	m : cabecera.getMotivoList()) {
+				m.setCabecera(cabecera);
+				if(m.getIdmotivo()==null || m.getIdmotivo().contains("M")) {
+					m.setIdmotivo(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.MOTIVO, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				motivoServicio.crear(m);
+			}
+		}
+		
+		// 6. pago
 		pagoServicio.getPagoDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getPagoList()!=null) {
 			for (Pago	p : cabecera.getPagoList()) {
@@ -196,7 +212,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 6. infoadicional
+		// 7. infoadicional
 		infoadicionalServicio.getInfoadicionalDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getInfoadicionalList()!=null) {
 			for (Infoadicional	ia : cabecera.getInfoadicionalList()) {
@@ -208,7 +224,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 7. impuestoretencion
+		// 8. impuestoretencion
 		impuestoretencionServicio.getImpuestoretencionDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getImpuestoretencionList()!=null) {
 			for (Impuestoretencion ir : cabecera.getImpuestoretencionList()) {
@@ -220,7 +236,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 8. destinatario guia remision
+		// 9. destinatario guia remision
 		destinatarioServicio.getDestinatarioDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getDestinatarioList()!=null) {
 			for (Destinatario des : cabecera.getDestinatarioList()) {
@@ -244,7 +260,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 9. Si es retencion y tiene una compra actualiza los datos de la compra
+		// 10. Si es retencion y tiene una compra actualiza los datos de la compra
 		if(cabecera.getAdquisicion()!=null && cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.RETENCION.getIdentificador())) {
 			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
 			adquisicion.setTotalretencion(cabecera.getTotalretencion());
@@ -253,7 +269,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			adquisicionServicio.actualizar(adquisicion);
 		}
 		
-		// 10. si es nota de credito y tiene referencia a la cabecera anular la factura 
+		// 11. si es nota de credito y tiene referencia a la cabecera anular la factura 
 		if(GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()).equals(GenTipoDocumentoEnum.NOTA_CREDITO) && cabecera.getIdcabecerapadre()!=null) {
 			Cabecera c= consultarByPk(cabecera.getIdcabecerapadre());
 			if(c!=null) {

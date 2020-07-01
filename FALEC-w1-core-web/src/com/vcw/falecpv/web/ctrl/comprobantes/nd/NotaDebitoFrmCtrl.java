@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.ctrl.comprobantes.nd;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,25 +20,33 @@ import org.omnifaces.util.Ajax;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
+import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
-import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
+import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
+import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
-import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
+import com.vcw.falecpv.core.servicio.MotivoServicio;
 import com.vcw.falecpv.core.servicio.NotaDebitoServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
+import com.vcw.falecpv.core.servicio.TotalimpuestoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -67,9 +76,6 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	private CabeceraServicio cabeceraServicio;
 	
 	@EJB
-	private DetalleServicio detalleServicio;
-	
-	@EJB
 	private ContadorPkServicio contadorPkServicio;
 	
 	@EJB
@@ -84,6 +90,13 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	@EJB
 	private TipopagoServicio tipopagoServicio;
 	
+	@EJB
+	private MotivoServicio motivoServicio;
+	
+	@EJB
+	private TotalimpuestoServicio totalimpuestoServicio;
+	
+	
 	private List<Iva> ivaList;
 	private BigDecimal totalPago = BigDecimal.ZERO;
 	private BigDecimal totalSaldo = BigDecimal.ZERO;
@@ -92,8 +105,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	private String criterioCliente;
 	private List<Tipocomprobante> tipocomprobanteList;
 	private Cabecera notDebitoSelected;
-	private List<Detalle> notDebitoDetalleList;
-	private Detalle detalleSelected;
+	private List<Motivo> motivoList;
+	private Motivo motivoSelected;
+	private Totalimpuesto totalimpuesto;
 
 	/**
 	 * 
@@ -125,6 +139,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	
 	public void nuevaNotDebito() throws DaoException{
 		
+		consultarTipoComprobante();
+		consultarIva();
+		
 		notDebitoSelected = new Cabecera();
 		notDebitoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 		notDebitoSelected.setTotal(BigDecimal.ZERO);
@@ -135,16 +152,20 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTotalconimpuestos(BigDecimal.ZERO);
 		notDebitoSelected.setDetalleList(new ArrayList<>());
 		notDebitoSelected.setFechaemision(new Date());
-		notDebitoDetalleList = null;
+		notDebitoSelected.setCliente(new Cliente());
+		totalimpuesto = new Totalimpuesto();
+		totalimpuesto.setBaseimponible(BigDecimal.ZERO);
+		totalimpuesto.setDescuentoadicional(BigDecimal.ZERO);
+		totalimpuesto.setValor(BigDecimal.ZERO);
+		totalimpuesto.setIva(ivaList.stream().filter(x->x.getValor().intValue() == 0 ).findFirst().orElse(null));
+		motivoList = new ArrayList<>();;
 		criterioCliente = null;
-		detalleSelected = null;
+		motivoSelected = null;
 		pagoList = null;
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
 		totalSaldo = BigDecimal.ZERO;
 		
-		consultarTipoComprobante();
-		consultarIva();
 	}
 	
 	public void buscarCliente() {
@@ -171,6 +192,37 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 	
+	public void buscarNumDocumento() {
+		try {
+			
+			Cabecera c = cabeceraServicio.getCabeceraDao().getByTipoComprobante(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), notDebitoSelected.getTipocomprobanteretencion() ,notDebitoSelected.getNumdocasociado());
+			if(c!=null) {
+				nuevoByFacturaEmitida(c.getIdcabecera());
+			}else {
+				AppJsfUtil.addErrorMessage("formMain:inpNcNumFac", "ERROR", "NO EXISTE");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void nuevoByFacturaEmitida(String idFactura)throws DaoException{
+		
+		
+		nuevaNotDebito();
+		Cabecera cabecera = cabeceraServicio.consultarByPk(idFactura);
+		notDebitoSelected.setCliente(cabecera.getCliente());
+		notDebitoSelected.setFechaemision(cabecera.getFechaemision());
+		notDebitoSelected.setTipocomprobanteretencion(cabecera.getTipocomprobante());
+		notDebitoSelected.setFechaemisiondocasociado(cabecera.getFechaemision());
+		notDebitoSelected.setNumdocasociado(cabecera.getNumdocumento());
+		
+		totalizar();
+		
+	}
+	
 	@Override
 	public void nuevo() {
 		try {
@@ -186,33 +238,20 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	public void agregarItem() {
 		try {
 			
-			if(notDebitoDetalleList==null) {
-				notDebitoDetalleList = new ArrayList<>();
+			if(motivoList==null) {
+				motivoList = new ArrayList<>();
 			}
 			
 			consultarIva();
 			
-			detalleSelected = new Detalle();
-			detalleSelected.setCantidad(BigDecimal.valueOf(1));
-			detalleSelected.setDescuento(BigDecimal.ZERO);
-			detalleSelected.setDescripcion("");
-			detalleSelected.setPreciounitario(BigDecimal.ZERO);
-			detalleSelected.setProducto(null);
-			detalleSelected.setValorice(BigDecimal.ZERO);
-			detalleSelected.setValoriva(BigDecimal.ZERO);
-			detalleSelected.setIva(ivaServicio.getIvaDao().getByValor(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),BigDecimal.ZERO));
-			// valida
-			if(detalleSelected.getIva()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA CON VALOR CERO");
-				return;
-			}
+			motivoSelected = new Motivo();
+			motivoSelected.setValor(BigDecimal.ZERO);
 			
-			notDebitoDetalleList.add(detalleSelected);
+			motivoList.add(motivoSelected);
 			
-			calcularItem(detalleSelected);
+			calcularItem(motivoSelected);
 			totalizar();
-			
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (notDebitoDetalleList.size()-1) + ":intDetNombreProducto');");
+			Ajax.oncomplete("PrimeFaces.focus('formMain:notMotivoDT:" + (motivoList.size()-1) + ":intNdMotivo');");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -220,10 +259,10 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void calcularItemAction(Detalle det) {
+	public void calcularItemAction(Motivo det) {
 		try {
-			detalleSelected = det;
-			calcularItem(detalleSelected);
+			motivoSelected = det;
+			calcularItem(motivoSelected);
 			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -231,46 +270,54 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}
 	}
 	
-	private void calcularItem(Detalle dFac) {
+	private void calcularItem(Motivo dFac) {
 		
-		dFac.setPreciototalsinimpuesto(dFac.getCantidad().multiply(dFac.getPreciounitario()).add(dFac.getDescuento().negate()).setScale(2, RoundingMode.HALF_UP));
-		dFac.setValoriva(dFac.getIva().getValor().divide(BigDecimal.valueOf(100))
-				.multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
-		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva()).setScale(2, RoundingMode.HALF_UP));
+		dFac.setValor(dFac.getValor());
 		
 	}
 	
 	private void totalizar() throws DaoException {
 		if(notDebitoSelected==null) nuevaNotDebito();		
 		
-		notDebitoSelected.setTotaliva(BigDecimal.ZERO);
-		notDebitoSelected.setTotaldescuento(BigDecimal.ZERO);
 		notDebitoSelected.setTotalsinimpuestos(BigDecimal.ZERO);
-		notDebitoSelected.setTotalconimpuestos(BigDecimal.ZERO);
 		
 		int i= 1;
-		for (Detalle d : notDebitoDetalleList) {
+		for (Motivo d : motivoList) {
 			
-			notDebitoSelected.setTotalsinimpuestos(notDebitoSelected.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
-			notDebitoSelected.setTotaliva(notDebitoSelected.getTotaliva().add(d.getValoriva()));
-			notDebitoSelected.setTotaldescuento(notDebitoSelected.getTotaldescuento().add(d.getDescuento()));
+			notDebitoSelected.setTotalsinimpuestos(notDebitoSelected.getTotalsinimpuestos().add(d.getValor()));
 			
-			if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
-				d.setIddetalle("MM" + i);
+			if(d.getIdmotivo()==null || d.getIdmotivo().contains("MM")) {
+				d.setIdmotivo("MM" + i);
 			}
 			
 			i++;
 		}
 		
-		notDebitoSelected.setTotaliva(notDebitoSelected.getTotaliva().setScale(2, RoundingMode.HALF_UP));
-		notDebitoSelected.setTotaldescuento(notDebitoSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));
 		notDebitoSelected.setTotalsinimpuestos(notDebitoSelected.getTotalsinimpuestos().setScale(2, RoundingMode.HALF_UP));
-		notDebitoSelected.setTotalconimpuestos(notDebitoSelected.getTotalsinimpuestos().add(notDebitoSelected.getTotaliva()).add(notDebitoSelected.getTotalice()).setScale(2, RoundingMode.HALF_UP));
+		totalimpuesto.setBaseimponible(notDebitoSelected.getTotalsinimpuestos());
+		if(totalimpuesto.getIva()!=null) {
+			notDebitoSelected.setTotaliva(totalimpuesto.getIva().getValor().divide(BigDecimal.valueOf(100)).multiply(notDebitoSelected.getTotalsinimpuestos()).setScale(2, RoundingMode.HALF_UP));
+			totalimpuesto.setValor(notDebitoSelected.getTotaliva());
+		}else {
+			notDebitoSelected.setTotaliva(BigDecimal.ZERO);
+			totalimpuesto.setValor(BigDecimal.ZERO);
+		}
+		
+		notDebitoSelected.setTotalconimpuestos(notDebitoSelected.getTotalsinimpuestos().add(notDebitoSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
 		
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}
 		
+	}
+	
+	public void calcularIvaAction() {
+		try {
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	public void eliminarDetalle() {
@@ -280,22 +327,17 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			
 			// eliminar
 			
-			for (Detalle p : notDebitoDetalleList) {
-				if(detalleSelected.getIddetalle().equals(p.getIddetalle())) {
+			for (Motivo p : motivoList) {
+				if(motivoSelected.getIdmotivo().equals(p.getIdmotivo())) {
 					break;
 				}
 			}
 			
-			if(notDebitoSelected.getDetalleEliminarList()==null) {
-				notDebitoSelected.setDetalleEliminarList(new ArrayList<>());
-			}
-			detalleSelected.setIdUsuarioEliminacion(AppJsfUtil.getUsuario().getIdusuario());
-			notDebitoSelected.getDetalleEliminarList().add(detalleSelected);
-			notDebitoDetalleList.remove(detalleSelected);
-			if(notDebitoDetalleList.isEmpty()) {
-				detalleSelected=null;
+			motivoList.remove(motivoSelected);
+			if(motivoList.isEmpty()) {
+				motivoSelected=null;
 			}else {
-				detalleSelected = notDebitoDetalleList.get(notDebitoDetalleList.size()-1);
+				motivoSelected = motivoList.get(motivoList.size()-1);
 			}
 			
 			totalizar();
@@ -460,7 +502,8 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			return "NO EXISTE LA NOTA DEBITO";
 		}
 		
-		notDebitoDetalleList = detalleServicio.getDetalleDao().getByIdCabecera(idNotDebito);
+		motivoList = motivoServicio.getMotivoDao().getByIdCabecera(idNotDebito);
+		totalimpuesto = totalimpuestoServicio.getTotalimpuestoDao().getByIdCabecera(idNotDebito).isEmpty()?null:totalimpuestoServicio.getTotalimpuestoDao().getByIdCabecera(idNotDebito).get(0);
 		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idNotDebito);
 		pagoList.stream().forEach(x->{
 			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
@@ -475,12 +518,86 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
+			// validar estado
+			if(notDebitoSelected.getIdcabecera()!=null) {
+				
+				String analisisEstado = notaDebitoServicio.analizarEstado(notDebitoSelected.getIdcabecera(),notDebitoSelected.getEstablecimiento().getIdestablecimiento(), "GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+				
+			}
+			
+			if(motivoList==null || motivoList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE LISTA DE MOTIVOS.");
+				return;
+			}
+			
+			
+			populateNotaDebito(GenTipoDocumentoEnum.NOTA_DEBITO);
+			notDebitoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			notDebitoSelected.setUpdated(new Date());
+			notDebitoSelected.setPagoList(pagoList);	
+			notDebitoSelected.setDetalleEliminarList(null);
+			notDebitoSelected.setDetalleList(null);
+			notDebitoSelected = cabeceraServicio.guardarComprobanteFacade(notDebitoSelected);
+			
+			NotaDebitoCtrl notaDebitoCtrl = (NotaDebitoCtrl) AppJsfUtil.getManagedBean("notaDebitoCtrl");
+			notaDebitoCtrl.consultar();
+			
+			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO CORRECTAMENTE");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
+
+	private void populateNotaDebito(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException{
+		notDebitoSelected.setTipoemision("1");
+		notDebitoSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
+		
+		notDebitoSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notDebitoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		determinarPeriodoFiscal();
+		notDebitoSelected.setContribuyenteespecial("5368");
+		notDebitoSelected.setMoneda("DOLAR");
+		if(notDebitoSelected.getSecuencial()==null) {
+			notDebitoSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
+					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+			// clave de acceso
+			notDebitoSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(notDebitoSelected,
+					contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIONOTADEBITO,
+							notDebitoSelected.getEstablecimiento().getIdestablecimiento(), new Object[] { false })));
+			notDebitoSelected.setNumdocumento(TextoUtil.leftPadTexto(notDebitoSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(notDebitoSelected.getSecuencial()));
+			notDebitoSelected.setNumfactura(notDebitoSelected.getNumdocumento());
+		}
+		
+		notDebitoSelected.setPropina(BigDecimal.ZERO);
+		notDebitoSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		
+		if(notDebitoSelected.getTipocomprobanteretencion()!=null) {
+			notDebitoSelected.setTipodocasociado(notDebitoSelected.getTipocomprobanteretencion().getIdentificador());
+		}
+		notDebitoSelected.setImportetotal(notDebitoSelected.getTotalconimpuestos());
+		totalimpuesto.setBaseimponible(totalimpuesto.getIva().getValor());
+		
+		// tabla de total impuesto
+		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
+		totalimpuestoList.add(totalimpuesto);
+		notDebitoSelected.setTotalimpuestoList(totalimpuestoList);
+		notDebitoSelected.setMotivoList(motivoList);
+		// infromacion adicional 
+		notDebitoSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notDebitoSelected));
+	}
+	
+	private void determinarPeriodoFiscal() {
+		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
+		notDebitoSelected.setPeriodofiscal(sf.format(notDebitoSelected.getFechaemision()));
+	}
 
 	/**
 	 * @return the ivaList
@@ -595,31 +712,45 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	}
 
 	/**
-	 * @return the notDebitoDetalleList
+	 * @return the motivoList
 	 */
-	public List<Detalle> getNotDebitoDetalleList() {
-		return notDebitoDetalleList;
+	public List<Motivo> getMotivoList() {
+		return motivoList;
 	}
 
 	/**
-	 * @param notDebitoDetalleList the notDebitoDetalleList to set
+	 * @param motivoList the motivoList to set
 	 */
-	public void setNotDebitoDetalleList(List<Detalle> notDebitoDetalleList) {
-		this.notDebitoDetalleList = notDebitoDetalleList;
+	public void setMotivoList(List<Motivo> motivoList) {
+		this.motivoList = motivoList;
 	}
 
 	/**
-	 * @return the detalleSelected
+	 * @return the motivoSelected
 	 */
-	public Detalle getDetalleSelected() {
-		return detalleSelected;
+	public Motivo getMotivoSelected() {
+		return motivoSelected;
 	}
 
 	/**
-	 * @param detalleSelected the detalleSelected to set
+	 * @param motivoSelected the motivoSelected to set
 	 */
-	public void setDetalleSelected(Detalle detalleSelected) {
-		this.detalleSelected = detalleSelected;
+	public void setMotivoSelected(Motivo motivoSelected) {
+		this.motivoSelected = motivoSelected;
+	}
+
+	/**
+	 * @return the totalimpuesto
+	 */
+	public Totalimpuesto getTotalimpuesto() {
+		return totalimpuesto;
+	}
+
+	/**
+	 * @param totalimpuesto the totalimpuesto to set
+	 */
+	public void setTotalimpuesto(Totalimpuesto totalimpuesto) {
+		this.totalimpuesto = totalimpuesto;
 	}
 
 }

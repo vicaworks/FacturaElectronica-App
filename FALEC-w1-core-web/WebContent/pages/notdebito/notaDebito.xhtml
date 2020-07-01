@@ -180,10 +180,10 @@
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"  
-					rows="15"
-					rowsPerPageTemplate="15,20,25,30,35,40">
+					rows="10"
+					rowsPerPageTemplate="10,15,20,25,30,35,40">
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtNotaDebito">
 							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
@@ -191,10 +191,10 @@
 						
 						<p:menu overlay="true" trigger="cmlDtNotaDebito" my="left top" at="left bottom">
 							
-							<p:menuitem value="Ver #{msg['label.notadebito']}" action="#" icon="fa fa-eye" process="guiaRemDT" update="@form">
+							<p:menuitem value="Ver #{msg['label.notadebito']}" action="#{notaDebitoCtrl.editarNd(r.idcabecera)}" icon="fa fa-eye" process="notDebitoDT" update="@form">
 							</p:menuitem>
 							
-							<p:menuitem value="Anular" action="#{notaDebitoCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Anular" action="#{notaDebitoCtrl.eliminar()}" icon="fa fa-trash-o" process="notDebitoDT" update="@form" disabled="#{r.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r}" target="#{notaDebitoCtrl.notDebitoSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
@@ -203,15 +203,15 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="ID" style="width:70px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{r.numdocumento}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+					<p:column headerText="ESTADO" style="width:60px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
 						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
 					</p:column>
 					
-					<p:column headerText="RUC / CI " style="width:60px;" filterBy="#{r.cliente.identificacion}" filterMatchMode="contains">
+					<p:column headerText="RUC / CI " style="width:80px;" filterBy="#{r.cliente.identificacion}" filterMatchMode="contains">
 						<h:outputText value="#{r.cliente.identificacion}" />
 					</p:column>
 					
@@ -219,19 +219,41 @@
 						<h:outputText value="#{r.cliente.razonsocial}" />
 					</p:column>
 					
-					<p:column headerText="SUBTOTAL" style="width:40px;">
+					<p:column headerText="MOTIVO" style="width:150px;">
+						
+						<div class="p-grid p-align-top vertical-container">
+							
+							<p:repeat var="m" value="#{r.motivoList}">
+								<div class="p-col-12 p-md-8">
+									<h:outputText value="- #{m.razon}" styleClass="DispBlock"/>
+								</div>
+								
+								<div class="p-col-12 p-md-4" style="text-align: right;">
+									<h:outputText value="#{m.valor}" styleClass="DispBlock markGray">
+										<f:convertNumber pattern="$ #,##0.00"/>
+									</h:outputText>
+								</div>
+							</p:repeat>
+							
+							
+						</div>
+						<div class="EmptyBox5"/>
+						
+					</p:column>
+					
+					<p:column headerText="SUBTOTAL" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totalsinimpuestos}" >
 							<f:convertNumber pattern="#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="I.V.A." style="width:40px;">
+					<p:column headerText="I.V.A." style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totaliva}" >
 							<f:convertNumber pattern="#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="TOTAL" style="width:40px;">
+					<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totalconimpuestos}" >
 							<f:convertNumber pattern="#,##0.00"/>
 						</h:outputText>

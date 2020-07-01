@@ -18,7 +18,8 @@ public class FormatoNumComprobante implements Converter<String> {
 
 	@Override
 	public String getAsObject(FacesContext arg0, UIComponent arg1, String numeroDocumento) {
-		return numeroDocumento.replace("-", "");
+		
+		return numeroDocumento!=null?numeroDocumento.replace("-", ""):null;
 	}
 
 	@Override

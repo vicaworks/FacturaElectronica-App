@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.web.ctrl.home;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +21,8 @@ import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
-import org.primefaces.model.charts.optionconfig.title.Title;
 
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.dto.VentasDto;
 
@@ -83,7 +84,6 @@ public class MainCtrl extends BaseCtrl {
 		ventasDtoList.add(new VentasDto("25", "MACIAS FRANCO JONATHAN JOEL", new Date(), 1.60d));
 		ventasDtoList.add(new VentasDto("26", "MACIAS FRANCO JONATHAN JOEL", new Date(), 1.60d));
 		ventasDtoList.add(new VentasDto("27", "MACIAS FRANCO JONATHAN JOEL", new Date(), 1.60d));
-		
 		
 	}
 

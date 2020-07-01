@@ -87,7 +87,7 @@
 	                selectionMode="single"
 	                selection="#{ventasQueryCtrl.resumenCabeceraQuery}">
 	                
-	                <p:ajax event="rowDblselect" listener="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
+	                <p:ajax event="rowSelect" listener="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
 	                	<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>
 					</p:ajax>
 					

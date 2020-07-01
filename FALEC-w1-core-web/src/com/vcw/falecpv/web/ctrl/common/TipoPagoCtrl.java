@@ -14,6 +14,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -68,6 +69,10 @@ public class TipoPagoCtrl implements Serializable {
 			case "FACTURA":
 				CompFacCtrl compFacCtrl = (CompFacCtrl) AppJsfUtil.getManagedBean("compFacCtrl");
 				compFacCtrl.aplicarPago(tipoPagoFormularioEnum);
+				break;
+			case "NOTA_DEBITO":
+				NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
+				notaDebitoFrmCtrl.aplicarPago(tipoPagoFormularioEnum);
 				break;
 			default:
 				break;

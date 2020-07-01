@@ -93,7 +93,7 @@
     <ui:define name="content">
 		
 		<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
-    	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
+    	<o:importConstants type="com.vcw.falecpv.core.constante.TipoPagoFormularioEnum" var="TipoPagoFormularioEnum" />
     	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
@@ -118,21 +118,24 @@
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdfacNuevo"
 										value="NUEVO" icon="fa fa-plus" 
-										action="#" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
+										action="#{notaDebitoFrmCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
 								</p:commandButton>
 	    					</div>
 	    					
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdNdDocumento"
 										value="DOCUMENTO" icon="fa fa-search" 
-										action="#" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
+										action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="secondary-button Wid100 Fs12" update="@form" process="@this">
+									<f:setPropertyActionListener value="NOTA_DEBITO" target="#{ventasQueryCtrl.callModule}"/>
+									<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
+									<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>
 								</p:commandButton>
 	    					</div>
 	    					
 							<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmduardar"
 										value="GUARDAR" icon="fa fa-floppy-o"  
-										action="#" styleClass=" Wid100 Fs12" update=":formMain"/>
+										action="#{notaDebitoFrmCtrl.guardar()}" styleClass=" Wid100 Fs12" update="@form"/>
 							</div>
 							
 	    				</div>
@@ -157,13 +160,21 @@
 				</div>
 				<!-- destinatarios -->
 				<div class="p-col-12 p-md-7">
-					<!-- <ui:include src="incl_gr_destinatario.xhtml" /> -->
+					<ui:include src="incl_nd_detalle.xhtml" />
 				</div>
 				
 			</div>
 			
 		</h:form>
-		    	
+		
+		<!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />  
+	    
+	    <!-- Lista de ventas -->
+	    <ui:include src="../common/incl_ventas.xhtml" />
+	    
+	    <!-- Modal lista tipo pago -->
+	    <ui:include src="../common/incl_tipopago.xhtml" />  	
         
     </ui:define>
 
