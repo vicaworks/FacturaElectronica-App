@@ -118,6 +118,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		destinatarioSelected = null;
 		detalledestinatarioSeleted = null;
 		consultarTransportista();
+		consultarTipoComprobante();
 		guiaRemisionSelected = new Cabecera();
 		guiaRemisionSelected.setDireccionpartida(AppJsfUtil.getEstablecimiento().getDireccionestablecimiento());
 		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
