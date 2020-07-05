@@ -84,20 +84,22 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeMatriz(String idestablecimiento, String matriz)throws DaoException{
+	public boolean existeMatriz(String idestablecimiento, String matriz, String idempresa)throws DaoException{
 		try {
 			
 			Query q = null;
 			
 			if(idestablecimiento!=null) {
 				
-				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz AND e.idestablecimiento<>:idestablecimiento");
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz AND e.idestablecimiento<>:idestablecimiento AND e.empresa.idempresa=:idempresa");
 				q.setParameter("matriz", matriz);
 				q.setParameter("idestablecimiento", idestablecimiento);
+				q.setParameter("idempresa", idempresa);
 			}else {
 				
-				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz");
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz AND e.empresa.idempresa=:idempresa");
 				q.setParameter("matriz", matriz);
+				q.setParameter("idempresa", idempresa);
 			}
 			
 			if(q.getResultList().size()>0) {

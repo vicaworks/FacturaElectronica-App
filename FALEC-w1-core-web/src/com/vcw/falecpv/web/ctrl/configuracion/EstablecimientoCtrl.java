@@ -175,7 +175,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			}
 				
 			// Validar si existe Matriz
-			if (establecimientoServicio.getEstablecimientoDao().existeMatriz(null, matriz)) {
+			if (establecimientoServicio.getEstablecimientoDao().existeMatriz(null, matriz,establecimientoSelected.getEmpresa().getIdempresa())) {
 				if (matriz.equals(establecimientoSelected.getMatriz())) {
 					// consulto el id de la matriz
 					establecimientoUpdate = establecimientoServicio.getEstablecimientoDao()
@@ -433,7 +433,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(7);
-				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
+				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getIdusuario());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(8);
