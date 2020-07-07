@@ -181,8 +181,8 @@
 					
 					</p:column>
 					
-					<p:column headerText="N." style="width:40px;">
-						<h:outputText value="#{v.secuencial}" />
+					<p:column headerText="N." style="width:80px;">
+						<h:outputText value="#{recEmitidoCtrl.getFormatoNumDocumento(v.numdocumento)}" />
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -191,12 +191,12 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CLIENTE" style="width:125px;">
+					<p:column headerText="CLIENTE" style="width:140px;">
 						<h:outputText value="#{v.razonsocial}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VENDEDOR" style="width:60px;">
+					<p:column headerText="VENDEDOR" style="width:80px;">
 						<h:outputText value="#{v.nombrepantalla}" >
 						</h:outputText>
 					</p:column>
@@ -212,7 +212,7 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="DESC" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.totaldescuento}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
@@ -224,7 +224,7 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PAGO" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.total.doubleValue()?'markRed':'markGreen'}">
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>

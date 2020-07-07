@@ -154,11 +154,24 @@ public class IceCtrl extends BaseCtrl {
 	@Override
 	public void nuevo() {
 		try {
-			iceSelected = new Ice();
-			iceSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
-			iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-	
+			nuevoIce();
 			AppJsfUtil.showModalRender("dlgIce", "frmIce");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void nuevoIce() {
+		iceSelected = new Ice();
+		iceSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+		iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+	}
+	
+	
+	public void nuevoForm() {
+		try {
+			nuevoIce();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

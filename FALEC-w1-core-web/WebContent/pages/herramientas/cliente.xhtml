@@ -166,6 +166,7 @@
 							<p:menuitem value="Ver Cliente" action="#{clienteCtrl.verCliente(c.idcliente)}" icon="fa fa-edit" >
 							</p:menuitem>
 							<p:menuitem value="Editar Cliente" action="#{clienteCtrl.editarCliente(c.idcliente)}" icon="fa fa-edit" rendered="#{c.identificacion ne '9999999999999'}">
+								<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
 							</p:menuitem>
 				            <p:menuitem value="Eliminar Cliente" action="#{clienteCtrl.eliminar()}" icon="fa fa-close" process="clienteDT" update="@parent" rendered="#{c.identificacion ne '9999999999999'}">
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

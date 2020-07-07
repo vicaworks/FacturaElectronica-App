@@ -90,8 +90,8 @@
                 paginatorPosition="bottom"  
 				rowKey="#{f.id}">
 			
-				<p:column headerText="N." style="width:40px;">
-					<h:outputText value="#{f.secuencial}" />
+				<p:column headerText="N." style="width:80px;">
+					<h:outputText value="#{repFacCtrl.getFormatoNumDocumento(f.numdocumento)}" />
 				</p:column>
 				
 				<p:column headerText="FECHA" style="width:40px;">
@@ -121,7 +121,7 @@
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
+				<p:column headerText="DESC" style="width:30px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.totaldescuento}" >
 						<f:convertNumber pattern="$#,##0.00"/>
 					</h:outputText>
@@ -145,7 +145,7 @@
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+				<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.total}" styleClass="markGreen">
 						<f:convertNumber pattern="$#,##0.00"/>
 					</h:outputText>

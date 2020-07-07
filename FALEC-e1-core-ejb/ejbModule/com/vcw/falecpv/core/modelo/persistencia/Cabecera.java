@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 
 import com.servitec.common.util.PojoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 
 /**
  * @author cristianvillarreal
@@ -229,6 +230,21 @@ public class Cabecera implements Serializable {
     
     @Transient
     private BigDecimal total = BigDecimal.ZERO;
+    
+    @Transient
+    private boolean editarSecuencial;
+    
+    @Transient
+    private String secuencialEstablecimiento;
+    
+    @Transient
+    private String secuencialCaja;
+    
+    @Transient
+    private String secuencialNumero;
+    
+    @Transient
+    private GenTipoDocumentoEnum genTipoDocumentoEnum;
 
 	/**
 	 * 
@@ -1010,6 +1026,76 @@ public class Cabecera implements Serializable {
 	 */
 	public void setIdguiaremision(String idguiaremision) {
 		this.idguiaremision = idguiaremision;
+	}
+
+	/**
+	 * @return the secuencialEstablecimiento
+	 */
+	public String getSecuencialEstablecimiento() {
+		return secuencialEstablecimiento;
+	}
+
+	/**
+	 * @param secuencialEstablecimiento the secuencialEstablecimiento to set
+	 */
+	public void setSecuencialEstablecimiento(String secuencialEstablecimiento) {
+		this.secuencialEstablecimiento = secuencialEstablecimiento;
+	}
+
+	/**
+	 * @return the secuencialCaja
+	 */
+	public String getSecuencialCaja() {
+		return secuencialCaja;
+	}
+
+	/**
+	 * @param secuencialCaja the secuencialCaja to set
+	 */
+	public void setSecuencialCaja(String secuencialCaja) {
+		this.secuencialCaja = secuencialCaja;
+	}
+
+	/**
+	 * @return the secuencialNumero
+	 */
+	public String getSecuencialNumero() {
+		return secuencialNumero;
+	}
+
+	/**
+	 * @param secuencialNumero the secuencialNumero to set
+	 */
+	public void setSecuencialNumero(String secuencialNumero) {
+		this.secuencialNumero = secuencialNumero;
+	}
+
+	/**
+	 * @return the editarSecuencial
+	 */
+	public boolean isEditarSecuencial() {
+		return editarSecuencial;
+	}
+
+	/**
+	 * @param editarSecuencial the editarSecuencial to set
+	 */
+	public void setEditarSecuencial(boolean editarSecuencial) {
+		this.editarSecuencial = editarSecuencial;
+	}
+
+	/**
+	 * @return the genTipoDocumentoEnum
+	 */
+	public GenTipoDocumentoEnum getGenTipoDocumentoEnum() {
+		return genTipoDocumentoEnum;
+	}
+
+	/**
+	 * @param genTipoDocumentoEnum the genTipoDocumentoEnum to set
+	 */
+	public void setGenTipoDocumentoEnum(GenTipoDocumentoEnum genTipoDocumentoEnum) {
+		this.genTipoDocumentoEnum = genTipoDocumentoEnum;
 	}
 
 }

@@ -6,7 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
@@ -16,9 +21,12 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
 import com.vcw.falecpv.core.constante.contadores.TCGuiaRemision;
 import com.vcw.falecpv.core.dao.impl.CabeceraDao;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
@@ -34,7 +42,9 @@ import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.xpert.persistence.query.QueryBuilder;
 
-@Stateless
+@Singleton
+@Startup
+@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 
 	@Inject
@@ -79,6 +89,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Inject
 	private MotivoServicio motivoServicio;
 	
+	@Inject
+	private EstablecimientoServicio establecimientoServicio;
+	
 	public CabeceraServicio() {
 	}
 
@@ -112,7 +125,34 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @throws DaoException
 	 * @throws ParametroRequeridoException
 	 */
-	public Cabecera guardarComprobanteFacade(Cabecera cabecera)throws DaoException, ParametroRequeridoException{
+	@Lock(LockType.WRITE)
+	public Cabecera guardarComprobanteFacade(Cabecera cabecera)throws DaoException, ParametroRequeridoException,ExisteNumDocumentoException{
+		
+		// 0. Asignar secuencia
+		if(cabecera.getSecuencial()==null && !cabecera.isEditarSecuencial()) {
+			
+			cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(), cabecera.getEstablecimiento().getIdestablecimiento()));
+//			cabecera.setSecuencial(contadorPkServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(),
+//					cabecera.getEstablecimiento().getIdestablecimiento()));
+			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			
+		}else if(cabecera.isEditarSecuencial()) {
+			cabecera.setSecuencial(cabecera.getSecuencialNumero());
+			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+		}
+		
+		cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
+		cabecera.setNumfactura(cabecera.getNumdocumento());
+		
+		// 0.1 Valida que no exista duplicado el comprobante
+		if (existeNumComprobante(cabecera.getEstablecimiento().getIdestablecimiento(),
+				cabecera.getGenTipoDocumentoEnum().getIdentificador(), cabecera.getSecuencial(),
+				cabecera.getIdcabecera())) {
+			
+			throw new ExisteNumDocumentoException("EL SECUENCIAL : " + cabecera.getSecuencial() + " YA EXISTE NO SE PUEDE DUPLICAR.");
+			
+		}
+		
 		
 		// 1. crear la cabecera
 		if(cabecera.getIdcabecera()==null) {
@@ -408,6 +448,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @param detalleFac
 	 * @throws DaoException
 	 */
+	@Lock(LockType.WRITE)
 	public void salidaKardex(Detalle detalleFac)throws DaoException{
 		try {
 			
@@ -482,6 +523,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @param detalleFac
 	 * @throws DaoException
 	 */
+	@Lock(LockType.WRITE)
 	public void entredaKardex(Detalle detalleFac)throws DaoException{
 		try {
 			
@@ -558,6 +600,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @param idCabecera
 	 * @throws DaoException
 	 */
+	@Lock(LockType.WRITE)
 	public int anularById(String idCabecera)throws DaoException{
 		try {
 			
@@ -577,6 +620,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @return
 	 * @throws DaoException
 	 */
+	@Lock(LockType.WRITE)
 	public int anularGuiaRemisionFacade(String idCabecera)throws DaoException{
 		try {
 			
@@ -585,6 +629,46 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			q.executeUpdate();
 			
 			return anularById(idCabecera);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param iEstablecimeinto
+	 * @param tipComprobanteIdentificador
+	 * @param secuencial
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	@Lock(LockType.READ)
+	public boolean existeNumComprobante(String iEstablecimeinto,String tipComprobanteIdentificador, String secuencial,String idCabecera)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(cabeceraDao.getEntityManager());
+			
+			List<Cabecera> lista = null;
+			
+			if(idCabecera!=null) {
+				lista = q.select("c")
+						.from(Cabecera.class,"c")
+						.notEquals("c.idcabecera", idCabecera)
+						.equals("c.establecimiento.idestablecimiento", iEstablecimeinto)
+						.equals("c.tipocomprobante.identificador",tipComprobanteIdentificador)
+						.equals("c.secuencial",secuencial).getResultList();
+			}else {
+				lista = q.select("c")
+						.from(Cabecera.class,"c")
+						.equals("c.establecimiento.idestablecimiento", iEstablecimeinto)
+						.equals("c.tipocomprobante.identificador",tipComprobanteIdentificador)
+						.equals("c.secuencial",secuencial).getResultList();
+			}
+			
+			return !lista.isEmpty();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

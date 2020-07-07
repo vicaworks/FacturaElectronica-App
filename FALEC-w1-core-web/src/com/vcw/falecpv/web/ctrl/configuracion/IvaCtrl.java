@@ -178,11 +178,25 @@ public class IvaCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			
-			ivaSelected = new Iva();
-			ivaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
-			ivaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-	
+			nuevoIva();
 			AppJsfUtil.showModalRender("dlgIva", "frmIva");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmIva", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void nuevoIva() {
+		
+		ivaSelected = new Iva();
+		ivaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+		ivaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		
+	}
+	
+	public void nuevoForm() {
+		try {
+			nuevoIva();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmIva", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

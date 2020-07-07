@@ -30,6 +30,10 @@
 						action="#{ivaCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
 						/>
 						
+					<p:commandButton id="cmdNuevoIvaForm"
+							value="NUEVO" icon="fa fa-plus" 
+							action="#{ivaCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>	
+						
 					<p:commandButton id="cmdCerrar"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
 						onclick="PF('dlgIva').hide()" immediate="true"  

@@ -21,7 +21,7 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -525,6 +525,9 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				return;
 			}
 			
+			noEditarSecuencial(cabecerSelected);
+			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.RECIBO);
+			cabecerSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.RECIBO);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
@@ -566,6 +569,8 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				return;
 			}
 			
+			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.FACTURA);
+			cabecerSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.FACTURA);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
@@ -574,7 +579,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
 			
-		} catch (Exception e) {
+		}  catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+		}  catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
@@ -595,15 +603,6 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
-		if(cabecerSelected.getSecuencial()==null) {
-			cabecerSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
-			// clave de acceso
-			cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			cabecerSelected.setNumdocumento(TextoUtil.leftPadTexto(cabecerSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(cabecerSelected.getSecuencial()));
-			cabecerSelected.setNumfactura(cabecerSelected.getNumdocumento());
-		}
-		
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
@@ -621,7 +620,6 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected));
 		
 	}
-	
 	
 	/**
 	 * @return the cabecerSelected

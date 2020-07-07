@@ -64,7 +64,6 @@ public class ProveedorCtrl extends BaseCtrl {
 	private String callModule;
 	private String formModule;
 	private String viewUpdate;
-	private String estado;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private RetencionFrmCtrl retencionFrmCtrl;
 
@@ -490,20 +489,6 @@ public class ProveedorCtrl extends BaseCtrl {
 	 */
 	public void setViewUpdate(String viewUpdate) {
 		this.viewUpdate = viewUpdate;
-	}
-
-	/**
-	 * @return the estado
-	 */
-	public String getEstado() {
-		return estado;
-	}
-
-	/**
-	 * @param estado the estado to set
-	 */
-	public void setEstado(String estado) {
-		this.estado = estado;
 	}
 
 	/**

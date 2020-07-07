@@ -60,6 +60,7 @@ public class VentasQuery implements Serializable {
 	private String codigoprincipal;
 	private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
 	private String idguiaremision;
+	private String numdocumento;
 	
 	/**
 	 * 
@@ -601,6 +602,20 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setIdguiaremision(String idguiaremision) {
 		this.idguiaremision = idguiaremision;
+	}
+
+	/**
+	 * @return the numdocumento
+	 */
+	public String getNumdocumento() {
+		return numdocumento;
+	}
+
+	/**
+	 * @param numdocumento the numdocumento to set
+	 */
+	public void setNumdocumento(String numdocumento) {
+		this.numdocumento = numdocumento;
 	}
 
 }

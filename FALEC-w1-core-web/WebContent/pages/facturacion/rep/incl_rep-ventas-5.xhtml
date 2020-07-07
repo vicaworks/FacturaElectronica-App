@@ -89,8 +89,8 @@
                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                 paginatorPosition="bottom">
 			
-			<p:column headerText="N." style="width:40px;">
-				<h:outputText value="#{rn.secuencial}" />
+			<p:column headerText="N." style="width:80px;">
+				<h:outputText value="#{repRecibAnuCtrl.getFormatoNumDocumento(rn.numdocumento)}" />
 			</p:column>
 			
 			<p:column headerText="FECHA" style="width:40px;">

@@ -25,7 +25,7 @@ import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
@@ -201,10 +201,13 @@ public class CompFacCtrl extends BaseCtrl {
 	}
 	
 	public void nuevaFactura() throws DaoException {
+		
 		criterioBusqueda = null;
 		criterioCliente = null;
 		cabecerSelected = new Cabecera();
 		cabecerSelected.setFechaemision(new Date());
+		inicializarSecuencia(cabecerSelected);
+		
 		criterioCliente = null;
 		pagoList = null;
 		pagoSelected = null;
@@ -612,10 +615,14 @@ public class CompFacCtrl extends BaseCtrl {
 			
 			cabecerSelected.setDetalleList(detalleFacList);
 			cabecerSelected.setPagoList(pagoList);
+			noEditarSecuencial(cabecerSelected);
+			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.RECIBO);
+			cabecerSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.RECIBO);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			noEditarSecuencial(cabecerSelected);
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
 			
@@ -658,14 +665,20 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			cabecerSelected.setDetalleList(detalleFacList);
-			cabecerSelected.setPagoList(pagoList);	
+			cabecerSelected.setPagoList(pagoList);
+			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.FACTURA);
+			cabecerSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.FACTURA);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			noEditarSecuencial(cabecerSelected);
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
 			
+		} catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -687,16 +700,6 @@ public class CompFacCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
-		if(cabecerSelected.getSecuencial()==null) {
-			cabecerSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
-			// clave de acceso
-			cabecerSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecerSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecerSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			cabecerSelected.setNumdocumento(TextoUtil.leftPadTexto(cabecerSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(cabecerSelected.getSecuencial()));
-			cabecerSelected.setNumfactura(cabecerSelected.getNumdocumento());
-			
-		}
-		
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
@@ -714,6 +717,28 @@ public class CompFacCtrl extends BaseCtrl {
 		
 		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected));
 		
+	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(cabecerSelected, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(cabecerSelected);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	/**

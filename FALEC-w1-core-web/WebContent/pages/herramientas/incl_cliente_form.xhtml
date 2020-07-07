@@ -117,11 +117,13 @@
 							</h:panelGroup>
 							<h:outputText value="" />
 							
-							<h:outputText value="CORREO ELECTRÓNICO : " style="font-weight: bold" />
+							<h:outputText value="CORREO ELECTRÓNICO * : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="Wid100" maxlength="50" />
+								<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="Wid100" maxlength="50" validatorMessage="EMAIL INVALIDO" required="true" requiredMessage="REQUERIDO">
+									<f:validator validatorId="emailValidator"/>
+								</p:inputText>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intCorreo" />
 							
 							<h:outputText value="TELEFÓNO : " style="font-weight: bold" />
 							<h:panelGroup>

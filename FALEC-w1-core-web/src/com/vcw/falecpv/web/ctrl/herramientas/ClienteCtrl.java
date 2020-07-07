@@ -340,7 +340,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdTipoIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO ID TIPO IDENTIFICACI�N ERROR");
+						c.setNovedad("FORMATO ID TIPO IDENTIFICACION ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -355,7 +355,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO IDENTIFICACI�N ERROR");
+						c.setNovedad("FORMATO IDENTIFICACION ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -370,7 +370,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setRazonSocial(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO RAZ�N SOCIAL ERROR");
+						c.setNovedad("FORMATO RAZON SOCIAL ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -385,7 +385,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCI�N ERROR");
+						c.setNovedad("FORMATO DIRECCION ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -397,10 +397,11 @@ public class ClienteCtrl extends BaseCtrl {
 				if(cell!=null) {
 					try {
 						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						
 						c.setCorreoElectronico(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CORREO ELECTR�NICO ERROR");
+						c.setNovedad("FORMATO CORREO ELECTRONICO ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -415,7 +416,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefono(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TEL�FONO ERROR");
+						c.setNovedad("FORMATO TELOFONO ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -445,7 +446,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO C�DULA GARANTE 1 ERROR");
+						c.setNovedad("FORMATO CODULA GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -460,7 +461,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCI�N GARANTE 1 ERROR");
+						c.setNovedad("FORMATO DIRECCION GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -475,7 +476,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TEL�FONO GARANTE 1 ERROR");
+						c.setNovedad("FORMATO TELOFONO GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -490,7 +491,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACI�N GARANTE 1 ERROR");
+						c.setNovedad("FORMATO OCUPACION GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -520,7 +521,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO C�DULA GARANTE 2 ERROR");
+						c.setNovedad("FORMATO CODULA GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -535,7 +536,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCI�N GARANTE 2 ERROR");
+						c.setNovedad("FORMATO DIRECCION GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -550,7 +551,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TEL�FONO GARANTE 2 ERROR");
+						c.setNovedad("FORMATO TELOFONO GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -565,7 +566,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACI�N GARANTE 2 ERROR");
+						c.setNovedad("FORMATO OCUPACION GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -578,7 +579,7 @@ public class ClienteCtrl extends BaseCtrl {
 				
 			}
 			
-			// validaci�n formato
+			// validaciOn formato
 			validarFormatoImportCliente(importClienteDtoList);
 			
 			// cargar los datos
@@ -713,7 +714,6 @@ public class ClienteCtrl extends BaseCtrl {
 			} catch (ValidarExpresionException e) {
 				c.setError(true);
 				c.setNovedad("CAMPO CORREO ELECTRONICO, FORMATO INCORRECTO "+e.getMessage());
-				
 			}
 			
 		}

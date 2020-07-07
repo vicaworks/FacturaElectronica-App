@@ -138,7 +138,7 @@ public class IceDao extends AppGenericDao<Ice, String> {
 		
 		for(Ice p : lista) {
 			Ice aux= new Ice();
-			if(p.getTarifaadvalorem()!=null) {
+			if(p.getTarifaadvalorem()!=null && !p.isError()) {
 				aux.setCodigo(p.getCodigo());
 				aux.setCodigoIce(p.getCodigoIce());
 				aux.setDescripcion(p.getDescripcion());
@@ -149,7 +149,7 @@ public class IceDao extends AppGenericDao<Ice, String> {
 				aux.setIdice(contadorPkServicio.generarContadorTabla(TCIce.ICE, null));
 				listaaux.add(aux);
 			}
-			if(p.getTarifaespecifica()!=null) {
+			if(p.getTarifaespecifica()!=null && !p.isError()) {
 				aux= new Ice();
 				aux.setCodigo(p.getCodigo());
 				aux.setCodigoIce(p.getCodigoIce());

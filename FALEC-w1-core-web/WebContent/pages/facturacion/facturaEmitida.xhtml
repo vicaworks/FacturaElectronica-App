@@ -200,8 +200,8 @@
 					
 					</p:column>
 					
-					<p:column headerText="N." style="width:40px;">
-						<h:outputText value="#{v.secuencial}" />
+					<p:column headerText="N." style="width:80px;">
+						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -289,10 +289,10 @@
 					
 					
 					
-					<p:column headerText="PAGO" style="width:110px;" styleClass="TexAlLeft">
+					<p:column headerText="PAGO" style="width:100px;" styleClass="TexAlLeft">
 						
 						<div class="p-grid Fs10 p-justify-end">
-							<div class="p-col-3" >
+							<div class="p-col-5" >
 								<h:outputText value="PAGO: " styleClass="FontBold"/>
 							</div>
 							<div class="p-col-7">
@@ -300,7 +300,7 @@
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-3" >
+							<div class="p-col-5" >
 								<h:outputText value="ENTREG: " styleClass="FontBold"/>
 							</div>
 							<div class="p-col-7">
@@ -308,7 +308,7 @@
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-3" >
+							<div class="p-col-5" >
 								<h:outputText value="CAMBIO: " styleClass="FontBold"/>
 							</div>
 							<div class="p-col-7">
