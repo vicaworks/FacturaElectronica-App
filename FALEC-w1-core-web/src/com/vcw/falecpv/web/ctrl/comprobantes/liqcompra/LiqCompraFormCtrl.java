@@ -25,7 +25,7 @@ import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
@@ -139,6 +139,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTotalsinimpuestos(BigDecimal.ZERO);
 		liqCompraSelected.setDetalleList(new ArrayList<>());
 		liqCompraSelected.setFechaemision(new Date());
+		inicializarSecuencia(liqCompraSelected);
 		liqCompraDetalleList = null;
 		criterioProveedor = null;
 		detalleSelected = null;
@@ -185,11 +186,14 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 				return;
 			}
 			
+			liqCompraSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.LIQUIDACION_COMPRA);
+			liqCompraSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.LIQUIDACION_COMPRA);
 			liqCompraSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			liqCompraSelected.setUpdated(new Date());
 			liqCompraSelected.setPagoList(pagoList);			
 			liqCompraSelected = cabeceraServicio.guardarComprobanteFacade(liqCompraSelected);
+			noEditarSecuencial(liqCompraSelected);
 			
 			// main principal de la lista de liquidacion de compra 
 			LiqCompraCtrl liqCompraCtrl = (LiqCompraCtrl) AppJsfUtil.getManagedBean("liqCompraCtrl");
@@ -197,6 +201,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
 			
+		} catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -213,15 +220,6 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		liqCompraSelected.setContribuyenteespecial("5368");
 		liqCompraSelected.setMoneda("DOLAR");
-		if(liqCompraSelected.getSecuencial()==null) {
-			liqCompraSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
-			// clave de acceso
-			liqCompraSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(liqCompraSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOLIQCOMPRA, liqCompraSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			liqCompraSelected.setNumdocumento(TextoUtil.leftPadTexto(liqCompraSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(liqCompraSelected.getSecuencial()));
-			liqCompraSelected.setNumfactura(liqCompraSelected.getNumdocumento());
-		}
-		
 		liqCompraSelected.setPropina(BigDecimal.ZERO);
 		liqCompraSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		liqCompraSelected.setDetalleList(liqCompraDetalleList);
@@ -566,6 +564,28 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		totalizarPago();
 		
 		return null;
+	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(liqCompraSelected, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(liqCompraSelected);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	/**

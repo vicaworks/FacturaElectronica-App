@@ -27,6 +27,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
@@ -218,7 +219,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 				cell.setCellValue(FechaUtil.getMes(r.getFechaemision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getNumdocumento());
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(r.getNumdocumento()));
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(r.getClaveacceso());
@@ -227,7 +228,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 				cell.setCellValue(r.getTipocomprobanteretencion().getComprobante());
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(r.getNumfactura());
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(r.getNumfactura()));
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(r.getProveedor().getIdentificacion());

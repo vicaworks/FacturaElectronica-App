@@ -166,7 +166,7 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante "
 						+ " AND (c.cliente.identificacion like :rucCliente "
 						+ " OR UPPER(c.cliente.razonsocial) like :nombrecliente "
-						+ " OR c.numfactura like :numfactura "
+						+ " OR c.numdocumento like :numfactura "
 						+ " OR c.numdocasociado like :numdocumento) "
 						+ " AND c.establecimiento.idestablecimiento=:idEstablecimiento "
 						+ " ORDER BY c.fechaemision ASC,c.idcabecera DESC");

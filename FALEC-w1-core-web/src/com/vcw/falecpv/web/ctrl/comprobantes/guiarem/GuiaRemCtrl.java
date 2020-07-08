@@ -27,6 +27,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
@@ -187,7 +188,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 				int col = 0;
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(gr.getNumdocumento());
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(gr.getNumdocumento()));
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(gr.getEstado());
@@ -237,7 +238,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 					cell.setCellValue(de.getTipocomprobante()!=null?de.getTipocomprobante().getComprobante():"-");
 					
 					cell = row.createCell(col++);
-					cell.setCellValue(de.getNumdocsustento());
+					cell.setCellValue(ComprobanteHelper.formatNumDocumento(de.getNumdocsustento()));
 					
 					cell = row.createCell(col++);
 					cell.setCellValue(FechaUtil.formatoFecha(gr.getFechaemision()));

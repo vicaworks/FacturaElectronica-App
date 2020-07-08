@@ -234,6 +234,10 @@ public class ComprobanteHelper {
 	 * @return
 	 */
 	public static String formatNumDocumento(String numeroDocumento) {
+		if(numeroDocumento==null || numeroDocumento.trim().length()==0) {
+			numeroDocumento = "0000000000000";
+		}
+		numeroDocumento = numeroDocumento.replace("-", "");
 		return numeroDocumento.substring(0, 3) + "-" + numeroDocumento.substring(3, 6) + "-" + numeroDocumento.substring(6, numeroDocumento.length()); 
 	}
 	

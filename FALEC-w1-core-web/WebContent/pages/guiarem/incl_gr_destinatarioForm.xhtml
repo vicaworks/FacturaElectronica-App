@@ -192,8 +192,10 @@
 								mask="999-999-9999999"
 								value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" required="false"
 								requiredMessage="REQUERIDO" styleClass="Wid100"
-								maxlength="17" placeholder="000-000-0000000"
-								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}"></p:inputMask>	
+								maxlength="15" placeholder="000-000-0000000"
+								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
+								<f:converter converterId="formatoNumComprobanteConverter"/>
+						</p:inputMask>	
 						
 			            <p:message for="intGrDestNumDocAsociado" styleClass="Wid100"/>
 			            

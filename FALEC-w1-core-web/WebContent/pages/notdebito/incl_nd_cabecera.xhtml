@@ -58,7 +58,43 @@
 	<p:remoteCommand name="buscarCliente"  action="#{notaDebitoFrmCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente"/>
 	
 	<div class="card card-w-title">
-	
+		
+		<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Nota de #{msg['label.debito']}</h3>
+		
+		<p:panelGrid id="grid2" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:outputLabel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera!=null}">
+					<div class="EmptyBox5"></div>
+					<h:outputText value="#{notaDebitoFrmCtrl.getFormatoNumDocumento(notaDebitoFrmCtrl.notDebitoSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
+					<div class="EmptyBox5"></div>
+				</p:outputLabel>
+				<p:outputLabel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera==null}">
+					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialEstablecimiento}" />
+					<h:outputText value=" - " />
+					<p:inputMask id="intSecCaja" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+					<h:outputText value=" - " />
+					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" rendered="#{not notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}"/>
+					<p:inputMask id="intSecDocumento" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" maxlength="7" mask="9999999" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="width:80px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{notaDebitoFrmCtrl.editarSecuencialAction()}" process=":formMain:grid2" update=":formMain:msgFormMain :formMain:grid2">
+						<i class="fa fa-edit Fs18"/>
+					</p:commandLink>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{notaDebitoFrmCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid2">
+						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+					</p:commandLink>
+					<p:message styleClass="Wid100" for="intSecCaja"/>
+					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+				</p:outputLabel>
+				
+			</h:panelGroup>
+			
+		</p:panelGrid>
+		
+		<div class="EmptyBox5"/>
+		
 		<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Cliente</h3>
 		
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">

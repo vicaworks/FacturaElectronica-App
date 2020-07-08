@@ -14,6 +14,40 @@
 	
 	<div class="card card-w-title">
 		<div class="EmptyBox5"/>
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera!=null}">
+					<div class="EmptyBox5"></div>
+					<h:outputText value="#{guiaRemFormCtrl.getFormatoNumDocumento(guiaRemFormCtrl.guiaRemisionSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
+					<div class="EmptyBox5"></div>
+				</p:outputLabel>
+				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera==null}">
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialEstablecimiento}" />
+					<h:outputText value=" - " />
+					<p:inputMask id="intSecCaja" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+					<h:outputText value=" - " />
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" rendered="#{not guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}"/>
+					<p:inputMask id="intSecDocumento" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" maxlength="7" mask="9999999" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" style="width:80px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{guiaRemFormCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:grid">
+						<i class="fa fa-edit Fs18"/>
+					</p:commandLink>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{guiaRemFormCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid">
+						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+					</p:commandLink>
+					<p:message styleClass="Wid100" for="intSecCaja"/>
+					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+				</p:outputLabel>
+				
+			</h:panelGroup>
+			
+		</p:panelGrid>
+	
+	
+		<div class="EmptyBox10"/>
 		<div class="p-grid p-justify-center">
 			<div class="p-col-12">
 				<p:commandButton id="cmdGrNuevoTransportista"

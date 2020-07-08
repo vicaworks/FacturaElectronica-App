@@ -10,7 +10,7 @@
 		
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
 			min-height: 20vh !important;
-			height: calc(100vh - 592px)!important;
+			height: calc(100vh - 648px)!important;
 		}
 		
 		.ui-calendar .ui-inputfield{
@@ -65,6 +65,36 @@
 	<div class="card card-w-title">
 		
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:outputLabel rendered="#{liqCompraFormCtrl.liqCompraSelected.idcabecera!=null}">
+					<div class="EmptyBox5"></div>
+					<h:outputText value="#{liqCompraFormCtrl.getFormatoNumDocumento(liqCompraFormCtrl.liqCompraSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
+					<div class="EmptyBox5"></div>
+				</p:outputLabel>
+				<p:outputLabel rendered="#{liqCompraFormCtrl.liqCompraSelected.idcabecera==null}">
+					<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.secuencialEstablecimiento}" />
+					<h:outputText value=" - " />
+					<p:inputMask id="intSecCaja" value="#{liqCompraFormCtrl.liqCompraSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+					<h:outputText value=" - " />
+					<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.secuencialNumero}" rendered="#{not liqCompraFormCtrl.liqCompraSelected.editarSecuencial}"/>
+					<p:inputMask id="intSecDocumento" value="#{liqCompraFormCtrl.liqCompraSelected.secuencialNumero}" maxlength="7" mask="9999999" rendered="#{liqCompraFormCtrl.liqCompraSelected.editarSecuencial}" style="width:80px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{liqCompraFormCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:grid">
+						<i class="fa fa-edit Fs18"/>
+					</p:commandLink>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{liqCompraFormCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid">
+						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+					</p:commandLink>
+					<p:message styleClass="Wid100" for="intSecCaja"/>
+					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{liqCompraFormCtrl.liqCompraSelected.editarSecuencial}"/>
+				</p:outputLabel>
+				
+			</h:panelGroup>
+			
 			
 			<h:outputText value="FECHA #{msg['label.emision']}" styleClass="cpoRequerido"/>
 			<h:panelGroup>

@@ -27,6 +27,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -180,7 +181,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 				// datos de la cabecera
 				Cell cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getSecuencial());
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -193,6 +194,18 @@ public class NotaDebitoCtrl extends BaseCtrl {
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(lc.getCliente().getRazonsocial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getTipocomprobanteretencion().getComprobante());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocasociado()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemisiondocasociado()));
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -219,7 +232,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 				filaPago = fila;
 				for (Motivo d : lc.getMotivoList()) {
 					
-					col=9;
+					col=12;
 					rowCliente = sheet.getRow(filaDetalle);
 					if(rowCliente==null) {
 						rowCliente = sheet.createRow(filaDetalle);
@@ -237,7 +250,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 				}
 				
 				for (Pago p : lc.getPagoList()) {
-					col = 11;
+					col = 14;
 					rowCliente = sheet.getRow(filaPago);
 					if(rowCliente==null) {
 						rowCliente = sheet.createRow(filaPago);

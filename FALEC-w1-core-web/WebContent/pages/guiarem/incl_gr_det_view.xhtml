@@ -66,7 +66,7 @@
 							<h:panelGroup>
 								<h:outputText value="#Comprobante" styleClass="cpoRequerido DispBlock"/>
 								<div class="EmptyBox5"/>
-								<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.numdocumento}" styleClass="FontBold DispBlock"/>
+								<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(guiaRemCtrl.guiaRemisionSelected.numdocumento)}" styleClass="FontBold DispBlock"/>
 							</h:panelGroup>			   
 							
 							<h:panelGroup>
@@ -178,7 +178,7 @@
 							<h:panelGroup>
 								<h:outputText value="Documento sustento" styleClass="cpoRequerido DispBlock"/>
 								<div class="EmptyBox5"/>
-								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.numdocsustento}" styleClass="FontBold DispBlock"/>
+								<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(guiaRemCtrl.destinatarioSelected.numdocsustento)}" styleClass="FontBold DispBlock"/>
 							</h:panelGroup>
 							
 							<h:panelGroup>

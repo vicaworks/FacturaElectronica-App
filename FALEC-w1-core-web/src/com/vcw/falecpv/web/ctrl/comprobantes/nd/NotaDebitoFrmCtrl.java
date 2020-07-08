@@ -25,8 +25,8 @@ import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
@@ -153,6 +153,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setDetalleList(new ArrayList<>());
 		notDebitoSelected.setFechaemision(new Date());
 		notDebitoSelected.setCliente(new Cliente());
+		inicializarSecuencia(notDebitoSelected);
 		totalimpuesto = new Totalimpuesto();
 		totalimpuesto.setBaseimponible(BigDecimal.ZERO);
 		totalimpuesto.setDescuentoadicional(BigDecimal.ZERO);
@@ -218,7 +219,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTipocomprobanteretencion(cabecera.getTipocomprobante());
 		notDebitoSelected.setFechaemisiondocasociado(cabecera.getFechaemision());
 		notDebitoSelected.setNumdocasociado(cabecera.getNumdocumento());
-		
+		inicializarSecuencia(notDebitoSelected);
 		totalizar();
 		
 	}
@@ -535,7 +536,8 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 				return;
 			}
 			
-			
+			notDebitoSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.NOTA_DEBITO);
+			notDebitoSelected.setSecuencial(null);
 			populateNotaDebito(GenTipoDocumentoEnum.NOTA_DEBITO);
 			notDebitoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			notDebitoSelected.setUpdated(new Date());
@@ -543,13 +545,17 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			notDebitoSelected.setDetalleEliminarList(null);
 			notDebitoSelected.setDetalleList(null);
 			notDebitoSelected = cabeceraServicio.guardarComprobanteFacade(notDebitoSelected);
+			noEditarSecuencial(notDebitoSelected);
 			
 			NotaDebitoCtrl notaDebitoCtrl = (NotaDebitoCtrl) AppJsfUtil.getManagedBean("notaDebitoCtrl");
 			notaDebitoCtrl.consultar();
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO CORRECTAMENTE");
 			
-		} catch (Exception e) {
+		}  catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+		}  catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
@@ -565,17 +571,6 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		notDebitoSelected.setContribuyenteespecial("5368");
 		notDebitoSelected.setMoneda("DOLAR");
-		if(notDebitoSelected.getSecuencial()==null) {
-			notDebitoSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
-			// clave de acceso
-			notDebitoSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(notDebitoSelected,
-					contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIONOTADEBITO,
-							notDebitoSelected.getEstablecimiento().getIdestablecimiento(), new Object[] { false })));
-			notDebitoSelected.setNumdocumento(TextoUtil.leftPadTexto(notDebitoSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(notDebitoSelected.getSecuencial()));
-			notDebitoSelected.setNumfactura(notDebitoSelected.getNumdocumento());
-		}
-		
 		notDebitoSelected.setPropina(BigDecimal.ZERO);
 		notDebitoSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
@@ -597,6 +592,28 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	private void determinarPeriodoFiscal() {
 		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
 		notDebitoSelected.setPeriodofiscal(sf.format(notDebitoSelected.getFechaemision()));
+	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(notDebitoSelected, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(notDebitoSelected);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	/**

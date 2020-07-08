@@ -211,24 +211,25 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:40px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{r.numdocumento}" />
+					<p:column headerText="ID" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numdocumento)}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle}"/>
+					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
 					</p:column>
 					
-					<p:column headerText="RUC / CI" style="width:40px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
+					<p:column headerText="RUC / CI" style="width:50px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
 						<h:outputText value="#{r.proveedor.identificacion}" />
 					</p:column>
 					
-					<p:column headerText="FACTURA" style="width:40px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
-						<h:outputText value="#{r.numfactura}" />
+					
+					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:150px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
+						<h:outputText value="#{r.proveedor.nombrecomercial}" />
 					</p:column>
 					
-					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:100px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
-						<h:outputText value="#{r.proveedor.nombrecomercial}" />
+					<p:column headerText="DOC ASOCIADO" style="width:80px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
+						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numfactura)}" />
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">

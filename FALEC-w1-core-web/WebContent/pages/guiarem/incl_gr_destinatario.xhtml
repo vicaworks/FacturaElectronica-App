@@ -76,7 +76,7 @@
 					</div>
 					<div class="p-col-12 p-md-6">
 						<h:outputText value="# DOCUMENTO SUSTENTO" styleClass="DispBlock cpoRequerido Fs10"/>
-						<h:outputText value="#{d.numdocsustento}"  styleClass="DispBlock markGreen" rendered="#{d.numdocsustento!=null}"/>
+						<h:outputText value="#{guiaRemFormCtrl.getFormatoNumDocumento(d.numdocsustento)}"  styleClass="DispBlock markGreen" rendered="#{d.numdocsustento!=null}"/>
 					</div>
 					
 					<div class="p-col-12 p-md-6">

@@ -22,8 +22,8 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -190,6 +190,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setTotalbaseimponible(BigDecimal.ZERO);
 		retencionSeleccion.setTotalretencion(BigDecimal.ZERO);
+		inicializarSecuencia(retencionSeleccion);
 		
 		if(adquisicionSelected!=null) {
 			retencionSeleccion.setFechaemision(adquisicionSelected.getFecha());
@@ -328,9 +329,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			}
 			
 			retencionSeleccion.setUpdated(new Date());
+			retencionSeleccion.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.RETENCION);
+			retencionSeleccion.setSecuencial(null);
 			populateretencion();
 			// guarda los datos
 			retencionSeleccion = cabeceraServicio.guardarComprobanteFacade(retencionSeleccion);
+			noEditarSecuencial(retencionSeleccion);
 			
 			// Manage de session para actualizar las pantallas
 			adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
@@ -358,6 +362,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 			AppJsfUtil.addInfoMessage("formMain", "OK","REGISTRO GUARDADO CORRECTAMENTE.");
 			
+		}  catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -373,14 +380,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		retencionSeleccion.setContribuyenteespecial("5368");
 		retencionSeleccion.setMoneda("DOLAR");
-		if(retencionSeleccion.getSecuencial()==null) {
-			retencionSeleccion.setSecuencial(contadorPkServicio.generarNumeroDocumento(GenTipoDocumentoEnum.RETENCION,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
-			// clave de acceso
-			retencionSeleccion.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(retencionSeleccion, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIORETENCION, retencionSeleccion.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			retencionSeleccion.setNumdocumento(TextoUtil.leftPadTexto(retencionSeleccion.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(retencionSeleccion.getSecuencial()));
-		}
-		
 		retencionSeleccion.setPropina(BigDecimal.ZERO);
 		retencionSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
@@ -507,6 +506,28 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
+	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(retencionSeleccion, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(retencionSeleccion);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	/**

@@ -199,33 +199,33 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:40px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{n.numdocumento}" />
+					<p:column headerText="NUM COMP" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numdocumento)}" styleClass="Fs10"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{n.estado}" styleClass="#{n.estadoStyle}"/>
+					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+						<h:outputText value="#{n.estado}" styleClass="#{n.estadoStyle} Fs10"/>
 					</p:column>
 					
-					<p:column headerText="FACTURA" style="width:40px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
-						<h:outputText value="#{n.numfactura}" />
+					<p:column headerText="FACTURA" style="width:80px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
+						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numfactura)}" styleClass="Fs10"/>
 					</p:column>
 					
-					<p:column headerText="RUC / CI" style="width:40px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
+					<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
 						<h:outputText value="#{n.cliente.identificacion}" />
 					</p:column>
 					
-					<p:column headerText="CLIENTE" style="width:100px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
+					<p:column headerText="CLIENTE" style="width:130px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
 						<h:outputText value="#{n.cliente.razonsocial}" />
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:40px;">
+					<p:column headerText="FECHA" style="width:60px;">
 						<h:outputText value="#{n.fechaemision}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VALOR" style="width:40px;">
+					<p:column headerText="VALOR" style="width:60px;">
 						<h:outputText value="#{n.totalconimpuestos}" styleClass="markGreen">
 							<f:convertNumber pattern="$ 0.00"/>
 						</h:outputText>

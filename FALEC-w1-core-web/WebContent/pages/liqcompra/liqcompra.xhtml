@@ -204,7 +204,7 @@
 					</p:column>
 					
 					<p:column headerText="ID" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{r.numdocumento}" />
+						<h:outputText value="#{liqCompraCtrl.getFormatoNumDocumento(r.numdocumento)}" />
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">

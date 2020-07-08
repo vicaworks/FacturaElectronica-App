@@ -22,8 +22,8 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
@@ -125,6 +125,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setFechainiciotransporte(new Date());
 		guiaRemisionSelected.setFechafintransporte(new Date());
 		guiaRemisionSelected.setDestinatarioList(new ArrayList<>());
+		inicializarSecuencia(guiaRemisionSelected);
 	}
 	
 	public void cambioTransportista() {
@@ -147,11 +148,13 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			}
 			
 			// 2. populate valores
+			guiaRemisionSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.GUIA_REMISION);
+			guiaRemisionSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.GUIA_REMISION);
 			guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			guiaRemisionSelected.setUpdated(new Date());
 			guiaRemisionSelected = cabeceraServicio.guardarComprobanteFacade(guiaRemisionSelected);
-			
+			noEditarSecuencial(guiaRemisionSelected);
 			switch (callModule) {
 			case "GUIA_REMISION":
 				GuiaRemCtrl guiaRemCtrl = (GuiaRemCtrl) AppJsfUtil.getManagedBean("guiaRemCtrl");
@@ -165,6 +168,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 				break;
 			}
 			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			
+		} catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -194,16 +201,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		guiaRemisionSelected.setContribuyenteespecial("5368");
 		guiaRemisionSelected.setMoneda("DOLAR");
-		if(guiaRemisionSelected.getSecuencial()==null) {
-			guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
-			guiaRemisionSelected.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
-			// clave de acceso
-			guiaRemisionSelected.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(guiaRemisionSelected, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOGUIAREMISION, guiaRemisionSelected.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			guiaRemisionSelected.setNumdocumento(TextoUtil.leftPadTexto(guiaRemisionSelected.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(guiaRemisionSelected.getSecuencial()));
-			guiaRemisionSelected.setNumfactura(guiaRemisionSelected.getNumdocumento());
-		}
-		
+		guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
 		guiaRemisionSelected.setPropina(BigDecimal.ZERO);
 		guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
@@ -540,6 +538,28 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			asignarFactura(resumenCabeceraQuery);
 			AppJsfUtil.showModalRender("dlgDestinatario", "frmDestinatario");
 			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDestinatario:intGrDestMotTraslado')");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(guiaRemisionSelected, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(guiaRemisionSelected);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

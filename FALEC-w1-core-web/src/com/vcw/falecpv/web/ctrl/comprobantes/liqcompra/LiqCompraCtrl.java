@@ -27,6 +27,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -220,7 +221,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 				// datos de la cabecera
 				Cell cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getSecuencial());
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);

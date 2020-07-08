@@ -24,8 +24,8 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
@@ -172,10 +172,13 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			}
 			
 			notaCreditoSeleccion.setDetalleList(detalleNcList);
+			notaCreditoSeleccion.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.NOTA_CREDITO);
+			notaCreditoSeleccion.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.NOTA_CREDITO);
 			notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			notaCreditoSeleccion.setUpdated(new Date());
 			notaCreditoSeleccion = cabeceraServicio.guardarComprobanteFacade(notaCreditoSeleccion);
+			noEditarSecuencial(notaCreditoSeleccion);
 			switch (callModule) {
 			case "FACTURAS_EMITIDAS":
 				FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
@@ -192,6 +195,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			AppJsfUtil.addInfoMessage("formMain", "OK", "TODO: GUARDADO IMPRIMIR");
 			
 			
+		} catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -208,14 +214,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setContribuyenteespecial("5368");
 		determinarPeriodoFiscal();
 		notaCreditoSeleccion.setMoneda("DOLAR");
-		if(notaCreditoSeleccion.getSecuencial()==null) {
-			notaCreditoSeleccion.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
-			// clave de acceso
-			notaCreditoSeleccion.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(notaCreditoSeleccion, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIONOTACREDITO, notaCreditoSeleccion.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			notaCreditoSeleccion.setNumdocumento(TextoUtil.leftPadTexto(notaCreditoSeleccion.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(notaCreditoSeleccion.getSecuencial()));
-		}
-		
 		notaCreditoSeleccion.setPropina(BigDecimal.ZERO);
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
@@ -224,7 +222,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			notaCreditoSeleccion.setValordocasociado(notaCreditoSeleccion.getTotalconimpuestos());
 		}
 		notaCreditoSeleccion.setImportetotal(notaCreditoSeleccion.getTotalconimpuestos());
-		
+		notaCreditoSeleccion.setNumdocasociado(notaCreditoSeleccion.getNumfactura());
 		
 		// tabla de total impuesto
 		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
@@ -270,6 +268,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setTotalice(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotaliva(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotalsinimpuestos(BigDecimal.ZERO);
+		inicializarSecuencia(notaCreditoSeleccion);
 		
 		if(facturaSeleccion!=null) {
 			notaCreditoSeleccion.setIdcabecera(facturaSeleccion.getIdcabecera());
@@ -522,6 +521,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		notaCreditoSeleccion.setSecuencial(null);
 		notaCreditoSeleccion.setTipocomprobante(null);
+		inicializarSecuencia(notaCreditoSeleccion);
 		detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
 		for (Detalle de : detalleNcList) {
 			de.setCabecera(null);
@@ -543,6 +543,28 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			}else {
 				AppJsfUtil.addErrorMessage("formMain:inpNcNumFac", "ERROR", "NO EXISTE");
 			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(notaCreditoSeleccion, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(notaCreditoSeleccion);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

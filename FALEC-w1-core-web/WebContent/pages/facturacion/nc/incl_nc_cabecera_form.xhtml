@@ -11,15 +11,40 @@
 					
 		<div class="card card-w-title">
 			
-			<h2 class="cardTitle">Nota de #{msg['label.credito2']}</h2>
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Nota de #{msg['label.credito2']}</h2>
 			
 			<!-- Formulario -->
 			<p:panelGrid id="gridNotaCreditoDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 				
-				<h:outputText value="# NOTA DE #{msg['label.credito']} " styleClass="cpoRequerido"/>
+				<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
 				<h:panelGroup>
-					<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.numdocumento}" styleClass="Fs16 FontBold" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.numdocumento != null}"/>
-					<h:outputText value="00000000000000" styleClass="Fs16 FontBold" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.numdocumento == null}"/>
+					<p:outputPanel id="oupSecuenalNc">
+						<f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null}">
+							<div class="EmptyBox5"></div>
+							<h:outputText value="#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}" styleClass="Fs18 FontBold"/>
+							<div class="EmptyBox5"></div>
+						</f:subview>
+						<f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera==null}">
+							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialEstablecimiento}" />
+							<h:outputText value=" - " />
+							<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+							<h:outputText value=" - " />
+							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
+							<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="7" mask="9999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:80px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+							<p:spacer width="5px;"/>
+							<p:commandLink action="#{notaCreditoCtrl.editarSecuencialAction()}" process=":formMain:oupSecuenalNc" update=":formMain:msgFormMain :formMain:oupSecuenalNc">
+								<i class="fa fa-edit Fs18"/>
+							</p:commandLink>
+							<p:spacer width="5px;"/>
+							<p:commandLink action="#{notaCreditoCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:oupSecuenalNc">
+								<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+							</p:commandLink>
+							<p:message styleClass="Wid100" for="intSecCaja"/>
+							<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
+						</f:subview>
+					</p:outputPanel>					
+				
+					
 				</h:panelGroup>
 				
 				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
@@ -56,7 +81,7 @@
 		
 		<div class="card card-w-title">
 			
-			<h2 class="cardTitle">Documento Asociado</h2>
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Documento Asociado</h2>
 			
 			<!-- Formulario -->
 			<p:panelGrid id="gridNotaCreditoDG2" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">

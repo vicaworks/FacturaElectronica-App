@@ -142,7 +142,21 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		}
 		
 		cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
-		cabecera.setNumfactura(cabecera.getNumdocumento());
+		switch (cabecera.getGenTipoDocumentoEnum()) {
+		case FACTURA:
+			cabecera.setNumfactura(cabecera.getNumdocumento());
+			break;
+		case LIQUIDACION_COMPRA:
+			cabecera.setNumfactura(cabecera.getNumdocumento());
+		case GUIA_REMISION:
+			cabecera.setNumfactura(cabecera.getNumdocumento());	
+			break;	
+		case NOTA_DEBITO:
+			cabecera.setNumfactura(cabecera.getNumdocumento());	
+			break;	
+		default:
+			break;
+		}
 		
 		// 0.1 Valida que no exista duplicado el comprobante
 		if (existeNumComprobante(cabecera.getEstablecimiento().getIdestablecimiento(),
