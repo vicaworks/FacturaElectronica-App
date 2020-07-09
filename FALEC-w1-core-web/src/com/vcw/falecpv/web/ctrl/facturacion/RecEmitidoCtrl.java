@@ -187,7 +187,8 @@ public class RecEmitidoCtrl extends BaseCtrl {
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellValue(v.getFechaemision());
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
