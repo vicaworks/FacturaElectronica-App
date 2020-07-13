@@ -98,7 +98,7 @@
     	<f:subview rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
     		
     		<p:breadCrumb>
-			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+			    <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf" />
 			    <p:menuitem value="Lista de #{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf"/>
 		    	<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
 			</p:breadCrumb>
@@ -107,8 +107,7 @@
 		
 		<f:subview rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
 			<p:breadCrumb>
-				<p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-				<p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+				<p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
 				<p:menuitem value="#{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemForm.jsf"/>
 			</p:breadCrumb>
 		</f:subview>

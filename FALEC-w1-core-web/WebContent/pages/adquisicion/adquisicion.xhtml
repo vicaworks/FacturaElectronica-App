@@ -7,7 +7,7 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">#{msg['title.adquisicion']}</ui:define>
+    <ui:define name="title">Compras</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
@@ -58,8 +58,7 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Compras" url="#" />
-		    <p:menuitem value="Lista Compras" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf"/>
+		    <p:menuitem value="Lista de compras" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf"/>
 		</p:breadCrumb>
 		
 		
