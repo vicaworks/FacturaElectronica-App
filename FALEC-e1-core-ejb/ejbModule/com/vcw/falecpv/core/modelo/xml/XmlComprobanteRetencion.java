@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,10 +31,12 @@ public class XmlComprobanteRetencion implements Serializable {
 	@XmlElementRef
 	private XmlInfoFactura infoFactura;
 	
-	@XmlElementRef(name = "impuestos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "impuestos")
 	private List<XmlImpuestoRetencion> impuestoretencionList;
 	
-	@XmlElementRef(name = "infoAdicional")
+	@XmlElementRef
+	@XmlElementWrapper(name = "infoAdicional")
 	private List<XmlCampoAdicional> campoAdicionalList;
 	
 	/**

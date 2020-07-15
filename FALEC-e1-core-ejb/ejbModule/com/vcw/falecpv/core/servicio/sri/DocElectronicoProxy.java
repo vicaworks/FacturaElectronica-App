@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.servicio.sri;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.xml.bind.JAXBException;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
@@ -77,8 +78,9 @@ public class DocElectronicoProxy {
 	 * @param tipoDocumento
 	 * @return
 	 * @throws DaoException
+	 * @throws JAXBException 
 	 */
-	public String getDocElectronicoFacade(String idCabecera,String idEstablecimiento,GenTipoDocumentoEnum tipoDocumento)throws DaoException{
+	public String getDocElectronicoFacade(String idCabecera,String idEstablecimiento,GenTipoDocumentoEnum tipoDocumento)throws DaoException, JAXBException{
 		
 		GenerarDocumentoElectronico generarDocumentoElectronico = null;
 		

@@ -28,9 +28,9 @@ public class XmlInfoTributaria implements Serializable {
 	@XmlElement
 	private String tipoEmision;
 	@XmlElement
-	private String razonSocialrazonSocial;
+	private String razonSocial;
 	@XmlElement
-	private String nombreComercialnombreComercial;
+	private String nombreComercial;
 	@XmlElement
 	private String ruc;
 	@XmlElement
@@ -44,7 +44,7 @@ public class XmlInfoTributaria implements Serializable {
 	@XmlElement
 	private String secuencial;
 	@XmlElement
-	private String dirMatrizdirMatriz;
+	private String dirMatriz;
 	
 	/**
 	 * 
@@ -79,34 +79,6 @@ public class XmlInfoTributaria implements Serializable {
 	 */
 	public void setTipoEmision(String tipoEmision) {
 		this.tipoEmision = tipoEmision;
-	}
-
-	/**
-	 * @return the razonSocialrazonSocial
-	 */
-	public String getRazonSocialrazonSocial() {
-		return razonSocialrazonSocial;
-	}
-
-	/**
-	 * @param razonSocialrazonSocial the razonSocialrazonSocial to set
-	 */
-	public void setRazonSocialrazonSocial(String razonSocialrazonSocial) {
-		this.razonSocialrazonSocial = razonSocialrazonSocial;
-	}
-
-	/**
-	 * @return the nombreComercialnombreComercial
-	 */
-	public String getNombreComercialnombreComercial() {
-		return nombreComercialnombreComercial;
-	}
-
-	/**
-	 * @param nombreComercialnombreComercial the nombreComercialnombreComercial to set
-	 */
-	public void setNombreComercialnombreComercial(String nombreComercialnombreComercial) {
-		this.nombreComercialnombreComercial = nombreComercialnombreComercial;
 	}
 
 	/**
@@ -194,17 +166,46 @@ public class XmlInfoTributaria implements Serializable {
 	}
 
 	/**
-	 * @return the dirMatrizdirMatriz
+	 * @return the razonSocial
 	 */
-	public String getDirMatrizdirMatriz() {
-		return dirMatrizdirMatriz;
+	public String getRazonSocial() {
+		return razonSocial;
 	}
 
 	/**
-	 * @param dirMatrizdirMatriz the dirMatrizdirMatriz to set
+	 * @param razonSocial the razonSocial to set
 	 */
-	public void setDirMatrizdirMatriz(String dirMatrizdirMatriz) {
-		this.dirMatrizdirMatriz = dirMatrizdirMatriz;
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
+
+	/**
+	 * @return the nombreComercial
+	 */
+	public String getNombreComercial() {
+		return nombreComercial;
+	}
+
+	/**
+	 * @param nombreComercial the nombreComercial to set
+	 */
+	public void setNombreComercial(String nombreComercial) {
+		this.nombreComercial = nombreComercial;
+	}
+
+	/**
+	 * @return the dirMatriz
+	 */
+	public String getDirMatriz() {
+		return dirMatriz;
+	}
+
+	/**
+	 * @param dirMatriz the dirMatriz to set
+	 */
+	public void setDirMatriz(String dirMatriz) {
+		this.dirMatriz = dirMatriz;
+	}
+
 
 }

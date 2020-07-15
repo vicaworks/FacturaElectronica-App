@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -51,10 +52,12 @@ public class XmlReembolsoDetalle implements Serializable {
     @XmlElement
     private String numeroautorizacionDocReemb;
     
-    @XmlElementRef(name = "detalleImpuestos")
+    @XmlElementRef
+    @XmlElementWrapper(name = "detalleImpuestos")
     private List<XmlDetalleImpuesto> detalleImpuestoList;
 	
-    @XmlElementRef(name = "compensacionesReembolso")
+    @XmlElementRef
+    @XmlElementWrapper(name = "compensacionesReembolso")
     private List<XmlCompensacionReembolso> compensacionReembolsoList;
 	/**
 	 * 

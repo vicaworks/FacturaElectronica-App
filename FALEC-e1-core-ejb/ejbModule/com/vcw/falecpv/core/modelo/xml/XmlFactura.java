@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,25 +32,30 @@ public class XmlFactura implements Serializable {
 	@XmlElementRef
 	private XmlInfoFactura infoFactura;
 	
-	@XmlElementRef(name = "detalles")
+	@XmlElementRef
+	@XmlElementWrapper(name = "detalles")
 	private List<XmlDetalle> detalleList;
 	
-	@XmlElementRef(name = "reembolsos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "reembolsos")
 	private List<XmlReembolsoDetalle> reembolsoDetalleList;
 	
-	@XmlElementRef(name = "retenciones")
+	@XmlElementRef
+	@XmlElementWrapper(name = "retenciones")
 	private List<XmlRetencion> retencioneList;
 	
 	@XmlElement
 	private XmlInfoSustitutivaGuiaRemision infoSustitutivaGuiaRemision;
 	
-	@XmlElementRef(name = "otrosRubrosTerceros")
+	@XmlElementRef
+	@XmlElementWrapper(name = "otrosRubrosTerceros")
 	private List<XmlRubro> rubroList;
 	
 	@XmlElementRef
 	private XmlTipoNegociable tipoNegociable;
 	
-	@XmlElementRef(name = "infoAdicional")
+	@XmlElementRef
+	@XmlElementWrapper(name = "infoAdicional")
 	private List<XmlCampoAdicional> campoAdicionalList;
 	
 	/**

@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -93,10 +94,12 @@ public class XmlInfoFactura implements Serializable {
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double totalImpuestoReembolso = 0d;
 	
-	@XmlElementRef(name = "totalConImpuestos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "totalConImpuestos")
 	private List<XmlTotalImpuesto> totalImpuestoList;
 	
-	@XmlElementRef(name = "compensaciones")
+	@XmlElementRef
+	@XmlElementWrapper(name = "compensaciones")
 	private List<XmlCompensacion> compensacionList;
 	
 	@XmlElement
@@ -122,7 +125,8 @@ public class XmlInfoFactura implements Serializable {
     @XmlElement
     private String placa;
     
-    @XmlElementRef(name = "pagos")
+    @XmlElementRef
+    @XmlElementWrapper(name = "pagos")
     private List<XmlPago> pagoList;
     
     @XmlElement

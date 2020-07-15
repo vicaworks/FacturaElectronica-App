@@ -3,6 +3,8 @@
  */
 package com.vcw.falecpv.core.servicio.sri;
 
+import javax.xml.bind.JAXBException;
+
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 
@@ -20,7 +22,7 @@ public class DocElectronicoNotaCredito extends GenerarDocumentoElectronico {
 
 	@Override
 	public String generarFacade(String idDocumento, String idEstablecimeinto, GenTipoDocumentoEnum tipoDocumento)
-			throws DaoException {
+			throws DaoException, JAXBException {
 		return null;
 	}
 

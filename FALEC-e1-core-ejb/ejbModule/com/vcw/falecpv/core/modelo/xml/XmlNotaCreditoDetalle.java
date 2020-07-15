@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -47,10 +48,12 @@ public class XmlNotaCreditoDetalle implements Serializable {
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double precioTotalSinImpuesto;
 	
-	@XmlElementRef(name = "detallesAdicionales")
+	@XmlElementRef
+	@XmlElementWrapper(name = "detallesAdicionales")
 	private List<XmlDetAdicional> detAdicionalList;
 	
-	@XmlElementRef(name = "impuestos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "impuestos")
 	private List<XmlImpuesto> impuestoList;
 	
 	/**

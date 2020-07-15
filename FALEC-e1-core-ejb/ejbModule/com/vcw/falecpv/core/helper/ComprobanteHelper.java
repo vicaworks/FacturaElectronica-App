@@ -241,5 +241,17 @@ public class ComprobanteHelper {
 		return numeroDocumento.substring(0, 3) + "-" + numeroDocumento.substring(3, 6) + "-" + numeroDocumento.substring(6, numeroDocumento.length()); 
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param numDoc
+	 * @return
+	 */
+	public static String getPuntoEmision(String numDoc) {
+		if(numDoc==null || numDoc.trim().length()<4) {
+			return "001";
+		}
+		return numDoc.substring(3, 6);
+	}
 
 }

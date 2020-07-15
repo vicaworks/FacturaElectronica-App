@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,17 +32,20 @@ public class XmlLiquidacionCompra implements Serializable {
 	@XmlElementRef
 	private XmlInfoLiquidacionCompra infoLiquidacionCompra;
 	
-	@XmlElementRef(name = "detalles")
+	@XmlElementRef
+	@XmlElementWrapper(name = "detalles")
 	private List<XmlDetalle> detalleList;
 	
-	@XmlElementRef(name = "reembolsos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "reembolsos")
 	private List<XmlReembolsoDetalle> reembolsoDetalleList;
 	
 	@XmlElement
 	private XmlMaquinaFiscal maquinaFiscal;
 	
 	
-	@XmlElementRef(name = "infoAdicional")
+	@XmlElementRef
+	@XmlElementWrapper(name = "infoAdicional")
 	private List<XmlCampoAdicional> campoAdicionalList;
 	
 	

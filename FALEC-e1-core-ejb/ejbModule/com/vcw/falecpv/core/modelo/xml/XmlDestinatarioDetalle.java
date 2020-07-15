@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,7 +35,8 @@ public class XmlDestinatarioDetalle implements Serializable {
 	@XmlElement
 	private Integer cantidad;
 	
-	@XmlElementRef(name = "detallesAdicionales")
+	@XmlElementRef
+	@XmlElementWrapper(name = "detallesAdicionales")
 	private List<XmlDetallesAdicionales> detallesAdicionalesList;
 	
 	/**

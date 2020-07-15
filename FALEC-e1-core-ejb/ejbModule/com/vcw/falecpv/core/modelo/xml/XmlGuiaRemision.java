@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,10 +31,12 @@ public class XmlGuiaRemision implements Serializable {
 	@XmlElementRef
 	private XmlInfoGuiaRemision infoGuiaRemision;
 	
-	@XmlElementRef(name = "destinatarios")
+	@XmlElementRef
+	@XmlElementWrapper(name = "destinatarios")
 	private List<XmlDestinatario> destinatarioList;
 	
-	@XmlElementRef(name = "infoAdicional")
+	@XmlElementRef
+	@XmlElementWrapper(name = "infoAdicional")
 	private List<XmlCampoAdicional> campoAdicionalList;
 	
 	/**

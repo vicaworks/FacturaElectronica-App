@@ -3,8 +3,23 @@
  */
 package com.vcw.falecpv.core.servicio.sri;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBException;
+
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
+import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
+import com.vcw.falecpv.core.modelo.xml.XmlCampoAdicional;
+import com.vcw.falecpv.core.modelo.xml.XmlInfoTributaria;
+import com.vcw.falecpv.core.modelo.xml.XmlPago;
+import com.vcw.falecpv.core.modelo.xml.XmlTotalImpuesto;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.DestinatarioServicio;
@@ -52,7 +67,94 @@ public abstract class GenerarDocumentoElectronico {
 	 * @return
 	 * @throws DaoException
 	 */
-	public abstract String generarFacade(String idDocumento,String idEstablecimeinto,GenTipoDocumentoEnum tipoDocumento)throws DaoException;
+	public abstract String generarFacade(String idDocumento,String idEstablecimeinto,GenTipoDocumentoEnum tipoDocumento)throws DaoException, JAXBException;
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param cabecera
+	 * @return
+	 */
+	protected XmlInfoTributaria getXmlInfoTributaria(Cabecera cabecera) {
+		XmlInfoTributaria infoTributaria = new XmlInfoTributaria();
+		
+		infoTributaria.setAmbiente(cabecera.getEstablecimiento().getAmbiente());
+		infoTributaria.setTipoEmision(cabecera.getTipoemision());
+		infoTributaria.setRazonSocial(cabecera.getEstablecimiento().getEmpresa().getRazonsocial());
+		infoTributaria.setNombreComercial(cabecera.getEstablecimiento().getNombrecomercial());
+		infoTributaria.setRuc(cabecera.getEstablecimiento().getEmpresa().getRuc());
+		infoTributaria.setClaveAcceso(cabecera.getClaveacceso());
+		infoTributaria.setCodDoc(cabecera.getTipocomprobante().getIdentificador());
+		infoTributaria.setEstab(TextoUtil.leftPadTexto(cabecera.getEstablecimiento().getCodigoestablecimiento(),3,"0"));
+		infoTributaria.setPtoEmi(ComprobanteHelper.getPuntoEmision(cabecera.getNumdocumento()));
+		infoTributaria.setSecuencial(cabecera.getSecuencial());
+		infoTributaria.setDirMatriz(cabecera.getEstablecimiento().getEmpresa().getDireccionmatriz());
+		
+		return infoTributaria;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param infoadicionalList
+	 * @return
+	 */
+	protected List<XmlCampoAdicional> getInfoAdicinal(List<Infoadicional> infoadicionalList){
+		List<XmlCampoAdicional> infoAdicinalList = new ArrayList<>();
+		for (Infoadicional infoadicional : infoadicionalList) {
+			XmlCampoAdicional xmlCampoAdicional = new XmlCampoAdicional();
+			xmlCampoAdicional.setNombre(infoadicional.getNombre());
+			xmlCampoAdicional.setValue(infoadicional.getValor());
+			infoAdicinalList.add(xmlCampoAdicional);
+		}
+		return infoAdicinalList;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param totalimpuestoList
+	 * @return
+	 */
+	protected List<XmlTotalImpuesto> getTotalImpuesto(List<Totalimpuesto> totalimpuestoList){
+		List<XmlTotalImpuesto> xmlTotalImpuestoList = new ArrayList<>();
+		for (Totalimpuesto totalimpuesto : totalimpuestoList) {
+			XmlTotalImpuesto xmlTotalImpuesto = new XmlTotalImpuesto();
+			if(totalimpuesto.getIva()!=null) {
+				xmlTotalImpuesto.setCodigo(totalimpuesto.getIva().getCodigo());
+				xmlTotalImpuesto.setTarifa(totalimpuesto.getIva().getValor().doubleValue());
+			}
+			if(totalimpuesto.getIce()!=null) {
+				xmlTotalImpuesto.setCodigo(totalimpuesto.getIce().getCodigo());
+				xmlTotalImpuesto.setTarifa(totalimpuesto.getIce().getValor().doubleValue());
+			}
+			
+			xmlTotalImpuesto.setCodigoPorcentaje(xmlTotalImpuesto.getCodigo());
+			xmlTotalImpuesto.setBaseImponible(totalimpuesto.getBaseimponible().doubleValue());
+			xmlTotalImpuesto.setValor(totalimpuesto.getValor().doubleValue());
+			xmlTotalImpuestoList.add(xmlTotalImpuesto);
+		}
+		return xmlTotalImpuestoList;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param pagoList
+	 * @return
+	 */
+	protected List<XmlPago> getPago(List<Pago> pagoList){
+		List<XmlPago> xmlPagoList = new ArrayList<>();
+		for (Pago pago : pagoList) {
+			XmlPago xmlPago = new XmlPago();
+			xmlPago.setFormaPago(pago.getTipopago().getNombre());
+			xmlPago.setTotal(pago.getTotal().doubleValue());
+			xmlPago.setPlazo(pago.getPlazo().doubleValue());
+			xmlPago.setUnidadTiempo(pago.getUnidadtiempo());
+			xmlPagoList.add(xmlPago);
+		}
+		return xmlPagoList;
+	}
 
 	/**
 	 * @return the cabeceraServicio

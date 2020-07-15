@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -58,7 +59,8 @@ public class XmlinfoNotaCredito implements Serializable {
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double totalSinImpuestos = 0.00d;
 	
-	@XmlElementRef(name = "compensaciones")
+	@XmlElementRef
+	@XmlElementWrapper(name = "compensaciones")
 	private List<XmlCompensacion> compensacionList;
 	
 	@XmlElement
@@ -67,7 +69,8 @@ public class XmlinfoNotaCredito implements Serializable {
 	@XmlElement
 	private String moneda;
 	
-	@XmlElementRef(name = "totalConImpuestos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "totalConImpuestos")
     private List<XmlTotalImpuesto> totalImpuestoList;
 	
 	@XmlElement

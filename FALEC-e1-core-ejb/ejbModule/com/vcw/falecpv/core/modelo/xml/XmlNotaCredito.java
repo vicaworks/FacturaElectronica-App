@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,10 +31,12 @@ public class XmlNotaCredito implements Serializable {
 	@XmlElementRef
 	private XmlinfoNotaCredito infoNotaCredito;
 	
-	@XmlElementRef(name = "detalles")
+	@XmlElementRef
+	@XmlElementWrapper(name = "detalles")
 	private List<XmlNotaCreditoDetalle> notaCreditoDetalleList;
 	
-	@XmlElementRef(name = "infoAdicional")
+	@XmlElementRef
+	@XmlElementWrapper(name = "infoAdicional")
 	private List<XmlCampoAdicional> campoAdicionalList;
 	
 

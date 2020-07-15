@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.modelo.xml.adapter;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -24,7 +25,9 @@ public class XmlAdapterSriNumero6 extends XmlAdapter<String, Double> {
 		if(arg0==null) {
 			return "0.000000";
 		}
-		DecimalFormat nf = new DecimalFormat("0.000000"); 
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+		otherSymbols.setDecimalSeparator('.');
+		DecimalFormat nf = new DecimalFormat("0.000000",otherSymbols);
 		return nf.format(arg0);
 	}
 

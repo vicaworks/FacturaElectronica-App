@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -58,16 +59,19 @@ public class XmlInfoNotaDebito implements Serializable {
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double totalSinImpuestos;
 	
-	@XmlElementRef(name = "impuestos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "impuestos")
 	private List<XmlImpuesto> impuestoList;
 	
-	@XmlElementRef(name = "compensaciones")
+	@XmlElementRef
+	@XmlElementWrapper(name = "compensaciones")
 	private List<XmlCompensacion> compensacionList;
 	
 	@XmlElement
 	private Double valorTotal;
 	
-	@XmlElementRef(name = "pagos")
+	@XmlElementRef
+	@XmlElementWrapper(name = "pagos")
 	private List<XmlPago> pagoList;
 	
 	/**
