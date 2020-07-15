@@ -216,6 +216,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setMoneda("DOLAR");
 		notaCreditoSeleccion.setPropina(BigDecimal.ZERO);
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		notaCreditoSeleccion.setTipodocasociado(notaCreditoSeleccion.getTipocomprobanteretencion().getIdentificador());
 		
 		formatoNumDoc(notaCreditoSeleccion.getNumfactura());
 		if(notaCreditoSeleccion.getIdcabecerapadre()==null) {

@@ -131,6 +131,7 @@ public class DocElectrinocCtrl extends BaseCtrl {
 //			File xsdFile = new File(path);
 //			System.out.println(xsdFile.getPath());
 			validarXml(path, xmlDocElectronico, numDocumento);
+			xmlError = "OK";
 		} catch (SAXException e) {
 			e.printStackTrace();
 			xmlError = e.getMessage();

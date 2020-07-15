@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriDate;
 import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriNumero;
 
 /**
@@ -31,6 +32,7 @@ public class XmlInfoLiquidacionCompra implements Serializable {
 	private static final long serialVersionUID = -2633840624700345912L;
 
 	@XmlElement
+	@XmlJavaTypeAdapter(XmlAdapterSriDate.class)
 	private Date fechaEmision;
 	@XmlElement
     private String dirEstablecimiento;

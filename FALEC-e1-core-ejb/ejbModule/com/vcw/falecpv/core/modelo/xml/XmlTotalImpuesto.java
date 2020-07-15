@@ -32,19 +32,19 @@ public class XmlTotalImpuesto implements Serializable {
     private String codigoPorcentaje;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double descuentoAdicional = 0.00d;
+    private Double descuentoAdicional;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double baseImponible = 0.00d;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double tarifa = 0.00d;
+    private Double tarifa;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double valor = 0.00d;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double valorDevolucionIva = 0.00d;
+    private Double valorDevolucionIva;
 	
 	/**
 	 * 

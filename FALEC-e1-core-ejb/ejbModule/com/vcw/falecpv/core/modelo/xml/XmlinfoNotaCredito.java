@@ -22,7 +22,7 @@ import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriNumero;
  * @author cristianvillarreal
  *
  */
-@XmlRootElement(name = "notaCredito")
+@XmlRootElement(name = "infoNotaCredito")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class XmlinfoNotaCredito implements Serializable {
 
