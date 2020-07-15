@@ -133,7 +133,7 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			
 			Establecimiento e = consultarByPk(idEStablecimiento);
 			
-			int cantidadZero = 7;
+			int cantidadZero = 9;
 			String numDoc =  "";
 			
 			switch (geTipoDocumentoEnum) {

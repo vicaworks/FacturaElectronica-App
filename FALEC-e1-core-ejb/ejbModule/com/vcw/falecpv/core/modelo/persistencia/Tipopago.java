@@ -68,6 +68,10 @@ public class Tipopago implements Serializable {
     @Column(name = "codinterno", length = 4)
     private String codinterno;
     
+    @Size(max = 2)
+    @Column(name = "codigo", length = 2)
+    private String codigo;
+    
     @Column(name = "updated")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
@@ -216,6 +220,20 @@ public class Tipopago implements Serializable {
 	 */
 	public void setCodinterno(String codinterno) {
 		this.codinterno = codinterno;
+	}
+
+	/**
+	 * @return the codigo
+	 */
+	public String getCodigo() {
+		return codigo;
+	}
+
+	/**
+	 * @param codigo the codigo to set
+	 */
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 }

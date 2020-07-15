@@ -121,11 +121,11 @@ public abstract class GenerarDocumentoElectronico {
 		for (Totalimpuesto totalimpuesto : totalimpuestoList) {
 			XmlTotalImpuesto xmlTotalImpuesto = new XmlTotalImpuesto();
 			if(totalimpuesto.getIva()!=null) {
-				xmlTotalImpuesto.setCodigo(totalimpuesto.getIva().getCodigo());
+				xmlTotalImpuesto.setCodigo(totalimpuesto.getIva().getCodigoIva());
 				xmlTotalImpuesto.setTarifa(totalimpuesto.getIva().getValor().doubleValue());
 			}
 			if(totalimpuesto.getIce()!=null) {
-				xmlTotalImpuesto.setCodigo(totalimpuesto.getIce().getCodigo());
+				xmlTotalImpuesto.setCodigo(totalimpuesto.getIce().getCodigoIce());
 				xmlTotalImpuesto.setTarifa(totalimpuesto.getIce().getValor().doubleValue());
 			}
 			
@@ -147,7 +147,7 @@ public abstract class GenerarDocumentoElectronico {
 		List<XmlPago> xmlPagoList = new ArrayList<>();
 		for (Pago pago : pagoList) {
 			XmlPago xmlPago = new XmlPago();
-			xmlPago.setFormaPago(pago.getTipopago().getNombre());
+			xmlPago.setFormaPago(pago.getTipopago().getCodigo());
 			xmlPago.setTotal(pago.getTotal().doubleValue());
 			xmlPago.setPlazo(pago.getPlazo().doubleValue());
 			xmlPago.setUnidadTiempo(pago.getUnidadtiempo());

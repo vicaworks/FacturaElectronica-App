@@ -53,6 +53,12 @@
 				display: block !important;
 			}
 			
+			.xmlError{
+				padding: 20px;
+				background-color: #ffe5e5;
+				border: 1px solid #ccc;
+			}
+			
         </style>
     </ui:define>
 
@@ -90,7 +96,7 @@
 					<div class="p-col-12 p-md-4">
 						<h:outputText value="#{msg['label.numero']} DOCUMENTO *" styleClass="cpoRequerido"/>
 						<div class="EmptyBox5"/>
-						<p:inputMask mask="999-999-9999999" maxlength="15" required="true" requiredMessage="REQUERIDO" value="#{docElectrinocCtrl.numDocumento}" styleClass="Wid100">
+						<p:inputMask mask="999-999-999999999" maxlength="17" required="true" requiredMessage="REQUERIDO" value="#{docElectrinocCtrl.numDocumento}" styleClass="Wid100">
 							<f:converter converterId="formatoNumComprobanteConverter"/>
 						</p:inputMask>
 					</div>
@@ -121,7 +127,7 @@
 			
 			<div class="p-grid p-align-top vertical-container">
 				
-				<div class="p-col-12 p-md-6">
+				<div class="p-col-12 p-md-8">
 					<div class="card card-w-title xmlDoc" style="margin-top:12px;">
 						
 						<h3 class="cardTitle"> <i class="fa fa-arrow-circle-right"></i> Documento #{msg['label.electronico']}</h3>
@@ -131,11 +137,18 @@
 					</div>
 				</div>
 				
-				<div class="p-col-12 p-md-6">
+				<div class="p-col-12 p-md-4">
 					<div class="card card-w-title xmlDoc" style="margin-top:12px;">
 						
 						<h3 class="cardTitle"> <i class="fa fa-arrow-circle-right"></i> Resultado #{msg['label.validacion']}</h3>
 						
+						<p:outputPanel rendered="#{not empty docElectrinocCtrl.xmlError}">
+							<div class="xmlError Wid100">
+								<h:outputText value="#{docElectrinocCtrl.xmlError}" styleClass="Fs18"/>
+							</div>
+						</p:outputPanel>
+						
+						<div class="EmptyBox20"/>
 					</div>
 				</div>
 				

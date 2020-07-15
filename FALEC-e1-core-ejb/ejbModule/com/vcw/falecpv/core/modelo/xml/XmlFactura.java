@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author cristianvillarreal
  *
  */
-@XmlRootElement(name = "infoFactura")
+@XmlRootElement(name = "factura")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class XmlFactura implements Serializable {
 

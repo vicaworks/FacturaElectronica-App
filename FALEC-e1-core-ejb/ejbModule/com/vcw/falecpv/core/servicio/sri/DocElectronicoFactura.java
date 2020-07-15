@@ -116,10 +116,10 @@ public class DocElectronicoFactura extends GenerarDocumentoElectronico {
 			for (Detalleimpuesto i : d.getDetalleimpuestoList()) {
 				XmlImpuesto impuesto = new XmlImpuesto();
 				if(i.getIva()!=null) {
-					impuesto.setCodigo(i.getIva().getCodigo());
+					impuesto.setCodigo(i.getIva().getCodigoIva());
 				}
 				if(i.getIce()!=null) {
-					impuesto.setCodigo(i.getIce().getCodigo());
+					impuesto.setCodigo(i.getIce().getCodigoIce());
 				}
 				impuesto.setCodigoPorcentaje(impuesto.getCodigo());
 				impuesto.setTarifa(i.getTarifa().doubleValue());
