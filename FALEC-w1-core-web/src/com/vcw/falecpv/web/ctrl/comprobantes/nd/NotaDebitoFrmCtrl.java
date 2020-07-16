@@ -573,6 +573,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setMoneda("DOLAR");
 		notDebitoSelected.setPropina(BigDecimal.ZERO);
 		notDebitoSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		notDebitoSelected.setTipodocasociado(notDebitoSelected.getTipocomprobanteretencion().getIdentificador());
 		
 		if(notDebitoSelected.getTipocomprobanteretencion()!=null) {
 			notDebitoSelected.setTipodocasociado(notDebitoSelected.getTipocomprobanteretencion().getIdentificador());

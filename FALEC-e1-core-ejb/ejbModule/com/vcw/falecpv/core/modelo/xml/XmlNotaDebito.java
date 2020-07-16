@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -26,11 +27,17 @@ public class XmlNotaDebito implements Serializable {
 	 */
 	private static final long serialVersionUID = 1592149953320156125L;
 	
+	@XmlAttribute
+	private String id="comprobante";
+	
+	@XmlAttribute
+	private String version="1.0.0";
+	
 	@XmlElementRef
 	private XmlInfoTributaria infoTributaria;
 	
 	@XmlElement
-	private XmlinfoNotaCredito infoNotaCredito;
+	private XmlInfoNotaDebito infoNotaDebito;
 	
 	@XmlElementRef
 	@XmlElementWrapper(name = "motivos")
@@ -64,26 +71,6 @@ public class XmlNotaDebito implements Serializable {
 		this.infoTributaria = infoTributaria;
 	}
 
-
-
-	/**
-	 * @return the infoNotaCredito
-	 */
-	public XmlinfoNotaCredito getInfoNotaCredito() {
-		return infoNotaCredito;
-	}
-
-
-
-	/**
-	 * @param infoNotaCredito the infoNotaCredito to set
-	 */
-	public void setInfoNotaCredito(XmlinfoNotaCredito infoNotaCredito) {
-		this.infoNotaCredito = infoNotaCredito;
-	}
-
-
-
 	/**
 	 * @return the motivoList
 	 */
@@ -116,6 +103,54 @@ public class XmlNotaDebito implements Serializable {
 	 */
 	public void setCampoAdicionalList(List<XmlCampoAdicional> campoAdicionalList) {
 		this.campoAdicionalList = campoAdicionalList;
+	}
+
+
+	/**
+	 * @return the infoNotaDebito
+	 */
+	public XmlInfoNotaDebito getInfoNotaDebito() {
+		return infoNotaDebito;
+	}
+
+
+	/**
+	 * @param infoNotaDebito the infoNotaDebito to set
+	 */
+	public void setInfoNotaDebito(XmlInfoNotaDebito infoNotaDebito) {
+		this.infoNotaDebito = infoNotaDebito;
+	}
+
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }
