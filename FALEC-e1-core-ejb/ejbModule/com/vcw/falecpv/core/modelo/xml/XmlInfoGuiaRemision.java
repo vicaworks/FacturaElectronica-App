@@ -47,6 +47,7 @@ public class XmlInfoGuiaRemision implements Serializable {
 	@XmlJavaTypeAdapter(XmlAdapterSriDate.class)
 	private Date fechaIniTransporte;
 	@XmlElement
+	@XmlJavaTypeAdapter(XmlAdapterSriDate.class)
 	private Date fechaFinTransporte;
 	@XmlElement
 	private String placa;

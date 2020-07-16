@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,6 +25,12 @@ public class XmlGuiaRemision implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1363645481170869349L;
+	
+	@XmlAttribute
+	private String id="comprobante";
+	
+	@XmlAttribute
+	private String version="1.0.0";
 
 	@XmlElementRef
 	private XmlInfoTributaria infoTributaria;
@@ -116,6 +123,42 @@ public class XmlGuiaRemision implements Serializable {
 	 */
 	public void setCampoAdicionalList(List<XmlCampoAdicional> campoAdicionalList) {
 		this.campoAdicionalList = campoAdicionalList;
+	}
+
+
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

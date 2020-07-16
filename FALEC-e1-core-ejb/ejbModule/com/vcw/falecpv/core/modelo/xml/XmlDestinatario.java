@@ -218,4 +218,18 @@ public class XmlDestinatario implements Serializable {
 		this.fechaEmisionDocSustento = fechaEmisionDocSustento;
 	}
 
+	/**
+	 * @return the destinatarioDetallesList
+	 */
+	public List<XmlDestinatarioDetalle> getDestinatarioDetallesList() {
+		return destinatarioDetallesList;
+	}
+
+	/**
+	 * @param destinatarioDetallesList the destinatarioDetallesList to set
+	 */
+	public void setDestinatarioDetallesList(List<XmlDestinatarioDetalle> destinatarioDetallesList) {
+		this.destinatarioDetallesList = destinatarioDetallesList;
+	}
+
 }

@@ -111,7 +111,7 @@ public abstract class GenerarDocumentoElectronico {
 			xmlCampoAdicional.setValue(infoadicional.getValor());
 			infoAdicinalList.add(xmlCampoAdicional);
 		}
-		return infoAdicinalList;
+		return infoAdicinalList.size()>0?infoAdicinalList:null;
 	}
 	
 	/**
