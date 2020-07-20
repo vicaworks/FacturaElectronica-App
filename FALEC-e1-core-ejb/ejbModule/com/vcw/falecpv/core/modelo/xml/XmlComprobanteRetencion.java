@@ -37,7 +37,7 @@ public class XmlComprobanteRetencion implements Serializable {
 	private String id="comprobante";
 	
 	@XmlAttribute
-	private String version="NMTOKEN";
+	private String version="1.0.0";
 	
 	@XmlElementRef
 	private XmlInfoTributaria infoTributaria;
