@@ -30,10 +30,10 @@ public class XmlPago implements Serializable {
 	private String formaPago;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double total = 0.00d;
+    private Double total;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double plazo = 0.00d;
+    private Double plazo;
 	@XmlElement
     private String unidadTiempo;
 

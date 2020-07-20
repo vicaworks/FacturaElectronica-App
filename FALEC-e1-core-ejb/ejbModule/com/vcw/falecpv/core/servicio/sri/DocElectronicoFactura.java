@@ -49,7 +49,7 @@ public class DocElectronicoFactura extends GenerarDocumentoElectronico {
 		// infoadicional
 		factura.setCampoAdicionalList(getInfoAdicinal(infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idDocumento)));
 		
-		return XmlCommonsUtil.jaxbMarshall(factura, true, false);
+		return XmlCommonsUtil.jaxbMarshall(factura, true, false,encode);
 	}
 	
 	

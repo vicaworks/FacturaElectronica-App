@@ -53,7 +53,7 @@ public class DocElectronicoLiqCompra extends GenerarDocumentoElectronico {
 		// infoadicional
 		liqCompra.setCampoAdicionalList(getInfoAdicinal(infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idDocumento)));
 		
-		return XmlCommonsUtil.jaxbMarshall(liqCompra, true, false);
+		return XmlCommonsUtil.jaxbMarshall(liqCompra, true, false,encode);
 	}
 	
 	protected XmlInfoLiquidacionCompra getInfoLiquidacionCompra(Cabecera cabecera,List<Pago> pagoList,List<Totalimpuesto> totalimpuestoList) {

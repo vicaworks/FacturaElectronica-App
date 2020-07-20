@@ -54,7 +54,7 @@ public class DocElectronicoNotaCredito extends GenerarDocumentoElectronico {
 		// infoadicional
 		notCredito.setCampoAdicionalList(getInfoAdicinal(infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idDocumento)));
 		
-		return XmlCommonsUtil.jaxbMarshall(notCredito, true, false);
+		return XmlCommonsUtil.jaxbMarshall(notCredito, true, false,encode);
 	}
 	
 	/**

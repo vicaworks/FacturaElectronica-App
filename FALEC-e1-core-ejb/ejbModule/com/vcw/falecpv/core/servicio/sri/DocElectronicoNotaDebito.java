@@ -49,7 +49,7 @@ public class DocElectronicoNotaDebito extends GenerarDocumentoElectronico {
 		// infoadicional
 		notDebito.setCampoAdicionalList(getInfoAdicinal(infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idDocumento)));
 		
-		return XmlCommonsUtil.jaxbMarshall(notDebito, true, false);
+		return XmlCommonsUtil.jaxbMarshall(notDebito, true, false,encode);
 	}
 	
 	/**

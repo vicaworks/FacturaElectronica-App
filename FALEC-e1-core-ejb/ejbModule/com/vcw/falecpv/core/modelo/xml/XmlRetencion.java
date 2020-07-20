@@ -32,10 +32,10 @@ public class XmlRetencion implements Serializable {
     private String codigoPorcentaje;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double tarifa = 0.00d;
+    private Double tarifa;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double valor = 0.00d;
+    private Double valor;
 	
 	/**
 	 * 

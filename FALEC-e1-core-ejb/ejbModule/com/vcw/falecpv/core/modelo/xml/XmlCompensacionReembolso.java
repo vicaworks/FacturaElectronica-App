@@ -30,10 +30,10 @@ public class XmlCompensacionReembolso implements Serializable {
 	private String codigo;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double tarifa = 0.00d;
+    private Double tarifa;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double valor = 0.00d;
+    private Double valor;
 	
 	/**
 	 * 

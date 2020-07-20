@@ -40,19 +40,22 @@ public class XmlDetalle implements Serializable {
     private String unidadMedida;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero6.class)
-    private Double cantidad = 0.000000d;
+    //private Double cantidad = 0.000000d;
+	private Double cantidad;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero6.class)
-    private Double precioUnitario = 0.000000d;
+//    private Double precioUnitario = 0.000000d;
+	private Double precioUnitario;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero6.class)
-    private Double precioSinSubsidio = 0.000000d;
+//    private Double precioSinSubsidio = 0.000000d;
+	private Double precioSinSubsidio;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double descuento = 0.00d;
+    private Double descuento;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double precioTotalSinImpuesto = 0.00d;
+    private Double precioTotalSinImpuesto;
     @XmlElementRef
     @XmlElementWrapper(name = "detallesAdicionales")
     private List<XmlDetAdicional> detAdicionalList;

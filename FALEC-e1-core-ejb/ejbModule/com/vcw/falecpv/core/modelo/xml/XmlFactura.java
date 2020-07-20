@@ -37,7 +37,7 @@ public class XmlFactura implements Serializable {
 	private String id="comprobante";
 	
 	@XmlAttribute
-	private String version="1.0.0";
+	private String version="2.1.0";
 	
 	@XmlElementRef
 	private XmlInfoTributaria infoTributaria;

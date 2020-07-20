@@ -50,21 +50,21 @@ public class XmlInfoLiquidacionCompra implements Serializable {
 	private String direccionProveedor;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalSinImpuestos = 0.00d;
+    private Double totalSinImpuestos;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalDescuento = 0.00d;
+    private Double totalDescuento;
 	@XmlElement
     private String codDocReembolso;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalComprobantesReembolso = 0.00d;
+    private Double totalComprobantesReembolso;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalBaseImponibleReembolso = 0.00d;
+    private Double totalBaseImponibleReembolso;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalImpuestoReembolso = 0.00d;
+    private Double totalImpuestoReembolso;
 	
 	@XmlElementRef
 	@XmlElementWrapper(name = "totalConImpuestos")
@@ -72,7 +72,7 @@ public class XmlInfoLiquidacionCompra implements Serializable {
 	
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double importeTotal = 0.00d;
+    private Double importeTotal;
 	
 	@XmlElement
     private String moneda;

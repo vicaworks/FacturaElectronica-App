@@ -64,6 +64,41 @@ public class XmlCommonsUtil {
 
 		return xmlContent;
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param <T>
+	 * @param xml
+	 * @param prettyPrint
+	 * @param deleteXmlTag
+	 * @param encoding
+	 * @return
+	 * @throws JAXBException
+	 */
+	public static <T> String jaxbMarshall(T xml, Boolean prettyPrint, Boolean deleteXmlTag,String encoding) throws JAXBException {
+
+		StringWriter sw = new StringWriter();
+		JAXBContext context = JAXBContext.newInstance(xml.getClass());
+		Marshaller m = context.createMarshaller();
+		if(encoding!=null) {
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, prettyPrint);
+		}
+		m.setProperty(Marshaller.JAXB_ENCODING, encoding);
+		if (deleteXmlTag) {
+			m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+		}
+
+		m.marshal(xml, sw);
+		
+		String xmlContent = sw.toString();
+        xmlContent = xmlContent.replaceAll("xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", "");
+        xmlContent = xmlContent.replaceAll("</ns2:", "</");
+        xmlContent = xmlContent.replaceAll(":ns2=", "=");
+        xmlContent = xmlContent.replaceAll("<ns2:", "<");
+
+		return xmlContent;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> T jaxbunmarshall(String xml, T xmlType) throws JAXBException, UnsupportedEncodingException {
@@ -110,7 +145,6 @@ public class XmlCommonsUtil {
 	 * @return
 	 */
 	public static List<Node> aplicarXpath(Document document,String xmlXpath){
-		@SuppressWarnings("unchecked")
 		List<Node> nodes = document.selectNodes(xmlXpath);
 		return nodes;
 	}

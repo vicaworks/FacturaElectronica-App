@@ -46,7 +46,7 @@ public class DocElectronicoRetencion extends GenerarDocumentoElectronico {
 		// infoadicional
 		retencion.setCampoAdicionalList(getInfoAdicinal(infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idDocumento)));
 		
-		return XmlCommonsUtil.jaxbMarshall(retencion, true, false);
+		return XmlCommonsUtil.jaxbMarshall(retencion, true, false,encode);
 	}
 	
 	protected XmlInfoCompRetencion getXmlInfoCompRetencion(Cabecera cabecera) {

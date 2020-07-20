@@ -36,7 +36,7 @@ public class XmlGuiaRemision implements Serializable {
 	private String id="comprobante";
 	
 	@XmlAttribute
-	private String version="1.0.0";
+	private String version="NMTOKEN";
 
 	@XmlElementRef
 	private XmlInfoTributaria infoTributaria;

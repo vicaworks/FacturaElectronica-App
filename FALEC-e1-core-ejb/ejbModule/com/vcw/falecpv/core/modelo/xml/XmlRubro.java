@@ -30,7 +30,7 @@ public class XmlRubro implements Serializable {
 	private String concepto;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double total = 0.00d;
+    private Double total;
 	
 	/**
 	 * 

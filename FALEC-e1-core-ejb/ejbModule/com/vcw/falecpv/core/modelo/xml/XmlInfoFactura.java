@@ -71,17 +71,17 @@ public class XmlInfoFactura implements Serializable {
     // #.00
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalSinImpuestos = 0d;
+    private Double totalSinImpuestos;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalSubsidio = 0d;
+    private Double totalSubsidio;
     
     // FOB
 	@XmlElement
     private String incoTermTotalSinImpuestos;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalDescuento = 0d;
+    private Double totalDescuento;
 	@XmlElement
     private String codDocReembolso;
 	@XmlElement
@@ -104,7 +104,7 @@ public class XmlInfoFactura implements Serializable {
 	
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double propina = 0.00d;
+    private Double propina;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double fleteInternacional;

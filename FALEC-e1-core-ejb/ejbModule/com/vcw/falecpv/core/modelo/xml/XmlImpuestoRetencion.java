@@ -27,13 +27,13 @@ public class XmlImpuestoRetencion implements Serializable {
 	private String codigoRetencion;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-	private Double baseImponible = 0.00d;
+	private Double baseImponible;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-	private Double porcentajeRetener = 0.00d;
+	private Double porcentajeRetener;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-	private Double valorRetenido = 0.00d;
+	private Double valorRetenido;
 	@XmlElement
 	private String codDocSustento;
 	@XmlElement

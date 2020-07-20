@@ -60,7 +60,7 @@ public class DocElectronicoGuiaRemision extends GenerarDocumentoElectronico {
 		// infoadicional
 		guiaRemision.setCampoAdicionalList(getInfoAdicinal(infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idDocumento)));
 		
-		return XmlCommonsUtil.jaxbMarshall(guiaRemision, true, false);
+		return XmlCommonsUtil.jaxbMarshall(guiaRemision, true, false,encode);
 	}
 
 	protected XmlInfoGuiaRemision getInfoGuiaRemision(Cabecera cabecera) {

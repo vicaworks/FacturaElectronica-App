@@ -45,6 +45,7 @@ import com.vcw.falecpv.core.servicio.TotalimpuestoServicio;
  */
 public abstract class GenerarDocumentoElectronico {
 
+	protected static final String encode = "ISO-8859-1";
 	
 	
 	protected CabeceraServicio cabeceraServicio;
