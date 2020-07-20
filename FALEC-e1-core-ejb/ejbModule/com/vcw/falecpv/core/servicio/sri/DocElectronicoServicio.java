@@ -33,24 +33,28 @@ public class DocElectronicoServicio {
 	 * @throws NoExisteRegistroException
 	 */
 	public String getIdDocElectronico(String tipoComprobanteIdentificador,String idEstablecimiento,String numDocumento)throws DaoException,NoExisteRegistroException{
+		
+		List<Cabecera> lista =  null;
+		
 		try {
 			
 			QueryBuilder qb = new QueryBuilder(cabeceraDao.getEntityManager());
 			
-			List<Cabecera> lista =  qb.select("c")
+			lista =  qb.select("c")
 							.from(Cabecera.class,"c")
 							.notEquals("c.estado", "ANULADO")
 							.equals("c.establecimiento.idestablecimiento",idEstablecimiento)
 							.equals("c.tipocomprobante.identificador",tipoComprobanteIdentificador)
 							.equals("c.numdocumento",numDocumento).getResultList();
-			if(lista.size()==0) {
-				throw new NoExisteRegistroException("NO EXISTE : " + numDocumento);
-			}
-			
-			return lista.get(0).getIdcabecera();
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
+		
+		if(lista.size()==0) {
+			throw new NoExisteRegistroException("NO EXISTE : " + numDocumento);
+		}
+		
+		return lista.get(0).getIdcabecera();
 		
 	}
 	

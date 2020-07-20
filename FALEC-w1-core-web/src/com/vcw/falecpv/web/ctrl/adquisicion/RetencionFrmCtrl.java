@@ -198,6 +198,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			retencionSeleccion.setProveedor(adquisicionSelected.getProveedor());
 			retencionSeleccion.setTipocomprobanteretencion(adquisicionSelected.getTipocomprobante());
 		}
+		retencionSeleccion.setFechaemisiondocasociado(retencionSeleccion.getFechaemision());
 		retenciondetalleList = null;
 		nuevaRetencionDetalle();
 		determinarPeriodoFiscal();
@@ -205,7 +206,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	private void determinarPeriodoFiscal() {
 		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
-		retencionSeleccion.setPeriodofiscal(sf.format(retencionSeleccion.getFechaemision()));
+		retencionSeleccion.setPeriodofiscal(sf.format(retencionSeleccion.getFechaemisiondocasociado()));
 	}
 	
 	private void nuevaRetencionDetalle() {
@@ -385,6 +386,11 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		
 		// detalle retencion
 		retencionSeleccion.setImpuestoretencionList(retenciondetalleList);
+		for (Impuestoretencion i : retencionSeleccion.getImpuestoretencionList()) {
+			i.setCoddocsustento(retencionSeleccion.getTipocomprobanteretencion().getIdentificador());
+			i.setNumdocsustento(retencionSeleccion.getNumfactura());
+			i.setFechaemisiondocsustento(retencionSeleccion.getFechaemisiondocasociado());
+		}
 		
 		// infromacion adicional 
 		retencionSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(retencionSeleccion));

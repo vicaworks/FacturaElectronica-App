@@ -86,13 +86,13 @@ public class XmlInfoFactura implements Serializable {
     private String codDocReembolso;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalComprobantesReembolso = 0d;
+    private Double totalComprobantesReembolso;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalBaseImponibleReembolso = 0d;
+    private Double totalBaseImponibleReembolso;
 	@XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double totalImpuestoReembolso = 0d;
+    private Double totalImpuestoReembolso;
 	
 	@XmlElementRef
 	@XmlElementWrapper(name = "totalConImpuestos")
@@ -107,19 +107,19 @@ public class XmlInfoFactura implements Serializable {
     private Double propina = 0.00d;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double fleteInternacional = 0.00d;
+    private Double fleteInternacional;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double seguroInternacional = 0.00d;
+    private Double seguroInternacional;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double gastosAduaneros = 0.00d;
+    private Double gastosAduaneros;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double gastosTransporteOtros = 0.00d;
+    private Double gastosTransporteOtros;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double importeTotal = 0.00d;
+    private Double importeTotal;
     @XmlElement
     private String moneda;
     @XmlElement
@@ -131,10 +131,10 @@ public class XmlInfoFactura implements Serializable {
     
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double valorRetIva = 0.00d;
+    private Double valorRetIva;
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
-    private Double valorRetRenta = 0.00d;
+    private Double valorRetRenta;
 
 	/**
 	 * 

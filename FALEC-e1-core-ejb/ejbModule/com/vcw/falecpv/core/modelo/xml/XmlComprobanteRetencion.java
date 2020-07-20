@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,11 +26,24 @@ public class XmlComprobanteRetencion implements Serializable {
 	 */
 	private static final long serialVersionUID = 8549899996004415625L;
 	
+	
+	@XmlAttribute(name = "xmlns:ns1")
+	private String xmlns_ns1="http://www.w3.org/2000/09/xmldsig#";
+	
+	@XmlAttribute(name = "xmlns:xsi")
+	private String xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance";
+	
+	@XmlAttribute
+	private String id="comprobante";
+	
+	@XmlAttribute
+	private String version="NMTOKEN";
+	
 	@XmlElementRef
 	private XmlInfoTributaria infoTributaria;
 	
 	@XmlElementRef
-	private XmlInfoFactura infoFactura;
+	private XmlInfoCompRetencion infoCompRetencion;
 	
 	@XmlElementRef
 	@XmlElementWrapper(name = "impuestos")
@@ -60,20 +74,6 @@ public class XmlComprobanteRetencion implements Serializable {
 	}
 
 	/**
-	 * @return the infoFactura
-	 */
-	public XmlInfoFactura getInfoFactura() {
-		return infoFactura;
-	}
-
-	/**
-	 * @param infoFactura the infoFactura to set
-	 */
-	public void setInfoFactura(XmlInfoFactura infoFactura) {
-		this.infoFactura = infoFactura;
-	}
-
-	/**
 	 * @return the impuestoretencionList
 	 */
 	public List<XmlImpuestoRetencion> getImpuestoretencionList() {
@@ -99,6 +99,76 @@ public class XmlComprobanteRetencion implements Serializable {
 	 */
 	public void setCampoAdicionalList(List<XmlCampoAdicional> campoAdicionalList) {
 		this.campoAdicionalList = campoAdicionalList;
+	}
+
+	/**
+	 * @return the infoCompRetencion
+	 */
+	public XmlInfoCompRetencion getInfoCompRetencion() {
+		return infoCompRetencion;
+	}
+
+	/**
+	 * @param infoCompRetencion the infoCompRetencion to set
+	 */
+	public void setInfoCompRetencion(XmlInfoCompRetencion infoCompRetencion) {
+		this.infoCompRetencion = infoCompRetencion;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	/**
+	 * @return the xmlns_ns1
+	 */
+	public String getXmlns_ns1() {
+		return xmlns_ns1;
+	}
+
+	/**
+	 * @param xmlns_ns1 the xmlns_ns1 to set
+	 */
+	public void setXmlns_ns1(String xmlns_ns1) {
+		this.xmlns_ns1 = xmlns_ns1;
+	}
+
+	/**
+	 * @return the xmlns_xsi
+	 */
+	public String getXmlns_xsi() {
+		return xmlns_xsi;
+	}
+
+	/**
+	 * @param xmlns_xsi the xmlns_xsi to set
+	 */
+	public void setXmlns_xsi(String xmlns_xsi) {
+		this.xmlns_xsi = xmlns_xsi;
 	}
 
 }

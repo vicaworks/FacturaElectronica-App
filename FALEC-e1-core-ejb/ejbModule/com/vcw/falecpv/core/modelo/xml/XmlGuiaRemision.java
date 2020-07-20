@@ -26,6 +26,12 @@ public class XmlGuiaRemision implements Serializable {
 	 */
 	private static final long serialVersionUID = -1363645481170869349L;
 	
+	@XmlAttribute(name = "xmlns:ns1")
+	private String xmlns_ns1="http://www.w3.org/2000/09/xmldsig#";
+			
+	@XmlAttribute(name = "xmlns:xsi")
+	private String xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance";
+	
 	@XmlAttribute
 	private String id="comprobante";
 	
@@ -159,6 +165,42 @@ public class XmlGuiaRemision implements Serializable {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+
+
+	/**
+	 * @return the xmlns_ns1
+	 */
+	public String getXmlns_ns1() {
+		return xmlns_ns1;
+	}
+
+
+
+	/**
+	 * @param xmlns_ns1 the xmlns_ns1 to set
+	 */
+	public void setXmlns_ns1(String xmlns_ns1) {
+		this.xmlns_ns1 = xmlns_ns1;
+	}
+
+
+
+	/**
+	 * @return the xmlns_xsi
+	 */
+	public String getXmlns_xsi() {
+		return xmlns_xsi;
+	}
+
+
+
+	/**
+	 * @param xmlns_xsi the xmlns_xsi to set
+	 */
+	public void setXmlns_xsi(String xmlns_xsi) {
+		this.xmlns_xsi = xmlns_xsi;
 	}
 
 }
