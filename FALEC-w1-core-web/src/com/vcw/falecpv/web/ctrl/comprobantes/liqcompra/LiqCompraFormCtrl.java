@@ -139,6 +139,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTotalsinimpuestos(BigDecimal.ZERO);
 		liqCompraSelected.setDetalleList(new ArrayList<>());
 		liqCompraSelected.setFechaemision(new Date());
+		infoadicionalList = null;
 		inicializarSecuencia(liqCompraSelected);
 		liqCompraDetalleList = null;
 		criterioProveedor = null;
@@ -234,7 +235,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		ComprobanteHelper.determinarDetalleImpuesto(liqCompraSelected.getDetalleList());
 		
 		// infromacion adicional 
-		liqCompraSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(liqCompraSelected));
+		liqCompraSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(liqCompraSelected,infoadicionalList));
 		
 	}
 	
@@ -338,7 +339,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTotaldescuento(liqCompraSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalsinimpuestos(liqCompraSelected.getTotalsinimpuestos().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalconimpuestos(liqCompraSelected.getTotalsinimpuestos().add(liqCompraSelected.getTotaliva()).add(liqCompraSelected.getTotalice()).setScale(2, RoundingMode.HALF_UP));
-		
+		liqCompraSelected.setTotalpagar(liqCompraSelected.getTotalconimpuestos().add(liqCompraSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}

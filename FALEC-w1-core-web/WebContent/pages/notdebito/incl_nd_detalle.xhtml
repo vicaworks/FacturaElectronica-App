@@ -124,12 +124,42 @@
 			<div class="EmptyBox5"/>
 			<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h3>
 			
+			
+			<div class="EmptyBox20"/>
+			
+			<div class="p-grid p-justify-even">
+				<div class="p-col-12 p-md-3 boxMain box-gray">
+					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
+					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalpagar}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">TOTAL PAGADO</div>
+					<h:outputText value="#{notaDebitoFrmCtrl.totalPago}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
+					<h:outputText value="#{notaDebitoFrmCtrl.totalSaldo}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+			</div>	
+			
+			<div class="EmptyBox10"/>			
+			
+			
+			
 			<p:panelGrid id="gridOpcPagos" columns="2"
 				 styleClass="ui-panelgrid-blank Wid100" 
 				 columnClasses="ui-g-12 ui-md-6,
 				 				ui-g-12 ui-md-6">
 				 				
-				 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{notaDebitoFrmCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupMotivos" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupMotivos" styleClass="Wid100"/>
+				 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{notaDebitoFrmCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupMotivos" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupMotivos" styleClass="secondary-button Wid100"/>
 				 
 				 <p:commandButton value="OTROS" icon="fa fa-plus" action="#{tipoPagoCtrl.showModal()}" process="@this :formMain:oupMotivos" styleClass="secondary-button Wid100">
 				 	<f:setPropertyActionListener value="NOTA_DEBITO" target="#{tipoPagoCtrl.callModule}"/>
@@ -248,38 +278,6 @@
 				</p:column>
 							
 			</p:dataTable>
-			
-			<div class="EmptyBox10"/>
-	        <div class="p-grid p-justify-around p-align-center" >
-	        
-	        	<div class="p-col-12 p-md-5 divTotalPago">
-	        		<div class="p-grid p-justify-center">
-	        			<div class="p-col-12 cabecera">
-	        				TOTAL
-	        			</div>
-	        			<div class="p-col-12 detalle">
-	        				<h:outputText value="#{notaDebitoFrmCtrl.totalPago}">
-			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-			            	</h:outputText>
-	        			</div>
-	        		</div>
-	        	</div>
-	        	
-	        	<div class="p-col-12 p-md-5 divTotalPagoSaldo">
-	        		<div class="p-grid p-justify-center">
-	        			<div class="p-col-12 cabecera">
-	        				SALDO
-	        			</div>
-	        			<div class="p-col-12 detalle">
-	        				<h:outputText value="#{notaDebitoFrmCtrl.totalSaldo}">
-			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-			            	</h:outputText>
-	        			</div>
-	        		</div>
-	        	</div>
-	        	
-	        </div>
-		
 		</div>
 			
 	</p:outputPanel>

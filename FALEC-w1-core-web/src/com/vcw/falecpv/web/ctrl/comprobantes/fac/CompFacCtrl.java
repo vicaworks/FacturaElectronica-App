@@ -206,6 +206,7 @@ public class CompFacCtrl extends BaseCtrl {
 		criterioCliente = null;
 		cabecerSelected = new Cabecera();
 		cabecerSelected.setFechaemision(new Date());
+		infoadicionalList = null;
 		inicializarSecuencia(cabecerSelected);
 		
 		criterioCliente = null;
@@ -314,11 +315,30 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setTotaldescuento(cabecerSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalsinimpuestos(cabecerSelected.getTotalsinimpuestos().setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalconimpuestos(cabecerSelected.getTotalsinimpuestos().add(cabecerSelected.getTotaliva()).add(cabecerSelected.getTotalice()).setScale(2, RoundingMode.HALF_UP));
-		
+		cabecerSelected.setValorretenido(cabecerSelected.getValorretenidorenta().add(cabecerSelected.getValorretenidoiva()).setScale(2, RoundingMode.HALF_UP));
+		cabecerSelected.setTotalpagar(cabecerSelected.getTotalconimpuestos().add(cabecerSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}
 		
+	}
+	
+	public void totalizarRetencion() {
+		try {
+			if(cabecerSelected == null) {
+				return;
+			}
+			
+			if (cabecerSelected.getTotalsinimpuestos().doubleValue()<=0) {
+				return;
+			}
+			
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	private Detalle existeProductoLista() {
@@ -446,7 +466,7 @@ public class CompFacCtrl extends BaseCtrl {
 			pagoSelected.setTipoPagoFormularioEnum(tipoPagoFormularioEnum);
 			pagoSelected.setCabecera(cabecerSelected);
 			pagoSelected.setTipopago(tp);
-			pagoSelected.setTotal(cabecerSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+			pagoSelected.setTotal(cabecerSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
 			pagoSelected.setPlazo(BigDecimal.ZERO);
 			pagoSelected.setUnidadtiempo("DIAS");
 			pagoList.add(pagoSelected);
@@ -484,7 +504,7 @@ public class CompFacCtrl extends BaseCtrl {
 		
 		totalPago = totalPago.setScale(2, RoundingMode.HALF_UP);
 		
-		totalSaldo = cabecerSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
+		totalSaldo = cabecerSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
 		if(totalSaldo.doubleValue()<0) {
 			totalSaldo = BigDecimal.ZERO;
 		}
@@ -659,8 +679,8 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(totalPago.doubleValue()<cabecerSelected.getTotalconimpuestos().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+			if(totalPago.doubleValue()<cabecerSelected.getTotalpagar().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR A PAGAR.");
 				return;
 			}
 			
@@ -715,7 +735,7 @@ public class CompFacCtrl extends BaseCtrl {
 		
 		// infromacion adicional 
 		
-		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected));
+		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected,infoadicionalList));
 		
 	}
 	

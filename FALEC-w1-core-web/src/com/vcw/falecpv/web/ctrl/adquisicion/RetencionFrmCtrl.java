@@ -190,6 +190,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setTotalbaseimponible(BigDecimal.ZERO);
 		retencionSeleccion.setTotalretencion(BigDecimal.ZERO);
+		infoadicionalList = null;
 		inicializarSecuencia(retencionSeleccion);
 		
 		if(adquisicionSelected!=null) {
@@ -393,7 +394,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}
 		
 		// infromacion adicional 
-		retencionSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(retencionSeleccion));
+		retencionSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(retencionSeleccion,infoadicionalList));
 		
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setUpdated(new Date());

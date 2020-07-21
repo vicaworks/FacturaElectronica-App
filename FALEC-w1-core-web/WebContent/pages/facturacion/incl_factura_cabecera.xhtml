@@ -10,52 +10,9 @@
 		
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
 			min-height: 20vh !important;
-			height: calc(100vh - 609px)!important;
-		}
-		.ui-calendar .ui-inputfield{
-			font-size: 14px !important;
+			height: calc(100vh - 690px)!important;
 		}
 		
-		.ui-inputfield-pago .ui-spinner-input{
-			font-size: 12px !important;
-		}
-		
-		.ui-inputfield-pago .ui-inputfield {
-			font-size: 12px !important;
-			padding: 0.2em 0.5em;
-		}
-		
-		.divTotalPago{
-			border-radius: 4px;
-			text-align: center;
-			
-		}
-		
-		.divTotalPagoSaldo{
-			border-radius: 4px;
-			text-align: center;
-		}
-		
-		.divTotalPagoSaldo .cabecera{
-			font-size: 10px;
-			font-weight: 800;
-			padding: 2px !important;;
-		}
-		
-		.divTotalPagoSaldo .detalle{
-			font-size: 14px;
-		}
-		
-		.divTotalPago .cabecera{
-			font-size: 10px;
-			font-weight: 800;
-			padding: 2px !important;;
-		}
-		
-		.divTotalPago .detalle{
-			font-size: 14px;
-			font-weight: 800;
-		}
 	</style>
 	
 	<!-- consulta cliente return keycode 13 -->
@@ -93,7 +50,7 @@
 				
 			</h:panelGroup>
 			
-			<h:outputText value="FECHA #{msg['label.emision']}" styleClass="cpoRequerido"/>
+			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
 					pattern="dd/MMMM/yyyy"
@@ -141,114 +98,156 @@
 			</p:commandButton>
 			
 		</p:panelGrid>
-		<p:panelGrid id="grid3" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+		<p:panelGrid id="gridCliente" columns="2"
+			styleClass="ui-panelgrid-blank Fs12 Wid100"
+			columnClasses="ui-md-4,
+						   ui-md-8">
 			
+			<h:outputText value="C.I./RUC *" styleClass="cpoRequerido"/>
+			<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.identificacion}"/>
+			
+			<h:outputText value="NOMBRE * " styleClass="cpoRequerido"/>
+			<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.razonsocial}"/>
+			
+			
+			<h:outputText value="MAIL * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<div class="OvYScroll">
-					<p:panelGrid id="gridCliente" columns="2" style="background-color:#F0F3F4;border: 1px solid #252529;"
-						styleClass="ui-panelgrid-blank Fs12 Wid100"
-						columnClasses="ui-md-4,
-									   ui-md-8">
-						
-						<h:outputText value="Nombre: " styleClass="FontBold"/>
-						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.razonsocial}"/>
-						
-						<h:outputText value="C.I./RUC: " styleClass="FontBold"/>
-						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.identificacion}"/>
-						
-						<h:outputText value="Correo: " styleClass="FontBold"/>
-						<h:panelGroup>
-							<div class="OvHidden">
-								<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico}" styleClass="Fs10"/>
-							</div>
-						</h:panelGroup>
-						
-						<h:outputText value="Telf: " styleClass="FontBold"/>
-						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.telefono}"/>
-						
-						<h:outputText value="Dirección: " styleClass="FontBold"/>
-						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.direccion}"/>
-									   
-					</p:panelGrid>
+				<div class="OvHidden">
+					<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico}"/>
 				</div>
 			</h:panelGroup>
 			
+			<h:outputText value="#{msg['label.direccion']} * " styleClass="cpoRequerido"/>
+			<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.direccion}"/>
+						   
 		</p:panelGrid>
 		
-		
-		<p:panelGrid id="gridOpcPagos" columns="2"
-			 styleClass="ui-panelgrid-blank Wid100" 
-			 columnClasses="ui-g-12 ui-md-6,
-			 				ui-g-12 ui-md-6">
-			 				
-			 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" styleClass="Wid100"/>
-			 
-			 <p:commandButton value="OTROS" icon="fa fa-plus" action="#{tipoPagoCtrl.showModal()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100">
-			 	<f:setPropertyActionListener value="FACTURA" target="#{tipoPagoCtrl.callModule}"/>
-			 	<f:setPropertyActionListener value="#{ compFacCtrl.cabecerSelected.totalconimpuestos}" target="#{tipoPagoCtrl.total}"/>
-            	<f:setPropertyActionListener value="formMain" target="#{tipoPagoCtrl.callForm}"/>
-            	<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" target="#{tipoPagoCtrl.updateView}"/>
-			 </p:commandButton>
 			
-		</p:panelGrid>
-		
-		
-		<!-- <p:panelGrid id="gridOpcPagos" columns="3"
-			 styleClass="ui-panelgrid-blank Wid100" 
-			 columnClasses="ui-g-12 ui-md-4,
-			 				ui-g-12 ui-md-4,
-			 				ui-g-12 ui-md-4">
-			
-			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="EFECTIVO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>	
-			
-			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.TRANSFERENCIA)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="TRANSFERENCIA" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.TARJETA_CREDITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="TARJ CREDITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.TARJETA_DEBITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="TARJ DEBITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.DEPOSITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="DEPOSITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.CHEQUE)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="CHEQUE" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<p:commandLink action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.CREDITO)}" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-				<div class="command-btn borde-gray">
-					<h:outputText value="CREDITO" styleClass="DispBlock"/>
-				</div>
-			</p:commandLink>
-			
-			<h:outputText value="" />
-			<h:outputText value="" />
-			
-		</p:panelGrid> -->
-		
-		<!-- detalle pago -->
 		<div class="EmptyBox5"/>
+		<p:outputPanel id="oupInfoAdicionalMain">
+			<h2 class="cardTitle">
+				<i class="fa fa-check-circle"> Información Adicional</i>
+				<p:spacer width="10"/>
+				<p:commandLink value="Agregar" action="#{compFacCtrl.agregarInfoAdicional()}" update="@form">			
+				</p:commandLink>
+			</h2>
+			
+			<p:outputPanel id="grdInfoAdicional" rendered="#{not empty compFacCtrl.infoadicionalList}">
+			
+				<div class="EmptyBox5"/>
+				
+				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+				</p:panelGrid>
+				
+				<div class="p-grid p-align-center vertical-container">
+					
+					<p:repeat var="info" value="#{compFacCtrl.infoadicionalList}" >
+						<div class="p-col-5">
+							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalNombre"/>
+						</div>
+						<div class="p-col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalValor"/>
+						</div>
+						<div class="p-col-1" style="text-align: center;">
+							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
+								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					
+					</p:repeat>
+				</div>
+			
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<div class="EmptyBox10"/>
+		
+		<h2 class="cardTitle">
+			<i class="fa fa-check-circle"> Pago</i>
+		</h2>
+		<div class="EmptyBox5"/>
+				
 		<p:outputPanel id="oupPagoDT">
+			
+			<div class="p-grid p-align-center vertical-container">
+				<div class="p-col-12 p-md-4">
+					<h:outputText value="Valor retenido Renta" styleClass="cpoRequerido"/>
+					<div class="EmptyBox5"/>
+					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidorenta}" decimalPlaces="2"  styleClass="Wid100">
+						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+					</p:spinner>
+				</div>
+				
+				<div class="p-col-12 p-md-4">
+					<h:outputText value="Valor retenido I.V.A." styleClass="cpoRequerido"/>
+					<div class="EmptyBox5"/>
+					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidoiva}" decimalPlaces="2"  styleClass="Wid100">
+						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+					</p:spinner>
+				</div>
+				
+				<div class="p-col-12 p-md-4">
+					<h:outputText value="Total retenido" styleClass="cpoRequerido"/>
+					<div class="EmptyBox5"/>
+					<div class="Wid100" style="text-align: center;">
+						<h:outputText  styleClass="Fs18 DispBlock" value="#{compFacCtrl.cabecerSelected.valorretenido}">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</div>
+				</div>
+			</div>
+			
+			<div class="EmptyBox20"/>
+			
+			<div class="p-grid p-justify-even">
+				<div class="p-col-12 p-md-3 boxMain box-gray">
+					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
+					<h:outputText value="#{compFacCtrl.cabecerSelected.totalpagar}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">TOTAL PAGADO</div>
+					<h:outputText value="#{compFacCtrl.totalPago}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
+					<h:outputText value="#{compFacCtrl.totalSaldo}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+			</div>	
+			
+			<div class="EmptyBox10"/>
+			
+			<p:panelGrid id="gridOpcPagos" columns="2"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12 ui-md-6,
+				 				ui-g-12 ui-md-6">
+				 				
+				 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" styleClass="secondary-button Wid100"/>
+				 
+				 <p:commandButton value="OTROS" icon="fa fa-plus" action="#{tipoPagoCtrl.showModal()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100">
+				 	<f:setPropertyActionListener value="FACTURA" target="#{tipoPagoCtrl.callModule}"/>
+				 	<f:setPropertyActionListener value="#{ compFacCtrl.cabecerSelected.totalconimpuestos}" target="#{tipoPagoCtrl.total}"/>
+	            	<f:setPropertyActionListener value="formMain" target="#{tipoPagoCtrl.callForm}"/>
+	            	<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" target="#{tipoPagoCtrl.updateView}"/>
+				 </p:commandButton>
+				
+			</p:panelGrid>
+			
+			<!-- detalle pago -->
+			<div class="EmptyBox5"/>
 			
 			<p:dataTable id="pvPagoDetalleDT"
 	        			scrollable="true"
@@ -356,37 +355,6 @@
 				</p:column>
 							
 			</p:dataTable>
-			
-	        <div class="EmptyBox10"/>
-	        <div class="p-grid p-justify-around p-align-center" >
-	        
-	        	<div class="p-col-12 p-md-5 divTotalPago">
-	        		<div class="p-grid p-justify-center">
-	        			<div class="p-col-12 cabecera">
-	        				TOTAL
-	        			</div>
-	        			<div class="p-col-12 detalle">
-	        				<h:outputText value="#{compFacCtrl.totalPago}">
-			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-			            	</h:outputText>
-	        			</div>
-	        		</div>
-	        	</div>
-	        	
-	        	<div class="p-col-12 p-md-5 divTotalPagoSaldo">
-	        		<div class="p-grid p-justify-center">
-	        			<div class="p-col-12 cabecera">
-	        				SALDO
-	        			</div>
-	        			<div class="p-col-12 detalle">
-	        				<h:outputText value="#{compFacCtrl.totalSaldo}">
-			            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-			            	</h:outputText>
-	        			</div>
-	        		</div>
-	        	</div>
-	        	
-	        </div>
 			
 		</p:outputPanel>	
 		

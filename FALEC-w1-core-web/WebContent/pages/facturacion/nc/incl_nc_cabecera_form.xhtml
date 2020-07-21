@@ -167,6 +167,50 @@
 				
 			</p:panelGrid>
 			
+			<div class="EmptyBox5"/>
+		<p:outputPanel id="oupInfoAdicionalMain">
+			<h2 class="cardTitle">
+				<i class="fa fa-check-circle"> Información Adicional</i>
+				<p:spacer width="10"/>
+				<p:commandLink value="Agregar" action="#{notaCreditoCtrl.agregarInfoAdicional()}" update="@form">			
+				</p:commandLink>
+			</h2>
+			
+			<p:outputPanel id="grdInfoAdicional" rendered="#{not empty notaCreditoCtrl.infoadicionalList}">
+			
+				<div class="EmptyBox5"/>
+				
+				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+				</p:panelGrid>
+				
+				<div class="p-grid p-align-center vertical-container">
+					
+					<p:repeat var="info" value="#{notaCreditoCtrl.infoadicionalList}" >
+						<div class="p-col-5">
+							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalNombre"/>
+						</div>
+						<div class="p-col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalValor"/>
+						</div>
+						<div class="p-col-1" style="text-align: center;">
+							<p:commandLink  action="#{notaCreditoCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+								<f:setPropertyActionListener value="#{info}" target="#{notaCreditoCtrl.infoadicionalSelected}"/>
+								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					
+					</p:repeat>
+				</div>
+			
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<div class="EmptyBox10"/>
 			
 		</div>	
 		

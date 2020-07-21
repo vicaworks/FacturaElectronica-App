@@ -193,6 +193,15 @@ public class Cabecera implements Serializable {
     @Column(name = "idcabecerapadre", nullable = true, length = 40)
     private String idcabecerapadre;
     
+    @Column(name = "valorretenidoiva", precision = 12, scale = 2)
+    private BigDecimal valorretenidoiva = BigDecimal.ZERO;
+    
+    @Column(name = "valorretenidorenta", precision = 12, scale = 2)
+    private BigDecimal valorretenidorenta = BigDecimal.ZERO;
+    
+    @Column(name = "valorretenido", precision = 12, scale = 2)
+    private BigDecimal valorretenido = BigDecimal.ZERO;
+    
     
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
@@ -245,6 +254,9 @@ public class Cabecera implements Serializable {
     
     @Transient
     private GenTipoDocumentoEnum genTipoDocumentoEnum;
+    
+    @Transient
+    private BigDecimal totalpagar = BigDecimal.ZERO;
 
 	/**
 	 * 
@@ -1096,6 +1108,62 @@ public class Cabecera implements Serializable {
 	 */
 	public void setGenTipoDocumentoEnum(GenTipoDocumentoEnum genTipoDocumentoEnum) {
 		this.genTipoDocumentoEnum = genTipoDocumentoEnum;
+	}
+
+	/**
+	 * @return the valorretenidoiva
+	 */
+	public BigDecimal getValorretenidoiva() {
+		return valorretenidoiva;
+	}
+
+	/**
+	 * @param valorretenidoiva the valorretenidoiva to set
+	 */
+	public void setValorretenidoiva(BigDecimal valorretenidoiva) {
+		this.valorretenidoiva = valorretenidoiva;
+	}
+
+	/**
+	 * @return the valorretenidorenta
+	 */
+	public BigDecimal getValorretenidorenta() {
+		return valorretenidorenta;
+	}
+
+	/**
+	 * @param valorretenidorenta the valorretenidorenta to set
+	 */
+	public void setValorretenidorenta(BigDecimal valorretenidorenta) {
+		this.valorretenidorenta = valorretenidorenta;
+	}
+
+	/**
+	 * @return the valorretenido
+	 */
+	public BigDecimal getValorretenido() {
+		return valorretenido;
+	}
+
+	/**
+	 * @param valorretenido the valorretenido to set
+	 */
+	public void setValorretenido(BigDecimal valorretenido) {
+		this.valorretenido = valorretenido;
+	}
+
+	/**
+	 * @return the totalpagar
+	 */
+	public BigDecimal getTotalpagar() {
+		return totalpagar;
+	}
+
+	/**
+	 * @param totalpagar the totalpagar to set
+	 */
+	public void setTotalpagar(BigDecimal totalpagar) {
+		this.totalpagar = totalpagar;
 	}
 
 }

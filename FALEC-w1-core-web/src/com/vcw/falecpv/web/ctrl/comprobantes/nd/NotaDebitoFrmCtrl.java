@@ -153,6 +153,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setDetalleList(new ArrayList<>());
 		notDebitoSelected.setFechaemision(new Date());
 		notDebitoSelected.setCliente(new Cliente());
+		infoadicionalList = null;
 		inicializarSecuencia(notDebitoSelected);
 		totalimpuesto = new Totalimpuesto();
 		totalimpuesto.setBaseimponible(BigDecimal.ZERO);
@@ -305,7 +306,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}
 		
 		notDebitoSelected.setTotalconimpuestos(notDebitoSelected.getTotalsinimpuestos().add(notDebitoSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
-		
+		notDebitoSelected.setTotalpagar(notDebitoSelected.getTotalconimpuestos().add(notDebitoSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}
@@ -587,7 +588,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTotalimpuestoList(totalimpuestoList);
 		notDebitoSelected.setMotivoList(motivoList);
 		// infromacion adicional 
-		notDebitoSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notDebitoSelected));
+		notDebitoSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notDebitoSelected,infoadicionalList));
 	}
 	
 	private void determinarPeriodoFiscal() {

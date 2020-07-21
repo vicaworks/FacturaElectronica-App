@@ -235,7 +235,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		ComprobanteHelper.determinarDetalleImpuesto(notaCreditoSeleccion.getDetalleList());
 		
 		// infromacion adicional 
-		notaCreditoSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notaCreditoSeleccion));
+		notaCreditoSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notaCreditoSeleccion,infoadicionalList));
 		
 	}
 
@@ -269,6 +269,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setTotalice(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotaliva(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotalsinimpuestos(BigDecimal.ZERO);
+		infoadicionalList = null;
 		inicializarSecuencia(notaCreditoSeleccion);
 		
 		if(facturaSeleccion!=null) {
@@ -522,6 +523,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		notaCreditoSeleccion.setSecuencial(null);
 		notaCreditoSeleccion.setTipocomprobante(null);
+		infoadicionalList = null;
 		inicializarSecuencia(notaCreditoSeleccion);
 		detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
 		for (Detalle de : detalleNcList) {

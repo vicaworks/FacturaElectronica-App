@@ -12,38 +12,71 @@
     <ui:define name="head">
         <style type="text/css">
 			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			.ui-calendar .ui-inputfield{
+				font-size: 14px !important;
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #e6e6e6;
+				color: black;
+				cursor: default;
+			}
+			
+			.ui-panelgrid .ui-panelgrid-cell {
+				padding: 0.25em !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			body .ui-datatable thead th {
+				/* padding: 0px !important; */
+			}
+			
+			.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+				/* padding: 0px !important; */
+			}
+			
+			.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+			}
+			
+			body .ui-inputgroup .ui-inputgroup-addon, 
+			body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+			 padding: 0px !important;
+			}
+			
+			/* =========================================================================================================================== */
+			
 			.retencionDetDT .ui-datatable-scrollable-body{
 				/* min-height: 42vh !important; */
-				height: calc(100vh - 525px);
+				height: calc(100vh - 495px);
 				
 			}
 			
 			.retencionDetDT .ui-selectonemenu .ui-selectonemenu-label {
 				text-align: right;
-			}
-			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-message {
-				padding: 0em !important;
-			}
-			
-			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
 			}
 			
 			.disable .ui-inputfield{
@@ -53,6 +86,7 @@
 			.ui-selectonemenu-item {
 			    font-size: 10px;
 			}
+			
 			
         </style>
     </ui:define>
@@ -287,6 +321,49 @@
 						
 						</p:panelGrid>
 						
+						<div class="EmptyBox5"/>
+						<p:outputPanel id="oupInfoAdicionalMain">
+							<h2 class="cardTitle">
+								<i class="fa fa-check-circle"> Información Adicional</i>
+								<p:spacer width="10"/>
+								<p:commandLink value="Agregar" action="#{retencionFrmCtrl.agregarInfoAdicional()}" update="@form">			
+								</p:commandLink>
+							</h2>
+							
+							<p:outputPanel id="grdInfoAdicional" rendered="#{not empty retencionFrmCtrl.infoadicionalList}">
+							
+								<div class="EmptyBox5"/>
+								
+								<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+									<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+									<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+								</p:panelGrid>
+								
+								<div class="p-grid p-align-center vertical-container">
+									
+									<p:repeat var="info" value="#{retencionFrmCtrl.infoadicionalList}" >
+										<div class="p-col-5">
+											<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+											<p:message for="inpInfoAdicionalNombre"/>
+										</div>
+										<div class="p-col-6">
+											<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+											<p:message for="inpInfoAdicionalValor"/>
+										</div>
+										<div class="p-col-1" style="text-align: center;">
+											<p:commandLink  action="#{retencionFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+												<f:setPropertyActionListener value="#{info}" target="#{retencionFrmCtrl.infoadicionalSelected}"/>
+												<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+												<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+											</p:commandLink>
+										</div>
+									
+									</p:repeat>
+								</div>
+							
+							</p:outputPanel>
+						</p:outputPanel>
+						
 					</div>
 				</div>
 				
@@ -314,7 +391,7 @@
 											<f:selectItems value="#{retencionFrmCtrl.retencionimpuestoList}" var="ri"
 												itemLabel="#{ri.nombre}" itemValue="#{ri}" />
 												
-											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioImpuesto()}" update=":formMain" process="@this :formMain:gridRetencionDG :formMain:grid"/>
+											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioImpuesto()}" update=":formMain" process="@form"/>
 												
 										</p:selectOneMenu>
 										<p:message for="somRtnImpuesto" />

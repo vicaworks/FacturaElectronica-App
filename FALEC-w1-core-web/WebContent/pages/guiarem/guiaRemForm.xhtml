@@ -12,45 +12,49 @@
     <ui:define name="head">
         <style type="text/css">
 			
-			.guiaRemDT .ui-datatable-scrollable-body{
-				min-height: 40vh !important;
-				height: calc(100vh - 380px);
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
 			}
 			
 			.ui-calendar .ui-inputfield{
-				width: 100% !important;
+				font-size: 14px !important;
 			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-message {
-				padding: 0em !important;
-			}
-			
-			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}	
 			
 			body .ui-messages, 
 			body .ui-message {
 				padding: 0em !important;
 				margin: 0em !important;
 				display: block !important;
-			}		
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #e6e6e6;
+				color: black;
+				cursor: default;
+			}
+			
+			.ui-panelgrid .ui-panelgrid-cell {
+				padding: 0.25em !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			body .ui-datatable thead th {
+				/* padding: 0px !important; */
+			}
+			
+			.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+				/* padding: 0px !important; */
+			}
 			
 			.dt-spinner .ui-spinner .ui-spinner-input {
 				padding-right: 2em;
@@ -58,8 +62,28 @@
 				padding-bottom: 0.2em;
 			}
 			
-			.ui-calendar .ui-inputfield{
-				font-size: 14px !important;
+			body .ui-inputgroup .ui-inputgroup-addon, 
+			body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+			 padding: 0px !important;
+			}
+			
+			/* =========================================================================================================================== */
+				
+			.guiaRemDT .ui-datatable-scrollable-body{
+				min-height: 40vh !important;
+				height: calc(100vh - 380px);
+			}
+			
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			
+			.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
 			}
 			
 			.ui-inputfield-pago .ui-spinner-input{
@@ -69,22 +93,6 @@
 			.ui-inputfield-pago .ui-inputfield {
 				font-size: 12px !important;
 				padding: 0.2em 0.5em;
-			}
-			
-			
-			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
-				padding: 0em;
-			}
-			
-			.ui-inputgroup .ui-inputgroup-addon {
-				padding: 0px; 
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
-				border: 1px solid #d8d8dc;
-				background-color: #ccc;
-				color: black;
-				cursor: default;
 			}
 			
         </style>

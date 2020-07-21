@@ -125,6 +125,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setFechainiciotransporte(new Date());
 		guiaRemisionSelected.setFechafintransporte(new Date());
 		guiaRemisionSelected.setDestinatarioList(new ArrayList<>());
+		infoadicionalList = null;
 		inicializarSecuencia(guiaRemisionSelected);
 	}
 	
@@ -207,7 +208,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		
 		
 		// infromacion adicional 
-		guiaRemisionSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(guiaRemisionSelected));
+		guiaRemisionSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(guiaRemisionSelected,infoadicionalList));
 		
 	}
 	

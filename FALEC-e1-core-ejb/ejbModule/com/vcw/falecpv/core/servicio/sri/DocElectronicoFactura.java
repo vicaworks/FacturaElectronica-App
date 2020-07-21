@@ -75,6 +75,10 @@ public class DocElectronicoFactura extends GenerarDocumentoElectronico {
 		xmlInfoFactura.setImporteTotal(cabecera.getTotalconimpuestos().doubleValue());
 		xmlInfoFactura.setMoneda(cabecera.getMoneda());
 		xmlInfoFactura.setPropina(0.00d);
+		if(cabecera.getValorretenido().doubleValue()>0d) {
+			xmlInfoFactura.setValorRetIva(cabecera.getValorretenidoiva().doubleValue());
+			xmlInfoFactura.setValorRetRenta(cabecera.getValorretenidorenta().doubleValue());
+		}
 		// total impuesto
 		xmlInfoFactura.setTotalImpuestoList(getTotalImpuesto(totalimpuestoList,true));
 		// pagos
