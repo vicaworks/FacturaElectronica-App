@@ -45,12 +45,19 @@
 				</p:outputLabel>
 				
 			</h:panelGroup>
+			<h:panelGroup>
+				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<p:calendar id="claFacFecha" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemision}"
+					pattern="dd/MMM/yyyy"
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+				</p:calendar>
+				<p:message for="claFacFecha"/>
+			</h:panelGroup>
 			
 		</p:panelGrid>
 		
 		<div class="EmptyBox5"/>
-		
-		<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Cliente</h3>
 		
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
@@ -80,7 +87,7 @@
 			
 			<h:panelGroup>
 				
-				<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="Wid100">
+				<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="secondary-button Wid100">
 					<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
@@ -110,18 +117,25 @@
 			</h:panelGroup>
 			
 			<h:panelGroup>
-				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+				<h:outputText value="EMAIL * " styleClass="cpoRequerido"/>
 				<div class="EmptyBox5"/>
-				<p:calendar id="claFacFecha" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemision}"
-					pattern="dd/MMM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="claFacFecha"/>
+				<p:inputText id="intNDDireccion" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
+				</p:inputText>
+				<p:message for="intNDDireccion"/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<h:outputText value="#{msg['label.direccion']} * " styleClass="cpoRequerido"/>
+				<div class="EmptyBox5"/>
+				<p:inputText id="intNDEmail" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
+				</p:inputText>
+				<p:message for="intNDEmail"/>
 			</h:panelGroup>
 		
 		</p:panelGrid>
-		<div class="EmptyBox5"/>
+	</div>
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
 		<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Documento Modificado</h3>
 		<p:panelGrid id="gridDocModificado" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 		
@@ -176,17 +190,24 @@
 			</h:panelGroup>
 			
 		</p:panelGrid>
-		
-		<div class="EmptyBox5"/>
+	</div>
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
+		<h3 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h3>
 		<p:outputPanel id="oupInfoAdicionalMain">
-			<h2 class="cardTitle">
-				<i class="fa fa-check-circle"> Información Adicional</i>
-				<p:spacer width="10"/>
-				<p:commandLink value="Agregar" action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" update="@form">			
-				</p:commandLink>
-			</h2>
 			
-			<p:outputPanel id="grdInfoAdicional" rendered="#{not empty notaDebitoFrmCtrl.infoadicionalList}">
+			<p:panelGrid columns="2"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12 ui-md-6,
+				 				ui-g-12 ui-md-6">
+				 				
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+				<h:panelGroup>
+				</h:panelGroup>				 
+				
+			</p:panelGrid>
+					
+			<p:outputPanel id="grdInfoAdicional">
 			
 				<div class="EmptyBox5"/>
 				
@@ -219,7 +240,7 @@
 			
 			</p:outputPanel>
 		</p:outputPanel>
-	
+		<div class="EmptyBox10"/>
 	</div>
 		
 	

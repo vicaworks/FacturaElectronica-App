@@ -9,8 +9,8 @@
 	<style type="text/css">
 		
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
-			min-height: 20vh !important;
-			height: calc(100vh - 685px)!important;
+			/* min-height: 20vh !important;
+			height: calc(100vh - 685px)!important; */
 		}
 		
 	</style>
@@ -19,6 +19,8 @@
 	<p:remoteCommand name="buscarProveedor"  action="#{liqCompraFormCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridProveedor"/>
 	
 	<div class="card card-w-title">
+		
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.liqcompra']}</h2>
 		
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
@@ -123,20 +125,27 @@
 			<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.direccion}"/>
 						   
 		</p:panelGrid>
+	</div>
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">	
 		
-		<div class="EmptyBox5"/>
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+	
 		<p:outputPanel id="oupInfoAdicionalMain">
-			<h2 class="cardTitle">
-				<i class="fa fa-check-circle"> Información Adicional</i>
-				<p:spacer width="10"/>
-				<p:commandLink value="Agregar" action="#{liqCompraFormCtrl.agregarInfoAdicional()}" update="@form">			
-				</p:commandLink>
-			</h2>
 			
-			<p:outputPanel id="grdInfoAdicional" rendered="#{not empty liqCompraFormCtrl.infoadicionalList}">
-			
-				<div class="EmptyBox5"/>
+			<p:panelGrid columns="2"
+					 styleClass="ui-panelgrid-blank Wid100" 
+					 columnClasses="ui-g-12 ui-md-6,
+					 				ui-g-12 ui-md-6">
+					 				
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{liqCompraFormCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+				<h:panelGroup>
+				</h:panelGroup>				 
 				
+			</p:panelGrid>
+		
+			<p:outputPanel id="grdInfoAdicional">
+				<div class="EmptyBox5"/>
 				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
 					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
 					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
@@ -166,13 +175,14 @@
 			
 			</p:outputPanel>
 		</p:outputPanel>
+		<div class="EmptyBox10"/>
+	</div>	
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
+		
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Pago</h2>
 		
 		<div class="EmptyBox10"/>
-		
-		<h2 class="cardTitle">
-			<i class="fa fa-check-circle"> Pago</i>
-		</h2>
-		<div class="EmptyBox5"/>
 		
 		<p:outputPanel id="oupPagoDT">
 		
@@ -326,6 +336,8 @@
 			</p:dataTable>
 			
 		</p:outputPanel>
+		
+		<div class="EmptyBox20"/>
 		
 	</div>
 	

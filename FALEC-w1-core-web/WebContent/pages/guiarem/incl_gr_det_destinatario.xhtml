@@ -17,8 +17,7 @@
 	
 	
 	<div class="card card-w-title">
-	
-		<h2 class="cardTitle">Detalle destinatario</h2>
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Detalle destinatario</h2>
 		<div class="EmptyBox5"/>
 		
 		<div class="p-grid p-justify-between">
@@ -105,20 +104,20 @@
 		
 		<div class="EmptyBox10"/>
 		<div class="p-grid p-justify-end p-align-center">
-			<div class="p-col-2 Fs12 FontBold" style="text-align: right;color:#acacac;">
+			<div class="p-col-2 Fs16 FontBold" style="text-align: right;color:#acacac;">
 				TOTAL :
 			</div>
 			<div class="p-col-2" style="text-align: right;">
-				<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.total}" styleClass="FontBold Fs18" rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}" >
+				<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.total}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}" >
 					<f:convertNumber pattern="#,##0.##"/>
 				</h:outputText>
 				
-				<h:outputText value="#{0}" styleClass="FontBold Fs18" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}" >
+				<h:outputText value="#{0}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}" >
 					<f:convertNumber pattern="#,##0.##"/>
 				</h:outputText>
 			</div>
 		</div>
-	
+		<div class="EmptyBox30"/>
 	</div>
 	
 	

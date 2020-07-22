@@ -8,13 +8,12 @@
 	
 	<style type="text/css">
 		.notMotivoDT .ui-datatable-scrollable-body{
-				min-height: 20vh !important;
-				max-height: 20vh !important;
+				min-height: 25vh !important;
 				/* height: calc(100vh - 381px); */
 			}
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
-			min-height: 30vh !important;
-			height: calc(100vh - 830px)!important;
+			/* min-height: 30vh !important;
+			height: calc(100vh - 830px)!important; */
 		}
 		.selecOneIva .ui-selectonemenu .ui-selectonemenu-label {
 			text-align: right;
@@ -25,7 +24,7 @@
 	<p:outputPanel id="oupMotivos">
 		<div class="card card-w-title">
 		
-			<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.motivorazon']}</h3>
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.motivorazon']}</h2>
 			<div class="EmptyBox5"/>			
 			<div class="p-grid p-justify-start">
 				<div class="p-col-12 p-md-4">
@@ -120,9 +119,10 @@
 					</h:outputText>
 				</div>
 			</div>
-		
-			<div class="EmptyBox5"/>
-			<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h3>
+		</div>
+		<div class="EmptyBox5"/>
+		<div class="card card-w-title">	
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h2>
 			
 			
 			<div class="EmptyBox20"/>
@@ -278,6 +278,9 @@
 				</p:column>
 							
 			</p:dataTable>
+			
+			<div class="EmptyBox20"/>
+			
 		</div>
 			
 	</p:outputPanel>

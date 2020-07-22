@@ -16,7 +16,7 @@
 	</style>
 	
 	<div class="card card-w-title">
-		<h2 class="cardTitle">Destinatarios</h2>
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Destinatarios</h2>
 		<div class="EmptyBox5"/>
 		<div class="p-grid p-justify-between">
 			<div class="p-col-12 p-md-6">
@@ -144,16 +144,16 @@
 		
 		<div class="EmptyBox10"/>
 		<div class="p-grid p-justify-end p-align-center">
-			<div class="p-col-2 Fs12 FontBold" style="text-align: right;color:#acacac;">
+			<div class="p-col-2 Fs16 FontBold" style="text-align: right;color:#acacac;">
 				TOTAL :
 			</div>
 			<div class="p-col-2" style="text-align: right;">
-				<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.total}" styleClass="FontBold Fs18" >
+				<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.total}" styleClass="FontBold Fs20" >
 					<f:convertNumber pattern="#,##0.##"/>
 				</h:outputText>
 			</div>
 		</div>
-		
+		<div class="EmptyBox30"/>
 	</div>
 	
 </ui:composition>

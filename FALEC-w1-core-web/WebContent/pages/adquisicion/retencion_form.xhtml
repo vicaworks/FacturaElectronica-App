@@ -101,8 +101,8 @@
     	<f:subview rendered="#{retencionFrmCtrl.callModule=='RETENCION'}">
 	    	<p:breadCrumb>
 			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-			    <p:menuitem value="Adquisiciones" url="#" />
 		    	<p:menuitem value="Lista de Retenciones" url="#{request.contextPath}/pages/adquisicion/retenciones.jsf"/>
+		    	<p:menuitem value="#{msg['label.retencion2']}" url="#{request.contextPath}/pages/adquisicion/retencion_form.jsf"/>
 			</p:breadCrumb>
     	</f:subview>
     	
@@ -154,8 +154,6 @@
 										action="#{retencionFrmCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
-							
-							
 	    				</div>
 	    			
 	    			</div>
@@ -179,7 +177,7 @@
 					<div class="card card-w-title">
 						
 						<!-- Formulario -->
-						<div class="EmptyBox5"/>
+						<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.retencion2']}</h2>
 						
 						
 						<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
@@ -232,7 +230,7 @@
 										title="NUEVO PROVEEDOR"
 										icon="fa fa-plus"
 										value="PROVEEDOR"
-										styleClass="Wid100 Fs11"
+										styleClass="secondary-button Wid100 Fs11"
 										action="#{proveedorCtrl.nuevo()}"
 										immediate="true">
 										<f:setPropertyActionListener value="RETENCION" target="#{proveedorCtrl.callModule}"/>
@@ -321,16 +319,23 @@
 						
 						</p:panelGrid>
 						
-						<div class="EmptyBox5"/>
+				</div>
+				<div class="EmptyBox5"/>
+				<div class="card card-w-title">		
+						<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
 						<p:outputPanel id="oupInfoAdicionalMain">
-							<h2 class="cardTitle">
-								<i class="fa fa-check-circle"> Información Adicional</i>
-								<p:spacer width="10"/>
-								<p:commandLink value="Agregar" action="#{retencionFrmCtrl.agregarInfoAdicional()}" update="@form">			
-								</p:commandLink>
-							</h2>
+							<p:panelGrid columns="2"
+								 styleClass="ui-panelgrid-blank Wid100" 
+								 columnClasses="ui-g-12 ui-md-6,
+								 				ui-g-12 ui-md-6">
+								 				
+								 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{retencionFrmCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+								<h:panelGroup>
+								</h:panelGroup>				 
+								
+							</p:panelGrid>
 							
-							<p:outputPanel id="grdInfoAdicional" rendered="#{not empty retencionFrmCtrl.infoadicionalList}">
+							<p:outputPanel id="grdInfoAdicional">
 							
 								<div class="EmptyBox5"/>
 								
@@ -363,7 +368,7 @@
 							
 							</p:outputPanel>
 						</p:outputPanel>
-						
+						<div class="EmptyBox20"/>
 					</div>
 				</div>
 				
@@ -523,28 +528,25 @@
 								<div class="p-grid p-col-12 p-md-6 divResumen">
 										
 									<div class="p-col-8 subtotal">
-										<h:outputText value="Total #{msg[label.retencion2]}" styleClass="FontBold Fs14" />
+										<h:outputText value="Valor Total Retenido : " styleClass="FontBold Fs16" />
 									</div>
 									
 									<div class="p-col-4 subtotalValor">
-										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs14">
+										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs16">
 											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 										</h:outputText>
 									</div>
 										
 								</div>
 								
-								
 							</div>
 						</p:outputPanel>
-					
+						<div class="EmptyBox20"/>
 					</div>
 					
 				</div>
 				
-				
 			</div>
-	    
 	    
 	    </h:form>
     	

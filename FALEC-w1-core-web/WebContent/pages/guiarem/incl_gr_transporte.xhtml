@@ -13,7 +13,7 @@
 	
 	
 	<div class="card card-w-title">
-		<div class="EmptyBox5"/>
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.guiaremision']}</h2>
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
 			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
@@ -123,17 +123,26 @@
 			</h:panelGroup>
 		
 		</p:panelGrid>
+	</div>
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">	
 		
-		<div class="EmptyBox5"/>
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+	
 		<p:outputPanel id="oupInfoAdicionalMain">
-			<h2 class="cardTitle">
-				<i class="fa fa-check-circle"> Información Adicional</i>
-				<p:spacer width="10"/>
-				<p:commandLink value="Agregar" action="#{guiaRemFormCtrl.agregarInfoAdicional()}" update="@form">			
-				</p:commandLink>
-			</h2>
 			
-			<p:outputPanel id="grdInfoAdicional" rendered="#{not empty guiaRemFormCtrl.infoadicionalList}">
+			<p:panelGrid columns="2"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12 ui-md-6,
+				 				ui-g-12 ui-md-6">
+				 				
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{guiaRemFormCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+				<h:panelGroup>
+				</h:panelGroup>				 
+				
+			</p:panelGrid>
+			
+			<p:outputPanel id="grdInfoAdicional">
 			
 				<div class="EmptyBox5"/>
 				
@@ -170,7 +179,5 @@
 		<div class="EmptyBox10"/>
 	
 	</div>
-	
-		
 	
 </ui:composition>
