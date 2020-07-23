@@ -433,7 +433,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	public void totalizarPagoaction(Pago p) {
 		try {
 			pagoSelected = p;
-			if(pagoSelected.getTipoPagoFormularioEnum().equals(TipoPagoFormularioEnum.EFECTIVO)) {
+			if(pagoSelected.getTipopago().getSubdetalle().equals("1")) {
 				calcularCambioAction(p);
 			}
 			totalizarPago();

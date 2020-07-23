@@ -151,6 +151,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		
 		consultarProveedor();
 		consultarIva();
+		populateTipoPago();
+		
 	}
 
 	public void consultarProveedor()throws DaoException {
@@ -379,19 +381,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void agregarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) {
-		try {
-			
-			aplicarPago(tipoPagoFormularioEnum);
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void aplicarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) throws DaoException {
+	public void aplicarPago() throws DaoException {
 		if(liqCompraSelected == null) {
 			return;
 		}
@@ -404,35 +394,21 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			pagoList = new ArrayList<>();
 		}
 		
-		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum);
-		
-		boolean flag = false;
-		for (Pago p : pagoList) {
-			if(p.getTipopago().equals(tp) && !tipoPagoFormularioEnum.isRepetir()) {
-				pagoSelected = p;
-				flag = true;
-				break;
-			}
-		}
-		
+		Tipopago tp = getTipopagoSelected();
+		pagoSelected = new Pago();
+		pagoSelected.setCabecera(liqCompraSelected);
+		pagoSelected.setTipopago(tp);
+		pagoSelected.setTotal(liqCompraSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+		pagoSelected.setPlazo(BigDecimal.ZERO);
+		pagoSelected.setUnidadtiempo("DIAS");
+		pagoList.add(pagoSelected);
 		totalizarPago();
-		if(!flag) {
-			pagoSelected = new Pago();
-			pagoSelected.setTipoPagoFormularioEnum(tipoPagoFormularioEnum);
-			pagoSelected.setCabecera(liqCompraSelected);
-			pagoSelected.setTipopago(tp);
-			pagoSelected.setTotal(liqCompraSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-			pagoSelected.setPlazo(BigDecimal.ZERO);
-			pagoSelected.setUnidadtiempo("DIAS");
-			pagoList.add(pagoSelected);
-			totalizarPago();
-		}
 		
-		switch (tipoPagoFormularioEnum) {
-		case EFECTIVO:
+		switch (tp.getSubdetalle()) {
+		case "1":
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
 			break;
-		case CREDITO:
+		case "4":
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
 			break;	
 		default:
@@ -488,7 +464,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	public void totalizarPagoaction(Pago p) {
 		try {
 			pagoSelected = p;
-			if(pagoSelected.getTipoPagoFormularioEnum().equals(TipoPagoFormularioEnum.EFECTIVO)) {
+			if(pagoSelected.getTipopago().getSubdetalle().equals("1")) {
 				calcularCambioAction(p);
 			}
 			totalizarPago();

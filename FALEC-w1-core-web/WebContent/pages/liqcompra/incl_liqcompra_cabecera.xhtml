@@ -178,177 +178,181 @@
 		<div class="EmptyBox10"/>
 	</div>	
 	<div class="EmptyBox5"/>
-	<div class="card card-w-title">
-		
-		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Pago</h2>
-		
-		<div class="EmptyBox10"/>
-		
-		<p:outputPanel id="oupPagoDT">
-		
-			<div class="p-grid p-justify-even">
-				<div class="p-col-12 p-md-3 boxMain box-gray">
-					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
-					<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalpagar}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
-					</h:outputText>
-				</div>
-				
-				<div class="p-col-12 p-md-3 boxMain box-border-gray">
-					<div class="DispBlock box-header">TOTAL PAGADO</div>
-					<h:outputText value="#{liqCompraFormCtrl.totalPago}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
-					</h:outputText>
-				</div>
-				
-				<div class="p-col-12 p-md-3 boxMain box-border-gray">
-					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
-					<h:outputText value="#{liqCompraFormCtrl.totalSaldo}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
-					</h:outputText>
-				</div>
-			</div>	
+	<p:outputPanel id="oupPagoDT">
+		<div class="card card-w-title">
 			
-			<div class="EmptyBox10"/>
-		
-			<p:panelGrid id="gridOpcPagos" columns="2"
-				 styleClass="ui-panelgrid-blank Wid100" 
-				 columnClasses="ui-g-12 ui-md-10,
-				 				ui-g-12 ui-md-2">
-				 				
-				 
-				  <p:selectOneMenu id="somFrmListaProducto"
-											value="#{liqCompraFormCtrl.tipopagoSelected}"
-											converter="omnifaces.SelectItemsConverter"
-											required="false"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-
-					<f:selectItems value="#{liqCompraFormCtrl.tipopagoList}" var="tp"
-						itemLabel="#{tp.nombre}" itemValue="#{tp}" />
-						
-					<p:ajax event="valueChange" listener="#{liqCompraFormCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT"/>	
-						
-				</p:selectOneMenu>
-				 					 
-				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{liqCompraFormCtrl.aplicarPago()}" styleClass="secondary-button Wid100 Fs11" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT">
-				 </p:commandButton>
-				
-			</p:panelGrid>
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Valor a Pagar</h2>
 			
-			<!-- detalle pago -->
 			<div class="EmptyBox5"/>
 			
-			<p:dataTable id="pvPagoDetalleDT"
-	        			scrollable="true"
-	        			value="#{liqCompraFormCtrl.pagoList}"
-	        			var="p"
-	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvPagoDetalleDT Fs12"  
-						rowKey="#{p.idpago}"
-						selectionMode="single"
-						selection="#{liqCompraFormCtrl.pagoSelected}">
-				
-				<p:ajax event="rowSelect"  update=":formMain:pvPagoDetalleDT">
-				</p:ajax>
-				
-				<p:column headerText="ITEM" style="width:90%;">
+			
+				<div class="p-grid p-justify-even">
+					<div class="p-col-12 p-md-3 boxMain box-gray">
+						<div class="DispBlock box-header">TOTAL POR PAGAR</div>
+						<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalpagar}" styleClass="box-content">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</div>
 					
-					<div class="EmptyBox5"/>
-					<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
+					<div class="p-col-12 p-md-3 boxMain box-border-gray">
+						<div class="DispBlock box-header">TOTAL PAGADO</div>
+						<h:outputText value="#{liqCompraFormCtrl.totalPago}" styleClass="box-content">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</div>
+					
+					<div class="p-col-12 p-md-3 boxMain box-border-gray">
+						<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
+						<h:outputText value="#{liqCompraFormCtrl.totalSaldo}" styleClass="box-content">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</div>
+				</div>	
+				
+				<div class="EmptyBox5"/>
+		</div>
+		<div class="EmptyBox5"/>	
+		<div class="card card-w-title">
+			
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Pago</h2>	
+				<p:panelGrid id="gridOpcPagos" columns="2"
+					 styleClass="ui-panelgrid-blank Wid100" 
+					 columnClasses="ui-g-12 ui-md-10,
+					 				ui-g-12 ui-md-2">
+					 				
+					 
+					  <p:selectOneMenu id="somFrmListaProducto"
+												value="#{liqCompraFormCtrl.tipopagoSelected}"
+												converter="omnifaces.SelectItemsConverter"
+												required="false"
+												requiredMessage="REQUERIDO"
+												styleClass="Wid100"
+												filter="true" filterMatchMode="contains">
+	
+						<f:selectItems value="#{liqCompraFormCtrl.tipopagoList}" var="tp"
+							itemLabel="#{tp.nombre}" itemValue="#{tp}" />
+							
+						<p:ajax event="valueChange" listener="#{liqCompraFormCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT"/>	
+							
+					</p:selectOneMenu>
+					 					 
+					 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{liqCompraFormCtrl.aplicarPago()}" styleClass="secondary-button Wid100 Fs11" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT">
+					 </p:commandButton>
+					
+				</p:panelGrid>
+				
+				<!-- detalle pago -->
+				<div class="EmptyBox5"/>
+				
+				<p:dataTable id="pvPagoDetalleDT"
+		        			scrollable="true"
+		        			value="#{liqCompraFormCtrl.pagoList}"
+		        			var="p"
+		        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="pvPagoDetalleDT Fs12"  
+							rowKey="#{p.idpago}"
+							selectionMode="single"
+							selection="#{liqCompraFormCtrl.pagoSelected}">
+					
+					<p:ajax event="rowSelect"  update=":formMain:pvPagoDetalleDT">
+					</p:ajax>
+					
+					<p:column headerText="ITEM" style="width:90%;">
 						
-						<div class="p-col-12">
-							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markBlack"/>
-						</div>
-						
-						<div class="p-col-12">
-						
-							<div class="p-grid Fs10">
-								
-								<div class="p-col-12 p-md-4 dt-spinner">
-								
-									<h:outputText value="VALOR" styleClass="Fs12"/>
+						<div class="EmptyBox5"/>
+						<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
+							
+							<div class="p-col-12">
+								<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markBlack"/>
+							</div>
+							
+							<div class="p-col-12">
+							
+								<div class="p-grid Fs10">
 									
-									<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" >
-										<p:ajax listener="#{liqCompraFormCtrl.totalizarPagoaction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
-									</p:spinner>
+									<div class="p-col-12 p-md-4 dt-spinner">
+									
+										<h:outputText value="VALOR" styleClass="Fs12"/>
+										
+										<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" >
+											<p:ajax listener="#{liqCompraFormCtrl.totalizarPagoaction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+										</p:spinner>
+										
+									</div>
+									
+									<div class="p-col-12 p-md-4 dt-spinner">
+										<!-- Efectivo -->								
+										<h:outputText value="Entrega" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+										<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" >
+											<p:ajax listener="#{liqCompraFormCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+										</p:spinner>
+										
+										<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+										<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+										<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+											<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+												<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+											</p:ajax>
+										</p:inputText>
+										
+										<!-- credito -->
+										<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+										<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" >
+											<p:ajax update=":formMain:pvPagoDetalleDT">
+												<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+											</p:ajax>
+										</p:spinner>
+										
+									</div>
+									
+									<div class="p-col-12 p-md-4 dt-spinner">
+										<!-- Efectivo -->
+										<h:outputText value="Cambio" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+										<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true" >
+											<p:ajax update=":formMain:pvPagoDetalleDT">
+												<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+											</p:ajax>
+										</p:spinner>
+										
+										<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+										<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+										<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+											<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+												<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+											</p:ajax>
+										</p:inputText>
+										
+										<!-- credito -->
+										<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />							
+										<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />
+										
+									</div>
 									
 								</div>
-								
-								<div class="p-col-12 p-md-4 dt-spinner">
-									<!-- Efectivo -->								
-									<h:outputText value="Entrega" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
-									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" >
-										<p:ajax listener="#{liqCompraFormCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
-									</p:spinner>
-									
-									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
-									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
-										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
-											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
-										</p:ajax>
-									</p:inputText>
-									
-									<!-- credito -->
-									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
-									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" >
-										<p:ajax update=":formMain:pvPagoDetalleDT">
-											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
-										</p:ajax>
-									</p:spinner>
-									
-								</div>
-								
-								<div class="p-col-12 p-md-4 dt-spinner">
-									<!-- Efectivo -->
-									<h:outputText value="Cambio" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
-									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true" >
-										<p:ajax update=":formMain:pvPagoDetalleDT">
-											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
-										</p:ajax>
-									</p:spinner>
-									
-									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
-									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
-										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
-											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
-										</p:ajax>
-									</p:inputText>
-									
-									<!-- credito -->
-									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />							
-									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />
-									
-								</div>
-								
 							</div>
 						</div>
-					</div>
-				</p:column>
-				
-				<p:column style="width:10%;" styleClass="TexAlCenter">
+					</p:column>
 					
-					<div class="p-grid p-justify-center p-align-center">
-						<div class="p-col-12">
-							<p:commandLink  action="#{liqCompraFormCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT">
-								<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>		
+					<p:column style="width:10%;" styleClass="TexAlCenter">
+						
+						<div class="p-grid p-justify-center p-align-center">
+							<div class="p-col-12">
+								<p:commandLink  action="#{liqCompraFormCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT">
+									<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
+									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>		
+							</div>
 						</div>
-					</div>
+					
+					</p:column>
+								
+				</p:dataTable>
+			</div>
 				
-				</p:column>
-							
-			</p:dataTable>
-			
+			<div class="EmptyBox20"/>
+		
 		</p:outputPanel>
 		
-		<div class="EmptyBox20"/>
-		
-	</div>
 	
 </ui:composition>
