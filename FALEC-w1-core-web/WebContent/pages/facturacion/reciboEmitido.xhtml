@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 380px)!important;				
+				height: calc(100vh - 430px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -70,7 +70,6 @@
     	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Punto de venta"  url="#{request.contextPath}/pages/facturacion/factura.jsf"/>
 		    <p:menuitem value="Recibos emitidos" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf"/>
 		</p:breadCrumb>
     	
@@ -84,7 +83,7 @@
 				</h3>
 		   		<div class="EmptyBox5"/>
 		   		
-		   		<div class="p-grid p-align-end vertical-container">
+		   		<div class="p-grid p-align-top vertical-container">
 		    		<div class="p-col-12 p-md-3">
 		    			<h:outputText value="Vendedor" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
 		    			<p:selectOneMenu id="somVendedor"
@@ -127,9 +126,15 @@
 		    		<div class="p-col-12 p-md-2">
 	  					<p:commandButton id="cmdGlobalBuscar"
 							icon="fa fa-search"
-							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100 Fs16" update="@form" style="margin-right:5px;"/>
-						<p:spacer width="5"/>
+							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100 Fs16" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+						<div class="EmptyBox5"/>
+						<p:commandButton id="cmdRtnNuevo"
+							value="NUEVA FACTURA" icon="fa fa-plus" 
+							action="factura.jsf?faces-redirect=true" styleClass="Wid100 secondary-button" update="@form">
+	   					</p:commandButton>
+						<div class="EmptyBox5"/>
 	  					<p:commandButton id="cmdGlobalExcel"
+	  						value="EXPORTAR"
 							icon="fa fa-file-excel-o" 
 							styleClass="success-btn Wid100 Fs16"
 							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
@@ -272,6 +277,7 @@
 		    			</h:outputText>
 		    		</div>
 		    	</div>
+		    	<div class="EmptyBox20"/>
 			</div>
 	    	
 	    </h:form>

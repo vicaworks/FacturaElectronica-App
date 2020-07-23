@@ -96,6 +96,7 @@
 		<f:subview rendered="#{notaCreditoCtrl.callModule=='NOTACREDITO'}">
 	    	<p:breadCrumb>
 			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+			    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
 		    	<p:menuitem value="Lista de Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notaCredito.jsf"/>
 		    	<p:menuitem value="Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notacredito_form.jsf"/>
 			</p:breadCrumb>
@@ -105,6 +106,7 @@
     		<p:breadCrumb>
 			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 			    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+			    <p:menuitem value="Lista de Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notaCredito.jsf"/>
 			    <p:menuitem value="Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notacredito_form.jsf"/>
 			</p:breadCrumb>
     	</f:subview>
