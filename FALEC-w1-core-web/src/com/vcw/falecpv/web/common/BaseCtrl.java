@@ -7,15 +7,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 
 import org.primefaces.PrimeFaces;
 
+import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
+import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
+import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.MessageWebUtil;
 
@@ -29,11 +33,15 @@ public abstract class BaseCtrl implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6523368854199739151L;
+	@EJB
+	private TipopagoServicio tipopagoServicio;
 	
 	protected MessageWebUtil msg = new MessageWebUtil();
 	protected String estado;
 	protected List<Infoadicional> infoadicionalList;
 	protected Infoadicional infoadicionalSelected;
+	private List<Tipopago> tipopagoList;
+	private Tipopago tipopagoSelected;
 	
 	/**
 	 * 
@@ -162,7 +170,16 @@ public abstract class BaseCtrl implements Serializable {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-
+	
+	public void populateTipoPago() throws DaoException {
+		tipopagoList = null;
+		tipopagoList = tipopagoServicio.getALL();
+		tipopagoSelected = null;
+		if(tipopagoList.size()>0) {
+			tipopagoSelected = tipopagoList.get(0);
+		}
+	}
+	
 	/**
 	 * @return the infoadicionalSelected
 	 */
@@ -189,6 +206,34 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setInfoadicionalList(List<Infoadicional> infoadicionalList) {
 		this.infoadicionalList = infoadicionalList;
+	}
+
+	/**
+	 * @return the tipopagoList
+	 */
+	public List<Tipopago> getTipopagoList() {
+		return tipopagoList;
+	}
+
+	/**
+	 * @param tipopagoList the tipopagoList to set
+	 */
+	public void setTipopagoList(List<Tipopago> tipopagoList) {
+		this.tipopagoList = tipopagoList;
+	}
+
+	/**
+	 * @return the tipopagoSelected
+	 */
+	public Tipopago getTipopagoSelected() {
+		return tipopagoSelected;
+	}
+
+	/**
+	 * @param tipopagoSelected the tipopagoSelected to set
+	 */
+	public void setTipopagoSelected(Tipopago tipopagoSelected) {
+		this.tipopagoSelected = tipopagoSelected;
 	}
 	
 }

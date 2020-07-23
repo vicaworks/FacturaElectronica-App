@@ -179,7 +179,7 @@
 	    					
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdNdDocumento"
-										value="DOCUMENTO" icon="fa fa-search" 
+										value="COMPROBANTE" icon="fa fa-search" 
 										action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="secondary-button Wid100 Fs12" update="@form" process="@this">
 									<f:setPropertyActionListener value="NOTA_DEBITO" target="#{ventasQueryCtrl.callModule}"/>
 									<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
@@ -227,9 +227,6 @@
 	    
 	    <!-- Lista de ventas -->
 	    <ui:include src="../common/incl_ventas.xhtml" />
-	    
-	    <!-- Modal lista tipo pago -->
-	    <ui:include src="../common/incl_tipopago.xhtml" />  	
         
     </ui:define>
 

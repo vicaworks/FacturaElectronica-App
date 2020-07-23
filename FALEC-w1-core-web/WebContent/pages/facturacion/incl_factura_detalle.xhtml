@@ -10,7 +10,7 @@
 		
 		.pvDetalleDT .ui-datatable-scrollable-body{
 			min-height: 20vh !important;
-			height: calc(100vh - 326px)!important;
+			height: calc(100vh - 385px)!important;
 		}
 		
 		.divTotal{
@@ -74,7 +74,7 @@
 					
 					<div class="p-col-12 p-md-3">
 		 				<p:commandButton id="cmdFacProducto"
-							value="AGREG PRODUCTO" icon="fa fa-search" 
+							value="PRODUCTO" icon="fa fa-search" 
 							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
 							
 							<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
@@ -87,7 +87,7 @@
 					
 					<div class="p-col-12 p-md-3">
 		 				<p:commandButton id="cmdFacDetalle"
-							value="AGREGAR ITEM" icon="fa fa-plus" 
+							value="ITEM" icon="fa fa-plus" 
 							action="#{compFacCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal" process="@this :formMain:pvDetalleDT">
 						</p:commandButton> 
 					</div>

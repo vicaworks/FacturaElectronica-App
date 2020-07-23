@@ -141,7 +141,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		
 		consultarTipoComprobante();
 		consultarIva();
-		
+		populateTipoPago();
 		notDebitoSelected = new Cabecera();
 		notDebitoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 		notDebitoSelected.setTotal(BigDecimal.ZERO);
@@ -350,19 +350,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void agregarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) {
-		try {
-			
-			aplicarPago(tipoPagoFormularioEnum);
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void aplicarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) throws DaoException {
+	public void aplicarPago() throws DaoException {
 		if(notDebitoSelected == null) {
 			return;
 		}
@@ -375,35 +363,21 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			pagoList = new ArrayList<>();
 		}
 		
-		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum);
-		
-		boolean flag = false;
-		for (Pago p : pagoList) {
-			if(p.getTipopago().equals(tp) && !tipoPagoFormularioEnum.isRepetir()) {
-				pagoSelected = p;
-				flag = true;
-				break;
-			}
-		}
-		
+		Tipopago tp = getTipopagoSelected();
+		pagoSelected = new Pago();
+		pagoSelected.setCabecera(notDebitoSelected);
+		pagoSelected.setTipopago(tp);
+		pagoSelected.setTotal(notDebitoSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+		pagoSelected.setPlazo(BigDecimal.ZERO);
+		pagoSelected.setUnidadtiempo("DIAS");
+		pagoList.add(pagoSelected);
 		totalizarPago();
-		if(!flag) {
-			pagoSelected = new Pago();
-			pagoSelected.setTipoPagoFormularioEnum(tipoPagoFormularioEnum);
-			pagoSelected.setCabecera(notDebitoSelected);
-			pagoSelected.setTipopago(tp);
-			pagoSelected.setTotal(notDebitoSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-			pagoSelected.setPlazo(BigDecimal.ZERO);
-			pagoSelected.setUnidadtiempo("DIAS");
-			pagoList.add(pagoSelected);
-			totalizarPago();
-		}
 		
-		switch (tipoPagoFormularioEnum) {
-		case EFECTIVO:
+		switch (tp.getSubdetalle()) {
+		case "1":
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
 			break;
-		case CREDITO:
+		case "4":
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
 			break;	
 		default:

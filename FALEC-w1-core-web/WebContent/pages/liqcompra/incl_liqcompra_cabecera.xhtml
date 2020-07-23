@@ -213,16 +213,26 @@
 		
 			<p:panelGrid id="gridOpcPagos" columns="2"
 				 styleClass="ui-panelgrid-blank Wid100" 
-				 columnClasses="ui-g-12 ui-md-6,
-				 				ui-g-12 ui-md-6">
+				 columnClasses="ui-g-12 ui-md-10,
+				 				ui-g-12 ui-md-2">
 				 				
-				 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{liqCompraFormCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" styleClass="secondary-button Wid100"/>
 				 
-				 <p:commandButton value="OTROS" icon="fa fa-plus" action="#{tipoPagoCtrl.showModal()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100">
-				 	<f:setPropertyActionListener value="LIQCOMPRA" target="#{tipoPagoCtrl.callModule}"/>
-				 	<f:setPropertyActionListener value="#{liqCompraFormCtrl.liqCompraSelected.totalconimpuestos}" target="#{tipoPagoCtrl.total}"/>
-	            	<f:setPropertyActionListener value="formMain" target="#{tipoPagoCtrl.callForm}"/>
-	            	<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" target="#{tipoPagoCtrl.updateView}"/>
+				  <p:selectOneMenu id="somFrmListaProducto"
+											value="#{liqCompraFormCtrl.tipopagoSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+
+					<f:selectItems value="#{liqCompraFormCtrl.tipopagoList}" var="tp"
+						itemLabel="#{tp.nombre}" itemValue="#{tp}" />
+						
+					<p:ajax event="valueChange" listener="#{liqCompraFormCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT"/>	
+						
+				</p:selectOneMenu>
+				 					 
+				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{liqCompraFormCtrl.aplicarPago()}" styleClass="secondary-button Wid100 Fs11" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT">
 				 </p:commandButton>
 				
 			</p:panelGrid>
@@ -268,22 +278,22 @@
 								
 								<div class="p-col-12 p-md-4 dt-spinner">
 									<!-- Efectivo -->								
-									<h:outputText value="Entrega" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
-									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" >
+									<h:outputText value="Entrega" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" >
 										<p:ajax listener="#{liqCompraFormCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
 									</p:spinner>
 									
 									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
-									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
 										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
 										</p:ajax>
 									</p:inputText>
 									
 									<!-- credito -->
-									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}"/>
-									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" >
+									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" >
 										<p:ajax update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
 										</p:ajax>
@@ -293,24 +303,24 @@
 								
 								<div class="p-col-12 p-md-4 dt-spinner">
 									<!-- Efectivo -->
-									<h:outputText value="Cambio" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
-									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" readonly="true" >
+									<h:outputText value="Cambio" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true" >
 										<p:ajax update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
 										</p:ajax>
 									</p:spinner>
 									
 									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
-									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
 										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
 										</p:ajax>
 									</p:inputText>
 									
 									<!-- credito -->
-									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />							
-									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />
+									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />							
+									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />
 									
 								</div>
 								

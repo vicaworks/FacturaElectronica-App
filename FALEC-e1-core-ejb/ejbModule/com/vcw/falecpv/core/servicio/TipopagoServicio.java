@@ -69,6 +69,24 @@ public class TipopagoServicio extends AppGenericService<Tipopago, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Tipopago> getALL()throws DaoException{
+		try {
+			QueryBuilder q = new QueryBuilder(tipopagoDao.getEntityManager());
+			return q.select("t")
+					.from(Tipopago.class,"t")
+					.orderBy("t.orden").getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 
 }

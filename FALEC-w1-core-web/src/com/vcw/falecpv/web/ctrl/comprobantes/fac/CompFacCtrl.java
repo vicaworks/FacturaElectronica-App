@@ -24,7 +24,6 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
-import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -100,6 +99,8 @@ public class CompFacCtrl extends BaseCtrl {
 	private String criterioBusqueda;
 	private List<Ice> iceList;
 	private List<Iva> ivaList;
+	private BigDecimal porcentajeRenta;
+	private BigDecimal porcentajeIva;
  	
 	/**
 	 * 
@@ -214,8 +215,11 @@ public class CompFacCtrl extends BaseCtrl {
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
 		totalSaldo = BigDecimal.ZERO;
+		porcentajeIva = BigDecimal.ZERO;
+		porcentajeRenta = BigDecimal.ZERO;
 		consultarIce();
 		consultarIva();
+		populateTipoPago();
 	}
 	
 	public void agregarProducto() {
@@ -424,19 +428,7 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void agregarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) {
-		try {
-			
-			aplicarPago(tipoPagoFormularioEnum);
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void aplicarPago(TipoPagoFormularioEnum tipoPagoFormularioEnum) throws DaoException {
+	public void aplicarPago() throws DaoException {
 		if(cabecerSelected == null) {
 			return;
 		}
@@ -449,35 +441,21 @@ public class CompFacCtrl extends BaseCtrl {
 			pagoList = new ArrayList<>();
 		}
 		
-		Tipopago tp = tipopagoServicio.getByCodINterno(tipoPagoFormularioEnum);
-		
-		boolean flag = false;
-		for (Pago p : pagoList) {
-			if(p.getTipopago().equals(tp) && !tipoPagoFormularioEnum.isRepetir()) {
-				pagoSelected = p;
-				flag = true;
-				break;
-			}
-		}
-		
+		Tipopago tp = getTipopagoSelected();
+		pagoSelected = new Pago();
+		pagoSelected.setCabecera(cabecerSelected);
+		pagoSelected.setTipopago(tp);
+		pagoSelected.setTotal(cabecerSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+		pagoSelected.setPlazo(BigDecimal.ZERO);
+		pagoSelected.setUnidadtiempo("DIAS");
+		pagoList.add(pagoSelected);
 		totalizarPago();
-		if(!flag) {
-			pagoSelected = new Pago();
-			pagoSelected.setTipoPagoFormularioEnum(tipoPagoFormularioEnum);
-			pagoSelected.setCabecera(cabecerSelected);
-			pagoSelected.setTipopago(tp);
-			pagoSelected.setTotal(cabecerSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-			pagoSelected.setPlazo(BigDecimal.ZERO);
-			pagoSelected.setUnidadtiempo("DIAS");
-			pagoList.add(pagoSelected);
-			totalizarPago();
-		}
 		
-		switch (tipoPagoFormularioEnum) {
-		case EFECTIVO:
+		switch (tp.getSubdetalle()) {
+		case "1":
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
 			break;
-		case CREDITO:
+		case "4":
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
 			break;	
 		default:
@@ -533,7 +511,8 @@ public class CompFacCtrl extends BaseCtrl {
 	public void totalizarPagoaction(Pago p) {
 		try {
 			pagoSelected = p;
-			if(pagoSelected.getTipoPagoFormularioEnum().equals(TipoPagoFormularioEnum.EFECTIVO)) {
+			// tipo efectivo
+			if(pagoSelected.getTipopago().getSubdetalle().equals("1")) {
 				calcularCambioAction(p);
 			}
 			totalizarPago();
@@ -760,6 +739,36 @@ public class CompFacCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	public void calcularRettencion(String tipo) {
+		try {
+			
+			if(cabecerSelected == null) {
+				return;
+			}
+			
+			if (cabecerSelected.getTotalsinimpuestos().doubleValue()<=0) {
+				return;
+			}
+			
+			switch (tipo) {
+			case "RENTA":
+				cabecerSelected.setValorretenidorenta(
+						porcentajeRenta.divide(BigDecimal.valueOf(100d)).multiply(cabecerSelected.getTotalsinimpuestos()).setScale(2, RoundingMode.HALF_UP));
+				break;
+			case "IVA":
+				cabecerSelected.setValorretenidoiva(
+						porcentajeIva.divide(BigDecimal.valueOf(100d)).multiply(cabecerSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
+				break;	
+			default:
+				break;
+			}
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the clienteServicio
@@ -955,6 +964,34 @@ public class CompFacCtrl extends BaseCtrl {
 	 */
 	public void setTotalSaldo(BigDecimal totalSaldo) {
 		this.totalSaldo = totalSaldo;
+	}
+
+	/**
+	 * @return the porcentajeRenta
+	 */
+	public BigDecimal getPorcentajeRenta() {
+		return porcentajeRenta;
+	}
+
+	/**
+	 * @param porcentajeRenta the porcentajeRenta to set
+	 */
+	public void setPorcentajeRenta(BigDecimal porcentajeRenta) {
+		this.porcentajeRenta = porcentajeRenta;
+	}
+
+	/**
+	 * @return the porcentajeIva
+	 */
+	public BigDecimal getPorcentajeIva() {
+		return porcentajeIva;
+	}
+
+	/**
+	 * @param porcentajeIva the porcentajeIva to set
+	 */
+	public void setPorcentajeIva(BigDecimal porcentajeIva) {
+		this.porcentajeIva = porcentajeIva;
 	}
 
 }

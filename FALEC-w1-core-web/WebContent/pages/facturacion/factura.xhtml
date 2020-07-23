@@ -171,10 +171,12 @@
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	<o:importConstants type="com.vcw.falecpv.core.constante.TipoPagoFormularioEnum" var="TipoPagoFormularioEnum" />
     	
-    	<!-- <h:form>
-    		<p:remoteCommand name="buscarProducto" actionListener="#{compFacCtrl.buscarCodigoProducto}" update=":formMain:msgFormMain :formMain:intCriterioBusqueda :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:intCriterioBusqueda"/>
-    	</h:form> -->
-    
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+		    <p:menuitem value="Factura" url="#{request.contextPath}/pages/facturacion/factura.jsf"/>
+		</p:breadCrumb>
+    	<div class="EmptyBox5"/>
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	 <!-- Opciones principales -->
@@ -252,9 +254,6 @@
 	    
 	    <!-- Busqueda Productos -->
 	    <ui:include src="../productos/incl_listaProducto.xhtml" />
-	    
-	    <!-- Modal lista tipo pago -->
-	    <ui:include src="../common/incl_tipopago.xhtml" />
         
     </ui:define>
 

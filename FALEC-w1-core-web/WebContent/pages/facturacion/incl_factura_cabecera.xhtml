@@ -176,15 +176,28 @@
 		</p:outputPanel>
 	</div>
 	<div class="EmptyBox5"/>	
-	<div class="card card-w-title">	
+	<p:outputPanel id="oupPagoDT">
+	
+		<div class="card card-w-title">	
 		
-		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h2>
-		<div class="EmptyBox10"/>
-		<p:outputPanel id="oupPagoDT">
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Valor a Pagar</h2>
+			<div class="EmptyBox10"/>
 			
 			<div class="p-grid p-align-center vertical-container">
 				<div class="p-col-12 p-md-4">
-					<h:outputText value="Valor retenido Renta" styleClass="cpoRequerido"/>
+					<p:commandLink id="cmlCalValorRenta" title="Calcular">
+						<i class="fa fa-calculator"/>
+					</p:commandLink>
+					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
+						<p:inputNumber symbol="%"  value="#{compFacCtrl.porcentajeRenta}" 
+                                symbolPosition="s" emptyValue="always">  
+		                </p:inputNumber>
+						<p:commandLink action="#{compFacCtrl.calcularRettencion('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+							<i class="fa fa-check Fs14" style="color:green;"></i>
+						</p:commandLink>  
+				    </p:overlayPanel>
+					<p:spacer width="3"/>
+					<h:outputText value="Val retenido Renta" styleClass="cpoRequerido"/>
 					<div class="EmptyBox5"/>
 					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidorenta}" decimalPlaces="2"  styleClass="Wid100">
 						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
@@ -192,17 +205,30 @@
 				</div>
 				
 				<div class="p-col-12 p-md-4">
-					<h:outputText value="Valor retenido I.V.A." styleClass="cpoRequerido"/>
+					<p:commandLink id="cmlCalValorIva" title="Calcular">
+						<i class="fa fa-calculator"/>
+					</p:commandLink>
+					<p:spacer width="3"/>
+					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
+						<p:inputNumber symbol="%" value="#{compFacCtrl.porcentajeIva}"
+                                symbolPosition="s" emptyValue="always">  
+		                </p:inputNumber>
+						<p:commandLink action="#{compFacCtrl.calcularRettencion('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+							<i class="fa fa-check Fs14" style="color:green;"></i>
+						</p:commandLink>  
+				    </p:overlayPanel>
+					<p:spacer width="3"/>
+					<h:outputText value="Val retenido I.V.A." styleClass="cpoRequerido"/>
 					<div class="EmptyBox5"/>
 					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidoiva}" decimalPlaces="2"  styleClass="Wid100">
 						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
 					</p:spinner>
 				</div>
 				
-				<div class="p-col-12 p-md-4">
-					<h:outputText value="Total retenido" styleClass="cpoRequerido"/>
+				<div class="p-col-12 p-md-4" style="text-align: center;">
+					<h:outputText value="Total retenido" styleClass="FontBold"/>
 					<div class="EmptyBox5"/>
-					<div class="Wid100" style="text-align: center;">
+					<div class="Wid100" >
 						<h:outputText  styleClass="Fs18 DispBlock" value="#{compFacCtrl.cabecerSelected.valorretenido}">
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
@@ -236,19 +262,33 @@
 			</div>	
 			
 			<div class="EmptyBox10"/>
-			
+		</div>
+		
+		<div class="EmptyBox5"/>
+		<div class="card card-w-title">	
+		
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h2>
 			<p:panelGrid id="gridOpcPagos" columns="2"
 				 styleClass="ui-panelgrid-blank Wid100" 
-				 columnClasses="ui-g-12 ui-md-6,
-				 				ui-g-12 ui-md-6">
+				 columnClasses="ui-g-12 ui-md-10,
+				 				ui-g-12 ui-md-2">
 				 				
-				 <p:commandButton value="EFECTIVO" icon="fa fa-dollar" action="#{compFacCtrl.agregarPago(TipoPagoFormularioEnum.EFECTIVO)}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" styleClass="secondary-button Wid100"/>
-				 
-				 <p:commandButton value="OTROS" icon="fa fa-plus" action="#{tipoPagoCtrl.showModal()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100">
-				 	<f:setPropertyActionListener value="FACTURA" target="#{tipoPagoCtrl.callModule}"/>
-				 	<f:setPropertyActionListener value="#{ compFacCtrl.cabecerSelected.totalconimpuestos}" target="#{tipoPagoCtrl.total}"/>
-	            	<f:setPropertyActionListener value="formMain" target="#{tipoPagoCtrl.callForm}"/>
-	            	<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" target="#{tipoPagoCtrl.updateView}"/>
+				 <p:selectOneMenu id="somFrmListaProducto"
+											value="#{compFacCtrl.tipopagoSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+
+					<f:selectItems value="#{compFacCtrl.tipopagoList}" var="tp"
+						itemLabel="#{tp.nombre}" itemValue="#{tp}" />
+						
+					<p:ajax event="valueChange" listener="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT"/>	
+						
+				</p:selectOneMenu>
+				 					 
+				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100 Fs11" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT">
 				 </p:commandButton>
 				
 			</p:panelGrid>
@@ -275,7 +315,7 @@
 					<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
 						
 						<div class="p-col-12">
-							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markBlack"/>
+							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markGray"/>
 						</div>
 						
 						<div class="p-col-12">
@@ -292,24 +332,25 @@
 									
 								</div>
 								
+								
 								<div class="p-col-12 p-md-4 dt-spinner">
 									<!-- Efectivo -->								
-									<h:outputText value="Entrega" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
-									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" >
+									<h:outputText value="IMPORTE" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" >
 										<p:ajax listener="#{compFacCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
 									</p:spinner>
 									
 									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
-									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
 										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
 										</p:ajax>
 									</p:inputText>
 									
 									<!-- credito -->
-									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}"/>
-									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" >
+									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" >
 										<p:ajax update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
 										</p:ajax>
@@ -319,28 +360,26 @@
 								
 								<div class="p-col-12 p-md-4 dt-spinner">
 									<!-- Efectivo -->
-									<h:outputText value="Cambio" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}"/>
-									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.EFECTIVO}" readonly="true" >
+									<h:outputText value="CAMBIO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true" >
 										<p:ajax update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
 										</p:ajax>
 									</p:spinner>
 									
 									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}"/>
-									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.EFECTIVO and p.tipoPagoFormularioEnum != TipoPagoFormularioEnum.CREDITO}">
+									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
 										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
 											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
 										</p:ajax>
 									</p:inputText>
 									
 									<!-- credito -->
-									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />							
-									<h:outputText value="" rendered="#{p.tipoPagoFormularioEnum == TipoPagoFormularioEnum.CREDITO}" />
+									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />							
+									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />
 									
 								</div>
-								
-								
 								
 							</div>
 						</div>
@@ -363,11 +402,11 @@
 							
 			</p:dataTable>
 			
-		</p:outputPanel>	
 		
-		<div class="EmptyBox20"/>
+			<div class="EmptyBox20"/>
 		
-	</div>
+		</div>
+	</p:outputPanel>	
 	
 	
 </ui:composition>
