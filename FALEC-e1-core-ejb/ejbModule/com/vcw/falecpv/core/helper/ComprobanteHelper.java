@@ -17,6 +17,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Detalleimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 
 /**
@@ -276,6 +277,21 @@ public class ComprobanteHelper {
 			return "001";
 		}
 		return numDoc.substring(3, 6);
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param pagoList
+	 * @return
+	 */
+	public static String determinarResumenPago(List<Pago> pagoList) {
+		String resumen = null;
+		if(pagoList.size()==1) {
+			return pagoList.get(0).getTipopago().getNombre().toUpperCase();
+		}
+		resumen = "VARIOS";
+		return resumen;
 	}
 
 }

@@ -701,6 +701,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		
 		
 		// tabla de total impuesto

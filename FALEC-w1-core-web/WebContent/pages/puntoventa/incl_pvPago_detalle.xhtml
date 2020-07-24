@@ -207,7 +207,7 @@
 									</h:outputText>
 								</div>
 								
-								<f:subview rendered="#{p.tipopago.nombre=='EFECTIVO'}">
+								<f:subview rendered="#{p.tipopago.subdetalle=='1'}">
 													
 									<div class="p-col-4">
 										<h:outputText value="Entregado:" styleClass="FontBold"/>
@@ -229,7 +229,7 @@
 									
 								</f:subview>
 								
-								<f:subview rendered="#{p.tipopago.nombre!='EFECTIVO'}">
+								<f:subview rendered="#{p.tipopago.subdetalle!='1'}">
 									
 									<div class="p-col-4">
 										<h:outputText value="Documento:" styleClass="FontBold"/>
@@ -310,7 +310,7 @@
 						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
 						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='CAMBIO'?'documento-btn-seleccion':'documento-btn'}">
-							<h:outputText value="CAMBIO" styleClass="DispBlock FontBold Fs14"/>
+							<h:outputText value="IMPORTE" styleClass="DispBlock FontBold Fs14"/>
 						</div>
 					</p:commandLink>
 						

@@ -61,6 +61,10 @@ public class VentasQuery implements Serializable {
 	private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
 	private String idguiaremision;
 	private String numdocumento;
+	private String resumenpago;
+	private Integer envioemail = 0;
+	private BigDecimal valorretenido = BigDecimal.ZERO;
+	private BigDecimal valorapagar = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -616,6 +620,63 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setNumdocumento(String numdocumento) {
 		this.numdocumento = numdocumento;
+	}
+
+	/**
+	 * @return the resumenpago
+	 */
+	public String getResumenpago() {
+		return resumenpago;
+	}
+
+	/**
+	 * @param resumenpago the resumenpago to set
+	 */
+	public void setResumenpago(String resumenpago) {
+		this.resumenpago = resumenpago;
+	}
+
+	/**
+	 * @return the envioemail
+	 */
+	public Integer getEnvioemail() {
+		return envioemail;
+	}
+
+	/**
+	 * @param envioemail the envioemail to set
+	 */
+	public void setEnvioemail(Integer envioemail) {
+		this.envioemail = envioemail;
+	}
+
+	/**
+	 * @return the valorretenido
+	 */
+	public BigDecimal getValorretenido() {
+		return valorretenido;
+	}
+
+	/**
+	 * @param valorretenido the valorretenido to set
+	 */
+	public void setValorretenido(BigDecimal valorretenido) {
+		this.valorretenido = valorretenido;
+	}
+
+	/**
+	 * @return the valorapagar
+	 */
+	public BigDecimal getValorapagar() {
+		valorapagar = total.add(valorretenido.negate()).setScale(2, RoundingMode.HALF_UP);
+		return valorapagar;
+	}
+
+	/**
+	 * @param valorapagar the valorapagar to set
+	 */
+	public void setValorapagar(BigDecimal valorapagar) {
+		this.valorapagar = valorapagar;
 	}
 
 }

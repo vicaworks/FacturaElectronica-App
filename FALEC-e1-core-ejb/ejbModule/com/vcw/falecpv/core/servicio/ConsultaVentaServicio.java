@@ -59,6 +59,8 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"	c.estadoautorizacion, " +
 						"	c.idguiaremision, " +
 						"	c.numdocumento, " +
+						"	c.resumenpago, " +
+						"	c.envioemail, " +
 						"	(select coalesce(SUM(p.valorentrega),0) from pago p where p.idcabecera = c.idcabecera ) as licitado, " +
 						"	(select coalesce(SUM(p.cambio),0) from pago p where p.idcabecera = c.idcabecera ) as cambio, " +
 						"   (select coalesce(SUM(p.total),0) from pago p where p.idcabecera = c.idcabecera ) as totalpago " +

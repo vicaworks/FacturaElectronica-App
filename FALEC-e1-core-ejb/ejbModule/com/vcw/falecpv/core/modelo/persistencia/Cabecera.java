@@ -202,6 +202,12 @@ public class Cabecera implements Serializable {
     @Column(name = "valorretenido", precision = 12, scale = 2)
     private BigDecimal valorretenido = BigDecimal.ZERO;
     
+    @Column(name = "envioemail")
+    private Integer envioemail = 0;
+    
+    @Size(min = 1, max = 100)
+    @Column(name = "resumenpago", nullable = false, length = 100)
+    private String resumenpago = "EFECTIVO";
     
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
@@ -1164,6 +1170,34 @@ public class Cabecera implements Serializable {
 	 */
 	public void setTotalpagar(BigDecimal totalpagar) {
 		this.totalpagar = totalpagar;
+	}
+
+	/**
+	 * @return the envioemail
+	 */
+	public Integer getEnvioemail() {
+		return envioemail;
+	}
+
+	/**
+	 * @param envioemail the envioemail to set
+	 */
+	public void setEnvioemail(Integer envioemail) {
+		this.envioemail = envioemail;
+	}
+
+	/**
+	 * @return the resumenpago
+	 */
+	public String getResumenpago() {
+		return resumenpago;
+	}
+
+	/**
+	 * @param resumenpago the resumenpago to set
+	 */
+	public void setResumenpago(String resumenpago) {
+		this.resumenpago = resumenpago;
 	}
 
 }
