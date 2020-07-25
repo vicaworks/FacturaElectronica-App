@@ -200,7 +200,7 @@
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 							</p:menuitem>	
 							
-							<p:menuitem value="#{msg['menu.notadebito']}" action="#" icon="fa fa-minus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="#{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-minus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 							</p:menuitem>
 							

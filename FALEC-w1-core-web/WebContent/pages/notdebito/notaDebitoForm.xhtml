@@ -167,18 +167,18 @@
 	    		<div class="EmptyBox10"/>
 	    		<div class="p-grid p-align-left">
 	    			
-	    			<div class="p-col-12 p-md-6">
+	    			<div class="p-col-12 p-md-7">
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-4">
+	    					<div class="p-col-12 p-md-3">
 			    				<p:commandButton id="cmdfacNuevo"
 										value="NUEVO" icon="fa fa-plus" 
 										action="#{notaDebitoFrmCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
 								</p:commandButton>
 	    					</div>
 	    					
-	    					<div class="p-col-12 p-md-4">
+	    					<div class="p-col-12 p-md-6">
 			    				<p:commandButton id="cmdNdDocumento"
 										value="COMPROBANTE" icon="fa fa-search" 
 										action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="secondary-button Wid100 Fs12" update="@form" process="@this">
@@ -188,7 +188,7 @@
 								</p:commandButton>
 	    					</div>
 	    					
-							<div class="p-col-12 p-md-4">
+							<div class="p-col-12 p-md-3">
 			    				<p:commandButton id="cmduardar"
 										value="GUARDAR" icon="fa fa-floppy-o"  
 										action="#{notaDebitoFrmCtrl.guardar()}" styleClass=" Wid100 Fs12" update="@form"/>
@@ -211,11 +211,11 @@
 			<div class="p-grid p-align-start vertical-container">
 			
 				<!-- cabecera -->
-				<div class="p-col-12 p-md-5">
+				<div class="p-col-12 p-lg-5">
 					<ui:include src="incl_nd_cabecera.xhtml" />
 				</div>
 				<!-- destinatarios -->
-				<div class="p-col-12 p-md-7">
+				<div class="p-col-12 p-lg-7">
 					<ui:include src="incl_nd_detalle.xhtml" />
 				</div>
 				

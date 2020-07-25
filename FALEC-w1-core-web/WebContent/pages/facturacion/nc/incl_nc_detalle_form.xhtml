@@ -6,8 +6,6 @@
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions">
 	
-<div class="p-col-12 p-md-8">
-					
 	<p:remoteCommand name="buscarCodigoProducto" actionListener="#{notaCreditoCtrl.buscarCodigoProducto()}" global="true" update="@form"/>
 	
 	<div class="card card-w-title">
@@ -37,7 +35,7 @@
 					
 					<div class="p-col-12 p-md-3">
 		 				<p:commandButton id="cmdFacProducto"
-							value="AGREG PRODUCTO" icon="fa fa-search" 
+							value="PRODUCTO" icon="fa fa-search" 
 							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100" update="@form :frmListProducto" process="@this :formMain">
 							
 							<f:setPropertyActionListener value="#{notaCreditoCtrl}" target="#{listaProductoCtrl.notaCreditoCtrl}"/>
@@ -50,7 +48,7 @@
 					
 					<div class="p-col-12 p-md-3">
 		 				<p:commandButton id="cmdNcDetalle"
-							value="AGREGAR ITEM" icon="fa fa-plus" 
+							value="ITEM" icon="fa fa-plus" 
 							action="#{notaCreditoCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@form" process="@this :formMain">
 						</p:commandButton> 
 					</div>
@@ -104,7 +102,7 @@
 									
 									<div class="p-md-2 dt-spinner">
 					
-										<h:outputText value="DESCUTO($)" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
+										<h:outputText value="DESC" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8"  >
 											<p:ajax listener="#{notaCreditoCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
@@ -281,47 +279,47 @@
 			
 						<div class="p-grid p-col-12 p-md-6 divResumen">
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="Subtotal" styleClass="Fs12" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.totalsinimpuestos}" styleClass="Fs12">
 									<f:convertNumber pattern="$ #,##0.00"/>
 								</h:outputText>
 							</div>
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="I.C.E." styleClass="Fs12" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.totalice}" styleClass="Fs12">
 									<f:convertNumber pattern="$ #,##0.00"/>
 								</h:outputText>
 							</div>
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="I.V.A." styleClass="Fs12" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.totaliva}" styleClass="Fs12">
 									<f:convertNumber pattern="$ #,##0.00"/>
 								</h:outputText>
 							</div>
 							
-							<div class="p-col-8">
+							<div class="p-col-6">
 							</div>
-							<div class="p-grid p-col-4">
+							<div class="p-grid p-col-6">
 								<div class="p-col-12 bordeSubtotal"></div>
 							</div>
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="Total" styleClass="FontBold Fs16" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.totalconimpuestos}" styleClass="FontBold Fs16 DispBlock Wid100">
 									<f:convertNumber pattern="$ 0.00"/>
 								</h:outputText>
@@ -340,7 +338,5 @@
 		</div>
 		
 	</div>
-	
-</div>    
 
 </ui:composition>

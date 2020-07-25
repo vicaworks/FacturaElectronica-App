@@ -108,6 +108,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	private List<Motivo> motivoList;
 	private Motivo motivoSelected;
 	private Totalimpuesto totalimpuesto;
+	private String callModule;
 
 	/**
 	 * 
@@ -744,6 +745,20 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	 */
 	public void setTotalimpuesto(Totalimpuesto totalimpuesto) {
 		this.totalimpuesto = totalimpuesto;
+	}
+
+	/**
+	 * @return the callModule
+	 */
+	public String getCallModule() {
+		return callModule;
+	}
+
+	/**
+	 * @param callModule the callModule to set
+	 */
+	public void setCallModule(String callModule) {
+		this.callModule = callModule;
 	}
 
 }

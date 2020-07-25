@@ -45,6 +45,7 @@ import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -296,6 +297,23 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			}
 			
 			return "./nc/notacredito_form.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public String generarND() {
+		
+		try {
+			
+			NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
+			notaDebitoFrmCtrl.setCallModule("FACTURA");
+			notaDebitoFrmCtrl.nuevoByFacturaEmitida(ventasQuerySelected.getIdcabecera());
+			
+			return "/pages/notdebito/notaDebitoForm.jsf?faces-redirect=true";
 			
 		} catch (Exception e) {
 			e.printStackTrace();

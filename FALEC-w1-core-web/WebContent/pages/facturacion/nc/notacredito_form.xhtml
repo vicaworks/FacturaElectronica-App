@@ -83,6 +83,14 @@
 				margin: 0px 0px 5px 0px !important;
 			}
 			
+			.dt-selection .ui-inputfield {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.dt-selection .ui-selectonemenu-label {
+				text-align: right;
+			}
+			
 			
         </style>
     </ui:define>
@@ -122,13 +130,13 @@
 	    		
 	    		<div class="p-grid p-align-left">
 	    			
-	    			<div class="p-col-12 p-md-4">
+	    			<div class="p-col-12 p-md-5">
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdRtnNuevo"
-										value="NUEVA NOTA #{msg['label.credito']}" icon="fa fa-plus" 
+										value="NUEVO" icon="fa fa-plus" 
 										action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true">
 										
 								<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facturaSeleccion}"/>
@@ -142,13 +150,13 @@
 							
 	    					</div>
 		    				
-		    				<div class="p-col-12 p-md-3">
+		    				<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdrtnGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
 										action="#{notaCreditoCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{notaCreditoCtrl.notaCreditoSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
-							<div class="p-col-12 p-md-3">
+							<div class="p-col-12 p-md-4">
 							
 								<p:commandButton  id="cmdRtnCliente" 
 										title="NUEVO CLIENTE"
@@ -182,12 +190,16 @@
 			
 			<div class="p-grid p-align-top">
 				
-				<!-- cabecera -->
-				<ui:include src="incl_nc_cabecera_form.xhtml" />
+				<div class="p-col-12 p-lg-7">
+					<!-- cabecera -->
+					<ui:include src="incl_nc_cabecera_form.xhtml" />
+				</div>
 				
-				<!-- detalle -->
-				<ui:include src="incl_nc_detalle_form.xhtml" />
-				
+				<div class="p-col-12 p-lg-5">
+					<!-- detalle -->
+					<ui:include src="incl_nc_detalle_form.xhtml" />
+				</div>
+								
 			</div>
 	    	
         </h:form>

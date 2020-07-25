@@ -203,7 +203,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="ID" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{notaDebitoCtrl.getFormatoNumDocumento(r.numdocumento)}" />
 					</p:column>
 					
@@ -266,7 +266,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="SUBTOTAL" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="SUBTOTAL" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totalsinimpuestos}" >
 							<f:convertNumber pattern="#,##0.00"/>
 						</h:outputText>
