@@ -47,6 +47,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"	c.secuencial, " +
 						"	c.fechaemision, " +
 						"	c.idcliente, " +
+						"	cl.identificacion, " +
 						"	cl.razonsocial, " +
 						"	u.nombrepantalla, " +
 						"	(select SUM(d.cantidad) from detalle d where d.idcabecera = c.idcabecera ) as cantidad, " +

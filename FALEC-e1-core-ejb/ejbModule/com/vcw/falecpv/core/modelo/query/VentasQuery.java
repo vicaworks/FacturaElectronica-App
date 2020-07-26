@@ -65,6 +65,7 @@ public class VentasQuery implements Serializable {
 	private Integer envioemail = 0;
 	private BigDecimal valorretenido = BigDecimal.ZERO;
 	private BigDecimal valorapagar = BigDecimal.ZERO;
+	private String identificacion;
 	
 	/**
 	 * 
@@ -677,6 +678,20 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setValorapagar(BigDecimal valorapagar) {
 		this.valorapagar = valorapagar;
+	}
+
+	/**
+	 * @return the identificacion
+	 */
+	public String getIdentificacion() {
+		return identificacion;
+	}
+
+	/**
+	 * @param identificacion the identificacion to set
+	 */
+	public void setIdentificacion(String identificacion) {
+		this.identificacion = identificacion;
 	}
 
 }
