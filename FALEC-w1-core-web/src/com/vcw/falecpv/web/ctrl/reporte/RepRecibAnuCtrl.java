@@ -183,10 +183,6 @@ public class RepRecibAnuCtrl extends BaseCtrl {
 				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getEstadoautorizacion());
-				
-				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(v.getCantidad().doubleValue());
 				
@@ -219,11 +215,6 @@ public class RepRecibAnuCtrl extends BaseCtrl {
 			fila++;
 			// totales
 			rowCliente = sheet.createRow(fila);
-			rowCliente.createCell(6).setCellValue(totalesDto.getCantidad().doubleValue());
-			rowCliente.createCell(7).setCellValue(totalesDto.getSubtotal().doubleValue());
-			rowCliente.createCell(8).setCellValue(totalesDto.getDescuento().doubleValue());
-			rowCliente.createCell(9).setCellValue(totalesDto.getTotal().doubleValue());
-			rowCliente.createCell(10).setCellValue(totalesDto.getPago().doubleValue());
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);

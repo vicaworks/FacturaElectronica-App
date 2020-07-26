@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 35vh !important;
-				height: calc(100vh - 430px)!important;				
+				height: calc(100vh - 420px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -137,7 +137,7 @@
 			    		<p:calendar id="calDesde" value="#{facEmitidaCtrl.desde}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
 						</p:calendar>
 						<p:message for="calDesde"/>
 		    		</div>
@@ -147,7 +147,7 @@
 			    		<p:calendar id="calHasta" value="#{facEmitidaCtrl.hasta}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
 						</p:calendar>
 						<p:message for="calHasta"/>
 		    		</div>
@@ -159,7 +159,7 @@
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdRtnNuevo"
 							value="NUEVA FACTURA" icon="fa fa-plus" 
-							action="factura.jsf?faces-redirect=true" styleClass="Wid100 secondary-button" update="@form">
+							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button" update="@form">
 	   					</p:commandButton>
 						<div class="EmptyBox5"/>
 	  					<p:commandButton id="cmdGlobalExcel"
@@ -171,10 +171,10 @@
 						
 						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
 							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-								<p:fileDownload value="#{facEmitidaCtrl.file}" contentDisposition="inline"/>
+								<p:fileDownload value="#{facEmitidaCtrl.fileResumen}" contentDisposition="inline"/>
 							</p:menuitem>
 							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-								<p:fileDownload value="#{facEmitidaCtrl.file}" contentDisposition="inline"/>
+								<p:fileDownload value="#{facEmitidaCtrl.fileDetalle}" contentDisposition="inline"/>
 							</p:menuitem>
 						</p:menu>
 						
@@ -204,7 +204,7 @@
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idcabecera}"
-						rows="15"
+						rows="20"
 						rowsPerPageTemplate="10,15,20,25,30,35,40">
 					
 					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
@@ -257,20 +257,10 @@
 						</h:outputText>
 					</p:column>
 					
-<!-- 					<p:column headerText="VENDEDOR" style="width:60px;">
-						<h:outputText value="#{v.nombrepantalla}" >
-						</h:outputText>
-					</p:column>
- -->					
 					<p:column headerText="ESTADO" style="width:50px;">
 						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
 						</h:outputText>
 					</p:column>
-					
-					<!-- <p:column headerText="AUT SRI" style="width:40px;">
-						<h:outputText value="#{v.estadoautorizacion}" >
-						</h:outputText>
-					</p:column> -->
 					
 					<p:column style="width:5px;" styleClass="TexAlCenter">
 						<f:facet name="header">
@@ -347,7 +337,7 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{msg['label.retencion']}" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="#{msg['label.retencion']}" style="width:30px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.valorretenido}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
@@ -361,9 +351,9 @@
 					
 					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlRight">
 						
-						<div class="p-grid">
+						<div class="p-grid" style="padding-top:2px;">
 							<div class="p-col-9" style="text-align: right;">
-								<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.valorapagar.doubleValue()?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
+								<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.valorapagar.doubleValue() and v.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>

@@ -136,7 +136,7 @@ public class RepFacCtrl extends BaseCtrl {
 			}
 			
 			String path = FacesUtil.getServletContext().getRealPath(
-					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-FacEmitidas.xlsx");
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-FacEmitidasres.xlsx");
 			
 			// icialización
 			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
@@ -178,15 +178,15 @@ public class RepFacCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(v.getIdentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(v.getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(v.getNombrepantalla());
-				
-				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -222,29 +222,17 @@ public class RepFacCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getTotalpago().doubleValue());
+				cell.setCellValue(v.getValorretenido().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getLicitado().doubleValue());
-				
-				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getCambio().doubleValue());
+				cell.setCellValue(v.getValorapagar().doubleValue());
 				
 				fila++;
 			}
 			fila++;
 			// totales
 			rowCliente = sheet.createRow(fila);
-			rowCliente.createCell(6).setCellValue(totalesDto.getCantidad().doubleValue());
-			rowCliente.createCell(7).setCellValue(totalesDto.getSubtotal().doubleValue());
-			rowCliente.createCell(8).setCellValue(totalesDto.getDescuento().doubleValue());
-			rowCliente.createCell(9).setCellValue(totalesDto.getTotalsinimpuestos().doubleValue());
-			rowCliente.createCell(10).setCellValue(totalesDto.getIva().doubleValue());
-			rowCliente.createCell(11).setCellValue(totalesDto.getIce().doubleValue());
-			rowCliente.createCell(12).setCellValue(totalesDto.getTotal().doubleValue());
-			rowCliente.createCell(13).setCellValue(totalesDto.getPago().doubleValue());
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);
@@ -254,7 +242,7 @@ public class RepFacCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidasRes-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain2", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

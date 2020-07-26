@@ -196,6 +196,26 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 	}
 	
+	public String nuevoFromMain() {
+		try {
+			
+			productoSelected = null;
+			nuevaFactura();
+			detalleFacList = null;
+			detalleSelected = null;
+			criterioBusqueda = null;
+			consultarProductos();
+			
+			return "./factura.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+
+		return null;
+	}
+	
 	public void consultarProductos()throws DaoException{
 		productoList = null;
 		productoList = productoServicio.getProductoDao().consultarAllImageEager(AppJsfUtil.getEstablecimiento().getIdestablecimiento(),criterioBusqueda);
@@ -702,7 +722,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
-		
+		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
 		
 		// tabla de total impuesto
 		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();

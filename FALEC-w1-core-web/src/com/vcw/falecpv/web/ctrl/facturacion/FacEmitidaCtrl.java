@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -35,12 +36,15 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.dto.TotalesDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
+import com.vcw.falecpv.core.servicio.FacturaServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -79,6 +83,9 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	
 	@EJB
 	private CabeceraServicio cabeceraServicio;
+	
+	@EJB
+	private FacturaServicio facturaServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -147,7 +154,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		
 	}
 	
-	public StreamedContent getFile() {
+	public StreamedContent getFileResumen() {
 		try {
 			
 			if(ventasQueryList==null || ventasQueryList.isEmpty()) {
@@ -266,14 +273,6 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			fila++;
 			// totales
 			rowCliente = sheet.createRow(fila);
-//			rowCliente.createCell(6).setCellValue(totalesDto.getCantidad().doubleValue());
-//			rowCliente.createCell(7).setCellValue(totalesDto.getSubtotal().doubleValue());
-//			rowCliente.createCell(8).setCellValue(totalesDto.getDescuento().doubleValue());
-//			rowCliente.createCell(9).setCellValue(totalesDto.getTotalsinimpuestos().doubleValue());
-//			rowCliente.createCell(10).setCellValue(totalesDto.getIva().doubleValue());
-//			rowCliente.createCell(11).setCellValue(totalesDto.getIce().doubleValue());
-//			rowCliente.createCell(12).setCellValue(totalesDto.getTotal().doubleValue());
-//			rowCliente.createCell(13).setCellValue(totalesDto.getPago().doubleValue());
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);
@@ -292,7 +291,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		return null;
 	}
 	
-	public StreamedContent getFileResumen() {
+	public StreamedContent getFileDetalle() {
 		try {
 			
 			if(ventasQueryList==null || ventasQueryList.isEmpty()) {
@@ -301,7 +300,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			}
 			
 			String path = FacesUtil.getServletContext().getRealPath(
-					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-FacEmitidas.xlsx");
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-FacEmitidasDetalle.xlsx");
 			
 			// icialización
 			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
@@ -328,8 +327,12 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			rowCliente = sheet.getRow(7);
 			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(hasta));
 			
-			int fila = 10;
-			for (VentasQuery v : ventasQueryList) {
+			List<Cabecera> cabeceraList = facturaServicio.getByIdList(ventasQueryList.stream().map(x->x.getIdcabecera()).collect(Collectors.toList()));
+			
+			int filaDetalle = 11;
+			int filaPago = 11;
+			int fila = 11;
+			for (Cabecera v : cabeceraList) {
 				
 				int col = 0;
 				rowCliente = sheet.createRow(fila);
@@ -344,11 +347,11 @@ public class FacEmitidaCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getRazonsocial());
+				cell.setCellValue(v.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getNombrepantalla());
+				cell.setCellValue(v.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -356,15 +359,11 @@ public class FacEmitidaCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getEstadoautorizacion());
+				cell.setCellValue(v.getDetalleList().stream().mapToDouble(x->x.getCantidad().doubleValue()).sum());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getCantidad().doubleValue());
-				
-				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getSubtotal().doubleValue());
+				cell.setCellValue(v.getTotalsinimpuestos().add(v.getTotaldescuento()).setScale(2, RoundingMode.HALF_UP).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -376,41 +375,128 @@ public class FacEmitidaCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getIva().doubleValue());
+				cell.setCellValue(v.getTotaliva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getIce().doubleValue());
+				cell.setCellValue(v.getTotalice().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getTotal().doubleValue());
+				cell.setCellValue(v.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getTotalpago().doubleValue());
+				cell.setCellValue(v.getValorretenido().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getLicitado().doubleValue());
+				cell.setCellValue(v.getValorapagar().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(v.getCambio().doubleValue());
+				cell.setCellValue(v.getPagoList().stream().mapToDouble(x->x.getTotal().doubleValue()).sum());
 				
+				filaDetalle = fila;
+				filaPago = fila;
+				for(Detalle d : v.getDetalleList()) {
+					
+					col = 15;
+					rowCliente = sheet.getRow(filaDetalle);
+					if(rowCliente==null) {
+						rowCliente = sheet.createRow(filaDetalle);
+					}
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoprincipal():"");
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoauxiliar():"");
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getDescripcion());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getCantidad().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciounitario().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciototalsinimpuesto().add(d.getDescuento()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getDescuento().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciototalsinimpuesto().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getValoriva().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getValorice().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciototal().doubleValue());
+					
+					filaDetalle++;
+					
+				}
+				
+				for (Pago p : v.getPagoList()) {
+					col = 26;
+					rowCliente = sheet.getRow(filaPago);
+					if(rowCliente==null) {
+						rowCliente = sheet.createRow(filaPago);
+					}
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getTipopago().getNombre());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getTotal().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getValorentrega().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getCambio().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNumerodocumento());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNombrebanco());
+					
+					filaPago++;
+					
+				}
+				
+				if(filaDetalle>filaPago) {
+					fila = filaDetalle;
+				}else {
+					fila = filaPago;
+				}
 				fila++;
+				
 			}
-			fila++;
-			// totales
-			rowCliente = sheet.createRow(fila);
-			rowCliente.createCell(6).setCellValue(totalesDto.getCantidad().doubleValue());
-			rowCliente.createCell(7).setCellValue(totalesDto.getSubtotal().doubleValue());
-			rowCliente.createCell(8).setCellValue(totalesDto.getDescuento().doubleValue());
-			rowCliente.createCell(9).setCellValue(totalesDto.getTotalsinimpuestos().doubleValue());
-			rowCliente.createCell(10).setCellValue(totalesDto.getIva().doubleValue());
-			rowCliente.createCell(11).setCellValue(totalesDto.getIce().doubleValue());
-			rowCliente.createCell(12).setCellValue(totalesDto.getTotal().doubleValue());
-			rowCliente.createCell(13).setCellValue(totalesDto.getPago().doubleValue());
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);
@@ -420,7 +506,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidasDetalle-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -110,11 +110,6 @@
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="AUT SRI" style="width:40px;">
-					<h:outputText value="#{f.estadoautorizacion}" >
-					</h:outputText>
-				</p:column>
-				
 				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.subtotal}">
 						<f:convertNumber pattern="$#,##0.00"/>
@@ -146,10 +141,29 @@
 				</p:column>
 				
 				<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.total}" styleClass="markGreen">
+					<h:outputText value="#{f.total}" styleClass="">
 						<f:convertNumber pattern="$#,##0.00"/>
 					</h:outputText>
 				</p:column>
+				
+				<p:column headerText="#{msg['label.retencion']}" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.valorretenido}" styleClass="">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="A PAGAR" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.valorapagar}" styleClass="markGreen">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<!-- <p:column headerText="PAGO" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.totalpago}" styleClass="">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</p:column> -->
+				
 						
 		</p:dataTable>
     	

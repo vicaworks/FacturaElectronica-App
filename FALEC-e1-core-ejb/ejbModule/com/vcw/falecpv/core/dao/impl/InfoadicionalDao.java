@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 
 /**
  * @author cristianvillarreal
@@ -60,6 +61,27 @@ public class InfoadicionalDao extends AppGenericDao<Infoadicional, String> {
 			
 			Query q = getEntityManager().createQuery("SELECT d FROM Infoadicional d WHERE d.cabecera.idcabecera=:idCabecera");
 			q.setParameter("idCabecera", idCabecera);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabeceraList
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Infoadicional> getByIdCabecera(List<String> idCabeceraList)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Infoadicional p WHERE p.cabecera.idcabecera in :idCabecera");
+			q.setParameter("idCabecera", idCabeceraList);
 			
 			return q.getResultList();
 			

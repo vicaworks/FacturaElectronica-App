@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 430px)!important;				
+				height: calc(100vh - 420px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -57,6 +57,31 @@
 			
 			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
 				padding: 0.2em !important;
+			}
+			
+			.boxMain{
+				padding: 15px;
+				text-align: center;
+				border-radius: 4px;
+			}
+			
+			.box-header{
+				font-size: 10px;
+			}
+			
+			.box-content{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			
+			.box-gray{
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.box-border-gray{
+				border:1px solid #2f2f2f;
+				color: #2f2f2f;
 			}
 			
         </style>
@@ -126,20 +151,28 @@
 		    		<div class="p-col-12 p-md-2">
 	  					<p:commandButton id="cmdGlobalBuscar"
 							icon="fa fa-search"
-							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100 Fs16" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdRtnNuevo"
 							value="NUEVA FACTURA" icon="fa fa-plus" 
 							action="factura.jsf?faces-redirect=true" styleClass="Wid100 secondary-button" update="@form">
 	   					</p:commandButton>
 						<div class="EmptyBox5"/>
-	  					<p:commandButton id="cmdGlobalExcel"
+						<p:commandButton id="cmdGlobalExcel"
 	  						value="EXPORTAR"
-							icon="fa fa-file-excel-o" 
-							styleClass="success-btn Wid100 Fs16"
-							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
-							<p:fileDownload value="#{recEmitidoCtrl.file}"/>
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							immediate="true">
 						</p:commandButton>
+						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{recEmitidoCtrl.file}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{recEmitidoCtrl.fileDetalle}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
+						
 		    		</div>
 		    		
 		   		</div>
@@ -224,29 +257,30 @@
 					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.total}" styleClass="markBlack">
+						<h:outputText value="#{v.total}" styleClass="markGray DispBlock Wid100">
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.total.doubleValue()?'markRed':'markGreen'}">
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
+						
+						<div class="p-grid" style="padding-top:2px;">
+							<div class="p-col-9" style="text-align: right;">
+								<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.valorapagar.doubleValue() and v.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-1">
+								<p:commandLink action="#{pagoCtrl.cargarPagos()}" process="@this">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="#{v}" target="#{pagoCtrl.ventasQuery}"/>
+								</p:commandLink>
+							</div>
+						</div>
+						
+						
 					</p:column>
 					
-					<p:column headerText="ENTREG" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.licitado}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="CAMBIO" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.cambio}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
-								
 				</p:dataTable>
 				
 				<div class="EmptyBox5"/>
@@ -281,6 +315,8 @@
 			</div>
 	    	
 	    </h:form>
+	    
+	    <ui:include src="../common/incl_comprobante_pagos.xhtml" />
 	    
     </ui:define>
 

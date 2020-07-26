@@ -209,6 +209,9 @@ public class Cabecera implements Serializable {
     @Column(name = "resumenpago", nullable = false, length = 100)
     private String resumenpago = "EFECTIVO";
     
+    @Column(name = "valorapagar", precision = 12, scale = 2)
+    private BigDecimal valorapagar = BigDecimal.ZERO;
+    
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
     private Tipocomprobante tipocomprobanteretencion;
@@ -1198,6 +1201,20 @@ public class Cabecera implements Serializable {
 	 */
 	public void setResumenpago(String resumenpago) {
 		this.resumenpago = resumenpago;
+	}
+
+	/**
+	 * @return the valorapagar
+	 */
+	public BigDecimal getValorapagar() {
+		return valorapagar;
+	}
+
+	/**
+	 * @param valorapagar the valorapagar to set
+	 */
+	public void setValorapagar(BigDecimal valorapagar) {
+		this.valorapagar = valorapagar;
 	}
 
 }

@@ -669,7 +669,6 @@ public class VentasQuery implements Serializable {
 	 * @return the valorapagar
 	 */
 	public BigDecimal getValorapagar() {
-		valorapagar = total.add(valorretenido.negate()).setScale(2, RoundingMode.HALF_UP);
 		return valorapagar;
 	}
 

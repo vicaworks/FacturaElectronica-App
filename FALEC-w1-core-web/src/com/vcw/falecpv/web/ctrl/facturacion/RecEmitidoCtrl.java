@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -33,11 +34,15 @@ import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.dto.TotalesDto;
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
+import com.vcw.falecpv.core.servicio.FacturaServicio;
 import com.vcw.falecpv.core.servicio.ReciboServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
@@ -75,6 +80,9 @@ public class RecEmitidoCtrl extends BaseCtrl {
 	
 	@EJB
 	private ReciboServicio reciboServicio;
+	
+	@EJB
+	private FacturaServicio facturaServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -131,11 +139,11 @@ public class RecEmitidoCtrl extends BaseCtrl {
 		totalesDto = new TotalesDto();
 		
 		if(ventasQueryList!=null) {
-			totalesDto.setCantidad(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getCantidad().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getSubtotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setDescuento(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotaldescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setTotal(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setPago(BigDecimal.valueOf(ventasQueryList.stream().mapToDouble(x->x.getTotalpago().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setCantidad(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getCantidad().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getSubtotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setDescuento(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaldescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotal(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setPago(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalpago().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 		}
 		
 	}
@@ -203,10 +211,6 @@ public class RecEmitidoCtrl extends BaseCtrl {
 				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getEstadoautorizacion());
-				
-				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(v.getCantidad().doubleValue());
 				
@@ -236,15 +240,6 @@ public class RecEmitidoCtrl extends BaseCtrl {
 				
 				fila++;
 			}
-			fila++;
-			// totales
-			rowCliente = sheet.createRow(fila);
-			rowCliente.createCell(6).setCellValue(totalesDto.getCantidad().doubleValue());
-			rowCliente.createCell(7).setCellValue(totalesDto.getSubtotal().doubleValue());
-			rowCliente.createCell(8).setCellValue(totalesDto.getDescuento().doubleValue());
-			rowCliente.createCell(9).setCellValue(totalesDto.getTotal().doubleValue());
-			rowCliente.createCell(10).setCellValue(totalesDto.getPago().doubleValue());
-			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);
 			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
@@ -254,6 +249,202 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			out.close();
 			
 			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public StreamedContent getFileDetalle() {
+		try {
+			
+			if(ventasQueryList==null || ventasQueryList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-RecEmitidasDet.xlsx");
+			
+			// icialización
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			// datos cabecera
+			Row rowCliente = sheet.getRow(3);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			rowCliente = sheet.getRow(4);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			rowCliente = sheet.getRow(5);
+			rowCliente.createCell(1).setCellValue(usuarioSelected!=null?usuarioSelected.getNombrepantalla():"TODOS");
+			
+			rowCliente = sheet.getRow(6);
+			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(desde));
+			
+			rowCliente = sheet.getRow(7);
+			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			List<Cabecera> cabeceraList = facturaServicio.getByIdList(ventasQueryList.stream().map(x->x.getIdcabecera()).collect(Collectors.toList()));
+			
+			int filaDetalle = 11;
+			int filaPago = 11;
+			int fila = 11;
+			for (Cabecera v : cabeceraList) {
+				
+				int col = 0;
+				rowCliente = sheet.createRow(fila);
+				
+				Cell cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(v.getCliente().getIdentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(v.getCliente().getRazonsocial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(v.getEstado());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(v.getDetalleList().stream().mapToDouble(x->x.getCantidad().doubleValue()).sum());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(v.getTotaldescuento().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(v.getTotalsinimpuestos().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(v.getTotaliva().add(v.getTotalice()).doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(v.getTotalconimpuestos().doubleValue());
+				
+				filaDetalle = fila;
+				filaPago = fila;
+				for(Detalle d : v.getDetalleList()) {
+					
+					col = 10;
+					rowCliente = sheet.getRow(filaDetalle);
+					if(rowCliente==null) {
+						rowCliente = sheet.createRow(filaDetalle);
+					}
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoprincipal():"");
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoauxiliar():"");
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getDescripcion());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getCantidad().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciounitario().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getDescuento().doubleValue());
+					
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciototalsinimpuesto().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getValoriva().add(d.getValorice()).doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(d.getPreciototal().doubleValue());
+					
+					filaDetalle++;
+					
+				}
+				
+				for (Pago p : v.getPagoList()) {
+					col = 19;
+					rowCliente = sheet.getRow(filaPago);
+					if(rowCliente==null) {
+						rowCliente = sheet.createRow(filaPago);
+					}
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getTipopago().getNombre());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getTotal().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getValorentrega().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getCambio().doubleValue());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNumerodocumento());
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNombrebanco());
+					
+					filaPago++;
+					
+				}
+				
+				if(filaDetalle>filaPago) {
+					fila = filaDetalle;
+				}else {
+					fila = filaPago;
+				}
+				fila++;
+				
+			}
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidasDet-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

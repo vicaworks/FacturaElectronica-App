@@ -235,7 +235,7 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	public List<Cabecera> getByIds(List<String> idList)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.idcabecera in :idList ORDER BY c.fechainiciotransporte");
+			Query q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.idcabecera in :idList ORDER BY c.fechaemision,c.cliente.razonsocial");
 			q.setParameter("idList", idList);
 			
 			return q.getResultList();

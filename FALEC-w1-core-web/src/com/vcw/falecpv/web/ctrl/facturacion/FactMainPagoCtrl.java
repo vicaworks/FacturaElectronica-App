@@ -606,6 +606,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
+		cabecerSelected.setValorapagar(cabecerSelected.getTotalconimpuestos());
 		
 		// tabla de total impuesto
 		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
