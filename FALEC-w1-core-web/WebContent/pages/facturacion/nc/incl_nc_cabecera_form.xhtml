@@ -85,6 +85,20 @@
 		<!-- Formulario -->
 		<p:panelGrid id="gridNotaCreditoDG2" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 			
+			<h:panelGroup>
+			</h:panelGroup>
+			<p:commandButton  id="cmdRtnCliente2" 
+					title="NUEVO CLIENTE"
+					icon="fa fa-plus"
+					value="CLIENTE"
+					styleClass="secondary-button Wid100 Fs11"
+					action="#{clienteCtrl.nuevo()}"
+					immediate="true">
+					<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
+					<f:setPropertyActionListener value=":formMain:somNcCliente :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+			</p:commandButton>
+			
 			<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>				
 			<h:panelGroup>
 				<p:selectOneMenu id="somNcCliente"
@@ -100,7 +114,7 @@
 					<f:selectItems value="#{notaCreditoCtrl.clienteList}" var="cl"
 						itemLabel="#{cl.razonsocial}" itemValue="#{cl}" />
 					
-					<p:ajax update=":formMain:inpNcRuc" />
+					<p:ajax update=":formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" />
 						
 				</p:selectOneMenu>
 				<p:message for="somNcCliente" />
@@ -112,6 +126,20 @@
 				<p:inputText id="inpNcRuc" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
 				</p:inputText>
 				<p:message for="inpNcRuc" />
+			</h:panelGroup>
+			
+			<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpNcEmail" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcEmail" />
+			</h:panelGroup>
+			
+			<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpNcDireccion" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcDireccion" />
 			</h:panelGroup>
 			
 			<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>

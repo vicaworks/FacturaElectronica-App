@@ -130,11 +130,11 @@
 	    		
 	    		<div class="p-grid p-align-left">
 	    			
-	    			<div class="p-col-12 p-md-5">
+	    			<div class="p-col-12 p-md-4">
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-4">
+	    					<div class="p-col-12 p-md-6">
 			    				<p:commandButton id="cmdRtnNuevo"
 										value="NUEVO" icon="fa fa-plus" 
 										action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true">
@@ -150,28 +150,12 @@
 							
 	    					</div>
 		    				
-		    				<div class="p-col-12 p-md-4">
+		    				<div class="p-col-12 p-md-6">
 			    				<p:commandButton id="cmdrtnGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
 										action="#{notaCreditoCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{notaCreditoCtrl.notaCreditoSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
-							<div class="p-col-12 p-md-4">
-							
-								<p:commandButton  id="cmdRtnCliente" 
-										title="NUEVO CLIENTE"
-										icon="fa fa-plus"
-										value="CLIENTE"
-										styleClass="secondary-button Wid100 Fs11"
-										action="#{clienteCtrl.nuevo()}"
-										immediate="true">
-										<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
-										<f:setPropertyActionListener value=":formMain:somNcCliente :formMain:inpNcRuc" target="#{clienteCtrl.updateView}"/>
-										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
-								</p:commandButton>
-									
-							</div>
-	    						
 	    				</div>
 	    				
 	    			</div>
@@ -190,12 +174,12 @@
 			
 			<div class="p-grid p-align-top">
 				
-				<div class="p-col-12 p-lg-7">
+				<div class="p-col-12 p-lg-5">
 					<!-- cabecera -->
 					<ui:include src="incl_nc_cabecera_form.xhtml" />
 				</div>
 				
-				<div class="p-col-12 p-lg-5">
+				<div class="p-col-12 p-lg-7">
 					<!-- detalle -->
 					<ui:include src="incl_nc_detalle_form.xhtml" />
 				</div>

@@ -235,7 +235,7 @@
 										immediate="true">
 										<f:setPropertyActionListener value="RETENCION" target="#{proveedorCtrl.callModule}"/>
 										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
-										<f:setPropertyActionListener value=":formMain:somRtnProveedor :formMain:inpRtnRuc" target="#{proveedorCtrl.viewUpdate}"/>
+										<f:setPropertyActionListener value=":formMain:somRtnProveedor :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{proveedorCtrl.viewUpdate}"/>
 										<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{proveedorCtrl.retencionFrmCtrl}"/>
 								</p:commandButton>
 							</h:panelGroup>
@@ -256,7 +256,7 @@
 									<f:selectItems value="#{retencionFrmCtrl.proveedorList}" var="pv"
 										itemLabel="#{pv.nombrecomercial}" itemValue="#{pv}" />
 									
-									<p:ajax update=":formMain:inpRtnRuc :formMain:somRtnImpuesto" />
+									<p:ajax update=":formMain:somRtnImpuesto :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" />
 										
 								</p:selectOneMenu>
 								<p:message for="somRtnProveedor" />
@@ -269,6 +269,23 @@
 								</p:inputText>
 								<p:message for="inpRtnRuc" />
 							</h:panelGroup>
+							
+							<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+								</p:inputText>
+								<p:message for="inpRtnEmail" />
+							</h:panelGroup>
+							
+							<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+								</p:inputText>
+								<p:message for="inpRtnDireccion" />
+							</h:panelGroup>
+							
+							
+							
 							
 							<h:outputText value="TIPO COMPROBANTE*" styleClass="cpoRequerido"/>
 							<h:panelGroup>
