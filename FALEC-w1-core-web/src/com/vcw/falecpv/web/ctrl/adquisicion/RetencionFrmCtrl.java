@@ -395,7 +395,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		
 		// infromacion adicional 
 		retencionSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(retencionSeleccion,infoadicionalList));
-		
+		retencionSeleccion.setNumdocasociado(retencionSeleccion.getNumfactura());
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setUpdated(new Date());
 		determinarPeriodoFiscal();
