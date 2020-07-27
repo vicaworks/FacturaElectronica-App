@@ -550,6 +550,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setPropina(BigDecimal.ZERO);
 		notDebitoSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		notDebitoSelected.setTipodocasociado(notDebitoSelected.getTipocomprobanteretencion().getIdentificador());
+		notDebitoSelected.setValorapagar(notDebitoSelected.getTotalconimpuestos());
 		
 		if(notDebitoSelected.getTipocomprobanteretencion()!=null) {
 			notDebitoSelected.setTipodocasociado(notDebitoSelected.getTipocomprobanteretencion().getIdentificador());

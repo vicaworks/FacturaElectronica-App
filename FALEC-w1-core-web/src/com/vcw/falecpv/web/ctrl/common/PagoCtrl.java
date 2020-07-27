@@ -3,6 +3,8 @@
  */
 package com.vcw.falecpv.web.ctrl.common;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -35,6 +37,9 @@ public class PagoCtrl extends BaseCtrl {
 	
 	private List<Pago> pagoList;
 	private VentasQuery ventasQuery;
+	private String idComprobante;
+	private BigDecimal valorPagar = BigDecimal.ZERO;
+	private BigDecimal totalPago = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -47,7 +52,23 @@ public class PagoCtrl extends BaseCtrl {
 			
 			pagoList = null;
 			pagoList = pagoServicio.getPagoDao().getByIdCabecera(ventasQuery.getIdcabecera());
+			valorPagar = ventasQuery.getValorapagar();
+			totalPago = ventasQuery.getTotalpago();
 			
+			AppJsfUtil.showModalRender("dlgResumenPagos", "frmResPagos");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void cargarPagosById() {
+		try {
+			
+			pagoList = null;
+			pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
+			totalPago = BigDecimal.valueOf(pagoList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 			AppJsfUtil.showModalRender("dlgResumenPagos", "frmResPagos");
 			
 		} catch (Exception e) {
@@ -99,6 +120,48 @@ public class PagoCtrl extends BaseCtrl {
 	 */
 	public void setVentasQuery(VentasQuery ventasQuery) {
 		this.ventasQuery = ventasQuery;
+	}
+
+	/**
+	 * @return the idComprobante
+	 */
+	public String getIdComprobante() {
+		return idComprobante;
+	}
+
+	/**
+	 * @param idComprobante the idComprobante to set
+	 */
+	public void setIdComprobante(String idComprobante) {
+		this.idComprobante = idComprobante;
+	}
+
+	/**
+	 * @return the valorPagar
+	 */
+	public BigDecimal getValorPagar() {
+		return valorPagar;
+	}
+
+	/**
+	 * @param valorPagar the valorPagar to set
+	 */
+	public void setValorPagar(BigDecimal valorPagar) {
+		this.valorPagar = valorPagar;
+	}
+
+	/**
+	 * @return the totalPago
+	 */
+	public BigDecimal getTotalPago() {
+		return totalPago;
+	}
+
+	/**
+	 * @param totalPago the totalPago to set
+	 */
+	public void setTotalPago(BigDecimal totalPago) {
+		this.totalPago = totalPago;
 	}
 
 }
