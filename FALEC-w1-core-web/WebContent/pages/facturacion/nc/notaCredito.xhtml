@@ -71,7 +71,7 @@
 	    		
 	    		<div class="p-grid p-align-center">
 	    			
-	    			<div class="p-col-12 p-md-8">
+	    			<div class="p-col-12 p-md-9">
 	    				
 	    				<div class="p-grid">
 	    					
@@ -120,7 +120,7 @@
 	    			</div>
 	    			
 	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-4">
+	    			<div class="p-col-12 p-md-3">
 	    				
 	    				<div class="EmptyBox5"/>
 	    				
@@ -131,21 +131,27 @@
 						<div class="EmptyBox5"/>
 	   				
 	   					<p:commandButton id="cmdNCNuevo"
-							value="NUEVA NOTA DE #{msg['label.credito']}" icon="fa fa-plus" 
+							value="NUEVA N.C." icon="fa fa-plus" 
 							action="#{compNcCtrl.nuevaNotaCredito()}" styleClass="Wid100 secondary-button" update="@form">
 	   					</p:commandButton>
 	   					
 	   					<div class="EmptyBox5"/>
 	   					
-	   					<p:commandButton  id="cmdNCExcel" 
-									title="EXPORTAR"
-									icon="fa fa-file-excel-o"
-									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-									value="REPORTE"
-									styleClass="success-btn Wid100"
-									disabled="#{empty compNcCtrl.notaCreditoList}">
-							<p:fileDownload value="#{compNcCtrl.fileNC}"/>	
+						<p:commandButton id="cmdNCExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty compNcCtrl.notaCreditoList}">
 						</p:commandButton>
+						
+						<p:menu overlay="true" trigger="cmdNCExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{compNcCtrl.fileNC}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{compNcCtrl.fileNCDetalle}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
 	    				
 	    			</div>
 	    			
@@ -170,8 +176,8 @@
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"
-					rows="12"
-					rowsPerPageTemplate="10,12,20,30,40">
+					rows="20"
+					rowsPerPageTemplate="15,20,25,30,35,40,45">
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 					
@@ -199,7 +205,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numdocumento)}" styleClass="Fs10"/>
 					</p:column>
 					
@@ -207,8 +213,10 @@
 						<h:outputText value="#{n.estado}" styleClass="#{n.estadoStyle} Fs10"/>
 					</p:column>
 					
-					<p:column headerText="FACTURA" style="width:80px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
-						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numfactura)}" styleClass="Fs10"/>
+					<p:column headerText="FECHA" style="width:50px;">
+						<h:outputText value="#{n.fechaemision}" >
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
@@ -219,15 +227,76 @@
 						<h:outputText value="#{n.cliente.razonsocial}" />
 					</p:column>
 					
+					<p:column style="width:5px;" styleClass="TexAlCenter">
+						<f:facet name="header">
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope Fs14"/>
+						</f:facet>
+						<f:subview rendered="#{n.envioemail==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{n.envioemail==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
+					
+					<p:column headerText="DOC ASOCIADO" style="width:90px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
+						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numfactura)}" styleClass="Fs10"/>
+					</p:column>
+					
 					<p:column headerText="FECHA" style="width:60px;">
-						<h:outputText value="#{n.fechaemision}" >
+						<h:outputText value="#{n.fechaemisiondocasociado}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VALOR" style="width:60px;">
-						<h:outputText value="#{n.totalconimpuestos}" styleClass="markGreen">
-							<f:convertNumber pattern="$ 0.00"/>
+					
+					
+					<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totalsinimpuestos.add(n.totaldescuento)}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="DESC" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totaldescuento}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totalsinimpuestos}">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="IMPUESTO" style="width:70px;" styleClass="TexAlCenter">
+						
+						<div class="p-grid Fs10 p-justify-end">
+							<div class="p-col-3" >
+								<h:outputText value="I.V.A." styleClass="FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{n.totaliva}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-3">
+								<h:outputText value="I.C.E." styleClass="FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{n.totalice}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+						</div>
+					
+					</p:column>
+					
+					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totalconimpuestos}" styleClass="DispBlock Wid100 markGray">
+							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					

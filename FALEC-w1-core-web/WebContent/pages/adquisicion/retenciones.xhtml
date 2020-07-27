@@ -216,8 +216,12 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numdocumento)}" />
+					</p:column>
+					
+					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -226,9 +230,6 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
-					</p:column>
 					
 					<p:column headerText="RUC / CI" style="width:50px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
 						<h:outputText value="#{r.proveedor.identificacion}" />
@@ -237,6 +238,19 @@
 					
 					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:150px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
 						<h:outputText value="#{r.proveedor.nombrecomercial}" />
+					</p:column>
+					
+					<p:column style="width:5px;" styleClass="TexAlCenter">
+						<f:facet name="header">
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope Fs14"/>
+						</f:facet>
+						<f:subview rendered="#{r.envioemail==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{r.envioemail==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
 					</p:column>
 					
 					<p:column headerText="DOC ASOCIADO" style="width:90px;" filterBy="#{r.numfactura}" filterMatchMode="contains">

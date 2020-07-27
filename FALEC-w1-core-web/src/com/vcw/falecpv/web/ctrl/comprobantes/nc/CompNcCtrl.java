@@ -6,6 +6,7 @@ package com.vcw.falecpv.web.ctrl.comprobantes.nc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -151,7 +152,7 @@ public class CompNcCtrl extends BaseCtrl {
 		return null;
 	}
 	
-	public StreamedContent getFileNC() {
+	public StreamedContent getFileNCDetalle() {
 		try {
 			
 			if(notaCreditoList==null || notaCreditoList.isEmpty()) {
@@ -161,7 +162,7 @@ public class CompNcCtrl extends BaseCtrl {
 			
 			
 			String path = FacesUtil.getServletContext().getRealPath(
-					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-NotCredito.xlsx");
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-NotCreditoDet.xlsx");
 			
 			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
 			File template = new File(path);
@@ -199,6 +200,10 @@ public class CompNcCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getEstado());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
@@ -215,19 +220,19 @@ public class CompNcCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumfactura()));
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocasociado()));
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemisiondocasociado()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getEstado());
-
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalsinimpuestos().add(lc.getTotaldescuento()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getEstadoautorizacion());
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -236,22 +241,28 @@ public class CompNcCtrl extends BaseCtrl {
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(lc.getTotaliva().doubleValue());
-
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalice().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(lc.getTotalconimpuestos().doubleValue());
-				
-				
+
 				filaDetalle = fila;
 				filaPago = fila;
 				for (Detalle d : lc.getDetalleList()) {
 					
-					col=12;
+					col=14;
 					rowCliente = sheet.getRow(filaDetalle);
 					if(rowCliente==null) {
 						rowCliente = sheet.createRow(filaDetalle);
 					}
+					
+					cell = rowCliente.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoprincipal():"");
 					
 					cell = rowCliente.createCell(col++);
 					cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -288,7 +299,7 @@ public class CompNcCtrl extends BaseCtrl {
 					filaDetalle++;
 				}
 				for (Pago p : lc.getPagoList()) {
-					col = 20;
+					col = 22;
 					rowCliente = sheet.getRow(filaPago);
 					if(rowCliente==null) {
 						rowCliente = sheet.createRow(filaPago);
@@ -326,6 +337,124 @@ public class CompNcCtrl extends BaseCtrl {
 				}else {
 					fila = filaPago;
 				}
+				fila++;
+				
+			}
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-NotCreditoDet-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public StreamedContent getFileNC() {
+		try {
+			
+			if(notaCreditoList==null || notaCreditoList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-NotCredito.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			Row rowCliente = sheet.getRow(3);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			rowCliente = sheet.getRow(4);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			rowCliente = sheet.getRow(5);
+			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(desde));
+			
+			rowCliente = sheet.getRow(6);
+			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			
+			int fila = 9;
+			for (Cabecera lc : notaCreditoList) {
+				
+				int col = 0;
+				rowCliente = sheet.createRow(fila);
+				
+				// datos de la cabecera
+				Cell cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocumento()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getEstado());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemision()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getCliente().getIdentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getCliente().getRazonsocial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(lc.getTipocomprobanteretencion().getComprobante());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocasociado()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemisiondocasociado()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalsinimpuestos().add(lc.getTotaldescuento()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotaldescuento().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalsinimpuestos().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotaliva().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalice().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(lc.getTotalconimpuestos().doubleValue());
+
 				fila++;
 				
 			}

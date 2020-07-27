@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 35vh !important;
-				height: calc(100vh - 420px)!important;				
+				height: calc(100vh - 450px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -242,8 +242,13 @@
 					
 					</p:column>
 					
-					<p:column headerText="N." style="width:100px;">
+					<p:column headerText="NUM COMP" style="width:100px;">
 						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
+					</p:column>
+					
+					<p:column headerText="ESTADO" style="width:50px;">
+						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
+						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -252,15 +257,15 @@
 						</h:outputText>
 					</p:column>
 					
+					<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{n.cliente.identificacion}" />
+					</p:column>
+					
 					<p:column headerText="CLIENTE" style="width:125px;">
 						<h:outputText value="#{v.razonsocial}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;">
-						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
-						</h:outputText>
-					</p:column>
 					
 					<p:column style="width:5px;" styleClass="TexAlCenter">
 						<f:facet name="header">
