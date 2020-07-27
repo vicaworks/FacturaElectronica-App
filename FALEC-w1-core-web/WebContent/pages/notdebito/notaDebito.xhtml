@@ -255,6 +255,19 @@
 						<h:outputText value="#{r.cliente.razonsocial}" />
 					</p:column>
 					
+					<p:column style="width:5px;" styleClass="TexAlCenter">
+						<f:facet name="header">
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope Fs14"/>
+						</f:facet>
+						<f:subview rendered="#{r.envioemail==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{r.envioemail==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
+					
 					<p:column headerText="DOC ASOCIADO" style="width:95px;">
 						<div class="p-grid p-align-top vertical-container">
 							<div class="p-col-12 p-md-5">
