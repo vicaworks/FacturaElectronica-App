@@ -337,7 +337,7 @@
 						
 						<div class="p-grid" style="padding-top:2px;">
 							<div class="p-col-9" style="text-align: right;">
-								<h:outputText value="#{r.totalconimpuestos}" styleClass="#{r.totalconimpuestos.doubleValue()!=r.valorapagar.doubleValue() and r.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
+								<h:outputText value="#{r.totalPagadoSum}" styleClass="#{r.totalPagadoSum.doubleValue()!=r.valorapagar.doubleValue() and r.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
 									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>

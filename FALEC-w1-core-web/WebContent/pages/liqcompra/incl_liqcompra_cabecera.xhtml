@@ -182,34 +182,87 @@
 		<div class="card card-w-title">
 			
 			<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Valor a Pagar</h2>
+			<div class="EmptyBox10"/>
+			
+			<div class="p-grid p-align-center vertical-container">
+				<div class="p-col-12 p-md-4">
+					<p:commandLink id="cmlCalValorRenta" title="Calcular">
+						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+					</p:commandLink>
+					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
+						<p:inputNumber symbol="%"  value="#{liqCompraFormCtrl.porcentajeRenta}" 
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){return false;}">  
+		                </p:inputNumber>
+						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencion('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
+						</p:commandLink>  
+				    </p:overlayPanel>
+					<p:spacer width="3"/>
+					<h:outputText value="Val retenido Renta" styleClass="cpoRequerido"/>
+					<div class="EmptyBox5"/>
+					<p:spinner value="#{liqCompraFormCtrl.liqCompraSelected.valorretenidorenta}" decimalPlaces="2"  styleClass="Wid100">
+						<p:ajax listener="#{liqCompraFormCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+					</p:spinner>
+				</div>
+				
+				<div class="p-col-12 p-md-4">
+					<p:commandLink id="cmlCalValorIva" title="Calcular">
+						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+					</p:commandLink>
+					<p:spacer width="3"/>
+					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
+						<p:inputNumber symbol="%" value="#{liqCompraFormCtrl.porcentajeIva}"
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){return false;}">  
+		                </p:inputNumber>
+						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencion('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
+						</p:commandLink>  
+				    </p:overlayPanel>
+					<p:spacer width="3"/>
+					<h:outputText value="Val retenido I.V.A." styleClass="cpoRequerido"/>
+					<div class="EmptyBox5"/>
+					<p:spinner value="#{liqCompraFormCtrl.liqCompraSelected.valorretenidoiva}" decimalPlaces="2"  styleClass="Wid100">
+						<p:ajax listener="#{liqCompraFormCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+					</p:spinner>
+				</div>
+				
+				<div class="p-col-12 p-md-4" style="text-align: center;">
+					<h:outputText value="Total retenido" styleClass="FontBold"/>
+					<div class="EmptyBox5"/>
+					<div class="Wid100" >
+						<h:outputText  styleClass="Fs18 DispBlock" value="#{liqCompraFormCtrl.liqCompraSelected.valorretenido}">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</div>
+				</div>
+			</div>
+			
+			<div class="EmptyBox20"/>
+			
+			<div class="p-grid p-justify-even">
+				<div class="p-col-12 p-md-3 boxMain box-gray">
+					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
+					<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalpagar}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">TOTAL PAGADO</div>
+					<h:outputText value="#{liqCompraFormCtrl.totalPago}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
+					<h:outputText value="#{liqCompraFormCtrl.totalSaldo}" styleClass="box-content">
+						<f:convertNumber pattern="$#,##0.00"/>
+					</h:outputText>
+				</div>
+			</div>	
 			
 			<div class="EmptyBox5"/>
-			
-			
-				<div class="p-grid p-justify-even">
-					<div class="p-col-12 p-md-3 boxMain box-gray">
-						<div class="DispBlock box-header">TOTAL POR PAGAR</div>
-						<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalpagar}" styleClass="box-content">
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</div>
-					
-					<div class="p-col-12 p-md-3 boxMain box-border-gray">
-						<div class="DispBlock box-header">TOTAL PAGADO</div>
-						<h:outputText value="#{liqCompraFormCtrl.totalPago}" styleClass="box-content">
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</div>
-					
-					<div class="p-col-12 p-md-3 boxMain box-border-gray">
-						<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
-						<h:outputText value="#{liqCompraFormCtrl.totalSaldo}" styleClass="box-content">
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</div>
-				</div>	
-				
-				<div class="EmptyBox5"/>
 		</div>
 		<div class="EmptyBox5"/>	
 		<div class="card card-w-title">

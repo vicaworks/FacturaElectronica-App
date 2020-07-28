@@ -196,14 +196,14 @@
 			<div class="p-grid p-align-center vertical-container">
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorRenta" title="Calcular">
-						<i class="fa fa-calculator"/>
+						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
 						<p:inputNumber symbol="%"  value="#{compFacCtrl.porcentajeRenta}" 
-                                symbolPosition="s" emptyValue="always">  
+                                symbolPosition="s" emptyValue="always"  onkeydown="if(event.keyCode==13){return false;}">  
 		                </p:inputNumber>
-						<p:commandLink action="#{compFacCtrl.calcularRettencion('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-check Fs14" style="color:green;"></i>
+						<p:commandLink action="#{compFacCtrl.calcularRettencion('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT">
+							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>
@@ -216,15 +216,15 @@
 				
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorIva" title="Calcular">
-						<i class="fa fa-calculator"/>
+						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:spacer width="3"/>
 					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
 						<p:inputNumber symbol="%" value="#{compFacCtrl.porcentajeIva}"
-                                symbolPosition="s" emptyValue="always">  
+                                symbolPosition="s" emptyValue="always"  onkeydown="if(event.keyCode==13){return false;}">  
 		                </p:inputNumber>
 						<p:commandLink action="#{compFacCtrl.calcularRettencion('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-check Fs14" style="color:green;"></i>
+							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>

@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -1215,6 +1216,13 @@ public class Cabecera implements Serializable {
 	 */
 	public void setValorapagar(BigDecimal valorapagar) {
 		this.valorapagar = valorapagar;
+	}
+	
+	public BigDecimal getTotalPagadoSum() {
+		if(pagoList!=null && !pagoList.isEmpty()) {
+			return BigDecimal.valueOf(pagoList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		}
+		return BigDecimal.ZERO;
 	}
 
 }

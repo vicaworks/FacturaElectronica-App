@@ -104,6 +104,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	private List<Pago> pagoList;
 	private Pago pagoSelected;
 	private String criterioProveedor;
+	private BigDecimal porcentajeRenta;
+	private BigDecimal porcentajeIva;
 	
 	/**
 	 * 
@@ -184,7 +186,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(totalPago.doubleValue()<liqCompraSelected.getTotalconimpuestos().doubleValue()) {
+			if(totalPago.doubleValue()<liqCompraSelected.getValorapagar().doubleValue()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA LIQUIDACION DE COMPRA.");
 				return;
 			}
@@ -225,6 +227,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setMoneda("DOLAR");
 		liqCompraSelected.setPropina(BigDecimal.ZERO);
 		liqCompraSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		liqCompraSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
+		liqCompraSelected.setValorapagar(liqCompraSelected.getTotalpagar());
 		liqCompraSelected.setDetalleList(liqCompraDetalleList);
 		
 		// tabla de total impuesto
@@ -341,6 +345,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTotaldescuento(liqCompraSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalsinimpuestos(liqCompraSelected.getTotalsinimpuestos().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalconimpuestos(liqCompraSelected.getTotalsinimpuestos().add(liqCompraSelected.getTotaliva()).add(liqCompraSelected.getTotalice()).setScale(2, RoundingMode.HALF_UP));
+		liqCompraSelected.setValorretenido(liqCompraSelected.getValorretenidorenta().add(liqCompraSelected.getValorretenidoiva()).setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalpagar(liqCompraSelected.getTotalconimpuestos().add(liqCompraSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
@@ -435,7 +440,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		
 		totalPago = totalPago.setScale(2, RoundingMode.HALF_UP);
 		
-		totalSaldo = liqCompraSelected.getTotalconimpuestos().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
+		totalSaldo = liqCompraSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
 		if(totalSaldo.doubleValue()<0) {
 			totalSaldo = BigDecimal.ZERO;
 		}
@@ -559,6 +564,54 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			
 			noEditarSecuencial(liqCompraSelected);
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void totalizarRetencion() {
+		try {
+			if(liqCompraSelected == null) {
+				return;
+			}
+			
+			if (liqCompraSelected.getTotalsinimpuestos().doubleValue()<=0) {
+				return;
+			}
+			
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void calcularRettencion(String tipo) {
+		try {
+			
+			if(liqCompraSelected == null) {
+				return;
+			}
+			
+			if (liqCompraSelected.getTotalsinimpuestos().doubleValue()<=0) {
+				return;
+			}
+			
+			switch (tipo) {
+			case "RENTA":
+				liqCompraSelected.setValorretenidorenta(
+						porcentajeRenta.divide(BigDecimal.valueOf(100d)).multiply(liqCompraSelected.getTotalsinimpuestos()).setScale(2, RoundingMode.HALF_UP));
+				break;
+			case "IVA":
+				liqCompraSelected.setValorretenidoiva(
+						porcentajeIva.divide(BigDecimal.valueOf(100d)).multiply(liqCompraSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
+				break;	
+			default:
+				break;
+			}
+			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -737,6 +790,38 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	 */
 	public void setCriterioProveedor(String criterioProveedor) {
 		this.criterioProveedor = criterioProveedor;
+	}
+
+
+	/**
+	 * @return the porcentajeRenta
+	 */
+	public BigDecimal getPorcentajeRenta() {
+		return porcentajeRenta;
+	}
+
+
+	/**
+	 * @param porcentajeRenta the porcentajeRenta to set
+	 */
+	public void setPorcentajeRenta(BigDecimal porcentajeRenta) {
+		this.porcentajeRenta = porcentajeRenta;
+	}
+
+
+	/**
+	 * @return the porcentajeIva
+	 */
+	public BigDecimal getPorcentajeIva() {
+		return porcentajeIva;
+	}
+
+
+	/**
+	 * @param porcentajeIva the porcentajeIva to set
+	 */
+	public void setPorcentajeIva(BigDecimal porcentajeIva) {
+		this.porcentajeIva = porcentajeIva;
 	}
 
 }

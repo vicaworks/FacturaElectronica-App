@@ -235,8 +235,8 @@ public class CompFacCtrl extends BaseCtrl {
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
 		totalSaldo = BigDecimal.ZERO;
-		porcentajeIva = BigDecimal.ZERO;
-		porcentajeRenta = BigDecimal.ZERO;
+//		porcentajeIva = BigDecimal.ZERO;
+//		porcentajeRenta = BigDecimal.ZERO;
 		consultarIce();
 		consultarIva();
 		populateTipoPago();
