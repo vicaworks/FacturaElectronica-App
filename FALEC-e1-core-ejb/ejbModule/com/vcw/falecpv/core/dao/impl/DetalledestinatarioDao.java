@@ -37,7 +37,7 @@ public class DetalledestinatarioDao extends AppGenericDao<Detalledestinatario, S
 	public List<Detalledestinatario> getByIdListDestinatario(List<String> idDestinatarioList)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT d FROM Detalledestinatario d WHERE d.destinatario.iddestinatario in :idsList ORDER BY d.destinatario.iddestinatario,d.descripcion");
+			Query q = getEntityManager().createQuery("SELECT d FROM Detalledestinatario d WHERE d.destinatario.iddestinatario in :idsList ORDER BY d.descripcion");
 			q.setParameter("idsList", idDestinatarioList);
 			return q.getResultList();
 		} catch (Exception e) {

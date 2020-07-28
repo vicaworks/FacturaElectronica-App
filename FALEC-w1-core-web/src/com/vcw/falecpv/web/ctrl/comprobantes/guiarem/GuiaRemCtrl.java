@@ -66,6 +66,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 	private String criterioBusqueda;
 	private List<Cabecera> guiaRemisionList;
 	private Cabecera guiaRemisionSelected;
+	private List<Destinatario> destinatarioList;
 	private Destinatario destinatarioSelected;
 	private List<Detalledestinatario> detalledestinatarioList;
 	private GuiaRemFormCtrl guiaRemFormCtrl;
@@ -92,7 +93,9 @@ public class GuiaRemCtrl extends BaseCtrl {
 	public void consultar()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:guiaRemDT");
 		guiaRemisionList = null;
-		guiaRemisionList = guiaRemisionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
+		destinatarioList = null;
+		destinatarioList = guiaRemisionServicio.getGRByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
+//		guiaRemisionList = guiaRemisionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 	}
 
 	@Override
@@ -143,7 +146,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 	public StreamedContent getFileGR() {
 		try {
 			
-			if(guiaRemisionList==null || guiaRemisionList.isEmpty()) {
+			if(destinatarioList==null || destinatarioList.isEmpty()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
 				return null;
 			}
@@ -181,6 +184,8 @@ public class GuiaRemCtrl extends BaseCtrl {
 			int fila = 10;
 			int filaDestinatario = 10;
 			int filaDt = 10;
+			
+			guiaRemisionList = guiaRemisionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 			
 			for (Cabecera gr : guiaRemisionList) {
 				
@@ -417,6 +422,20 @@ public class GuiaRemCtrl extends BaseCtrl {
 	 */
 	public void setDestinatarioSelected(Destinatario destinatarioSelected) {
 		this.destinatarioSelected = destinatarioSelected;
+	}
+
+	/**
+	 * @return the destinatarioList
+	 */
+	public List<Destinatario> getDestinatarioList() {
+		return destinatarioList;
+	}
+
+	/**
+	 * @param destinatarioList the destinatarioList to set
+	 */
+	public void setDestinatarioList(List<Destinatario> destinatarioList) {
+		this.destinatarioList = destinatarioList;
 	}
 
 }

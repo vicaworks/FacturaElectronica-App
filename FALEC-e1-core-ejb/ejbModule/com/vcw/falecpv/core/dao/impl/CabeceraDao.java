@@ -248,6 +248,28 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param idList
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Cabecera> getByIdsTransportista(List<String> idList)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.idcabecera in :idList ORDER BY c.fechaemision,c.transportista.razonsocial");
+			q.setParameter("idList", idList);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param idcabecera
 	 * @return
 	 * @throws DaoException

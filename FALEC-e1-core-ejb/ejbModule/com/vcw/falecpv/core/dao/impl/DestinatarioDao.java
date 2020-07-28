@@ -37,7 +37,28 @@ public class DestinatarioDao extends AppGenericDao<Destinatario, String> {
 	public List<Destinatario> getIdDestinatarioByCabeceraIdList(List<String> idsList)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT d FROM Destinatario d WHERE d.cabecera.idcabecera in :idsList ORDER BY d.cabecera.idcabecera,d.razonsocialdestinatario");
+			Query q = getEntityManager().createQuery("SELECT d FROM Destinatario d WHERE d.cabecera.idcabecera in :idsList ORDER BY d.razonsocialdestinatario,cabecera.fechaemision");
+			q.setParameter("idsList", idsList);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idsList
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Destinatario> getById(List<String> idsList)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT d FROM Destinatario d WHERE d.iddestinatario in :idsList ORDER BY d.razonsocialdestinatario,cabecera.fechaemision");
 			q.setParameter("idsList", idsList);
 			
 			return q.getResultList();

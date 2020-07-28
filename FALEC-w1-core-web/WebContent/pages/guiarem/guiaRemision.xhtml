@@ -145,15 +145,23 @@
 	   					
 	   					<div class="EmptyBox5"/>
 	   					
-	   					<p:commandButton  id="cmdRtnExcel" 
-									title="EXPORTAR"
-									icon="fa fa-file-excel-o"
-									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-									value="REPORTE"
-									styleClass="success-btn Wid100"
-									disabled="#{empty guiaRemCtrl.guiaRemisionList}">
-							<p:fileDownload value="#{guiaRemCtrl.fileGR}"/>
+						<p:commandButton id="cmdRtnExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty guiaRemCtrl.destinatarioList}"
+							ajax="false">
+							<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
 						</p:commandButton>
+						
+						<!-- <p:menu overlay="true" trigger="cmdRtnExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu> -->
 	    				
 	    			</div>
 	    			
@@ -172,10 +180,10 @@
 			<div class="card card-w-title">
 				
 				<p:dataTable id="guiaRemDT" var="r"
-					value="#{guiaRemCtrl.guiaRemisionList}" scrollable="true"
+					value="#{guiaRemCtrl.destinatarioList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="guiaRemDT Fs11"  
-					rowKey="#{r.idcabecera}"
+					rowKey="#{r.iddestinatario}"
 					paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -194,8 +202,8 @@
 							<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#" icon="fa fa-eye" process="guiaRemDT" update="@form">
 							</p:menuitem>
 							
-							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.estado=='ANULADO'}">
-								<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
@@ -203,20 +211,81 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.numdocumento)}" />
+					<p:column headerText="ID" style="width:80px;" filterBy="#{r.cabecera.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
+					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+						<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} Fs10"/>
 					</p:column>
 					
-					<p:column headerText="RUC / CI " style="width:60px;" filterBy="#{r.transportista.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{r.transportista.identificacion}" />
+					<p:column headerText="DESTINATARIOS" style="width:150px;" filterBy="#{r.razonsocialdestinatario}" filterMatchMode="contains">
+						<div class="p-grid p-justify-start">
+								
+								<div class="p-col-12">
+									<h:outputText value="#{msg['label.identificacion']}" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{r.identificaciondestinatario}" styleClass="FontBold"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="NOMBRE" styleClass="cpoRequerido"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{r.razonsocialdestinatario}" styleClass="FontBold"/>
+								</div>
+								
+								<div class="p-col-12">
+									<h:outputText value="DOCUMENTO SUSTENTO" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.numdocsustento)}" styleClass="#{r.numdocsustento!=null?'markGray':''}"/>
+								</div>
+								
+								<div class="p-col-12">
+									<h:outputText value="RUTA" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{r.ruta}" styleClass="FontBold"/>
+								</div>
+								
+								<div class="p-col-6">
+									<h:outputText value="ITEMS DETALLE :" styleClass="cpoRequerido Fs10"/>
+									<h:outputText value="#{r.detalledestinatarioList.size()}" styleClass="markGray"/>
+								</div>
+								
+						</div>
+					
 					</p:column>
 					
-					<p:column headerText="TRANSPORTISTA" style="width:120px;" filterBy="#{r.transportista.razonsocial}" filterMatchMode="contains">
-						<h:outputText value="#{r.transportista.razonsocial}" />
+					<p:column headerText="DET" style="width:10px;" styleClass="TexAlLeft">
+						<p:commandLink oncomplete="PF('dlgResGuiaRemision').show();" update="@form :frmDetGR">
+							<i class="fa fa-2x fa-list" style="color:black;"></i>
+							<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+							<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.destinatarioSelected}"/>
+							<f:setPropertyActionListener value="#{r.detalledestinatarioList}" target="#{guiaRemCtrl.detalledestinatarioList}"/>
+						</p:commandLink>
+					</p:column>
+					
+					<p:column style="width:5px;" styleClass="TexAlLeft">
+						<f:facet name="header">
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope Fs14"/>
+						</f:facet>
+						<f:subview rendered="#{r.cabecera.envioemail==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{r.cabecera.envioemail==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
+					
+					<p:column headerText="RUC / CI " style="width:60px;" filterBy="#{r.cabecera.transportista.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{r.cabecera.transportista.identificacion}" />
+					</p:column>
+					
+					<p:column headerText="TRANSPORTISTA" style="width:120px;" filterBy="#{r.cabecera.transportista.razonsocial}" filterMatchMode="contains">
+						<h:outputText value="#{r.cabecera.transportista.razonsocial}" />
 					</p:column>
 					
 					<p:column headerText="FECHA RUTA" style="width:90px;">
@@ -226,7 +295,7 @@
 								<h:outputText value="Inicio :" styleClass="FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{r.fechainiciotransporte}">
+								<h:outputText value="#{r.cabecera.fechainiciotransporte}">
 									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
@@ -234,14 +303,14 @@
 								<h:outputText value="Fin :" styleClass="FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{r.fechafintransporte}">
+								<h:outputText value="#{r.cabecera.fechafintransporte}">
 									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="DESTINATARIOS" style="width:150px;" >
+					<!-- <p:column headerText="DESTINATARIOS" style="width:150px;" >
 						<div class="p-grid p-justify-start">
 							<p:repeat var="det" value="#{r.destinatarioList}">
 								
@@ -292,8 +361,8 @@
 								</f:subview>
 								
 							</p:repeat>
-						</div>
-					</p:column>
+						</div> 
+					</p:column>-->
 					
 				</p:dataTable>
 				<div class="EmptyBox20"/>			
