@@ -100,29 +100,37 @@
 			
 		</p:panelGrid>
 		
-		<p:panelGrid id="gridProveedor" columns="2"
+		<p:panelGrid id="gridProveedor" columns="1"
 			styleClass="ui-panelgrid-blank Fs12 Wid100"
-			columnClasses="ui-md-4,
-						   ui-md-8">
-			
-			<h:outputText value="NOMBRE * " styleClass="cpoRequerido"/>
-			<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.razonsocial}"/>
+			columnClasses="ui-g-12">
 			
 			<h:outputText value="C.I./RUC * " styleClass="cpoRequerido"/>
-			<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.identificacion}"/>
+			<h:panelGroup>
+				<p:inputText id="inpNcRuc" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcRuc" />
+			</h:panelGroup>
+			
+			<h:outputText value="NOMBRE * " styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpNCNombre" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNCNombre" />
+			</h:panelGroup>
 			
 			<h:outputText value="EMAIL * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<div class="OvHidden">
-					<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.email}" styleClass="Fs10"/>
-				</div>
+				<p:inputText id="inpNcEmail" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcEmail" />
 			</h:panelGroup>
 			
-			<h:outputText value="Telf: " styleClass="cpoRequerido"/>
-			<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.telefono}"/>
-			
 			<h:outputText value="#{msg['label.direccion']} * " styleClass="cpoRequerido"/>
-			<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.direccion}"/>
+			<h:panelGroup>
+				<p:inputText id="inpNcDireccion" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcDireccion" />
+			</h:panelGroup>
 						   
 		</p:panelGrid>
 	</div>

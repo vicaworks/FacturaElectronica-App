@@ -102,7 +102,7 @@
 			<h:panelGroup>
 				<h:outputText value="#{msg['label.identificacion']} * " styleClass="cpoRequerido"/>
 				<div class="EmptyBox5"/>
-				<p:inputText id="intNDIdentificacionCLiente" maxlength="20" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" validatorMessage="SOLO NUMEROS">
+				<p:inputText id="intNDIdentificacionCLiente" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" validatorMessage="SOLO NUMEROS" readonly="true">
 					<f:validateRegex pattern="^\d+$" />
 				</p:inputText>
 				<p:message for="intNDIdentificacionCLiente"/>
@@ -111,7 +111,7 @@
 			<h:panelGroup>
 				<h:outputText value="#{msg['label.razonsocial']} * " styleClass="cpoRequerido"/>
 				<div class="EmptyBox5"/>
-				<p:inputText id="intNDRazonSocial" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" validatorMessage="SOLO NUMEROS">
+				<p:inputText id="intNDRazonSocial" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" validatorMessage="SOLO NUMEROS" readonly="true">
 				</p:inputText>
 				<p:message for="intNDRazonSocial"/>
 			</h:panelGroup>
@@ -119,7 +119,7 @@
 			<h:panelGroup>
 				<h:outputText value="EMAIL * " styleClass="cpoRequerido"/>
 				<div class="EmptyBox5"/>
-				<p:inputText id="intNDDireccion" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
+				<p:inputText id="intNDDireccion" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="intNDDireccion"/>
 			</h:panelGroup>
@@ -127,7 +127,7 @@
 			<h:panelGroup>
 				<h:outputText value="#{msg['label.direccion']} * " styleClass="cpoRequerido"/>
 				<div class="EmptyBox5"/>
-				<p:inputText id="intNDEmail" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
+				<p:inputText id="intNDEmail" maxlength="300" value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="intNDEmail"/>
 			</h:panelGroup>

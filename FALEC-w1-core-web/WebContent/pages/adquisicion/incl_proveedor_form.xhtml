@@ -126,6 +126,13 @@
 						</p:inputText>
 						<p:message for="intProveedorEmail"/>
 						
+						<h:outputText value="#{msg['label.direccion']} * : " />
+					<p:inputText id="intProveedorCalles"
+						value="#{proveedorCtrl.proveedorSelected.direccion}"
+						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="200" converter="omnifaces.ToUpperCaseConverter" />
+					<p:message for="intProveedorCalles"/>
+						
 						<h:outputText value="ESTADO * :" />
 						<p:selectOneMenu id="somestadoProveedor" value="#{proveedorCtrl.proveedorSelected.estado}" style="width:100%" disabled="#{proveedorCtrl.proveedorSelected.idproveedor==null}">
 			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
@@ -169,48 +176,6 @@
 						<f:validator validatorId="emailValidator"/>
 					</p:inputText>
 					<p:message for="intProveedorContactoEmail"/>
-					
-				</p:panelGrid>
-				
-				<!-- Direccion -->	
-				<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> #{msg['label.direccionminuscula']}</div>
-				<div class="EmptyBox10"/>
-				<p:panelGrid id="gridProveedorDR" columns="3"
-						styleClass="ui-panelgrid-blank Wid100"
-						columnClasses="ui-g-12 ui-md-4,
-									   ui-g-12 ui-md-6,
-									   ui-g-12 ui-md-2">
-					
-					<h:outputText value="PROVINCIA : " />
-					<p:inputText id="intProveedorProvincia"
-						value="#{proveedorCtrl.proveedorSelected.provincia}"
-						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
-						maxlength="100" converter="omnifaces.ToUpperCaseConverter" />
-					<p:message for="intProveedorProvincia"/>
-					
-					<h:outputText value="CIUADAD : " />
-					<p:inputText id="intProveedorCiudad"
-						value="#{proveedorCtrl.proveedorSelected.ciudad}"
-						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
-						maxlength="100" converter="omnifaces.ToUpperCaseConverter" />
-					<p:message for="intProveedorCiudad"/>
-					
-					<h:outputText value="#{msg['label.direccion']} : " />
-					<p:inputText id="intProveedorCalles"
-						value="#{proveedorCtrl.proveedorSelected.direccion}"
-						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
-						maxlength="200" converter="omnifaces.ToUpperCaseConverter" />
-					<p:message for="intProveedorCalles"/>
-					
-					<h:outputText value="#{msg['label.codigo']} POSTAL : " />
-					<p:inputText id="intProveedorZip"
-						value="#{proveedorCtrl.proveedorSelected.codigopostal}"
-						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
-						maxlength="40" converter="omnifaces.ToUpperCaseConverter" validatorMessage="SOLO NUMEROS">
-							<f:validateRegex pattern="^\d+$"/>
-					</p:inputText>
-					<p:message for="intProveedorZip"/>
-					
 					
 				</p:panelGrid>
 				

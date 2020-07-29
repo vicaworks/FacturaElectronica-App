@@ -69,6 +69,10 @@
 			
 			/* =========================================================================================================================== */
 			
+			.disable-color{
+				background-color: #F4F6F7 !important;
+			}
+			
 			.retencionDetDT .ui-datatable-scrollable-body{
 				/* min-height: 42vh !important; */
 				height: calc(100vh - 495px);
@@ -80,7 +84,7 @@
 			}
 			
 			.disable .ui-inputfield{
-				background-color: #ccc !important;
+				background-color: #F4F6F7 !important;
 			}
 			
 			.ui-selectonemenu-item {
@@ -197,11 +201,11 @@
 									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" rendered="#{not retencionFrmCtrl.retencionSeleccion.editarSecuencial}"/>
 									<p:inputMask id="intSecDocumento" value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" maxlength="7" mask="999999999" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 									<p:spacer width="5px;"/>
-									<p:commandLink action="#{retencionFrmCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:grid">
+									<p:commandLink action="#{retencionFrmCtrl.editarSecuencialAction()}" process=":formMain:grid :formMain:grid2" update=":formMain:msgFormMain :formMain:grid :formMain:grid2">
 										<i class="fa fa-edit Fs18"/>
 									</p:commandLink>
 									<p:spacer width="5px;"/>
-									<p:commandLink action="#{retencionFrmCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid">
+									<p:commandLink action="#{retencionFrmCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid :formMain:grid2">
 										<i class="fa fa-trash-o Fs18 " style="color:red;"/>
 									</p:commandLink>
 									<p:message styleClass="Wid100" for="intSecCaja"/>
@@ -227,11 +231,11 @@
 							<h:outputText value="PROVEEDOR *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
 								<p:commandButton  id="cmdRtnProveedor" 
-										title="NUEVO PROVEEDOR"
+										title="NUEVO/EDITAR PROVEEDOR"
 										icon="fa fa-plus"
 										value="PROVEEDOR"
 										styleClass="secondary-button Wid100 Fs11"
-										action="#{proveedorCtrl.nuevo()}"
+										action="#{proveedorCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.proveedor!=null?retencionFrmCtrl.retencionSeleccion.proveedor.idproveedor:null)}"
 										immediate="true">
 										<f:setPropertyActionListener value="RETENCION" target="#{proveedorCtrl.callModule}"/>
 										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
@@ -265,27 +269,34 @@
 							
 							<h:outputText value="CI / RUC * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" maxlength="15" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnRuc" />
 							</h:panelGroup>
 							
 							<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" maxlength="15" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnEmail" />
 							</h:panelGroup>
 							
 							<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" maxlength="15" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnDireccion" />
 							</h:panelGroup>
-							
-							
-							
+						</p:panelGrid>			
+				</div>
+				<div class="EmptyBox5"/>			
+				<div class="card card-w-title">
+					
+					<!-- Formulario -->
+					<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Documento Asociado</h2>
+						
+						
+						<p:panelGrid id="grid2" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">		
 							
 							<h:outputText value="TIPO COMPROBANTE*" styleClass="cpoRequerido"/>
 							<h:panelGroup>
@@ -326,7 +337,7 @@
 								</p:outputPanel>
 							</h:panelGroup>
 							
-							<h:outputText value="NUM FACTURA * : " styleClass="cpoRequerido"/>
+							<h:outputText value="NUM COMPROBANTE * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
 								<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
 									<f:converter converterId="formatoNumComprobanteConverter"/>
@@ -435,7 +446,7 @@
 											<f:selectItems value="#{retencionFrmCtrl.retencionimpuestodetList}" var="rid"
 												itemLabel="#{rid.display}" itemValue="#{rid}" itemDescription="#{rid.nombre}"/>
 											
-											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update="@form" process="@this"/>
+											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update="@form" process="@form"/>
 											
 										</p:selectOneMenu>
 										<p:message for="somRtnImpuestoDet" />
@@ -481,7 +492,7 @@
 							<div class="p-col-12 p-md-6">
 								<p:commandButton  id="cmdAdqAgregarDetalle" 
 									icon="fa fa-plus"
-									value="AGREGAR #{msg['label.retencion']}"
+									value="AGREGAR #{msg['label.retencion']} CALCULADA"
 									styleClass="Wid100"
 									action="#{retencionFrmCtrl.agregarDetalle()}"
 									update="@form">
@@ -517,20 +528,20 @@
 							
 							<p:column headerText="BASE IMPONIBLE" style="width:30px;">
 								<h:outputText value="#{d.baseimponible}">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber pattern="$ 0.00"/>
 								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="%" style="width:30px;">
 								<h:outputText value="% "/>
 								<h:outputText value="#{d.porcentajeretener}">
-									<f:convertNumber locale="es_EC" pattern="0.00"/>
+									<f:convertNumber pattern="0.00"/>
 								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="TOTAL RTN." style="width:30px;">
 								<h:outputText value="#{d.valorretenido}">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber pattern="$ 0.00"/>
 								</h:outputText>
 							</p:column>
 							
@@ -550,7 +561,7 @@
 									
 									<div class="p-col-4 subtotalValor">
 										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs16">
-											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+											<f:convertNumber pattern="$ 0.00"/>
 										</h:outputText>
 									</div>
 										

@@ -106,28 +106,28 @@
 			
 			<h:outputText value="CI / RUC *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpfacRuc" value="#{compFacCtrl.cabecerSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+				<p:inputText id="inpfacRuc" value="#{compFacCtrl.cabecerSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpfacRuc" />
 			</h:panelGroup>
 			
 			<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpfacNombre" value="#{compFacCtrl.cabecerSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+				<p:inputText id="inpfacNombre" value="#{compFacCtrl.cabecerSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpfacNombre" />
 			</h:panelGroup>
 			
 			<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpFacEmail" value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+				<p:inputText id="inpFacEmail" value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpFacEmail" />
 			</h:panelGroup>
 			
 			<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpFacDireccion" value="#{compFacCtrl.cabecerSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+				<p:inputText id="inpFacDireccion" value="#{compFacCtrl.cabecerSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpFacDireccion" />
 			</h:panelGroup>

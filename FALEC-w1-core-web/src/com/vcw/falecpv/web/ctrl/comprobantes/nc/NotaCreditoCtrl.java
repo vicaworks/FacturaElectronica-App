@@ -28,7 +28,6 @@ import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
-import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
@@ -91,7 +90,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	private String callModule;
 	private String viewUpdate;
-	private List<Cliente> clienteList;
 	private List<Tipocomprobante> tipocomprobanteList;
 	private Cabecera notaCreditoSeleccion;
 	private Cabecera facturaSeleccion;
@@ -103,6 +101,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	private List<Iva> ivaList;
 	private List<Ice> iceList;
 	private String criterioBusqueda;
+	private String criterioCliente;
 	
 	/**
 	 * 
@@ -116,7 +115,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 			callModule = "NOTACREDITO";
 			notaCreditoSeleccion = new Cabecera();
-			consultarCliente();
 			consultarTipoComprobante();
 			consultarIce();
 			consultarIva();
@@ -135,9 +133,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
-	public void consultarCliente()throws DaoException{
-		clienteList = null;
-		clienteList = clienteServicio.getClienteDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+	public void consultarCliente(String identificador)throws DaoException{
+		notaCreditoSeleccion.setCliente(null);
+		notaCreditoSeleccion.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 	public void consultarTipoComprobante()throws DaoException{
 		
@@ -251,7 +250,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	public void nuevaNotaCredito()throws DaoException {
 		consultarTipoComprobante();
-		consultarCliente();
 		consultarIce();
 		consultarIva();
 		notaCreditoSeleccion = null;
@@ -575,6 +573,24 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void buscarCliente() {
+		try {
+			
+			if(notaCreditoSeleccion==null) return;
+			
+			if(criterioCliente==null || criterioCliente.trim().length()==0) {
+				AppJsfUtil.addErrorMessage("formMain:inpCriterioCliente", "ERROR", "REQUERIDO");
+				return;
+			}
+			
+			consultarCliente(criterioCliente);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	/**
 	 * @return the callModule
 	 */
@@ -664,20 +680,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	/**
-	 * @return the clienteList
-	 */
-	public List<Cliente> getClienteList() {
-		return clienteList;
-	}
-
-	/**
-	 * @param clienteList the clienteList to set
-	 */
-	public void setClienteList(List<Cliente> clienteList) {
-		this.clienteList = clienteList;
 	}
 
 	/**
@@ -776,6 +778,20 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 */
 	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
+	}
+
+	/**
+	 * @return the criterioCliente
+	 */
+	public String getCriterioCliente() {
+		return criterioCliente;
+	}
+
+	/**
+	 * @param criterioCliente the criterioCliente to set
+	 */
+	public void setCriterioCliente(String criterioCliente) {
+		this.criterioCliente = criterioCliente;
 	}
 
 }

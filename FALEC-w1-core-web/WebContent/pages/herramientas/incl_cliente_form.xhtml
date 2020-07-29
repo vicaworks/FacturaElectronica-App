@@ -111,11 +111,11 @@
 							</h:panelGroup>
 							<p:message for="intRazonSocial" />
 							
-							<h:outputText value="DIRECCIÓN : " style="font-weight: bold" />
+							<h:outputText value="DIRECCIÓN * : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter" required="true" requiredMessage="REQUERIDO"/>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intDireccion" />
 							
 							<h:outputText value="CORREO ELECTRÓNICO * : " style="font-weight: bold" />
 							<h:panelGroup>

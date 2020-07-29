@@ -140,7 +140,6 @@ public class ClienteCtrl extends BaseCtrl {
 				break;
 			case "NotaCreditoCtrl":
 				NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
-				notaCreditoCtrl.consultarCliente();
 				notaCreditoCtrl.getNotaCreditoSeleccion().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;

@@ -171,7 +171,7 @@ public class ProveedorCtrl extends BaseCtrl {
 			case "RETENCION":
 				retencionFrmCtrl.consultarProveedor();
 				retencionFrmCtrl.getRetencionSeleccion().setProveedor(proveedorSelected);
-				flag = true;
+				flag = false;
 				break;
 			case "LIQCOMPRA":
 				LiqCompraFormCtrl liqCompraFormCtrl = (LiqCompraFormCtrl)AppJsfUtil.getManagedBean("liqCompraFormCtrl");
