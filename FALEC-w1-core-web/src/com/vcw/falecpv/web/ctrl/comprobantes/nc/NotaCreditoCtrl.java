@@ -178,14 +178,19 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			notaCreditoSeleccion.setUpdated(new Date());
 			notaCreditoSeleccion = cabeceraServicio.guardarComprobanteFacade(notaCreditoSeleccion);
 			noEditarSecuencial(notaCreditoSeleccion);
+			FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
+			if(facEmitidaCtrl!=null) {
+				facEmitidaCtrl.consultar();
+			}
+			CompNcCtrl compNcCtrl = (CompNcCtrl) AppJsfUtil.getManagedBean("compNcCtrl");
+			if(compNcCtrl!=null) {
+				compNcCtrl.consultar();
+			}
+			
 			switch (callModule) {
 			case "FACTURAS_EMITIDAS":
-				FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
-				facEmitidaCtrl.consultar();
 				break;
 			case "NOTACREDITO":
-				CompNcCtrl compNcCtrl = (CompNcCtrl) AppJsfUtil.getManagedBean("compNcCtrl");
-				compNcCtrl.consultar();
 				break;	
 			default:
 				break;

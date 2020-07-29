@@ -193,6 +193,9 @@ public class GuiaRemisionServicio extends DBUtilGenericoApp {
 				List<Map<String, Object>> idListMap= resultListMap(sql);
 				
 				List<String> idList = idListMap.stream().map(x->(String)x.get("iddestinatario")).collect(Collectors.toList());
+				if(idList.isEmpty()) {
+					return new ArrayList<>();
+				}
 				List<Destinatario> destinatarioList = destinatarioDao.getById(idList);
 				//filtra id destinatarios
 				List<String> idDestinatarioList = destinatarioList.stream().map(x->x.getIddestinatario()).collect(Collectors.toList());

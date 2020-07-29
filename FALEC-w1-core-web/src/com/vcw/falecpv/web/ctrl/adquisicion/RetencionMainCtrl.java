@@ -77,7 +77,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -90);
+			desde = FechaUtil.agregarDias(hasta, -21);
 			criterioBusqueda = null;
 			retencionFormCtrl = (RetencionFrmCtrl) AppJsfUtil.getManagedBean("retencionFrmCtrl");
 			consultarRetenciones();

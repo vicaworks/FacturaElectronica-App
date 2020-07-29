@@ -120,7 +120,12 @@
 						</h:outputText>
 	                </p:column>
 	                
-	                <p:column headerText="GREM" style="width:15px;" styleClass="TexAlCenter">
+	                <p:column style="width:10px;" styleClass="TexAlCenter">
+	                	<f:facet name="header">
+	                		<div class="Wid100" style="text-align: center;">
+		                		<i class="fa fa-truck Fs18"></i>
+	                		</div>
+	                	</f:facet>
 	                	<f:subview rendered="#{v.idguiaremision!=null}">
 							<i class="fa fa-check Fs20" style="color:green;"/>
 						</f:subview>

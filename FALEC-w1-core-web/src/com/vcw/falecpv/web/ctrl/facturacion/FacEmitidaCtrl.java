@@ -107,7 +107,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		try {
 			consultarUsuario();
 			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -15);
+			desde = FechaUtil.agregarDias(hasta, -21);
 			consultar();
 			totalizar();
 		} catch (Exception e) {
