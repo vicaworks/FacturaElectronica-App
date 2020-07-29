@@ -28,7 +28,6 @@ import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
-import com.vcw.falecpv.core.modelo.persistencia.Proveedor;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuestodet;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
@@ -91,7 +90,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private String callModule;
 	private String viewUpdate;
 	private Adquisicion adquisicionSelected = new Adquisicion();
-	private List<Proveedor> proveedorList;
 	private List<Retencionimpuesto> retencionimpuestoList;
 	private List<Retencionimpuestodet> retencionimpuestodetList;
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -102,6 +100,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private RetencionMainCtrl retencionMainCtrl;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private AdquisicionMainCtrl adquisicionMainCtrl;
+	private String criterioProveedor;
 	
 	
 	/**
@@ -117,7 +116,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			callModule = "RETENCION";
 			retencionSeleccion = new Cabecera();
 			retenciondetalleSelected = new Impuestoretencion();
-			consultarProveedor();
 			consultarTipoComprobante();
 			consultarRetencionImpuesto();
 			
@@ -125,13 +123,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
-	}
-	
-	public void consultarProveedor()throws DaoException {
-		
-		setProveedorList(proveedorServicio.getProveedorDao().getByConsulta(
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), EstadoRegistroEnum.ACTIVO, null));
-		
 	}
 	
 	public void consultarTipoComprobante()throws DaoException{
@@ -177,10 +168,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	private void nuevaRetencion()throws DaoException {
 		
-		consultarProveedor();
 		consultarTipoComprobante();
 		consultarRetencionImpuesto();
-		
+		criterioProveedor = null;
 		retencionimpuesto = null;
 		retencionSeleccion = new Cabecera();
 		retencionSeleccion.setAdquisicion(null);
@@ -403,7 +393,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 
 	public void editarRetencion(String idRetencion)throws DaoException{
-		
+		criterioProveedor = null;
 		retencionSeleccion = cabeceraServicio.consultarByPk(idRetencion);
 		retenciondetalleList = cabeceraRetencionServicio.getDetalleById(idRetencion);
 		adquisicionSelected = null;
@@ -411,7 +401,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			adquisicionSelected = adquisicionServicio.consultarByPk(retencionSeleccion.getAdquisicion().getIdadquisicion());
 		}
 		nuevaRetencionDetalle();
-		consultarProveedor();
 		consultarTipoComprobante();
 		consultarRetencionImpuesto();
 		totalizar();
@@ -536,6 +525,30 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	public void buscarProveedor() {
+		try {
+			
+			if(retencionSeleccion==null) return;
+			
+			if(criterioProveedor==null || criterioProveedor.trim().length()==0) {
+				AppJsfUtil.addErrorMessage("formMain:inpCriterioProveedor", "ERROR", "REQUERIDO");
+				return;
+			}
+			
+			consultarProveedor(criterioProveedor);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void consultarProveedor(String identificador) throws DaoException {
+		retencionSeleccion.setProveedor(null);
+		retencionSeleccion.setProveedor(proveedorServicio.getProveedorDao().getByIdentificador(identificador,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+	}
 
 	/**
 	 * @return the callModule
@@ -577,20 +590,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	 */
 	public void setAdquisicionSelected(Adquisicion adquisicionSelected) {
 		this.adquisicionSelected = adquisicionSelected;
-	}
-
-	/**
-	 * @return the proveedorList
-	 */
-	public List<Proveedor> getProveedorList() {
-		return proveedorList;
-	}
-
-	/**
-	 * @param proveedorList the proveedorList to set
-	 */
-	public void setProveedorList(List<Proveedor> proveedorList) {
-		this.proveedorList = proveedorList;
 	}
 
 	/**
@@ -731,6 +730,20 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	 */
 	public void setRetenciondetalleSelected(Impuestoretencion retenciondetalleSelected) {
 		this.retenciondetalleSelected = retenciondetalleSelected;
+	}
+
+	/**
+	 * @return the criterioProveedor
+	 */
+	public String getCriterioProveedor() {
+		return criterioProveedor;
+	}
+
+	/**
+	 * @param criterioProveedor the criterioProveedor to set
+	 */
+	public void setCriterioProveedor(String criterioProveedor) {
+		this.criterioProveedor = criterioProveedor;
 	}
 
 }

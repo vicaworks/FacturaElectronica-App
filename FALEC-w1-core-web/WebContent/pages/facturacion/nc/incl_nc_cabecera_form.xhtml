@@ -87,21 +87,6 @@
 		<!-- Formulario -->
 		<p:panelGrid id="gridNotaCreditoDG2" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 			
-			<h:panelGroup>
-			</h:panelGroup>
-			<p:commandButton  id="cmdRtnCliente2" 
-					title="NUEVO / EDITAR CLIENTE"
-					icon="fa fa-user"
-					value="NUEVO / EDITAR CLIENTE"
-					styleClass="secondary-button Wid100 Fs11"
-					action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}"
-					immediate="true">
-					<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{clienteCtrl.updateView}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
-			</p:commandButton>
-			
-			
 			<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>				
 			<h:panelGroup>
 				<div class="ui-inputgroup">
@@ -126,6 +111,20 @@
 	            </div>
 	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
 			</h:panelGroup>
+			
+			<p:commandButton  id="cmdRtnCliente2" 
+					title="NUEVO / EDITAR CLIENTE"
+					icon="fa fa-user"
+					value="NUEVO / EDITAR CLIENTE"
+					styleClass="secondary-button Wid100 Fs11"
+					action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}"
+					immediate="true">
+					<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
+					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+			</p:commandButton>
+			
+			
 			
 			<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
 			<h:panelGroup>

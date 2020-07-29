@@ -97,6 +97,8 @@
 
     <ui:define name="content">
     	
+    	
+    	
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	<o:importConstants type="com.vcw.falecpv.core.constante.ComprobanteEstadoEnum" var="ComprobanteEstadoEnum" />
@@ -137,7 +139,7 @@
 	    					
 	    					<div class="p-col-12 p-md-6">
 			    				<p:commandButton id="cmdRtnNuevo"
-										value="NUEVA #{msg['label.retencion']}" icon="fa fa-plus" 
+										value="NUEVO" icon="fa fa-plus" 
 										action="#{retencionFrmCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true">
 										
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
@@ -216,6 +218,9 @@
 							
 						</p:panelGrid>
 						
+						<!-- consulta cliente return keycode 13 -->
+						<p:remoteCommand name="buscarProveedor"  action="#{retencionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion"/>
+						
 						<p:panelGrid id="gridRetencionDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 							
 							<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
@@ -230,60 +235,70 @@
 							
 							<h:outputText value="PROVEEDOR *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
+								<div class="ui-inputgroup">
+					                <span class="ui-inputgroup-addon">
+					                	
+					                	<p:commandButton process="@this :formMain:inpCriterioProveedor"
+											update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" 
+											action="#{retencionFrmCtrl.buscarProveedor()}" icon="fa fa-search">
+					                	</p:commandButton>
+					                
+					                </span>
+					                
+					                <p:inputText id="inpCriterioProveedor"
+										value="#{retencionFrmCtrl.criterioProveedor}" required="false"
+										requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+										maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+										validatorMessage="SOLO NUMEROS"
+										onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
+										<f:validateRegex pattern="^\d+$" />
+									</p:inputText>
+					                
+					            </div>
+					            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
+							</h:panelGroup>
+							
+							
+							<h:panelGroup>
 								<p:commandButton  id="cmdRtnProveedor" 
 										title="NUEVO/EDITAR PROVEEDOR"
 										icon="fa fa-plus"
-										value="PROVEEDOR"
+										value="NUEVO / EDITAR PROVEEDOR"
 										styleClass="secondary-button Wid100 Fs11"
 										action="#{proveedorCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.proveedor!=null?retencionFrmCtrl.retencionSeleccion.proveedor.idproveedor:null)}"
 										immediate="true">
 										<f:setPropertyActionListener value="RETENCION" target="#{proveedorCtrl.callModule}"/>
 										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
-										<f:setPropertyActionListener value=":formMain:somRtnProveedor :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{proveedorCtrl.viewUpdate}"/>
+										<f:setPropertyActionListener value=":formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{proveedorCtrl.viewUpdate}"/>
 										<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{proveedorCtrl.retencionFrmCtrl}"/>
 								</p:commandButton>
 							</h:panelGroup>
 							
-							<h:panelGroup>
-							</h:panelGroup>
-							<h:panelGroup>
-								<p:selectOneMenu id="somRtnProveedor"
-											value="#{retencionFrmCtrl.retencionSeleccion.proveedor}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{retencionFrmCtrl.proveedorList}" var="pv"
-										itemLabel="#{pv.nombrecomercial}" itemValue="#{pv}" />
-									
-									<p:ajax update=":formMain:somRtnImpuesto :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" />
-										
-								</p:selectOneMenu>
-								<p:message for="somRtnProveedor" />
-								
-							</h:panelGroup>
 							
 							<h:outputText value="CI / RUC * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" maxlength="15" readonly="true">
+								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnRuc" />
 							</h:panelGroup>
 							
+							<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="inpRtNombre" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpRtNombre" />
+							</h:panelGroup>
+							
 							<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" maxlength="15" readonly="true">
+								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnEmail" />
 							</h:panelGroup>
 							
 							<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" maxlength="15" readonly="true">
+								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnDireccion" />
 							</h:panelGroup>

@@ -169,7 +169,6 @@ public class ProveedorCtrl extends BaseCtrl {
 				flag = true;
 				break;
 			case "RETENCION":
-				retencionFrmCtrl.consultarProveedor();
 				retencionFrmCtrl.getRetencionSeleccion().setProveedor(proveedorSelected);
 				flag = false;
 				break;

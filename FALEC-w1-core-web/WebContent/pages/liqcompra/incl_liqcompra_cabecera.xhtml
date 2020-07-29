@@ -54,7 +54,7 @@
 			</h:panelGroup>
 			
 			
-			<h:outputText value="FECHA #{msg['label.emision']}" styleClass="cpoRequerido"/>
+			<h:outputText value="FECHA #{msg['label.emision']} * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:calendar id="claFacFecha" value="#{liqCompraFormCtrl.liqCompraSelected.fechaemision}"
 					pattern="dd/MMMM/yyyy"
@@ -64,6 +64,7 @@
 				<p:message for="claFacFecha" />
 			</h:panelGroup>
 			
+			<h:outputText value="PROVEEDOR * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<div class="ui-inputgroup">
 	                <span class="ui-inputgroup-addon">
