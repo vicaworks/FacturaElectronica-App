@@ -14,7 +14,7 @@
 			
 			.adquisicionDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 420px);
+				height: calc(100vh - 410px);
 				
 			}
 			
@@ -70,7 +70,7 @@
 	    		
 	    		<div class="p-grid p-align-center">
 	    			
-	    			<div class="p-col-12 p-md-8">
+	    			<div class="p-col-12 p-md-9">
 	    				
 	    				<div class="p-grid">
 	    					
@@ -120,7 +120,7 @@
 	    			</div>
 	    			
 	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-4">
+	    			<div class="p-col-12 p-md-3">
 	    				
 	    				<div class="EmptyBox5"/>
 	    				
@@ -132,21 +132,27 @@
 						<div class="EmptyBox5"/>
 	   				
 	   					<p:commandButton id="cmdAdqNuevo"
-							value="NUEVA COMPRA" icon="fa fa-plus" 
+							value="NUEVO" icon="fa fa-plus" 
 							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100 secondary-button" update="@form">
 	   					</p:commandButton>
 	   					
 	   					<div class="EmptyBox5"/>
 	   					
-	   					<p:commandButton  id="cmdAdqExcel" 
-									title="EXPORTAR"
-									icon="fa fa-file-excel-o"
-									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-									value="REPORTE"
-									styleClass="success-btn Wid100"
-									disabled="#{empty adquisicionMainCtrl.adquisicionList}">
-							<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}"/>	
+						<p:commandButton id="cmdAdqExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty adquisicionMainCtrl.adquisicionList}">
 						</p:commandButton>
+						
+						<p:menu overlay="true" trigger="cmdAdqExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
 	    				
 	    			</div>
 	    			
@@ -173,8 +179,8 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"  
-					rows="6"
-					rowsPerPageTemplate="6,12,18,24,30,36">
+					rows="15"
+					rowsPerPageTemplate="15,20,25,30,35,40">
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						
@@ -193,109 +199,98 @@
 						
 					</p:column>
 					
-					<!-- <p:column headerText="ID" style="width:20px;">
-						<h:outputText value="#{a.idadquisicion}" />
-					</p:column> -->
-					
 					<p:column headerText="FECHA" style="width:40px;">
 						<h:outputText value="#{a.fecha}" >
 							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column style="width:40px;" filterBy="#{a.numfactura}" filterMatchMode="contains">
-						<f:facet name="header">
-							<h:outputText value="# FACT" />
-							<h:outputText value=" [Filtro]" styleClass="Fs10" style="color:gray;" />
-						</f:facet>
-						<h:outputText value="#{a.numfactura}" >
+					<p:column headerText="COMPROBANTE" style="width:50px;">
+						<h:outputText value="#{a.tipocomprobante.comprobante}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column style="width:120px;" filterBy="#{a.proveedor.nombrecomercial}" filterMatchMode="contains">
-						<f:facet name="header">
-							<h:outputText value="PROVEEDOR" />
-							<h:outputText value=" [Filtro]" styleClass="Fs10" style="color:gray;" />
-						</f:facet>
+					<p:column style="width:90px;" filterBy="#{a.numfactura}" filterMatchMode="contains" headerText="NUM COMP">
+						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(a.numfactura)}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:120px;" filterBy="#{a.proveedor.nombrecomercial}" filterMatchMode="contains" headerText="PROVEEDOR">
 						<h:outputText value="#{a.proveedor.nombrecomercial}" >
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:50px;">
-						<h:outputText value="#{a.estado}" styleClass="#{a.style}">
+						<h:outputText value="#{a.estado}" styleClass="#{a.style} Fs10">
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PAGO" style="width:40px;">
-						<h:outputText value="#{a.tipopago.nombre}" >
+					<p:column headerText="SUBTOTAL" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.subtotal}" >
+							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VALORES" style="width:80px;">
+					<p:column headerText="DESCTO" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totaldescuento}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="I.V.A" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totaliva}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="I.C.E" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totalice}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="TOTAL" style="width:45px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totalfactura}" styleClass="markGray DispBlock">
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="#{msg['label.retencion']}" style="width:45px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totalretencion}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="A PAGAR" style="width:45px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totalpagar}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlRight">
 						
-						<div class="p-grid">
-						
-							<div class="p-col-5">
-								<h:outputText value="Subtotal:" styleClass="Fs11 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{a.subtotal}" styleClass="Fs11">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+						<div class="p-grid" style="padding-top:2px;">
+							<div class="p-col-9" style="text-align: right;">
+								<h:outputText value="#{a.totalpagar}" styleClass="#{a.totalpagar.doubleValue()!=a.totalpagar.doubleValue() and v.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
+									<f:convertNumber pattern="$#,##0.00"/>
 								</h:outputText>
 							</div>
-							
-							<div class="p-col-5">
-								<h:outputText value="I.V.A.:" styleClass="Fs11 FontBold"/>
+							<div class="p-col-1">
+								<p:commandLink action="#" process="@this">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+								</p:commandLink>
 							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{a.totaliva}" styleClass="Fs11">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-5">
-								<h:outputText value="Descuento:" styleClass="Fs11 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{a.totaldescuento}" styleClass="Fs11">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-5">
-								<h:outputText value="Total:" styleClass="Fs11 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{a.totalfactura}" styleClass="Fs11">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-5">
-								<h:outputText value="#{msg['label.retencion2']}:" styleClass="Fs11 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{a.totalretencion}" styleClass="Fs11">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-5">
-								<h:outputText value="A Pagar:" styleClass="Fs11 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{a.totalpagar}" styleClass="Fs11">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-								</h:outputText>
-							</div>
-							
 						</div>
+						
 						
 					</p:column>
 					
 				</p:dataTable>
 				
+				<div class="EmptyBox20"/>
+								
 			</div>
+			
 	    	
 	    </h:form>
         

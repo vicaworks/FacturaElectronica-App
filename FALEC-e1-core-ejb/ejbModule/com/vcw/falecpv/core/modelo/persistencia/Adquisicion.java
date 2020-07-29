@@ -94,6 +94,11 @@ public class Adquisicion implements Serializable {
     
     @Basic(optional = false)
     @NotNull
+    @Column(name = "totalice", nullable = false, precision = 12, scale = 2)
+    private BigDecimal totalice;
+    
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "updated", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
@@ -398,6 +403,20 @@ public class Adquisicion implements Serializable {
 			e.printStackTrace();
 			return "";
 		}
+	}
+
+	/**
+	 * @return the totalice
+	 */
+	public BigDecimal getTotalice() {
+		return totalice;
+	}
+
+	/**
+	 * @param totalice the totalice to set
+	 */
+	public void setTotalice(BigDecimal totalice) {
+		this.totalice = totalice;
 	}
 
 }

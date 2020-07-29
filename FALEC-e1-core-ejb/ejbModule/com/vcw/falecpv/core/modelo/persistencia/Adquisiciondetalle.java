@@ -71,6 +71,16 @@ public class Adquisiciondetalle implements Serializable {
     
     @Basic(optional = false)
     @NotNull
+    @Column(name = "valoriva", nullable = false, precision = 12, scale = 2)
+    private BigDecimal valoriva;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valorice", nullable = false, precision = 12, scale = 2)
+    private BigDecimal valorice;
+    
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "idusuario", nullable = false, length = 40)
     private String idusuario;
@@ -88,6 +98,10 @@ public class Adquisiciondetalle implements Serializable {
     @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = false)
     @ManyToOne(optional = false)
     private Iva iva;
+    
+    @JoinColumn(name = "idice", referencedColumnName = "idice", nullable = true)
+    @ManyToOne(optional = true)
+    private Ice ice;
     
     @ManyToOne(optional = true)
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = true)
@@ -327,6 +341,48 @@ public class Adquisiciondetalle implements Serializable {
 	 */
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+
+	/**
+	 * @return the valoriva
+	 */
+	public BigDecimal getValoriva() {
+		return valoriva;
+	}
+
+	/**
+	 * @param valoriva the valoriva to set
+	 */
+	public void setValoriva(BigDecimal valoriva) {
+		this.valoriva = valoriva;
+	}
+
+	/**
+	 * @return the valorice
+	 */
+	public BigDecimal getValorice() {
+		return valorice;
+	}
+
+	/**
+	 * @param valorice the valorice to set
+	 */
+	public void setValorice(BigDecimal valorice) {
+		this.valorice = valorice;
+	}
+
+	/**
+	 * @return the ice
+	 */
+	public Ice getIce() {
+		return ice;
+	}
+
+	/**
+	 * @param ice the ice to set
+	 */
+	public void setIce(Ice ice) {
+		this.ice = ice;
 	}
 
 }
