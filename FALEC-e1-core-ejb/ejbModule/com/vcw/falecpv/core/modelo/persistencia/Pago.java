@@ -2,6 +2,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -65,9 +68,21 @@ public class Pago implements Serializable{
     @NotNull
     @Column(name = "valorentrega", nullable = false, precision = 12, scale = 2)
     private BigDecimal valorentrega =  BigDecimal.ZERO;
-    @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera", nullable = false)
-    @ManyToOne(optional = false)
+    
+    @Basic(optional = true)
+    @NotNull
+    @Column(name = "fechapago", nullable = true)
+    @Temporal(TemporalType.DATE)
+    private Date fechapago;
+    
+    @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera", nullable = true)
+    @ManyToOne(optional = true)
     private Cabecera cabecera;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idadquisicion", referencedColumnName = "idadquisicion", nullable = true)
+    private Adquisicion adquisicion;
+    
     @JoinColumn(name = "idtipopago", referencedColumnName = "idtipopago", nullable = false)
     @ManyToOne(optional = false)
     private Tipopago tipopago;
@@ -268,6 +283,34 @@ public class Pago implements Serializable{
 	 */
 	public void setTipoPagoFormularioEnum(TipoPagoFormularioEnum tipoPagoFormularioEnum) {
 		this.tipoPagoFormularioEnum = tipoPagoFormularioEnum;
+	}
+
+	/**
+	 * @return the fechapago
+	 */
+	public Date getFechapago() {
+		return fechapago;
+	}
+
+	/**
+	 * @param fechapago the fechapago to set
+	 */
+	public void setFechapago(Date fechapago) {
+		this.fechapago = fechapago;
+	}
+
+	/**
+	 * @return the adquisicion
+	 */
+	public Adquisicion getAdquisicion() {
+		return adquisicion;
+	}
+
+	/**
+	 * @param adquisicion the adquisicion to set
+	 */
+	public void setAdquisicion(Adquisicion adquisicion) {
+		this.adquisicion = adquisicion;
 	}
 
 }

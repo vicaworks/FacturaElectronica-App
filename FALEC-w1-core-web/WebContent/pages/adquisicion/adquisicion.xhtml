@@ -46,6 +46,31 @@
 				padding: 0.2em 0.5em !important;
 			}
 			
+			.boxMain{
+				padding: 15px;
+				text-align: center;
+				border-radius: 4px;
+			}
+			
+			.box-header{
+				font-size: 10px;
+			}
+			
+			.box-content{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			
+			.box-gray{
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.box-border-gray{
+				border:1px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
         </style>
     </ui:define>
 
@@ -150,7 +175,7 @@
 								<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
 							</p:menuitem>
 							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-								<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
+								<p:fileDownload value="#{adquisicionMainCtrl.fileComprasDet}" contentDisposition="inline"/>
 							</p:menuitem>
 						</p:menu>
 	    				
@@ -192,7 +217,7 @@
 						<p:menu overlay="true" trigger="cmlDtCompra" my="left top" at="left bottom">
 							<p:menuitem value="Editar Compra" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" >
 							</p:menuitem>
-							<p:menuitem value="Anular Compra" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" >
+							<p:menuitem value="Anular Compra" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 						</p:menu>
@@ -237,17 +262,18 @@
 						</h:outputText>
 					</p:column>
 					
+					<p:column headerText="I.C.E" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totalice}" >
+							<f:convertNumber pattern="$#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
 					<p:column headerText="I.V.A" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totaliva}" >
 							<f:convertNumber pattern="$#,##0.00"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="I.C.E" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totalice}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totalfactura}" styleClass="markGray DispBlock">
@@ -276,8 +302,10 @@
 								</h:outputText>
 							</div>
 							<div class="p-col-1">
-								<p:commandLink action="#" process="@this">
+								<p:commandLink action="#{pagoCtrl.cargarPagosAdquisicionById()}" process="@this" disabled="#{a.estado=='ANULADO'}">
 									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="#{a.idadquisicion}" target="#{pagoCtrl.idComprobante}"/>
+									<f:setPropertyActionListener value="#{a.totalpagar}" target="#{pagoCtrl.valorPagar}"/>
 								</p:commandLink>
 							</div>
 						</div>
@@ -291,8 +319,9 @@
 								
 			</div>
 			
-	    	
 	    </h:form>
+	    <!-- Lisdao de pago -->
+	    <ui:include src="../common/incl_comprobante_pagos.xhtml" />
         
     </ui:define>
 

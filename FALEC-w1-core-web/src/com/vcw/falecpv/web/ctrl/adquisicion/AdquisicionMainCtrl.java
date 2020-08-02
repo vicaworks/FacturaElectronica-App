@@ -6,8 +6,6 @@ package com.vcw.falecpv.web.ctrl.adquisicion;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -29,12 +27,12 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisiciondetalle;
-import com.vcw.falecpv.core.modelo.persistencia.Pagodetalle;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.AdquisiciondetalleServicio;
-import com.vcw.falecpv.core.servicio.PagodetalleServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -61,11 +59,6 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 	
 	@EJB
 	private AdquisiciondetalleServicio adquisiciondetalleServicio;
-	
-	@EJB
-	private PagodetalleServicio pagodetalleServicio;
-	
-	
 	
 	private Date desde;
 	private Date hasta;
@@ -94,7 +87,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 	public void consultarAdquisiciones()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:adquisicionDT");
 		adquisicionList = null;
-		adquisicionList = adquisicionServicio.getAdquisicionDao().getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
+		adquisicionList = adquisicionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 	}
 	
 	@Override
@@ -165,6 +158,223 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 		}
 	}
 	
+	public StreamedContent getFileComprasDet() {
+		try {
+			
+			if(adquisicionList==null || adquisicionList.size()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-ComprasDet.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			// datos de la cabecera
+			Row row = sheet.getRow(3);
+			Cell cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			row = sheet.getRow(4);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(desde));
+			
+			row = sheet.getRow(5);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			row = sheet.getRow(6);
+			cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			int fila = 10;
+			int filaPago = 10;
+			int filaDt = 10;
+			
+			for (Adquisicion adq : adquisicionList) {
+				
+				row = sheet.createRow(fila);
+				
+				int col =0;
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(adq.getFecha()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getEstado());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getTipocomprobante().getComprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(adq.getNumfactura()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getProveedor().getIdentificacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getProveedor().getNombrecomercial());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getSubtotal().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotaldescuento().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalice().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotaliva().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalfactura().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalretencion().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalpagar().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalPagoSum().doubleValue());
+				
+				// detalle de pago
+				filaDt = fila + 1;
+				filaPago = fila + 1;
+				for (Adquisiciondetalle ad : adq.getAdquisiciondetalleList()) {
+					
+					col = 14;
+					
+					row = sheet.getRow(filaDt);
+					if(row==null) {
+						row = sheet.createRow(filaDt);
+					}
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(ad.getProducto()!=null?ad.getProducto().getCodigoprincipal():"");
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(ad.getDescripcion());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(ad.getCantidad().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(ad.getPreciounitario().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(ad.getDescuento().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(ad.getValorice().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(ad.getValoriva().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(ad.getPreciototal().doubleValue());
+					
+					filaDt++;
+					
+				}
+				
+				for (Pago p : adq.getPagoList()) {
+					col = 22;
+					row = sheet.getRow(filaPago);
+					if(row==null) {
+						row = sheet.createRow(filaPago);
+					}
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getTipopago().getNombre());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getTotal().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getValorentrega().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(p.getCambio().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(FechaUtil.formatoFecha(p.getFechapago()));
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNumerodocumento());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(p.getNombrebanco());
+					
+					filaPago++;
+					
+				}
+				
+				if(filaDt >= filaPago) {
+					fila += (filaDt - fila);
+				}else {
+					fila += (filaPago - fila);
+				}
+				
+			}
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+			
+
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-CompraDet_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
 	public StreamedContent getFileCompras() {
 		try {
 			
@@ -201,136 +411,72 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			cell = row.createCell(1);
 			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
 			
-			int fila = 10;
-			int filaPago = 10;
-			int filaDt = 10;
+			int fila = 9;
 			
-			for (Adquisicion a : adquisicionList) {
+			for (Adquisicion adq : adquisicionList) {
 				
 				row = sheet.createRow(fila);
 				
 				int col =0;
 				
 				// datos de la cabecera
-				Adquisicion adq = adquisicionServicio.consultarByPk(a.getIdadquisicion());
 				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(adq.getFecha()));
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(adq.getTipocomprobante().getComprobante());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(adq.getNumfactura());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(adq.getAutorizacion()==null?"":adq.getAutorizacion());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(adq.getProveedor().getIdentificacion());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(adq.getProveedor().getNombrecomercial());
-				
-				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(adq.getEstado());
 				
 				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getTipocomprobante().getComprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(adq.getNumfactura()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getProveedor().getIdentificacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getProveedor().getNombrecomercial());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(adq.getSubtotal().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(adq.getTotaliva().doubleValue());
-				
-				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(adq.getTotaldescuento().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(adq.getTotalretencion().doubleValue());
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalice().doubleValue());
 				
 				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotaliva().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(adq.getTotalfactura().doubleValue());
 				
 				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalretencion().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(adq.getTotalpagar().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(adq.getTipopago().getNombre());
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adq.getTotalPagoSum().doubleValue());
 				
-				// detalle de pago
-				filaPago = fila + 1;
-				List<Pagodetalle> pdList = pagodetalleServicio.getByAdquisicion(a.getIdadquisicion());
-				for (Pagodetalle p : pdList) {
-					
-					col = 14;
-					
-					row = sheet.getRow(filaPago);
-					if(row==null) {
-						row = sheet.createRow(filaPago);
-					}
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(p.getTipopago().getNombre());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(p.getNumerodocumento()!=null?p.getNumerodocumento():"");
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(p.getNombrebanco()!=null?p.getNombrebanco():"");
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(p.getFecha()!=null?FechaUtil.formatoFecha(p.getFecha()):"");
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(p.getValor().doubleValue());
-					
-					filaPago++;
-				}
-				
-				// detalle de la compra
-				filaDt = fila + 1;
-				List<Adquisiciondetalle> adList = adquisicionServicio.getByAdquisicion(a.getIdadquisicion());
-				for (Adquisiciondetalle ad : adList) {
-					
-					col = 19;
-					
-					row = sheet.getRow(filaDt);
-					if(row==null) {
-						row = sheet.createRow(filaDt);
-					}
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getProducto()!=null?ad.getProducto().getCodigoprincipal():"");
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getDescripcion());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getCantidad());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getPreciounitario().doubleValue());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getDescuento().doubleValue());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getPreciototal().doubleValue());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getIva().getPorcentaje());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(ad.getIva().getValor().divide(BigDecimal.valueOf(100))
-							.multiply(ad.getPreciototal()).setScale(2, RoundingMode.HALF_UP).doubleValue());
-					
-					filaDt++;
-					
-				}
-				
-				if(filaDt >= filaPago) {
-					fila += (filaDt - fila);
-				}else {
-					fila += (filaPago - fila);
-				}
+				fila++;
 				
 			}
 			

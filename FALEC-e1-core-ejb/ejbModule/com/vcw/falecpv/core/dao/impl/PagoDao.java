@@ -47,6 +47,26 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 	}
 	
 	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idAdquisicion
+	 * @return
+	 * @throws DaoException
+	 */
+	public int eliminarByAdquisicion(String idAdquisicion)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createNativeQuery("DELETE FROM pago WHERE idadquisicion=:id");
+			q.setParameter("id", idAdquisicion);
+			
+			return q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
 	 * @param idCabecera
 	 * @return
 	 * @throws DaoException
@@ -86,4 +106,44 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 		}
 	}
 
+	/**
+	 * @author cristianvillarreal
+	 * @param idAdquisicion
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Pago> getByIdAdquisicion(String idAdquisicion)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.adquisicion.idadquisicion=:idCabecera ORDER BY p.idpago");
+			q.setParameter("idCabecera", idAdquisicion);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * @param idAdquisicionList
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Pago> getByIdAdquisicion(List<String> idAdquisicionList)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.adquisicion.idadquisicion in :lista ORDER BY p.adquisicion.idadquisicion,p.idpago");
+			q.setParameter("lista", idAdquisicionList);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 }

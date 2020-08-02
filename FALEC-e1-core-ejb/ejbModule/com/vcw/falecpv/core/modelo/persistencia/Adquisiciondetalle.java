@@ -51,7 +51,7 @@ public class Adquisiciondetalle implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad", nullable = false)
-    private int cantidad;
+    private BigDecimal cantidad;
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
@@ -78,6 +78,11 @@ public class Adquisiciondetalle implements Serializable {
     @NotNull
     @Column(name = "valorice", nullable = false, precision = 12, scale = 2)
     private BigDecimal valorice;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "preciototalsinimpuesto", nullable = false, precision = 12, scale = 2)
+    private BigDecimal preciototalsinimpuesto;
     
     @Basic(optional = false)
     @NotNull
@@ -113,9 +118,6 @@ public class Adquisiciondetalle implements Serializable {
     
     @Transient
     private BigDecimal precioUntarioCalculado;
-    
-    @Transient
-    private BigDecimal valorIva;
     
 	/**
 	 * 
@@ -173,20 +175,6 @@ public class Adquisiciondetalle implements Serializable {
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	}
-
-	/**
-	 * @return the cantidad
-	 */
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	/**
-	 * @param cantidad the cantidad to set
-	 */
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
 	}
 
 	/**
@@ -316,20 +304,6 @@ public class Adquisiciondetalle implements Serializable {
 	}
 
 	/**
-	 * @return the valorIva
-	 */
-	public BigDecimal getValorIva() {
-		return valorIva;
-	}
-
-	/**
-	 * @param valorIva the valorIva to set
-	 */
-	public void setValorIva(BigDecimal valorIva) {
-		this.valorIva = valorIva;
-	}
-
-	/**
 	 * @return the updated
 	 */
 	public Date getUpdated() {
@@ -383,6 +357,34 @@ public class Adquisiciondetalle implements Serializable {
 	 */
 	public void setIce(Ice ice) {
 		this.ice = ice;
+	}
+
+	/**
+	 * @return the cantidad
+	 */
+	public BigDecimal getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	/**
+	 * @return the preciototalsinimpuesto
+	 */
+	public BigDecimal getPreciototalsinimpuesto() {
+		return preciototalsinimpuesto;
+	}
+
+	/**
+	 * @param preciototalsinimpuesto the preciototalsinimpuesto to set
+	 */
+	public void setPreciototalsinimpuesto(BigDecimal preciototalsinimpuesto) {
+		this.preciototalsinimpuesto = preciototalsinimpuesto;
 	}
 
 }

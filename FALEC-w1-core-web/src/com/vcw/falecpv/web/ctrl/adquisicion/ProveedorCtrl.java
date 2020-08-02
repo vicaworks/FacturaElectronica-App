@@ -164,7 +164,6 @@ public class ProveedorCtrl extends BaseCtrl {
 				flag = true;
 				break;
 			case "ADQUISICION":
-				adquisicionFrmCtrl.consultarProveedor();
 				adquisicionFrmCtrl.getAdquisicionSelected().setProveedor(proveedorSelected);
 				flag = true;
 				break;

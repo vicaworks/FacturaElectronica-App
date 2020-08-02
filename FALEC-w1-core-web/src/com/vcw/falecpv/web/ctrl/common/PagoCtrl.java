@@ -76,6 +76,20 @@ public class PagoCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	public void cargarPagosAdquisicionById() {
+		try {
+			
+			pagoList = null;
+			pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idComprobante);
+			totalPago = BigDecimal.valueOf(pagoList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+			AppJsfUtil.showModalRender("dlgResumenPagos", "frmResPagos");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 
 	/**

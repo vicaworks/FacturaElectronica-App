@@ -88,10 +88,10 @@ public class AdquisicionDao extends AppGenericDao<Adquisicion, String> {
 			
 			Query q = null;
 			if(idadquisicion!=null) {
-				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado='GEN' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.proveedor.idproveedor=:idproveedor AND a.numfactura=:numfactura AND a.idadquisicion<>:idadquisicion");
+				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado<>'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.proveedor.idproveedor=:idproveedor AND a.numfactura=:numfactura AND a.idadquisicion<>:idadquisicion");
 				q.setParameter("idadquisicion", idadquisicion);
 			}else {
-				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado='GEN' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.proveedor.idproveedor=:idproveedor AND a.numfactura=:numfactura");
+				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado<>'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.proveedor.idproveedor=:idproveedor AND a.numfactura=:numfactura");
 			}
 			
 			q.setParameter("idestablecimiento", idestablecimiento);
