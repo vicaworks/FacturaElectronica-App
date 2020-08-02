@@ -317,8 +317,8 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		// 10. Si es retencion y tiene una compra actualiza los datos de la compra
 		if(cabecera.getAdquisicion()!=null && cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.RETENCION.getIdentificador())) {
 			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
-			adquisicion.setTotalretencion(cabecera.getTotalretencion());
-			adquisicion.setTotalpagar(adquisicion.getTotalfactura().add(cabecera.getTotalretencion().negate()).setScale(2, RoundingMode.HALF_UP));
+//			adquisicion.setTotalretencion(cabecera.getTotalretencion());
+//			adquisicion.setTotalpagar(adquisicion.getTotalfactura().add(cabecera.getTotalretencion().negate()).setScale(2, RoundingMode.HALF_UP));
 			adquisicion.setEstado("RETENCION");
 			adquisicionServicio.actualizar(adquisicion);
 		}
