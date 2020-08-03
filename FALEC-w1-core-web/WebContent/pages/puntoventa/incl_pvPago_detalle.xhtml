@@ -164,7 +164,7 @@
             
             <div class="Wid100 Fs25 divValor resaltarValor" style="text-align: center;">
             	<h:outputText value="#{factMainPagoCtrl.cabecerSelected.totalconimpuestos}" >
-            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
             	</h:outputText>
             </div>
                   
@@ -203,7 +203,7 @@
 								</div>
 								<div class="p-col-8">
 									<h:outputText value="#{p.total}" styleClass="FontBold Fs12 markGreen">
-										<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+										<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 								</div>
 								
@@ -214,7 +214,7 @@
 									</div>
 									<div class="p-col-8">
 										<h:outputText value="#{p.valorentrega}" styleClass="FontBold">
-											<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+											<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 										</h:outputText>
 									</div>
 									
@@ -223,7 +223,7 @@
 									</div>
 									<div class="p-col-8">
 										<h:outputText value="#{p.cambio}" styleClass="FontBold markBlack">
-											<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+											<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 										</h:outputText>
 									</div>
 									
@@ -236,7 +236,7 @@
 									</div>
 									<div class="p-col-8">
 										<h:outputText value="#{p.numerodocumento}" styleClass="FontBold">
-											<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+											<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 										</h:outputText>
 									</div>
 									
@@ -281,7 +281,7 @@
 	            <div class="Wid100 divValor" style="text-align: center;">
 	            	<p:outputPanel id="oupTotalPagoDT">
 		            	<h:outputText value="#{factMainPagoCtrl.totalPago}" styleClass="Fs20">
-		            		<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+		            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 		            	</h:outputText>
 			        </p:outputPanel>
 	            </div>

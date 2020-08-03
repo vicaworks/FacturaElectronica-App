@@ -270,7 +270,7 @@
 					
 					<p:column headerText="VALOR" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totalretencion}" styleClass="markGray DispBlock Wid100">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					

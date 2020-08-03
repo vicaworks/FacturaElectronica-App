@@ -71,7 +71,7 @@
 						<div class="p-md-4">
 							<h:outputText value="CANTIDAD" styleClass="DispBlock cpoRequerido Fs10"/>
 							<h:outputText value="#{det.cantidad}"  styleClass="DispBlock FontBold">
-								<f:convertNumber pattern="#,##0"/>
+								<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
 							</h:outputText>
 						</div>
 					</div>

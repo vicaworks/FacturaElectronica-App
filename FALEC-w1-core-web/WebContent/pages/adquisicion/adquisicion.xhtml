@@ -237,7 +237,7 @@
 					
 					<p:column headerText="FECHA" style="width:40px;">
 						<h:outputText value="#{a.fecha}" >
-							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+							<f:convertDateTime  pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
@@ -263,44 +263,44 @@
 					
 					<p:column headerText="SUBTOTAL" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.subtotal}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="DESCTO" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totaldescuento}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="I.C.E" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totalice}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="I.V.A" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totaliva}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					
 					<p:column headerText="TOTAL" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totalfactura}" styleClass="markGray DispBlock">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="#{msg['label.retencion']}" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totalretencion}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="A PAGAR" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totalpagar}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
@@ -309,7 +309,7 @@
 						<div class="p-grid" style="padding-top:2px;">
 							<div class="p-col-9" style="text-align: right;">
 								<h:outputText value="#{a.totalpagar}" styleClass="#{a.totalpagar.doubleValue()!=a.totalpagar.doubleValue() and v.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
-									<f:convertNumber pattern="$#,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							<div class="p-col-1">

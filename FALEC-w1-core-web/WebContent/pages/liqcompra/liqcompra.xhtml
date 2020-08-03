@@ -273,45 +273,45 @@
 					
 					<p:column headerText="SUBTOTAL" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totalsinimpuestos.add(r.totaldescuento)}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="DESCUENTO" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totaldescuento}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="SUBTOTAL" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totalsinimpuestos}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="IMPUESTO" style="width:45px;" styleClass="TexAlRight">
 						
 						<h:outputText value="#{r.totaliva}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					
 					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:45px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.totalconimpuestos}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="#{msg['label.retencion']}" style="width:30px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.valorretenido}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="A PAGAR" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{r.valorapagar}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
@@ -320,7 +320,7 @@
 						<div class="p-grid" style="padding-top:2px;">
 							<div class="p-col-9" style="text-align: right;">
 								<h:outputText value="#{r.totalPagadoSum}" styleClass="#{r.totalPagadoSum.doubleValue()!=r.valorapagar.doubleValue() and r.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
-									<f:convertNumber pattern="$#,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							<div class="p-col-1">

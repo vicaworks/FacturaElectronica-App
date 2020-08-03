@@ -70,7 +70,6 @@ public class Pago implements Serializable{
     private BigDecimal valorentrega =  BigDecimal.ZERO;
     
     @Basic(optional = true)
-    @NotNull
     @Column(name = "fechapago", nullable = true)
     @Temporal(TemporalType.DATE)
     private Date fechapago;

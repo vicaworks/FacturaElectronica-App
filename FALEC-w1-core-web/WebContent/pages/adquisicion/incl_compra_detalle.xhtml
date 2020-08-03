@@ -228,7 +228,7 @@
 					
 					<div class="p-col-3" style="text-align: right;">
 						<h:outputText value="#{d.preciototal}" styleClass="Fs12 FontBold">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					
@@ -263,7 +263,7 @@
 					
 					<div class="p-col-5 subtotalValor">
 						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.subtotal}" styleClass="Fs12">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					
@@ -273,7 +273,7 @@
 					
 					<div class="p-col-5 subtotalValor">
 						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaldescuento}" styleClass="Fs12">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					
@@ -283,7 +283,7 @@
 					
 					<div class="p-col-5 subtotalValor">
 						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalice}" styleClass="Fs12">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					
@@ -293,7 +293,7 @@
 					
 					<div class="p-col-5 subtotalValor">
 						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaliva}" styleClass="Fs12">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					
@@ -309,7 +309,7 @@
 					
 					<div class="p-col-5 subtotalValor">
 						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="FontBold Fs16 DispBlock Wid100">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 							
@@ -374,7 +374,7 @@
 					<div class="EmptyBox5"/>
 					<div class="Wid100" >
 						<h:outputText  styleClass="Fs18 DispBlock" value="#{adquisicionFrmCtrl.adquisicionSelected.totalretencion}">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 				</div>
@@ -386,21 +386,21 @@
 				<div class="p-col-12 p-md-3 boxMain box-gray">
 					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
 					<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</div>
 				
 				<div class="p-col-12 p-md-3 boxMain box-border-gray">
 					<div class="DispBlock box-header">TOTAL PAGADO</div>
 					<h:outputText value="#{adquisicionFrmCtrl.totalPago}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</div>
 				
 				<div class="p-col-12 p-md-3 boxMain box-border-gray">
 					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
 					<h:outputText value="#{adquisicionFrmCtrl.totalSaldo}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</div>
 			</div>	

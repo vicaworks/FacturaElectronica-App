@@ -122,7 +122,7 @@
 					<p:column headerText="VALOR"
 						style="width:30px; text-align: center; ">
 						<h:outputText value="#{iva.valor}" >
-						 <f:convertNumber locale="es_EC" pattern="0.###"/>
+						 <f:convertNumber pattern="#{appSessionCtrl.formatoPorcentaje}"/>
 						</h:outputText>
 					</p:column>
 					

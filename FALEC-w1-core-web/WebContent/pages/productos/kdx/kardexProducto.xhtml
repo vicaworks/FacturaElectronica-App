@@ -15,7 +15,7 @@
 			.kardexDT .ui-datatable-scrollable-body{
 			
 				min-height: 30vh !important;
-				height: calc(100vh - 430px)!important;
+				height: calc(100vh - 380px)!important;
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -28,12 +28,19 @@
 				vertical-align: top;
 			}
 			
-			body .ui-message {
-				padding: 0em !important;
-			}
-			
 			.ui-buttonset .ui-button {
 				width: 100%;
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
 			}
 			
 			/* .ui-splitbutton .ui-button {
@@ -211,17 +218,17 @@
 					
 					<p:column headerText="FECHA / HORA" style="width:40px;" styleClass="TexAlCenter">
 						<h:outputText value="#{k.updated}" >
-							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+							<f:convertDateTime  pattern="dd/MM/yyyy"/>
 						</h:outputText>
 						<br/>
 						<h:outputText value="#{k.updated}" >
-							<f:convertDateTime locale="es_EC" pattern="HH:mm"/>
+							<f:convertDateTime  pattern="HH:mm"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="FECHA REGISTRO INV" style="width:40px;">
 						<h:outputText value="#{k.fecharegistro}" >
-							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+							<f:convertDateTime  pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 	                
@@ -243,7 +250,7 @@
 							</div>
 							<div class="p-col-7">
 								<h:outputText value="#{k.fechafabricacion}" >
-									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+									<f:convertDateTime  pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
 						</div>
@@ -254,7 +261,7 @@
 							</div>
 							<div class="p-col-7">
 								<h:outputText value="#{k.fechacompra}" >
-									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+									<f:convertDateTime  pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
 						</div>
@@ -265,7 +272,7 @@
 							</div>
 							<div class="p-col-7">
 								<h:outputText value="#{k.fechavencimiento}" >
-									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+									<f:convertDateTime  pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
 						</div>
@@ -281,23 +288,23 @@
 					
 					<p:column headerText="CANTIDAD" style="width:40px;" styleClass="TexAlCenter">
 						<h:outputText value="#{k.cantidad}" >
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="COST UNIT" style="width:30px;" styleClass="TexAlRight">
 						<h:outputText value="#{k.costounitario}" >
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="COST TOT" style="width:30px;" styleClass="TexAlRight">
 						<h:outputText value="#{k.costototal}" >
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:convertNumber  pattern="0.##"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PREC VENTA" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="PREC VENTA" style="width:50px;" styleClass="TexAlCenter">
 						
 						<div class="p-grid">
 							<div class="p-col-4">
@@ -305,7 +312,7 @@
 							</div>
 							<div class="p-col-8" style="text-align: left;">
 								<h:outputText value="#{k.producto.preciouno}" >
-									<f:convertNumber locale="es_EC" pattern="0.##"/>
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							<div class="p-col-4">
@@ -313,7 +320,7 @@
 							</div>
 							<div class="p-col-8" style="text-align: left;">
 								<h:outputText value="#{k.producto.preciodos}" >
-									<f:convertNumber locale="es_EC" pattern="0.##"/>
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							<div class="p-col-4">
@@ -321,7 +328,7 @@
 							</div>
 							<div class="p-col-8" style="text-align: left;">
 								<h:outputText value="#{k.producto.preciotres}" >
-									<f:convertNumber locale="es_EC" pattern="0.##"/>
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 						</div>
@@ -330,7 +337,7 @@
 					
 					<p:column headerText="EXISTENCIA" style="width:30px;" styleClass="TexAlCenter">
 						<h:outputText value="#{k.saldo}" styleClass="#{kardexCtrl.getCompararValoresDouble(k.saldo.doubleValue(),0)?'markRed':'markGreen'}">
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 					</p:column>
 	                

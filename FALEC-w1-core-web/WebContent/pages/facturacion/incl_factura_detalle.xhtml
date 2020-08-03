@@ -183,7 +183,7 @@
 							</div>
 							<div class="p-col-3" style="text-align: right;">
 								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 						</div>
@@ -267,7 +267,7 @@
 							</div>
 							<div class="p-col-3" style="text-align: right;">
 								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
@@ -307,7 +307,7 @@
 							
 							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totalsinimpuestos}" styleClass="Fs12">
-									<f:convertNumber pattern="$ #,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
@@ -317,7 +317,7 @@
 							
 							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totalice}" styleClass="Fs12">
-									<f:convertNumber pattern="$ #,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
@@ -327,7 +327,7 @@
 							
 							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totaliva}" styleClass="Fs12">
-									<f:convertNumber pattern="$ #,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
@@ -343,7 +343,7 @@
 							
 							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totalconimpuestos}" styleClass="FontBold Fs16 DispBlock Wid100">
-									<f:convertNumber pattern="$ 0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 								

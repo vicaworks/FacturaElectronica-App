@@ -112,49 +112,49 @@
 				
 				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.subtotal}">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="DESC" style="width:30px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.totaldescuento}" >
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="TOT SIN IVA" style="width:40px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.totalsinimpuestos}" styleClass="markBlack">
-						<f:convertNumber pattern="$#,##0.00"/>
-					</h:outputText>
-				</p:column>
-				
-				<p:column headerText="IVA" style="width:30px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.iva}" >
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="ICE" style="width:30px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.ice}" >
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="IVA" style="width:30px;" styleClass="TexAlRight">
+					<h:outputText value="#{f.iva}" >
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.total}" styleClass="">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="#{msg['label.retencion']}" style="width:40px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.valorretenido}" styleClass="">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="A PAGAR" style="width:40px;" styleClass="TexAlRight">
 					<h:outputText value="#{f.valorapagar}" styleClass="markGreen">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
@@ -173,38 +173,38 @@
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repFacCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     		
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repFacCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="TOT SIN IVA" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repFacCtrl.totalesDto.totalsinimpuestos}" styleClass="Fs16 FontBold markBlack">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="I.V.A." styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacCtrl.totalesDto.iva}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="I.C.E" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repFacCtrl.totalesDto.ice}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+    			</h:outputText>
+    		</div>
+    		<div class="p-col-4 p-md-2" style="text-align: center;">
+    			<h:outputText value="I.V.A." styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
+    			<h:outputText value="#{repFacCtrl.totalesDto.iva}" styleClass="Fs16 FontBold">
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repFacCtrl.totalesDto.total}" styleClass="Fs16 FontBold markGreen">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     	</div>

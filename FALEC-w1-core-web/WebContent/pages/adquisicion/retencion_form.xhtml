@@ -543,20 +543,20 @@
 							
 							<p:column headerText="BASE IMPONIBLE" style="width:30px;">
 								<h:outputText value="#{d.baseimponible}">
-									<f:convertNumber pattern="$ 0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="%" style="width:30px;">
 								<h:outputText value="% "/>
 								<h:outputText value="#{d.porcentajeretener}">
-									<f:convertNumber pattern="0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
 								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="TOTAL RTN." style="width:30px;">
 								<h:outputText value="#{d.valorretenido}">
-									<f:convertNumber pattern="$ 0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</p:column>
 							
@@ -576,7 +576,7 @@
 									
 									<div class="p-col-4 subtotalValor">
 										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs16">
-											<f:convertNumber pattern="$ 0.00"/>
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 										</h:outputText>
 									</div>
 										
