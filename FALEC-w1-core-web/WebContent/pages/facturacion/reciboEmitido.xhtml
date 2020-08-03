@@ -154,8 +154,9 @@
 							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdRtnNuevo"
-							value="NUEVA RECIBO" icon="fa fa-plus" 
-							action="factura.jsf?faces-redirect=true" styleClass="Wid100 secondary-button" update="@form">
+							value="NUEVO RECIBO" icon="fa fa-plus" 
+							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button" update="@form">
+							<f:setPropertyActionListener value="RECIBO" target="#{compFacCtrl.callModule}"/>
 	   					</p:commandButton>
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdGlobalExcel"

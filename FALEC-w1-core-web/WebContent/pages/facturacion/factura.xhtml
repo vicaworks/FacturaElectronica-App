@@ -178,7 +178,8 @@
     	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+		    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf" rendered="#{compFacCtrl.callModule=='FACTURA'}"/>
+		    <p:menuitem value="Recibos Emitidos" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf" rendered="#{compFacCtrl.callModule=='RECIBO'}"/>
 		    <p:menuitem value="Factura" url="#{request.contextPath}/pages/facturacion/factura.jsf"/>
 		</p:breadCrumb>
     	<div class="EmptyBox5"/>

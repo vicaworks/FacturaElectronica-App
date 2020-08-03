@@ -101,6 +101,7 @@ public class CompFacCtrl extends BaseCtrl {
 	private List<Iva> ivaList;
 	private BigDecimal porcentajeRenta;
 	private BigDecimal porcentajeIva;
+	private String callModule;
  	
 	/**
 	 * 
@@ -1013,6 +1014,20 @@ public class CompFacCtrl extends BaseCtrl {
 	 */
 	public void setPorcentajeIva(BigDecimal porcentajeIva) {
 		this.porcentajeIva = porcentajeIva;
+	}
+
+	/**
+	 * @return the callModule
+	 */
+	public String getCallModule() {
+		return callModule;
+	}
+
+	/**
+	 * @param callModule the callModule to set
+	 */
+	public void setCallModule(String callModule) {
+		this.callModule = callModule;
 	}
 
 }
