@@ -9,7 +9,7 @@ package com.vcw.falecpv.core.constante.contadores;
  */
 public enum TipoComprobanteEnum {
 	
-	ADQUICIION("C"),FACTURACION("F"),RETENCION("RT"),NOTACREDITO("NC"),GUIA_REMISION("GR"),LIQUIDACION_COMPRA("LC"),NOTA_DEBITO("ND");
+	ADQUICIION("C"),FACTURACION("F"),RETENCION("RT"),NOTACREDITO("NC"),GUIA_REMISION("GR"),LIQUIDACION_COMPRA("LC"),NOTA_DEBITO("ND"),CUENTAS_COBRAR("CXC");
 	
 	private String sigla;
 	

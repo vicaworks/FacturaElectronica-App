@@ -202,8 +202,9 @@
 						<p:inputNumber symbol="%"  value="#{liqCompraFormCtrl.porcentajeRenta}" 
                                 symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){return false;}">  
 		                </p:inputNumber>
+		                <p:spacer width="10px"/>
 						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencion('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
+							<i class="fa fa-floppy-o Fs14"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>
@@ -223,8 +224,9 @@
 						<p:inputNumber symbol="%" value="#{liqCompraFormCtrl.porcentajeIva}"
                                 symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){return false;}">  
 		                </p:inputNumber>
+		                <p:spacer width="10px"/>
 						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencion('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
+							<i class="fa fa-floppy-o Fs14"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>
@@ -385,8 +387,13 @@
 										</p:inputText>
 										
 										<!-- credito -->
-										<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />							
-										<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />
+										<h:outputText value="FECHA PAGO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+										<p:calendar id="claAdqFechaCompra" value="#{p.fechapago}"
+											pattern="dd/MM/yyyy"
+											locale="es"
+											requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="Fecha tentativa de pago"
+											rendered="#{p.tipopago.subdetalle == '4'}">
+										</p:calendar>
 										
 									</div>
 									

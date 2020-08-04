@@ -387,8 +387,13 @@
 									</p:inputText>
 									
 									<!-- credito -->
-									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />							
-									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />
+									<h:outputText value="FECHA PAGO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:calendar id="claAdqFechaCompra" value="#{p.fechapago}"
+										pattern="dd/MM/yyyy"
+										locale="es"
+										requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="Fecha tentativa de pago"
+										rendered="#{p.tipopago.subdetalle == '4'}">
+									</p:calendar>
 									
 								</div>
 								
