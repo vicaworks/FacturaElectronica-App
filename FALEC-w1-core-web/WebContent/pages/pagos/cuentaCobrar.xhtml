@@ -112,6 +112,25 @@
 				border: 1px solid #d8d8dc;
 			}
 			
+			.pago-header{
+				border-radius: 4px;
+				text-align: right;
+				padding: 10px 15px;
+				font-size: 18px;
+				/* font-weight: 700; */
+				border-bottom: 1px solid #F0F3F4;
+			}
+			
+			.pago-valor{
+				border-radius: 4px;
+				background-color: #f8f8f8;
+				text-align: left;
+				padding: 10px 15px;
+				font-size: 18px;
+				font-weight: 700;
+				color: #595959;
+				border: 1px solid #d8d8dc;
+			}
 			
         </style>
     </ui:define>
@@ -306,8 +325,11 @@
 								</h:outputText>
 							</div>
 							<div class="p-col-1">
-								<p:commandLink action="#" process="@this">
+								<p:commandLink action="#{pagoCtrl.cargarPagosForm()}" process="@this">
 									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="CUENTAS_COBRAR" target="#{pagoCtrl.callModule}"/>
+									<f:setPropertyActionListener value="#{v.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
+									<f:setPropertyActionListener value="#{v.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
 								</p:commandLink>
 							</div>
 						</div>
@@ -322,6 +344,8 @@
 			</div>
 	    	
 	    </h:form>
+	    <!-- Formulario de pagos -->
+	    <ui:include src="incl_pagos_form.xhtml"></ui:include>
 	    
     </ui:define>
 

@@ -1,0 +1,231 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.otrosPagosDT .ui-datatable-scrollable-body{
+			min-height: 20vh !important;
+			max-height: 20vh !important;
+		}
+		
+		.pagosDT .ui-datatable-scrollable-body{
+			min-height: 30vh !important;
+			max-height: 30vh !important;
+		}
+		
+	</style>
+	
+	<p:dialog header="Pagos" widgetVar="dlgPagosForm" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="formPagos">
+		
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgPagosForm').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<!-- Mensajes -->
+			<p:messages id="msgFormPagos" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formPagos"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmUsuario contenedorFormulario">
+				
+				<div class="card card-w-title">
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Otros pagos</h3>
+			   		<div class="EmptyBox5"/>
+			   		<p:dataTable id="otrosPagosDT"
+	        			scrollable="true"
+	        			value="#{pagoCtrl.pagoOtrosList}"
+	        			var="p"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvResumenPagoDT Fs12"  
+						rowKey="#{p.idpago}">
+						
+						<p:column headerText="TIPO PAGO" style="width:50px;">
+							<h:outputText value="#{p.tipopago.nombre}" />
+						</p:column>
+						
+						<p:column headerText="VALOR" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{p.total}" styleClass="markGreen DispBlock">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="IMPORTE" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{p.valorentrega}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="CAMBIO" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{p.cambio}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="NUM. DOCUMENTO" style="width:80px;" styleClass="TexAlLeft">
+							<h:outputText value="#{p.numerodocumento}" >
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="BANCO" style="width:80px;" styleClass="TexAlLeft">
+							<h:outputText value="#{p.nombrebanco}" >
+							</h:outputText>
+						</p:column>
+						
+					</p:dataTable>
+			   		<div class="EmptyBox5"/>
+				</div>
+				<div class="EmptyBox5"/>
+				<div class="card card-w-title">
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Adeudado</h3>
+			   		<div class="EmptyBox5"/>
+			   		
+			   		<p:dataTable id="pagosDT"
+	        			scrollable="true"
+	        			value="#{pagoCtrl.pagoList}"
+	        			var="f"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvResumenPagoDT Fs12"  
+						rowKey="#{f.idpago}">
+						
+						<p:column headerText="FECHA PAGO" style="width:50px;">
+							<h:outputText value="#{f.fechapago}" styleClass="#{cuentaCobrarCtrl.isFechaVencida(f.fechapago)?'markRed':''}">
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
+						</p:column>
+						
+						<p:column headerText="PLAZO" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{f.plazo}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="VALOR PAGO" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{f.total}" styleClass="markGray DispBlock">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="ABONO" style="width:40px;">
+							
+							<p:spinner id="insDetpagValPago" value="#{f.valorpago}" min="0" max="#{f.total}" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+								<!-- <p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/> -->
+							</p:spinner>
+							<p:message for="insDetpagValPago"/>
+						</p:column>
+						
+						<p:column headerText="NOTAS" style="width:120px;">
+							
+							<p:inputTextarea value="#{f.notas}" maxlength="500" styleClass="Wid100" rows="1">
+							</p:inputTextarea>
+							
+						</p:column>
+						
+					</p:dataTable>
+			   		
+			   		<div class="EmptyBox5"/>
+			   	</div>
+			   	<div class="EmptyBox5"/>
+				<div class="card card-w-title">
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Valor pago</h3>
+			   		<div class="EmptyBox5"/>
+			   		
+			   		<div class="p-grid p-align-center vertical-container">
+			   			
+			   			<div class="p-col-12 p-md-8">
+			   				<div class="p-grid p-justify-even ">
+					   			<!-- Valor comprobante -->
+					   			<div class="p-col-12 p-md-4 boxMain box-gray">
+					   				<div class="DispBlock box-header">TOTAL COMPROBANTE</div>
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="box-content Fs20">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+					   			</div>
+					   			
+					   			<!-- Valor adeudado -->
+					   			<div class="p-col-12 p-md-4 boxMain box-border-gray">
+					   				<div class="DispBlock box-header">TOTAL ADEUDADO</div>
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content Fs20">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+					   			</div>
+			   				</div>		
+			   			</div>
+			   			
+			   			<!-- totales -->
+			   			<div class="p-col-12 p-md-4">
+			   				<div class="p-grid">
+			   					<div class="p-col-6 pago-header">
+			   						<h:outputText value="Otros pagos " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalOtrosPago}" styleClass="box-content">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   					<div class="EmptyBox5"/>
+			   					<div class="p-col-6 pago-header">
+			   						<h:outputText value="Adeudado " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   					<div class="EmptyBox5"/>
+			   					<div class="p-col-6 pago-header">
+			   						<h:outputText value="Abonado " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalAbono}" styleClass="box-content">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   					<div class="EmptyBox5"/>
+			   					<div class="p-col-6 pago-header">
+			   						<h:outputText value="Total " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalPago}" styleClass="box-content">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   				</div>
+			   			</div>
+			   			
+			   		</div>
+			   		
+			   		<div class="EmptyBox5"/>
+			   	</div>
+				
+			</div>
+			
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>

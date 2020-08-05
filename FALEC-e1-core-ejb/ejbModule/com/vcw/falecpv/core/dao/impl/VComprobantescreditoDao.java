@@ -39,9 +39,9 @@ public class VComprobantescreditoDao extends AppGenericDao<VComprobantescredito,
 	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante,String criterio)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantescredito c WHERE c.idestablecimiento=:idestablecimiento AND c.abono < c.totalpago " 
+			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantescredito c WHERE c.idestablecimiento=:idestablecimiento  " 
 			+ (tipocomprobante!=null?" AND c.idtipocomprobante:=idtipocomprobante ":" ") 
-			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":" ")
+			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":" AND c.abono < c.totalpago ")
 			+ " ORDER BY c.fechaemision");
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);
