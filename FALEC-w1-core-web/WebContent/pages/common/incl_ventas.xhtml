@@ -134,25 +134,25 @@
 						</f:subview>
 	                </p:column>
 	                
-	                <p:column headerText="SUBTOTAL" style="width:40px;">
+	                <p:column headerText="SUBTOTAL" style="width:40px;" styleClass="TexAlRight">
 	                	<h:outputText value="#{v.totalsinimpuestos}">
-	                		<f:convertNumber pattern="$#,##0.00"/>
+	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 	                </p:column>
 	                
-	                <p:column headerText="IMPUESTOS" style="width:40px;">
+	                <p:column headerText="IMPUESTOS" style="width:40px;" styleClass="TexAlRight">
 	                	<h:outputText value="#{v.totalice.add(v.totaliva)}">
-	                		<f:convertNumber pattern="$#,##0.00"/>
+	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 	                </p:column>
 	            	
-	            	<p:column headerText="TOTAL" style="width:40px;">
+	            	<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
 	                	<h:outputText value="#{v.totalconimpuestos}">
-	                		<f:convertNumber pattern="$#,##0.00"/>
+	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 	                </p:column>
 	                
-	                <p:column headerText=" " style="width:40px;">
+	                <p:column headerText=" " style="width:40px;" styleClass="TexAlCenter">
 	                	<p:commandLink action="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
 							<i class="fa fa-hand-o-left Fs30" style="color:#252529;"></i>
 							<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>

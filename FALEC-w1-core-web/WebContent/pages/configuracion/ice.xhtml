@@ -179,12 +179,14 @@
 		        </p:column>
 		        
 		        
-		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;" >
+		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;"  styleClass="TexAlRight">
 		            <h:outputText value="#{ice.tarifaespecifica}" />
 		        </p:column>
 		        
-		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" >
-		            <h:outputText value="#{ice.valor}" />
+		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" styleClass="TexAlRight">
+		            <h:outputText value="#{ice.valor}" >
+		            	<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
+		            </h:outputText>
 		        </p:column>
 		 
 		        

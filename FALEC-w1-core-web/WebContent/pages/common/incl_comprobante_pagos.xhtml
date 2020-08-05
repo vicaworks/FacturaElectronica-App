@@ -120,14 +120,14 @@
 					<div class="p-col-12 p-md-3 boxMain box-gray">
 						<div class="DispBlock box-header">TOTAL POR PAGAR</div>
 						<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="box-content">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					
 					<div class="p-col-12 p-md-3 boxMain box-border-gray">
 						<div class="DispBlock box-header">TOTAL PAGO</div>
 						<h:outputText value="#{pagoCtrl.totalPago}" styleClass="box-content">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 				</div>	

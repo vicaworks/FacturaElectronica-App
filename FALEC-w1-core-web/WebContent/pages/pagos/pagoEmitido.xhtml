@@ -1,0 +1,309 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">Pagos</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+        
+        	.pvUnoDT .ui-datatable-scrollable-body{
+				min-height: 40vh !important;
+				/* height: calc(100vh - 500px)!important; */				
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.cardTitle{
+				padding:0.5em 0px;
+				font-size: 18px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
+				padding: 0.2em !important;
+			}
+			
+			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+				padding: 0em;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+				padding: 0px; 
+			}
+			
+			.boxMain{
+				padding: 15px;
+				text-align: center;
+				border-radius: 4px;
+			}
+			
+			.box-header{
+				font-size: 10px;
+			}
+			
+			.box-content{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			
+			.box-gray{
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.box-border-gray{
+				border:1px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
+			.pago-header{
+				border-radius: 4px;
+				text-align: right;
+				padding: 10px 15px;
+				font-size: 18px;
+				/* font-weight: 700; */
+				border-bottom: 1px solid #F0F3F4;
+			}
+			
+			.pago-valor{
+				border-radius: 4px;
+				background-color: #f8f8f8;
+				text-align: left;
+				padding: 10px 15px;
+				font-size: 18px;
+				font-weight: 700;
+				color: #595959;
+				border: 1px solid #d8d8dc;
+			}
+			
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
+    	
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+		    <p:menuitem value="Pagos" url="#{request.contextPath}/pages/pagos/pagoEmitido.jsf"/>
+		</p:breadCrumb>
+    	
+    	<!-- Reporte global -->
+	    <h:form id="formMain">
+	    
+	    	<div class="card card-w-title">
+				<h3 class="cardTitle">
+					<i class="fa fa-arrow-circle-right"/>
+					Pagos emitidos
+				</h3>
+		   		<div class="EmptyBox5"/>
+		   		
+		   		<div class="p-grid p-align-top vertical-container">
+		    		
+		    		<div class="p-col-12 p-md-3">
+		    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+			    		<p:calendar id="calDesde" value="#{pagosMainCtrl.desde}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calDesde"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-3">
+		    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+			    		<p:calendar id="calHasta" value="#{pagosMainCtrl.hasta}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calHasta"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-4">
+		    			<h:outputText value="Tipo Pago" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+		    			<p:selectOneMenu id="somTipoPago"
+									value="#{pagosMainCtrl.tipopagoSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="false"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100">
+							<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+							<f:selectItems value="#{pagosMainCtrl.tipopagoList}" var="u"
+											itemLabel="#{u.nombre}" itemValue="#{u}" />	
+						</p:selectOneMenu>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+		    		
+	  					<p:commandButton id="cmdGlobalBuscar"
+							icon="fa fa-search"
+							action="#{pagosMainCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+						<div class="EmptyBox5"/>
+						
+	  					<p:commandButton id="cmdGlobalExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty pagosMainCtrl.pagosQuerieList}"
+							ajax="false">
+							<p:fileDownload value="#{pagosMainCtrl.fileResumen}" contentDisposition="inline"/>
+						</p:commandButton>
+						
+		    		</div>
+		    		
+		   		</div>
+		   		
+		   			
+	    	</div>
+	    
+	    	<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="EmptyBox10"/>
+			<div class="card card-w-title">
+		    	<p:dataTable id="pvUnoDT"
+		       			scrollable="true"
+		       			value="#{pagosMainCtrl.pagosQuerieList}"
+		       			var="v"
+		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvUnoDT Fs11"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowKey="#{v.idpago}"
+						rows="20"
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+					
+					
+					<p:column headerText="REGISTRO" style="width:40px;" styleClass="TexAlCenter">
+						<h:outputText value="#{v.updated}" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="FECHA" style="width:40px;">
+						<h:outputText value="#{v.fechaemision}" >
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="#{msg['label.identificacion']}" style="width:80px;" filterBy="#{v.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{v.identificacion}" />
+					</p:column>
+					
+					<p:column headerText="CLIENTE" style="width:130px;">
+						<h:outputText value="#{v.razonsocial}" />
+					</p:column>
+					
+					<p:column headerText="COMPROBANTE" style="width:80px;">
+						<h:outputText value="#{v.comprobante}" />
+					</p:column>
+					
+					<p:column headerText="NUM COMPRO" style="width:90px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" />
+					</p:column>
+					
+					<p:column headerText="TIPO PAGO" style="width:100px;">
+						<h:outputText value="#{v.nombre}">
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="VALOR" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.total}" styleClass="DispBlock markGray">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="IMPORTE" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.valorentrega}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CAMBIO" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.cambio}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="NUM DOC" style="width:50px;" filterBy="#{v.numerodocumento}" filterMatchMode="contains">
+						<h:outputText value="#{v.numerodocumento}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="BANCO" style="width:50px;"  filterBy="#{v.nombrebanco}" filterMatchMode="contains">
+						<h:outputText value="#{v.nombrebanco}" >
+						</h:outputText>
+					</p:column>
+								
+				</p:dataTable>
+				
+				<div class="EmptyBox10"/>
+			</div>
+			<div class="EmptyBox5"/>
+			<div class="card card-w-title">
+				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Totales</h3>
+		   		<div class="EmptyBox5"/>
+		   		<div class="p-grid">
+			   		<p:repeat var="t" value="#{pagosMainCtrl.pagosQueryTotal}">
+			   			<div class="p-col-4 pago-header">
+			   				<h:outputText value="#{t.nombre}" />
+			   			</div>
+			   			<div class="p-col-8 pago-valor">
+			   				<h:outputText value="#{t.total}" >
+			   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+			   				</h:outputText>
+			   			</div>
+			   			<div class="EmptyBox5"/>
+			   		</p:repeat>
+		   		</div>
+		   		<div class="EmptyBox10"/>
+		   	</div>
+	    	
+	    </h:form>
+	    
+    </ui:define>
+
+</ui:composition>

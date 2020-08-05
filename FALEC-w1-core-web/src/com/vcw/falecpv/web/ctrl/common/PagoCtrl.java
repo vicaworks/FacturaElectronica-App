@@ -5,7 +5,9 @@ package com.vcw.falecpv.web.ctrl.common;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
@@ -36,10 +38,15 @@ public class PagoCtrl extends BaseCtrl {
 	private PagoServicio pagoServicio;
 	
 	private List<Pago> pagoList;
+	private List<Pago> pagoOtrosList;
 	private VentasQuery ventasQuery;
 	private String idComprobante;
 	private BigDecimal valorPagar = BigDecimal.ZERO;
 	private BigDecimal totalPago = BigDecimal.ZERO;
+	private String callModule;
+	private BigDecimal totalOtrosPago = BigDecimal.ZERO;
+	private BigDecimal totalAdeudado = BigDecimal.ZERO;
+	private BigDecimal totalAbono = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -90,7 +97,62 @@ public class PagoCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	public void cargarPagosForm() {
+		try {
+			pagoList = null;
+			switch (callModule) {
+			case "CUENTAS_COBRAR":
+				pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
+				break;
+			case "CUENTAS_PAGAR":
+				pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idComprobante);
+				break;	
+			default:
+				break;
+			}
+			
+			// consultar otros pagos
+			pagoOtrosList = null;
+			pagoOtrosList = pagoList.stream().filter(x->!x.getTipopago().getIdtipopago().equals("6")).collect(Collectors.toList());
+			// consultar solo creditos
+			pagoList = pagoList.stream().filter(x->x.getTipopago().getIdtipopago().equals("6")).collect(Collectors.toList());
+			// ordenar
+			pagoList.sort(Comparator.comparing(Pago::getFechapago));
+			totalizar();
+			AppJsfUtil.showModalRender("dlgPagosForm", "formPagos");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
+	private void totalizar() {
+		
+		totalPago = BigDecimal.ZERO;
+		totalOtrosPago = BigDecimal.ZERO;
+		totalAdeudado = BigDecimal.ZERO;
+		totalAbono = BigDecimal.ZERO;
+		
+		if(!pagoOtrosList.isEmpty()) {
+			totalOtrosPago = BigDecimal.valueOf(pagoOtrosList.stream().mapToDouble(p->p.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		}
+		
+		totalAbono = BigDecimal.valueOf(pagoList.stream().mapToDouble(p->p.getValorpago().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		totalAdeudado = BigDecimal.valueOf(pagoList.stream().mapToDouble(p->p.getTotal().doubleValue()).sum() - totalAbono.doubleValue()).setScale(2, RoundingMode.HALF_UP);
+		totalPago = totalPago.add(totalOtrosPago).add(totalAdeudado).add(totalAbono).setScale(2, RoundingMode.HALF_UP);
+		
+	}
+	
+	public void aplicarAbonoAction() {
+		try {
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formPagos", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the pagoList
@@ -176,6 +238,76 @@ public class PagoCtrl extends BaseCtrl {
 	 */
 	public void setTotalPago(BigDecimal totalPago) {
 		this.totalPago = totalPago;
+	}
+
+	/**
+	 * @return the pagoOtrosList
+	 */
+	public List<Pago> getPagoOtrosList() {
+		return pagoOtrosList;
+	}
+
+	/**
+	 * @param pagoOtrosList the pagoOtrosList to set
+	 */
+	public void setPagoOtrosList(List<Pago> pagoOtrosList) {
+		this.pagoOtrosList = pagoOtrosList;
+	}
+
+	/**
+	 * @return the callModule
+	 */
+	public String getCallModule() {
+		return callModule;
+	}
+
+	/**
+	 * @param callModule the callModule to set
+	 */
+	public void setCallModule(String callModule) {
+		this.callModule = callModule;
+	}
+
+	/**
+	 * @return the totalOtrosPago
+	 */
+	public BigDecimal getTotalOtrosPago() {
+		return totalOtrosPago;
+	}
+
+	/**
+	 * @param totalOtrosPago the totalOtrosPago to set
+	 */
+	public void setTotalOtrosPago(BigDecimal totalOtrosPago) {
+		this.totalOtrosPago = totalOtrosPago;
+	}
+
+	/**
+	 * @return the totalAdeudado
+	 */
+	public BigDecimal getTotalAdeudado() {
+		return totalAdeudado;
+	}
+
+	/**
+	 * @param totalAdeudado the totalAdeudado to set
+	 */
+	public void setTotalAdeudado(BigDecimal totalAdeudado) {
+		this.totalAdeudado = totalAdeudado;
+	}
+
+	/**
+	 * @return the totalAbono
+	 */
+	public BigDecimal getTotalAbono() {
+		return totalAbono;
+	}
+
+	/**
+	 * @param totalAbono the totalAbono to set
+	 */
+	public void setTotalAbono(BigDecimal totalAbono) {
+		this.totalAbono = totalAbono;
 	}
 
 }

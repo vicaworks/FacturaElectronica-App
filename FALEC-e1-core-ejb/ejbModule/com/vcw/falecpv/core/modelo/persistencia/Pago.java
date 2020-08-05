@@ -69,8 +69,16 @@ public class Pago implements Serializable{
     @Column(name = "valorentrega", nullable = false, precision = 12, scale = 2)
     private BigDecimal valorentrega =  BigDecimal.ZERO;
     
-    @Basic(optional = true)
+    @Basic(optional = false)
     @NotNull
+    @Column(name = "valorpago", nullable = false, precision = 12, scale = 2)
+    private BigDecimal valorpago =  BigDecimal.ZERO;
+    
+    @Size(max = 500)
+    @Column(name = "notas", length = 500)
+    private String notas;
+    
+    @Basic(optional = true)
     @Column(name = "fechapago", nullable = true)
     @Temporal(TemporalType.DATE)
     private Date fechapago;
@@ -311,6 +319,34 @@ public class Pago implements Serializable{
 	 */
 	public void setAdquisicion(Adquisicion adquisicion) {
 		this.adquisicion = adquisicion;
+	}
+
+	/**
+	 * @return the valorpago
+	 */
+	public BigDecimal getValorpago() {
+		return valorpago;
+	}
+
+	/**
+	 * @param valorpago the valorpago to set
+	 */
+	public void setValorpago(BigDecimal valorpago) {
+		this.valorpago = valorpago;
+	}
+
+	/**
+	 * @return the notas
+	 */
+	public String getNotas() {
+		return notas;
+	}
+
+	/**
+	 * @param notas the notas to set
+	 */
+	public void setNotas(String notas) {
+		this.notas = notas;
 	}
 
 }

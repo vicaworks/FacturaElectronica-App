@@ -254,26 +254,26 @@
 					
 					<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totalsinimpuestos.add(n.totaldescuento)}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="DESC" style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totaldescuento}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					
 					<p:column headerText="I.C.E." style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totalice}">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="I.V.A." style="width:40px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totaliva}">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
@@ -302,7 +302,7 @@
 					
 					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totalconimpuestos}" styleClass="DispBlock Wid100 markGray">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					

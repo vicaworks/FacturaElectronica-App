@@ -67,8 +67,11 @@
                             <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-2x fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf" />
                         </p:submenu>
                         
-                        <p:menuitem id="om_pagos" value="Pagos" icon="fa fa-2x fa-money" url="#" />
-                        
+                        <p:submenu id="om_pagosMain" label="Pagos" icon="fa fa-2x fa-money">
+                        	<p:menuitem id="om_pagos" value="Pagos" icon="fa fa-2x fa-money" url="#{request.contextPath}/pages/pagos/pagoEmitido.jsf" />
+                        	<p:menuitem id="om_pagoscobrar" value="Por Cobrar" icon="fa fa-2x fa-paypal" url="#{request.contextPath}/pages/pagos/cuentaCobrar.jsf" />
+                        	<p:menuitem id="om_pagospagar" value="Por Pagar" icon="fa fa-2x fa-dollar" url="#" />
+                        </p:submenu>
 	                    <p:menuitem id="om_nuevaadquisicion" value="Compras" icon="fa fa-2x fa-cart-arrow-down" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf" />
 	                    
                         <p:submenu id="om_inventario" label="Inventario" icon="fa fa-2x fa-stack-overflow">

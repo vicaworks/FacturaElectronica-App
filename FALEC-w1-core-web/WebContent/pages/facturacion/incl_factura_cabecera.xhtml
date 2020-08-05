@@ -241,7 +241,7 @@
 					<div class="EmptyBox5"/>
 					<div class="Wid100" >
 						<h:outputText  styleClass="Fs18 DispBlock" value="#{compFacCtrl.cabecerSelected.valorretenido}">
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 				</div>
@@ -253,21 +253,21 @@
 				<div class="p-col-12 p-md-3 boxMain box-gray">
 					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
 					<h:outputText value="#{compFacCtrl.cabecerSelected.totalpagar}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</div>
 				
 				<div class="p-col-12 p-md-3 boxMain box-border-gray">
 					<div class="DispBlock box-header">TOTAL PAGADO</div>
 					<h:outputText value="#{compFacCtrl.totalPago}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</div>
 				
 				<div class="p-col-12 p-md-3 boxMain box-border-gray">
 					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
 					<h:outputText value="#{compFacCtrl.totalSaldo}" styleClass="box-content">
-						<f:convertNumber pattern="$#,##0.00"/>
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</div>
 			</div>	
@@ -387,8 +387,13 @@
 									</p:inputText>
 									
 									<!-- credito -->
-									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />							
-									<h:outputText value="" rendered="#{p.tipopago.subdetalle == '4'}" />
+									<h:outputText value="FECHA PAGO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:calendar id="claAdqFechaCompra" value="#{p.fechapago}"
+										pattern="dd/MM/yyyy"
+										locale="es"
+										requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="Fecha tentativa de pago"
+										rendered="#{p.tipopago.subdetalle == '4'}">
+									</p:calendar>
 									
 								</div>
 								

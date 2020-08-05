@@ -68,6 +68,27 @@ public class AppSessionCtrl implements Serializable {
 			AppJsfUtil.addErrorMessage(null,TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	public String getFormatoMoneda() {
+		return "$ #,##0.00";
+	}
+	
+	public String getFormatoPorcentaje() {
+		return "#,##0.00";
+	}
+	
+	public String getFormatoInteger() {
+		return "#,##0";
+	}
+	
+	public String getFormatoNumber() {
+		return "#,##0.00";
+	}
+	
+	public String getFormatoNumberDecimalOpcional() {
+		return "#,##0.##";
+	}
+	
 	/**
 	 * @return the nombreEstablecimiento
 	 */

@@ -477,6 +477,7 @@ public class CompFacCtrl extends BaseCtrl {
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
 			break;
 		case "4":
+			pagoSelected.setFechapago(new Date());
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
 			break;	
 		default:
