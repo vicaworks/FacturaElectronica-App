@@ -77,7 +77,7 @@ public class VComprobantescreditoServicio extends AppGenericService<VComprobante
 			List<Pago> pagoList = pagoDao.getByIdCabecera(idList);
 			
 			cabeceralist.stream().forEach(x->{
-				x.setPagoList(pagoList.stream().filter(p->p.getTipopago().getIdtipopago().equals('6') && p.getCabecera().getIdcabecera().equals(x.getIdcabecera())).collect(Collectors.toList()));
+				x.setPagoList(pagoList.stream().filter(p->(p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
 			});
 			
 			return cabeceralist;

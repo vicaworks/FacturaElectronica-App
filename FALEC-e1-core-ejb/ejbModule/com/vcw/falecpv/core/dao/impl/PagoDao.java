@@ -75,7 +75,7 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 	public List<Pago> getByIdCabecera(String idCabecera)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.cabecera.idcabecera=:idCabecera");
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.cabecera.idcabecera=:idCabecera ORDER BY p.idpago");
 			q.setParameter("idCabecera", idCabecera);
 			
 			return q.getResultList();
@@ -96,7 +96,7 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 	public List<Pago> getByIdCabecera(List<String> idCabeceraList)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.cabecera.idcabecera in :idCabecera");
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.cabecera.idcabecera in :idCabecera ORDER BY p.idpago");
 			q.setParameter("idCabecera", idCabeceraList);
 			
 			return q.getResultList();

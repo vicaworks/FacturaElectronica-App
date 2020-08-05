@@ -188,15 +188,15 @@
 					<div class="p-col-12 p-md-3 boxMain box-gray">
 						<div class="DispBlock box-header">TOTAL ADEUDADO</div>
 						<div class="EmptyBox5"/>
-						<h:outputText value="#{1560.88}" styleClass="box-content Fs20">
+						<h:outputText value="#{cuentaCobrarCtrl.totalCobrar}" styleClass="box-content Fs20">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					
-					<div class="p-col-12 p-md-3 boxMain box-border-orange">
+					<div class="p-col-12 p-md-3 boxMain box-border-gray">
 						<div class="DispBlock box-header">VENCIDO</div>
 						<div class="EmptyBox5"/>
-						<h:outputText value="#{300.88}" styleClass="box-content Fs20">
+						<h:outputText value="#{cuentaCobrarCtrl.totalVencido}" styleClass="box-content Fs20">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
@@ -294,7 +294,7 @@
 						
 						<div class="p-grid" style="padding-top:2px;">
 							<div class="p-col-10" style="text-align: right;">
-								<h:outputText value="#{v.fechapago}" styleClass="#{cuentaCobrarCtrl.isFechaVencida(v.fechapago)?'markRed DispBlock':''}">
+								<h:outputText value="#{v.fechapago}" styleClass="#{cuentaCobrarCtrl.isFechaVencida(v.fechapago)?'markRed':''}">
 									<f:convertDateTime pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>

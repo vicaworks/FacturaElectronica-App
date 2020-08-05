@@ -4,9 +4,12 @@
 package com.vcw.falecpv.web.ctrl.pagos;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,6 +21,7 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.vista.VComprobantescredito;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
@@ -74,6 +78,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	public void consultar()throws DaoException{
 		vComprobantescreditoList = null;
 		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), tipocomprobante);
+		totalizar();
 	}
 	
 	public void consultarTipoComprobante()throws DaoException{
@@ -100,6 +105,28 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		return false;
+	}
+	
+	public void totalizar() {
+		
+		if(vComprobantescreditoList!=null) {
+			
+			totalCobrar = BigDecimal.valueOf(vComprobantescreditoList.stream().mapToDouble(x->x.getTotalpago().doubleValue()).sum() +
+			vComprobantescreditoList.stream().mapToDouble(x->x.getAbono().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+			
+			List<VComprobantescredito> vencimientoList =  vComprobantescreditoList.stream().filter(x->isFechaVencida(x.getFechapago())).collect(Collectors.toList());
+			totalVencido = BigDecimal.ZERO;
+			for (VComprobantescredito v : vencimientoList) {
+				v.getPagoList().sort(Comparator.comparing(Pago::getFechapago));
+				for (Pago p : v.getPagoList()) {
+					if(p.getValorpago().doubleValue()<p.getTotal().doubleValue() && isFechaVencida(p.getFechapago())) {
+						totalVencido = totalVencido.add(p.getTotal().add(p.getValorpago().negate())).setScale(2, RoundingMode.HALF_UP);
+					}
+				}
+			}
+			
+		}
+		
 	}
 
 	/**
