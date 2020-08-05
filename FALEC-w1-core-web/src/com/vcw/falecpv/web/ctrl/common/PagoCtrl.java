@@ -139,6 +139,13 @@ public class PagoCtrl extends BaseCtrl {
 			totalOtrosPago = BigDecimal.valueOf(pagoOtrosList.stream().mapToDouble(p->p.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 		}
 		
+		pagoList.stream().forEach(p->{
+			if(p.getValorpago().doubleValue()>p.getTotal().doubleValue()) {
+				p.setValorpago(p.getTotal());
+			}
+		});
+		
+		
 		totalAbono = BigDecimal.valueOf(pagoList.stream().mapToDouble(p->p.getValorpago().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 		totalAdeudado = BigDecimal.valueOf(pagoList.stream().mapToDouble(p->p.getTotal().doubleValue()).sum() - totalAbono.doubleValue()).setScale(2, RoundingMode.HALF_UP);
 		totalPago = totalPago.add(totalOtrosPago).add(totalAdeudado).add(totalAbono).setScale(2, RoundingMode.HALF_UP);
