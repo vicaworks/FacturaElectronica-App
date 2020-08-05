@@ -230,7 +230,6 @@ public class Chrome
         }
         catch(Exception e)
         {
-            LOGGER.error("No se pudo cerrar el navegador");
         }
     }
 }

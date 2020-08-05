@@ -9,6 +9,10 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.io.File;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
 
 public class Principal 
 {
@@ -32,16 +36,16 @@ public class Principal
     	System.setProperty("java.util.logging.SimpleFormatter.format", "[%tF %1$tT] [%4$-7s] %5$s %n");
     	rutaArchivoPropiedades = System.getProperty("user.dir") + java.nio.file.FileSystems.getDefault().getSeparator() 
     			+ "comprobantesrecibidos.properties";
-    	leerArchivoPropiedades(rutaArchivoPropiedades);
+    	leerArchivoPropiedades();
     	descargar();
     }
     
-    public static void leerArchivoPropiedades(String ruta)
+    public static void leerArchivoPropiedades()
     {
     	try
     	{
 	    	Properties pr = new Properties();
-	    	FileInputStream fis = new FileInputStream(ruta);
+	    	FileInputStream fis = new FileInputStream(rutaArchivoPropiedades);
 	    	InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
 	    	pr.load(isr);
 	    	
@@ -114,8 +118,7 @@ public class Principal
 	    			}
 	    			Chrome.ingresoSRI = false; // Resetear el valor para el próximo inicio de sesión
 	    			chrome.irAComprobantesRecibidos();
-//	    			chrome.consultarReporte(nombreMes, anio);
-	    			chrome.consultarReporte("Julio", anio);
+	    			chrome.consultarReporte(nombreMes, anio);
 	    			boolean captchaResuelto = chrome.resolverCaptcha();
 	    			if(captchaResuelto)
 	    			{
@@ -149,16 +152,37 @@ public class Principal
     			}
     			chrome.cerrarNavegador();
     		}
+    		
+    		Calendar hoy = Calendar.getInstance();
+    		if(hoy.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH))
+    		{
+    			actualizarArchivoPropiedades();
+    		}
+    		for(String diaMesAnterior : diasEjecutarMesAnterior)
+    		{
+    			if(hoy.get(Calendar.DAY_OF_MONTH) == Integer.parseInt(diaMesAnterior))
+    			{
+    				ejecutarMesAnterior = "sí";
+    				break;
+    			}
+    		}
+    		LOGGER.info("Fin");
+    		// Verificar si se debe ejecutar para el mes anterior
+    		if(ejecutarMesAnterior.compareTo("sí") == 0)
+    		{
+    			LOGGER.info("Ejecutando para el mes anterior");
+    			descargar();
+    		}
     	}
     	catch(Exception ex)
     	{
-    		LOGGER.error("Error en el proceso de descarga del reporte. ");
+    		LOGGER.error("Error en el proceso de descarga del reporte.");
     	}
     }
     
     public static void obtenerNombreMes()
     {
-    	if(mes.compareTo("10") != 0 && mes.compareTo("11") != 0 && mes.compareTo("12") != 0)
+    	if(!mes.startsWith("0") && mes.compareTo("10") != 0 && mes.compareTo("11") != 0 && mes.compareTo("12") != 0)
     	{
     		mes = "0" +  mes; // Para los meses de enero a septiembre
     	}
@@ -232,6 +256,35 @@ public class Principal
     	{
     		nombreMes = "Diciembre";
     		fechaFinConsulta += "31";
+    	}
+    }
+    
+    public static void actualizarArchivoPropiedades()
+    {
+    	try
+    	{
+    		Properties pr = new Properties();
+    		FileInputStream fis = new FileInputStream(rutaArchivoPropiedades);
+	    	InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+	    	pr.load(isr);
+	    	
+	    	Integer mesInt = Integer.parseInt(mes);
+	    	Integer anioInt = Integer.parseInt(anio);
+	    	mesInt += 1;
+	    	if(mesInt == 13)
+	    	{
+	    		mesInt = 1;
+	    		anioInt += 1;
+	    	}
+            pr.setProperty("mes", Integer.toString(mesInt));
+            pr.setProperty("anio", Integer.toString(anioInt));
+            File properties = new File("comprobantesrecibidos.properties");
+            OutputStream out = new FileOutputStream(properties);
+            pr.store(out, null);
+    	}
+    	catch(IOException ioex)
+    	{
+    		LOGGER.error("No se pudo escribir en el archivo de propiedades");
     	}
     }
 }
