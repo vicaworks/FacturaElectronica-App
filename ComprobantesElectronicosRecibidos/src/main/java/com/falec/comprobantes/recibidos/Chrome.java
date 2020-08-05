@@ -5,15 +5,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.falec.comprobantes.anticaptcha.Anticaptcha;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.JavascriptExecutor;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.concurrent.TimeUnit;
+import java.io.File;
 
 public class Chrome
 {
@@ -141,7 +140,6 @@ public class Chrome
 	
 	public boolean resolverCaptcha()
 	{
-		boolean resuelto = false;
 		try
 		{
 			TimeUnit.SECONDS.sleep(1);
@@ -149,12 +147,90 @@ public class Chrome
 			LOGGER.info("Dirección Captcha: " + direccionActual);
 			String sitekey = webdriverwait.until(ExpectedConditions.elementToBeClickable(By.className("g-recaptcha"))).getAttribute("data-sitekey");
 			LOGGER.info("Sitekey: " + sitekey);
-			String respuesta = Anticaptcha.resolverCaptcha(direccionActual, sitekey);
+			String respuesta = Anticaptcha.resolverNoCaptchaProxyless(direccionActual, sitekey);
+			if(respuesta != null)
+			{
+				JavascriptExecutor js;
+				if(driver instanceof JavascriptExecutor)
+				{
+                    js = (JavascriptExecutor) driver;
+                    js.executeScript("document.getElementById(\"g-recaptcha-response\").innerHTML = \"" + respuesta + "\";");
+                    TimeUnit.SECONDS.sleep(1);
+                    js.executeScript("rcBuscar(\"" + respuesta + "\");");
+                    return true;
+                }
+			}
 		}
 		catch(Exception ex)
 		{
 			LOGGER.error("Error al resolver el Captcha");
 		}
-		return resuelto;
+		return false;
 	}
+	
+	public boolean descargarReporte(String ruc, String rutaDescargaReporte)
+	{
+		try
+		{
+            TimeUnit.SECONDS.sleep(2);
+            String mensajeCaptchaIncorrecta = null;
+            try
+            {
+            	mensajeCaptchaIncorrecta = driver.findElement(By.className("ui-messages-warn-summary")).getText();
+            }
+            catch(Exception ex)
+            {
+            	LOGGER.info("No apareció el mensaje Captcha incorrecta");
+            }
+            if((mensajeCaptchaIncorrecta != null) && (mensajeCaptchaIncorrecta.compareTo("Captcha incorrecta")) == 0) // Captcha incorrecta
+            {
+                return false;
+            }
+            else // Captcha correcta
+            {
+                TimeUnit.SECONDS.sleep(3);
+                webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("frmPrincipal:lnkTxtlistado"))).click();
+                TimeUnit.SECONDS.sleep(10);
+                String mensajeNoExistenDatos = null;
+                try
+                {
+                	mensajeNoExistenDatos = driver.findElement(By.className("ui-messages-warn-summary")).getText();
+                }
+                catch(Exception ex)
+                {
+                	LOGGER.info("No apareció el mensaje No existen datos para los parámetros ingresados");
+                }
+                if((mensajeNoExistenDatos != null) && (mensajeNoExistenDatos.compareTo("No existen datos para los parámetros ingresados")) == 0) // No existen datos para los parámetros ingresados
+                {
+                    return true;
+                }
+                else // Sí existen datos para los parámetros ingresados
+                {
+                    // Mover el reporte descargado de Descargas a la ruta de descarga de reportes
+                    File report = new File(System.getProperty("user.home") + java.nio.file.FileSystems.getDefault().getSeparator() + "Downloads" + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
+                    report.renameTo(new File(rutaDescargaReporte + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt"));
+                    report = new File(rutaDescargaReporte + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
+                    return report.exists();
+                }
+            }
+        }
+		catch(Exception ex)
+		{
+        	LOGGER.error("Error al descargar el reporte del SRI");
+            return false;
+        }
+	}
+	
+	public void cerrarNavegador()
+	{
+        try
+        {
+            driver.close();
+            driver.quit();
+        }
+        catch(Exception e)
+        {
+            LOGGER.error("No se pudo cerrar el navegador");
+        }
+    }
 }

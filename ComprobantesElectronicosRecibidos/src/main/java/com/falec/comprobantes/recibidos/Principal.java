@@ -25,6 +25,7 @@ public class Principal
 	private static String fechaInicioConsulta = "";
 	private static String fechaFinConsulta = "";
 	private static String rutaChromeDriver = "";
+	private static String rutaDescargaReporte = "";
 	
     public static void main( String[] args )
     {
@@ -32,7 +33,7 @@ public class Principal
     	rutaArchivoPropiedades = System.getProperty("user.dir") + java.nio.file.FileSystems.getDefault().getSeparator() 
     			+ "comprobantesrecibidos.properties";
     	leerArchivoPropiedades(rutaArchivoPropiedades);
-    	descargarReporte();
+    	descargar();
     }
     
     public static void leerArchivoPropiedades(String ruta)
@@ -65,6 +66,8 @@ public class Principal
 	    	diasEjecutarMesAnterior.addAll(Arrays.asList(arregloDiasMesAnterior));
 	    	
 	    	rutaChromeDriver = pr.getProperty("rutaChromeDriver");
+	    	
+	    	rutaDescargaReporte = pr.getProperty("rutaDescargaReporte");
     	}
     	catch(IOException ex)
     	{
@@ -72,8 +75,9 @@ public class Principal
     	}
     }
     
-    public static void descargarReporte()
+    public static void descargar()
     {
+    	boolean reporteDescargado = false;
     	obtenerNombreMes();
     	Chrome chrome = new Chrome(rutaChromeDriver);
     	if(ejecutarMesAnterior.compareTo("sí") == 0)
@@ -99,20 +103,51 @@ public class Principal
     		for(int i = 0; i < rucs.size(); i++)
     		{
     			int intento = 1;
-    			LOGGER.info("Intento " + intento + "de descarga del reporte del RUC " + rucs.get(i));
-    			chrome.inicializarDriver();
-    			chrome.iniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
-    			while(!Chrome.ingresoSRI)
+    			for (int j = 0; j < 1; j++)
     			{
-    				chrome.reintentarIniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
+	    			LOGGER.info("Intento " + intento + " de descarga del reporte del RUC " + rucs.get(i));
+	    			chrome.inicializarDriver();
+	    			chrome.iniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
+	    			while(!Chrome.ingresoSRI)
+	    			{
+	    				chrome.reintentarIniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
+	    			}
+	    			Chrome.ingresoSRI = false; // Resetear el valor para el próximo inicio de sesión
+	    			chrome.irAComprobantesRecibidos();
+//	    			chrome.consultarReporte(nombreMes, anio);
+	    			chrome.consultarReporte("Julio", anio);
+	    			boolean captchaResuelto = chrome.resolverCaptcha();
+	    			if(captchaResuelto)
+	    			{
+	    				reporteDescargado = chrome.descargarReporte(rucs.get(i), rutaDescargaReporte);
+	    				chrome.cerrarNavegador();
+	    				if(reporteDescargado)
+	                    {
+	                        LOGGER.info("Comprobante de ruc " + rucs.get(i) + " descargado con éxito");
+	                        break;
+	                    }
+	                    else
+	                    {
+	                        chrome.cerrarNavegador(); // Cierra la ventana del navegador en la que el captcha fue incorrecto
+	                        if(intento <= 3) // Intenta resolver el captcha para cada RUC un máximo de 3 intentos
+	                        {
+	                            j = j - 1;
+	                            intento++;
+	                        }
+	                    }
+	    			}
+	    			else
+	    			{
+	    				LOGGER.info("Error al resolver el captcha");
+                        chrome.cerrarNavegador();
+                        if(intento <= 3) // Intenta resolver el captcha para cada RUC un máximo de 3 intentos
+                        {
+                            j = j - 1;
+                            intento++;
+                        }
+	    			}
     			}
-    			Chrome.ingresoSRI = false; // Resetear el valor para el próximo inicio de sesión
-    			chrome.irAComprobantesRecibidos();
-    			chrome.consultarReporte(nombreMes, anio);
-//    			if(chrome.resolverCaptcha())
-//    			{
-//    				
-//    			}
+    			chrome.cerrarNavegador();
     		}
     	}
     	catch(Exception ex)
