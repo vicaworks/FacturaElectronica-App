@@ -13,6 +13,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.concurrent.TimeUnit;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public class Chrome
 {
@@ -207,10 +212,18 @@ public class Chrome
                 else // Sí existen datos para los parámetros ingresados
                 {
                     // Mover el reporte descargado de Descargas a la ruta de descarga de reportes
-                    File report = new File(System.getProperty("user.home") + java.nio.file.FileSystems.getDefault().getSeparator() + "Downloads" + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
-                    report.renameTo(new File(rutaDescargaReporte + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt"));
-                    report = new File(rutaDescargaReporte + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
-                    return report.exists();
+                    Path origen = FileSystems.getDefault().getPath(System.getProperty("user.home") + java.nio.file.FileSystems.getDefault().getSeparator() + "Descargas" + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
+                    Path destino = FileSystems.getDefault().getPath(rutaDescargaReporte + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
+                    try
+                    {
+                        Files.move(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+                        return true;
+                    }
+                    catch(IOException e)
+                    {
+                        System.err.println(e);
+                        return false;
+                    }
                 }
             }
         }
