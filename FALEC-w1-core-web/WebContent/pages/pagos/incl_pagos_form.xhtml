@@ -14,8 +14,12 @@
 		}
 		
 		.pagosDT .ui-datatable-scrollable-body{
-			min-height: 30vh !important;
-			max-height: 30vh !important;
+			min-height: 20vh !important;
+			max-height: 20vh !important;
+		}
+		
+		.heightFrmPagos{
+			height: calc(100vh - 135px)!important;
 		}
 		
 	</style>
@@ -47,7 +51,7 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmUsuario contenedorFormulario">
+			<div class="form-ui Wid100 OvYScroll heightFrmPagos contenedorFormulario">
 				
 				<div class="card card-w-title">
 					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Otros pagos</h3>
@@ -126,17 +130,23 @@
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="ABONO" style="width:40px;">
-							
+						<p:column headerText="" style="width:10px;" styleClass="TexAlCenter">
+							<p:commandLink update="@form" action="#{pagoCtrl.aplicarAbonoAction()}">
+								<i class="fa fa-hand-o-right Fs20" style="color:#000;"></i>
+								<f:setPropertyActionListener value="#{f.total}" target="#{f.valorpago}"/>
+							</p:commandLink>
+						</p:column>
+						
+						<p:column headerText="ABONO" style="width:40px;" styleClass="dt-spinner">
 							<p:spinner id="insDetpagValPago" value="#{f.valorpago}" min="0" max="#{f.total}" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-								<!-- <p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/> -->
+								<p:ajax listener="#{pagoCtrl.aplicarAbonoAction()}" update="@form" process="@this :formPagos:pagosDT"/>
 							</p:spinner>
 							<p:message for="insDetpagValPago"/>
 						</p:column>
 						
 						<p:column headerText="NOTAS" style="width:120px;">
 							
-							<p:inputTextarea value="#{f.notas}" maxlength="500" styleClass="Wid100" rows="1">
+							<p:inputTextarea value="#{f.notas}" maxlength="500" styleClass="Wid100" rows="1" style="padding:0.2em !important;height:22px!important;max-height:66px!important;">
 							</p:inputTextarea>
 							
 						</p:column>
@@ -152,13 +162,14 @@
 			   		
 			   		<div class="p-grid p-align-center vertical-container">
 			   			
-			   			<div class="p-col-12 p-md-8">
+			   			<div class="p-col-12 p-lg-8">
+			   				<div class="EmptyBox5"/>
 			   				<div class="p-grid p-justify-even ">
 					   			<!-- Valor comprobante -->
 					   			<div class="p-col-12 p-md-4 boxMain box-gray">
 					   				<div class="DispBlock box-header">TOTAL COMPROBANTE</div>
 									<div class="EmptyBox5"/>
-									<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="box-content Fs20">
+									<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="box-content Fs18">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 					   			</div>
@@ -167,48 +178,49 @@
 					   			<div class="p-col-12 p-md-4 boxMain box-border-gray">
 					   				<div class="DispBlock box-header">TOTAL ADEUDADO</div>
 									<div class="EmptyBox5"/>
-									<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content Fs20">
+									<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content Fs18">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 					   			</div>
-			   				</div>		
+			   				</div>
+			   				<div class="EmptyBox5"/>		
 			   			</div>
 			   			
 			   			<!-- totales -->
-			   			<div class="p-col-12 p-md-4">
+			   			<div class="p-col-12 p-lg-4">
 			   				<div class="p-grid">
-			   					<div class="p-col-6 pago-header">
+			   					<div class="p-col-6 pago-header Fs14">
 			   						<h:outputText value="Otros pagos " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">
-			   						<h:outputText value="#{pagoCtrl.totalOtrosPago}" styleClass="box-content">
+			   						<h:outputText value="#{pagoCtrl.totalOtrosPago}" styleClass="box-content Fs14">
 											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 			   					</div>
 			   					<div class="EmptyBox5"/>
-			   					<div class="p-col-6 pago-header">
+			   					<div class="p-col-6 pago-header Fs14">
 			   						<h:outputText value="Adeudado " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">
-			   						<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content">
+			   						<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content Fs14">
 											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 			   					</div>
 			   					<div class="EmptyBox5"/>
-			   					<div class="p-col-6 pago-header">
+			   					<div class="p-col-6 pago-header Fs14">
 			   						<h:outputText value="Abonado " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">
-			   						<h:outputText value="#{pagoCtrl.totalAbono}" styleClass="box-content">
+			   						<h:outputText value="#{pagoCtrl.totalAbono}" styleClass="box-content Fs14">
 											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 			   					</div>
 			   					<div class="EmptyBox5"/>
-			   					<div class="p-col-6 pago-header">
+			   					<div class="p-col-6 pago-header Fs14">
 			   						<h:outputText value="Total " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">
-			   						<h:outputText value="#{pagoCtrl.totalPago}" styleClass="box-content">
+			   						<h:outputText value="#{pagoCtrl.totalPago}" styleClass="box-content Fs14">
 											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 			   					</div>
@@ -221,7 +233,6 @@
 			   	</div>
 				
 			</div>
-			
 			
 		</h:form>
 		

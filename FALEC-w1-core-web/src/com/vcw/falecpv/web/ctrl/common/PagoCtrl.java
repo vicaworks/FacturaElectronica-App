@@ -144,6 +144,15 @@ public class PagoCtrl extends BaseCtrl {
 		totalPago = totalPago.add(totalOtrosPago).add(totalAdeudado).add(totalAbono).setScale(2, RoundingMode.HALF_UP);
 		
 	}
+	
+	public void aplicarAbonoAction() {
+		try {
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formPagos", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the pagoList
