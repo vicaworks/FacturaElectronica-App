@@ -36,13 +36,20 @@ public class VComprobantescreditoDao extends AppGenericDao<VComprobantescredito,
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante)throws DaoException{
+	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante,String criterio)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantescredito c WHERE c.idestablecimiento=:idestablecimiento AND c.abono < c.totalpago " + (tipocomprobante!=null?" AND c.idtipocomprobante:=idtipocomprobante ":" ") + " ORDER BY c.fechaemision");
+			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantescredito c WHERE c.idestablecimiento=:idestablecimiento AND c.abono < c.totalpago " 
+			+ (tipocomprobante!=null?" AND c.idtipocomprobante:=idtipocomprobante ":" ") 
+			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":" ")
+			+ " ORDER BY c.fechaemision");
+			
 			q.setParameter("idestablecimiento", idEstablecimiento);
 			if(tipocomprobante!=null) {
 				q.setParameter("idtipocomprobante", tipocomprobante.getIdtipocomprobante());
+			}
+			if(criterio!=null&&criterio.trim().length()>0) {
+				q.setParameter("numdocumento", criterio);
 			}
 			
 			return q.getResultList();

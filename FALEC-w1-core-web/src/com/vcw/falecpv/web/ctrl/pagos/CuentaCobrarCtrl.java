@@ -55,6 +55,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	private BigDecimal totalCobrar;
 	private BigDecimal totalVencido;
 	private BigDecimal totalProximo;
+	private String criterioBusqueda;
 	
 	public CuentaCobrarCtrl() {
 	}
@@ -77,11 +78,12 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	
 	public void consultar()throws DaoException{
 		vComprobantescreditoList = null;
-		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), tipocomprobante);
+		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), tipocomprobante,criterioBusqueda);
 		totalizar();
 	}
 	
 	public void consultarTipoComprobante()throws DaoException{
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
 				.getByEmpresaFormulario(TipoComprobanteEnum.CUENTAS_COBRAR));
 	}
@@ -225,6 +227,20 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	 */
 	public void setTotalProximo(BigDecimal totalProximo) {
 		this.totalProximo = totalProximo;
+	}
+
+	/**
+	 * @return the criterioBusqueda
+	 */
+	public String getCriterioBusqueda() {
+		return criterioBusqueda;
+	}
+
+	/**
+	 * @param criterioBusqueda the criterioBusqueda to set
+	 */
+	public void setCriterioBusqueda(String criterioBusqueda) {
+		this.criterioBusqueda = criterioBusqueda;
 	}
 
 }

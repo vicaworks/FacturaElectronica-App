@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 420px)!important;				
+				height: calc(100vh - 445px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -151,6 +151,13 @@
 						</p:selectOneMenu>
 		    		</div>
 		    		
+		    		<div class="p-col-12 p-md-4">
+		    			<h:outputText value="Num. Comprobante" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+		    			<p:inputMask id="inpRtnNumFac" value="#{cuentaCobrarCtrl.criterioBusqueda}" mask="999-999-999999999" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
+							<f:converter converterId="formatoNumComprobanteConverter"/>
+						</p:inputMask>
+		    		</div>
+		    		
 		    		<div class="p-col-12 p-md-2">
 	  					<p:commandButton id="cmdGlobalBuscar"
 							icon="fa fa-search"
@@ -245,17 +252,17 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:90px;">
+					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="#{msg['label.identificacion']}" style="width:60px;">
+					<p:column headerText="#{msg['label.identificacion']}" style="width:70px;" filterBy="#{v.identificacion}" filterMatchMode="contains">
 						<h:outputText value="#{v.identificacion}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CLIENTE" style="width:130px;">
+					<p:column headerText="CLIENTE" style="width:130px;"  filterBy="#{v.razonsocial}" filterMatchMode="contains">
 						<h:outputText value="#{v.razonsocial}" >
 						</h:outputText>
 					</p:column>	

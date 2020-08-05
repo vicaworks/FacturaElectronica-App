@@ -64,10 +64,10 @@ public class VComprobantescreditoServicio extends AppGenericService<VComprobante
 		this.vComprobantescreditoDao = vComprobantescreditoDao;
 	}
 
-	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante)throws DaoException{
+	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante,String criterio)throws DaoException{
 		try {
 			
-			List<VComprobantescredito> cabeceralist = vComprobantescreditoDao.getByCuentasCobrar(idEstablecimiento, tipocomprobante);
+			List<VComprobantescredito> cabeceralist = vComprobantescreditoDao.getByCuentasCobrar(idEstablecimiento, tipocomprobante,criterio);
 			
 			if(cabeceralist.isEmpty()) {
 				return cabeceralist;
