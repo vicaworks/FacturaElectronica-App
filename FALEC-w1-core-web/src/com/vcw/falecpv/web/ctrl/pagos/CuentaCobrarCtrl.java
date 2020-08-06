@@ -3,6 +3,9 @@
  */
 package com.vcw.falecpv.web.ctrl.pagos;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
@@ -16,11 +19,21 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.model.StreamedContent;
+
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.vista.VComprobantescredito;
@@ -28,6 +41,7 @@ import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.VComprobantescreditoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
  * @author cristianvillarreal
@@ -77,13 +91,13 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	}
 	
 	public void consultar()throws DaoException{
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		vComprobantescreditoList = null;
 		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), tipocomprobante,criterioBusqueda);
 		totalizar();
 	}
 	
 	public void consultarTipoComprobante()throws DaoException{
-		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
 				.getByEmpresaFormulario(TipoComprobanteEnum.CUENTAS_COBRAR));
 	}
@@ -101,7 +115,10 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	
 	public Boolean isFechaVencida(Date fecha) {
 		try {
+			if(fecha==null) return false;
+			
 			return (FechaUtil.comparaFechas(fecha, new Date())<0);
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -129,6 +146,115 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			
 		}
 		
+	}
+	
+	public StreamedContent getFileResumen() {
+		try {
+			
+			if(vComprobantescreditoList==null || vComprobantescreditoList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-CuentaCobrar.xlsx");
+			
+			// icialización
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			// datos cabecera
+			Row rowCliente = sheet.getRow(3);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			rowCliente = sheet.getRow(4);
+			rowCliente.createCell(1).setCellValue(tipocomprobante==null?"TODOS":tipocomprobante.getComprobante());
+			
+			rowCliente = sheet.getRow(5);
+			rowCliente.createCell(1).setCellValue(totalCobrar.doubleValue());
+			
+			rowCliente = sheet.getRow(6);
+			rowCliente.createCell(1).setCellValue(totalVencido.doubleValue());
+			
+			int fila = 9;
+			
+			for (VComprobantescredito p : vComprobantescreditoList) {
+				
+				int col = 0;
+				rowCliente = sheet.createRow(fila);
+				
+				Cell cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getComprobante());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(p.getFechaemision()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(p.getNumdocumento()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getIdentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(p.getRazonsocial());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getTotalconimpuestos().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getTotalretencion().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getValorapagar().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getTotalpago().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getAbono().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getTotalpago().add(p.getAbono()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getFechapago()!=null?FechaUtil.formatoFecha(p.getFechapago()):"");
+				
+				fila++;
+			}
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-CuentaCobrar-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
 	}
 
 	/**

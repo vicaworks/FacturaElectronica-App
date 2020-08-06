@@ -35,7 +35,15 @@
 				
 				<div class="p-col-12 p-md-6" style="text-align:left;">					
 					
-					<p:commandButton id="cmdCerrar"
+					<p:commandButton id="cmdCCRefrescar"
+						value="REFRESCAR" icon="fa fa-repeat" styleClass="secondary-button" 
+						action="#{pagoCtrl.refrescarPagosForm()}" process="@this" update="@form" 
+						/>
+					<p:spacer width="5"/>
+					<p:commandButton id="cmdCCGuardar"
+						value="GUARDAR" icon="fa fa-floppy-o" action="#{pagoCtrl.guardar()}" update="@form :formMain"/>	
+					<p:spacer width="5"/>
+					<p:commandButton id="cmdCCCerrar"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
 						onclick="PF('dlgPagosForm').hide()" immediate="true"  
 						/>
@@ -102,6 +110,12 @@
 				<div class="card card-w-title">
 					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Adeudado</h3>
 			   		
+			   		<div class="p-grid">
+				   		<div class="p-col-12 p-md-2">
+							<p:commandButton value="PAGO" action="#{pagoCtrl.nuevoPago()}" styleClass="Wid100 secondary-button Fs10" icon="fa fa-plus"/>				   			
+				   		</div>
+			   		</div>
+			   		<div class="EmptyBox5"/>
 			   		<p:dataTable id="pagosDT"
 	        			scrollable="true"
 	        			value="#{pagoCtrl.pagoList}"

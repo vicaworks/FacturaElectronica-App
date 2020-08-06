@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGPagos;
 import com.vcw.falecpv.core.dao.impl.PagoDao;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -30,6 +31,9 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 	
 	@Inject
 	private ParametroGenericoServicio parametroGenericoServicio;
+	
+	@Inject
+	private ContadorPkServicio contadorPkServicio;
 	
 	/**
 	 * 
@@ -158,5 +162,39 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 			throw new DaoException(e);
 		}
 	}
-
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param pagoList
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Pago> guardarPago(List<Pago> pagoList)throws DaoException{
+		try {
+			
+			for (Pago pago : pagoList) {
+				if(pago.getIdpago()==null || pago.getIdpago().contains("M")) {
+					String idestablecimeinto = null;
+					if(pago.getCabecera()!=null) {
+						idestablecimeinto = pago.getCabecera().getEstablecimiento().getIdestablecimiento();
+					}
+					if(pago.getAdquisicion()!=null) {
+						idestablecimeinto = pago.getAdquisicion().getEstablecimiento().getIdestablecimiento();
+					}
+					if(idestablecimeinto!=null) {
+						pago.setIdpago(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.PAGO, idestablecimeinto));
+						crear(pago);
+					}
+				}else {
+					actualizar(pago);
+				}
+			}
+			
+			return pagoList;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 }

@@ -18,14 +18,18 @@ import javax.inject.Named;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
+import com.vcw.falecpv.core.servicio.AdquisicionServicio;
+import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.pagos.CuentaCobrarCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -47,6 +51,12 @@ public class PagoCtrl extends BaseCtrl {
 	@EJB
 	private TipopagoServicio tipopagoServicio;
 	
+	@EJB
+	private CabeceraServicio cabeceraServicio;
+	
+	@EJB
+	private AdquisicionServicio adquisicionServicio;
+	
 	private List<Pago> pagoList;
 	private List<Pago> pagoOtrosList;
 	private List<Pago> pagoEliminarList;
@@ -59,6 +69,7 @@ public class PagoCtrl extends BaseCtrl {
 	private BigDecimal totalOtrosPago = BigDecimal.ZERO;
 	private BigDecimal totalAdeudado = BigDecimal.ZERO;
 	private BigDecimal totalAbono = BigDecimal.ZERO;
+	private CuentaCobrarCtrl cuentaCobrarCtrl;
 	
 	/**
 	 * 
@@ -112,28 +123,7 @@ public class PagoCtrl extends BaseCtrl {
 	
 	public void cargarPagosForm() {
 		try {
-			pagoList = null;
-			pagoEliminarList = null;
-			pagoSelected = null;
-			switch (callModule) {
-			case "CUENTAS_COBRAR":
-				pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
-				break;
-			case "CUENTAS_PAGAR":
-				pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idComprobante);
-				break;	
-			default:
-				break;
-			}
-			
-			// consultar otros pagos
-			pagoOtrosList = null;
-			pagoOtrosList = pagoList.stream().filter(x->!x.getTipopago().getIdtipopago().equals("6")).collect(Collectors.toList());
-			// consultar solo creditos
-			pagoList = pagoList.stream().filter(x->x.getTipopago().getIdtipopago().equals("6")).collect(Collectors.toList());
-			// ordenar
-			pagoList.sort(Comparator.comparing(Pago::getFechapago));
-			totalizar();
+			consultarPagosCredito();
 			AppJsfUtil.showModalRender("dlgPagosForm", "formPagos");
 			
 		} catch (Exception e) {
@@ -141,7 +131,42 @@ public class PagoCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-
+	
+	public void refrescarPagosForm() {
+		try {
+			consultarPagosCredito();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void consultarPagosCredito() throws DaoException {
+		pagoList = null;
+		pagoEliminarList = null;
+		pagoSelected = null;
+		switch (callModule) {
+		case "CUENTAS_COBRAR":
+			pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
+			break;
+		case "CUENTAS_PAGAR":
+			pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idComprobante);
+			break;	
+		default:
+			break;
+		}
+		
+		// consultar otros pagos
+		pagoOtrosList = null;
+		pagoOtrosList = pagoList.stream().filter(x->!x.getTipopago().getIdtipopago().equals("6")).collect(Collectors.toList());
+		// consultar solo creditos
+		pagoList = pagoList.stream().filter(x->x.getTipopago().getIdtipopago().equals("6")).collect(Collectors.toList());
+		// ordenar
+		pagoList.sort(Comparator.comparing(Pago::getFechapago));
+		totalizar();
+	}
+	
 	public void eliminarCredito() {
 		try {
 			eliminarPago();
@@ -203,8 +228,11 @@ public class PagoCtrl extends BaseCtrl {
 	
 	public void aceptarPago() {
 		try {
-			
-			pagoList.add(pagoSelected);
+			if(pagoSelected.getIdpago()==null) {
+				pagoSelected.setIdpago("M");
+				pagoList.add(pagoSelected);
+			}
+			pagoList.sort(Comparator.comparing(Pago::getFechapago));
 			totalizar();
 			AppJsfUtil.hideModal("dlgFormPago");
 			
@@ -217,8 +245,19 @@ public class PagoCtrl extends BaseCtrl {
 	public void nuevoPago() {
 		try {
 			pagoSelected = new Pago();
-			pagoSelected.setTipopago(tipopagoServicio.consultarByPk("6"));
+			pagoSelected.setTipopago(tipopagoServicio.getTipopagoDao().cargar("6"));
 			pagoSelected.setFechapago(new Date());
+			
+			switch (callModule) {
+			case "CUENTAS_COBRAR":
+				pagoSelected.setCabecera(cabeceraServicio.consultarByPk(idComprobante));
+				break;
+			case "CUENTAS_PAGAR":
+				pagoSelected.setAdquisicion(adquisicionServicio.consultarByPk(idComprobante));
+				break;
+			default:
+				break;
+			}
 			AppJsfUtil.showModalRender("dlgFormPago", "formPagoRegistro");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -244,7 +283,25 @@ public class PagoCtrl extends BaseCtrl {
 		return pagoList;
 	}
 
-
+	@Override
+	public void guardar() {
+		try {
+			
+			if(valorPagar.doubleValue() != totalPago.doubleValue()) {
+				AppJsfUtil.addErrorMessage("formPagos", "ERROR", "LA SUMATORIA DE otros pagos, adeudado, abonado NO CUADRA CON EL VALOR TOTAl A PAGAR DEL COMPROBANTE.");
+				return;
+			}
+			
+			pagoList = pagoServicio.guardarPago(pagoList);
+			// pantall aprincipal
+			cuentaCobrarCtrl.consultar();
+			cuentaCobrarCtrl.totalizar();
+			AppJsfUtil.addInfoMessage("formPagos", "OK", "REGISTROS GUARDADOS CORRECTAMENTE.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formPagos", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @param pagoList the pagoList to set
@@ -419,6 +476,20 @@ public class PagoCtrl extends BaseCtrl {
 	 */
 	public void setPagoSelected(Pago pagoSelected) {
 		this.pagoSelected = pagoSelected;
+	}
+
+	/**
+	 * @return the cuentaCobrarCtrl
+	 */
+	public CuentaCobrarCtrl getCuentaCobrarCtrl() {
+		return cuentaCobrarCtrl;
+	}
+
+	/**
+	 * @param cuentaCobrarCtrl the cuentaCobrarCtrl to set
+	 */
+	public void setCuentaCobrarCtrl(CuentaCobrarCtrl cuentaCobrarCtrl) {
+		this.cuentaCobrarCtrl = cuentaCobrarCtrl;
 	}
 
 }
