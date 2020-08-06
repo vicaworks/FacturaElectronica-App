@@ -114,7 +114,9 @@ public class Principal
 	    			chrome.iniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
 	    			while(!Chrome.ingresoSRI)
 	    			{
-	    				chrome.reintentarIniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
+	    				chrome.cerrarNavegador();
+	    				chrome.inicializarDriver();
+	    				chrome.iniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
 	    			}
 	    			Chrome.ingresoSRI = false; // Resetear el valor para el próximo inicio de sesión
 	    			chrome.irAComprobantesRecibidos();
@@ -153,26 +155,30 @@ public class Principal
     			chrome.cerrarNavegador();
     		}
     		
-    		Calendar hoy = Calendar.getInstance();
-    		if(hoy.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH))
+    		if(ejecutarMesAnterior.compareTo("no") == 0)
     		{
-    			actualizarArchivoPropiedades();
-    		}
-    		for(String diaMesAnterior : diasEjecutarMesAnterior)
-    		{
-    			if(hoy.get(Calendar.DAY_OF_MONTH) == Integer.parseInt(diaMesAnterior))
-    			{
-    				ejecutarMesAnterior = "sí";
-    				break;
-    			}
+    			Calendar hoy = Calendar.getInstance();
+        		if(hoy.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH))
+        		{
+        			actualizarArchivoPropiedades();
+        		}
+        		for(String diaMesAnterior : diasEjecutarMesAnterior)
+        		{
+        			if(hoy.get(Calendar.DAY_OF_MONTH) == Integer.parseInt(diaMesAnterior))
+        			{
+        				ejecutarMesAnterior = "sí";
+        				break;
+        			}
+        		}
+        		
+        		// Verificar si se debe ejecutar para el mes anterior
+        		if(ejecutarMesAnterior.compareTo("sí") == 0)
+        		{
+        			LOGGER.info("Ejecutando para el mes anterior");
+        			descargar();
+        		}
     		}
     		LOGGER.info("Fin");
-    		// Verificar si se debe ejecutar para el mes anterior
-    		if(ejecutarMesAnterior.compareTo("sí") == 0)
-    		{
-    			LOGGER.info("Ejecutando para el mes anterior");
-    			descargar();
-    		}
     	}
     	catch(Exception ex)
     	{

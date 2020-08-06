@@ -75,36 +75,6 @@ public class Chrome
 		}
 	}
 	
-	public void reintentarIniciarSesion(String ruc, String cIAdicional, String clave)
-	{
-		try
-		{
-			// Llena el RUC sin recargar la página del SRI
-			webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("usuario"))).sendKeys(ruc);
-			// Llena la C.I. adicional si existe
-			if(cIAdicional.compareTo("0") != 0)
-			{
-				webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("ciAdicional"))).sendKeys(cIAdicional);
-			}
-			// Llena la clave
-			webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("password"))).sendKeys(clave);
-			// Hace clic en el botón Ingresar
-			webelement = webdriverwait.until(ExpectedConditions.elementToBeClickable(By.name("login")));
-	        ((JavascriptExecutor)driver).executeScript("arguments[0].click()", webelement);
-	        // Comprueba si ingresó al SRI
-	        TimeUnit.SECONDS.sleep(5);
-	        String direccionWeb = driver.getCurrentUrl();
-	        if(direccionWeb.substring(0, 63).compareTo("https://srienlinea.sri.gob.ec/sri-en-linea/contribuyente/perfil") == 0) // Si es que ingresó al SRI
-	        {
-	        	ingresoSRI = true;
-	        }
-		}
-		catch(Exception ex)
-		{
-			LOGGER.error("No se pudo ingresar al SRI");
-		}
-	}
-	
 	public void irAComprobantesRecibidos()
 	{
 		try
