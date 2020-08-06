@@ -3,9 +3,12 @@
  */
 package com.vcw.falecpv.web.ctrl.common;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,11 +16,15 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.PagoServicio;
+import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -37,8 +44,13 @@ public class PagoCtrl extends BaseCtrl {
 	@EJB
 	private PagoServicio pagoServicio;
 	
+	@EJB
+	private TipopagoServicio tipopagoServicio;
+	
 	private List<Pago> pagoList;
 	private List<Pago> pagoOtrosList;
+	private List<Pago> pagoEliminarList;
+	private Pago pagoSelected;
 	private VentasQuery ventasQuery;
 	private String idComprobante;
 	private BigDecimal valorPagar = BigDecimal.ZERO;
@@ -101,6 +113,8 @@ public class PagoCtrl extends BaseCtrl {
 	public void cargarPagosForm() {
 		try {
 			pagoList = null;
+			pagoEliminarList = null;
+			pagoSelected = null;
 			switch (callModule) {
 			case "CUENTAS_COBRAR":
 				pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
@@ -128,6 +142,25 @@ public class PagoCtrl extends BaseCtrl {
 		}
 	}
 
+	public void eliminarCredito() {
+		try {
+			eliminarPago();
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formPagos", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void eliminarPago() throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+		if(pagoEliminarList==null) {
+			pagoEliminarList = new ArrayList<>();
+		}
+		pagoEliminarList.add((Pago)BeanUtils.cloneBean(pagoSelected));
+		pagoList.remove(pagoSelected);
+		pagoSelected = null;
+	}
+	
 	private void totalizar() {
 		
 		totalPago = BigDecimal.ZERO;
@@ -137,6 +170,13 @@ public class PagoCtrl extends BaseCtrl {
 		
 		if(!pagoOtrosList.isEmpty()) {
 			totalOtrosPago = BigDecimal.valueOf(pagoOtrosList.stream().mapToDouble(p->p.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		}
+		int i=1;
+		for (Pago p : pagoList) {
+			if(p.getIdpago()==null || p.getIdpago().contains("M")) {
+				p.setIdpago("M"+i);
+			}
+			i++;
 		}
 		
 		pagoList.stream().forEach(p->{
@@ -159,6 +199,42 @@ public class PagoCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formPagos", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public void aceptarPago() {
+		try {
+			
+			pagoList.add(pagoSelected);
+			totalizar();
+			AppJsfUtil.hideModal("dlgFormPago");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formPagoRegistro", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void nuevoPago() {
+		try {
+			pagoSelected = new Pago();
+			pagoSelected.setTipopago(tipopagoServicio.consultarByPk("6"));
+			pagoSelected.setFechapago(new Date());
+			AppJsfUtil.showModalRender("dlgFormPago", "formPagoRegistro");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formPagos", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public boolean isPagoVencimiento(Pago p) {
+		try {
+			if(FechaUtil.comparaFechas(p.getFechapago(), new Date())<0 && p.getValorpago().doubleValue()!=p.getTotal().doubleValue()) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -315,6 +391,34 @@ public class PagoCtrl extends BaseCtrl {
 	 */
 	public void setTotalAbono(BigDecimal totalAbono) {
 		this.totalAbono = totalAbono;
+	}
+
+	/**
+	 * @return the pagoEliminarList
+	 */
+	public List<Pago> getPagoEliminarList() {
+		return pagoEliminarList;
+	}
+
+	/**
+	 * @param pagoEliminarList the pagoEliminarList to set
+	 */
+	public void setPagoEliminarList(List<Pago> pagoEliminarList) {
+		this.pagoEliminarList = pagoEliminarList;
+	}
+
+	/**
+	 * @return the pagoSelected
+	 */
+	public Pago getPagoSelected() {
+		return pagoSelected;
+	}
+
+	/**
+	 * @param pagoSelected the pagoSelected to set
+	 */
+	public void setPagoSelected(Pago pagoSelected) {
+		this.pagoSelected = pagoSelected;
 	}
 
 }
