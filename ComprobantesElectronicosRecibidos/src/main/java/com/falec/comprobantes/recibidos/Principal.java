@@ -9,6 +9,10 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.io.File;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
 
 public class Principal 
 {
@@ -25,22 +29,23 @@ public class Principal
 	private static String fechaInicioConsulta = "";
 	private static String fechaFinConsulta = "";
 	private static String rutaChromeDriver = "";
+	private static String rutaDescargaReporte = "";
 	
     public static void main( String[] args )
     {
     	System.setProperty("java.util.logging.SimpleFormatter.format", "[%tF %1$tT] [%4$-7s] %5$s %n");
     	rutaArchivoPropiedades = System.getProperty("user.dir") + java.nio.file.FileSystems.getDefault().getSeparator() 
     			+ "comprobantesrecibidos.properties";
-    	leerArchivoPropiedades(rutaArchivoPropiedades);
-    	descargarReporte();
+    	leerArchivoPropiedades();
+    	descargar();
     }
     
-    public static void leerArchivoPropiedades(String ruta)
+    public static void leerArchivoPropiedades()
     {
     	try
     	{
 	    	Properties pr = new Properties();
-	    	FileInputStream fis = new FileInputStream(ruta);
+	    	FileInputStream fis = new FileInputStream(rutaArchivoPropiedades);
 	    	InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
 	    	pr.load(isr);
 	    	
@@ -65,6 +70,8 @@ public class Principal
 	    	diasEjecutarMesAnterior.addAll(Arrays.asList(arregloDiasMesAnterior));
 	    	
 	    	rutaChromeDriver = pr.getProperty("rutaChromeDriver");
+	    	
+	    	rutaDescargaReporte = pr.getProperty("rutaDescargaReporte");
     	}
     	catch(IOException ex)
     	{
@@ -72,8 +79,9 @@ public class Principal
     	}
     }
     
-    public static void descargarReporte()
+    public static void descargar()
     {
+    	boolean reporteDescargado = false;
     	obtenerNombreMes();
     	Chrome chrome = new Chrome(rutaChromeDriver);
     	if(ejecutarMesAnterior.compareTo("sí") == 0)
@@ -99,31 +107,88 @@ public class Principal
     		for(int i = 0; i < rucs.size(); i++)
     		{
     			int intento = 1;
-    			LOGGER.info("Intento " + intento + "de descarga del reporte del RUC " + rucs.get(i));
-    			chrome.inicializarDriver();
-    			chrome.iniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
-    			while(!Chrome.ingresoSRI)
+    			for (int j = 0; j < 1; j++)
     			{
-    				chrome.reintentarIniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
+	    			LOGGER.info("Intento " + intento + " de descarga del reporte del RUC " + rucs.get(i));
+	    			chrome.inicializarDriver();
+	    			chrome.iniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
+	    			while(!Chrome.ingresoSRI)
+	    			{
+	    				chrome.cerrarNavegador();
+	    				chrome.inicializarDriver();
+	    				chrome.iniciarSesion(rucs.get(i), cIAdicionales.get(i), claves.get(i));
+	    			}
+	    			Chrome.ingresoSRI = false; // Resetear el valor para el próximo inicio de sesión
+	    			chrome.irAComprobantesRecibidos();
+	    			chrome.consultarReporte(nombreMes, anio);
+	    			boolean captchaResuelto = chrome.resolverCaptcha();
+	    			if(captchaResuelto)
+	    			{
+	    				reporteDescargado = chrome.descargarReporte(rucs.get(i), rutaDescargaReporte);
+	    				chrome.cerrarNavegador();
+	    				if(reporteDescargado)
+	                    {
+	                        LOGGER.info("Comprobante de ruc " + rucs.get(i) + " descargado con éxito");
+	                        break;
+	                    }
+	                    else
+	                    {
+	                        chrome.cerrarNavegador(); // Cierra la ventana del navegador en la que el captcha fue incorrecto
+	                        if(intento <= 3) // Intenta resolver el captcha para cada RUC un máximo de 3 intentos
+	                        {
+	                            j = j - 1;
+	                            intento++;
+	                        }
+	                    }
+	    			}
+	    			else
+	    			{
+	    				LOGGER.info("Error al resolver el captcha");
+                        chrome.cerrarNavegador();
+                        if(intento <= 3) // Intenta resolver el captcha para cada RUC un máximo de 3 intentos
+                        {
+                            j = j - 1;
+                            intento++;
+                        }
+	    			}
     			}
-    			Chrome.ingresoSRI = false; // Resetear el valor para el próximo inicio de sesión
-    			chrome.irAComprobantesRecibidos();
-    			chrome.consultarReporte(nombreMes, anio);
-//    			if(chrome.resolverCaptcha())
-//    			{
-//    				
-//    			}
+    			chrome.cerrarNavegador();
     		}
+    		
+    		if(ejecutarMesAnterior.compareTo("no") == 0)
+    		{
+    			Calendar hoy = Calendar.getInstance();
+        		if(hoy.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH))
+        		{
+        			actualizarArchivoPropiedades();
+        		}
+        		for(String diaMesAnterior : diasEjecutarMesAnterior)
+        		{
+        			if(hoy.get(Calendar.DAY_OF_MONTH) == Integer.parseInt(diaMesAnterior))
+        			{
+        				ejecutarMesAnterior = "sí";
+        				break;
+        			}
+        		}
+        		
+        		// Verificar si se debe ejecutar para el mes anterior
+        		if(ejecutarMesAnterior.compareTo("sí") == 0)
+        		{
+        			LOGGER.info("Ejecutando para el mes anterior");
+        			descargar();
+        		}
+    		}
+    		LOGGER.info("Fin");
     	}
     	catch(Exception ex)
     	{
-    		LOGGER.error("Error en el proceso de descarga del reporte. ");
+    		LOGGER.error("Error en el proceso de descarga del reporte.");
     	}
     }
     
     public static void obtenerNombreMes()
     {
-    	if(mes.compareTo("10") != 0 && mes.compareTo("11") != 0 && mes.compareTo("12") != 0)
+    	if(!mes.startsWith("0") && mes.compareTo("10") != 0 && mes.compareTo("11") != 0 && mes.compareTo("12") != 0)
     	{
     		mes = "0" +  mes; // Para los meses de enero a septiembre
     	}
@@ -197,6 +262,35 @@ public class Principal
     	{
     		nombreMes = "Diciembre";
     		fechaFinConsulta += "31";
+    	}
+    }
+    
+    public static void actualizarArchivoPropiedades()
+    {
+    	try
+    	{
+    		Properties pr = new Properties();
+    		FileInputStream fis = new FileInputStream(rutaArchivoPropiedades);
+	    	InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+	    	pr.load(isr);
+	    	
+	    	Integer mesInt = Integer.parseInt(mes);
+	    	Integer anioInt = Integer.parseInt(anio);
+	    	mesInt += 1;
+	    	if(mesInt == 13)
+	    	{
+	    		mesInt = 1;
+	    		anioInt += 1;
+	    	}
+            pr.setProperty("mes", Integer.toString(mesInt));
+            pr.setProperty("anio", Integer.toString(anioInt));
+            File properties = new File("comprobantesrecibidos.properties");
+            OutputStream out = new FileOutputStream(properties);
+            pr.store(out, null);
+    	}
+    	catch(IOException ioex)
+    	{
+    		LOGGER.error("No se pudo escribir en el archivo de propiedades");
     	}
     }
 }

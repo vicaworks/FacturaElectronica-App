@@ -5,15 +5,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.falec.comprobantes.anticaptcha.Anticaptcha;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.JavascriptExecutor;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public class Chrome
 {
@@ -46,36 +50,6 @@ public class Chrome
 			driver.get("https://srienlinea.sri.gob.ec/sri-en-linea/contribuyente/perfil");
 			TimeUnit.SECONDS.sleep(5);
 			// Llena el RUC
-			webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("usuario"))).sendKeys(ruc);
-			// Llena la C.I. adicional si existe
-			if(cIAdicional.compareTo("0") != 0)
-			{
-				webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("ciAdicional"))).sendKeys(cIAdicional);
-			}
-			// Llena la clave
-			webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("password"))).sendKeys(clave);
-			// Hace clic en el botón Ingresar
-			webelement = webdriverwait.until(ExpectedConditions.elementToBeClickable(By.name("login")));
-	        ((JavascriptExecutor)driver).executeScript("arguments[0].click()", webelement);
-	        // Comprueba si ingresó al SRI
-	        TimeUnit.SECONDS.sleep(5);
-	        String direccionWeb = driver.getCurrentUrl();
-	        if(direccionWeb.substring(0, 63).compareTo("https://srienlinea.sri.gob.ec/sri-en-linea/contribuyente/perfil") == 0) // Si es que ingresó al SRI
-	        {
-	        	ingresoSRI = true;
-	        }
-		}
-		catch(Exception ex)
-		{
-			LOGGER.error("No se pudo ingresar al SRI");
-		}
-	}
-	
-	public void reintentarIniciarSesion(String ruc, String cIAdicional, String clave)
-	{
-		try
-		{
-			// Llena el RUC sin recargar la página del SRI
 			webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("usuario"))).sendKeys(ruc);
 			// Llena la C.I. adicional si existe
 			if(cIAdicional.compareTo("0") != 0)
@@ -141,7 +115,6 @@ public class Chrome
 	
 	public boolean resolverCaptcha()
 	{
-		boolean resuelto = false;
 		try
 		{
 			TimeUnit.SECONDS.sleep(1);
@@ -149,12 +122,97 @@ public class Chrome
 			LOGGER.info("Dirección Captcha: " + direccionActual);
 			String sitekey = webdriverwait.until(ExpectedConditions.elementToBeClickable(By.className("g-recaptcha"))).getAttribute("data-sitekey");
 			LOGGER.info("Sitekey: " + sitekey);
-			String respuesta = Anticaptcha.resolverCaptcha(direccionActual, sitekey);
+			String respuesta = Anticaptcha.resolverNoCaptchaProxyless(direccionActual, sitekey);
+			if(respuesta != null)
+			{
+				JavascriptExecutor js;
+				if(driver instanceof JavascriptExecutor)
+				{
+                    js = (JavascriptExecutor) driver;
+                    js.executeScript("document.getElementById(\"g-recaptcha-response\").innerHTML = \"" + respuesta + "\";");
+                    TimeUnit.SECONDS.sleep(1);
+                    js.executeScript("rcBuscar(\"" + respuesta + "\");");
+                    return true;
+                }
+			}
 		}
 		catch(Exception ex)
 		{
 			LOGGER.error("Error al resolver el Captcha");
 		}
-		return resuelto;
+		return false;
 	}
+	
+	public boolean descargarReporte(String ruc, String rutaDescargaReporte)
+	{
+		try
+		{
+            TimeUnit.SECONDS.sleep(2);
+            String mensajeCaptchaIncorrecta = null;
+            try
+            {
+            	mensajeCaptchaIncorrecta = driver.findElement(By.className("ui-messages-warn-summary")).getText();
+            }
+            catch(Exception ex)
+            {
+            	LOGGER.info("No apareció el mensaje Captcha incorrecta");
+            }
+            if((mensajeCaptchaIncorrecta != null) && (mensajeCaptchaIncorrecta.compareTo("Captcha incorrecta")) == 0) // Captcha incorrecta
+            {
+                return false;
+            }
+            else // Captcha correcta
+            {
+                TimeUnit.SECONDS.sleep(3);
+                webdriverwait.until(ExpectedConditions.elementToBeClickable(By.id("frmPrincipal:lnkTxtlistado"))).click();
+                TimeUnit.SECONDS.sleep(10);
+                String mensajeNoExistenDatos = null;
+                try
+                {
+                	mensajeNoExistenDatos = driver.findElement(By.className("ui-messages-warn-summary")).getText();
+                }
+                catch(Exception ex)
+                {
+                	LOGGER.info("No apareció el mensaje No existen datos para los parámetros ingresados");
+                }
+                if((mensajeNoExistenDatos != null) && (mensajeNoExistenDatos.compareTo("No existen datos para los parámetros ingresados")) == 0) // No existen datos para los parámetros ingresados
+                {
+                    return true;
+                }
+                else // Sí existen datos para los parámetros ingresados
+                {
+                    // Mover el reporte descargado de Descargas a la ruta de descarga de reportes
+                    Path origen = FileSystems.getDefault().getPath(System.getProperty("user.home") + java.nio.file.FileSystems.getDefault().getSeparator() + "Descargas" + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
+                    Path destino = FileSystems.getDefault().getPath(rutaDescargaReporte + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
+                    try
+                    {
+                        Files.move(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+                        return true;
+                    }
+                    catch(IOException e)
+                    {
+                        System.err.println(e);
+                        return false;
+                    }
+                }
+            }
+        }
+		catch(Exception ex)
+		{
+        	LOGGER.error("Error al descargar el reporte del SRI");
+            return false;
+        }
+	}
+	
+	public void cerrarNavegador()
+	{
+        try
+        {
+            driver.close();
+            driver.quit();
+        }
+        catch(Exception e)
+        {
+        }
+    }
 }
