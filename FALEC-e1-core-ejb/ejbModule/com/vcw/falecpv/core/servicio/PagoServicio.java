@@ -87,6 +87,9 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 			"		tc.comprobante, " +
 			"		c.idcabecera, " +
 			"		c.numdocumento, " +
+			"		c.totalconimpuestos, " +
+			"		c.valorretenido, " +
+			"		c.valorapagar, " +
 			"		p.idpago, " +
 			"		p.idtipopago, " +
 			"		tp.descripcion, " +
@@ -170,8 +173,14 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<Pago> guardarPago(List<Pago> pagoList)throws DaoException{
+	public List<Pago> guardarPago(List<Pago> pagoList,List<Pago> pagoEliminarList)throws DaoException{
 		try {
+			
+			if(pagoEliminarList!=null) {
+				for (Pago pe : pagoEliminarList) {
+					eliminar(pe);
+				}
+			}
 			
 			for (Pago pago : pagoList) {
 				if(pago.getIdpago()==null || pago.getIdpago().contains("M")) {

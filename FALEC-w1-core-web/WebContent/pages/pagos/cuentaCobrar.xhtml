@@ -286,13 +286,19 @@
 						</h:outputText>
 					</p:column>
 					
+					<p:column headerText="#{msg['label.retencion']}" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.totalretencion}">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
 					<p:column headerText="A PAGAR" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.valorapagar}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="ADEUDADO" style="width:50px;" styleClass="TexAlRight">
+					<p:column headerText="#{msg['label.credito']}" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.totalpago}" styleClass="DispBlock markGray">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
@@ -304,21 +310,21 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="SALDO" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.totalpago-v.abono}">
+					<p:column headerText="ADEUDADO" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.totalpago-v.abono}" styleClass="DispBlock markGray">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VENCIMIENTO" style="width:90px;" styleClass="TexAlRight">
+					<p:column headerText="VENCIMIENTO" style="width:85px;" styleClass="TexAlRight">
 						
-						<div class="p-grid" style="padding-top:2px;">
+						<div class="p-grid p-justify-start" style="padding-top:2px;">
 							<div class="p-col-10" style="text-align: right;">
 								<h:outputText value="#{v.fechapago}" styleClass="#{cuentaCobrarCtrl.isFechaVencida(v.fechapago)?'markRed':''}">
 									<f:convertDateTime pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-1">
+							<div class="p-col-2" style="text-align: left;">
 								<p:commandLink action="#{pagoCtrl.cargarPagosForm()}" process="@this">
 									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
 									<f:setPropertyActionListener value="CUENTAS_COBRAR" target="#{pagoCtrl.callModule}"/>

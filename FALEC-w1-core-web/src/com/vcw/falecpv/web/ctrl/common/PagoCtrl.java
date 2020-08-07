@@ -247,6 +247,9 @@ public class PagoCtrl extends BaseCtrl {
 			pagoSelected = new Pago();
 			pagoSelected.setTipopago(tipopagoServicio.getTipopagoDao().cargar("6"));
 			pagoSelected.setFechapago(new Date());
+			if(valorPagar.doubleValue() - totalPago.doubleValue()>0) {
+				pagoSelected.setTotal(BigDecimal.valueOf(valorPagar.doubleValue() - totalPago.doubleValue()).setScale(2, RoundingMode.HALF_UP));
+			}
 			
 			switch (callModule) {
 			case "CUENTAS_COBRAR":
@@ -292,7 +295,7 @@ public class PagoCtrl extends BaseCtrl {
 				return;
 			}
 			
-			pagoList = pagoServicio.guardarPago(pagoList);
+			pagoList = pagoServicio.guardarPago(pagoList,pagoEliminarList);
 			// pantall aprincipal
 			cuentaCobrarCtrl.consultar();
 			cuentaCobrarCtrl.totalizar();

@@ -167,6 +167,18 @@ public class PagosMainCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getTotalconimpuestos().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getValorretenido().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(p.getValorapagar().doubleValue());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(p.getTotal().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
@@ -189,6 +201,9 @@ public class PagosMainCtrl extends BaseCtrl {
 			}
 			
 			fila++;
+			rowCliente = sheet.createRow(fila);
+			rowCliente.createCell(0).setCellValue("TOTALES");
+			fila++;
 			for (PagosQuery p : pagosQueryTotal) {
 				int col = 0;
 				rowCliente = sheet.createRow(fila);
@@ -204,7 +219,6 @@ public class PagosMainCtrl extends BaseCtrl {
 				fila++;
 			}
 			
-			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);
 			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
@@ -212,7 +226,6 @@ public class PagosMainCtrl extends BaseCtrl {
 			FileOutputStream out = new FileOutputStream(tempXls);
 			wb.write(out);
 			out.close();
-			
 			return AppJsfUtil.downloadFile(tempXls, "FALECPV-PagosEmitidos-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {

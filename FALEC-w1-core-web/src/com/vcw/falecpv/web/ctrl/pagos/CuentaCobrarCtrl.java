@@ -131,7 +131,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 		if(vComprobantescreditoList!=null) {
 			
 			totalCobrar = BigDecimal.valueOf(vComprobantescreditoList.stream().mapToDouble(x->x.getTotalpago().doubleValue()).sum() +
-			vComprobantescreditoList.stream().mapToDouble(x->x.getAbono().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+			vComprobantescreditoList.stream().mapToDouble(x->x.getAbono().doubleValue()).sum()*(-1)).setScale(2, RoundingMode.HALF_UP);
 			
 			List<VComprobantescredito> vencimientoList =  vComprobantescreditoList.stream().filter(x->isFechaVencida(x.getFechapago())).collect(Collectors.toList());
 			totalVencido = BigDecimal.ZERO;
@@ -230,7 +230,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(p.getTotalpago().add(p.getAbono()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+				cell.setCellValue(p.getTotalpago().add(p.getAbono().negate()).setScale(2, RoundingMode.HALF_UP).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
