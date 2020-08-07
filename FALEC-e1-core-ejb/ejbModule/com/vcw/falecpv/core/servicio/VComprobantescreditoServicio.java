@@ -78,6 +78,7 @@ public class VComprobantescreditoServicio extends AppGenericService<VComprobante
 			
 			cabeceralist.stream().forEach(x->{
 				x.setPagoList(pagoList.stream().filter(p->(p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
+				x.setPagoOtrosList(pagoList.stream().filter(p->(!p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
 			});
 			
 			return cabeceralist;

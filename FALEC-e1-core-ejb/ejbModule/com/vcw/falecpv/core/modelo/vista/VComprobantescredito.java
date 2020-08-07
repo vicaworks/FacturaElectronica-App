@@ -93,6 +93,9 @@ public class VComprobantescredito implements Serializable {
     
     @Transient
     private List<Pago> pagoList;
+    
+    @Transient
+    private List<Pago> pagoOtrosList;
 	
 	/**
 	 * 
@@ -430,6 +433,20 @@ public class VComprobantescredito implements Serializable {
 	 */
 	public void setPagoList(List<Pago> pagoList) {
 		this.pagoList = pagoList;
+	}
+
+	/**
+	 * @return the pagoOtrosList
+	 */
+	public List<Pago> getPagoOtrosList() {
+		return pagoOtrosList;
+	}
+
+	/**
+	 * @param pagoOtrosList the pagoOtrosList to set
+	 */
+	public void setPagoOtrosList(List<Pago> pagoOtrosList) {
+		this.pagoOtrosList = pagoOtrosList;
 	}
 
 }
