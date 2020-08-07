@@ -29,14 +29,17 @@ public class PagosQuery implements Serializable {
 	private String idtipopago;
 	private String descripcion;
 	private String nombre;
-	private BigDecimal total;
-	private BigDecimal valorentrega;
-	private BigDecimal cambio;
+	private BigDecimal total = BigDecimal.ZERO;
+	private BigDecimal valorentrega = BigDecimal.ZERO;
+	private BigDecimal cambio = BigDecimal.ZERO;
 	private String numerodocumento;
 	private String nombrebanco;
 	private String idcliente;
 	private String razonsocial;
 	private String identificacion;
+	private BigDecimal totalconimpuestos = BigDecimal.ZERO;
+	private BigDecimal valorretenido = BigDecimal.ZERO;
+	private BigDecimal valorapagar = BigDecimal.ZERO;
 
 	/**
 	 * 
@@ -308,6 +311,48 @@ public class PagosQuery implements Serializable {
 	 */
 	public void setIdentificacion(String identificacion) {
 		this.identificacion = identificacion;
+	}
+
+	/**
+	 * @return the totalconimpuestos
+	 */
+	public BigDecimal getTotalconimpuestos() {
+		return totalconimpuestos;
+	}
+
+	/**
+	 * @param totalconimpuestos the totalconimpuestos to set
+	 */
+	public void setTotalconimpuestos(BigDecimal totalconimpuestos) {
+		this.totalconimpuestos = totalconimpuestos;
+	}
+
+	/**
+	 * @return the valorretenido
+	 */
+	public BigDecimal getValorretenido() {
+		return valorretenido;
+	}
+
+	/**
+	 * @param valorretenido the valorretenido to set
+	 */
+	public void setValorretenido(BigDecimal valorretenido) {
+		this.valorretenido = valorretenido;
+	}
+
+	/**
+	 * @return the valorapagar
+	 */
+	public BigDecimal getValorapagar() {
+		return valorapagar;
+	}
+
+	/**
+	 * @param valorapagar the valorapagar to set
+	 */
+	public void setValorapagar(BigDecimal valorapagar) {
+		this.valorapagar = valorapagar;
 	}
 
 

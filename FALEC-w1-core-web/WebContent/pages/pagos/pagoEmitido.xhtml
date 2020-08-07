@@ -244,8 +244,18 @@
 						<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" />
 					</p:column>
 					
-					<p:column headerText="TIPO PAGO" style="width:100px;">
+					<p:column headerText="TIPO PAGO" style="width:80px;">
 						<h:outputText value="#{v.nombre}">
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.totalconimpuestos}">
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="A PAGAR" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.valorapagar}">
 						</h:outputText>
 					</p:column>
 					
