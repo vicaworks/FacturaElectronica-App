@@ -11,7 +11,6 @@ import javax.persistence.Query;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
-import com.vcw.falecpv.core.modelo.persistencia.Pago;
 
 /**
  * @author cristianvillarreal
