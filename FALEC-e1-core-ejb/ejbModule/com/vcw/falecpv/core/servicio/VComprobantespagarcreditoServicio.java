@@ -75,11 +75,11 @@ public class VComprobantespagarcreditoServicio extends AppGenericService<VCompro
 			
 			cabeceralist.stream().forEach(x->{
 				if(x.getIdtipocomprobante().equals("C")) {
-					x.setPagoList(pagoList.stream().filter(p->(p.getTipopago().getIdtipopago().equals("6") && p.getAdquisicion().getIdadquisicion().equals(x.getIdcabecera()))).collect(Collectors.toList()));
-					x.setPagoOtrosList(pagoList.stream().filter(p->(!p.getTipopago().getIdtipopago().equals("6") && p.getAdquisicion().getIdadquisicion().equals(x.getIdcabecera()))).collect(Collectors.toList()));
+					x.setPagoList(pagoList.stream().filter(p->(p.getAdquisicion() != null && p.getTipopago().getIdtipopago().equals("6") && p.getAdquisicion().getIdadquisicion().equals(x.getIdcabecera()))).collect(Collectors.toList()));
+					x.setPagoOtrosList(pagoList.stream().filter(p->(p.getAdquisicion() != null && !p.getTipopago().getIdtipopago().equals("6") && p.getAdquisicion().getIdadquisicion().equals(x.getIdcabecera()))).collect(Collectors.toList()));
 				}else {
-					x.setPagoList(pagoList.stream().filter(p->(p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
-					x.setPagoOtrosList(pagoList.stream().filter(p->(!p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
+					x.setPagoList(pagoList.stream().filter(p->(p.getCabecera()!=null && p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
+					x.setPagoOtrosList(pagoList.stream().filter(p->(p.getCabecera()!=null && !p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
 				}
 			});
 			

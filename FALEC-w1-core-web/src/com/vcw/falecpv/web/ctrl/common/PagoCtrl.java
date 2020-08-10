@@ -30,6 +30,7 @@ import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.pagos.CuentaCobrarCtrl;
+import com.vcw.falecpv.web.ctrl.pagos.CuentaPagarCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -70,6 +71,8 @@ public class PagoCtrl extends BaseCtrl {
 	private BigDecimal totalAdeudado = BigDecimal.ZERO;
 	private BigDecimal totalAbono = BigDecimal.ZERO;
 	private CuentaCobrarCtrl cuentaCobrarCtrl;
+	private CuentaPagarCtrl cuentaPagarCtrl;
+	private String idTipoComprobante;
 	
 	/**
 	 * 
@@ -151,7 +154,11 @@ public class PagoCtrl extends BaseCtrl {
 			pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
 			break;
 		case "CUENTAS_PAGAR":
-			pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idComprobante);
+			if(idTipoComprobante.equals("C")) {
+				pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idComprobante);
+			}else {
+				pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
+			}
 			break;	
 		default:
 			break;
@@ -297,8 +304,18 @@ public class PagoCtrl extends BaseCtrl {
 			
 			pagoList = pagoServicio.guardarPago(pagoList,pagoEliminarList);
 			// pantall aprincipal
-			cuentaCobrarCtrl.consultar();
-			cuentaCobrarCtrl.totalizar();
+			switch (callModule) {
+			case "CUENTAS_COBRAR":
+				cuentaCobrarCtrl.consultar();
+				cuentaCobrarCtrl.totalizar();
+				break;
+			case "CUENTAS_PAGAR":
+				cuentaPagarCtrl.consultar();
+				cuentaPagarCtrl.totalizar();
+				break;	
+			default:
+				break;
+			}
 			AppJsfUtil.addInfoMessage("formPagos", "OK", "REGISTROS GUARDADOS CORRECTAMENTE.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -493,6 +510,34 @@ public class PagoCtrl extends BaseCtrl {
 	 */
 	public void setCuentaCobrarCtrl(CuentaCobrarCtrl cuentaCobrarCtrl) {
 		this.cuentaCobrarCtrl = cuentaCobrarCtrl;
+	}
+
+	/**
+	 * @return the cuentaPagarCtrl
+	 */
+	public CuentaPagarCtrl getCuentaPagarCtrl() {
+		return cuentaPagarCtrl;
+	}
+
+	/**
+	 * @param cuentaPagarCtrl the cuentaPagarCtrl to set
+	 */
+	public void setCuentaPagarCtrl(CuentaPagarCtrl cuentaPagarCtrl) {
+		this.cuentaPagarCtrl = cuentaPagarCtrl;
+	}
+
+	/**
+	 * @return the idTipoComprobante
+	 */
+	public String getIdTipoComprobante() {
+		return idTipoComprobante;
+	}
+
+	/**
+	 * @param idTipoComprobante the idTipoComprobante to set
+	 */
+	public void setIdTipoComprobante(String idTipoComprobante) {
+		this.idTipoComprobante = idTipoComprobante;
 	}
 
 }
