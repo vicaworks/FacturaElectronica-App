@@ -343,7 +343,7 @@
 					
 					</p:column> -->
 					
-					<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.total}" styleClass="DispBlock Wid100 markGray">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
@@ -356,13 +356,13 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="A PAGAR" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="A PAGAR" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.valorapagar}" >
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlRight">
+					<p:column headerText="PAGO" style="width:60px;" styleClass="TexAlRight">
 						
 						<div class="p-grid" style="padding-top:2px;">
 							<div class="p-col-9" style="text-align: right;">
@@ -370,11 +370,13 @@
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-1">
+							<div class="p-col-1" style="text-align: left;">
 								<p:commandLink action="#{pagoCtrl.cargarPagos()}" process="@this">
 									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
 									<f:setPropertyActionListener value="#{v}" target="#{pagoCtrl.ventasQuery}"/>
 								</p:commandLink>
+							</div>
+							<div class="p-col-1" style="text-align: left;">
 							</div>
 						</div>
 						

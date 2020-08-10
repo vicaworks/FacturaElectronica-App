@@ -10,6 +10,12 @@
 		
 		.pvResumenPagoDT .ui-datatable-scrollable-body{
 			min-height: 25vh !important;
+			max-height: 65vh !important;
+		}
+		
+		.heightDTCredito{
+			/* min-height: 25vh !important;
+			max-height: 25vh !important; */
 		}
 		
 	</style>
@@ -35,7 +41,7 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmUsuario contenedorFormulario">
+			<div class="form-ui Wid100 OvYScroll heightDTCredito contenedorFormulario">
 			
 				<p:dataTable id="pvResumenPagoDT"
 	        			scrollable="true"
@@ -58,7 +64,7 @@
 							
 								<div class="p-grid Fs10">
 									
-									<div class="p-col-12 p-md-4 dt-spinner">
+									<div class="p-col-12 p-md-3 dt-spinner">
 									
 										<h:outputText value="VALOR" styleClass="Fs12"/>
 										
@@ -68,43 +74,51 @@
 									</div>
 									
 									
-									<div class="p-col-12 p-md-4 dt-spinner">
+									<div class="p-col-12 p-md-3 dt-spinner">
 										<!-- Efectivo -->								
-										<h:outputText value="IMPORTE" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+										<h:outputText value="IMPORTE" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '1'}"/>
 										<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true">
 										</p:spinner>
 										
 										<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-										<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+										<h:outputText value="# DOCUMENTO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
 										<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}" readonly="true">
 										</p:inputText>
 										
 										<!-- credito -->
-										<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+										<h:outputText value="PLAZO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '4'}"/>
 										<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" readonly="true">
 										</p:spinner>
 										
 									</div>
 									
-									<div class="p-col-12 p-md-4 dt-spinner">
+									<div class="p-col-12 p-md-3 dt-spinner">
 										<!-- Efectivo -->
-										<h:outputText value="CAMBIO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+										<h:outputText value="CAMBIO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '1'}"/>
 										<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true">
 										</p:spinner>
 										
 										<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-										<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+										<h:outputText value="BANCO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
 										<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}" readonly="true">
 										</p:inputText>
 										
 										<!-- credito -->
-										<h:outputText value="FECHA PAGO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+										<h:outputText value="FECHA PAGO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '4'}"/>
 										<p:calendar id="claAdqFechaCompra" value="#{p.fechapago}"
 											pattern="dd/MM/yyyy"
 											locale="es"
 											requiredMessage="REQUERIDO" required="false" styleClass="Wid100" placeholder="Fecha tentativa de pago"
 											rendered="#{p.tipopago.subdetalle == '4'}" readonly="true" showOn="false">
 										</p:calendar>
+										
+									</div>
+									
+									<div class="p-col-12 p-md-3 dt-spinner">
+									
+										<h:outputText value="NOTAS" styleClass="Fs12 FontBold"/>
+										
+										<h:outputText value="#{p.notas}" />
 										
 									</div>
 									

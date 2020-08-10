@@ -187,6 +187,14 @@
 		<div class="EmptyBox10"/>
 	</div>	
 	<div class="EmptyBox5"/>
+	<!--
+		Funciones de calculo de la retencion renta e iva 
+	 -->
+	 <p:remoteCommand name="calcularretencionRenta" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{liqCompraFormCtrl.calcularRettencionAction('RENTA')}"/>
+	 <p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{liqCompraFormCtrl.calcularRettencionAction('IVA')}"/>
+	 <!--
+	 	=====================================================================================================  
+	 -->
 	<p:outputPanel id="oupPagoDT">
 		<div class="card card-w-title">
 			
@@ -200,10 +208,10 @@
 					</p:commandLink>
 					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
 						<p:inputNumber symbol="%"  value="#{liqCompraFormCtrl.porcentajeRenta}" 
-                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){return false;}">  
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionRenta();return false;}">  
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
-						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencion('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 							<i class="fa fa-floppy-o Fs14"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
@@ -222,10 +230,10 @@
 					<p:spacer width="3"/>
 					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
 						<p:inputNumber symbol="%" value="#{liqCompraFormCtrl.porcentajeIva}"
-                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){return false;}">  
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionIva();return false;}">  
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
-						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencion('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 							<i class="fa fa-floppy-o Fs14"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>

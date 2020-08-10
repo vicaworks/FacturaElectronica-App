@@ -236,8 +236,8 @@ public class CompFacCtrl extends BaseCtrl {
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
 		totalSaldo = BigDecimal.ZERO;
-//		porcentajeIva = BigDecimal.ZERO;
-//		porcentajeRenta = BigDecimal.ZERO;
+		porcentajeIva = null;
+		porcentajeRenta = null;
 		consultarIce();
 		consultarIva();
 		populateTipoPago();
@@ -307,6 +307,8 @@ public class CompFacCtrl extends BaseCtrl {
 		dFac.setValoriva(dFac.getIva().getValor().divide(BigDecimal.valueOf(100))
 				.multiply(dFac.getPreciototalsinimpuesto().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
 		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
+		cabecerSelected.setValorretenidoiva(BigDecimal.ZERO);
+		cabecerSelected.setValorretenidorenta(BigDecimal.ZERO);
 		
 	}
 	
@@ -340,6 +342,8 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setTotaldescuento(cabecerSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalsinimpuestos(cabecerSelected.getTotalsinimpuestos().setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalconimpuestos(cabecerSelected.getTotalsinimpuestos().add(cabecerSelected.getTotaliva()).add(cabecerSelected.getTotalice()).setScale(2, RoundingMode.HALF_UP));
+		calcularRettencion("RENTA");
+		calcularRettencion("IVA");
 		cabecerSelected.setValorretenido(cabecerSelected.getValorretenidorenta().add(cabecerSelected.getValorretenidoiva()).setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalpagar(cabecerSelected.getTotalconimpuestos().add(cabecerSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
 		if(totalPago!=null && totalPago.doubleValue()>0) {
@@ -763,6 +767,27 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void calcularRettencionAction(String tipo) {
+		try {
+			
+			if(cabecerSelected == null) {
+				return;
+			}
+			
+			if (cabecerSelected.getTotalsinimpuestos().doubleValue()<=0) {
+				return;
+			}
+			
+			calcularRettencion(tipo);
+			totalizar();
+			porcentajeIva = null;
+			porcentajeRenta = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	public void calcularRettencion(String tipo) {
 		try {
 			
@@ -776,17 +801,20 @@ public class CompFacCtrl extends BaseCtrl {
 			
 			switch (tipo) {
 			case "RENTA":
-				cabecerSelected.setValorretenidorenta(
-						porcentajeRenta.divide(BigDecimal.valueOf(100d)).multiply(cabecerSelected.getTotalsinimpuestos()).setScale(2, RoundingMode.HALF_UP));
+				if(porcentajeRenta!=null) {
+					cabecerSelected.setValorretenidorenta(
+							porcentajeRenta.divide(BigDecimal.valueOf(100d)).multiply(cabecerSelected.getTotalsinimpuestos()).setScale(2, RoundingMode.HALF_UP));
+				}
 				break;
 			case "IVA":
-				cabecerSelected.setValorretenidoiva(
-						porcentajeIva.divide(BigDecimal.valueOf(100d)).multiply(cabecerSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
+				if(porcentajeIva!=null) {
+					cabecerSelected.setValorretenidoiva(
+							porcentajeIva.divide(BigDecimal.valueOf(100d)).multiply(cabecerSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
+				}
 				break;	
 			default:
 				break;
 			}
-			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

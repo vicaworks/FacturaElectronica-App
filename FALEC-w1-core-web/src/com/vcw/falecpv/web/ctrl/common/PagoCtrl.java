@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -85,6 +86,7 @@ public class PagoCtrl extends BaseCtrl {
 			
 			pagoList = null;
 			pagoList = pagoServicio.getPagoDao().getByIdCabecera(ventasQuery.getIdcabecera());
+			ordenar();
 			valorPagar = ventasQuery.getValorapagar();
 			totalPago = ventasQuery.getTotalpago();
 			
@@ -96,11 +98,26 @@ public class PagoCtrl extends BaseCtrl {
 		}
 	}
 	
+	private void ordenar() {
+		if(pagoList!=null && !pagoList.isEmpty()) {
+			for (Pago p : pagoList) {
+				if(!p.getTipopago().getIdtipopago().equals("6")) {
+					Calendar cl = Calendar.getInstance();
+					cl.set(2000, Calendar.JANUARY, 1);
+					p.setFechapago(cl.getTime());
+				}
+			}
+			
+			pagoList.sort(Comparator.comparing(Pago::getFechapago));
+		}
+	}
+	
 	public void cargarPagosById() {
 		try {
 			
 			pagoList = null;
 			pagoList = pagoServicio.getPagoDao().getByIdCabecera(idComprobante);
+			ordenar();
 			totalPago = BigDecimal.valueOf(pagoList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 			AppJsfUtil.showModalRender("dlgResumenPagos", "frmResPagos");
 			
@@ -115,6 +132,7 @@ public class PagoCtrl extends BaseCtrl {
 			
 			pagoList = null;
 			pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idComprobante);
+			ordenar();
 			totalPago = BigDecimal.valueOf(pagoList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 			AppJsfUtil.showModalRender("dlgResumenPagos", "frmResPagos");
 			
