@@ -187,12 +187,21 @@
 		</p:outputPanel>
 	</div>
 	<div class="EmptyBox5"/>	
+	<!--
+		Funciones de calculo de la retencion renta e iva 
+	 -->
+	 <p:remoteCommand name="calcularretencionRenta" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{compFacCtrl.calcularRettencionAction('RENTA')}"/>
+	 <p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{compFacCtrl.calcularRettencionAction('IVA')}"/>
+	 <!--
+	 	=====================================================================================================  
+	 -->
 	<p:outputPanel id="oupPagoDT">
 	
 		<div class="card card-w-title">	
 		
 			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Valor a Pagar</h2>
 			<div class="EmptyBox10"/>
+			
 			
 			<div class="p-grid p-align-center vertical-container">
 				<div class="p-col-12 p-md-4">
@@ -201,9 +210,9 @@
 					</p:commandLink>
 					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
 						<p:inputNumber symbol="%"  value="#{compFacCtrl.porcentajeRenta}" 
-                                symbolPosition="s" emptyValue="always"  onkeydown="if(event.keyCode==13){return false;}">  
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionRenta();return false;}">
 		                </p:inputNumber>
-						<p:commandLink action="#{compFacCtrl.calcularRettencion('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT">
+						<p:commandLink action="#{compFacCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT">
 							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
@@ -222,9 +231,9 @@
 					<p:spacer width="3"/>
 					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
 						<p:inputNumber symbol="%" value="#{compFacCtrl.porcentajeIva}"
-                                symbolPosition="s" emptyValue="always"  onkeydown="if(event.keyCode==13){return false;}">  
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionIva();return false;}">  
 		                </p:inputNumber>
-						<p:commandLink action="#{compFacCtrl.calcularRettencion('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+						<p:commandLink action="#{compFacCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
 							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>

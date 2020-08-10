@@ -150,6 +150,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
 		totalSaldo = BigDecimal.ZERO;
+		porcentajeIva = null;
+		porcentajeRenta = null;
 		
 		consultarProveedor();
 		consultarIva();
@@ -316,6 +318,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 				.multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
 		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva()).setScale(2, RoundingMode.HALF_UP));
 		
+		liqCompraSelected.setValorretenidoiva(BigDecimal.ZERO);
+		liqCompraSelected.setValorretenidorenta(BigDecimal.ZERO);
+		
 	}
 	
 	private void totalizar() throws DaoException {
@@ -345,6 +350,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTotaldescuento(liqCompraSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalsinimpuestos(liqCompraSelected.getTotalsinimpuestos().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalconimpuestos(liqCompraSelected.getTotalsinimpuestos().add(liqCompraSelected.getTotaliva()).add(liqCompraSelected.getTotalice()).setScale(2, RoundingMode.HALF_UP));
+		calcularRettencion("RENTA");
+		calcularRettencion("IVA");
 		liqCompraSelected.setValorretenido(liqCompraSelected.getValorretenidorenta().add(liqCompraSelected.getValorretenidoiva()).setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalpagar(liqCompraSelected.getTotalconimpuestos().add(liqCompraSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
 		if(totalPago!=null && totalPago.doubleValue()>0) {
@@ -589,6 +596,27 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void calcularRettencionAction(String tipo) {
+		try {
+			
+			if(liqCompraSelected == null) {
+				return;
+			}
+			
+			if (liqCompraSelected.getTotalsinimpuestos().doubleValue()<=0) {
+				return;
+			}
+			
+			calcularRettencion(tipo);
+			totalizar();
+			porcentajeIva = null;
+			porcentajeRenta = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	public void calcularRettencion(String tipo) {
 		try {
 			
@@ -602,17 +630,20 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			
 			switch (tipo) {
 			case "RENTA":
-				liqCompraSelected.setValorretenidorenta(
-						porcentajeRenta.divide(BigDecimal.valueOf(100d)).multiply(liqCompraSelected.getTotalsinimpuestos()).setScale(2, RoundingMode.HALF_UP));
+				if(porcentajeRenta!=null) {
+					liqCompraSelected.setValorretenidorenta(
+							porcentajeRenta.divide(BigDecimal.valueOf(100d)).multiply(liqCompraSelected.getTotalsinimpuestos()).setScale(2, RoundingMode.HALF_UP));
+				}
 				break;
 			case "IVA":
-				liqCompraSelected.setValorretenidoiva(
-						porcentajeIva.divide(BigDecimal.valueOf(100d)).multiply(liqCompraSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
+				if(porcentajeIva!=null) {
+					liqCompraSelected.setValorretenidoiva(
+							porcentajeIva.divide(BigDecimal.valueOf(100d)).multiply(liqCompraSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
+				}
 				break;	
 			default:
 				break;
 			}
-			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
