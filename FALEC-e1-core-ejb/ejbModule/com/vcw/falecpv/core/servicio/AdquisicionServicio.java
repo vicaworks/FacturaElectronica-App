@@ -70,7 +70,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 			// datos de la adquisicion
 			
 			if(adquisicion.getIdadquisicion()==null) {
-				adquisicion.setIdadquisicion(contadorPkServicio.generarContadorTabla(TCAdquisicion.ADQUISICION,
+				adquisicion.setIdadquisicion(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.CABECERA,
 						adquisicion.getEstablecimiento().getIdestablecimiento()));
 				crear(adquisicion);
 			}else {

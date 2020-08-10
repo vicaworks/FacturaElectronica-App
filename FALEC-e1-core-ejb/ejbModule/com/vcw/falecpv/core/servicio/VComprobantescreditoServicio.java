@@ -64,6 +64,15 @@ public class VComprobantescreditoServicio extends AppGenericService<VComprobante
 		this.vComprobantescreditoDao = vComprobantescreditoDao;
 	}
 
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param tipocomprobante
+	 * @param criterio
+	 * @return
+	 * @throws DaoException
+	 */
 	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante,String criterio)throws DaoException{
 		try {
 			
