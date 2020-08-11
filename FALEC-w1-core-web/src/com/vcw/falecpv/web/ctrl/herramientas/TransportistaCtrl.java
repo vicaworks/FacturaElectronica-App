@@ -46,6 +46,7 @@ public class TransportistaCtrl extends BaseCtrl {
 	private String viewUpdate;
 	private Transportista transportistaSelected;
 	private List<TipoIdentificacion> tipoIdentificacionList;
+	private TransportistaMainCtrl transportistaMainCtrl;
 
 	/**
 	 * 
@@ -94,10 +95,14 @@ public class TransportistaCtrl extends BaseCtrl {
 				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
 				guiaRemFormCtrl.consultarTransportista();
 				guiaRemFormCtrl.getGuiaRemisionSelected().setTransportista(transportistaSelected);
+				guiaRemFormCtrl.cambioTransportista();
 				
 				AppJsfUtil.hideModal("dlgTransportista");
 				break;
-
+			case "TRANSPORTISTA":
+				transportistaMainCtrl.consultar();
+				AppJsfUtil.ajaxUpdate("formMain");
+				break;
 			default:
 				break;
 			}
@@ -235,6 +240,20 @@ public class TransportistaCtrl extends BaseCtrl {
 	 */
 	public void setTipoIdentificacionList(List<TipoIdentificacion> tipoIdentificacionList) {
 		this.tipoIdentificacionList = tipoIdentificacionList;
+	}
+
+	/**
+	 * @return the transportistaMainCtrl
+	 */
+	public TransportistaMainCtrl getTransportistaMainCtrl() {
+		return transportistaMainCtrl;
+	}
+
+	/**
+	 * @param transportistaMainCtrl the transportistaMainCtrl to set
+	 */
+	public void setTransportistaMainCtrl(TransportistaMainCtrl transportistaMainCtrl) {
+		this.transportistaMainCtrl = transportistaMainCtrl;
 	}
 
 }

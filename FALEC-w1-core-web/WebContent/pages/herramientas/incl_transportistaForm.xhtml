@@ -19,7 +19,6 @@
 		
 		<h:form id="frmTransportista">
 			
-			
 			<!-- OPCIONES -->
 			
 			<div class="p-grid toolBarPopUp" >
@@ -110,7 +109,7 @@
 					<h:outputText value="#{msg['label.telefono']} : "/>
 					<p:inputText id="intTransportistaTelefono"
 						value="#{transportistaCtrl.transportistaSelected.telefono}"
-						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
 						maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="#{msg['converter.solonumeros']}">
 						<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 					</p:inputText>

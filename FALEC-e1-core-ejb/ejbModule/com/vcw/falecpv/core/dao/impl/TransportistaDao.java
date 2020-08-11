@@ -82,7 +82,7 @@ public class TransportistaDao extends AppGenericDao<Transportista, String> {
 		
 		Query q = getEntityManager().createQuery(sql);
 		q.setParameter("idempresa", idEmpresa);
-		if(estadoRegistroEnum!=null) {
+		if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
 			q.setParameter("estado", estadoRegistroEnum.getInicial());
 		}
 		

@@ -129,16 +129,6 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		inicializarSecuencia(guiaRemisionSelected);
 	}
 	
-	public void cambioTransportista() {
-		try {
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-		
-	}
-	
 	@Override
 	public void guardar() {
 		try {
@@ -565,6 +555,21 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void cambioTransportistaAction() {
+		try {
+			cambioTransportista();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void cambioTransportista() {
+		if(guiaRemisionSelected.getTransportista()!=null) {
+			guiaRemisionSelected.setPlaca(guiaRemisionSelected.getTransportista().getPlaca());
 		}
 	}
 	

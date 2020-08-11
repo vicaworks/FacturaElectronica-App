@@ -103,8 +103,9 @@
 										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
 										action="#{transportistaCtrl.nuevoAction()}" inline="true">
 										<f:setPropertyActionListener value="#{null}" target="#{transportistaCtrl.transportistaSelected}"/>		
-										<f:setPropertyActionListener value="TRASNPORTISTA" target="#{transportistaCtrl.callModule}"/>
+										<f:setPropertyActionListener value="TRANSPORTISTA" target="#{transportistaCtrl.callModule}"/>
 										<f:setPropertyActionListener value=":formMain" target="#{transportistaCtrl.viewUpdate}"/>
+										<f:setPropertyActionListener value="#{transportistaMainCtrl}" target="#{transportistaCtrl.transportistaMainCtrl}"/>
 									</p:commandButton>
 									
 									<p:commandButton  id="cmdExcel" 
@@ -114,7 +115,7 @@
 										value="REPORTE"
 										styleClass="success-btn Wid90"
 										disabled="#{empty transportistaMainCtrl.transportistaList}">
-										<p:fileDownload value="#{proveedorCtrl.fileProveedor}"/>
+										<p:fileDownload value="#{transportistaMainCtrl.fileResumen}"/>
 									</p:commandButton>
 								
 								</p:panelGrid>
@@ -153,8 +154,10 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtCliente" my="left top" at="left bottom">
-							<p:menuitem value="Editar" action="#{transportistaCtrl.nuevoEditar(c.idtransportista)}" icon="fa fa-edit">
-								<f:setPropertyActionListener value="TRASNPORTISTA" target="#{clienteCtrl.callModule}"/>
+							<p:menuitem value="Editar" action="#{transportistaCtrl.nuevoEditar(c.idtransportista)}" icon="fa fa-edit" update="@form">
+								<f:setPropertyActionListener value="TRANSPORTISTA" target="#{transportistaCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{transportistaCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="#{transportistaMainCtrl}" target="#{transportistaCtrl.transportistaMainCtrl}"/>
 							</p:menuitem>
 				            <p:menuitem value="Eliminar" action="#{transportistaMainCtrl.eliminar()}" icon="fa fa-close" process="transportistaDT" update="@form">
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -162,6 +165,10 @@
 				            </p:menuitem>
 						</p:menu>
 						
+					</p:column>
+					
+					<p:column style="width:20px;" headerText="ESTADO">
+						<h:outputText value="#{c.estado}" />
 					</p:column>
 					
 					<p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
@@ -181,15 +188,15 @@
 					</p:column>
 					
 					<p:column headerText="PLACA" style="width:30px;">
-						<h:outputText value="#{c.placa}" styleClass="FontBold Fs12" />
+						<h:outputText value="#{c.placa}" />
 					</p:column>
 					
 					<p:column headerText="TELÉFONO" style="width:50px;">
-						<h:outputText value="#{c.telefono}" styleClass="FontBold Fs12" />
+						<h:outputText value="#{c.telefono}"/>
 					</p:column>
 					
 					<p:column headerText="CORREO ELECTRÖNICO" style="width:50px;">
-						<h:outputText value="#{c.email}" styleClass="FontBold Fs12" />
+						<h:outputText value="#{c.email}"/>
 					</p:column>
 					
 	                
