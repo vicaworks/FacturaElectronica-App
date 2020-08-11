@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.heightFrmTransportista {
-				height: 300px;
+				height: 350px;
 		}	
 		
 	</style>
@@ -18,7 +18,6 @@
 	
 		
 		<h:form id="frmTransportista">
-			
 			
 			<!-- OPCIONES -->
 			
@@ -100,11 +99,34 @@
 						maxlength="200" converter="omnifaces.ToUpperCaseConverter" />
 					<p:message for="intTransportistaRazonSocial"/>
 					
+					<h:outputText value="PLACA * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTransportistaPlaca"
+						value="#{transportistaCtrl.transportistaSelected.placa}"
+						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="10" converter="omnifaces.ToUpperCaseConverter" />
+					<p:message for="intTransportistaPlaca"/>
+					
+					<h:outputText value="#{msg['label.telefono']} : "/>
+					<p:inputText id="intTransportistaTelefono"
+						value="#{transportistaCtrl.transportistaSelected.telefono}"
+						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="#{msg['converter.solonumeros']}">
+						<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+					</p:inputText>
+					<p:message for="intTransportistaTelefono"/>
+					
+					<h:outputText value="#{msg['label.correoelectronico']} : "/>
+					<p:inputText id="intTransportistaEmail"
+						value="#{transportistaCtrl.transportistaSelected.email}"
+						styleClass="Wid100" maxlength="100" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
+						<f:validator validatorId="emailValidator"/>
+					</p:inputText>
+					<p:message for="intTransportistaEmail"/>
+					
 					<h:outputText value="ESTADO * :" />
 					<p:selectOneMenu id="somestadoTransportista" value="#{transportistaCtrl.transportistaSelected.estado}" style="width:100%" disabled="#{transportistaCtrl.transportistaSelected.idtransportista==null}">
 		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
 		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
 		    		</p:selectOneMenu>
 		    		<p:message for="somestadoTransportista"/>
 					

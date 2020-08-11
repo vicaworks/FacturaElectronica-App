@@ -66,7 +66,8 @@
 					<f:selectItems value="#{guiaRemFormCtrl.transportistaList}" var="t"
 						itemLabel="#{t.razonsocial}" itemValue="#{t}" />
 					
-					<p:ajax update=":formMain:msgFormMain :formMain:optGrIdentificacion :formMain:optGrRazonSocial"/>
+					<p:ajax event="change" update=":formMain:msgFormMain :formMain:optGrIdentificacion :formMain:optGrRazonSocial :formMain:inpGrPlaca" listener="#{guiaRemFormCtrl.cambioTransportistaAction()}">
+					</p:ajax>
 						
 				</p:selectOneMenu>
 				<p:message for="somGrTransportista" />
@@ -77,7 +78,7 @@
 							action="#{transportistaCtrl.nuevoEditar(guiaRemFormCtrl.guiaRemisionSelected.transportista==null?null:guiaRemFormCtrl.guiaRemisionSelected.transportista.idtransportista)}" styleClass="secondary-button Wid100" process="@this">
 				<f:setPropertyActionListener value="#{guiaRemCtrl.guiaRemisionSelected.transportista}" target="#{transportistaCtrl.transportistaSelected}"/>		
 				<f:setPropertyActionListener value="GUIA_REMISION" target="#{transportistaCtrl.callModule}"/>
-				<f:setPropertyActionListener value=":formMain:somGrTransportista :formMain:optGrIdentificacion :formMain:optGrRazonSocial" target="#{transportistaCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value=":formMain:somGrTransportista :formMain:optGrIdentificacion :formMain:optGrRazonSocial :formMain:inpGrPlaca" target="#{transportistaCtrl.viewUpdate}"/>
 			</p:commandButton>
 			
 			<h:outputText value="#{msg['label.identificacion']} *" styleClass="cpoRequerido"/>
