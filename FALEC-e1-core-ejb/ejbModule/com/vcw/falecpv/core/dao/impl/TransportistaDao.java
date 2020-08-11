@@ -55,5 +55,43 @@ public class TransportistaDao extends AppGenericDao<Transportista, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @param criteria
+	 * @param estadoRegistroEnum
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Transportista> getByCriteria(String idEmpresa,String criteria,EstadoRegistroEnum estadoRegistroEnum)throws DaoException{
+		
+		String sql = "SELECT t FROM Transportista t WHERE t.empresa.idempresa=:idempresa ";
+		
+		sql += !estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)?" AND t.estado=:estado ":" ";
+		
+		if(criteria!=null && criteria.trim().length()>0) {
+			sql += "AND (";
+			sql += " t.identificacion like :identificacion ";
+			sql += " OR t.razonsocial like :razonsocial ";
+			sql += ") ";
+		}
+		sql += "ORDER BY t.razonsocial";
+		
+		Query q = getEntityManager().createQuery(sql);
+		q.setParameter("idempresa", idEmpresa);
+		if(estadoRegistroEnum!=null) {
+			q.setParameter("estado", estadoRegistroEnum.getInicial());
+		}
+		
+		if(criteria!=null && criteria.trim().length()>0) {
+			q.setParameter("identificacion", "%".concat(criteria).concat("%"));
+			q.setParameter("razonsocial", "%".concat(criteria).concat("%"));
+		}
+		
+		return q.getResultList();
+	}
 
 }

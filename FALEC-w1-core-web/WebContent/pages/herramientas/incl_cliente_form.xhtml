@@ -117,7 +117,7 @@
 							</h:panelGroup>
 							<p:message for="intDireccion" />
 							
-							<h:outputText value="CORREO ELECTRÓNICO * : " style="font-weight: bold" />
+							<h:outputText value="#{msg['label.correoelectronico']} * : " style="font-weight: bold" />
 							<h:panelGroup>
 								<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="Wid100" maxlength="50" validatorMessage="EMAIL INVALIDO" required="true" requiredMessage="REQUERIDO">
 									<f:validator validatorId="emailValidator"/>

@@ -1,0 +1,207 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">Transportista</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.transportistaDT .ui-datatable-scrollable-body{
+				min-height: 30vh !important;
+				height: calc(100vh - 390px)!important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
+			}
+			
+						
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+		
+		<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+		
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Transportista" url="#{request.contextPath}/pages/herramientas/transportista.jsf"/>
+		</p:breadCrumb>
+		
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	
+	    		<div class="p-grid p-align-start ">
+	    			
+	    			<div class="p-col-12 p-md-6">
+						
+						<div class="p-col-12">
+							<p:selectOneMenu id="somTraEstado" value="#{transportistaMainCtrl.estadoRegBusqueda}" style="width:100%">
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
+				    		</p:selectOneMenu>
+						</div>
+						
+						<div class="p-col-12">
+							<p:inputText id="intCriterio" value="#{transportistaMainCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="Buscar por : #{msg['criterio.busquedatransportista']}"/>
+						</div>
+						
+					</div>
+					
+					<div class="p-col-12 p-md-6" style="text-align:center;">
+						
+						<p:panelGrid columns="1"
+								style="margin:0px;border:none !important;width:100%;"
+								layout="grid"
+								columnClasses="ui-g-12">
+								
+								<p:panelGrid columns="3" style="border:none !important;margin:0px;width:100%;" 
+									columnClasses="ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4,
+												   ui-g-12 ui-lg-4">
+												   
+									<p:commandButton id="cmdProveedorRefrecar"
+											value="CONSULTAR" icon="fa fa-search" 
+											action="#{transportistaMainCtrl.buscar()}" styleClass="secondary-button Wid90" update="@form"
+											/>
+									
+									<p:commandButton id="cmdNuevo"
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
+										action="#{transportistaCtrl.nuevoAction()}" inline="true">
+										<f:setPropertyActionListener value="#{null}" target="#{transportistaCtrl.transportistaSelected}"/>		
+										<f:setPropertyActionListener value="TRASNPORTISTA" target="#{transportistaCtrl.callModule}"/>
+										<f:setPropertyActionListener value=":formMain" target="#{transportistaCtrl.viewUpdate}"/>
+									</p:commandButton>
+									
+									<p:commandButton  id="cmdExcel" 
+										title="EXPORTAR"
+										icon="fa fa-file-excel-o"
+										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+										value="REPORTE"
+										styleClass="success-btn Wid90"
+										disabled="#{empty transportistaMainCtrl.transportistaList}">
+										<p:fileDownload value="#{proveedorCtrl.fileProveedor}"/>
+									</p:commandButton>
+								
+								</p:panelGrid>
+								
+						</p:panelGrid>
+						
+					</div>
+	    				
+	    		</div>
+	    		
+	    	</div>
+	    	
+	    	<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="card card-w-title">
+				<h1 class="cardTitle">Cliente</h1>
+				<p:dataTable id="transportistaDT" var="c"
+					value="#{transportistaMainCtrl.transportistaList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="transportistaDT Fs11"  
+					rowKey="#{c.idtransportista}"
+					rows="20"
+	                paginator="true"
+	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	                paginatorPosition="bottom">
+	                
+	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:30px;">
+						
+						<p:commandLink id="cmlDtCliente">
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmlDtCliente" my="left top" at="left bottom">
+							<p:menuitem value="Editar" action="#{transportistaCtrl.nuevoEditar(c.idtransportista)}" icon="fa fa-edit">
+								<f:setPropertyActionListener value="TRASNPORTISTA" target="#{clienteCtrl.callModule}"/>
+							</p:menuitem>
+				            <p:menuitem value="Eliminar" action="#{transportistaMainCtrl.eliminar()}" icon="fa fa-close" process="transportistaDT" update="@form">
+				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+				            	<f:setPropertyActionListener value="#{c}" target="#{transportistaMainCtrl.transportistaSelected}"/>
+				            </p:menuitem>
+						</p:menu>
+						
+					</p:column>
+					
+					<p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="IDENTIFICACIÓN" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+						<h:outputText value="#{c.identificacion}" />
+					</p:column>
+					
+					<p:column style="width:90px;" filterBy="#{c.razonsocial}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="RAZÓN SOCIAL" />
+							<h:outputText value=" [filtro]"  style="color:gray;"/>
+						</f:facet>
+						<h:outputText value="#{c.razonsocial}" />
+					</p:column>
+					
+					<p:column headerText="PLACA" style="width:30px;">
+						<h:outputText value="#{c.placa}" styleClass="FontBold Fs12" />
+					</p:column>
+					
+					<p:column headerText="TELÉFONO" style="width:50px;">
+						<h:outputText value="#{c.telefono}" styleClass="FontBold Fs12" />
+					</p:column>
+					
+					<p:column headerText="CORREO ELECTRÖNICO" style="width:50px;">
+						<h:outputText value="#{c.email}" styleClass="FontBold Fs12" />
+					</p:column>
+					
+	                
+				</p:dataTable>
+				<div class="EmptyBox20"/>
+			</div>
+	    	
+	    </h:form>
+	    
+	    <!-- Form Ver Cliente -->
+	    <ui:include src="incl_transportistaForm.xhtml" />
+
+    </ui:define>
+
+</ui:composition>

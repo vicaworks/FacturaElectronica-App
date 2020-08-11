@@ -13,6 +13,7 @@ import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCGuiaRemision;
 import com.vcw.falecpv.core.dao.impl.TransportistaDao;
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Transportista;
 import com.xpert.persistence.query.QueryBuilder;
 
@@ -28,7 +29,7 @@ public class TransportistaServicio extends AppGenericService<Transportista, Stri
 	
 	@EJB
 	private ContadorPkServicio contadorPkServicio;
-
+	
 	@Override
 	public List<Transportista> consultarActivos() {
 		return null;
@@ -111,6 +112,32 @@ public class TransportistaServicio extends AppGenericService<Transportista, Stri
 			}
 			
 			return transportista;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idtransportista
+	 * @param idempresa
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean tieneDependencias(String idtransportista,String idempresa)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(transportistaDao.getEntityManager());
+			if(q.select("g")
+				.from(Cabecera.class,"g")
+				.equals("g.transportista.idtransportista",idtransportista)
+				.equals("g.transportista.empresa.idempresa",idempresa).count()>0) {
+				return true;
+			}
+			
+			return false;
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
