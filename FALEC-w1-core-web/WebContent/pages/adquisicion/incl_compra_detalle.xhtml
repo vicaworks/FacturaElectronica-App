@@ -319,6 +319,14 @@
 		
 	</div>
 	<div class="EmptyBox5"/>
+	<!--
+		Funciones de calculo de la retencion renta e iva 
+	 -->
+	 <p:remoteCommand name="calcularretencionRenta" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}"/>
+	 <p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}"/>
+	 <!--
+	 	=====================================================================================================  
+	 -->
 	<p:outputPanel id="oupPagoDT">
 		<div class="card card-w-title">	
 	
@@ -332,7 +340,7 @@
 					</p:commandLink>
 					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
 						<p:inputNumber symbol="%"  value="#{adquisicionFrmCtrl.porcentajeRenta}" 
-                                symbolPosition="s" emptyValue="always"  onkeydown="if(event.keyCode==13){return false;}">  
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionRenta();return false;}">  
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
 						<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT">
@@ -354,7 +362,7 @@
 					<p:spacer width="3"/>
 					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
 						<p:inputNumber symbol="%" value="#{adquisicionFrmCtrl.porcentajeIva}"
-                                symbolPosition="s" emptyValue="always"  onkeydown="if(event.keyCode==13){return false;}">  
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionIva();return false;}">  
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
 						<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">

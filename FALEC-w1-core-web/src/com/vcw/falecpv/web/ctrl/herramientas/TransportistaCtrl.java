@@ -101,7 +101,7 @@ public class TransportistaCtrl extends BaseCtrl {
 				break;
 			case "TRANSPORTISTA":
 				transportistaMainCtrl.consultar();
-				AppJsfUtil.ajaxUpdate("formMain");
+				AppJsfUtil.addInfoMessage("frmTransportista", "OK", "REGISTRO GUARDADO CORRECTAMENTE.");
 				break;
 			default:
 				break;

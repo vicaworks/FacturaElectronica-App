@@ -438,6 +438,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 			calcularRetencion(tipo);
 			totalizarCompra();
+			porcentajeIva = null;
+			porcentajeRenta = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
