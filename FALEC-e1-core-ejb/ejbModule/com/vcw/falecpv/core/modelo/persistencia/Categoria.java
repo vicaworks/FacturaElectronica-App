@@ -201,6 +201,4 @@ public class Categoria implements Serializable {
 		this.establecimiento = establecimiento;
 	}
 
-	
-
 }
