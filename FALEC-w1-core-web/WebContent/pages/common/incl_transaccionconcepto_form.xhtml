@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+	</style>
+	
+	<p:dialog header="Concepto" widgetVar="dlgTrxConcepto" modal="true" responsive="true" width="500px" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmTrxConcepto">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12" style="text-align:left;">					
+					
+					
+					<p:commandButton id="cmdGuardar"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{tranConceptoCtrl.guardar()}" styleClass="MRight10" update="@form #{tranConceptoCtrl.updateView}"
+						/>
+					
+					<p:commandButton id="cmdNuevo"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{tranConceptoCtrl.nuevo()}" styleClass="secondary-button MRight10" update="@form :formMain" process="@this"
+						/>
+						
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgTrxConcepto').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmTrxConcepto"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll contenedorFormulario">
+			
+				<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+					
+					<h:panelGroup>
+						<h:outputText value="NOMBRE * : " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intTrxConcento" value="#{tranConceptoCtrl.transaccionconcepto.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="200" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intTrxConcento"></p:message>
+					</h:panelGroup>
+										
+					<h:panelGroup>
+						<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:selectOneMenu id="somEstado"
+							value="#{tranConceptoCtrl.transaccionconcepto.estado}"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100" disabled="#{tranConceptoCtrl.transaccionconcepto.idtransaccionconcepto==null}">
+							
+							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+			    			
+						</p:selectOneMenu>
+					</h:panelGroup>
+					<p:message for="somEstado" />
+					
+				</p:panelGrid>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>

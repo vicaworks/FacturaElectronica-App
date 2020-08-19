@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
  *
  */
 @Entity
-@Table(catalog = "falecpv")
+@Table(name = "transaccionconcepto")
 public class Transaccionconcepto implements Serializable {
 
 	/**
@@ -59,10 +59,10 @@ public class Transaccionconcepto implements Serializable {
     private Date updated;
     @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
     @ManyToOne(optional = false)
-    private Empresa idempresa;
+    private Empresa empresa;
     @JoinColumn(name = "idtransacciontipo", referencedColumnName = "idtransacciontipo", nullable = false)
     @ManyToOne(optional = false)
-    private Transacciontipo idtransacciontipo;
+    private Transacciontipo transacciontipo;
 
 	/**
 	 * 
@@ -166,31 +166,31 @@ public class Transaccionconcepto implements Serializable {
 	}
 
 	/**
-	 * @return the idempresa
+	 * @return the empresa
 	 */
-	public Empresa getIdempresa() {
-		return idempresa;
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 
 	/**
-	 * @param idempresa the idempresa to set
+	 * @param empresa the empresa to set
 	 */
-	public void setIdempresa(Empresa idempresa) {
-		this.idempresa = idempresa;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	/**
-	 * @return the idtransacciontipo
+	 * @return the transacciontipo
 	 */
-	public Transacciontipo getIdtransacciontipo() {
-		return idtransacciontipo;
+	public Transacciontipo getTransacciontipo() {
+		return transacciontipo;
 	}
 
 	/**
-	 * @param idtransacciontipo the idtransacciontipo to set
+	 * @param transacciontipo the transacciontipo to set
 	 */
-	public void setIdtransacciontipo(Transacciontipo idtransacciontipo) {
-		this.idtransacciontipo = idtransacciontipo;
+	public void setTransacciontipo(Transacciontipo transacciontipo) {
+		this.transacciontipo = transacciontipo;
 	}
 
 }

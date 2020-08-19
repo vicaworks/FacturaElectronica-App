@@ -1,0 +1,296 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+ 		.heightFrmCajaChica {
+				/* height: 75vh; */
+		} 
+		
+		.centerAligned td{
+		    vertical-align: center !important;
+		}
+		
+	</style>
+	
+	<script >
+		PrimeFaces.widget.Dialog.prototype.applyFocus = function () {
+	        var firstInput = this.jq.find(':not(:submit):not(:button):input:visible:enabled:first');
+	        if (!firstInput.hasClass('hasDatepicker')) {
+	            firstInput.focus();
+	        }
+	    }
+	</script>
+	<p:dialog header="Caja chica" widgetVar="dlgcajaChica" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="formCC">
+			<!-- consulta proveedor return keycode 13 -->
+			<p:remoteCommand name="buscarProveedor"  action="#{cajaChicaCtrl.buscarProveedor()}" process="@this :formCC:inpCriterioProveedor" update=":formCC:msgformCC :formCC:msgInpCriterioProveedor :formCC:gridProveedor"/>
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp p-align-center" >
+				
+				<div class="p-col-12 p-md-6">
+				
+					<p:commandButton id="cmdGuardarCCForm"
+						value="GUARDAR" icon="fa fa-floppy-o" 
+						action="#{cajaChicaCtrl.guardar()}" styleClass="MRight10" update="@form :formMain" disabled="#{not cajaChicaCtrl.flagGuardar}"
+						/>
+						
+					<p:commandButton id="cmdNuevoCCForm"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{cajaChicaCtrl.nuevo()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
+							
+					<p:commandButton id="cmdCerrarCCForm"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgcajaChica').hide()" immediate="true"  
+						/>
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formCC" id="msgformCC"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmCajaChica contenedorFormulario">
+				
+				<div class="p-grid p-align-start vertcal-container">
+					
+					<!-- VALORES -->
+					<div class="p-col-12 p-md-6">
+					
+						<p:panelGrid id="grid1" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+							
+							<h:panelGroup>
+								<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:calendar id="calCCfechaEmision" value="#{cajaChicaCtrl.transaccionSelected.fechaemision}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								<p:message for="calCCfechaEmision"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="CONCEPTO *" styleClass="cpoRequerido"/>
+							</h:panelGroup>
+							
+						</p:panelGrid>
+						
+						<p:panelGrid id="gridOPC" columns="2" styleClass="centerAligned ui-panelgrid-blank Wid100" columnClasses="ui-g-11,ui-g-1">
+							
+																
+							<h:panelGroup>
+								<p:selectOneMenu id="somCCConcepto"
+									value="#{cajaChicaCtrl.transaccionSelected.transaccionconcepto}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true"
+									filterMatchMode="contains">
+									<f:selectItem itemLabel="Seleccionar...." itemValue="#{null}"/>
+									<f:selectItems value="#{cajaChicaCtrl.transaccionconceptoList}" var="c"
+												itemLabel="#{c.nombre}" itemValue="#{c}" />
+									<p:ajax event="change" process="@this :formCC:gridOPC" update=":formCC:gridOPC"/>
+								</p:selectOneMenu>
+								<p:message for="somCCConcepto"/>
+							</h:panelGroup>								
+							<h:panelGroup>
+								<p:commandLink action="#{tranConceptoCtrl.nuevoEditar(null)}" process="@this">
+									<i class="fa fa-plus Fs16">
+									</i>
+									<f:setPropertyActionListener value="CAJACHICA" target="#{tranConceptoCtrl.callModule}"></f:setPropertyActionListener>
+									<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridOPC" target="#{tranConceptoCtrl.updateView}"></f:setPropertyActionListener>
+									<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{tranConceptoCtrl.cajaChicaCtrl}"></f:setPropertyActionListener>
+								</p:commandLink>
+								<p:spacer width="10px"/>								
+								<p:commandLink action="#{tranConceptoCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.transaccionconcepto.idtransaccionconcepto)}" disabled="#{cajaChicaCtrl.transaccionSelected.transaccionconcepto == null}" process="@this :formCC:somCCConcepto">
+									<i class="fa fa-edit Fs16">
+									</i>
+									<f:setPropertyActionListener value="CAJACHICA" target="#{tranConceptoCtrl.callModule}"></f:setPropertyActionListener>
+									<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridOPC" target="#{tranConceptoCtrl.updateView}"></f:setPropertyActionListener>
+									<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{tranConceptoCtrl.cajaChicaCtrl}"></f:setPropertyActionListener>
+								</p:commandLink>
+							</h:panelGroup>		
+						</p:panelGrid>
+						
+						<p:panelGrid id="grid11" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+							
+							<h:panelGroup>
+								<h:outputText value="NOTA" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputTextarea maxlength="500" value="#{cajaChicaCtrl.transaccionSelected.nota}" styleClass="Wid100" rows="3"/>
+							</h:panelGroup>
+							
+							
+						</p:panelGrid>
+						
+						
+						<p:panelGrid id="grid5" columns="1"
+							styleClass="ui-panelgrid-blank Fs12 Wid100"
+							columnClasses="ui-g-12">
+							<h:panelGroup>
+								<h:outputText value="TIPO REGISTRO * " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:selectOneMenu id="somCCTipo"
+									value="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion}"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true"
+									filterMatchMode="contains">
+									<f:selectItem itemLabel="Seleccionar...." itemValue="#{null}"/>
+									<f:selectItem itemLabel="#{msg['label.reposicion']}" itemValue="INGRESO"/>
+									<f:selectItem itemLabel="EGRESO" itemValue="EGRESO"/>
+									<p:ajax event="change" update=":formCC:grid5" process="@this :formCC:grid5" oncomplete="PrimeFaces.focus('formCC:ipsCCValorIngreso');PrimeFaces.focus('formCC:ipsCCValorEgreso');"/>
+								</p:selectOneMenu>
+								<p:message for="somCCTipo"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="VALOR * " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:spinner id="ipsCCValorIngreso" value="#{cajaChicaCtrl.transaccionSelected.valoringreso}" styleClass="Wid100" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='INGRESO'}" min="0" decimalPlaces="2">
+								</p:spinner>
+								<p:message for="ipsCCValorIngreso" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='INGRESO'}"/>
+								<p:spinner id="ipsCCValorEgreso" value="#{cajaChicaCtrl.transaccionSelected.valoregreso}" styleClass="Wid100" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='EGRESO'}" min="0" decimalPlaces="2">
+								</p:spinner>
+								<p:message for="ipsCCValorEgreso" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='EGRESO'}"/>
+								<h:outputText value="-" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion==null}"/>
+							</h:panelGroup>
+						</p:panelGrid>
+						
+						<div class="EmptyBox10"/>
+						<div class="p-grid p-justify-even">
+							<div class="p-col-12 p-md-3 boxMain box-gray">
+								<div class="DispBlock box-header">SALDO ACTUAL</div>
+								<h:outputText value="#{cajaChicaCtrl.saldoActual}" styleClass="box-content Fs16">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+						</div>
+						<div class="EmptyBox10"/>
+						
+					</div>
+					
+					
+					<!-- DATOS CABECERA -->
+					<div class="p-col-12 p-md-6">
+						
+						<p:panelGrid id="grid2" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+						
+							<h:panelGroup>
+								<h:outputText value="PROVEEDOR " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<div class="ui-inputgroup">
+					                <span class="ui-inputgroup-addon">
+					                	
+					                	<p:commandButton process="@this :formCC:inpCriterioProveedor"
+											update=":formCC:msgformCC :formCC:msgInpCriterioProveedor :formCC:gridProveedor" 
+											action="#{cajaChicaCtrl.buscarProveedor()}" icon="fa fa-search">
+					                	</p:commandButton>
+					                
+					                </span>
+					                
+					                <p:inputText id="inpCriterioProveedor"
+										value="#{cajaChicaCtrl.criterioProveedor}" required="false"
+										requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+										maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+										validatorMessage="SOLO NUMEROS"
+										onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
+										<f:validateRegex pattern="^\d+$" />
+									</p:inputText>
+					                
+					            </div>
+					            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
+							</h:panelGroup>
+			
+							<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{proveedorCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.proveedor!=null?cajaChicaCtrl.transaccionSelected.proveedor.idproveedor:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
+								<f:setPropertyActionListener value="CAJACHICA" target="#{proveedorCtrl.callModule}"/>
+								<f:setPropertyActionListener value="formCC" target="#{proveedorCtrl.formModule}"/>
+								<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{proveedorCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{proveedorCtrl.cajaChicaCtrl}"/>
+							</p:commandButton>
+							
+						</p:panelGrid>
+						
+						<p:panelGrid id="gridProveedor" columns="1"
+							styleClass="ui-panelgrid-blank Fs12 Wid100"
+							columnClasses="ui-g-12">
+							
+							<h:panelGroup>
+								<h:outputText value="C.I./RUC " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="inpNcRuc" value="#{cajaChicaCtrl.transaccionSelected.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpNcRuc" />
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="NOMBRE " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="inpNCNombre" value="#{cajaChicaCtrl.transaccionSelected.proveedor.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpNCNombre" />
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="EMAIL " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+							</h:panelGroup>							
+							<h:panelGroup>
+								<p:inputText id="inpNcEmail" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpNcEmail" />
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="#{msg['label.direccion']} " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+							</h:panelGroup>							
+							<h:panelGroup>
+								<p:inputText id="inpNcDireccion" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpNcDireccion" />
+							</h:panelGroup>
+										   
+						</p:panelGrid>
+						
+						<p:panelGrid id="grid4" columns="1"
+							styleClass="ui-panelgrid-blank Fs12 Wid100"
+							columnClasses="ui-g-12">
+							<h:panelGroup>
+								<h:outputText value="DOCUMENTO REFRENCIA " styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText id="inptDocReferencia" value="#{cajaChicaCtrl.transaccionSelected.numdocumento}" maxlength="20" styleClass="Wid100" required="false" requiredMessage="REQUERIDO">
+								</p:inputText>
+								<p:message for="inptDocReferencia" />
+							</h:panelGroup>
+						</p:panelGrid>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>

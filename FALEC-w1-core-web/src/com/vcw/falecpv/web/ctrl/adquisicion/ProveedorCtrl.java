@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
 import com.vcw.falecpv.core.servicio.ProveedorServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.cajachica.CajaChicaCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -66,6 +67,7 @@ public class ProveedorCtrl extends BaseCtrl {
 	private String viewUpdate;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private RetencionFrmCtrl retencionFrmCtrl;
+	private CajaChicaCtrl cajaChicaCtrl;
 
 	/**
 	 * 
@@ -176,6 +178,11 @@ public class ProveedorCtrl extends BaseCtrl {
 				liqCompraFormCtrl.getLiqCompraSelected().setProveedor(proveedorSelected);
 				flag = false;
 				break;
+			case "CAJACHICA":
+				cajaChicaCtrl.getTransaccionSelected().setProveedor(proveedorSelected);
+				flag = false;
+				break;	
+			
 			default:
 				break;
 			}
@@ -516,6 +523,20 @@ public class ProveedorCtrl extends BaseCtrl {
 	 */
 	public void setRetencionFrmCtrl(RetencionFrmCtrl retencionFrmCtrl) {
 		this.retencionFrmCtrl = retencionFrmCtrl;
+	}
+
+	/**
+	 * @return the cajaChicaCtrl
+	 */
+	public CajaChicaCtrl getCajaChicaCtrl() {
+		return cajaChicaCtrl;
+	}
+
+	/**
+	 * @param cajaChicaCtrl the cajaChicaCtrl to set
+	 */
+	public void setCajaChicaCtrl(CajaChicaCtrl cajaChicaCtrl) {
+		this.cajaChicaCtrl = cajaChicaCtrl;
 	}
 	
 	

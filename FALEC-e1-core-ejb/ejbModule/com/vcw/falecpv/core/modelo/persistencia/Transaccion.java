@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,7 +27,7 @@ import com.servitec.common.util.PojoUtil;
  *
  */
 @Entity
-@Table(catalog = "falecpv")
+@Table(name = "transaccion")
 public class Transaccion implements Serializable {
 
 	/**
@@ -61,19 +62,22 @@ public class Transaccion implements Serializable {
     private String numdocumento;
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     @ManyToOne(optional = false)
-    private Establecimiento idestablecimiento;
+    private Establecimiento establecimiento;
     @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor")
     @ManyToOne
-    private Proveedor idproveedor;
+    private Proveedor proveedor;
     @JoinColumn(name = "idtransaccionconcepto", referencedColumnName = "idtransaccionconcepto")
     @ManyToOne
-    private Transaccionconcepto idtransaccionconcepto;
+    private Transaccionconcepto transaccionconcepto;
     @JoinColumn(name = "idtransacciontipo", referencedColumnName = "idtransacciontipo", nullable = false)
     @ManyToOne(optional = false)
-    private Transacciontipo idtransacciontipo;
+    private Transacciontipo transacciontipo;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne
-    private Usuario idusuario;
+    private Usuario usuario;
+    
+    @Transient
+    private String tipoTransaccion;
 
 	/**
 	 * 
@@ -205,73 +209,87 @@ public class Transaccion implements Serializable {
 	}
 
 	/**
-	 * @return the idestablecimiento
+	 * @return the establecimiento
 	 */
-	public Establecimiento getIdestablecimiento() {
-		return idestablecimiento;
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
 	}
 
 	/**
-	 * @param idestablecimiento the idestablecimiento to set
+	 * @param establecimiento the establecimiento to set
 	 */
-	public void setIdestablecimiento(Establecimiento idestablecimiento) {
-		this.idestablecimiento = idestablecimiento;
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
 	}
 
 	/**
-	 * @return the idproveedor
+	 * @return the proveedor
 	 */
-	public Proveedor getIdproveedor() {
-		return idproveedor;
+	public Proveedor getProveedor() {
+		return proveedor;
 	}
 
 	/**
-	 * @param idproveedor the idproveedor to set
+	 * @param proveedor the proveedor to set
 	 */
-	public void setIdproveedor(Proveedor idproveedor) {
-		this.idproveedor = idproveedor;
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
 	}
 
 	/**
-	 * @return the idtransaccionconcepto
+	 * @return the transacciontipo
 	 */
-	public Transaccionconcepto getIdtransaccionconcepto() {
-		return idtransaccionconcepto;
+	public Transacciontipo getTransacciontipo() {
+		return transacciontipo;
 	}
 
 	/**
-	 * @param idtransaccionconcepto the idtransaccionconcepto to set
+	 * @param transacciontipo the transacciontipo to set
 	 */
-	public void setIdtransaccionconcepto(Transaccionconcepto idtransaccionconcepto) {
-		this.idtransaccionconcepto = idtransaccionconcepto;
+	public void setTransacciontipo(Transacciontipo transacciontipo) {
+		this.transacciontipo = transacciontipo;
 	}
 
 	/**
-	 * @return the idtransacciontipo
+	 * @return the usuario
 	 */
-	public Transacciontipo getIdtransacciontipo() {
-		return idtransacciontipo;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
 	/**
-	 * @param idtransacciontipo the idtransacciontipo to set
+	 * @param usuario the usuario to set
 	 */
-	public void setIdtransacciontipo(Transacciontipo idtransacciontipo) {
-		this.idtransacciontipo = idtransacciontipo;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	/**
-	 * @return the idusuario
+	 * @return the transaccionconcepto
 	 */
-	public Usuario getIdusuario() {
-		return idusuario;
+	public Transaccionconcepto getTransaccionconcepto() {
+		return transaccionconcepto;
 	}
 
 	/**
-	 * @param idusuario the idusuario to set
+	 * @param transaccionconcepto the transaccionconcepto to set
 	 */
-	public void setIdusuario(Usuario idusuario) {
-		this.idusuario = idusuario;
+	public void setTransaccionconcepto(Transaccionconcepto transaccionconcepto) {
+		this.transaccionconcepto = transaccionconcepto;
+	}
+
+	/**
+	 * @return the tipoTransaccion
+	 */
+	public String getTipoTransaccion() {
+		return tipoTransaccion;
+	}
+
+	/**
+	 * @param tipoTransaccion the tipoTransaccion to set
+	 */
+	public void setTipoTransaccion(String tipoTransaccion) {
+		this.tipoTransaccion = tipoTransaccion;
 	}
 
 }

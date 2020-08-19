@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
  *
  */
 @Entity
-@Table(catalog = "falecpv")
+@Table(name = "transacciontipo")
 public class Transacciontipo implements Serializable {
 
 	/**
