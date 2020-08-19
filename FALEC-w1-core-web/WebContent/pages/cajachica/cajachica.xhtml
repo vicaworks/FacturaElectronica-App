@@ -14,7 +14,7 @@
 			
 			.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 385px)!important;				
+				height: calc(100vh - 390px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -222,19 +222,22 @@
 				<div class="EmptyBox5"/>
 				<div class="p-grid p-justify-even">
 					<div class="p-col-12 p-md-3 boxMain box-gray">
-						<div class="DispBlock box-header">SALDO</div>
+						<div class="DispBlock box-header">SALDO ACTUAL</div>
+						<div class="EmptyBox5"/>
 						<h:outputText value="#{cajaChicaCtrl.saldoActual}" styleClass="box-content Fs16">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					<div class="p-col-12 p-md-3 boxMain box-border-gray">
 						<div class="DispBlock box-header">TOTAL INGRESOS</div>
+						<div class="EmptyBox5"/>
 						<h:outputText value="#{cajaChicaCtrl.totalIngreso}" styleClass="box-content Fs16">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
 					<div class="p-col-12 p-md-3 boxMain box-border-gray">
 						<div class="DispBlock box-header">TOTAL EGRESOS</div>
+						<div class="EmptyBox5"/>
 						<h:outputText value="#{cajaChicaCtrl.totalEgreso}" styleClass="box-content Fs16">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
