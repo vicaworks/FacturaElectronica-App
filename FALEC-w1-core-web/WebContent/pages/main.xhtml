@@ -5,20 +5,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">Sample</ui:define>
-    <ui:define name="viewname">
+    <ui:define name="title">Mako</ui:define>
+    <!-- <ui:define name="viewname">
         <li>Components</li>
         <li>/</li>
         <li><p:link outcome="/sample">Sample Page</p:link></li>
-    </ui:define>
+    </ui:define> -->
     
     <ui:define name="head">
         <style type="text/css">
-            .ui-panelgrid.form-elements .ui-grc-2 {
-                padding-left: 60px;
-            }
 
-            @media (max-width:1024px) {
+            /* @media (max-width:1024px) {
                 .ui-panelgrid.form-elements .ui-grc-2 {
                     padding-left: 20px;
                 }
@@ -28,7 +25,7 @@
                 .ui-panelgrid.form-elements .ui-grc-2 {
                     padding-left: 6px;
                 }
-            }
+            } */
             
             .dialogDemo label {
                 line-height: 2.1em;
@@ -40,128 +37,312 @@
 				/* background-color: #f4f4f9; */
 			}
             
+            /* ===================================================================== */
+            .oneDT .ui-datatable-scrollable-body{
+				min-height: 20vh !important;
+				max-height: 20vh !important;
+			}
+			.twoDT .ui-datatable-scrollable-body{
+				min-height: 20vh !important;
+				max-height: 20vh !important;
+			}
+            .cardTitle{
+				padding:0.3em 0px;
+				font-size: 18px !important;
+				color:#535b65;
+			}
+			
+			.padding5{
+				padding: 5px !important;
+			}
+			.padding10{
+				padding: 10px !important;
+			}
+			.padding15{
+				padding: 15px !important;
+			}
+			.padding20{
+				padding: 20px !important;
+			}
+			.boxLink{
+				border: 1px solid #ddd;
+				padding: 10px 15px;
+				color: #555;
+			}
+			.boxLink i{
+				color: #555;
+				margin-right: 10px;
+			}
+			.boxLink:hover{
+				background-color: #f5f5f5;
+				cursor: pointer;
+			}
+			.MtopNone{
+				border-top: none;
+			}
+			.boxContentInfo{
+				min-height: 200px;
+			}
+			.boxFooter{
+				font-size: 18px;
+				color:#555;
+				text-align: center;
+				padding: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.bgGreen{
+				background: #28cd5a;
+				color: #fff;
+			}
+			
+			.bgBlue{
+				background: #188de0;
+				color: #fff;
+			}
+			
+			.bgCyan{
+				background: #397d8e;
+				color: #fff;
+			}
+			
         </style>
+        <script>
+		    function goToURL(url) {
+		      location.href = url;
+		
+		    }
+		  </script>
     </ui:define>
 
     <ui:define name="content">
-    	<p:breadCrumb>
+    	<!-- <p:breadCrumb>
 		    <p:menuitem url="#" />
-		    <p:menuitem value="Inicio" url="#{request.contextPath}/pages/main.jsf" />
-		</p:breadCrumb>
+		    <p:menuitem value="Panel" url="#{request.contextPath}/pages/main.jsf" />
+		</p:breadCrumb> -->
 		
         <h:form >
-        	
-        	<!-- Lista de reportes principales -->
-        	<div class="landing-body">
-        		<div class="landing-wrapper"> 
-		        	<div id="features" class="landing-features">
-		        		
-		        		<div class="p-grid">
-		        			
-		        			<div class="p-col-12 p-lg-4">
-		                        <div class="feature-box">
-		                            <p:graphicImage name="images/landing/icon-responsive@2x.png" library="roma-layout" />
-		                            <div>
-		                            	<p:commandLink action="#">
-			                                <h3>Reporte de Ventas</h3>
-			                                <p>Listado de ventas or rango de fechas.</p>
-		                            	</p:commandLink>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="p-g-12 p-lg-4">
-		                        <div class="feature-box">
-		                            <p:graphicImage name="images/landing/icon-design@2x.png" library="roma-layout" />
-		                            <div>
-		                            	<p:commandLink action="#">
-			                                <h3>Adquisiciones</h3>
-			                                <p>Lista de compras por rango de fechas.</p>
-			                            </p:commandLink>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="p-col-12 p-lg-4">
-		                        <div class="feature-box">
-		                            <p:graphicImage name="images/landing/icon-document@2x.png" library="roma-layout" />
-		                            <div>
-		                            	<p:commandLink action="#">
-			                                <h3>Reporte Ventas Cliente</h3>
-			                                <p>Reporte de vantas por Cliente.</p>
-			                            </p:commandLink>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="p-col-12 p-lg-4">
-		                        <div class="feature-box">
-		                            <p:graphicImage name="images/landing/icon-responsive@2x.png" library="roma-layout" />
-		                            <div>
-		                            	<p:commandLink action="#">
-			                                <h3>Inventario</h3>
-			                                <p>Lista de Inventario por producto.</p>
-			                           	</p:commandLink>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="p-col-12 p-lg-4">
-		                        <div class="feature-box">
-		                            <p:graphicImage name="images/landing/icon-gorgeous@2x.png" library="roma-layout" />
-		                            <div>
-		                            	<p:commandLink action="#">
-			                                <h3>Top Productos</h3>
-			                                <p>Lista de productos mas vendidos por rango de fechas.</p>
-			                            </p:commandLink>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <div class="p-col-12 p-lg-4">
-		                        <div class="feature-box">
-		                            <p:graphicImage name="images/landing/icon-responsive@2x.png" library="roma-layout" />
-		                            <div>
-		                            	<p:commandLink action="#">
-			                                <h3>Aviso de Inventario</h3>
-			                                <p>Lista de productos sin existencia.</p>
-			                            </p:commandLink>
-		                            </div>
-		                        </div>
-		                    </div>
-		        			
-		        		</div>
-	        		</div>
-	        	</div>
-        	</div>
-        	
-        	<div style="background-color: #fff">
-	        	<p:barChart model="#{mainCtrl.barModel}" style="width: 100%; height: 400px;" />
-        	</div>
-        	
-        	<p:spacer height="20px"/>
-        	
-        	<div style="text-align: center;">
-	        	<h2 style="color:#0772B3;font-size: 2em;">VENTAS DEL DíA</h2>
-        	</div>
-		    <p:dataTable var="v" value="#{mainCtrl.ventasDtoList}" scrollable="true" scrollHeight="300">
-		    	
-		        <p:column headerText="Id" >
-		            <h:outputText value="#{v.id}" />
-		        </p:column>
-		        
-		        <p:column headerText="CLIENTE" >
-		            <h:outputText value="#{v.cliente}" />
-		        </p:column>
-		        
-		        <p:column headerText="HORA" >
-		            <h:outputText value="#{v.hora}" >
-		            	<f:convertDateTime pattern="HH:mm" locale="es_EC"/>
-		            </h:outputText>
-		        </p:column>
-		        
-		        
-		        <p:column headerText="VALOR" >
-		            <h:outputText value="#{v.valor}" >
-		            	<f:convertNumber pattern="$#.00" locale="es_EC"/>		            	
-		            </h:outputText>
-		        </p:column>
-		    </p:dataTable>
+			<div class="p-grid">
+				<!-- Configuracion inicial -->
+				<div class="p-col-12 p-lg-6 padding20">
+					<div class="card card-w-title" style="height:100%;">
+						
+						<h3 class="cardTitle" style="color:#252529;">Empieza con Mako</h3>
+						<p style="margin-top:0px;">Configura el sistema para emitir comprobantes electrónicos.</p>
+						<div class="EmptyBox5"/>
+						<div class="p-grid Fs18" style="margin:0px 0px;">
+							<div class="p-col-12 boxLink" onclick="alert('Link AAAAAA');">
+								<i class="fa fa-check "></i>
+								Configurar certificado de firma electrónica.
+							</div>
+							<div class="p-col-12 boxLink MtopNone"  onclick="alert('Link BBBBBBB');">
+								<i class="fa fa-check"></i>
+								Seleccionar la forma de pago.
+							</div>
+						</div>
+						<div class="EmptyBox20"/>
+					</div>
+				</div>
+				
+				<!-- Reportes -->
+				<div class="p-col-12 p-lg-6 padding20">
+					<div class="card card-w-title">
+						
+						<h3 class="cardTitle">Reportes</h3>
+						<p style="margin-top:0px;">Toda la información de tu negocio, en reportes consolidados.</p>
+						<div class="EmptyBox5"/>
+						<div class="p-grid Fs18" style="margin:0px 0px;">
+							<div class="p-col-12 boxLink" onclick="goToURL('facturacion/rep/repVentas.jsf');">
+								<i class="fa fa-external-link" style="color:green;"></i>
+								Reporte de ventas.
+							</div>
+							<div class="p-col-12 boxLink MtopNone"  onclick="goToURL('reportes/rep_clienteproducto.jsf');">
+								<i class="fa fa-external-link"></i>
+								Productos vendidos a un cliente.
+							</div>
+							<div class="p-col-12 boxLink MtopNone"  onclick="goToURL('reportes/rep_ventaproducto.jsf');">
+								<i class="fa fa-external-link" style="color:blue;"></i>
+								Productos mas vendidos.
+							</div>
+							<div class="p-col-12 boxLink MtopNone"  onclick="goToURL('productos/inventario.jsf');">
+								<i class="fa fa-external-link"  style="color:orange;"></i>
+								Inventario.
+							</div>
+						</div>
+						<div class="EmptyBox20"/>
+					</div>
+				</div>
+				
+				<!-- Total de ventas -->
+				<div class="p-col-12 p-lg-4 padding20">
+					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
+						<div class="EmptyBox20"/>
+						<h3 class="cardTitle" style="color:#535b65;">Total de ventas</h3>
+						<div class="EmptyBox20"/>
+						<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgGreen">
+							<div class="p-col-12" style="text-align: center;">
+								<h:outputText value="#{1200.25}" styleClass="Fs50">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								<div class="EmptyBox10"/>
+								<h:outputText value="Subtotal Facturas #{1000}" styleClass="DispBlock">
+								</h:outputText>
+								<h:outputText value="Impuetos #{22.25}" styleClass="DispBlock">
+								</h:outputText>
+								<h:outputText value="Subtotal Recibos #{300}" styleClass="DispBlock">
+								</h:outputText>
+							</div>
+						</div>
+						<div class="boxFooter">
+							<h:outputText value="Total de documentos: #{10}" />
+						</div>
+					</div>
+				</div>
+				
+				<!-- Consumo promedio -->
+				<div class="p-col-12 p-lg-4 padding20">
+					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
+						<div class="EmptyBox20"/>
+						<h3 class="cardTitle" style="color:#535b65;">Consumo Promedio</h3>
+						<div class="EmptyBox20"/>
+						<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgBlue">
+							<div class="p-col-12" style="text-align: center;">
+								<h:outputText value="#{120.25}" styleClass="Fs50">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								<div class="EmptyBox10"/>
+								<h:outputText value="Promedio de consumo por venta" styleClass="DispBlock">
+								</h:outputText>
+								<h:outputText value=" " styleClass="DispBlock">
+								</h:outputText>
+								<h:outputText value=" " styleClass="DispBlock">
+								</h:outputText>
+							</div>
+						</div>
+						<div class="boxFooter">
+							<h:outputText value="Últimos 21 días" />
+						</div>
+					</div>
+				</div>
+				
+				<!-- total clientes -->
+				<div class="p-col-12 p-lg-4 padding20">
+					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
+						<div class="EmptyBox20"/>
+						<h3 class="cardTitle" style="color:#535b65;">Total de Clientes</h3>
+						<div class="EmptyBox20"/>
+						<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgCyan">
+							<div class="p-col-12" style="text-align: center;">
+								<h:outputText value="#{12}" styleClass="Fs50">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+								</h:outputText>
+								<div class="EmptyBox10"/>
+								<h:outputText value="Clientes" styleClass="DispBlock">
+								</h:outputText>
+								<h:outputText value=" " styleClass="DispBlock">
+								</h:outputText>
+								<h:outputText value=" " styleClass="DispBlock">
+								</h:outputText>
+							</div>
+						</div>
+						<div class="boxFooter">
+							<h:outputText value="Últimos 21 días" />
+						</div>
+					</div>
+				</div>
+				
+				<!-- Productos mas vendidos -->
+				<div class="p-col-12 p-lg-6 padding20">
+					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
+						<div class="EmptyBox20"/>
+						<h3 class="cardTitle" style="color:#535b65;">Ítems más vendidos</h3>
+						<div class="EmptyBox20"/>
+						
+						<p:dataTable id="oneDT" var="c"
+							value="#{categoriaCtrl.categoriaList}" scrollable="true"
+							emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="oneDT"  
+							rowKey="#{c.idcategoria}"
+							paginator="true"
+			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+			                paginatorPosition="bottom"  
+							rows="10"
+							rowsPerPageTemplate="10,15,20,25,30,35,40">
+							
+							<p:column headerText="COD" style="width:5%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+							<p:column headerText="ITEM" style="width:45%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+							<p:column headerText="CANTIDAD" style="width:30%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+							<p:column headerText="SUBTOTAL" style="width:20%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+						</p:dataTable>
+						
+						<div class="boxFooter">
+							<h:outputText value="Últimos 21 días" />
+						</div>
+					</div>
+				</div>
+				
+				<!-- Ventas del dia de hoy -->
+				<div class="p-col-12 p-lg-6 padding20">
+					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
+						<div class="EmptyBox20"/>
+						<h3 class="cardTitle" style="color:#535b65;">Ventas</h3>
+						<div class="EmptyBox20"/>
+						
+						<p:dataTable id="twoDT" var="c"
+							value="#{categoriaCtrl.categoriaList}" scrollable="true"
+							emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="twoDT"  
+							rowKey="#{c.idcategoria}"
+							paginator="true"
+			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+			                paginatorPosition="bottom"  
+							rows="10"
+							rowsPerPageTemplate="10,15,20,25,30,35,40">
+							
+							<p:column headerText="NUM" style="width:10%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+							<p:column headerText="CLIENTE" style="width:45%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+							<p:column headerText="SUBTOTAL" style="width:15%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+							<p:column headerText="IMPUESTOS" style="width:15%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+							<p:column headerText="TOTAL" style="width:15%;">
+								<h:outputText value="#{c.estado}" />
+							</p:column>
+							
+						</p:dataTable>
+						
+						<div class="boxFooter">
+							<h:outputText value="Día de hoy" />
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			        	
         		
         </h:form>
         
