@@ -120,16 +120,16 @@
 						<h:outputText value="EMAIL : " styleClass="cpoRequerido"/>
 						<p:inputText id="intProveedorEmail"
 							value="#{proveedorCtrl.proveedorSelected.email}"
-							required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+							required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
 							maxlength="50"  validatorMessage="EMAIL INVALIDO" >
 							<f:validator validatorId="emailValidator"/>
 						</p:inputText>
 						<p:message for="intProveedorEmail"/>
 						
-						<h:outputText value="#{msg['label.direccion']} * : " />
+						<h:outputText value="#{msg['label.direccion']} : " />
 					<p:inputText id="intProveedorCalles"
 						value="#{proveedorCtrl.proveedorSelected.direccion}"
-						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
 						maxlength="200" converter="omnifaces.ToUpperCaseConverter" />
 					<p:message for="intProveedorCalles"/>
 						
