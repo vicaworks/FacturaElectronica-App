@@ -3,9 +3,11 @@
  */
 package com.vcw.falecpv.core.servicio;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 
@@ -15,6 +17,7 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.dao.DBUtilGenericoApp;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
+import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
@@ -335,5 +338,259 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param desde
+	 * @param hasta
+	 * @param razonSocial
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<VentasQuery> getVentasProductoByNombreCliente(String idEstablecimiento,Date desde,Date hasta,String razonSocial)throws DaoException{
+		try {
+			String sql = "select " + 
+			"		d.idproducto, " +
+			"		p.codigoprincipal, " +
+			"		p.nombregenerico, " +
+			"		SUM(d.cantidad ) as cantidad, " +
+			"		SUM(d.preciototalsinimpuesto ) as preciototalsinimpuesto " +
+			"	from  " +
+			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+			"		inner join detalle d on d.idcabecera = c.idcabecera " +
+			"		inner join producto p on d.idproducto = p.idproducto  " +
+			"	where  " +
+			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+			"		and tc.identificador in ('00','01') " +
+			"		and upper(cl.razonsocial) like '%" + razonSocial.toUpperCase() + "%' " +
+			"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
+			"		and c.estado <> 'ANULADO' " +
+			"	group by " +
+			"		d.idproducto, " +
+			"		p.codigoprincipal, " +
+			"		p.nombregenerico " +
+			"	order by  " +
+			"		SUM(d.cantidad ) desc ";
+			
+			return resultList(sql, VentasQuery.class, false);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param desde
+	 * @param hasta
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<VentasQuery> getVentasProductos(String idEstablecimiento,Date desde,Date hasta,Producto producto)throws DaoException{
+		try {
+			
+			String sql = "select " + 
+					"		d.idproducto, " +
+					"		p.codigoprincipal, " +
+					"		p.nombregenerico, " +
+					"		SUM(d.cantidad ) as cantidad, " +
+					"		SUM(d.preciototalsinimpuesto ) as preciototalsinimpuesto " +
+					"	from  " +
+					"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+					"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+					"		inner join detalle d on d.idcabecera = c.idcabecera " +
+					"		inner join producto p on d.idproducto = p.idproducto  " +
+					"	where  " +
+					"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+					"		and tc.identificador in ('00','01') " +
+					"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
+					"		and c.estado <> 'ANULADO' " +
+					(producto!=null? "		and d.idproducto = '" + producto.getIdproducto() + "'":" ") +
+					"	group by " +
+					"		d.idproducto, " +
+					"		p.codigoprincipal, " +
+					"		p.nombregenerico " +
+					"	order by  " +
+					"		SUM(d.cantidad ) desc ";
+					
+					return resultList(sql, VentasQuery.class, false);
+					
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	public List<VentasQuery> getTotalByFecha(String idEstablecimiento,Date fecha)throws DaoException{
+		try {
+			
+			String sql = "select " +
+			"		tc.identificador, " +
+			"       count(c.idcabecera) as contador, " +
+			"		SUM(d.cantidad ) as cantidad, " +
+			"		SUM(c.totalsinimpuestos ) as totalsinimpuestos, " +
+			"		SUM(c.totalice + c.totaliva ) as impuestos, " +
+			"		SUM(c.totalconimpuestos ) as totalconimpuestos  " +
+			"	from  " +
+			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+			"		inner join detalle d on d.idcabecera = c.idcabecera " +
+//			"		inner join producto p on d.idproducto = p.idproducto  " +
+			"	where  " +
+			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+			"		and tc.identificador in ('01') " +
+			"		and c.fechaemision = '" + formatoFecha(fecha) + "'  " +
+			"		and c.estado <> 'ANULADO' " +
+			"	group by " +
+			"		tc.identificador " +
+			"	union " +
+			"	select  " +
+			"		tc.identificador, " +
+			"       count(c.idcabecera) as contador, " +
+			"		SUM(d.cantidad ) as cantidad, " +
+			"		SUM(c.totalsinimpuestos ) as totalsinimpuestos, " +
+			"		SUM(c.totalice + c.totaliva ) as impuestos, " +
+			"		SUM(c.totalconimpuestos ) as totalconimpuestos " +
+			"	from  " +
+			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+			"		inner join detalle d on d.idcabecera = c.idcabecera " +
+//			"		inner join producto p on d.idproducto = p.idproducto  " +
+			"	where  " +
+			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+			"		and tc.identificador in ('00') " +
+			"		and c.fechaemision = '" + formatoFecha(fecha) + "'  " +
+			"		and c.estado <> 'ANULADO' " +
+			"	group by " +
+			"		tc.identificador ";
+			
+			return resultList(sql, VentasQuery.class, false);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param desde
+	 * @param hasta
+	 * @return
+	 * @throws DaoException
+	 */
+	public BigDecimal getConsumoPromedio(String idEstablecimiento,Date desde,Date hasta)throws DaoException{
+		try {
+			
+			String sql = "select " +
+				"	AVG(c.totalconimpuestos ) as totalconimpuestos " + 
+				"	from  " +
+				"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+				"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+				"		inner join detalle d on d.idcabecera = c.idcabecera " +
+//				"		inner join producto p on d.idproducto = p.idproducto  " +
+				"	where  " +
+				"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+				"		and tc.identificador in ('01','00') " +
+				"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
+				"		and c.estado <> 'ANULADO' ";
+			
+			Map<String, Object> r = singleResultMap(sql);
+			
+			if(r!=null && r.get("totalconimpuestos")!=null) {
+				return (BigDecimal)r.get("totalconimpuestos");
+			}
+			
+			return BigDecimal.ZERO;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param desde
+	 * @param hasta
+	 * @return
+	 * @throws DaoException
+	 */
+	public Integer getClientesContador(String idEstablecimiento,Date desde,Date hasta)throws DaoException{
+		try {
+			
+			String sql = "select " +
+			"		count(distinct c.idcliente) as contador " + 
+			"		from  " +
+			"			cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+			"			inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+			"			inner join detalle d on d.idcabecera = c.idcabecera " +
+//			"			inner join producto p on d.idproducto = p.idproducto  " +
+			"		where  " +
+			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+			"			and tc.identificador in ('01','00') " +
+			"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
+			"			and c.estado <> 'ANULADO' ";
+			
+			Map<String, Object> r = singleResultMap(sql);
+			
+			if(r!=null && r.get("contador")!=null) {
+				return ((Long)r.get("contador")).intValue();
+			}
+			
+			return 0;
+			
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param fecha
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<VentasQuery> getVentasResumenByFecha(String idEstablecimiento,Date fecha)throws DaoException{
+		try {
+			
+			String sql = "select " + 
+			"		c.idcabecera, " +
+			"		tc.identificador, " +
+			"		c.numdocumento, " +
+			"		c.idcliente, " +
+			"		cl.razonsocial, " +
+			"		c.totalsinimpuestos, " +
+			"		c.totaldescuento, " +
+			"		c.totalice, " +
+			"		c.totaliva, " +
+			"		c.totalconimpuestos, " +
+			"		c.updated " +
+			"	from  " +
+			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+			"		inner join detalle d on d.idcabecera = c.idcabecera " +
+			"	where  " +
+			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+			"		and tc.identificador in ('01','00') " +
+			"		and c.fechaemision = '" + formatoFecha(fecha) + "' " +
+			"		and c.estado <> 'ANULADO' " +
+			"	order by " +
+			"		c.fechaemision, " +
+			"		c.updated ";
+			
+			return resultList(sql, VentasQuery.class, false);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 }

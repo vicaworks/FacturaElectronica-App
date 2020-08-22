@@ -14,6 +14,7 @@
         	
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
+				max-height: 40vh !important;
 				/* height: calc(100vh - 500px)!important; */				
 			}
 			
@@ -61,6 +62,10 @@
 			.ui-inputgroup .ui-inputgroup-addon {
 				padding: 0px; 
 			}
+			
+			.ui-autocomplete input{
+				width: 100%;
+			}
 			/* ================================================================================================== */
 			
 			
@@ -86,9 +91,9 @@
 				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Reporte Cliente - Producto</h3>
 		   		<div class="EmptyBox5"/>
 		   		
-		   		<div class="p-grid p-align-top vertical-container">
+		   		<div class="p-grid p-align-end vertical-container">
 		    		
-		    		<div class="p-col-12 p-md-3">
+		    		<div class="p-col-12 p-md-2">
 		    			<h:outputText value="Desde *" styleClass="FontBold DispBlock"/>
 		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calDesde" value="#{repClienteProductosCtrl.desde}"
@@ -99,7 +104,7 @@
 						<p:message for="calDesde"/>
 		    		</div>
 		    		
-		    		<div class="p-col-12 p-md-3">
+		    		<div class="p-col-12 p-md-2">
 		    			<h:outputText value="Hasta *" styleClass="FontBold DispBlock"/>
 		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calHasta" value="#{repClienteProductosCtrl.hasta}"
@@ -110,14 +115,36 @@
 						<p:message for="calHasta"/>
 		    		</div>
 		    		
-		    		<div class="p-col-12 p-md-3">
+		    		<div class="p-col-12 p-md-4">
 		    			<h:outputText value="Cliente *" styleClass="FontBold DispBlock"/>
 		    			<div class="EmptyBox5"/>
-			    		<p:inputText id="intCriterioBusqueda" value="#{repClienteProductosCtrl.criterioBusqueda}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO" maxlength="200" placeholder="C.I., R.U.C., Nombre del cliente">
-			    		</p:inputText>
+		    			
+		    			<p:autoComplete id="intCriterioBusqueda" value="#{repClienteProductosCtrl.criterioBusqueda}" completeMethod="#{repClienteProductosCtrl.completeClienteCriterio}"
+                        	forceSelection="true" 
+                        	styleClass="Wid100" requiredMessage="REQUERIDO"
+                        	placeholder="C.I., R.U.C., Nombre del cliente"
+                        	minQueryLength="2"/>
+		    			
 			    		<p:message for="intCriterioBusqueda"/>
 		    		</div>
 		    		
+		    		<div class="p-col-12 p-md-2">
+			    		<p:commandButton id="cmdRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{repClienteProductosCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
+							/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+			    		<p:commandButton id="cmdGlobalExcel"
+		  						value="EXPORTAR"
+								icon="fa fa-sort-down" 
+								styleClass="secondary-button Wid100"
+								disabled="#{empty repClienteProductosCtrl.ventasQuerieList}"
+								ajax="false">
+								<p:fileDownload value="#{repClienteProductosCtrl.fileResumen}" contentDisposition="inline"/>
+							</p:commandButton>
+		    		</div>
 		    	</div>
 		   		
 		   	</div>
@@ -127,10 +154,51 @@
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			
-			<div class="EmptyBox10"/>
+			<div class="EmptyBox5"/>
+			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repClienteProductosCtrl.ventasQuerieList}">
+				<p:chart type="bar" model="#{repClienteProductosCtrl.barChartModel}" style="height:400px" responsive="true"/>
+			</p:panelGrid>
+			<div class="EmptyBox5"/>
 			<div class="card card-w-title">
-			
+				
+				<p:dataTable id="pvUnoDT"
+		       			scrollable="true"
+		       			value="#{repClienteProductosCtrl.ventasQuerieList}"
+		       			var="v"
+		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvUnoDT Fs11"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowKey="#{v.idproducto}"
+						rows="20"
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+					
+					<p:column headerText="CODIGO" style="width:40px;">
+						<h:outputText value="#{v.codigoprincipal}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="ITEM" style="width:200px;">
+						<h:outputText value="#{v.nombregenerico}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CANTIDAD" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.cantidad}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="VALOR" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.preciototalsinimpuesto}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+							
+						
+				</p:dataTable>
 				
 				<div class="EmptyBox20"/>
 			

@@ -45,7 +45,7 @@ public class ClienteDao extends AppGenericDao<Cliente, String> {
 			if(criteria!=null && criteria.trim().length()>0) {
 				sql += "AND (";
 				sql += "c.identificacion like :identificacion ";
-				sql += " OR c.razonsocial like :razonsocial ";
+				sql += " OR UPPER(c.razonsocial) like :razonsocial ";
 				sql += " OR c.telefono like :telefono ";
 				sql += ") ";
 			}
@@ -55,7 +55,7 @@ public class ClienteDao extends AppGenericDao<Cliente, String> {
 			q.setParameter("idempresa", idempresa);
 			if(criteria!=null && criteria.trim().length()>0) {
 				q.setParameter("identificacion", "%".concat(criteria).concat("%"));
-				q.setParameter("razonsocial", "%".concat(criteria).concat("%"));
+				q.setParameter("razonsocial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("telefono", "%".concat(criteria).concat("%"));
 			}
 			

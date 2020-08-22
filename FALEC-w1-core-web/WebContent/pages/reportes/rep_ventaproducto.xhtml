@@ -61,6 +61,10 @@
 			.ui-inputgroup .ui-inputgroup-addon {
 				padding: 0px; 
 			}
+			
+			.ui-autocomplete input{
+				width: 100%;
+			}
 			/* ================================================================================================== */
 			
 			
@@ -83,40 +87,18 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="card card-w-title">
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Reporte Venta - Producto</h3>
+				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Reporte Productos más Vendidos</h3>
 		   		<div class="EmptyBox5"/>
 		   		
-		   		<div class="p-grid p-align-top vertical-container">
-		    		
-		    		<div class="p-col-12 p-md-3">
-		    			<h:outputText value="Desde *" styleClass="FontBold DispBlock"/>
-		    			<div class="EmptyBox5"/>
-			    		<p:calendar id="calDesde" value="#{repClienteProductosCtrl.desde}"
-							pattern="dd/MM/yyyy"
-							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-						</p:calendar>
-						<p:message for="calDesde"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-3">
-		    			<h:outputText value="Hasta *" styleClass="FontBold DispBlock"/>
-		    			<div class="EmptyBox5"/>
-			    		<p:calendar id="calHasta" value="#{repClienteProductosCtrl.hasta}"
-							pattern="dd/MM/yyyy"
-							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-						</p:calendar>
-						<p:message for="calHasta"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-3">
+		   		<div class="p-grid p-align-end vertical-container">
+		   		
+		   			<div class="p-col-12">
 		    			<h:outputText value="Producto *" styleClass="FontBold DispBlock"/>
 		    			<div class="EmptyBox5"/>
 		    			<p:selectOneMenu id="somInvListaProducto"
 								value="#{repProductosCtrl.productoSelected}"
 								converter="omnifaces.SelectItemsConverter"
-								required="true"
+								required="false"
 								requiredMessage="REQUERIDO"
 								styleClass="Wid100"
 								filter="true" filterMatchMode="contains">
@@ -126,6 +108,46 @@
 								itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
 						</p:selectOneMenu>
 						<p:message for="somInvListaProducto" />
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+		    			<h:outputText value="Desde *" styleClass="FontBold DispBlock"/>
+		    			<div class="EmptyBox5"/>
+			    		<p:calendar id="calDesde" value="#{repProductosCtrl.desde}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calDesde"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+		    			<h:outputText value="Hasta *" styleClass="FontBold DispBlock"/>
+		    			<div class="EmptyBox5"/>
+			    		<p:calendar id="calHasta" value="#{repProductosCtrl.hasta}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calHasta"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+			    		<p:commandButton id="cmdRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{repProductosCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
+							/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+			    		<p:commandButton id="cmdGlobalExcel"
+		  						value="EXPORTAR"
+								icon="fa fa-sort-down" 
+								styleClass="secondary-button Wid100"
+								disabled="#{empty repProductosCtrl.ventasQuerieList}"
+								ajax="false">
+								<p:fileDownload value="#{repProductosCtrl.fileResumen}" contentDisposition="inline"/>
+							</p:commandButton>
 		    		</div>
 		    		
 		    	</div>
@@ -138,9 +160,52 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="EmptyBox10"/>
+			<div class="EmptyBox5"/>
+			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repProductosCtrl.ventasQuerieList}">
+				<p:chart type="bar" model="#{repProductosCtrl.barChartModel}" style="height:400px" responsive="true"/>
+			</p:panelGrid>
+			<div class="EmptyBox5"/>
+			
 			<div class="card card-w-title">
 			
+				<p:dataTable id="pvUnoDT"
+		       			scrollable="true"
+		       			value="#{repProductosCtrl.ventasQuerieList}"
+		       			var="v"
+		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvUnoDT Fs11"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowKey="#{v.idproducto}"
+						rows="20"
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+					
+					<p:column headerText="CODIGO" style="width:40px;">
+						<h:outputText value="#{v.codigoprincipal}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="ITEM" style="width:200px;">
+						<h:outputText value="#{v.nombregenerico}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CANTIDAD" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.cantidad}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="VALOR" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.preciototalsinimpuesto}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+							
+						
+				</p:dataTable>
 				
 				<div class="EmptyBox20"/>
 			

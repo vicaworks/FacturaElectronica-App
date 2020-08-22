@@ -39,12 +39,12 @@
             
             /* ===================================================================== */
             .oneDT .ui-datatable-scrollable-body{
-				min-height: 20vh !important;
-				max-height: 20vh !important;
+				min-height: 35vh !important;
+				max-height: 35vh !important;
 			}
 			.twoDT .ui-datatable-scrollable-body{
-				min-height: 20vh !important;
-				max-height: 20vh !important;
+				min-height: 35vh !important;
+				max-height: 35vh !important;
 			}
             .cardTitle{
 				padding:0.3em 0px;
@@ -104,6 +104,12 @@
 			.bgCyan{
 				background: #397d8e;
 				color: #fff;
+			}
+			
+			.bgNone{
+				border-top: 1px solid #ddd;
+				background-color: #fff;
+				color: #555;
 			}
 			
         </style>
@@ -177,24 +183,48 @@
 				<div class="p-col-12 p-lg-4 padding20">
 					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
 						<div class="EmptyBox20"/>
-						<h3 class="cardTitle" style="color:#535b65;">Total de ventas</h3>
+						<h3 class="cardTitle" style="color:#535b65;">Total de ventas hoy</h3>
 						<div class="EmptyBox20"/>
-						<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgGreen">
-							<div class="p-col-12" style="text-align: center;">
-								<h:outputText value="#{1200.25}" styleClass="Fs50">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-								<div class="EmptyBox10"/>
-								<h:outputText value="Subtotal Facturas #{1000}" styleClass="DispBlock">
-								</h:outputText>
-								<h:outputText value="Impuetos #{22.25}" styleClass="DispBlock">
-								</h:outputText>
-								<h:outputText value="Subtotal Recibos #{300}" styleClass="DispBlock">
-								</h:outputText>
+						<p:outputPanel rendered="#{mainCtrl.totalVentas!=null}">
+							<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgGreen">
+								<div class="p-col-12" style="text-align: center;">
+									<h:outputText value="#{mainCtrl.totalVentas.totalconimpuestos}" styleClass="Fs50">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+									<div class="EmptyBox10"/>
+									<div>
+										<h:outputText value="Subtotal Facturas "/>
+										<h:outputText value="#{mainCtrl.totalVentas.totalsinimpuestos}">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+										</h:outputText>
+									</div>
+									<div>
+										<h:outputText value="Impuetos "/>
+										<h:outputText value="#{mainCtrl.totalVentas.impuestos}">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+										</h:outputText>
+									</div>
+									<div>
+										<h:outputText value="Subtotal Recibos "/>
+										<h:outputText value="#{mainCtrl.totalVentas.totalrecibos}">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+										</h:outputText>
+									</div>
+								</div>
 							</div>
-						</div>
+						</p:outputPanel>
+						<p:outputPanel rendered="#{mainCtrl.totalVentas==null}">
+							<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgNone">
+								<div class="p-col-12" style="text-align: center;">
+									<i class="fa fa-language" style="font-size: 80px;"/>
+									
+								</div>
+							</div>
+						</p:outputPanel>
 						<div class="boxFooter">
-							<h:outputText value="Total de documentos: #{10}" />
+							<h:outputText value="Total de documentos: #{mainCtrl.totalVentas.contador}" rendered="#{mainCtrl.totalVentas!=null}"/>
+							<h:outputText value="No existe información" rendered="#{mainCtrl.totalVentas==null}">
+							</h:outputText>
 						</div>
 					</div>
 				</div>
@@ -205,22 +235,34 @@
 						<div class="EmptyBox20"/>
 						<h3 class="cardTitle" style="color:#535b65;">Consumo Promedio</h3>
 						<div class="EmptyBox20"/>
-						<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgBlue">
-							<div class="p-col-12" style="text-align: center;">
-								<h:outputText value="#{120.25}" styleClass="Fs50">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-								<div class="EmptyBox10"/>
-								<h:outputText value="Promedio de consumo por venta" styleClass="DispBlock">
-								</h:outputText>
-								<h:outputText value=" " styleClass="DispBlock">
-								</h:outputText>
-								<h:outputText value=" " styleClass="DispBlock">
-								</h:outputText>
+						<p:outputPanel rendered="#{mainCtrl.promedioConsumo!=null}">
+							<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgBlue">
+								<div class="p-col-12" style="text-align: center;">
+									<h:outputText value="#{mainCtrl.promedioConsumo}" styleClass="Fs50">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+									<div class="EmptyBox10"/>
+									<h:outputText value="Promedio de consumo por venta" styleClass="DispBlock">
+									</h:outputText>
+									<h:outputText value=" " styleClass="DispBlock">
+									</h:outputText>
+									<h:outputText value=" " styleClass="DispBlock">
+									</h:outputText>
+								</div>
 							</div>
-						</div>
+						</p:outputPanel>
+						<p:outputPanel rendered="#{mainCtrl.promedioConsumo==null}">
+							<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgNone">
+								<div class="p-col-12" style="text-align: center;">
+									<i class="fa fa-language" style="font-size: 80px;"/>
+									
+								</div>
+							</div>
+						</p:outputPanel>
 						<div class="boxFooter">
-							<h:outputText value="Últimos 21 días" />
+							<h:outputText value="Últimos 21 días" rendered="#{mainCtrl.promedioConsumo!=null}"/>
+							<h:outputText value="No existe información" rendered="#{mainCtrl.promedioConsumo==null}">
+							</h:outputText>
 						</div>
 					</div>
 				</div>
@@ -231,22 +273,34 @@
 						<div class="EmptyBox20"/>
 						<h3 class="cardTitle" style="color:#535b65;">Total de Clientes</h3>
 						<div class="EmptyBox20"/>
-						<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgCyan">
-							<div class="p-col-12" style="text-align: center;">
-								<h:outputText value="#{12}" styleClass="Fs50">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
-								<div class="EmptyBox10"/>
-								<h:outputText value="Clientes" styleClass="DispBlock">
-								</h:outputText>
-								<h:outputText value=" " styleClass="DispBlock">
-								</h:outputText>
-								<h:outputText value=" " styleClass="DispBlock">
-								</h:outputText>
+						<p:outputPanel rendered="#{mainCtrl.contadorClientes!=null}">
+							<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgCyan">
+								<div class="p-col-12" style="text-align: center;">
+									<h:outputText value="#{mainCtrl.contadorClientes}" styleClass="Fs50">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+									</h:outputText>
+									<div class="EmptyBox10"/>
+									<h:outputText value="Clientes" styleClass="DispBlock">
+									</h:outputText>
+									<h:outputText value=" " styleClass="DispBlock">
+									</h:outputText>
+									<h:outputText value=" " styleClass="DispBlock">
+									</h:outputText>
+								</div>
 							</div>
-						</div>
+						</p:outputPanel>
+						<p:outputPanel rendered="#{mainCtrl.contadorClientes==null}">
+							<div class="p-grid p-justify-center p-align-center vertical-container boxContentInfo bgNone">
+								<div class="p-col-12" style="text-align: center;">
+									<i class="fa fa-language" style="font-size: 80px;"/>
+									
+								</div>
+							</div>
+						</p:outputPanel>
 						<div class="boxFooter">
-							<h:outputText value="Últimos 21 días" />
+							<h:outputText value="Últimos 21 días" rendered="#{mainCtrl.promedioConsumo!=null}"/>
+							<h:outputText value="No existe información" rendered="#{mainCtrl.promedioConsumo==null}">
+							</h:outputText>
 						</div>
 					</div>
 				</div>
@@ -259,10 +313,10 @@
 						<div class="EmptyBox20"/>
 						
 						<p:dataTable id="oneDT" var="c"
-							value="#{categoriaCtrl.categoriaList}" scrollable="true"
+							value="#{mainCtrl.productosMasVendidos}" scrollable="true"
 							emptyMessage="#{msg['mensaje.noexistenDatos']}"
-							styleClass="oneDT"  
-							rowKey="#{c.idcategoria}"
+							styleClass="oneDT Fs11"  
+							rowKey="#{c.idproducto}"
 							paginator="true"
 			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -270,26 +324,26 @@
 							rows="10"
 							rowsPerPageTemplate="10,15,20,25,30,35,40">
 							
-							<p:column headerText="COD" style="width:5%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="COD" style="width:25%;">
+								<h:outputText value="#{c.codigoprincipal}" />
 							</p:column>
 							
-							<p:column headerText="ITEM" style="width:45%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="ITEM" style="width:55%;">
+								<h:outputText value="#{c.nombregenerico}" />
 							</p:column>
 							
-							<p:column headerText="CANTIDAD" style="width:30%;">
-								<h:outputText value="#{c.estado}" />
-							</p:column>
-							
-							<p:column headerText="SUBTOTAL" style="width:20%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="CANTIDAD" style="width:20%;" styleClass="TexAlRight">
+								<h:outputText value="#{c.cantidad}" >
+									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+								</h:outputText>
 							</p:column>
 							
 						</p:dataTable>
 						
 						<div class="boxFooter">
-							<h:outputText value="Últimos 21 días" />
+							<h:outputText value="Últimos 21 días" rendered="#{not empty mainCtrl.productosMasVendidos}"/>
+							<h:outputText value="No existe información" rendered="#{empty mainCtrl.productosMasVendidos}">
+							</h:outputText>
 						</div>
 					</div>
 				</div>
@@ -302,10 +356,10 @@
 						<div class="EmptyBox20"/>
 						
 						<p:dataTable id="twoDT" var="c"
-							value="#{categoriaCtrl.categoriaList}" scrollable="true"
+							value="#{mainCtrl.resumenVentas}" scrollable="true"
 							emptyMessage="#{msg['mensaje.noexistenDatos']}"
-							styleClass="twoDT"  
-							rowKey="#{c.idcategoria}"
+							styleClass="twoDT Fs11"  
+							rowKey="#{c.idcabecera}"
 							paginator="true"
 			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -313,30 +367,36 @@
 							rows="10"
 							rowsPerPageTemplate="10,15,20,25,30,35,40">
 							
-							<p:column headerText="NUM" style="width:10%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="" style="width:15%;">
+								<h:outputText value="#{c.identificador=='00'?'REC':'FAC'}" styleClass="#{c.identificador=='00'?' ':'markGray'}"/>
 							</p:column>
 							
-							<p:column headerText="CLIENTE" style="width:45%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="NUM" style="width:20%;">
+								<h:outputText value="#{mainCtrl.getFormatoNumDocumento(c.numdocumento)}" />
 							</p:column>
 							
-							<p:column headerText="SUBTOTAL" style="width:15%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="CLIENTE" style="width:30%;">
+								<h:outputText value="#{c.razonsocial}" />
 							</p:column>
 							
-							<p:column headerText="IMPUESTOS" style="width:15%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="HORA" style="width:15%;"	>
+								<h:outputText value="#{c.updated}" >
+									<f:convertDateTime pattern="HH:mm"/>
+								</h:outputText>
 							</p:column>
 							
-							<p:column headerText="TOTAL" style="width:15%;">
-								<h:outputText value="#{c.estado}" />
+							<p:column headerText="TOTAL" style="width:20%;" styleClass="TexAlRight">
+								<h:outputText value="#{c.totalconimpuestos}" >
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
 							</p:column>
 							
 						</p:dataTable>
 						
 						<div class="boxFooter">
-							<h:outputText value="Día de hoy" />
+							<h:outputText value="Día de hoy" rendered="#{not empty mainCtrl.resumenVentas}"/>
+							<h:outputText value="No existe información" rendered="#{empty mainCtrl.resumenVentas}">
+							</h:outputText>
 						</div>
 					</div>
 				</div>
