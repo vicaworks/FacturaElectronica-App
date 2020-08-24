@@ -60,6 +60,11 @@ public class Transaccion implements Serializable {
     @Size(max = 20)
     @Column(length = 20)
     private String numdocumento;
+    @Column(name = "ajuste")
+    private Integer ajuste = 0;
+    @Size(max = 20)
+    @Column(length = 20)
+    private String estado;
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     @ManyToOne(optional = false)
     private Establecimiento establecimiento;
@@ -290,6 +295,34 @@ public class Transaccion implements Serializable {
 	 */
 	public void setTipoTransaccion(String tipoTransaccion) {
 		this.tipoTransaccion = tipoTransaccion;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public String getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	/**
+	 * @return the ajuste
+	 */
+	public Integer getAjuste() {
+		return ajuste;
+	}
+
+	/**
+	 * @param ajuste the ajuste to set
+	 */
+	public void setAjuste(Integer ajuste) {
+		this.ajuste = ajuste;
 	}
 
 }

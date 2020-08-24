@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCTransaccion;
 import com.vcw.falecpv.core.dao.impl.TransaccionDao;
 import com.vcw.falecpv.core.modelo.persistencia.Transaccion;
@@ -55,6 +56,28 @@ public class TransaccionServicio extends AppGenericService<Transaccion, String> 
 		return transaccionDao;
 	}
 
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param t
+	 * @param idAnular
+	 * @return
+	 * @throws DaoException
+	 */
+	public Transaccion guardarFacade(Transaccion t,String idAnular) throws DaoException {
+		try {
+			Transaccion transaccionAnular = consultarByPk(idAnular);
+			transaccionAnular.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
+			
+			return guardarFacade(t);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	
 	/**
 	 * @author cristianvillarreal
 	 *

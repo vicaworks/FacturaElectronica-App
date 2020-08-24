@@ -430,15 +430,12 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			String sql = "select " +
 			"		tc.identificador, " +
 			"       count(c.idcabecera) as contador, " +
-			"		SUM(d.cantidad ) as cantidad, " +
 			"		SUM(c.totalsinimpuestos ) as totalsinimpuestos, " +
 			"		SUM(c.totalice + c.totaliva ) as impuestos, " +
 			"		SUM(c.totalconimpuestos ) as totalconimpuestos  " +
 			"	from  " +
 			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
 			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
-			"		inner join detalle d on d.idcabecera = c.idcabecera " +
-//			"		inner join producto p on d.idproducto = p.idproducto  " +
 			"	where  " +
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('01') " +
@@ -450,15 +447,12 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"	select  " +
 			"		tc.identificador, " +
 			"       count(c.idcabecera) as contador, " +
-			"		SUM(d.cantidad ) as cantidad, " +
 			"		SUM(c.totalsinimpuestos ) as totalsinimpuestos, " +
 			"		SUM(c.totalice + c.totaliva ) as impuestos, " +
 			"		SUM(c.totalconimpuestos ) as totalconimpuestos " +
 			"	from  " +
 			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
 			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
-			"		inner join detalle d on d.idcabecera = c.idcabecera " +
-//			"		inner join producto p on d.idproducto = p.idproducto  " +
 			"	where  " +
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('00') " +
@@ -577,7 +571,6 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"	from  " +
 			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
 			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
-			"		inner join detalle d on d.idcabecera = c.idcabecera " +
 			"	where  " +
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('01','00') " +

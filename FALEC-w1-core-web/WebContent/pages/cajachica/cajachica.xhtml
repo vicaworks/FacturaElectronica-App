@@ -271,7 +271,7 @@
 								<f:setPropertyActionListener value="#{t}" target="#{cajaChicaCtrl.transaccionSelected}"/>
 								<f:setPropertyActionListener value="#{false}" target="#{cajaChicaCtrl.flagGuardar}"/>
 							</p:menuitem>
-							<p:menuitem value="Anular #{msg['label.transaccion.capiotalice']}" action="#{cajaChicaCtrl.eliminar()}" process="@this :formMain:pvUnoDT" update="@form" icon="fa fa-list">
+							<p:menuitem value="Anular #{msg['label.transaccion.capiotalice']}" action="#{cajaChicaCtrl.eliminar()}" process="@this :formMain:pvUnoDT" update="@form" icon="fa fa-list" disabled="#{t.estado=='ANULADO'}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{t}" target="#{cajaChicaCtrl.transaccionSelected}"/>
 							</p:menuitem>
@@ -306,7 +306,7 @@
 					</p:column>
 					
 					<p:column headerText="#{msg['label.reposicion']}" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{t.valoringreso}" styleClass="DispBlock #{t.valoringreso.doubleValue()>0?'markGreen':' '} ">
+						<h:outputText value="#{t.valoringreso}" styleClass="DispBlock #{t.valoringreso.doubleValue()>0 and t.ajuste==0?'markGreen':t.valoringreso.doubleValue()>0 and t.ajuste==1?'markGray':' '} ">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>

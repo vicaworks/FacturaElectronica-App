@@ -29,8 +29,10 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.TransaccionTipoEnum;
+import com.vcw.falecpv.core.constante.contadores.EstadoComprobanteEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Transaccion;
 import com.vcw.falecpv.core.modelo.persistencia.Transaccionconcepto;
 import com.vcw.falecpv.core.servicio.ProveedorServicio;
@@ -90,7 +92,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -30);
+			desde = FechaUtil.agregarDias(hasta, -7);
 			consultarTransaccionConcepto();
 			consultar();
 			totalizar();
@@ -154,9 +156,11 @@ public class CajaChicaCtrl extends BaseCtrl {
 			}
 			
 			transaccionSelected.setUsuario(AppJsfUtil.getUsuario());
+			String idAnular = transaccionSelected.getIdtransaccion();
 			transaccionSelected.setIdtransaccion(null);
 			transaccionSelected.setUpdated(new Date());
-			transaccionServicio.guardarFacade(transaccionSelected);
+			transaccionSelected.setAjuste(1);
+			transaccionServicio.guardarFacade(transaccionSelected,idAnular);
 			transaccionSelected = null;
 			
 			consultar();
@@ -246,6 +250,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 		transaccionSelected.setUsuario(AppJsfUtil.getUsuario());
 		transaccionSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 		transaccionSelected.setFechaemision(new Date());
+		transaccionSelected.setEstado(EstadoComprobanteEnum.REGISTRADO.toString());
 	}
 	
 	public void totalizar() throws DaoException {
@@ -256,8 +261,8 @@ public class CajaChicaCtrl extends BaseCtrl {
 			return;
 		}
 		
-		totalEgreso = BigDecimal.valueOf(transaccionList.stream().mapToDouble(x->x.getValoregreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
-		totalIngreso = BigDecimal.valueOf(transaccionList.stream().mapToDouble(x->x.getValoringreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		totalEgreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())).mapToDouble(x->x.getValoregreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		totalIngreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString()) && x.getAjuste()==0).mapToDouble(x->x.getValoringreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 		saldoActual = transaccionServicio.getTransaccionDao().getSaldoActual(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
 	}
 	
@@ -322,6 +327,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(t.getNumdocumento()!=null?t.getNumdocumento():"");
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(t.getEstado());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
