@@ -50,6 +50,27 @@ public class DestinatarioDao extends AppGenericDao<Destinatario, String> {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Destinatario> getByIdCabecera(String idCabecera)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT d FROM Destinatario d WHERE d.cabecera.idcabecera =:idCabecera ORDER BY d.razonsocialdestinatario,cabecera.fechaemision");
+			q.setParameter("idCabecera", idCabecera);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param idsList
 	 * @return
 	 * @throws DaoException

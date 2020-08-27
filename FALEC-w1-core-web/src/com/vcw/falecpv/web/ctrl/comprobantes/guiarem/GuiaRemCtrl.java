@@ -143,6 +143,26 @@ public class GuiaRemCtrl extends BaseCtrl {
 		return null;
 	}
 	
+	public String editarGuiaRem(String idGuiaRem) {
+		try {
+			
+			GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
+			String editar = guiaRemFormCtrl.editar(idGuiaRem);
+			
+			if(editar==null) {
+				return "./guiaRemForm.jsf?faces-redirect=true";
+			}
+			
+			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+		return null;
+	}
+	
 	public StreamedContent getFileGR() {
 		try {
 			

@@ -39,6 +39,7 @@ import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.LiqCompraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
@@ -91,6 +92,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	@EJB
 	private PagoServicio pagoServicio;
 	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
 	
 	
 	private List<Proveedor> proveedorList;
@@ -550,6 +553,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		pagoList.stream().forEach(x->{
 			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
 		});
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idLiqCompra);
+		
 		totalizar();
 		totalizarPago();
 		

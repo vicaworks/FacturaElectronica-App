@@ -199,7 +199,7 @@
 							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" disabled="#{n.estado=='ANULADO'}">
 							</p:menuitem>
 							
-							<p:menuitem value="Editar " action="#{compNcCtrl.editar()}" icon="fa fa-edit" process="notaCreditoDT" update="@form" disabled="#{n.estado=='ANULADO'}">
+							<p:menuitem value="Editar " action="#{compNcCtrl.editarLiqCompra(n.idcabecera)}" icon="fa fa-edit" process="notaCreditoDT" update="@form" disabled="#{n.estado=='ANULADO'}">
 							</p:menuitem>
 							
 							

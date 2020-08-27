@@ -40,6 +40,7 @@ import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
@@ -86,6 +87,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	@EJB
 	private DetalleServicio detalleServicio;
+	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
 	
 	
 	private String callModule;
@@ -594,6 +598,22 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public String editar(String idNotaCredito) throws DaoException {
+		
+		nuevaNotaCredito();
+		notaCreditoSeleccion = cabeceraServicio.consultarByPk(idNotaCredito);
+		
+		if(idNotaCredito==null) {
+			return "NO EXISTE EL REGISTRO SELECCIONADO";
+		}
+		
+	 	detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idNotaCredito);
+	 	infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotaCredito);
+		totalizar();
+		
+		return null;
 	}
 	
 	/**

@@ -36,8 +36,11 @@ import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
+import com.vcw.falecpv.core.servicio.DestinatarioServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
+import com.vcw.falecpv.core.servicio.DetalledestinatarioServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -77,6 +80,15 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
+	
+	@EJB
+	private DestinatarioServicio destinatarioServicio;
+	
+	@EJB
+	private DetalledestinatarioServicio detalledestinatarioServicio;
+	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
 	
 	private String callModule;
 	private Cabecera guiaRemisionSelected;
@@ -571,6 +583,32 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		if(guiaRemisionSelected.getTransportista()!=null) {
 			guiaRemisionSelected.setPlaca(guiaRemisionSelected.getTransportista().getPlaca());
 		}
+	}
+	
+	public String editar(String idGuiaRem) throws DaoException {
+		nuevaGuiaRemision();
+		guiaRemisionSelected = cabeceraServicio.consultarByPk(idGuiaRem);
+		
+		if(guiaRemisionSelected==null) {
+			return "NO EXISTE EL REGISTRO SELECCIONADO";
+		}
+		
+		guiaRemisionSelected.setDestinatarioList(destinatarioServicio.getDestinatarioDao().getByIdCabecera(idGuiaRem));
+		// detalle destinatario
+		List<String> idDestinatarioList = guiaRemisionSelected.getDestinatarioList().stream().map(x->x.getIddestinatario()).collect(Collectors.toList());
+		// consulta detalle de todos los destinatarios
+		List<Detalledestinatario> detalledestinatarioList = detalledestinatarioServicio.getDetalledestinatarioDao().getByIdListDestinatario(idDestinatarioList);
+		
+		// 1. unifica las consultas
+		// 2. el detalle en cada destinatario
+		guiaRemisionSelected.getDestinatarioList().forEach(x->{
+			x.setDetalledestinatarioList(detalledestinatarioList.stream().filter(y->y.getDestinatario().getIddestinatario().equals(x.getIddestinatario())).collect(Collectors.toList()));
+		});
+		
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idGuiaRem);
+		totalizarGuiaRemision();
+		
+		return null;
 	}
 	
 	/**

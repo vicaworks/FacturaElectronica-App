@@ -40,6 +40,7 @@ import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.MotivoServicio;
 import com.vcw.falecpv.core.servicio.NotaDebitoServicio;
@@ -95,6 +96,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	
 	@EJB
 	private TotalimpuestoServicio totalimpuestoServicio;
+	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
 	
 	
 	private List<Iva> ivaList;
@@ -486,6 +490,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		pagoList.stream().forEach(x->{
 			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
 		});
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotDebito);
 		totalizar();
 		totalizarPago();
 		

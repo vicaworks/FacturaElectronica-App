@@ -24,6 +24,7 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -37,9 +38,12 @@ import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
+import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
+import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
@@ -85,6 +89,16 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	@EJB
 	private IceServicio iceServicio;
+	
+	@EJB
+	private DetalleServicio detalleServicio;
+	
+	@EJB
+	private PagoServicio pagoServicio;
+	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
+	
 	
 	private Cabecera cabecerSelected;
 	private String criterioCliente;
@@ -819,6 +833,27 @@ public class CompFacCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	
+	public String editar(String idFactura) throws DaoException {
+		nuevaFactura();
+		cabecerSelected = cabeceraServicio.consultarByPk(idFactura);
+		
+		if(cabecerSelected==null) {
+			return "NO EXISTE LA FACTURA SELECCIONADA";
+		}
+		
+		detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
+		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idFactura);
+		pagoList.stream().forEach(x->{
+			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
+		}); 
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idFactura);
+		totalizar();
+		totalizarPago();
+		
+		return null;
 	}
 
 	/**

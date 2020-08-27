@@ -37,6 +37,7 @@ import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ImpuestoretencionServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.ProveedorServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
@@ -86,6 +87,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	@EJB
 	private ContadorPkServicio contadorPkServicio;
+	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
 	
 	private String callModule;
 	private String viewUpdate;
@@ -403,6 +407,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		nuevaRetencionDetalle();
 		consultarTipoComprobante();
 		consultarRetencionImpuesto();
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idRetencion);
 		totalizar();
 	}
 	

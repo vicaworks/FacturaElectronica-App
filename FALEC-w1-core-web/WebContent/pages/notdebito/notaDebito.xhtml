@@ -231,6 +231,8 @@
 							</p:menuitem>
 							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" disabled="#{v.estado=='ANULADO'}">
 							</p:menuitem>
+							<p:menuitem value="Editar" action="#{notaDebitoCtrl.editarNd(r.idcabecera)}" icon="fa fa-edit" process="notDebitoDT" update="@form" disabled="#{r.estado=='ANULADO'}">
+							</p:menuitem>
 							<p:menuitem value="Anular" action="#{notaDebitoCtrl.eliminar()}" icon="fa fa-trash-o" process="notDebitoDT" update="@form" disabled="#{r.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r}" target="#{notaDebitoCtrl.notDebitoSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

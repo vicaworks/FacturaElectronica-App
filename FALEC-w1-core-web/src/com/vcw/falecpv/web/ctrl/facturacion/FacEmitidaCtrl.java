@@ -48,6 +48,7 @@ import com.vcw.falecpv.core.servicio.FacturaServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -545,6 +546,25 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			notaDebitoFrmCtrl.nuevoByFacturaEmitida(ventasQuerySelected.getIdcabecera());
 			
 			return "/pages/notdebito/notaDebitoForm.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public String editarFactura(String idFactura) {
+		try {
+			
+			CompFacCtrl compFacCtrl = (CompFacCtrl) AppJsfUtil.getManagedBean("compFacCtrl");
+			String editar = compFacCtrl.editar(ventasQuerySelected.getIdcabecera());
+			
+			if(editar==null) {
+				return "./factura.jsf?faces-redirect=true";
+			}
+			
+			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

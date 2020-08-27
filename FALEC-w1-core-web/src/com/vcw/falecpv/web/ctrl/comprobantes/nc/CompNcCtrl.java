@@ -61,7 +61,6 @@ public class CompNcCtrl extends BaseCtrl {
 	@EJB
 	private NotaCreditoServicio notaCreditoServicio;
 	
-	
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
@@ -123,15 +122,6 @@ public class CompNcCtrl extends BaseCtrl {
 		}
 	}
 
-	@Override
-	public void editar() {
-		try {
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
 	public String nuevaNotaCredito() {
 		try {
 			
@@ -151,6 +141,27 @@ public class CompNcCtrl extends BaseCtrl {
 		
 		return null;
 	}
+	
+	public String editarLiqCompra(String idNotaCredito) {
+		try {
+			
+			NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl) AppJsfUtil.getManagedBean("notaCreditoCtrl");
+			String editar = notaCreditoCtrl.editar(idNotaCredito);
+			
+			if(editar==null) {
+				return "./notacredito_form.jsf?faces-redirect=true";
+			}
+			
+			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+		return null;
+	}
+	
 	
 	public StreamedContent getFileNCDetalle() {
 		try {

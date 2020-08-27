@@ -153,15 +153,6 @@
 							ajax="false">
 							<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
 						</p:commandButton>
-						
-						<!-- <p:menu overlay="true" trigger="cmdRtnExcel" my="left top" at="left bottom" style="width:250px !important;">
-							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-								<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
-							</p:menuitem>
-							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-								<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
-							</p:menuitem>
-						</p:menu> -->
 	    				
 	    			</div>
 	    			
@@ -210,7 +201,7 @@
 							</p:menuitem>
 							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" disabled="#{r.cabecera.estado=='ANULADO'}">
 							</p:menuitem>
-							<p:menuitem value="Editar" action="#" icon="fa fa-edit" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{guiaRemCtrl.editarGuiaRem(r.cabecera.idcabecera)}" icon="fa fa-edit" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
 							</p:menuitem>
 							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
