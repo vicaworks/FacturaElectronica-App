@@ -87,6 +87,10 @@
 				color: #2f2f2f;
 			}
 			
+			.disable-color{
+				background-color: #F4F6F7 !important;
+			}
+			
         </style>
     </ui:define>
 
@@ -223,9 +227,16 @@
 							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{v.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{v.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
@@ -435,6 +446,8 @@
 		<ui:include src="../common/incl_comprobante_pagos.xhtml" />
 		<!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />
+		<!-- FIRMAR ENVIAR EMAIL -->
+	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
 	    
     </ui:define>
 
