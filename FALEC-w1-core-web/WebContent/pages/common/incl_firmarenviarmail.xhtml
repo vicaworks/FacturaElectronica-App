@@ -25,7 +25,7 @@
 			
 			<div class="p-grid toolBarPopUp p-align-end vertical-container">
 				
-				<div class="p-col-12 p-md-2" style="text-align:left;">					
+				<div class="p-col-12 p-lg-3" style="text-align:left;">					
 					
 					<p:commandButton id="cmdEnviarEmail"
 						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" process="@form" update="@form"
@@ -34,7 +34,7 @@
 					
 				</div>
 				
-				<div class="p-col-12 p-md-3" style="text-align:left;">					
+				<div class="p-col-12 p-lg-4" style="text-align:left;">					
 					
 					<p:commandButton id="cmdEnviarFirmarEmail"
 						value="FIRMAR Y ENVIAR EMAIL" icon="fa fa-envelope" styleClass="secondary-button Wid100" process="@form" update="@form"
@@ -44,7 +44,7 @@
 				</div>
 				
 				
-				<div class="p-col-12 p-md-2" style="text-align:left;">					
+				<div class="p-col-12 p-lg-2" style="text-align:left;">					
 					
 					<p:commandButton id="cmdCerrar"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button Wid100" 
@@ -123,7 +123,7 @@
 						
 						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Emails de #{msg['label.envio']}</div>
 						<div class="EmptyBox5"/>
-						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-md-3">
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-lg-3">
 							<p:commandButton process="@this" value="AGREGAR"
 								update=":formEnvioDoc:pvEnvioCorreosDT" 
 								action="#{enviarDocCtrl.nuevo()}" icon="fa fa-plus" styleClass="secondary-button Wid100 Fs10">

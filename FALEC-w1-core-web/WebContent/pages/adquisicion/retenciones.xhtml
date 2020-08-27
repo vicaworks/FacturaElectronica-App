@@ -201,9 +201,17 @@
 							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{r.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o" disabled="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{r.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:retencionDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#" icon="fa fa-envelope" disabled="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{r.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:retencionDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							
 							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
@@ -296,6 +304,9 @@
         
         <!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />
+		<!-- FIRMAR ENVIAR EMAIL -->
+	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
+		
         
     </ui:define>
 
