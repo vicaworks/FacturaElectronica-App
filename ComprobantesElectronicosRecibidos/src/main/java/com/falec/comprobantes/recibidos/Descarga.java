@@ -14,9 +14,9 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 
-public class Principal 
+public class Descarga 
 {
-	private static Logger LOGGER = Logger.getLogger(Principal.class);
+	private static Logger LOGGER = Logger.getLogger(Descarga.class);
 	private static String rutaArchivoPropiedades;
 	private static List<String> rucs;
 	private static List<String> cIAdicionales;
