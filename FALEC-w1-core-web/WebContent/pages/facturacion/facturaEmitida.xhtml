@@ -62,6 +62,10 @@
 				padding: 0px; 
 			}
 			
+			 .ui-menu .ui-menu-list .ui-widget-header {
+				background-color: #d8d8dc !important;
+			}
+			
 			.boxMain{
 				padding: 15px;
 				text-align: center;
@@ -242,20 +246,29 @@
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 							</p:menuitem>
-							<p:menuitem value="#{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{v.estado=='ANULADO'}">
-								<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
-							</p:menuitem>
 							
-							<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#" icon="fa fa-eye" disabled="#{v.estado=='ANULADO' or v.idguiaremision==null}">
-							</p:menuitem>
-							
-							<p:menuitem value="#{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-plus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Anular" action="#{facEmitidaCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
-							</p:menuitem>	
-							
-							<p:menuitem value="#{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-minus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
-								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
+							
+							<p:submenu label="Comprobantes">
+								<p:menuitem value="#{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{v.estado=='ANULADO'}">
+									<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
+								</p:menuitem>
+								
+								<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#{rideCtrl.showRide()}" icon="fa fa-eye" disabled="#{v.estado=='ANULADO' or v.idguiaremision==null}">
+									<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+								</p:menuitem>
+								
+								<p:menuitem value="#{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-plus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
+									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+								</p:menuitem>	
+								
+								<p:menuitem value="#{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-minus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
+									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+								</p:menuitem>
+							</p:submenu>
 							
 						</p:menu>
 					

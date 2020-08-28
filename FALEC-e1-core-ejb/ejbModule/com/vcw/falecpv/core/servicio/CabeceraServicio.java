@@ -218,9 +218,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 					case FACTURA: case RECIBO:
 						salidaKardex(d);
 						break;
-					case NOTA_CREDITO:
-						entredaKardex(d);
-						break;	
+//					case NOTA_CREDITO:
+//						entredaKardex(d);
+//						break;	
 					default:
 						break;
 					}
@@ -324,12 +324,12 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		}
 		
 		// 11. si es nota de credito y tiene referencia a la cabecera anular la factura 
-		if(GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()).equals(GenTipoDocumentoEnum.NOTA_CREDITO) && cabecera.getIdcabecerapadre()!=null) {
-			Cabecera c= consultarByPk(cabecera.getIdcabecerapadre());
-			if(c!=null) {
-				c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
-			}
-		}
+//		if(GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()).equals(GenTipoDocumentoEnum.NOTA_CREDITO) && cabecera.getIdcabecerapadre()!=null) {
+//			Cabecera c= consultarByPk(cabecera.getIdcabecerapadre());
+//			if(c!=null) {
+//				c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
+//			}
+//		}
 		
 		return cabecera;
 	}
@@ -568,7 +568,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			k.setFechafabricacion(detalleFac.getProducto().getFechafabricacion());
 			k.setFechavencimiento(detalleFac.getProducto().getFechavencimiento());
 			StringBuilder obs = new StringBuilder();
-			obs.append(" / CLIENTE : " + detalleFac.getCabecera().getCliente().getRazonsocial());
+			obs.append("CLIENTE : " + detalleFac.getCabecera().getCliente().getRazonsocial());
 			switch (GenTipoDocumentoEnum.getEnumByIdentificador(detalleFac.getCabecera().getTipocomprobante().getIdentificador())) {
 			case RECIBO:
 				obs.append("ANULACION RECIBO : ");
@@ -625,6 +625,46 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			throw new DaoException(e);
 		}
 		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @throws DaoException
+	 */
+	@Lock(LockType.WRITE)
+	public void anularComprobanteReversoKardex(String idCabecera,String idUsuarioEliminacion) throws DaoException {
+		try {
+			
+			// 1. consultar cabecera 
+			Cabecera c = consultarByPk(idCabecera);
+			
+			if(c==null || c.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())) {
+				return;
+			}
+			
+			c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
+			c.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador()));
+			List<Detalle> detalleList = detalleServicio.getDetalleDao().getByIdCabecera(idCabecera);
+			for (Detalle d : detalleList) {
+				d.setIdUsuarioEliminacion(idUsuarioEliminacion);
+				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
+					
+					switch (GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador())) {
+					case FACTURA: case RECIBO:
+						entredaKardex(d);
+						break;
+					default:
+						break;
+					}
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 	
 	/**

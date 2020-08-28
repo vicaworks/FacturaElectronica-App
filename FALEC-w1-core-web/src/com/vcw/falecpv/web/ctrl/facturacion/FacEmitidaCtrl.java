@@ -572,6 +572,25 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		}
 		return null;
 	}
+	
+	@Override
+	public void eliminar() {
+		try {
+			
+			if(ventasQuerySelected==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				return;
+			}
+			
+			cabeceraServicio.anularComprobanteReversoKardex(ventasQuerySelected.getIdcabecera(),AppJsfUtil.getUsuario().getIdusuario());
+			ventasQuerySelected = null;
+			consultar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the usuarioList
