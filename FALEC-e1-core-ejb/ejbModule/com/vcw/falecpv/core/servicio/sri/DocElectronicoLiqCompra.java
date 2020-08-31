@@ -63,10 +63,10 @@ public class DocElectronicoLiqCompra extends GenerarDocumentoElectronico {
 		info.setDirEstablecimiento(cabecera.getEstablecimiento().getDireccionestablecimiento());
 		info.setContribuyenteEspecial(cabecera.getContribuyenteespecial());
 		info.setObligadoContabilidad(cabecera.getEstablecimiento().getEmpresa().getObligadocontablidad());
-		info.setTipoIdentificacionProveedor(cabecera.getProveedor().getTipoidentificacion().getCodigo());
-		info.setRazonSocialProveedor(cabecera.getProveedor().getRazonsocial());
-		info.setIdentificacionProveedor(cabecera.getProveedor().getIdentificacion());
-		info.setDireccionProveedor(cabecera.getProveedor().getDireccion());
+		info.setTipoIdentificacionProveedor(cabecera.getCliente().getTipoIdentificacion().getCodigo());
+		info.setRazonSocialProveedor(cabecera.getCliente().getRazonsocial());
+		info.setIdentificacionProveedor(cabecera.getCliente().getIdentificacion());
+		info.setDireccionProveedor(cabecera.getCliente().getDireccion());
 		info.setTotalSinImpuestos(cabecera.getTotalsinimpuestos().doubleValue());
 		info.setTotalDescuento(cabecera.getTotaldescuento().doubleValue());
 		info.setImporteTotal(cabecera.getTotalconimpuestos().doubleValue());

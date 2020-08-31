@@ -35,7 +35,7 @@ import com.vcw.falecpv.core.constante.TransaccionTipoEnum;
 import com.vcw.falecpv.core.constante.contadores.EstadoComprobanteEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Transaccion;
 import com.vcw.falecpv.core.modelo.persistencia.Transaccionconcepto;
-import com.vcw.falecpv.core.servicio.ProveedorServicio;
+import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.TransaccionServicio;
 import com.vcw.falecpv.core.servicio.TransaccionconceptoServicio;
 import com.vcw.falecpv.core.servicio.TransacciontipoServicio;
@@ -66,7 +66,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 	private TransacciontipoServicio transacciontipoServicio;
 	
 	@EJB
-	private ProveedorServicio proveedorServicio;
+	private ClienteServicio clienteServicio;
 	
 	private Transaccionconcepto transaccionconcepto;
 	private List<Transaccionconcepto> transaccionconceptoList;
@@ -242,6 +242,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 	
 	private void nuevaTransaccion() throws DaoException {
 		flagGuardar = true;
+		criterioProveedor = null;
 		transaccionconceptoForm = null;
 		transaccionSelected = new Transaccion();
 		transaccionSelected.setTransacciontipo(transacciontipoServicio.consultarByPk(TransaccionTipoEnum.CAJA_CHICA.getId()));
@@ -318,11 +319,11 @@ public class CajaChicaCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(t.getProveedor()!=null?t.getProveedor().getIdentificacion():"");
+				cell.setCellValue(t.getCliente()!=null?t.getCliente().getIdentificacion():"");
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(t.getProveedor()!=null?t.getProveedor().getRazonsocial():"");
+				cell.setCellValue(t.getCliente()!=null?t.getCliente().getRazonsocial():"");
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -392,8 +393,8 @@ public class CajaChicaCtrl extends BaseCtrl {
 	}
 	
 	public void consultarProveedor(String identificador) throws DaoException {
-		transaccionSelected.setProveedor(null);
-		transaccionSelected.setProveedor(proveedorServicio.getProveedorDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		transaccionSelected.setCliente(null);
+		transaccionSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 	
 	/**

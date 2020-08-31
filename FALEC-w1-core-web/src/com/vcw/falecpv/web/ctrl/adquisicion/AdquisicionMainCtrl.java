@@ -222,11 +222,11 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(adq.getProveedor().getIdentificacion());
+				cell.setCellValue(adq.getCliente().getIdentificacion());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(adq.getProveedor().getNombrecomercial());
+				cell.setCellValue(adq.getCliente().getRazonsocial());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -438,11 +438,11 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(adq.getProveedor().getIdentificacion());
+				cell.setCellValue(adq.getCliente().getIdentificacion());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(adq.getProveedor().getNombrecomercial());
+				cell.setCellValue(adq.getCliente().getRazonsocial());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);

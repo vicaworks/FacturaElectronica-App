@@ -188,7 +188,7 @@ public class CabeceraRetencionServicio {
 			return q.select("r")
 					.from(Cabecera.class,"r")
 					.equals("r.establecimiento.idestablecimiento",idEstablecimiento)
-					.equals("r.proveedor.idproveedor",idProveedor)
+					.equals("r.cliente.idcliente",idProveedor)
 					.equals("r.numfactura",numFactura)
 					.notEquals("r.idcabecera", idRetencion==null?"-1":idRetencion)
 					.notEquals("r.estado", ComprobanteEstadoEnum.ANULADO.toString()).getResultList().size()>0;

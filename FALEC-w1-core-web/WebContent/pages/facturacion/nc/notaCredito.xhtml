@@ -46,6 +46,10 @@
 				padding: 0.2em 0.5em !important;
 			}
 			
+			.ui-menu .ui-menu-list .ui-widget-header {
+				background-color: #d8d8dc !important;
+			}
+			
         </style>
     </ui:define>
 
@@ -216,9 +220,11 @@
 								<f:setPropertyActionListener value="#{n}" target="#{compNcCtrl.notaCreditoSelected}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Ver documento asociado" action="#{rideCtrl.showRide()}" icon="fa fa-eye" process="notaCreditoDT" update="@form" disabled="#{n.idcabecerapadre==null}">
-								<f:setPropertyActionListener value="#{n.idcabecerapadre}" target="#{rideCtrl.idCabecera}"/>
-							</p:menuitem>
+							<p:submenu label="Comprobantes">
+								<p:menuitem value="Ver documento asociado" action="#{rideCtrl.showRide()}" icon="fa fa-eye" process="notaCreditoDT" update="@form" disabled="#{n.idcabecerapadre==null}">
+									<f:setPropertyActionListener value="#{n.idcabecerapadre}" target="#{rideCtrl.idCabecera}"/>
+								</p:menuitem>
+							</p:submenu>
 							
 						</p:menu>
 						

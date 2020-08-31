@@ -45,10 +45,10 @@ public class AdquisicionDao extends AppGenericDao<Adquisicion, String> {
 			if(criteria==null || criteria.trim().isEmpty()) {
 				
 				if(estado!=null) {
-					q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado" + (estado.equals("I")?"=":"<>")  + "'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimeinto AND a.fecha BETWEEN :fechaIni AND :fechaFin ORDER BY a.fecha,a.proveedor.nombrecomercial");
+					q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado" + (estado.equals("I")?"=":"<>")  + "'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimeinto AND a.fecha BETWEEN :fechaIni AND :fechaFin ORDER BY a.fecha,a.cliente.razonsocial");
 					
 				}else {
-					q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.establecimiento.idestablecimiento=:idestablecimeinto AND a.fecha BETWEEN :fechaIni AND :fechaFin ORDER BY a.fecha,a.proveedor.nombrecomercial");
+					q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.establecimiento.idestablecimiento=:idestablecimeinto AND a.fecha BETWEEN :fechaIni AND :fechaFin ORDER BY a.fecha,a.cliente.razonsocial");
 				}
 				
 				q.setParameter("fechaIni", fechaIni);
@@ -56,7 +56,7 @@ public class AdquisicionDao extends AppGenericDao<Adquisicion, String> {
 				
 			}else {
 				
-				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.establecimiento.idestablecimiento=:idestablecimeinto AND (UPPER(a.proveedor.nombrecomercial) like :nombrecomercial OR UPPER(a.proveedor.razonsocial) like :razonsocial OR UPPER(a.proveedor.identificacion) like :identificacion OR UPPER(a.numfactura) like :numfactura) ORDER BY a.fecha,a.proveedor.nombrecomercial");
+				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.establecimiento.idestablecimiento=:idestablecimeinto AND (UPPER(a.cliente.razonsocial) like :nombrecomercial OR UPPER(a.cliente.razonsocial) like :razonsocial OR UPPER(a.cliente.identificacion) like :identificacion OR UPPER(a.numfactura) like :numfactura) ORDER BY a.fecha,a.cliente.razonsocial");
 				q.setParameter("nombrecomercial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("razonsocial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("identificacion", "%".concat(criteria.toUpperCase()).concat("%"));
@@ -88,10 +88,10 @@ public class AdquisicionDao extends AppGenericDao<Adquisicion, String> {
 			
 			Query q = null;
 			if(idadquisicion!=null) {
-				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado<>'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.proveedor.idproveedor=:idproveedor AND a.numfactura=:numfactura AND a.idadquisicion<>:idadquisicion");
+				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado<>'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.cliente.idcliente=:idproveedor AND a.numfactura=:numfactura AND a.idadquisicion<>:idadquisicion");
 				q.setParameter("idadquisicion", idadquisicion);
 			}else {
-				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado<>'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.proveedor.idproveedor=:idproveedor AND a.numfactura=:numfactura");
+				q = getEntityManager().createQuery("SELECT a FROM Adquisicion a WHERE a.estado<>'ANULADO' AND a.establecimiento.idestablecimiento=:idestablecimiento AND a.cliente.idcliente=:idproveedor AND a.numfactura=:numfactura");
 			}
 			
 			q.setParameter("idestablecimiento", idestablecimiento);

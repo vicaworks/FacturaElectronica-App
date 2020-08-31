@@ -28,6 +28,43 @@ public class ClienteDao extends AppGenericDao<Cliente, String> {
 		super(Cliente.class);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Cliente> getByConsulta(String idEmpresa,EstadoRegistroEnum estadoRegistroEnum,String criterioBusqueda)throws DaoException{
+		try {
+			
+			
+			String sql = "SELECT p FROM Cliente p WHERE p.empresa.idempresa=:idempresa ";
+			
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				sql += " AND p.estado=:estado ";
+			}
+			
+			if(criterioBusqueda!=null && criterioBusqueda.trim().length()>0) {
+				sql += " AND (p.identificacion like :identificacion OR  upper(p.razonsocial) like :razonsocial) ";
+			}
+			
+			sql += " ORDER BY p.razonsocial";
+			
+			Query q = getEntityManager().createQuery(sql);
+			q.setParameter("idempresa", idEmpresa);
+			
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}
+			
+			if(criterioBusqueda!=null && criterioBusqueda.trim().length()>0) {
+				q.setParameter("identificacion", "%".concat(criterioBusqueda.toUpperCase()).concat("%"));
+				q.setParameter("razonsocial", "%".concat(criterioBusqueda.toUpperCase()).concat("%"));
+			}
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+
+	
 	/**
 	 * @author Jorge Toaza
 	 * @param idEstablecimiento

@@ -218,13 +218,6 @@ public class ComprobanteHelper {
 			
 		}
 		
-		if(cabeceraFac.getProveedor()!=null && cabeceraFac.getProveedor().getEmail()!=null) {
-			Infoadicional ia = new Infoadicional();
-			ia.setNombre("email");
-			ia.setValor(cabeceraFac.getProveedor().getEmail());
-			infoadicionalList.add(ia);
-		}
-		
 		return infoadicionalList;
 	}
 	
@@ -240,13 +233,6 @@ public class ComprobanteHelper {
 			ia.setValor(cabeceraFac.getCliente().getCorreoelectronico());
 			infoadicionalList.add(ia);
 			
-		}
-		
-		if(cabeceraFac.getProveedor()!=null && cabeceraFac.getProveedor().getEmail()!=null) {
-			Infoadicional ia = new Infoadicional();
-			ia.setNombre("email");
-			ia.setValor(cabeceraFac.getProveedor().getEmail());
-			infoadicionalList.add(ia);
 		}
 		
 		return infoadicionalList;

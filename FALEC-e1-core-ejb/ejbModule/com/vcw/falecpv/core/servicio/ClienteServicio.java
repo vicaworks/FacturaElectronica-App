@@ -14,6 +14,8 @@ import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCCliente;
 import com.vcw.falecpv.core.dao.impl.ClienteDao;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
+import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author Jorge Toaza
@@ -77,6 +79,26 @@ public class ClienteServicio extends AppGenericService<Cliente, String> {
 			}
 			
 			return cliente;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<TipoIdentificacion> getByProveedor()throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(clienteDao.getEntityManager());
+			return q.select("t")
+					.from(TipoIdentificacion.class,"t")
+					.equals("t.proveedor","S")
+					.orderBy("t.tipoidentificacion").getResultList();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

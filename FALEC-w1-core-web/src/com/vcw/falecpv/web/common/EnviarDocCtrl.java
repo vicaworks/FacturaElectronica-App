@@ -78,10 +78,6 @@ public class EnviarDocCtrl extends BaseCtrl {
 		if(cabeceraSelected.getCliente()!=null && cabeceraSelected.getCliente().getCorreoelectronico()!=null) {
 			agregarCorreoList(cabeceraSelected.getCliente().getCorreoelectronico());
 		}
-		// prveedor
-		if(cabeceraSelected.getProveedor()!=null && cabeceraSelected.getProveedor().getEmail()!=null) {
-			agregarCorreoList(cabeceraSelected.getProveedor().getEmail());
-		}
 	}
 	
 	private void agregarCorreoList(String emails) {

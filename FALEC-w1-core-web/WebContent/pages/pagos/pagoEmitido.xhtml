@@ -232,7 +232,7 @@
 						<h:outputText value="#{v.identificacion}" />
 					</p:column>
 					
-					<p:column headerText="CLIENTE" style="width:130px;">
+					<p:column headerText="CLIENTE" style="width:130px;" filterBy="#{v.razonsocial}" filterMatchMode="contains">
 						<h:outputText value="#{v.razonsocial}" />
 					</p:column>
 					

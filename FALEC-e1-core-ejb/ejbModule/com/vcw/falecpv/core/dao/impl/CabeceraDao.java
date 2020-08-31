@@ -59,15 +59,13 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 				q.setParameter("hasta", hasta);
 			}else {
 				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante "
-						+ " AND (c.proveedor.identificacion like :rucProveedor "
-						+ " OR UPPER(c.proveedor.nombrecomercial) like :nombrecomercial "
-						+ " OR UPPER(c.proveedor.razonsocial) like :razonsocial "
+						+ " AND (c.cliente.identificacion like :rucProveedor "
+						+ " OR UPPER(c.cliente.razonsocial) like :razonsocial "
 						+ " OR c.numfactura like :numfactura "
 						+ " OR c.numdocumento like :numdocumento) "
 						+ " AND c.establecimiento.idestablecimiento=:idEstablecimiento "
 						+ " ORDER BY c.fechaemision ASC,c.idcabecera DESC");
 				q.setParameter("rucProveedor", criteria.concat("%"));
-				q.setParameter("nombrecomercial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("razonsocial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("numfactura", "%".concat(criteria).concat("%"));
 				q.setParameter("numdocumento", "%".concat(criteria).concat("%"));
@@ -113,15 +111,13 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 				q.setParameter("hasta", hasta);
 			}else {
 				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante "
-						+ " AND (c.proveedor.identificacion like :rucProveedor "
-						+ " OR UPPER(c.proveedor.nombrecomercial) like :nombrecomercial "
-						+ " OR UPPER(c.proveedor.razonsocial) like :razonsocial "
+						+ " AND (c.cliente.identificacion like :rucProveedor "
+						+ " OR UPPER(c.cliente.razonsocial) like :razonsocial "
 						+ " OR c.numfactura like :numfactura "
 						+ " OR c.numdocumento like :numdocumento) "
 						+ " AND c.establecimiento.idestablecimiento=:idEstablecimiento "
 						+ " ORDER BY c.fechaemision ASC,c.idcabecera DESC");
 				q.setParameter("rucProveedor", criteria.concat("%"));
-				q.setParameter("nombrecomercial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("razonsocial", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("numfactura", "%".concat(criteria).concat("%"));
 				q.setParameter("numdocumento", "%".concat(criteria).concat("%"));

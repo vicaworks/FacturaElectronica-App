@@ -32,10 +32,10 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.AdquisiciondetalleServicio;
+import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
-import com.vcw.falecpv.core.servicio.ProveedorServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -56,8 +56,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	@EJB
 	private TipocomprobanteServicio tipocomprobanteServicio;
 	@EJB
-	private ProveedorServicio proveedorServicio;
-	@EJB
 	private IvaServicio ivaServicio;
 	@EJB
 	private IceServicio iceServicio;
@@ -67,6 +65,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	private AdquisiciondetalleServicio adquisiciondetalleServicio;
 	@EJB
 	private PagoServicio pagoServicio;
+	@EJB
+	private ClienteServicio clienteServicio;
 	
 	private Adquisicion adquisicionSelected = new Adquisicion();
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -153,8 +153,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 			// si ya existe la factura del mismo proveedor
 			
-			if (adquisicionServicio.getAdquisicionDao().existeFacturaProveedor(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), adquisicionSelected.getProveedor().getIdproveedor(), adquisicionSelected.getIdadquisicion(), adquisicionSelected.getNumfactura())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "YA EXISTE LA FACTURA :" + adquisicionSelected.getNumfactura() + " DEL PROVEEDOR : " + adquisicionSelected.getProveedor().getNombrecomercial());
+			if (adquisicionServicio.getAdquisicionDao().existeFacturaProveedor(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), adquisicionSelected.getCliente().getIdcliente(), adquisicionSelected.getIdadquisicion(), adquisicionSelected.getNumfactura())) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "YA EXISTE LA FACTURA :" + adquisicionSelected.getNumfactura() + " DEL PROVEEDOR : " + adquisicionSelected.getCliente().getRazonsocial());
 				return;
 			}
 			
@@ -421,8 +421,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	}
 	
 	public void consultarProveedor(String identificador) throws DaoException {
-		adquisicionSelected.setProveedor(null);
-		adquisicionSelected.setProveedor(proveedorServicio.getProveedorDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		adquisicionSelected.setCliente(null);
+		adquisicionSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 	
 	public void calcularRettencionAction(String tipo) {

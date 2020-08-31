@@ -217,7 +217,7 @@
 						<p:menu overlay="true" trigger="cmlDtCompra" my="left top" at="left bottom">
 							<p:menuitem value="Ver" action="#" icon="fa fa-eye" >
 							</p:menuitem>
-							<p:menuitem value="Editar Compra" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" disabled="#{a.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" disabled="#{a.estado=='ANULADO'}">
 							</p:menuitem>
 							<p:menuitem value="Agregar #{msg['label.retencion2']}" action="#{retencionMainCtrl.nuevaRetencion()}" icon="fa fa-sign-in" disabled="#{a.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{a}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
@@ -228,7 +228,7 @@
 							</p:menuitem>
 							<p:menuitem value="#{msg['label.retencion2']}" action="#" icon="fa fa-print" disabled="#{a.estado=='ANULADO'}">
 							</p:menuitem>
-							<p:menuitem value="Anular Compra" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}">
+							<p:menuitem value="Anular" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 						</p:menu>
@@ -251,8 +251,8 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column style="width:120px;" filterBy="#{a.proveedor.nombrecomercial}" filterMatchMode="contains" headerText="PROVEEDOR">
-						<h:outputText value="#{a.proveedor.nombrecomercial}" >
+					<p:column style="width:120px;" filterBy="#{a.cliente.razonsocial}" filterMatchMode="contains" headerText="PROVEEDOR">
+						<h:outputText value="#{a.cliente.razonsocial}" >
 						</h:outputText>
 					</p:column>
 					

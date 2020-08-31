@@ -45,6 +45,10 @@
 				padding: 0.2em 0.5em !important;
 			}
 			
+			.ui-menu .ui-menu-list .ui-widget-header {
+				background-color: #d8d8dc !important;
+			}
+			
         </style>
     </ui:define>
 
@@ -229,8 +233,10 @@
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
-							<p:menuitem value="Ver documento asociado" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
-							</p:menuitem>
+							<p:submenu label="Comprobantes">
+								<p:menuitem value="Ver documento asociado" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
+								</p:menuitem>
+							</p:submenu>
 							
 						</p:menu>
 						
@@ -251,13 +257,13 @@
 					</p:column>
 					
 					
-					<p:column headerText="RUC / CI" style="width:50px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{r.proveedor.identificacion}" />
+					<p:column headerText="RUC / CI" style="width:50px;" filterBy="#{r.cliente.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{r.cliente.identificacion}" />
 					</p:column>
 					
 					
-					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:150px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
-						<h:outputText value="#{r.proveedor.nombrecomercial}" />
+					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:150px;" filterBy="#{r.cliente.razonsocial}" filterMatchMode="contains">
+						<h:outputText value="#{r.cliente.razonsocial}" />
 					</p:column>
 					
 					<p:column style="width:5px;" styleClass="TexAlCenter">

@@ -265,40 +265,40 @@
 										icon="fa fa-plus"
 										value="NUEVO / EDITAR PROVEEDOR"
 										styleClass="secondary-button Wid100 Fs11"
-										action="#{proveedorCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.proveedor!=null?retencionFrmCtrl.retencionSeleccion.proveedor.idproveedor:null)}"
+										action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}"
 										immediate="true">
-										<f:setPropertyActionListener value="RETENCION" target="#{proveedorCtrl.callModule}"/>
-										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
-										<f:setPropertyActionListener value=":formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{proveedorCtrl.viewUpdate}"/>
-										<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{proveedorCtrl.retencionFrmCtrl}"/>
+										<f:setPropertyActionListener value="RETENCION" target="#{cliente.callModule}"/>
+<!-- 										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/> -->
+										<f:setPropertyActionListener value=":formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{clienteCtrl.updateView}"/>
+										<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{clienteCtrl.retencionFrmCtrl}"/>
 								</p:commandButton>
 							</h:panelGroup>
 							
 							
 							<h:outputText value="CI / RUC * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnRuc" />
 							</h:panelGroup>
 							
 							<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtNombre" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpRtNombre" value="#{retencionFrmCtrl.retencionSeleccion.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtNombre" />
 							</h:panelGroup>
 							
 							<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnEmail" />
 							</h:panelGroup>
 							
 							<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnDireccion" />
 							</h:panelGroup>
@@ -594,7 +594,7 @@
 	    </h:form>
     	
     	<!-- Form Proveedor -->
-	    <ui:include src="incl_proveedor_form.xhtml" />
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
         
     </ui:define>
 
