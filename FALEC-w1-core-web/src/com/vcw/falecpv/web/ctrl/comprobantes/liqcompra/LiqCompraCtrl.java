@@ -225,7 +225,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getProveedor().getEstado());
+				cell.setCellValue(lc.getCliente().getEstado());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -233,11 +233,11 @@ public class LiqCompraCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getProveedor().getIdentificacion());
+				cell.setCellValue(lc.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getProveedor().getRazonsocial());
+				cell.setCellValue(lc.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -420,7 +420,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getProveedor().getEstado());
+				cell.setCellValue(lc.getCliente().getEstado());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -428,11 +428,11 @@ public class LiqCompraCtrl extends BaseCtrl {
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getProveedor().getIdentificacion());
+				cell.setCellValue(lc.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(lc.getProveedor().getRazonsocial());
+				cell.setCellValue(lc.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);

@@ -53,8 +53,8 @@ public class VComprobantespagarcredito implements Serializable {
     @Column(name = "numdocumento", length = 2147483647)
     private String numdocumento;
     @Size(max = 40)
-    @Column(name = "idproveedor", length = 40)
-    private String idproveedor;
+    @Column(name = "idcliente", length = 40)
+    private String idcliente;
     @Size(max = 20)
     @Column(name = "identificacion", length = 20)
     private String identificacion;
@@ -229,19 +229,6 @@ public class VComprobantespagarcredito implements Serializable {
 		this.numdocumento = numdocumento;
 	}
 
-	/**
-	 * @return the idproveedor
-	 */
-	public String getIdproveedor() {
-		return idproveedor;
-	}
-
-	/**
-	 * @param idproveedor the idproveedor to set
-	 */
-	public void setIdproveedor(String idproveedor) {
-		this.idproveedor = idproveedor;
-	}
 
 	/**
 	 * @return the identificacion
@@ -437,6 +424,20 @@ public class VComprobantespagarcredito implements Serializable {
 	 */
 	public void setAbono(BigDecimal abono) {
 		this.abono = abono;
+	}
+
+	/**
+	 * @return the idcliente
+	 */
+	public String getIdcliente() {
+		return idcliente;
+	}
+
+	/**
+	 * @param idcliente the idcliente to set
+	 */
+	public void setIdcliente(String idcliente) {
+		this.idcliente = idcliente;
 	}
 
 }

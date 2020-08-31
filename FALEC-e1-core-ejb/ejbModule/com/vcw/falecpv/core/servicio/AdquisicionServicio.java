@@ -128,7 +128,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 						k.setFechavencimiento(d.getProducto().getFechavencimiento());
 						StringBuilder obs = new StringBuilder();
 						obs.append("COMPRA ");
-						obs.append(" / PROVEEDOR : " + adquisicion.getProveedor().getNombrecomercial());
+						obs.append(" / PROVEEDOR : " + adquisicion.getCliente().getRazonsocial());
 						obs.append(" / FACTURA : " + adquisicion.getNumfactura());
 						obs.append(" / FECHA : " + FechaUtil.formatoFecha(adquisicion.getFecha()));
 						if(pagoList!=null && !pagoList.isEmpty()) {
@@ -253,7 +253,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 					k.setFechavencimiento(ad.getProducto().getFechavencimiento());
 					StringBuilder obs = new StringBuilder();
 					obs.append("ANULACION COMPRA ");
-					obs.append(" / PROVEEDOR : " + ad.getAdquisicion().getProveedor().getNombrecomercial());
+					obs.append(" / PROVEEDOR : " + ad.getAdquisicion().getCliente().getRazonsocial());
 					obs.append(" / FACTURA : " + ad.getAdquisicion().getNumfactura());
 					obs.append(" / FECHA : " + FechaUtil.formatoFecha(ad.getAdquisicion().getFecha()));
 					k.setObservacion(obs.toString());

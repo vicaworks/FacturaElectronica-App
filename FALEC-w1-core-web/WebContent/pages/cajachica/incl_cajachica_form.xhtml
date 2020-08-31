@@ -215,11 +215,11 @@
 					            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
 							</h:panelGroup>
 			
-							<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{proveedorCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.proveedor!=null?cajaChicaCtrl.transaccionSelected.proveedor.idproveedor:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
-								<f:setPropertyActionListener value="CAJACHICA" target="#{proveedorCtrl.callModule}"/>
-								<f:setPropertyActionListener value="formCC" target="#{proveedorCtrl.formModule}"/>
-								<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{proveedorCtrl.viewUpdate}"/>
-								<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{proveedorCtrl.cajaChicaCtrl}"/>
+							<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
+								<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
+<!-- 								<f:setPropertyActionListener value="formCC" target="#{proveedorCtrl.formModule}"/> -->
+								<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{clienteCtrl.updateView}"/>
+								<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
 							</p:commandButton>
 							
 						</p:panelGrid>
@@ -233,7 +233,7 @@
 								<div class="EmptyBox5"/>
 							</h:panelGroup>
 							<h:panelGroup>
-								<p:inputText id="inpNcRuc" value="#{cajaChicaCtrl.transaccionSelected.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpNcRuc" value="#{cajaChicaCtrl.transaccionSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpNcRuc" />
 							</h:panelGroup>
@@ -243,7 +243,7 @@
 								<div class="EmptyBox5"/>
 							</h:panelGroup>
 							<h:panelGroup>
-								<p:inputText id="inpNCNombre" value="#{cajaChicaCtrl.transaccionSelected.proveedor.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpNCNombre" value="#{cajaChicaCtrl.transaccionSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpNCNombre" />
 							</h:panelGroup>
@@ -253,7 +253,7 @@
 								<div class="EmptyBox5"/>
 							</h:panelGroup>							
 							<h:panelGroup>
-								<p:inputText id="inpNcEmail" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpNcEmail" value="#{cajaChicaCtrl.transaccionSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpNcEmail" />
 							</h:panelGroup>
@@ -263,7 +263,7 @@
 								<div class="EmptyBox5"/>
 							</h:panelGroup>							
 							<h:panelGroup>
-								<p:inputText id="inpNcDireccion" value="#{liqCompraFormCtrl.liqCompraSelected.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<p:inputText id="inpNcDireccion" value="#{cajaChicaCtrl.transaccionSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpNcDireccion" />
 							</h:panelGroup>

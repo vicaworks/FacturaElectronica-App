@@ -56,9 +56,9 @@ public class DocElectronicoRetencion extends GenerarDocumentoElectronico {
 		info.setDirEstablecimiento(cabecera.getEstablecimiento().getDireccionestablecimiento());
 		info.setContribuyenteEspecial(cabecera.getContribuyenteespecial());
 		info.setObligadoContabilidad(cabecera.getEstablecimiento().getEmpresa().getObligadocontablidad());
-		info.setTipoIdentificacionSujetoRetenido(cabecera.getProveedor().getTipoidentificacion().getCodigo());
-		info.setRazonSocialSujetoRetenido(cabecera.getProveedor().getRazonsocial());
-		info.setIdentificacionSujetoRetenido(cabecera.getProveedor().getIdentificacion());
+		info.setTipoIdentificacionSujetoRetenido(cabecera.getCliente().getTipoIdentificacion().getCodigo());
+		info.setRazonSocialSujetoRetenido(cabecera.getCliente().getRazonsocial());
+		info.setIdentificacionSujetoRetenido(cabecera.getCliente().getIdentificacion());
 		info.setPeriodoFiscal(cabecera.getPeriodofiscal());
 		return info;
 	}

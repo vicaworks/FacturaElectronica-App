@@ -68,9 +68,11 @@ public class Transaccion implements Serializable {
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     @ManyToOne(optional = false)
     private Establecimiento establecimiento;
-    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor")
-    @ManyToOne
-    private Proveedor proveedor;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = true)
+    private Cliente cliente;
+    
     @JoinColumn(name = "idtransaccionconcepto", referencedColumnName = "idtransaccionconcepto")
     @ManyToOne
     private Transaccionconcepto transaccionconcepto;
@@ -228,20 +230,6 @@ public class Transaccion implements Serializable {
 	}
 
 	/**
-	 * @return the proveedor
-	 */
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-
-	/**
-	 * @param proveedor the proveedor to set
-	 */
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	/**
 	 * @return the transacciontipo
 	 */
 	public Transacciontipo getTransacciontipo() {
@@ -323,6 +311,20 @@ public class Transaccion implements Serializable {
 	 */
 	public void setAjuste(Integer ajuste) {
 		this.ajuste = ajuste;
+	}
+
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

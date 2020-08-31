@@ -67,9 +67,6 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 							"		c.idcliente, " +
 							"		cl.identificacion as clienteidentificacion, " +
 							"		cl.razonsocial as cliente, " +
-							"		c.idproveedor, " +
-							"		p.identificacion as proveedoridentificacion, " +
-							"		p.razonsocial as proveedor, " +
 							"		c.estado,	 " +
 							"		c.claveacceso, " +
 							"		c.estadoautorizacion, " +
@@ -83,7 +80,6 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 							"	from  " +
 							"		cabecera c inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
 							"		left join cliente cl on cl.idcliente = c.idcliente " + 
-							"		left join proveedor p on p.idproveedor = c.idproveedor " + 
 							"	where " +
 							"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 							"		and c.estado <> 'ANULADO' " +
@@ -94,17 +90,14 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 				sql += "   and (c.secuencial like '%" + criteria.toUpperCase()  + "%' "
 						+ " or c.numdocumento like '%" + criteria.toUpperCase()  + "%' "
 						+ " or UPPER(cl.razonsocial) like '%" + criteria.toUpperCase()  + "%' "
-						+ " or cl.identificacion like'%" + criteria.toUpperCase()  + "%' "
-						+ " or UPPER(p.razonsocial) like '%" + criteria.toUpperCase()  + "%' "
-						+ " or p.identificacion like '%" + criteria.toUpperCase()  + "%') ";
+						+ " or cl.identificacion like'%" + criteria.toUpperCase()  + "%') ";
 			}else {
 				sql += " and c.fechaemision between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' ";
 			}
 			
 			sql += " order by " +
 					" 	c.fechaemision DESC, " +
-					" cl.razonsocial, " +
-					" p.razonsocial ";
+					" cl.razonsocial ";
 			
 			return resultList(sql, ResumenCabeceraQuery.class, false);
 			

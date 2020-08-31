@@ -170,9 +170,9 @@ public class Cabecera implements Serializable {
     @JoinColumn(name = "idadquisicion", referencedColumnName = "idadquisicion", nullable = true)
     private Adquisicion adquisicion;
     
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = true)
-    private Proveedor proveedor;
+//    @ManyToOne(optional = true)
+//    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = true)
+//    private Proveedor proveedor;
     
     @Basic(optional = false)
     @NotNull
@@ -908,20 +908,6 @@ public class Cabecera implements Serializable {
 	 */
 	public void setNumdocumento(String numdocumento) {
 		this.numdocumento = numdocumento;
-	}
-
-	/**
-	 * @return the proveedor
-	 */
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-
-	/**
-	 * @param proveedor the proveedor to set
-	 */
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
 	}
 
 	/**

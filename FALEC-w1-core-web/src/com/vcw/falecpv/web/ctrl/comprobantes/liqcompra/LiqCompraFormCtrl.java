@@ -28,14 +28,15 @@ import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
-import com.vcw.falecpv.core.modelo.persistencia.Proveedor;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
@@ -43,7 +44,6 @@ import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.LiqCompraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
-import com.vcw.falecpv.core.servicio.ProveedorServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -84,7 +84,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	private EstablecimientoServicio establecimientoServicio;
 	
 	@EJB
-	private ProveedorServicio proveedorServicio;
+	private ClienteServicio clienteServicio;
 	
 	@EJB
 	private TipopagoServicio tipopagoServicio;
@@ -96,7 +96,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	private InfoadicionalServicio infoadicionalServicio;
 	
 	
-	private List<Proveedor> proveedorList;
+	private List<Cliente> proveedorList;
 	private List<Tipocomprobante> tipocomprobanteList;
 	private Cabecera liqCompraSelected;
 	private List<Detalle> liqCompraDetalleList;
@@ -164,7 +164,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 
 	public void consultarProveedor()throws DaoException {
 		
-		setProveedorList(proveedorServicio.getProveedorDao().getByConsulta(
+		setProveedorList(clienteServicio.getClienteDao().getByConsulta(
 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), EstadoRegistroEnum.ACTIVO, null));
 		
 	}
@@ -173,7 +173,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
-			if(liqCompraSelected.getProveedor()==null) {
+			if(liqCompraSelected.getCliente()==null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL PROVEEDOR");
 				return;
 			}
@@ -535,8 +535,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	}
 	
 	public void consultarProveedor(String identificador) throws DaoException {
-		liqCompraSelected.setProveedor(null);
-		liqCompraSelected.setProveedor(proveedorServicio.getProveedorDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		liqCompraSelected.setCliente(null);
+		liqCompraSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 	
 	public String editar(String idLiqCompra) throws DaoException {
@@ -654,22 +654,6 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-
-	/**
-	 * @return the proveedorList
-	 */
-	public List<Proveedor> getProveedorList() {
-		return proveedorList;
-	}
-
-
-	/**
-	 * @param proveedorList the proveedorList to set
-	 */
-	public void setProveedorList(List<Proveedor> proveedorList) {
-		this.proveedorList = proveedorList;
-	}
-
 
 	/**
 	 * @return the tipocomprobanteList
@@ -859,6 +843,22 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	 */
 	public void setPorcentajeIva(BigDecimal porcentajeIva) {
 		this.porcentajeIva = porcentajeIva;
+	}
+
+
+	/**
+	 * @return the proveedorList
+	 */
+	public List<Cliente> getProveedorList() {
+		return proveedorList;
+	}
+
+
+	/**
+	 * @param proveedorList the proveedorList to set
+	 */
+	public void setProveedorList(List<Cliente> proveedorList) {
+		this.proveedorList = proveedorList;
 	}
 
 }

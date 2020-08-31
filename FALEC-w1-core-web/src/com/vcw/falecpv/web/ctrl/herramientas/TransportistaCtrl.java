@@ -17,7 +17,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.TipoIdentificacion;
 import com.vcw.falecpv.core.modelo.persistencia.Transportista;
-import com.vcw.falecpv.core.servicio.ProveedorServicio;
+import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
@@ -37,7 +37,7 @@ public class TransportistaCtrl extends BaseCtrl {
 	private static final long serialVersionUID = 1303136713768047090L;
 	
 	@EJB
-	private ProveedorServicio proveedorServicio;
+	private ClienteServicio clienteServicio;
 	
 	@EJB
 	private TransportistaServicio transportistaServicio;
@@ -66,7 +66,7 @@ public class TransportistaCtrl extends BaseCtrl {
 	
 	public void consultarTipoIdentificacion()throws DaoException{
 		tipoIdentificacionList = null;
-		tipoIdentificacionList = proveedorServicio.getByProveedor();
+		tipoIdentificacionList = clienteServicio.getByProveedor();
 	}
 	
 	@Override

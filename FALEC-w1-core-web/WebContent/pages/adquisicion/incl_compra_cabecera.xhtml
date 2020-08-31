@@ -49,37 +49,36 @@
 	            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
 			</h:panelGroup>
 			
-			<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{proveedorCtrl.nuevoEditar(adquisicionFrmCtrl.adquisicionSelected.proveedor!=null?adquisicionFrmCtrl.adquisicionSelected.proveedor.idproveedor:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
-				<f:setPropertyActionListener value="ADQUISICION" target="#{proveedorCtrl.callModule}"/>
-				<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
-				<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor" target="#{proveedorCtrl.viewUpdate}"/>
-				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{proveedorCtrl.adquisicionFrmCtrl}"/>
+			<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(adquisicionFrmCtrl.adquisicionSelected.cliente!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
+				<f:setPropertyActionListener value="ADQUISICION" target="#{clienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor" target="#{clienteCtrl.updateView}"/>
+				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
 			</p:commandButton>
 			
 			<h:outputText value="C.I./RUC * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpNcRuc" value="#{adquisicionFrmCtrl.adquisicionSelected.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				<p:inputText id="inpNcRuc" value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpNcRuc" />
 			</h:panelGroup>
 			
 			<h:outputText value="NOMBRE * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpNCNombre" value="#{adquisicionFrmCtrl.adquisicionSelected.proveedor.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				<p:inputText id="inpNCNombre" value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpNCNombre" />
 			</h:panelGroup>
 			
 			<h:outputText value="EMAIL * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpNcEmail" value="#{adquisicionFrmCtrl.adquisicionSelected.proveedor.email}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				<p:inputText id="inpNcEmail" value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpNcEmail" />
 			</h:panelGroup>
 			
 			<h:outputText value="#{msg['label.direccion']} * " styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:inputText id="inpNcDireccion" value="#{adquisicionFrmCtrl.adquisicionSelected.proveedor.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				<p:inputText id="inpNcDireccion" value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 				</p:inputText>
 				<p:message for="inpNcDireccion" />
 			</h:panelGroup>

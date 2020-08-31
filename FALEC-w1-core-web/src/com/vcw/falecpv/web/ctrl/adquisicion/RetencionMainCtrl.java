@@ -223,11 +223,11 @@ public class RetencionMainCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(r.getProveedor().getIdentificacion());
+				cell.setCellValue(r.getCliente().getIdentificacion());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(r.getProveedor().getRazonsocial());
+				cell.setCellValue(r.getCliente().getRazonsocial());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -365,11 +365,11 @@ public class RetencionMainCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(r.getProveedor().getIdentificacion());
+				cell.setCellValue(r.getCliente().getIdentificacion());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(r.getProveedor().getRazonsocial());
+				cell.setCellValue(r.getCliente().getRazonsocial());
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);

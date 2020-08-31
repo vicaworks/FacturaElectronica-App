@@ -126,9 +126,9 @@ public class Adquisicion implements Serializable {
     @ManyToOne(optional = false)
     private Establecimiento establecimiento;
     
-    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = false)
+    @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = false)
     @ManyToOne(optional = false)
-    private Proveedor proveedor;
+    private Cliente cliente;
     
     @JoinColumn(name = "idtipocomprobante", referencedColumnName = "idtipocomprobante", nullable = false)
     @ManyToOne(optional = false)
@@ -335,20 +335,6 @@ public class Adquisicion implements Serializable {
 	}
 
 	/**
-	 * @return the proveedor
-	 */
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-
-	/**
-	 * @param proveedor the proveedor to set
-	 */
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	/**
 	 * @return the tipocomprobante
 	 */
 	public Tipocomprobante getTipocomprobante() {
@@ -484,6 +470,20 @@ public class Adquisicion implements Serializable {
 	 */
 	public void setPagoList(List<Pago> pagoList) {
 		this.pagoList = pagoList;
+	}
+
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

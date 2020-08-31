@@ -34,11 +34,11 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ImpuestoretencionServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
-import com.vcw.falecpv.core.servicio.ProveedorServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
@@ -65,7 +65,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private RetencionimpuestodetServicio retencionimpuestodetServicio;
 	
 	@EJB
-	private ProveedorServicio proveedorServicio;
+	private ClienteServicio clienteServicio;
 	
 	@EJB
 	private AdquisicionServicio adquisicionServicio;
@@ -190,7 +190,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		if(adquisicionSelected!=null) {
 			retencionSeleccion.setFechaemision(adquisicionSelected.getFecha());
 			retencionSeleccion.setNumfactura(adquisicionSelected.getNumfactura());
-			retencionSeleccion.setProveedor(adquisicionSelected.getProveedor());
+			retencionSeleccion.setCliente(adquisicionSelected.getCliente());
 			retencionSeleccion.setTipocomprobanteretencion(adquisicionSelected.getTipocomprobante());
 		}
 		retencionSeleccion.setFechaemisiondocasociado(retencionSeleccion.getFechaemision());
@@ -268,11 +268,11 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			// verifica numfactura proveedor establecimeinto
 			if (cabeceraRetencionServicio.existeRetencionProveedor(retencionSeleccion.getIdcabecera(),
 					retencionSeleccion.getEstablecimiento().getIdestablecimiento(),
-					retencionSeleccion.getProveedor().getIdproveedor(), retencionSeleccion.getNumfactura())) {
+					retencionSeleccion.getCliente().getIdcliente(), retencionSeleccion.getNumfactura())) {
 				
 				AppJsfUtil.addErrorMessage("formMain", "ERROR",
 						"YA EXISTE UNA RETENCION DE LA FACTURA : " + retencionSeleccion.getNumfactura()
-								+ " DEL PROVEEDOR : " + retencionSeleccion.getProveedor().getNombrecomercial());
+								+ " DEL PROVEEDOR : " + retencionSeleccion.getCliente().getRazonsocial());
 				return;
 				
 			}
@@ -280,7 +280,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			// verifica si existe la adquisicion
 			if(adquisicionSelected==null) {
 				adquisicionSelected = adquisicionServicio.getByFactura(
-						retencionSeleccion.getProveedor().getIdproveedor(), retencionSeleccion.getNumfactura(),
+						retencionSeleccion.getCliente().getIdcliente(), retencionSeleccion.getNumfactura(),
 						retencionSeleccion.getEstablecimiento().getIdestablecimiento());
 			}
 			
@@ -550,8 +550,8 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	}
 	
 	public void consultarProveedor(String identificador) throws DaoException {
-		retencionSeleccion.setProveedor(null);
-		retencionSeleccion.setProveedor(proveedorServicio.getProveedorDao().getByIdentificador(identificador,
+		retencionSeleccion.setCliente(null);
+		retencionSeleccion.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 

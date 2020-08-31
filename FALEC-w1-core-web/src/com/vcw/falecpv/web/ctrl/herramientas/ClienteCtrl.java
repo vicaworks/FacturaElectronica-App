@@ -39,8 +39,12 @@ import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ImportarClienteServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.adquisicion.RetencionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.cajachica.CajaChicaCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FactMainPagoCtrl;
@@ -72,6 +76,10 @@ public class ClienteCtrl extends BaseCtrl {
 	private Cliente clienteSelected;
 	private String callModule;
 	private String updateView;	
+	private AdquisicionFrmCtrl adquisicionFrmCtrl;
+	private RetencionFrmCtrl retencionFrmCtrl;
+	private CajaChicaCtrl cajaChicaCtrl;
+	private LiqCompraFormCtrl liqCompraFormCtrl;
 	
 	
 	public ClienteCtrl() {
@@ -121,6 +129,22 @@ public class ClienteCtrl extends BaseCtrl {
 				consultarClientes();
 				AppJsfUtil.addInfoMessage("frmCliente","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 				
+				break;
+			case "LIQCOMPRA":
+				liqCompraFormCtrl.getLiqCompraSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "RETENCION":
+				retencionFrmCtrl.getRetencionSeleccion().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "CAJACHICA":
+				cajaChicaCtrl.getTransaccionSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "ADQUISICION":
+				adquisicionFrmCtrl.getAdquisicionSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
 				break;
 			case "FactMainPagoCtrl":
 				
@@ -1007,5 +1031,61 @@ public class ClienteCtrl extends BaseCtrl {
 	 */
 	public void setUpdateView(String updateView) {
 		this.updateView = updateView;
+	}
+
+	/**
+	 * @return the adquisicionFrmCtrl
+	 */
+	public AdquisicionFrmCtrl getAdquisicionFrmCtrl() {
+		return adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @param adquisicionFrmCtrl the adquisicionFrmCtrl to set
+	 */
+	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
+		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @return the retencionFrmCtrl
+	 */
+	public RetencionFrmCtrl getRetencionFrmCtrl() {
+		return retencionFrmCtrl;
+	}
+
+	/**
+	 * @param retencionFrmCtrl the retencionFrmCtrl to set
+	 */
+	public void setRetencionFrmCtrl(RetencionFrmCtrl retencionFrmCtrl) {
+		this.retencionFrmCtrl = retencionFrmCtrl;
+	}
+
+	/**
+	 * @return the cajaChicaCtrl
+	 */
+	public CajaChicaCtrl getCajaChicaCtrl() {
+		return cajaChicaCtrl;
+	}
+
+	/**
+	 * @param cajaChicaCtrl the cajaChicaCtrl to set
+	 */
+	public void setCajaChicaCtrl(CajaChicaCtrl cajaChicaCtrl) {
+		this.cajaChicaCtrl = cajaChicaCtrl;
+	}
+
+	/**
+	 * @return the liqCompraFormCtrl
+	 */
+	public LiqCompraFormCtrl getLiqCompraFormCtrl() {
+		return liqCompraFormCtrl;
+	}
+
+	/**
+	 * @param liqCompraFormCtrl the liqCompraFormCtrl to set
+	 */
+	public void setLiqCompraFormCtrl(LiqCompraFormCtrl liqCompraFormCtrl) {
+		this.liqCompraFormCtrl = liqCompraFormCtrl;
 	}
 }
