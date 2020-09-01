@@ -20,6 +20,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
+import com.vcw.falecpv.web.ctrl.common.MessageCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.MessageWebUtil;
 
@@ -42,6 +43,7 @@ public abstract class BaseCtrl implements Serializable {
 	protected Infoadicional infoadicionalSelected;
 	private List<Tipopago> tipopagoList;
 	private Tipopago tipopagoSelected;
+	protected MessageCtrl messageCtrl = (MessageCtrl) AppJsfUtil.getManagedBean("messageCtrl");
 	
 	/**
 	 * 
@@ -234,6 +236,48 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setTipopagoSelected(Tipopago tipopagoSelected) {
 		this.tipopagoSelected = tipopagoSelected;
+	}
+
+	/**
+	 * @return the tipopagoServicio
+	 */
+	public TipopagoServicio getTipopagoServicio() {
+		return tipopagoServicio;
+	}
+
+	/**
+	 * @param tipopagoServicio the tipopagoServicio to set
+	 */
+	public void setTipopagoServicio(TipopagoServicio tipopagoServicio) {
+		this.tipopagoServicio = tipopagoServicio;
+	}
+
+	/**
+	 * @return the msg
+	 */
+	public MessageWebUtil getMsg() {
+		return msg;
+	}
+
+	/**
+	 * @param msg the msg to set
+	 */
+	public void setMsg(MessageWebUtil msg) {
+		this.msg = msg;
+	}
+
+	/**
+	 * @return the messageCtrl
+	 */
+	public MessageCtrl getMessageCtrl() {
+		return messageCtrl;
+	}
+
+	/**
+	 * @param messageCtrl the messageCtrl to set
+	 */
+	public void setMessageCtrl(MessageCtrl messageCtrl) {
+		this.messageCtrl = messageCtrl;
 	}
 	
 }

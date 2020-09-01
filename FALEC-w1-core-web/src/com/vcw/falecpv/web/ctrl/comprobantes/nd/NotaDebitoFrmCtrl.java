@@ -532,7 +532,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			NotaDebitoCtrl notaDebitoCtrl = (NotaDebitoCtrl) AppJsfUtil.getManagedBean("notaDebitoCtrl");
 			notaDebitoCtrl.consultar();
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO CORRECTAMENTE");
+			messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.debito") + " GENERADA CORRECTAMENTE.", "OK");
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();

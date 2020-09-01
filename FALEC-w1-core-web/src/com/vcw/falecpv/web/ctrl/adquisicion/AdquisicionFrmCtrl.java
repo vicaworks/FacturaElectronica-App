@@ -182,7 +182,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			AdquisicionMainCtrl adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
 			adquisicionMainCtrl.consultarAdquisiciones();
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK","REGISTRO GUARDADO CORRECTAMENTE.");
+			messageCtrl.cargarMenssage("OK", "COMPRA REGISTRADA CORRECTAMENTE.", "OK");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

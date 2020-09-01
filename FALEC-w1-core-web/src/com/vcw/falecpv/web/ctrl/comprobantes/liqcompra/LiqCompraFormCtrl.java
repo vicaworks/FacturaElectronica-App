@@ -209,7 +209,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			LiqCompraCtrl liqCompraCtrl = (LiqCompraCtrl) AppJsfUtil.getManagedBean("liqCompraCtrl");
 			liqCompraCtrl.consultar();
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			messageCtrl.cargarMenssage("OK", msg.getString("label.liquidacion") + " DE COMPRA GENERADA CORRECTAMENTE.", "OK");
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
