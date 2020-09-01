@@ -378,7 +378,13 @@ body .ui-dialog .ui-dialog-content {
 
 body .ui-dialog .ui-dialog-titlebar {			
 	padding: 1em !important;
-	
+}
+
+/* ================= MESSAGE =================== */
+
+body .ui-messages .ui-messages-info {
+	background-color: #0772b3;
+	border: 1px solid #0772b3;
 }
 
 /* ====== MEDIAQUERY == */

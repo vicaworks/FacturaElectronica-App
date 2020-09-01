@@ -310,7 +310,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 			return (Adquisicion) q.select("a")
 					.from(Adquisicion.class,"a")
 					.equals("a.establecimiento.idestablecimiento",idEstablecimiento)
-					.equals("a.proveedor.idproveedor",idProveedor)
+					.equals("a.cliente.idcliente",idProveedor)
 					.equals("a.numfactura",numFactura)
 					.notEquals("a.estado", "ANU").getSingleResult();
 			

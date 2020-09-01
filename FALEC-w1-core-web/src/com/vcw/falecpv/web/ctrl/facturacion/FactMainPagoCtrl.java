@@ -534,7 +534,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			cabecerSelected.setPagoList(pagoList);
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR RECIBO");
+			messageCtrl.cargarMenssage("OK", "RECIBO GENERADO CORRECTAMENTE.", "OK");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -577,7 +577,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			cabecerSelected.setPagoList(pagoList);			
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			messageCtrl.cargarMenssage("OK", "FACTURA GENERADA CORRECTAMENTE.", "OK");
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
