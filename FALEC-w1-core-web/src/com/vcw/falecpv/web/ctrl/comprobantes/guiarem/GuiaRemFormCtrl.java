@@ -170,7 +170,8 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			default:
 				break;
 			}
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			
+			messageCtrl.cargarMenssage("OK", msg.getString("label.guiaremision.upper") + " GENERADA CORRECTAMENTE.", "OK");
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();

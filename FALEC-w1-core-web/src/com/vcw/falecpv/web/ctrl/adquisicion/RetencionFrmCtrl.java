@@ -356,7 +356,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK","REGISTRO GUARDADO CORRECTAMENTE.");
+			messageCtrl.cargarMenssage("OK", msg.getString("label.retencion") + " GENERADA CORRECTAMENTE.", "OK");
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();

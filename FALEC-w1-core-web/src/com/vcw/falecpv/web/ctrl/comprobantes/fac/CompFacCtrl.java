@@ -663,7 +663,7 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			noEditarSecuencial(cabecerSelected);
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			messageCtrl.cargarMenssage("OK", "RECIBO GENERADO CORRECTAMENTE.", "OK");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -713,7 +713,7 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			noEditarSecuencial(cabecerSelected);
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "GUARDADO GENERAR FACTURA");
+			messageCtrl.cargarMenssage("OK", "FACTURA GENERADA CORRECTAMENTE.", "OK");
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();

@@ -200,8 +200,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "TODO: GUARDADO IMPRIMIR");
-			
+			messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.credito") + " GENERADA CORRECTAMENTE.", "OK");
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
