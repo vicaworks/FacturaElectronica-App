@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<ui:define name="head">
+        <style type="text/css">
+        	
+        	
+        	
+        </style>
+    </ui:define>
+    
+	<div class="card card-w-title">
+		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right" /> Guías de Remisión</h3>
+		<div class="EmptyBox5" />
+		<div class="p-grid p-align-top vertical-container">
+			<div class="p-col-12 p-md-3">
+    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar id="calDesde" value="#{compRecGuiaRemCtrl.desde}" 
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+				</p:calendar>
+				<p:message for="calDesde"/>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar id="calHasta" value="#{compRecGuiaRemCtrl.hasta}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+				</p:calendar>
+				<p:message for="calHasta"/>
+    		</div>
+    		<div class="p-col-12 p-md-3">
+    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<p:inputText value="#{compRecGuiaRemCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Emisor" styleClass="Wid100"/>
+    		</div>
+    		<div class="p-col-12 p-lg-3">
+    			<p:commandButton 
+							icon="fa fa-search"
+							action="#{compRecGuiaRemCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+				<div class="EmptyBox5"/>
+				<p:commandButton id="cmdGlobalExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty facEmitidaCtrl.ventasQueryList}">
+				</p:commandButton>
+				
+				<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+						<p:fileDownload value="#{facEmitidaCtrl.fileResumen}" contentDisposition="inline"/>
+					</p:menuitem>
+					<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+						<p:fileDownload value="#{facEmitidaCtrl.fileDetalle}" contentDisposition="inline"/>
+					</p:menuitem>
+				</p:menu>
+    		</div>
+		</div>
+	</div>
+
+</ui:composition>

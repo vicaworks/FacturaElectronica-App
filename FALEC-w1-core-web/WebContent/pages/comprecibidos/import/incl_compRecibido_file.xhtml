@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		.ui-fileupload-content {
+		    min-height: 200px;
+		    background-color: #F0F3F4 !important;
+		}
+ 	</style>
+	
+	
+	<p:dialog header="Comprobantes Recibidos" widgetVar="dlgCRImportFile" modal="true" responsive="true" width="60%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="formCRFile">
+			
+			<div class="p-grid toolBarPopUp p-align-end vertical-container">
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdAceptar"
+						value="ACEPTAR" icon="fa fa-check" styleClass="" update="@form"
+						action="#{compRecibidosCtrl.aceptarFile()}"  
+						/>
+					<p:spacer width="10px;"/>
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgCRImportFile').hide()" immediate="true"  
+						/>
+					
+				</div>	
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formCRFile"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<h3>
+				<i class="fa fa-warning Fs16"></i> Seleccionar o arrastrar el archivo descargado de la página web del SRI *.txt
+			</h3>
+			<div>
+				<f:subview rendered="#{compRecibidosCtrl.nombreFile!=null}">
+					<h:outputText value="Archivo Seleccionado :" />
+					<h:outputText value="#{compRecibidosCtrl.nombreFile}" styleClass="markGreen"/>
+					<div class="EmptyBox20"/>
+				</f:subview>
+			</div>
+			<p:fileUpload id="recImportupload"
+					listener="#{compRecibidosCtrl.handleUpload}"
+					allowTypes="/(\.|\/)(txt)$/"
+					required="true"
+					requiredMessage="REQUERIDO" 
+					label="Seleccionar Archivo *.txt" 
+					sizeLimit="25242880"
+					invalidFileMessage="SOLO FORMATOS [.txt]" 
+					invalidSizeMessage="#{msg['file.size']} 2MB" 
+					mode="advanced" 
+					dragDropSupport="true" 
+					auto="true"
+					update="@form"
+					previewWidth="0">
+			</p:fileUpload>
+			
+		</h:form>
+	
+	</p:dialog>
+	
+
+</ui:composition>
