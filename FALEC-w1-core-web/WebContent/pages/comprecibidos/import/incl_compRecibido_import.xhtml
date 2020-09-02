@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+     <style type="text/css">
+     	
+     	.compSriDT .ui-datatable-scrollable-body{
+				min-height: 35vh !important;
+				height: calc(100vh - 325px)!important;
+			}
+     	
+     </style>
+        
+	<div class="card card-w-title">
+		<h3 class="cardTitle">Importar Comprobantes Recibidos</h3>
+		<div class="EmptyBox5" />
+		<div class="p-grid p-align-top vertical-container">
+			<div class="p-col-12 p-md-4 p-lg-3">
+				<p:commandButton id="cmdCRSeleccionarFile" widgetVar="w_cmdCRSeleccionarFile"
+							icon="fa fa-search"
+							process="@this"
+							action="#{compRecibidosCtrl.showUploadFile()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="SELECCIONAR ARCHIVO"/>
+				    			
+    		</div>
+    		
+    		<div class="p-col-12 p-md-2">
+    			
+    			<p:commandButton id="cmdCRGuardar" widgetVar="w_cmdCRGuardar"
+							icon="fa fa-floppy-o"
+							process="@this"
+							onclick="PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
+							action="#{compRecibidosCtrl.cargarComprobantes()}" styleClass="Wid100" update="@form" style="margin-right:5px;" value="GUARDAR" disabled="#{compRecibidosCtrl.fileComprobantes==null}"/>
+    			
+    		</div>
+    		
+    		<div class="p-col-12 p-lg-7">
+    			<p:progressBar widgetVar="pbAjax" ajax="true" value="#{compRecibidosCtrl.progress}" labelTemplate="{value}%" styleClass="animated" global="false" interval="250">
+						<p:ajax event="complete" update="@form" oncomplete="PF('w_cmdCRGuardar').enable();PF('w_cmdCRSeleccionarFile').enable();"/>
+			    </p:progressBar>
+    		</div>
+    		
+		</div>
+	</div>
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
+	
+		<p:dataTable id="compSriDT" var="f"
+						value="#{compRecibidosCtrl.fileSriDtoList}" 
+						scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="compSriDT Fs11"  
+						rowKey="#{f.id}"
+						rows="20"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+		    
+		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+		    	
+		    </p:column>    
+		    
+		    <p:column headerText="ESTADO" style="width:60px;">
+				<h:outputText value="#{f.estado}" styleClass="DispBlock #{f.estado=='PENDIENTE'?'markGray':f.estado=='ERROR'?'markRed':'markGreen'}"/>
+			</p:column>
+		    
+		    <p:column headerText="COMPROBANTE" style="width:90px;">
+				<h:outputText value="#{f.comprobante}" />
+			</p:column>
+			
+			<p:column headerText="COMPROBANTE" style="width:100px;">
+				<h:outputText value="#{f.serieComprobante}" />
+			</p:column>        
+			
+			<p:column headerText="RUC" style="width:80px;">
+				<h:outputText value="#{f.rucEmisor}" />
+			</p:column>
+			
+			<p:column headerText="EMISOR" style="width:120px;">
+				<h:outputText value="#{f.emisor}" />
+			</p:column>
+			
+			<p:column headerText="#{msg['label.emision']}" style="width:60px;">
+				<h:outputText value="#{f.fechaEmision}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="#{msg['label.autorizacion']}" style="width:80px;">
+				<h:outputText value="#{f.fechaAutorizacion}" >
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="TIP #{msg['label.emision']}" style="width:50px;">
+				<h:outputText value="#{f.tipoEmision}" >
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="RECEPTOR" style="width:60px;">
+				<h:outputText value="#{f.identificacionReceptor}" >
+				</h:outputText>
+			</p:column>
+			
+<!-- 			<p:column headerText="CLAVE ACCESO">
+				<h:outputText value="#{f.claveAcceso}" >
+				</h:outputText>
+			</p:column>
+		                
+		    <p:column headerText="CLAVE #{msg['label.autorizacion']}">
+				<h:outputText value="#{f.numeroAutorizacion}" >
+				</h:outputText>
+			</p:column> -->
+			
+			<p:column headerText="IMPORTE TOTAL" styleClass="TexAlRight" style="width:40px;">
+				<h:outputText value="#{f.importeTotal}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+		                
+		</p:dataTable>
+		<div class="EmptyBox20"/>
+	</div>
+
+</ui:composition>
