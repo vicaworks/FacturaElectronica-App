@@ -1,0 +1,278 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+     <style type="text/css">
+       	
+       	.pvUnoDT .ui-datatable-scrollable-body{
+			min-height: 40vh !important;
+			height: calc(100vh - 410px)!important;				
+		}
+       	
+    </style>
+
+	<div class="card card-w-title">
+		<!-- <h3 class="cardTitle"><i class="fa fa-arrow-circle-right" /> Cotización</h3>
+		<div class="EmptyBox5" /> -->
+		<div class="p-grid p-align-top vertical-container">
+			<div class="p-col-12 p-md-2">
+    			<h:outputText value="Estado" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:selectOneMenu id="somCotEstado"
+									value="#{cotizacionCtrl.estado}"
+									required="false"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100">
+					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+					<f:selectItem itemLabel="FACTURADO" itemValue="FACTURADO"/>	
+					<f:selectItem itemLabel="SEGUIMIENTO" itemValue="SEGUIMIENTO"/>
+					<f:selectItem itemLabel="ARCHIVADO" itemValue="ARCHIVADO"/>
+				</p:selectOneMenu>
+    		</div>
+    		
+			<div class="p-col-12 p-md-2">
+    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar id="calDesde" value="#{cotizacionCtrl.desde}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+				</p:calendar>
+				<p:message for="calDesde"/>
+    		</div>
+    		
+    		<div class="p-col-12 p-md-2">
+    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+	    		<p:calendar id="calHasta" value="#{cotizacionCtrl.hasta}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+				</p:calendar>
+				<p:message for="calHasta"/>
+    		</div>
+    		<div class="p-col-12 p-md-6">
+    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<p:inputText value="#{cotizacionCtrl.criterioBusqueda}" placeholder="# Factura, #Cotización, R.U.C., Cliente" styleClass="Wid100"/>
+    		</div>
+    		<div class="p-col-12 p-lg-6">
+    			<div class="EmptyBox5"/>
+    			<div class="p-grid">
+    				<div class="p-col-6 p-md-4">
+		    			<p:commandButton 
+									icon="fa fa-search"
+									action="#{cotizacionCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+    				</div>
+    				<div class="p-col-6 p-md-4">
+		    			<p:commandButton 
+									icon="fa fa-plus"
+									action="#" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="NUEVO"/>
+    				</div>
+    				<div class="p-col-6 p-md-4">
+						<p:commandButton id="cmdGlobalExcel"
+			  						value="EXPORTAR"
+									icon="fa fa-sort-down" 
+									styleClass="secondary-button Wid100"
+									disabled="#{empty cotizacionCtrl.proformaList}">
+						</p:commandButton>				
+						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{null}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{null}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
+    				</div>
+    			</div>
+    		</div>
+    		
+		</div>
+	</div>
+	<!-- Mensajes -->
+	<p:messages id="msgInicio" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+		closable="true" >
+		<p:autoUpdate></p:autoUpdate>
+	</p:messages>
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
+		
+		<div class="p-grid p-nogutter">
+			<div class="p-col-6 p-lg-3">
+				
+				<div class="cardContador cardContador-bgBlack">
+					<div class="cardContador-header">
+						<h:outputText value="TOTAL COTIZACIONES" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{cotizacionCtrl.totalCotizacion}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="p-col-6 p-lg-3">
+				
+				<div class="cardContador cardContador-borderBlack">
+					<div class="cardContador-header">
+						<h:outputText value="FACTURADAS" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{cotizacionCtrl.totalfacturados}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="p-col-6 p-lg-3">
+				
+				<div class="cardContador cardContador-borderBlack">
+					<div class="cardContador-header">
+						<h:outputText value="SEGUIMIENTO" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{cotizacionCtrl.totalSeguimiento}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="p-col-6 p-lg-3">
+				
+				<div class="cardContador cardContador-borderBlack">
+					<div class="cardContador-header">
+						<h:outputText value="ARCHIVADAS" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{cotizacionCtrl.totalArchivados}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		<div class="EmptyBox10"/>
+		
+		<p:dataTable id="pvUnoDT"
+		       			scrollable="true"
+		       			value="#{cotizacionCtrl.proformaList}"
+		       			var="p"
+		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvUnoDT Fs11"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowKey="#{v.idcabecera}"
+						rows="20"
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+				
+				<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+					<p:commandLink id="cmlDtProformas">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
+						
+						<p:menuitem value="Editar" action="#" icon="fa fa-edit" rendered="#{v.estado=='ARCHIVADO'}">
+						</p:menuitem>
+						
+						<p:menuitem value="Archivar" action="#" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{v.estado=='ARCHIVADO'}">
+						</p:menuitem>
+						
+						<p:menuitem value="Imprimir" action="#" icon="fa fa-print" process="pvUnoDT" update="@form">
+						</p:menuitem>
+						
+					</p:menu>
+						
+				</p:column>	
+				
+				<p:column headerText="NUM " style="width:100px;">
+					<h:outputText value="#{p.secuencial}" />
+				</p:column>	
+				
+				<p:column headerText="ESTADO" style="width:50px;">
+					<h:outputText value="#{p.estado}">
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="FECHA" style="width:40px;">
+					<h:outputText value="#{p.fechaemision}" >
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="RUC / CI" style="width:80px;">
+					<h:outputText value="#{p.cliente.identificacion}" />
+				</p:column>
+				
+				<p:column headerText="CLIENTE" style="width:125px;">
+					<h:outputText value="#{p.cliente.razonsocial}" >
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="RESUMEN" style="width:125px;">
+					<h:outputText value="#{p.resumen}" >
+					</h:outputText>
+				</p:column>
+				
+				<p:column style="width:5px;" styleClass="TexAlCenter">
+					<f:facet name="header">
+						<p:spacer width="3px"/>
+						<i class="fa fa-envelope Fs14"/>
+					</f:facet>
+					<f:subview rendered="#{p.envioemail==1}">
+						<i class="fa fa-check Fs14" style="color:black;"/>
+					</f:subview>
+					<f:subview rendered="#{p.envioemail==0}">
+						<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+					</f:subview>
+				</p:column>
+				
+				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totalsinimpuestos.add(p.totaldescuento)}" >
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totaldescuento}" >
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totalsinimpuestos}" >
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="IMPUESTOS" style="width:25px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totaliva.add(p.totalice)}" >
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totalconimpuestos}" >
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>				
+				
+		</p:dataTable>
+		
+		<div class="EmptyBox30"/>
+		
+	</div>
+
+</ui:composition>

@@ -267,6 +267,9 @@ public class Cabecera implements Serializable {
     
     @Transient
     private BigDecimal totalpagar = BigDecimal.ZERO;
+    
+    @Transient
+    private String resumen;
 
 	/**
 	 * 
@@ -1209,6 +1212,20 @@ public class Cabecera implements Serializable {
 			return BigDecimal.valueOf(pagoList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 		}
 		return BigDecimal.ZERO;
+	}
+
+	/**
+	 * @return the resumen
+	 */
+	public String getResumen() {
+		return resumen;
+	}
+
+	/**
+	 * @param resumen the resumen to set
+	 */
+	public void setResumen(String resumen) {
+		this.resumen = resumen;
 	}
 
 }
