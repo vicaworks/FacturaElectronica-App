@@ -213,6 +213,26 @@ public class Cabecera implements Serializable {
     @Column(name = "valorapagar", precision = 12, scale = 2)
     private BigDecimal valorapagar = BigDecimal.ZERO;
     
+    @Size(max = 2147483647)
+    @Column(name = "contenido1", length = 2147483647)
+    private String contenido1;
+    
+    @Size(max = 2147483647)
+    @Column(name = "contenido2", length = 2147483647)
+    private String contenido2;
+    
+    @Size(max = 2147483647)
+    @Column(name = "contenido3", length = 2147483647)
+    private String contenido3;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fechavencimiento")
+    private Date fechaVencimiento;
+    
+    @Size(max = 400)
+    @Column(name = "resumen", length = 400)
+    private String resumen;
+    
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
     private Tipocomprobante tipocomprobanteretencion;
@@ -221,20 +241,18 @@ public class Cabecera implements Serializable {
     @JoinColumn(name = "idtransportista", referencedColumnName = "idtransportista", nullable = true)
     private Transportista transportista;
     
-    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
     @Transient
     private List<Motivo> motivoList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
+    
     @Transient
     private List<Totalimpuesto> totalimpuestoList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
+    
     @Transient
     private List<Destinatario> destinatarioList;
-//    @OneToMany(mappedBy = "idcabecera")
+    
     @Transient
     private List<Detalle> detalleList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
+    
     @Transient
     private List<Infoadicional> infoadicionalList;
     
@@ -267,21 +285,6 @@ public class Cabecera implements Serializable {
     
     @Transient
     private BigDecimal totalpagar = BigDecimal.ZERO;
-    
-    @Transient
-    private String resumen;
-    
-    @Transient
-    private String contenido1;
-    
-    @Transient
-    private String contenido2;
-    
-    @Transient
-    private String contenido3;
-    
-    @Transient
-    private Date fechaVencimiento;
     
     @Transient
     private boolean envioEmailBol=false;

@@ -63,7 +63,7 @@ public class CotizacionCtrl extends BaseCtrl {
 		}
 	}
 	
-	private void consultar()throws DaoException{
+	public void consultar()throws DaoException{
 		
 	}
 	

@@ -431,21 +431,6 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	public void eliminarDetalle() {
 		try {
 			
-			// eliminar datos de la base de datos
-			
-			// eliminar
-			
-			for (Detalle p : detalleFacList) {
-				if(detalleSelected.getIddetalle().equals(p.getIddetalle())) {
-					break;
-				}
-			}
-			
-			if(cabecerSelected.getDetalleEliminarList()==null) {
-				cabecerSelected.setDetalleEliminarList(new ArrayList<>());
-			}
-			detalleSelected.setIdUsuarioEliminacion(AppJsfUtil.getUsuario().getIdusuario());
-			cabecerSelected.getDetalleEliminarList().add(detalleSelected);
 			detalleFacList.remove(detalleSelected);
 			if(detalleFacList.isEmpty()) {
 				detalleSelected=null;
@@ -537,21 +522,18 @@ public class CotizacionFormCtrl extends BaseCtrl {
 				
 			}
 			
-			// validar el valor
-			if(totalPago.doubleValue()<cabecerSelected.getTotalpagar().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR A PAGAR.");
-				return;
-			}
-			
 			cabecerSelected.setDetalleList(detalleFacList);
 			cabecerSelected.setPagoList(pagoList);
 			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.COTIZACION);
-			cabecerSelected.setSecuencial(null);
 			populateCotizacion(GenTipoDocumentoEnum.COTIZACION);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			noEditarSecuencial(cabecerSelected);
+			
+			// actlualizar la consulta pantalla principal
+			CotizacionCtrl cotizacionCtrl = (CotizacionCtrl)AppJsfUtil.getManagedBean("cotizacionCtrl");
+			cotizacionCtrl.consultar();
 			
 			messageCtrl.cargarMenssage("OK", "COTIZACION GENERADA CORRECTAMENTE.", "OK");
 			
@@ -582,7 +564,8 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
-		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
+//		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
+		cabecerSelected.setResumenpago("EFECTIVO");
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
 		
 		// tabla de total impuesto
@@ -596,7 +579,18 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		
 		// infromacion adicional 
 		
-		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected,infoadicionalList));
+//		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected,infoadicionalList));
+		
+		// verifica los contenidos
+		if(cabecerSelected.getContenido1()!=null) {
+			cabecerSelected.setContenido1(cabecerSelected.getContenido1().replaceAll("\\r|\\n", ""));
+		}
+		if(cabecerSelected.getContenido2()!=null) {
+			cabecerSelected.setContenido2(cabecerSelected.getContenido2().replaceAll("\\r|\\n", ""));
+		}
+		if(cabecerSelected.getContenido3()!=null) {
+			cabecerSelected.setContenido3(cabecerSelected.getContenido3().replaceAll("\\r|\\n", ""));
+		}
 		
 	}
 	

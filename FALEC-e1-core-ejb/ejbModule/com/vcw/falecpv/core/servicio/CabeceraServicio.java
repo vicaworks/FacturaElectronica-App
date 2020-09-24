@@ -24,6 +24,7 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
 import com.vcw.falecpv.core.constante.contadores.TCGuiaRemision;
+import com.vcw.falecpv.core.constante.contadores.TablaContadorBaseEnum;
 import com.vcw.falecpv.core.dao.impl.CabeceraDao;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
@@ -128,17 +129,48 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Lock(LockType.WRITE)
 	public Cabecera guardarComprobanteFacade(Cabecera cabecera)throws DaoException, ParametroRequeridoException,ExisteNumDocumentoException{
 		
+		TablaContadorBaseEnum aleatorio = null;
+		
+		switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
+		case COTIZACION:
+			aleatorio = TCAleatorio.ALEATORIOCOTIZACION;
+			break;
+		case FACTURA:
+			aleatorio = TCAleatorio.ALEATORIOFACTURA;
+			break;
+		case GUIA_REMISION:
+			aleatorio = TCAleatorio.ALEATORIOGUIAREMISION;
+			break;
+		case LIQUIDACION_COMPRA:
+			aleatorio = TCAleatorio.ALEATORIOLIQCOMPRA;
+			break;	
+		case NOTA_CREDITO:
+			aleatorio = TCAleatorio.ALEATORIONOTACREDITO;
+			break;
+		case NOTA_DEBITO:
+			aleatorio = TCAleatorio.ALEATORIONOTADEBITO;
+			break;
+		case RECIBO:
+			aleatorio = TCAleatorio.ALEATORIORECIBO;
+			break;
+		case RETENCION:
+			aleatorio = TCAleatorio.ALEATORIORETENCION;
+			break;
+		default:
+			break;
+		}
+		
 		// 0. Asignar secuencia
 		if(cabecera.getSecuencial()==null && !cabecera.isEditarSecuencial()) {
 			
 			cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(), cabecera.getEstablecimiento().getIdestablecimiento()));
-//			cabecera.setSecuencial(contadorPkServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(),
-//					cabecera.getEstablecimiento().getIdestablecimiento()));
-			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			
 		}else if(cabecera.isEditarSecuencial()) {
+			
 			cabecera.setSecuencial(cabecera.getSecuencialNumero());
-			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIOFACTURA, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			
 		}
 		
 		cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
@@ -218,9 +250,6 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 					case FACTURA: case RECIBO:
 						salidaKardex(d);
 						break;
-//					case NOTA_CREDITO:
-//						entredaKardex(d);
-//						break;	
 					default:
 						break;
 					}
@@ -317,19 +346,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		// 10. Si es retencion y tiene una compra actualiza los datos de la compra
 		if(cabecera.getAdquisicion()!=null && cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.RETENCION.getIdentificador())) {
 			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
-//			adquisicion.setTotalretencion(cabecera.getTotalretencion());
-//			adquisicion.setTotalpagar(adquisicion.getTotalfactura().add(cabecera.getTotalretencion().negate()).setScale(2, RoundingMode.HALF_UP));
 			adquisicion.setEstado("RETENCION");
 			adquisicionServicio.actualizar(adquisicion);
 		}
-		
-		// 11. si es nota de credito y tiene referencia a la cabecera anular la factura 
-//		if(GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()).equals(GenTipoDocumentoEnum.NOTA_CREDITO) && cabecera.getIdcabecerapadre()!=null) {
-//			Cabecera c= consultarByPk(cabecera.getIdcabecerapadre());
-//			if(c!=null) {
-//				c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
-//			}
-//		}
 		
 		return cabecera;
 	}
