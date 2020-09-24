@@ -22,7 +22,6 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
-import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
@@ -38,6 +37,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
+import com.vcw.falecpv.core.servicio.CotizacionServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
@@ -77,6 +77,9 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	
 	@EJB
 	private CabeceraServicio cabeceraServicio;
+	
+	@EJB
+	private CotizacionServicio cotizacionServicio; 
 	
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
@@ -124,7 +127,6 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	@PostConstruct
 	public void init() {
 		try {
-			
 			productoSelected = null;
 			nuevaCotizacion();
 			detalleFacList = null;
@@ -513,7 +515,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 			// validar estado
 			if(cabecerSelected.getIdcabecera()!=null) {
 				
-				String analisisEstado = cabeceraServicio.analizarEstadoFactura(cabecerSelected.getIdcabecera(), "GUARDAR");
+				String analisisEstado = cotizacionServicio.analizarEstado(cabecerSelected.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
@@ -563,7 +565,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		cabecerSelected.setEstado("SEGUIMIENTO");
 //		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		cabecerSelected.setResumenpago("EFECTIVO");
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
@@ -650,6 +652,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	
 	
 	public String editar(String idCotizacion) throws DaoException {
+		
 		nuevaCotizacion();
 		cabecerSelected = cabeceraServicio.consultarByPk(idCotizacion);
 		

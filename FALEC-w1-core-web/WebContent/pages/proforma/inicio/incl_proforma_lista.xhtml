@@ -81,10 +81,10 @@
 						</p:commandButton>				
 						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
 							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-								<p:fileDownload value="#{null}" contentDisposition="inline"/>
+								<p:fileDownload value="#{cotizacionCtrl.fileResumen}" contentDisposition="inline"/>
 							</p:menuitem>
 							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-								<p:fileDownload value="#{null}" contentDisposition="inline"/>
+								<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
 							</p:menuitem>
 						</p:menu>
     				</div>
@@ -186,10 +186,13 @@
 					</p:commandLink>
 					<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
 						
-						<p:menuitem value="Editar" action="#" icon="fa fa-edit" rendered="#{v.estado=='ARCHIVADO'}">
+						<p:menuitem value="Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" disabled="#{p.estado=='ARCHIVADO'}" update="@form">
+							<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
 						</p:menuitem>
 						
-						<p:menuitem value="Archivar" action="#" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{v.estado=='ARCHIVADO'}">
+						<p:menuitem value="Archivar" action="#{cotizacionCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{p.estado=='ARCHIVADO'}">
+							<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 						</p:menuitem>
 						
 						<p:menuitem value="Imprimir" action="#" icon="fa fa-print" process="pvUnoDT" update="@form">
@@ -200,7 +203,7 @@
 				</p:column>	
 				
 				<p:column headerText="NUM " style="width:100px;">
-					<h:outputText value="#{p.secuencial}" />
+					<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(p.numdocumento)}" />
 				</p:column>	
 				
 				<p:column headerText="ESTADO" style="width:50px;">

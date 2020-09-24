@@ -27,7 +27,7 @@
 			<h:panelGroup>
 				<p:outputLabel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera!=null}">
 					<div class="EmptyBox5"></div>
-					<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.numdocumento}" styleClass="Fs18 FontBold"/>
+					<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(cotizacionFormCtrl.cabecerSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
 					<div class="EmptyBox5"></div>
 				</p:outputLabel>
 				<p:outputLabel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
