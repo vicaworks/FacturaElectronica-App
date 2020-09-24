@@ -68,7 +68,9 @@
     				<div class="p-col-6 p-md-4">
 		    			<p:commandButton 
 									icon="fa fa-plus"
-									action="#" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="NUEVO"/>
+									action="#{cotizacionFormCtrl.nuevoFromMain()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="NUEVO" process="@this">
+							<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>			
+						</p:commandButton>
     				</div>
     				<div class="p-col-6 p-md-4">
 						<p:commandButton id="cmdGlobalExcel"

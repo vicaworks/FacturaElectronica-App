@@ -208,7 +208,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	public String nuevoFromMain() {
+	public void nuevoFromMain() {
 		try {
 			
 			productoSelected = null;
@@ -218,14 +218,11 @@ public class CotizacionFormCtrl extends BaseCtrl {
 			criterioBusqueda = null;
 			consultarProductos();
 			
-			return "./factura.jsf?faces-redirect=true";
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 
-		return null;
 	}
 	
 	public void consultarProductos()throws DaoException{
