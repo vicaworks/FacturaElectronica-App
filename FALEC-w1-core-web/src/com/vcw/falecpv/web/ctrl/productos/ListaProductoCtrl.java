@@ -23,6 +23,7 @@ import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
+import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
 
@@ -51,6 +52,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	private String viewUpdate;
 	private String criterioBusqueda;
 	private String onComplete="";
+	private CotizacionFormCtrl cotizacionFormCtrl;
 	
 	/**
 	 * 
@@ -137,6 +139,12 @@ public class ListaProductoCtrl extends BaseCtrl {
 				
 				//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
 				//AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
+				break;
+			case "COTIZACION_FORM":
+				cotizacionFormCtrl.setProductoSelected(productoSelected);
+				cotizacionFormCtrl.agregarProducto();
+				AppJsfUtil.hideModal("dlgListaProducto");
+				Ajax.oncomplete("PrimeFaces.focus('formMain:formulario:pvDetalleDT:" + (cotizacionFormCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
 				break;
 			case "NOTA_CREDITO":
 				
@@ -304,6 +312,20 @@ public class ListaProductoCtrl extends BaseCtrl {
 	 */
 	public void setNotaCreditoCtrl(NotaCreditoCtrl notaCreditoCtrl) {
 		this.notaCreditoCtrl = notaCreditoCtrl;
+	}
+
+	/**
+	 * @return the cotizacionFormCtrl
+	 */
+	public CotizacionFormCtrl getCotizacionFormCtrl() {
+		return cotizacionFormCtrl;
+	}
+
+	/**
+	 * @param cotizacionFormCtrl the cotizacionFormCtrl to set
+	 */
+	public void setCotizacionFormCtrl(CotizacionFormCtrl cotizacionFormCtrl) {
+		this.cotizacionFormCtrl = cotizacionFormCtrl;
 	}
 
 }

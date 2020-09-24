@@ -270,6 +270,21 @@ public class Cabecera implements Serializable {
     
     @Transient
     private String resumen;
+    
+    @Transient
+    private String contenido1;
+    
+    @Transient
+    private String contenido2;
+    
+    @Transient
+    private String contenido3;
+    
+    @Transient
+    private Date fechaVencimiento;
+    
+    @Transient
+    private boolean envioEmailBol=false;
 
 	/**
 	 * 
@@ -1226,6 +1241,82 @@ public class Cabecera implements Serializable {
 	 */
 	public void setResumen(String resumen) {
 		this.resumen = resumen;
+	}
+
+	/**
+	 * @return the contenido1
+	 */
+	public String getContenido1() {
+		return contenido1;
+	}
+
+	/**
+	 * @param contenido1 the contenido1 to set
+	 */
+	public void setContenido1(String contenido1) {
+		this.contenido1 = contenido1;
+	}
+
+	/**
+	 * @return the contenido2
+	 */
+	public String getContenido2() {
+		return contenido2;
+	}
+
+	/**
+	 * @param contenido2 the contenido2 to set
+	 */
+	public void setContenido2(String contenido2) {
+		this.contenido2 = contenido2;
+	}
+
+	/**
+	 * @return the fechaVencimiento
+	 */
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	/**
+	 * @param fechaVencimiento the fechaVencimiento to set
+	 */
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	/**
+	 * @return the envioEmailBol
+	 */
+	public boolean isEnvioEmailBol() {
+		if(envioemail==null) {
+			envioEmailBol = false;
+		}else {
+			envioEmailBol = envioemail==1;
+		}
+		return envioEmailBol;
+	}
+
+	/**
+	 * @param envioEmailBol the envioEmailBol to set
+	 */
+	public void setEnvioEmailBol(boolean envioEmailBol) {
+		this.envioemail = envioEmailBol?1:0;
+		this.envioEmailBol = envioEmailBol;
+	}
+
+	/**
+	 * @return the contenido3
+	 */
+	public String getContenido3() {
+		return contenido3;
+	}
+
+	/**
+	 * @param contenido3 the contenido3 to set
+	 */
+	public void setContenido3(String contenido3) {
+		this.contenido3 = contenido3;
 	}
 
 }

@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+    <style type="text/css">
+    	.pvPagoDetalleDT .ui-datatable-scrollable-body{
+			/* min-height: 20vh !important;
+			height: calc(100vh - 755px)!important; */
+		}   	
+    </style>
+    
+    <!-- consulta cliente return keycode 13 -->
+	<p:remoteCommand name="buscarCliente"  action="#{cotizacionFormCtrl.buscarCliente()}" process="@this :formMain:formulario:inpCriterioCliente" update=":formMain:formulario:msgProformaForm :formMain:formulario:msgInpCriterioCliente :formMain:formulario:gridCliente"/>
+	
+	<div class="card card-w-title">
+		
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.cotizacion.title']}</h2>
+		
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+			<h:outputText value="SECUENCIAL" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:outputLabel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera!=null}">
+					<div class="EmptyBox5"></div>
+					<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.numdocumento}" styleClass="Fs18 FontBold"/>
+					<div class="EmptyBox5"></div>
+				</p:outputLabel>
+				<p:outputLabel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
+					<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialEstablecimiento}" />
+					<h:outputText value=" - " />
+					<p:inputText id="intSecCaja" value="#{cotizacionFormCtrl.cabecerSelected.secuencialCaja}" maxlength="3" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+					<h:outputText value=" - " />
+					<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialNumero}" rendered="#{not cotizacionFormCtrl.cabecerSelected.editarSecuencial}"/>
+					<p:message styleClass="Wid100" for="intSecCaja"/>
+				</p:outputLabel>
+				
+			</h:panelGroup>
+			
+			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:calendar id="claFacFecha" value="#{cotizacionFormCtrl.cabecerSelected.fechaemision}"
+					pattern="dd/MMMM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="FECHA EMISION" style="font-size:14px !important;">
+				</p:calendar>
+				<p:message for="claFacFecha" />
+			</h:panelGroup>
+			
+			<h:outputText value="FECHA VENCIMIENTO *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:calendar id="claFacFechaVencimiento" value="#{cotizacionFormCtrl.cabecerSelected.fechaVencimiento}"
+					pattern="dd/MMMM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="FECHA VENCIMIENTO" style="font-size:14px !important;">
+				</p:calendar>
+				<p:message for="claFacFecha" />
+			</h:panelGroup>
+			
+			<h:outputText value="ENVIADO EMAIL *" styleClass="cpoRequerido"/>
+			<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.envioEmailBol}" offLabel="NO" onLabel="SI" showLabels="true"/>
+			
+			<h:outputText value="RESUMEN *" styleClass="cpoRequerido"/>
+				<p:inputText id="inpResumen"
+					value="#{cotizacionFormCtrl.cabecerSelected.resumen}" required="true"
+					requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+					maxlength="500" placeholder="RESUMEN DEL CONTENIDO DE LA #{msg['label.cotizacion']}">
+				</p:inputText>
+				<p:message for="inpResumen" />
+			<h:panelGroup>
+				
+			</h:panelGroup>
+			
+			<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<div class="ui-inputgroup">
+	                <span class="ui-inputgroup-addon">
+	                	
+	                	<p:commandButton process="@this :formMain:formulario:inpCriterioCliente"
+							update=":formMain:formulario:msgProformaForm :formMain:formulario:msgInpCriterioCliente :formMain:formulario:gridCliente" 
+							action="#{cotizacionFormCtrl.buscarCliente()}" icon="fa fa-search">
+	                	</p:commandButton>
+	                
+	                </span>
+	                
+	                <p:inputText id="inpCriterioCliente"
+						value="#{cotizacionFormCtrl.criterioCliente}" required="false"
+						requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						validatorMessage="SOLO NUMEROS"
+						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
+						<f:validateRegex pattern="^\d+$" />
+					</p:inputText>
+	                
+	            </div>
+	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+			</h:panelGroup>
+		
+		</p:panelGrid>	
+		
+		<p:panelGrid id="grid2" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-md-6,ui-g-12 ui-md-6">
+			
+			<p:commandButton value="CONSUMIDOR FINAL" action="#{cotizacionFormCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:formulario:msgProformaForm :formMain:formulario:gridCliente" icon="fa fa-users" styleClass="secondary-button Wid100">
+			</p:commandButton>
+			
+			<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(cotizacionFormCtrl.cabecerSelected.cliente!=null?cotizacionFormCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="Wid100">
+				<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
+				<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+			</p:commandButton>
+			
+		</p:panelGrid>
+		
+		<p:panelGrid id="gridCliente" columns="1"
+			styleClass="ui-panelgrid-blank Fs12 Wid100"
+			columnClasses="ui-g-12">
+			
+			<h:outputText value="CI / RUC *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpfacRuc" value="#{cotizacionFormCtrl.cabecerSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpfacRuc" />
+			</h:panelGroup>
+			
+			<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpfacNombre" value="#{cotizacionFormCtrl.cabecerSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpfacNombre" />
+			</h:panelGroup>
+			
+			<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpFacEmail" value="#{cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpFacEmail" />
+			</h:panelGroup>
+			
+			<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpFacDireccion" value="#{cotizacionFormCtrl.cabecerSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpFacDireccion" />
+			</h:panelGroup>
+			
+		</p:panelGrid>
+	
+	</div>
+	
+	<div class="EmptyBox5"/>
+	
+	<div class="card card-w-title">	
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Comentarios impresión</h2>
+		
+		<p:accordionPanel>
+	        <p:tab title="Comentarios antes del detalle">
+				<pe:ckEditor id="edtComentario1" value="#{cotizacionFormCtrl.cabecerSelected.contenido1}" enterMode="CKEDITOR.ENTER_BR" width="100%">
+				</pe:ckEditor>
+	        </p:tab>
+	        <p:tab title="Comentarios después del detalle">
+				<pe:ckEditor id="edtComentario2" value="#{cotizacionFormCtrl.cabecerSelected.contenido2}" enterMode="CKEDITOR.ENTER_BR" width="100%">
+				</pe:ckEditor>	        	
+	        </p:tab>
+	        <p:tab title="Pie de página">
+				<pe:ckEditor id="edtComentario3" value="#{cotizacionFormCtrl.cabecerSelected.contenido3}" enterMode="CKEDITOR.ENTER_BR" width="100%" >
+				</pe:ckEditor>	        	
+	        </p:tab>
+        </p:accordionPanel>
+		
+	</div>
+	
+	<p:outputPanel id="oupPagoDT">
+	
+	</p:outputPanel>
+	
+</ui:composition>

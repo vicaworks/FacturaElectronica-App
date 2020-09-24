@@ -122,17 +122,21 @@
 			.tabProforma{
  				padding: 0px 2em !important; 
  				border-bottom: solid 1px #ccc;
+ 				color:#1B2631;
 			}
 			
 			.tabProforma:hover {
  				background-color:#ff9800 !important; 
  				border-bottom: solid 1px #ff9800 !important;
  				cursor: pointer !important;
+ 				color:#1B2631;
 			}
 			
 			.tabProformaSeleccion {
- 				background-color:#F8C471 !important; 
- 				border-bottom: solid 1px #F8C471 !important;
+ 				/* background-color:#F8C471 !important; 
+ 				border-bottom: solid 1px #F8C471 !important; */
+ 				background-color:#F0F3F4;
+ 				color: #024f9e;
 			}
 			
 			.tabProforma h4{
@@ -143,7 +147,6 @@
 			.tabProforma h3{
  				margin-top: 5px;
  				margin-bottom: 10px;
- 				color:#1B2631;
 			}
 			
 			.tabProformaBg{
@@ -182,12 +185,33 @@
 			}
 			
 			.cardContador-bgBlack{
+				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
 				background-color: #2f2f2f;
 				color: #fff;
 			}
 			
 			.cardContador-borderBlack{
 				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderGreen{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #1E8449;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderOrange{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #BA4A00;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderYellow{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #F1C40F;
 				color: #2f2f2f;
 			}
 			
@@ -264,20 +288,25 @@
 				<ui:include src="./inicio/incl_proforma_lista.xhtml"/>
 			</f:subview>
 			
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='FORMULARIO'}" id="formulario">
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='FORMULARIO'}" id="formulario">
+				<ui:include src="./formulario/incl_proforma_form.xhtml"/>
+			</f:subview>
+			
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='EMAIL'}" id="email">
 				
 			</f:subview>
 			
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='EMAIL'}" id="email">
-				
-			</f:subview>
-			
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='TAREAS'}" id="tareas">
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='TAREAS'}" id="tareas">
 				
 			</f:subview>
 	    	
 	    </h:form>
 	    
+	    <!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- Busqueda Productos -->
+	    <ui:include src="../productos/incl_listaProducto.xhtml" />
         
     </ui:define>
 

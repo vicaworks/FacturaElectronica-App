@@ -48,6 +48,7 @@ import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FactMainPagoCtrl;
+import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -177,6 +178,11 @@ public class ClienteCtrl extends BaseCtrl {
 			case "NotaDebitoFrmCtrl":
 				NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
 				notaDebitoFrmCtrl.getNotDebitoSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "cotizacionFormCtrl":
+				CotizacionFormCtrl cotizacionFormCtrl = (CotizacionFormCtrl)AppJsfUtil.getManagedBean("cotizacionFormCtrl");
+				cotizacionFormCtrl.getCabecerSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
 			default:
