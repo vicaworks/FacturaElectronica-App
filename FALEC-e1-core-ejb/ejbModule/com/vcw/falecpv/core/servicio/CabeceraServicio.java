@@ -165,15 +165,19 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			
 			cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(), cabecera.getEstablecimiento().getIdestablecimiento()));
 			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			cabecera.setNumeroautorizacion(cabecera.getClaveacceso());
 			
 		}else if(cabecera.isEditarSecuencial()) {
 			
 			cabecera.setSecuencial(cabecera.getSecuencialNumero());
 			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			cabecera.setNumeroautorizacion(cabecera.getClaveacceso());
 			
 		}
+		if(cabecera.getNumdocumento()==null) {
+			cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
+		}
 		
-		cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
 		switch (cabecera.getGenTipoDocumentoEnum()) {
 		case FACTURA:
 			cabecera.setNumfactura(cabecera.getNumdocumento());

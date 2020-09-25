@@ -706,7 +706,6 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected.setDetalleList(detalleFacList);
 			cabecerSelected.setPagoList(pagoList);
 			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.FACTURA);
-			cabecerSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.FACTURA);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
@@ -717,7 +716,11 @@ public class CompFacCtrl extends BaseCtrl {
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", msg.getString("mensaje.secuencialconprobante", cabecerSelected.getSecuencial()));
+			cabecerSelected.setSecuencial(null);
+			cabecerSelected.setNumdocumento(null);
+			cabecerSelected.setClaveacceso(null);
+			cabecerSelected.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

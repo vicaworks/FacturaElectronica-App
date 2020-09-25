@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-
-import org.primefaces.PrimeFaces;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
@@ -108,10 +105,13 @@ public abstract class BaseCtrl implements Serializable {
 			
 			cabecera.setEditarSecuencial(true);
 			
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "IMPORTANTE",
-				"Al asignar un nuevo secuencial del documento, el sistema valida que no se haya utilizado anteriormente, posterior a usar esta opción se debe actulizar la secuencia, en configuración establecimiento, para que el sistema continúe, generando automáticamnete.");
-	        PrimeFaces.current().dialog().showMessageDynamic(message,true);
-	        AppJsfUtil.executeJavaScript("PrimeFaces.focus('" + focus + "');");
+//		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "IMPORTANTE",
+//				"Al asignar un nuevo secuencial del documento, el sistema valida que no se haya utilizado anteriormente, posterior a usar esta opción se debe actulizar la secuencia, en configuración establecimiento, para que el sistema continúe, generando automáticamnete.");
+//	        PrimeFaces.current().dialog().showMessageDynamic(message,true);
+//	        AppJsfUtil.executeJavaScript("PrimeFaces.focus('" + focus + "');");
+	    
+	   messageCtrl.cargarMenssage("IMPORTANTE", msg.getString("mensaje.editarsecuencial"), "WARNING");     
+	        
 			
 	}
 	

@@ -233,6 +233,10 @@ public class Cabecera implements Serializable {
     @Column(name = "resumen", length = 400)
     private String resumen;
     
+    @Size(max = 3)
+    @Column(name = "secuencialcaja", length = 3)
+    private String secuencialCaja;
+    
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
     private Tipocomprobante tipocomprobanteretencion;
@@ -273,9 +277,6 @@ public class Cabecera implements Serializable {
     
     @Transient
     private String secuencialEstablecimiento;
-    
-    @Transient
-    private String secuencialCaja;
     
     @Transient
     private String secuencialNumero;
