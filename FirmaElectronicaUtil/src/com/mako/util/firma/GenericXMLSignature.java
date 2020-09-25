@@ -161,9 +161,9 @@ public abstract class GenericXMLSignature
         {
             ks = KeyStore.getInstance("PKCS12");
             ks.load(new FileInputStream(this.pathSignature), this.passSignature.toCharArray());
-//            ks.load(IOUtils.toInputStream(new String(data)), this.passSignature.toCharArray());
 //            byte[] data = new byte[5/2];
 //    		IOUtils.toInputStream(new String(data));
+//            ks.load(IOUtils.toInputStream(new String(data)), this.passSignature.toCharArray());
         }
         catch(KeyStoreException e)
         {
