@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<factura xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="comprobante" version="2.1.0">
+    <infoTributaria>
+        <ambiente>1</ambiente>
+        <tipoEmision>1</tipoEmision>
+        <razonSocial>SUTTIWORKS CIA LTDA</razonSocial>
+        <nombreComercial>SUTTI-E1</nombreComercial>
+        <ruc>1717202017001</ruc>
+        <claveAcceso>0109202001171720201700110010010000000690000029714</claveAcceso>
+        <codDoc>01</codDoc>
+        <estab>001</estab>
+        <ptoEmi>001</ptoEmi>
+        <secuencial>000000069</secuencial>
+        <dirMatriz>JORGE GONZALES N77-ED LUB OC 5</dirMatriz>
+    </infoTributaria>
+    <infoFactura>
+        <fechaEmision>01/09/2020</fechaEmision>
+        <dirEstablecimiento>JORGE GONZALES N77 ED LUB OFC 5</dirEstablecimiento>
+        <contribuyenteEspecial>5368</contribuyenteEspecial>
+        <obligadoContabilidad>SI</obligadoContabilidad>
+        <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+        <razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
+        <identificacionComprador>9999999999999</identificacionComprador>
+        <direccionComprador>AV AMAZONAS N47</direccionComprador>
+        <totalSinImpuestos>800.00</totalSinImpuestos>
+        <totalDescuento>0.00</totalDescuento>
+        <totalConImpuestos>
+            <totalImpuesto>
+                <codigo>2</codigo>
+                <codigoPorcentaje>2</codigoPorcentaje>
+                <baseImponible>800.00</baseImponible>
+                <tarifa>12.00</tarifa>
+                <valor>96.00</valor>
+            </totalImpuesto>
+        </totalConImpuestos>
+        <propina>0.00</propina>
+        <importeTotal>896.00</importeTotal>
+        <moneda>DOLAR</moneda>
+        <pagos>
+            <pago>
+                <formaPago>01</formaPago>
+                <total>896.00</total>
+                <plazo>0.00</plazo>
+                <unidadTiempo>DIAS</unidadTiempo>
+            </pago>
+        </pagos>
+    </infoFactura>
+    <detalles>
+        <detalle>
+            <codigoPrincipal>A107</codigoPrincipal>
+            <descripcion>ASUS TUF FX505DT</descripcion>
+            <cantidad>1.000000</cantidad>
+            <precioUnitario>800.000000</precioUnitario>
+            <descuento>0.00</descuento>
+            <precioTotalSinImpuesto>800.00</precioTotalSinImpuesto>
+            <impuestos>
+                <impuesto>
+                    <codigo>2</codigo>
+                    <codigoPorcentaje>2</codigoPorcentaje>
+                    <tarifa>12.00</tarifa>
+                    <baseImponible>800.00</baseImponible>
+                    <valor>96.00</valor>
+                </impuesto>
+            </impuestos>
+        </detalle>
+    </detalles>
+    <infoAdicional>
+        <campoAdicional nombre="email">aa@aa.com</campoAdicional>
+    </infoAdicional>
+</factura>
