@@ -3,8 +3,6 @@
  */
 package com.mako.util.firma;
 
-import es.mityc.firmaJava.libreria.xades.DataToSign;
-import es.mityc.firmaJava.libreria.xades.FirmaXML;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,6 +15,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,8 +25,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import es.mityc.firmaJava.libreria.xades.DataToSign;
+import es.mityc.firmaJava.libreria.xades.FirmaXML;
 
 /**
  * @author Jorge
@@ -138,8 +141,10 @@ public abstract class GenericXMLSignature
         try
         {
             DocumentBuilder db = dbf.newDocumentBuilder();
-
+//            byte[] data = new byte[5/2];
+//    		IOUtils.toInputStream(new String(data));
             doc = db.parse(file);
+//            doc = db.parse(IOUtils.toInputStream(new String(data)));
         }
         catch(ParserConfigurationException | SAXException | IOException | IllegalArgumentException ex)
         {
@@ -156,6 +161,9 @@ public abstract class GenericXMLSignature
         {
             ks = KeyStore.getInstance("PKCS12");
             ks.load(new FileInputStream(this.pathSignature), this.passSignature.toCharArray());
+//            ks.load(IOUtils.toInputStream(new String(data)), this.passSignature.toCharArray());
+//            byte[] data = new byte[5/2];
+//    		IOUtils.toInputStream(new String(data));
         }
         catch(KeyStoreException e)
         {
@@ -203,8 +211,11 @@ public abstract class GenericXMLSignature
         try
         {
             DOMSource source = new DOMSource(document);
+//            byte[] var1 = "inicializar".getBytes();
             StreamResult result = new StreamResult(new File(pathXml));
-
+//            ByteArrayOutputStream arr = new ByteArrayOutputStream();
+//            StreamResult result = new StreamResult(arr);
+//            arr.toByteArray();
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
             Transformer transformer = transformerFactory.newTransformer();
