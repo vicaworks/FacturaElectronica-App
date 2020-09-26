@@ -16,9 +16,9 @@
 
 ### Métodos 
 
-**AAAA**
+1. Genera un archivo en el disco ya firmado
 
-```
+```Java
 public static void firmarFacade(String xmlPath, String pathSignature, String passSignature, 
             String pathOut, String nameFileOut) throws CertificateException, FirmaElectronicaException
 ``` 
@@ -31,7 +31,15 @@ public static void firmarFacade(String xmlPath, String pathSignature, String pas
 | pathOut |  path del xml ya firmado   |
 | nameFileOut |  nombre del xml    |
 
-| #| Historia Usuario |
-|--|------------------|
-| 1|Especificación de la historia de usuario|
-| 1|Especificación de la historia de usuario|
+2. Utiliza Byte en todos los parámetros y retorna un byte con el xml firmado
+
+```Java
+public static byte[] firmarFacade(byte[] xmlToSign,byte[] penSignature,String passSignature)throws CertificateException, FirmaElectronicaException
+```
+|parámetro|descripción|
+|---------|-----------|
+| xmlToSign | byte[] del xml a firmar    |
+| penSignature | byte[] del archivo de la firma digital    |
+| passSignature | Clave de la firma digital    |
+
+
