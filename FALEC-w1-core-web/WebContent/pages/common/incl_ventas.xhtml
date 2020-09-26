@@ -96,10 +96,12 @@
 						</h:outputText>
 						<h:outputText value="RECIBO" rendered="#{v.indentificadorcomprobante=='00'}"  styleClass="markBlack Fs10">
 						</h:outputText>
+						<h:outputText value="LIQ COMPRAS" rendered="#{v.indentificadorcomprobante=='03'}"  styleClass="markBlack Fs10">
+						</h:outputText>
 	                </p:column>
 	                
 	                <p:column headerText="# NUM DOC" style="width:50px;">
-	                	<h:outputText value="#{v.numdocumento}" >
+	                	<h:outputText value="#{ventasQueryCtrl.getFormatoNumDocumento(v.numdocumento)}" >
 						</h:outputText>
 	                </p:column>
 	                
@@ -118,25 +120,39 @@
 						</h:outputText>
 	                </p:column>
 	                
-	                <p:column headerText="SUBTOTAL" style="width:40px;">
+	                <p:column style="width:10px;" styleClass="TexAlCenter">
+	                	<f:facet name="header">
+	                		<div class="Wid100" style="text-align: center;">
+		                		<i class="fa fa-truck Fs18"></i>
+	                		</div>
+	                	</f:facet>
+	                	<f:subview rendered="#{v.idguiaremision!=null}">
+							<i class="fa fa-check Fs20" style="color:green;"/>
+						</f:subview>
+						<f:subview rendered="#{v.idguiaremision==null}">
+							<i class="fa fa-minus Fs20" style="color:#ccc;"/>
+						</f:subview>
+	                </p:column>
+	                
+	                <p:column headerText="SUBTOTAL" style="width:40px;" styleClass="TexAlRight">
 	                	<h:outputText value="#{v.totalsinimpuestos}">
-	                		<f:convertNumber pattern="$#,##0.00"/>
+	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 	                </p:column>
 	                
-	                <p:column headerText="IMPUESTOS" style="width:40px;">
+	                <p:column headerText="IMPUESTOS" style="width:40px;" styleClass="TexAlRight">
 	                	<h:outputText value="#{v.totalice.add(v.totaliva)}">
-	                		<f:convertNumber pattern="$#,##0.00"/>
+	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 	                </p:column>
 	            	
-	            	<p:column headerText="TOTAL" style="width:40px;">
+	            	<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
 	                	<h:outputText value="#{v.totalconimpuestos}">
-	                		<f:convertNumber pattern="$#,##0.00"/>
+	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 	                </p:column>
 	                
-	                <p:column headerText=" " style="width:40px;">
+	                <p:column headerText=" " style="width:40px;" styleClass="TexAlCenter">
 	                	<p:commandLink action="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
 							<i class="fa fa-hand-o-left Fs30" style="color:#252529;"></i>
 							<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>

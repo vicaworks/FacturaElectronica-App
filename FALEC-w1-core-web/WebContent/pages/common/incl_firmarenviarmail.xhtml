@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		.heightFormEnvioDoc {
+				/* height: 550px; */
+		}
+		.pvEnvioCorreosDT .ui-datatable-scrollable-body{
+			min-height: 25vh !important;
+			max-height: 25vh !important;
+		}
+		
+	</style>
+	
+	
+	<p:dialog header="Enviar Documento #{msg['label.electronico']}" widgetVar="dlEnvioDoc" modal="true" responsive="true" width="70%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="formEnvioDoc">
+			
+			<div class="p-grid toolBarPopUp p-align-end vertical-container">
+				
+				<div class="p-col-12 p-lg-3" style="text-align:left;">					
+					
+					<p:commandButton id="cmdEnviarEmail"
+						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" process="@form" update="@form"
+						action="#{enviarDocCtrl.enviarCorreo()}"
+						/>
+					
+				</div>
+				
+				<div class="p-col-12 p-lg-4" style="text-align:left;">					
+					
+					<p:commandButton id="cmdEnviarFirmarEmail"
+						value="FIRMAR Y ENVIAR EMAIL" icon="fa fa-envelope" styleClass="secondary-button Wid100" process="@form" update="@form"
+						action="#{enviarDocCtrl.firmarEnviarCorreo()}"
+						/>
+					
+				</div>
+				
+				
+				<div class="p-col-12 p-lg-2" style="text-align:left;">					
+					
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button Wid100" 
+						onclick="PF('dlEnvioDoc').hide()" immediate="true"  
+						/>
+					
+				</div>	
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formEnvioDoc" id="msgFormEnvioDoc"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="form-ui Wid100 OvYScroll heightFormEnvioDoc contenedorFormulario">
+				
+				<div class="p-grid p-align-top vertical-container">
+					
+					<!-- datos de cabecera -->
+					<div class="p-col-12 p-md-6">
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Documento #{msg['label.electronico']}</div>
+						
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+							<h:panelGroup>
+								<h:outputText value="ESTABLECIMIENTO *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{enviarDocCtrl.cabeceraSelected.establecimiento.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.comprobante}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{enviarDocCtrl.cabeceraSelected.fechaemision}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+									<f:convertDateTime pattern="ddd dd/MM/yyyy"/>
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="R.U.C. / C.I. *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{enviarDocCtrl.cabeceraSelected.cliente!=null?enviarDocCtrl.cabeceraSelected.cliente.identificacion:enviarDocCtrl.cabeceraSelected.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente!=null?'CLIENTE':'PROVEEDOR'} *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{enviarDocCtrl.cabeceraSelected.cliente!=null?enviarDocCtrl.cabeceraSelected.cliente.razonsocial:enviarDocCtrl.cabeceraSelected.proveedor.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="ESTADO *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{enviarDocCtrl.cabeceraSelected.estado}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="NUM DOCUMENTO *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(enviarDocCtrl.cabeceraSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
+							</h:panelGroup>
+								
+						</p:panelGrid>
+						
+					</div>
+					
+					<!-- emails -->
+					<div class="p-col-12 p-md-6">
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Emails de #{msg['label.envio']}</div>
+						<div class="EmptyBox5"/>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-lg-3">
+							<p:commandButton process="@this" value="AGREGAR"
+								update=":formEnvioDoc:pvEnvioCorreosDT" 
+								action="#{enviarDocCtrl.nuevo()}" icon="fa fa-plus" styleClass="secondary-button Wid100 Fs10">
+		                	</p:commandButton>
+						</p:panelGrid>
+						<div class="EmptyBox5"/>
+						
+						<p:dataTable id="pvEnvioCorreosDT"
+		        			scrollable="true"
+		        			value="#{enviarDocCtrl.correoList}"
+		        			var="c"
+		        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="pvEnvioCorreosDT Fs12"  
+							rowKey="#{p}">
+							<p:column headerText="EMAIL" style="width:90%;">
+								<p:inputText id="intEnCorreo" maxlength="200" value="#{c}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO">
+									<f:validator validatorId="emailValidator"/>									
+								</p:inputText>
+								<p:message for="intEnCorreo"/>
+							</p:column>
+							<p:column headerText=" " style="width:10%;" styleClass="TexAlCenter">
+								<p:commandLink  action="#{enviarDocCtrl.eliminar()}" process="@this :formEnvioDoc:pvEnvioCorreosDT" update=":formEnvioDoc:msgFormEnvioDoc :formEnvioDoc:pvEnvioCorreosDT">
+									<f:setPropertyActionListener value="#{c}" target="#{enviarDocCtrl.correoSelected}"/>
+									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+						
+					</div>
+					
+				</div>
+			
+			</div>			
+			
+		</h:form>
+	
+	</p:dialog>
+	
+
+</ui:composition>

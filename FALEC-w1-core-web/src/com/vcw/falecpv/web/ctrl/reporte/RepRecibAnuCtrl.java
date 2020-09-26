@@ -32,6 +32,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.dto.TotalesDto;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
@@ -164,10 +165,10 @@ public class RepRecibAnuCtrl extends BaseCtrl {
 				
 				Cell cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getSecuencial());
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellValue(v.getFechaemision());
+				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -180,10 +181,6 @@ public class RepRecibAnuCtrl extends BaseCtrl {
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(v.getEstado());
-				
-				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellValue(v.getEstadoautorizacion());
 				
 				cell = rowCliente.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -218,11 +215,6 @@ public class RepRecibAnuCtrl extends BaseCtrl {
 			fila++;
 			// totales
 			rowCliente = sheet.createRow(fila);
-			rowCliente.createCell(6).setCellValue(totalesDto.getCantidad().doubleValue());
-			rowCliente.createCell(7).setCellValue(totalesDto.getSubtotal().doubleValue());
-			rowCliente.createCell(8).setCellValue(totalesDto.getDescuento().doubleValue());
-			rowCliente.createCell(9).setCellValue(totalesDto.getTotal().doubleValue());
-			rowCliente.createCell(10).setCellValue(totalesDto.getPago().doubleValue());
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);

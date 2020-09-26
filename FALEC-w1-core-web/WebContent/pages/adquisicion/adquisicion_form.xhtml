@@ -7,50 +7,67 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">#{msg['title.adquisicion']}</ui:define>
+    <ui:define name="title">Compra</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
 			
-			.adquisicionDetDT .ui-datatable-scrollable-body{
-				/* min-height: 42vh !important; */
-				height: calc(100vh - 440px);
-				
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
 			}
+			
+			.ui-calendar .ui-inputfield{
+				font-size: 14px !important;
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #e6e6e6;
+				color: black;
+				cursor: default;
+			}
+			
+			.ui-panelgrid .ui-panelgrid-cell {
+				padding: 0.25em !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
 			
 			.adquisicionDetDT .ui-selectonemenu .ui-selectonemenu-label {
 				text-align: center;
 			}
 			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
+			body .ui-datatable thead th {
+				/* padding: 0px !important; */
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
+			.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+				/* padding: 0px !important; */
 			}
 			
-			body .ui-message {
-				padding: 0em !important;
+			.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
 			}
-			
-			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
-				border: 1px solid #d8d8dc;
-				background-color: #ccc;
-				color: black;
-				cursor: default;
+			.ui-inputfield {
+				font-size: 12px !important;
 			}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
@@ -70,8 +87,126 @@
 				width: 100%;
 			}
 			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+			 padding: 0px !important;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+			 padding: 0px !important;
+			}
+			
+			/* =========================================================================================================================== */
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			
+			.divValor{
+	    		margin: 0px;
+	    		border: 1px solid #252529; 
+	    		font-weight: 800;
+	    		color: #252529;
+	    	}
+	    	
+	    	.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+			}
+			
+			.dt-selection .ui-inputfield {
 				padding: 0.2em 0.5em !important;
+			}
+			
+			.dt-selection .ui-selectonemenu-label {
+				text-align: right;
+			}
+			
+			.divTotal{
+				margin: 0px;
+				padding: 0.3em !important;
+				background-color: #0fc763;
+				color: white;
+				text-align: center;
+				font-size: 3em;
+				border-radius: 4px;
+			}
+			
+			.command-btn{
+	    		border-radius: 2px;
+	    		width: 100%;
+	    		text-align: center;
+	    		padding: 0.2em 0.2em;
+	    		color:#252529;
+	    		display: inline-block;
+	    		font-size: 12px;
+	    		/* margin-bottom:4px; */
+	    	}
+	    	
+	    	.borde-secondary{
+	    		border: 1px solid #0f97c7;
+	    		background:#0f97c7;
+	    		color: #fff;
+	    	}
+	    	
+	    	.borde-secondary:hover{
+	    		border: 1px solid #0f97c7;
+	    		background:#fff;
+	    		color: #0f97c7;
+	    	}
+	    	
+	    	.borde-gray{
+	    		border: 1px solid #252529;
+	    		background:#fff;
+	    		color: #252529;
+	    	}
+	    	
+	    	.borde-gray:hover{
+	    		background:#252529;
+	    		color: #fff;
+	    	}
+	    	
+	    	.ui-inputfield-pago .ui-spinner-input{
+				font-size: 12px !important;
+			}
+			
+			.ui-inputfield-pago .ui-inputfield {
+				font-size: 12px !important;
+				padding: 0.2em 0.5em;
+			}
+			
+			.boxMain{
+				padding: 15px;
+				text-align: center;
+				border-radius: 4px;
+			}
+			
+			.box-header{
+				font-size: 10px;
+			}
+			
+			.box-content{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			
+			.box-gray{
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.box-border-gray{
+				border:1px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
+			.disable-color{
+				background-color: #F4F6F7 !important;
 			}
 			
         </style>
@@ -85,8 +220,7 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Adquisiciones" url="#" />
-		    <p:menuitem value="Lista Adquisiciones" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf"/>
+		    <p:menuitem value="Lista de compras" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf" />
 		    <p:menuitem value="Compra" url="#{request.contextPath}/pages/adquisicion/adquisicion_form.jsf"/>
 		</p:breadCrumb>
 		
@@ -101,38 +235,23 @@
 	    		
 	    		<div class="p-grid p-align-left">
 	    			
-	    			<div class="p-col-12 p-md-6">
+	    			<div class="p-col-12 p-md-5">
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-3">
+	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdAdqNuevo"
-										value="NUEVA COMPRA" icon="fa fa-plus" 
+										value="NUEVO" icon="fa fa-plus" 
 										action="#{adquisicionFrmCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true"/>
 	    					</div>
 		    				
-		    				<div class="p-col-12 p-md-3">
+		    				<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdAdqGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{adquisicionFrmCtrl.guardar()}" styleClass="secondary-button Wid100 Fs11" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
+										action="#{adquisicionFrmCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
-							<div class="p-col-12 p-md-3">
-								<p:commandButton  id="cmdAdqProveedor" 
-										title="NUEVO PROVEEDOR"
-										icon="fa fa-plus"
-										value="PROVEEDOR"
-										styleClass="secondary-button Wid100 Fs11"
-										action="#{proveedorCtrl.nuevo()}"
-										immediate="true">
-										<f:setPropertyActionListener value="ADQUISICION" target="#{proveedorCtrl.callModule}"/>
-										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
-										<f:setPropertyActionListener value=":formMain:somAdqProveedor :formMain:inpAdqRuc" target="#{proveedorCtrl.viewUpdate}"/>
-										<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{proveedorCtrl.adquisicionFrmCtrl}"/>
-									</p:commandButton>
-							</div>
-							
-							<div class="p-col-12 p-md-3">
+							<div class="p-col-12 p-md-4">
 								<p:commandButton id="cmdAdqRetencion"
 									value="#{msg['label.retencion']}" icon="fa fa-plus" 
 									action="#{retencionMainCtrl.nuevaRetencion()}" 
@@ -158,348 +277,36 @@
 	    	
 			<!-- Mensajes -->
 			<div class="EmptyBox5"/>
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="p-grid p-align-top">
-				
-				<!-- Datos de cabecera -->
-				<div class="p-col-12 p-md-4">
-					
-					<div class="card card-w-title">
-						
-						<!-- Formulario -->
-						<div class="EmptyBox5"/>
-						<p:panelGrid id="gridProductoDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
-							
-							<h:outputText value="TIPO COMPROBANTE DE VENTA *" styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:selectOneMenu id="somAdqTipComprobante"
-											value="#{adquisicionFrmCtrl.adquisicionSelected.tipocomprobante}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+			<div class="EmptyBox5"/>
 			
-									<f:selectItems value="#{adquisicionFrmCtrl.tipocomprobanteList}" var="tp"
-										itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
-										
-								</p:selectOneMenu>
-								<p:message for="somAdqTipComprobante" />
-							</h:panelGroup>
-								
-							<h:outputText value="FECHA FACTURA *" styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:calendar id="claAdqFechaCompra" value="#{adquisicionFrmCtrl.adquisicionSelected.fecha}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-								</p:calendar>
-								<p:message for="claAdqFechaCompra" />
-							</h:panelGroup>
-							
-							<h:panelGroup>
-								<h:outputText value="NUM. FACTURA *" styleClass="cpoRequerido"/>
-							</h:panelGroup>
-							<h:panelGroup>
-
-								<p:inputMask id="inpAdqNumFac"
-									value="#{adquisicionFrmCtrl.adquisicionSelected.numfactura}"
-									mask="999999999999999" required="true"
-									requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15"
-									validatorMessage="SOLO NUMEROS, 15 DIGITOS"
-									placeholder="FORMATO : 15 DIGITOS" />
-
-								<p:message for="inpAdqNumFac" />
-							</h:panelGroup>
-							
-							<h:outputText value="NUM. #{msg['label.autorizacion']}"/>
-							<h:panelGroup>
-								<p:inputText id="inpAdqNumAut" value="#{adquisicionFrmCtrl.adquisicionSelected.autorizacion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="150" placeholder="Formato: 1123411234600" validatorMessage="SOLO NUMEROS">
-									<f:validateRegex pattern="^\d+$"/>
-								</p:inputText>
-								<p:message for="inpAdqNumAut" />
-							</h:panelGroup>
-							
-							<h:outputText value="PROVEEDOR *" styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:selectOneMenu id="somAdqProveedor"
-											value="#{adquisicionFrmCtrl.adquisicionSelected.proveedor}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{adquisicionFrmCtrl.proveedorList}" var="pv"
-										itemLabel="#{pv.nombrecomercial}" itemValue="#{pv}" />
-									
-									<p:ajax event="change" update=":formMain:inpAdqRuc" process="@this"></p:ajax>
-										
-								</p:selectOneMenu>
-								<p:message for="somAdqProveedor" />
-							</h:panelGroup>
-							
-							<h:outputText value="CI / RUC *" styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:inputText id="inpAdqRuc" value="#{adquisicionFrmCtrl.adquisicionSelected.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" readonly="true"/>
-								<p:message for="inpAdqRuc" />
-							</h:panelGroup>
-							
-							<h:outputText value="PAGO *" styleClass="cpoRequerido"/>
-							<h:panelGroup>
-								<p:selectOneMenu id="somAdqTipPago"
-											value="#{adquisicionFrmCtrl.adquisicionSelected.tipopago}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{adquisicionFrmCtrl.tipopagoList}" var="tpl"
-										itemLabel="#{tpl.nombre}" itemValue="#{tpl}" />
-									
-									<p:ajax event="change" update=":formMain:cmdAdqPago" process="@this"/>
-										
-								</p:selectOneMenu>
-								<p:message for="somAdqTipPago" />
-							</h:panelGroup>
-							
-							
-						</p:panelGrid>
-						<div class="EmptyBox10"/>
-						<p:panelGrid id="gridProductoDG_2" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-5">
-								<p:commandButton  id="cmdAdqPago" 
-									title="REGISTRAR PAGO"
-									icon="fa fa-dollar"
-									value="REGISTRAR PAGO"
-									styleClass="Wid100 Fs11"
-									action="#{adquisicionFrmCtrl.showDetallePago()}"
-									disabled="#{adquisicionFrmCtrl.adquisicionSelected.tipopago==null or adquisicionFrmCtrl.adquisicionSelected.tipopago.subdetalle=='N'}">
-								</p:commandButton>
-						</p:panelGrid>
-						
-					</div>
-					
-				</div>
-				
-				<!-- Datos de detalle -->
-				<div class="p-col-12 p-md-8">
-					<div class="card card-w-title">
-					
-						<!-- Opciones -->
-						
-						<p:panelGrid id="gridAdqFrmOP2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-lg-3,ui-g-12 ui-lg-3,ui-g-12 ui-lg-3">
-							<p:commandButton id="cmdAdqBuscarProducto"
-								value="AGREGAR PRODUCTO" icon="fa fa-search" 
-								action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100 Fs11" update="@form" process="@form @this :formMain:adquisicionDetDT">
-								<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
-								<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
-								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales" target="#{listaProductoCtrl.viewUpdate}"/>
-								<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
-							</p:commandButton>
-							
-							<p:commandButton  id="cmdAdqAgregarDetalle" 
-								icon="fa fa-plus"
-								value="AGREGAR DETALLE"
-								styleClass="secondary-button Wid100 Fs11"
-								action="#{adquisicionFrmCtrl.agregarDetalle()}"
-								process="@this :formMain:adquisicionDetDT @form"
-								update="@form">
-							</p:commandButton>
-							
-							<p:commandButton  id="cmdAdqAgregarProducto" 
-								icon="fa fa-plus"
-								value="NUEVO PRODUCTO"
-								styleClass="Wid100 secondary-button Fs11"
-								action="#{productoCtrl.nuevo()}"
-								update="@form" 
-								process="@this :formMain:adquisicionDetDT @form">
-								<f:setPropertyActionListener value="ADQUISICION" target="#{productoCtrl.callModule}"/>
-								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
-								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales" target="#{productoCtrl.viewUpdate}"/>
-								<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{productoCtrl.adquisicionFrmCtrl}"/>
-							</p:commandButton>
-							
-							
-						</p:panelGrid>
-						
-						<!-- Detalle de la factura -->
-						<div class="EmptyBox5"/>
-						<p:dataTable id="adquisicionDetDT" var="d"
-							value="#{adquisicionFrmCtrl.adquisiciondetalleList}" scrollable="true"
-							emptyMessage="#{msg['mensaje.noexistenDatos']}"
-							styleClass="adquisicionDetDT Fs11"  
-							rowKey="#{d.idadquisiciondetalle}">
-							
-							<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
-								<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
-									<i class="fa fa-trash-o Fs16" style="color:red;"></i>
-									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-									<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
-								</p:commandLink>
-							</p:column>
-							
-							<p:column headerText="COD" style="width:30px;">
-								<h:outputText value="#{d.producto.codigoprincipal}" rendered="#{d.producto!=null}"/>
-								<h:outputText value="N/A" rendered="#{d.producto==null}"/>
-							</p:column>
-							
-							<p:column headerText="CANTIDAD" style="width:30px;">
-								<p:spinner id="idAdqCantidad" value="#{d.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0" >
-									<p:ajax listener="#{adquisicionFrmCtrl.changeAdquicisionDetalle(d)}" update=":formMain:adquisicionDetDT :formMain:oupTotales" process="@this :formMain:adquisicionDetDT"/>
-								</p:spinner>
-							</p:column>
-							
-							<p:column headerText="#{msg['label.descripcion']}" style="width:150px;">
-								<f:subview rendered="#{d.producto!=null}">
-									<div class="EmptyBox10"/>
-									<h:outputText value="#{d.descripcion}"  rendered="#{d.producto!=null}" style="padding-left:5px;"/>
-								</f:subview>
-								<p:inputTextarea id="inpAdqDescripcion" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter" rows="1" rendered="#{d.producto==null}">
-								</p:inputTextarea>
-								
-							</p:column>
-							
-							<p:column headerText="P. UNIT" style="width:30px;">
-								
-								<p:spinner id="idAdqPUnitario" value="#{d.preciounitario}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2">
-									<p:ajax listener="#{adquisicionFrmCtrl.changeAdquicisionDetalle(d)}" update=":formMain:adquisicionDetDT :formMain:oupTotales" process="@this :formMain:adquisicionDetDT"/>
-								</p:spinner>
-	                			
-							</p:column>
-							
-							<p:column headerText="DESCUENTO" style="width:30px;">
-								
-								<p:spinner id="idAdqDescuento" value="#{d.descuento}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2">
-									<p:ajax listener="#{adquisicionFrmCtrl.changeAdquicisionDetalle(d)}" update=":formMain:adquisicionDetDT :formMain:oupTotales" process="@this :formMain:adquisicionDetDT"/>
-								</p:spinner>
-	                			<!-- <p:message for="idAdqDescuento"/> -->
-	                			
-							</p:column>
-							
-							<p:column headerText="P. TOTAL" style="width:30px;" styleClass="TexAlRight">
-								<div class="EmptyBox10"/>	
-								<h:outputText value="#{d.preciototal}" styleClass="Fs13">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-								</h:outputText>
-								
-							</p:column>
-							
-							<p:column headerText="IVA" style="width:30px;">
-								
-								<p:selectOneMenu id="somFrmIvaAdq"
-									value="#{d.iva}"
-									converter="omnifaces.SelectItemsConverter"
-									required="true"
-									requiredMessage="REQUERIDO"
-									filter="true" filterMatchMode="contains"
-									styleClass="Wid90">
-									<f:selectItem itemLabel="SELEC .."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{adquisicionFrmCtrl.ivaList}" var="iva2"
-										itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
-									<p:ajax listener="#{adquisicionFrmCtrl.changeAdquicisionDetalle(d)}" update=":formMain:adquisicionDetDT :formMain:oupTotales" process="@this :formMain:adquisicionDetDT"/>
-								</p:selectOneMenu>
-								<!-- <p:message for="somFrmIvaAdq"/> -->
-							
-							</p:column>
-							
-						</p:dataTable>
-						
-						<div class="EmptyBox20"></div>
-						
-						<!-- Totales -->
-						<p:outputPanel id="oupTotales">
-							<div class="p-grid p-align-top p-justify-end">
-							
-								<div class="p-grid p-col-12 p-md-6 divResumen">
-									
-									<div class="p-col-8 subtotal">
-										<h:outputText value="Subtotal" styleClass="Fs12" />
-									</div>
-									
-									<div class="p-col-4 subtotalValor">
-										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.subtotal}" styleClass="Fs12">
-											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-										</h:outputText>
-									</div>
-									
-									<div class="p-col-8 subtotal">
-										<h:outputText value="Total I.V.A." styleClass="Fs12" />
-									</div>
-									
-									<div class="p-col-4 subtotalValor">
-										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaliva}" styleClass="Fs12">
-											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-										</h:outputText>
-									</div>
-									
-									<div class="p-col-8">
-									</div>
-									<div class="p-grid p-col-4">
-										<div class="p-col-12 bordeSubtotal"></div>
-									</div>
-									
-									<div class="p-col-8 subtotal">
-										<h:outputText value="Total Factura" styleClass="Fs12" />
-									</div>
-									
-									<div class="p-col-4 subtotalValor">
-										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="Fs12 DispBlock Wid100">
-											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-										</h:outputText>
-									</div>
-									
-									<div class="p-col-8 subtotal">
-										<h:outputText value="Retencion" styleClass=" Fs12" />
-									</div>
-									
-									<div class="p-col-4 subtotalValor">
-										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalretencion}" styleClass="Fs12 DispBlock Wid100">
-											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-										</h:outputText>
-									</div>
-									
-									<div class="p-col-8">
-									</div>
-									<div class="p-grid p-col-4">
-										<div class="p-col-12 bordeSubtotal"></div>
-									</div>
-									
-									<div class="p-col-8 subtotal">
-										<h:outputText value="Total Pagar" styleClass="FontBold Fs14" />
-									</div>
-									
-									<div class="p-col-4 subtotalValor">
-										<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}" styleClass="FontBold  Fs14 DispBlock Wid100">
-											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
-										</h:outputText>
-									</div>
-											
-								</div>
-							</div>
-						</p:outputPanel>
-						
-					</div>
-				</div>
-				
-			</div>		    	
+			<div class="p-grid">
+	    		
+	    		
+	    		<div class="p-col-12 p-lg-5">
+	    			
+	    			<!-- Detalle de la factura -->
+	    			<ui:include src="./incl_compra_cabecera.xhtml" /> 
+	    			
+	    		</div>
+	    		
+	    		<div class="p-col-12 p-lg-7">
+	    			
+	    			<!-- Datos de la cabecera / pagos -->
+	    			<ui:include src="./incl_compra_detalle.xhtml" />
+	    			
+	    		</div>
+	    	
+	    	</div>			
 	    	
 	    </h:form>
 	    
 	    <!-- Form Proveedor -->
-	    <ui:include src="incl_proveedor_form.xhtml" />
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
 	    
 	    <!-- Busqueda Productos -->
 	    <ui:include src="../productos/incl_listaProducto.xhtml" />
@@ -514,7 +321,6 @@
 	    <ui:include src="../productos/incl_categoria_form.xhtml" />
 	    
 	    <!-- Detalle de pago -->
-	    <ui:include src="incl_adquisicion_pago.xhtml" />
         
     </ui:define>
 

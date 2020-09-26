@@ -17,6 +17,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Detalleimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 
 /**
@@ -128,7 +129,7 @@ public class ComprobanteHelper {
 			ti.setDescuentoadicional(BigDecimal.ZERO);
 			ti.setBaseimponible(BigDecimal
 					.valueOf(detallefacList.stream().filter(x -> x.getIva().getIdiva().equals(iva.getIdiva()))
-							.mapToDouble(x -> x.getPreciototalsinimpuesto().add(x.getValorice()).doubleValue()).sum())
+							.mapToDouble(x -> x.getPreciototalsinimpuesto().add(x.getValorice()!=null?x.getValorice():BigDecimal.ZERO).doubleValue()).sum())
 					.setScale(2, RoundingMode.HALF_UP));
 			ti.setValor(BigDecimal
 					.valueOf(detallefacList.stream().filter(x -> x.getIva().getIdiva().equals(iva.getIdiva()))
@@ -180,7 +181,7 @@ public class ComprobanteHelper {
 		
 		for (Detalle df : detalleFacList) {
 			df.setDetalleimpuestoList(new ArrayList<>());
-			if(df.getValorice().doubleValue()>0) {
+			if(df.getValorice()!=null && df.getValorice().doubleValue()>0) {
 				Detalleimpuesto di = new Detalleimpuesto();
 				di.setIce(df.getIce());
 				di.setTarifa(df.getIce().getValor());
@@ -189,11 +190,11 @@ public class ComprobanteHelper {
 				df.getDetalleimpuestoList().add(di);
 			}
 			
-			if(df.getValoriva().doubleValue()>0) {
+			if(df.getValoriva()!=null && df.getValoriva().doubleValue()>0) {
 				Detalleimpuesto di = new Detalleimpuesto();
 				di.setIva(df.getIva());
 				di.setTarifa(df.getIva().getValor());
-				di.setBaseimponible(df.getPreciototalsinimpuesto().add(df.getValorice()).setScale(2, RoundingMode.HALF_UP));
+				di.setBaseimponible(df.getPreciototalsinimpuesto().add(df.getValorice()!=null?df.getValorice():BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP));
 				di.setValor(df.getValoriva());
 				df.getDetalleimpuestoList().add(di);
 			}
@@ -217,11 +218,21 @@ public class ComprobanteHelper {
 			
 		}
 		
-		if(cabeceraFac.getProveedor()!=null && cabeceraFac.getProveedor().getEmail()!=null) {
+		return infoadicionalList;
+	}
+	
+	public static List<Infoadicional> determinarInfoAdicional(Cabecera cabeceraFac,List<Infoadicional> infoadicionalList) {
+		
+		if(infoadicionalList==null) {
+			infoadicionalList = new ArrayList<>();
+		}
+		
+		if(cabeceraFac.getCliente()!=null && cabeceraFac.getCliente().getCorreoelectronico()!=null) {
 			Infoadicional ia = new Infoadicional();
 			ia.setNombre("email");
-			ia.setValor(cabeceraFac.getProveedor().getEmail());
+			ia.setValor(cabeceraFac.getCliente().getCorreoelectronico());
 			infoadicionalList.add(ia);
+			
 		}
 		
 		return infoadicionalList;
@@ -234,8 +245,39 @@ public class ComprobanteHelper {
 	 * @return
 	 */
 	public static String formatNumDocumento(String numeroDocumento) {
+		if(numeroDocumento==null || numeroDocumento.trim().length()==0) {
+			numeroDocumento = "0000000000000";
+		}
+		numeroDocumento = numeroDocumento.replace("-", "");
 		return numeroDocumento.substring(0, 3) + "-" + numeroDocumento.substring(3, 6) + "-" + numeroDocumento.substring(6, numeroDocumento.length()); 
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param numDoc
+	 * @return
+	 */
+	public static String getPuntoEmision(String numDoc) {
+		if(numDoc==null || numDoc.trim().length()<4) {
+			return "001";
+		}
+		return numDoc.substring(3, 6);
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param pagoList
+	 * @return
+	 */
+	public static String determinarResumenPago(List<Pago> pagoList) {
+		String resumen = null;
+		if(pagoList.size()==1) {
+			return pagoList.get(0).getTipopago().getNombre().toUpperCase();
+		}
+		resumen = "VARIOS";
+		return resumen;
+	}
 
 }

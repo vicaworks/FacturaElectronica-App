@@ -4,17 +4,12 @@
 package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -62,22 +57,21 @@ public class Tipopago implements Serializable {
     @Column(name = "formulario", nullable = false, length = 100)
     private String formulario;
     
-    @Size(max = 40)
-    @Column(name = "idusuario", length = 40)
-    private String idusuario;
     
     @Size(max = 4)
     @Column(name = "codinterno", length = 4)
     private String codinterno;
     
-    @Column(name = "updated")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
+    @Size(max = 2)
+    @Column(name = "codigo", length = 2)
+    private String codigo;
     
-    @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
-    @ManyToOne(optional = false)
-    private Empresa empresa;
-
+    @Column(name = "orden")
+    private Integer orden;
+    
+    @Column(name = "descripcion", length = 300)
+    private String descripcion;
+    
 	/**
 	 * 
 	 */
@@ -179,48 +173,6 @@ public class Tipopago implements Serializable {
 	}
 
 	/**
-	 * @return the idusuario
-	 */
-	public String getIdusuario() {
-		return idusuario;
-	}
-
-	/**
-	 * @param idusuario the idusuario to set
-	 */
-	public void setIdusuario(String idusuario) {
-		this.idusuario = idusuario;
-	}
-
-	/**
-	 * @return the updated
-	 */
-	public Date getUpdated() {
-		return updated;
-	}
-
-	/**
-	 * @param updated the updated to set
-	 */
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-
-	/**
-	 * @return the empresa
-	 */
-	public Empresa getEmpresa() {
-		return empresa;
-	}
-
-	/**
-	 * @param empresa the empresa to set
-	 */
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
-	}
-
-	/**
 	 * @return the codinterno
 	 */
 	public String getCodinterno() {
@@ -232,6 +184,48 @@ public class Tipopago implements Serializable {
 	 */
 	public void setCodinterno(String codinterno) {
 		this.codinterno = codinterno;
+	}
+
+	/**
+	 * @return the codigo
+	 */
+	public String getCodigo() {
+		return codigo;
+	}
+
+	/**
+	 * @param codigo the codigo to set
+	 */
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	/**
+	 * @return the orden
+	 */
+	public Integer getOrden() {
+		return orden;
+	}
+
+	/**
+	 * @param orden the orden to set
+	 */
+	public void setOrden(Integer orden) {
+		this.orden = orden;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

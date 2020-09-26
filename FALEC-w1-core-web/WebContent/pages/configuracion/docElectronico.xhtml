@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">DOC ELECRONICO</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+        	
+        	.xmlDoc .ui-inputfield{
+				min-height: 30vh !important;
+				height: calc(100vh - 260px)!important;
+				/* background-color: #f2f2f2; */
+			}	
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-message {
+				padding: 0em !important;
+			}
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}	
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.xmlError{
+				padding: 20px;
+				background-color: #ffe5e5;
+				border: 1px solid #ccc;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Documento #{msg['label.electronico']}" url="#{request.contextPath}/pages/configuracion/docElectronico.jsf" />
+		</p:breadCrumb>
+	    
+	    <!-- OPCIONES -->
+	    <h:form id="formMain">
+			
+			<div class="card card-w-title" style="margin-top:12px;">
+				<div class="EmptyBox5"/>	
+				<div class="p-grid p-align-end vertical-container">
+					<div class="p-col-12 p-md-4">
+						<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:selectOneMenu id="somTipoComprobante" value="#{docElectrinocCtrl.tipoDocumentoIdentificador}" style="width:100%" required="true" requiredMessage="REQUERIDO">
+							<f:selectItem itemLabel="Seleccionar ..." itemValue="#{null}" />
+			    			<f:selectItem itemLabel="FACTURA" itemValue="01" />
+			    			<f:selectItem itemLabel="#{msg['label.retencion']}" itemValue="07" />
+			    			<f:selectItem itemLabel="#{msg['label.liqcompra.upper']}" itemValue="03" />
+			    			<f:selectItem itemLabel="NOTA #{msg['label.credito']}" itemValue="04" />
+			    			<f:selectItem itemLabel="NOTA #{msg['label.debito.upper']}" itemValue="05" />
+			    			<f:selectItem itemLabel="#{msg['label.guiaremision.upper']}" itemValue="08" /> 
+			    		</p:selectOneMenu>
+			    		<p:message for="somTipoComprobante"/>
+					</div>
+					
+					<div class="p-col-12 p-md-4">
+						<h:outputText value="#{msg['label.numero']} DOCUMENTO *" styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputMask mask="999-999-999999999" maxlength="17" required="true" requiredMessage="REQUERIDO" value="#{docElectrinocCtrl.numDocumento}" styleClass="Wid100">
+							<f:converter converterId="formatoNumComprobanteConverter"/>
+						</p:inputMask>
+					</div>
+					
+					<div class="p-col-12 p-md-2">
+						<p:commandButton id="cmdLqCRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{docElectrinocCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
+						/>
+					</div>
+					
+					<div class="p-col-12 p-md-2">
+						<p:commandButton id="cmdValidar"
+							value="VALIDAR" icon="fa fa-check" 
+							action="#{docElectrinocCtrl.validar()}" styleClass="Wid100" update="@form" disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
+						/>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="p-grid p-align-top vertical-container">
+				
+				<div class="p-col-12 p-md-8">
+					<div class="card card-w-title xmlDoc" style="margin-top:12px;">
+						
+						<h3 class="cardTitle"> <i class="fa fa-arrow-circle-right"></i> Documento #{msg['label.electronico']}</h3>
+						
+						<p:inputTextarea value="#{docElectrinocCtrl.xmlDocElectronico}" styleClass="Wid100 Fs14">
+						</p:inputTextarea>
+					</div>
+				</div>
+				
+				<div class="p-col-12 p-md-4">
+					<div class="card card-w-title xmlDoc" style="margin-top:12px;">
+						
+						<h3 class="cardTitle"> <i class="fa fa-arrow-circle-right"></i> Resultado #{msg['label.validacion']}</h3>
+						
+						<p:outputPanel rendered="#{not empty docElectrinocCtrl.xmlError}">
+							<div class="xmlError Wid100">
+								<h:outputText value="#{docElectrinocCtrl.xmlError}" styleClass="Fs16"/>
+							</div>
+						</p:outputPanel>
+						
+						<div class="EmptyBox20"/>
+					</div>
+				</div>
+				
+				
+			</div>
+			
+			
+				    	
+	    </h:form>
+	    
+    </ui:define>
+
+</ui:composition>

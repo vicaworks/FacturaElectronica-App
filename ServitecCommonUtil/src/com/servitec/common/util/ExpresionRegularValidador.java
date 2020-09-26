@@ -45,7 +45,8 @@ public class ExpresionRegularValidador implements Serializable {
 			throw new ValidarExpresionException(input +  ", no contiene @");
 
 		// comprueba que no contenga caracteres prohibidos
-		p = Pattern.compile("[^A-Za-z0-9\\.\\@_\\-~#]+");
+//		p = Pattern.compile("[^A-Za-z0-9\\.\\@_\\-~#]+");
+		p = Pattern.compile("^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$");
 		m = p.matcher(input);
 		StringBuffer sb = new StringBuffer();
 		boolean resultado = m.find();
@@ -67,6 +68,14 @@ public class ExpresionRegularValidador implements Serializable {
 		}
 
 	}
+	
+	 public static boolean validarEmailAnterior(String email)  throws ValidarExpresionException {
+        // Patron para validar el email
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+ 
+        Matcher mather = pattern.matcher(email);
+        return mather.find();
+    }
 	
 	
 	/**

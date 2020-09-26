@@ -7,7 +7,7 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">REP VENTAS</ui:define>
+    <ui:define name="title">Reporte ventas</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
@@ -61,7 +61,6 @@
     	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Factura"  url="#{request.contextPath}/pages/facturacion/factura.jsf"/>
 		    <p:menuitem value="Reporte De Ventas" url="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf"/>
 		</p:breadCrumb>
     	
@@ -144,7 +143,7 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<ui:include src="incl_rep-ventas-6.xhtml" />	    	
+			<!-- <ui:include src="incl_rep-ventas-6.xhtml" /> -->	    	
 	    	
 	    </h:form>
 	    

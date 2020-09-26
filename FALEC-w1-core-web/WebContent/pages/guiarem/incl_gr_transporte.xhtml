@@ -13,18 +13,40 @@
 	
 	
 	<div class="card card-w-title">
-		<div class="EmptyBox5"/>
-		<div class="p-grid p-justify-center">
-			<div class="p-col-12">
-				<p:commandButton id="cmdGrNuevoTransportista"
-							value="TRANSPORTISTA NUEVO / EDITAR" icon="fa fa-plus" 
-							action="#{transportistaCtrl.nuevoEditar(guiaRemFormCtrl.guiaRemisionSelected.transportista==null?null:guiaRemFormCtrl.guiaRemisionSelected.transportista.idtransportista)}" styleClass="secondary-button Wid100" process="@this">
-					<f:setPropertyActionListener value="#{guiaRemCtrl.guiaRemisionSelected.transportista}" target="#{transportistaCtrl.transportistaSelected}"/>		
-					<f:setPropertyActionListener value="GUIA_REMISION" target="#{transportistaCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:somGrTransportista :formMain:optGrIdentificacion :formMain:optGrRazonSocial" target="#{transportistaCtrl.viewUpdate}"/>
-				</p:commandButton>
-			</div>
-		</div>
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.guiaremision']}</h2>
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera!=null}">
+					<div class="EmptyBox5"></div>
+					<h:outputText value="#{guiaRemFormCtrl.getFormatoNumDocumento(guiaRemFormCtrl.guiaRemisionSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
+					<div class="EmptyBox5"></div>
+				</p:outputLabel>
+				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera==null}">
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialEstablecimiento}" />
+					<h:outputText value=" - " />
+					<p:inputMask id="intSecCaja" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+					<h:outputText value=" - " />
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" rendered="#{not guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}"/>
+					<p:inputMask id="intSecDocumento" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" maxlength="7" mask="9999999" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" style="width:80px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{guiaRemFormCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:grid">
+						<i class="fa fa-edit Fs18"/>
+					</p:commandLink>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{guiaRemFormCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid">
+						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+					</p:commandLink>
+					<p:message styleClass="Wid100" for="intSecCaja"/>
+					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}"/>
+				</p:outputLabel>
+				
+			</h:panelGroup>
+			
+		</p:panelGrid>
+	
+		<div class="EmptyBox10"/>
 		
 		<p:panelGrid id="gridGrCabecera" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 		
@@ -44,17 +66,34 @@
 					<f:selectItems value="#{guiaRemFormCtrl.transportistaList}" var="t"
 						itemLabel="#{t.razonsocial}" itemValue="#{t}" />
 					
-					<p:ajax update=":formMain:msgFormMain :formMain:optGrIdentificacion :formMain:optGrRazonSocial"/>
+					<p:ajax event="change" update=":formMain:msgFormMain :formMain:optGrIdentificacion :formMain:optGrRazonSocial :formMain:inpGrPlaca" listener="#{guiaRemFormCtrl.cambioTransportistaAction()}">
+					</p:ajax>
 						
 				</p:selectOneMenu>
 				<p:message for="somGrTransportista" />
 			</h:panelGroup>
 			
+			<p:commandButton id="cmdGrNuevoTransportista"
+							value="TRANSPORTISTA NUEVO / EDITAR" icon="fa fa-plus" 
+							action="#{transportistaCtrl.nuevoEditar(guiaRemFormCtrl.guiaRemisionSelected.transportista==null?null:guiaRemFormCtrl.guiaRemisionSelected.transportista.idtransportista)}" styleClass="secondary-button Wid100" process="@this">
+				<f:setPropertyActionListener value="#{guiaRemCtrl.guiaRemisionSelected.transportista}" target="#{transportistaCtrl.transportistaSelected}"/>		
+				<f:setPropertyActionListener value="GUIA_REMISION" target="#{transportistaCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:somGrTransportista :formMain:optGrIdentificacion :formMain:optGrRazonSocial :formMain:inpGrPlaca" target="#{transportistaCtrl.viewUpdate}"/>
+			</p:commandButton>
+			
 			<h:outputText value="#{msg['label.identificacion']} *" styleClass="cpoRequerido"/>
-			<h:outputText id="optGrIdentificacion" value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.identificacion}" styleClass="FontBold"/>
+			<h:panelGroup>
+				<p:inputText id="optGrIdentificacion" value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="optGrIdentificacion" />
+			</h:panelGroup>
 			
 			<h:outputText value="#{msg['label.razonsocial']} *" styleClass="cpoRequerido"/>
-			<h:outputText id="optGrRazonSocial" value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.razonsocial}" styleClass="FontBold"/>
+			<h:panelGroup>
+				<p:inputText id="optGrRazonSocial" value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="optGrRazonSocial" />
+			</h:panelGroup>
 			
 			<h:outputText value="PLACA *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
@@ -89,11 +128,61 @@
 			</h:panelGroup>
 		
 		</p:panelGrid>
+	</div>
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">	
 		
-		<div class="EmptyBox5"/>
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+	
+		<p:outputPanel id="oupInfoAdicionalMain">
+			
+			<p:panelGrid columns="2"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12 ui-md-6,
+				 				ui-g-12 ui-md-6">
+				 				
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{guiaRemFormCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+				<h:panelGroup>
+				</h:panelGroup>				 
+				
+			</p:panelGrid>
+			
+			<p:outputPanel id="grdInfoAdicional">
+			
+				<div class="EmptyBox5"/>
+				
+				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+				</p:panelGrid>
+				
+				<div class="p-grid p-align-center vertical-container">
+					
+					<p:repeat var="info" value="#{guiaRemFormCtrl.infoadicionalList}" >
+						<div class="p-col-5">
+							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalNombre"/>
+						</div>
+						<div class="p-col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalValor"/>
+						</div>
+						<div class="p-col-1" style="text-align: center;">
+							<p:commandLink  action="#{guiaRemFormCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+								<f:setPropertyActionListener value="#{info}" target="#{guiaRemFormCtrl.infoadicionalSelected}"/>
+								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					
+					</p:repeat>
+				</div>
+			
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<div class="EmptyBox10"/>
 	
 	</div>
-	
-		
 	
 </ui:composition>

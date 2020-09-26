@@ -66,6 +66,18 @@ public class Transportista implements Serializable {
     @Column(name = "estado", nullable = false, length = 1)
     private String estado;
     
+    @Size(min = 1, max = 10)
+    @Column(name = "placa", nullable = true, length = 10)
+    private String placa;
+    
+    @Size(min = 1, max = 20)
+    @Column(name = "telefono", nullable = true, length = 20)
+    private String telefono;
+    
+    @Size(min = 1, max = 100)
+    @Column(name = "email", nullable = true, length = 100)
+    private String email;
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "idtipoidentificacion", referencedColumnName = "idtipoidentificacion", nullable = false)
     private TipoIdentificacion tipoIdentificacion;
@@ -217,6 +229,48 @@ public class Transportista implements Serializable {
 	 */
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the placa
+	 */
+	public String getPlaca() {
+		return placa;
+	}
+
+	/**
+	 * @param placa the placa to set
+	 */
+	public void setPlaca(String placa) {
+		this.placa = placa;
+	}
+
+	/**
+	 * @return the telefono
+	 */
+	public String getTelefono() {
+		return telefono;
+	}
+
+	/**
+	 * @param telefono the telefono to set
+	 */
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

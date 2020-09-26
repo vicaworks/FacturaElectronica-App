@@ -8,10 +8,10 @@
 	
 	<style type="text/css">
 		
-		.contenedorFormulario {
+/* 		.contenedorFormulario {
 				height: 75vh;
 				/* min-height: 560px; */
-		}
+		} */
 		
 		@media screen and (max-width: 40em ) {
 		  .visualizar{display: none;}
@@ -72,14 +72,18 @@
 					<div class="p-col-12 p-md-6">
 					
 						<p:commandButton id="cmdBuscarProductoForm"
-							value="BUSCAR" icon="fa fa-search" 
-							action="#{productoCtrl.editarProductoForm()}" styleClass="MRight10" process="@this :frmProducto:somFrmListaProducto" update="@form"/>
+							icon="fa fa-search" 
+							action="#{productoCtrl.editarProductoForm()}" styleClass="secondary-button MRight10" process="@this :frmProducto:somFrmListaProducto" update="@form"/>
 					
 						<p:commandButton id="cmdGuardarProductoForm"
 							value="GUARDAR" icon="fa fa-check" 
 							action="#{productoCtrl.guardar()}" styleClass="MRight10" update="@form #{productoCtrl.viewUpdate}"
 							/>
 							
+						<p:commandButton id="cmdNuevoProductoForm"
+							value="NUEVO" icon="fa fa-check" 
+							action="#{productoCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
+								
 						<p:commandButton id="cmdCerrarProductoForm"
 							value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
 							onclick="PF('dlgProducto').hide()" immediate="true"  
@@ -189,13 +193,13 @@
 							
 							<h:outputText value="NOMBRE * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="intNombreProducto" value="#{productoCtrl.productoSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:inputText id="intNombreProducto" value="#{productoCtrl.productoSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 								<p:message for="intNombreProducto"/>
 							</h:panelGroup>
 							
 							<h:outputText value="NOMBRE COMERCIAL * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="intNombreProductoComercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:inputText id="intNombreProductoComercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 								<p:message for="intNombreProductoComercial"/>
 							</h:panelGroup>
 							
@@ -266,7 +270,7 @@
 											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 			
 									<f:selectItems value="#{productoCtrl.iceList}" var="ice"
-										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
+										itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
 								</p:selectOneMenu>
 								<p:message for="somFrmIceProducto" />
 							</h:panelGroup>

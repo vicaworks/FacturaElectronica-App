@@ -30,6 +30,10 @@
 						action="#{ivaCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
 						/>
 						
+					<p:commandButton id="cmdNuevoIvaForm"
+							value="NUEVO" icon="fa fa-plus" 
+							action="#{ivaCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>	
+						
 					<p:commandButton id="cmdCerrar"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
 						onclick="PF('dlgIva').hide()" immediate="true"  
@@ -59,27 +63,27 @@
 					<p:inputText id="intCodigo" value="#{ivaCtrl.ivaSelected.codigo}" 
 					required="true" requiredMessage="REQUERIDO" styleClass="Wid100" 
 					maxlength="1" 
-					 validatorMessage="SOLO NÚMEROS">
+					 validatorMessage="SOLO NÚMEROS" placeholder="#{msg['label.codigo']} SRI">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 							</p:inputText>
 					<p:message for="intCodigo"/>
 					
-					<h:outputText value="PORCENTAJE *   Ejemplo:14%: " styleClass="cpoRequerido"/>
+					<h:outputText value="PORCENTAJE *: " styleClass="cpoRequerido"/>
 					<p:inputText id="intPorcentaje" value="#{ivaCtrl.ivaSelected.porcentaje}" required="true" 
-						requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter"/>
+						requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']} PORCENTAJE Ejm. 14%"/>
 					<p:message for="intPorcentaje"/>
 					
-					<h:outputText value="VALOR *   Ejemplo:14 : " styleClass="cpoRequerido"/>
+					<h:outputText value="VALOR *: " styleClass="cpoRequerido"/>
 					<p:inputText id="intValor" value="#{ivaCtrl.ivaSelected.valor}" required="true" 
 						requiredMessage="REQUERIDO" styleClass="Wid100" 
-						 converterMessage="SOLO NUMEROS">
+						 converterMessage="SOLO NUMEROS" placeholder="VALOR: ejm 12 o 12.5">
 						    <f:convertNumber locale="es_EC" pattern="0.###"/>
 							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 					</p:inputText>
 					<p:message for="intValor"/>
 					
 					<h:outputText value="DEFECTO * : " styleClass="cpoRequerido"/>
-						<p:selectOneMenu id="intDefecto" value="#{ivaCtrl.ivaSelected.defecto}" required="true" requiredMessage="REQUERIDO">
+						<p:selectOneMenu id="intDefecto" value="#{ivaCtrl.ivaSelected.defecto}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />
 					            <f:selectItem itemLabel="SI" itemValue="1" />
 					            <f:selectItem itemLabel="NO" itemValue="0" />

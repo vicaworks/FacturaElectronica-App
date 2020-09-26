@@ -1,0 +1,313 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">Cotizaciones</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.cardTitle{
+				padding:0.5em 0px;
+				font-size: 18px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
+				padding: 0.2em !important;
+			}
+			
+			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+				padding: 0em;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+				padding: 0px; 
+			}
+			
+			.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+			}
+			
+			/* ======================================================================================================================== */
+			
+			.boxMain{
+				margin-top:5px;
+				padding: 10px !important;
+				text-align: center;
+				border-radius: 4px;
+			}
+			
+			.box-header{
+				font-size: 10px;
+			}
+			
+			.box-content{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			
+			.box-gray{
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.box-border-gray{
+				border:1px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
+			.box-border-orange{
+				border:1px solid orange;
+				color: #2f2f2f;
+			}
+			
+			.pago-header{
+				border-radius: 4px;
+				text-align: right;
+				padding: 5px 10px;
+				border-bottom: 1px solid #F0F3F4;
+			}
+			
+			.pago-valor{
+				border-radius: 4px;
+				background-color: #f8f8f8;
+				text-align: left;
+				padding: 5px 10px;
+				font-weight: 700;
+				color: #595959;
+				border: 1px solid #d8d8dc;
+			}
+			
+			.disable-color{
+				background-color: #F4F6F7 !important;
+			}
+			
+			/* -- tab -- */
+			.tabProforma{
+ 				padding: 0px 2em !important; 
+ 				border-bottom: solid 1px #ccc;
+ 				color:#1B2631;
+			}
+			
+			.tabProforma:hover {
+ 				background-color:#ff9800 !important; 
+ 				border-bottom: solid 1px #ff9800 !important;
+ 				cursor: pointer !important;
+ 				color:#1B2631;
+			}
+			
+			.tabProformaSeleccion {
+ 				/* background-color:#F8C471 !important; 
+ 				border-bottom: solid 1px #F8C471 !important; */
+ 				background-color:#F0F3F4;
+ 				color: #024f9e;
+			}
+			
+			.tabProforma h4{
+ 				margin-bottom: 5px;
+ 				margin-top: 10px;
+			}
+			
+			.tabProforma h3{
+ 				margin-top: 5px;
+ 				margin-bottom: 10px;
+			}
+			
+			.tabProformaBg{
+				background-color: #fff !important;
+			}
+			
+			/* -- card contador -- */
+			
+			.cardContador{
+				border-radius:4px;
+				margin:5px;
+				display: grid;
+				grid-gap: 3px;
+			    grid-template-columns: 1fr;
+			    grid-template-rows: 20px auto;
+			    grid-template-areas: "cardContador-header  cardContador-header"
+			    					 "cardContador-content cardContador-content";
+			}
+			
+			.cardContador .cardContador-header{
+				grid-area: cardContador-header;
+				padding: 3px;
+				justify-self: center;
+				align-self:center;
+				font-size: 10px;
+				
+			}
+			
+			.cardContador .cardContador-content{
+				grid-area: cardContador-content;
+				padding: 3px;
+				justify-self: center;
+				align-self:center;
+				font-size: 20px;
+				font-weight: 900;
+			}
+			
+			.cardContador-bgBlack{
+				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.cardContador-borderBlack{
+				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderGreen{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #1E8449;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderOrange{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #BA4A00;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderYellow{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #F1C40F;
+				color: #2f2f2f;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    
+    	<!-- <p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Cotización" url="#{request.contextPath}/pages/proforma/proforma.jsf"/>
+		</p:breadCrumb> -->
+		
+		<!-- OPCIONES -->
+	    <h:form id="formMain">
+	    	
+	    	<pe:remoteCommand name="switchProforma" process="@this" update="@form" actionListener="#{cotizacionCtrl.switchProforma}">
+	    		<pe:methodSignature parameters="java.lang.String"/>  
+			    <pe:methodParam name="proforma"/>
+	    	</pe:remoteCommand>
+	    	
+	    	<div class="p-grid">
+	    	
+				<div class="p-col-12 p-md-6 p-lg-3  tabProforma #{cotizacionCtrl.comprobanteRender=='INICIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('INICIO');">
+					
+					<h4>
+						<h:outputText value="01."/>
+					</h4>
+					<h3>
+						<h:outputText value="Cotizaciones"/>
+					</h3>
+					
+				</div>
+				
+				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='FORMULARIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('FORMULARIO');">
+					
+					<h4>
+						<h:outputText value="02."/>
+					</h4>
+					<h3>
+						<h:outputText value="Nuevo / Editar"/>
+					</h3>
+					
+				</div>
+				
+				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='EMAIL'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('EMAIL');">
+					
+					<h4>
+						<h:outputText value="03."/>
+					</h4>
+					<h3>
+						<h:outputText value="Email"/>
+					</h3>
+					
+				</div>
+				
+				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREAS'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('TAREAS');">
+					
+					<h4>
+						<h:outputText value="04."/>
+					</h4>
+					<h3>
+						<h:outputText value="Tareas"/>
+					</h3>
+					
+				</div>
+				
+			</div>
+			<div class="EmptyBox5"/>
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='INICIO'}" id="inicio">
+				<ui:include src="./inicio/incl_proforma_lista.xhtml"/>
+			</f:subview>
+			
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='FORMULARIO'}" id="formulario">
+				<ui:include src="./formulario/incl_proforma_form.xhtml"/>
+			</f:subview>
+			
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='EMAIL'}" id="email">
+				
+			</f:subview>
+			
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='TAREAS'}" id="tareas">
+				
+			</f:subview>
+	    	
+	    </h:form>
+	    
+	    <!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- Busqueda Productos -->
+	    <ui:include src="../productos/incl_listaProducto.xhtml" />
+        
+    </ui:define>
+
+</ui:composition>

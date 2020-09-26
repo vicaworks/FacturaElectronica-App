@@ -7,14 +7,14 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">Nota #{msg['title.credito2']}</ui:define>
+    <ui:define name="title">Nota #{msg['label.credito2']}</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
 			
 			.notaCreditoDT .ui-datatable-scrollable-body{
-				min-height: 50vh !important;
-				height: calc(100vh - 400px);
+				min-height: 35vh !important;
+				height: calc(100vh - 390px);
 				
 			}
 			
@@ -46,6 +46,10 @@
 				padding: 0.2em 0.5em !important;
 			}
 			
+			.ui-menu .ui-menu-list .ui-widget-header {
+				background-color: #d8d8dc !important;
+			}
+			
         </style>
     </ui:define>
 
@@ -71,11 +75,23 @@
 	    		
 	    		<div class="p-grid p-align-center">
 	    			
-	    			<div class="p-col-12 p-md-8">
+	    			<div class="p-col-12 p-md-9">
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
+	    						<h:outputText value="ESTADO * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+		    					<p:selectOneMenu  value="#{compNcCtrl.estado}" 
+												 styleClass="Wid100" 
+												 required="false" requiredMessage="REQUERIDO">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
+									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
+									<f:selectItem itemLabel="ANULADO" itemValue="I" />
+								</p:selectOneMenu>
+							</div>
+	    					
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- desde -->
 	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -87,7 +103,7 @@
 								<p:message for="claNCFechaDesde" style="padding:0em;"/>
 	    						
 	    					</div>
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- hasts  -->
 	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -108,7 +124,7 @@
 	    			</div>
 	    			
 	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-4">
+	    			<div class="p-col-12 p-md-3">
 	    				
 	    				<div class="EmptyBox5"/>
 	    				
@@ -119,21 +135,27 @@
 						<div class="EmptyBox5"/>
 	   				
 	   					<p:commandButton id="cmdNCNuevo"
-							value="NUEVA NOTA DE #{msg['label.credito']}" icon="fa fa-plus" 
+							value="NUEVA N.C." icon="fa fa-plus" 
 							action="#{compNcCtrl.nuevaNotaCredito()}" styleClass="Wid100 secondary-button" update="@form">
 	   					</p:commandButton>
 	   					
 	   					<div class="EmptyBox5"/>
 	   					
-	   					<p:commandButton  id="cmdNCExcel" 
-									title="EXPORTAR"
-									icon="fa fa-file-excel-o"
-									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-									value="REPORTE"
-									styleClass="success-btn Wid100"
-									disabled="#{empty adquisicionMainCtrl.adquisicionList}">
-							<p:fileDownload value="#{null}"/>	
+						<p:commandButton id="cmdNCExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty compNcCtrl.notaCreditoList}">
 						</p:commandButton>
+						
+						<p:menu overlay="true" trigger="cmdNCExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{compNcCtrl.fileNC}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{compNcCtrl.fileNCDetalle}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
 	    				
 	    			</div>
 	    			
@@ -158,69 +180,167 @@
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"
-					rows="12"
-					rowsPerPageTemplate="10,12,20,30,40">
+					rows="20"
+					rowsPerPageTemplate="15,20,25,30,35,40,45">
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtNotaCredito">
-							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
-						<p:menu overlay="true" trigger="cmlDtNotaCredito" my="left top" at="left bottom">
+						<p:menu overlay="true" trigger="cmlDtNotaCredito" my="left top" at="left bottom" style="width:200px;">
 							
-							<p:menuitem value="Editar " action="#{compNcCtrl.editar()}" icon="fa fa-edit" process="notaCreditoDT" update="@form">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{n.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Eliminar " action="#{compNcCtrl.eliminar()}" icon="fa fa-trash-o" process="notaCreditoDT" update="@form">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{n.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+							</p:menuitem>
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{n.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:notaCreditoDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
+							</p:menuitem>
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{n.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:notaCreditoDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
+							</p:menuitem>
+							
+							<p:menuitem value="Editar " action="#{compNcCtrl.editarLiqCompra(n.idcabecera)}" icon="fa fa-edit" process="notaCreditoDT" update="@form" disabled="#{n.estado=='ANULADO'}">
+							</p:menuitem>
+							
+							
+							<p:menuitem value="Anular " action="#{compNcCtrl.eliminar()}" icon="fa fa-trash-o" process="notaCreditoDT" update="@form" disabled="#{n.estado=='ANULADO'}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								<f:setPropertyActionListener value="#{n}" target="#{compNcCtrl.notaCreditoSelected}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Ver Factura" action="#" icon="fa fa-shopping-cart" process="notaCreditoDT" update="@form" disabled="#{n.idcabecerapadre==null}">
-							</p:menuitem>
+							<p:submenu label="Comprobantes">
+								<p:menuitem value="Ver documento asociado" action="#{rideCtrl.showRide()}" icon="fa fa-eye" process="notaCreditoDT" update="@form" disabled="#{n.idcabecerapadre==null}">
+									<f:setPropertyActionListener value="#{n.idcabecerapadre}" target="#{rideCtrl.idCabecera}"/>
+								</p:menuitem>
+							</p:submenu>
 							
 						</p:menu>
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:40px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{n.numdocumento}" />
+					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{n.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numdocumento)}" styleClass="Fs10"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{n.estado}" styleClass="#{r.estadoStyle}"/>
+					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{n.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+						<h:outputText value="#{n.estado}" styleClass="#{n.estadoStyle} Fs10"/>
 					</p:column>
 					
-					<p:column headerText="FACTURA" style="width:40px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
-						<h:outputText value="#{n.numdocasociado}" />
-					</p:column>
-					
-					<p:column headerText="RUC / CI" style="width:40px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{n.cliente.identificacion}" />
-					</p:column>
-					
-					<p:column headerText="CLIENTE" style="width:100px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
-						<h:outputText value="#{n.cliente.razonsocial}" />
-					</p:column>
-					
-					<p:column headerText="FECHA" style="width:40px;">
+					<p:column headerText="FECHA" style="width:50px;">
 						<h:outputText value="#{n.fechaemision}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VALOR" style="width:40px;">
-						<h:outputText value="#{n.totalconimpuestos}" styleClass="markGreen">
-							<f:convertNumber pattern="$ 0.00"/>
+					<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{n.cliente.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{n.cliente.identificacion}" />
+					</p:column>
+					
+					<p:column headerText="CLIENTE" style="width:130px;" filterBy="#{n.cliente.razonsocial}" filterMatchMode="contains">
+						<h:outputText value="#{n.cliente.razonsocial}" />
+					</p:column>
+					
+					<p:column style="width:5px;" styleClass="TexAlCenter">
+						<f:facet name="header">
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope Fs14"/>
+						</f:facet>
+						<f:subview rendered="#{n.envioemail==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{n.envioemail==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
+					
+					<p:column headerText="DOC ASOCIADO" style="width:90px;" filterBy="#{n.numfactura}" filterMatchMode="contains">
+						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numfactura)}" styleClass="Fs10"/>
+					</p:column>
+					
+					<p:column headerText="FECHA" style="width:60px;">
+						<h:outputText value="#{n.fechaemisiondocasociado}" >
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					
+					
+					
+					<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totalsinimpuestos.add(n.totaldescuento)}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="DESC" style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totaldescuento}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="I.C.E." style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totalice}">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="I.V.A." style="width:40px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totaliva}">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					<!-- <p:column headerText="IMPUESTO" style="width:70px;" styleClass="TexAlCenter">
+						
+						<div class="p-grid Fs10 p-justify-end">
+							<div class="p-col-3" >
+								<h:outputText value="I.V.A." styleClass="FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{n.totaliva}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-3">
+								<h:outputText value="I.C.E." styleClass="FontBold"/>
+							</div>
+							<div class="p-col-7">
+								<h:outputText value="#{n.totalice}" >
+									<f:convertNumber pattern="$#,##0.00"/>
+								</h:outputText>
+							</div>
+						</div>
+					
+					</p:column> -->
+					
+					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{n.totalconimpuestos}" styleClass="DispBlock Wid100 markGray">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 				</p:dataTable>
-				
+				<div class="EmptyBox20"/>				
 			</div>
 	    	
 	    </h:form>
-        
+        <!-- RIDE -->
+		<ui:include src="../../common/incl_ride.xhtml" />
+		<!-- FIRMAR ENVIAR EMAIL -->
+	    <ui:include src="../../common/incl_firmarenviarmail.xhtml" />
+		
     </ui:define>
 
 </ui:composition>

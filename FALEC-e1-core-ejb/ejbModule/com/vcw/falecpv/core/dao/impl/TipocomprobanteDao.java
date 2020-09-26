@@ -36,12 +36,11 @@ public class TipocomprobanteDao extends AppGenericDao<Tipocomprobante, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Tipocomprobante> getByEmpresaFormulario(String idEmpresa, TipoComprobanteEnum tipoComprobanteEnum)throws DaoException{
+	public List<Tipocomprobante> getByEmpresaFormulario(TipoComprobanteEnum tipoComprobanteEnum)throws DaoException{
 		try {
 			
-			String sql = "SELECT t FROM Tipocomprobante t WHERE t.empresa.idempresa=:idempresa AND t.formularios like :formulario ORDER BY t.comprobante";
+			String sql = "SELECT t FROM Tipocomprobante t WHERE t.formularios like :formulario ORDER BY t.comprobante";
 			Query q = getEntityManager().createQuery(sql);
-			q.setParameter("idempresa", idEmpresa);
 			q.setParameter("formulario", "%".concat(tipoComprobanteEnum.getSigla()).concat("%"));
 			
 			return q.getResultList();

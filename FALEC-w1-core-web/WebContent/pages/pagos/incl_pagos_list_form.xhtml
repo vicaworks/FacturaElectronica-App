@@ -1,0 +1,264 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.otrosPagosDT .ui-datatable-scrollable-body{
+			min-height: 20vh !important;
+			max-height: 20vh !important;
+		}
+		
+		.pagosDT .ui-datatable-scrollable-body{
+			min-height: 20vh !important;
+			max-height: 20vh !important;
+		}
+		
+		.heightFrmPagos{
+			height: calc(100vh - 135px)!important;
+			/* max-height: 650px; */
+		}
+		
+	</style>
+	
+	<p:dialog header="Pagos" widgetVar="dlgPagosForm" modal="true" responsive="true" width="95%" closeOnEscape="true" styleClass="modalResponsivo" >
+		
+		<h:form id="formPagos">
+		
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdCCRefrescar"
+						value="REFRESCAR" icon="fa fa-repeat" styleClass="secondary-button" 
+						action="#{pagoCtrl.refrescarPagosForm()}" process="@this" update="@form" 
+						/>
+					<p:spacer width="5"/>
+					<p:commandButton id="cmdCCGuardar"
+						value="GUARDAR" icon="fa fa-floppy-o" action="#{pagoCtrl.guardar()}" update="@form :formMain"/>	
+					<p:spacer width="5"/>
+					<p:commandButton id="cmdCCCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgPagosForm').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<!-- Mensajes -->
+			<p:messages id="msgFormPagos" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formPagos"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmPagos contenedorFormulario" style="background-color:#f4f4f4;padding: 5px;">
+				
+				<div class="card card-w-title">
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Otros pagos</h3>
+			   		<p:dataTable id="otrosPagosDT"
+	        			scrollable="true"
+	        			value="#{pagoCtrl.pagoOtrosList}"
+	        			var="p"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvResumenPagoDT Fs12"  
+						rowKey="#{p.idpago}">
+						
+						<p:column headerText="TIPO PAGO" style="width:50px;">
+							<h:outputText value="#{p.tipopago.nombre}" />
+						</p:column>
+						
+						<p:column headerText="VALOR" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{p.total}" styleClass="markGreen DispBlock">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="IMPORTE" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{p.valorentrega}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="CAMBIO" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{p.cambio}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="NUM. DOCUMENTO" style="width:80px;" styleClass="TexAlLeft">
+							<h:outputText value="#{p.numerodocumento}" >
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="BANCO" style="width:80px;" styleClass="TexAlLeft">
+							<h:outputText value="#{p.nombrebanco}" >
+							</h:outputText>
+						</p:column>
+						
+					</p:dataTable>
+				</div>
+				<div class="EmptyBox5"/>
+				<div class="card card-w-title">
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Adeudado</h3>
+			   		
+			   		<div class="p-grid">
+				   		<div class="p-col-12 p-md-2">
+							<p:commandButton value="PAGO" action="#{pagoCtrl.nuevoPago()}" styleClass="Wid100 secondary-button Fs10" icon="fa fa-plus"/>				   			
+				   		</div>
+			   		</div>
+			   		<div class="EmptyBox5"/>
+			   		<p:dataTable id="pagosDT"
+	        			scrollable="true"
+	        			value="#{pagoCtrl.pagoList}"
+	        			var="f"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvResumenPagoDT Fs12"  
+						rowKey="#{f.idpago}">
+						
+						<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+							<p:commandLink action="#{pagoCtrl.eliminarCredito()}" process="@this :formPagos:pagosDT" update=":formPagos">
+								<i class="fa fa-trash-o Fs18" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
+							</p:commandLink>
+							<p:spacer width="5px"/>
+							<p:commandLink process="@this" update=":formPagoRegistro" oncomplete="PF('dlgFormPago').show();">
+								<i class="fa fa-edit Fs18" style="color:#2f2f2f;"></i>
+								<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
+							</p:commandLink>
+							
+						</p:column>
+						
+						<p:column headerText="FECHA PAGO" style="width:60px;">
+							<h:outputText value="#{f.fechapago}" styleClass="#{pagoCtrl.isPagoVencimiento(f)?'markRed':''}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="PLAZO" style="width:40px;" styleClass="TexAlRight">
+							<h:outputText value="#{f.plazo}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="VALOR PAGO" style="width:60px;" styleClass="TexAlRight">
+							<h:outputText value="#{f.total}" styleClass="markGray DispBlock">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="" style="width:10px;" styleClass="TexAlCenter">
+							<p:commandLink update="@form" action="#{pagoCtrl.aplicarAbonoAction()}">
+								<i class="fa fa-hand-o-right Fs20" style="color:#000;"></i>
+								<f:setPropertyActionListener value="#{f.total}" target="#{f.valorpago}"/>
+							</p:commandLink>
+						</p:column>
+						
+						<p:column headerText="ABONO" style="width:60px;" styleClass="dt-spinner">
+							<p:spinner id="insDetpagValPago" value="#{f.valorpago}" min="0" max="#{f.total}" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+								<p:ajax listener="#{pagoCtrl.aplicarAbonoAction()}" update="@form" process="@this :formPagos:pagosDT"/>
+							</p:spinner>
+							<p:message for="insDetpagValPago"/>
+						</p:column>
+						
+						<p:column headerText="NOTAS" style="width:150px;">
+							
+							<p:inputTextarea value="#{f.notas}" maxlength="500" styleClass="Wid100" rows="1" style="padding:0.2em !important;height:22px!important;max-height:66px!important;">
+							</p:inputTextarea>
+							
+						</p:column>
+						
+					</p:dataTable>
+			   		
+			   	</div>
+			   	<div class="EmptyBox5"/>
+				<div class="card card-w-title">
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Valor pago</h3>
+			   		
+			   		<div class="p-grid p-align-center vertical-container">
+			   			
+			   			<div class="p-col-12 p-lg-8">
+			   				<div class="EmptyBox5"/>
+			   				<div class="p-grid p-justify-even ">
+					   			<!-- Valor comprobante -->
+					   			<div class="p-col-12 p-md-4 boxMain box-gray">
+					   				<div class="DispBlock box-header">TOTAL COMPROBANTE</div>
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="box-content Fs18">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+					   			</div>
+					   			
+					   			<!-- Valor adeudado -->
+					   			<div class="p-col-12 p-md-4 boxMain box-border-gray">
+					   				<div class="DispBlock box-header">TOTAL ADEUDADO</div>
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content Fs18">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+					   			</div>
+			   				</div>
+			   				<div class="EmptyBox5"/>		
+			   			</div>
+			   			
+			   			<!-- totales -->
+			   			<div class="p-col-12 p-lg-4">
+			   				<div class="p-grid">
+			   					<div class="p-col-6 pago-header Fs14">
+			   						<h:outputText value="Otros pagos " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalOtrosPago}" styleClass="box-content Fs14">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   					<div class="EmptyBox5"/>
+			   					<div class="p-col-6 pago-header Fs14">
+			   						<h:outputText value="Adeudado " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="box-content Fs14">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   					<div class="EmptyBox5"/>
+			   					<div class="p-col-6 pago-header Fs14">
+			   						<h:outputText value="Abonado " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalAbono}" styleClass="box-content Fs14">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   					<div class="EmptyBox5"/>
+			   					<div class="p-col-6 pago-header Fs14">
+			   						<h:outputText value="Total " />
+			   					</div>
+			   					<div class="p-col-6 pago-valor">
+			   						<h:outputText value="#{pagoCtrl.totalPago}" styleClass="box-content Fs14">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			   					</div>
+			   				</div>
+			   			</div>
+			   			
+			   		</div>
+			   		
+			   	</div>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+   
+</ui:composition>

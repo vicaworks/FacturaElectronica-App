@@ -1,0 +1,212 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">REP Cliente producto</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+        	
+        	.pvUnoDT .ui-datatable-scrollable-body{
+				min-height: 40vh !important;
+				max-height: 40vh !important;
+				/* height: calc(100vh - 500px)!important; */				
+			}
+			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.cardTitle{
+				padding:0.5em 0px;
+				font-size: 18px !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: top;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
+				padding: 0.2em !important;
+			}
+			
+			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+				padding: 0em;
+			}
+			
+			.ui-inputgroup .ui-inputgroup-addon {
+				padding: 0px; 
+			}
+			
+			.ui-autocomplete input{
+				width: 100%;
+			}
+			/* ================================================================================================== */
+			
+			
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
+    	
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="Facturas Emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+		</p:breadCrumb>
+    	
+    	<!-- Reporte global -->
+	    <h:form id="formMain">
+	    	
+	    	<div class="card card-w-title">
+				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Reporte Cliente - Producto</h3>
+		   		<div class="EmptyBox5"/>
+		   		
+		   		<div class="p-grid p-align-end vertical-container">
+		    		
+		    		<div class="p-col-12 p-md-2">
+		    			<h:outputText value="Desde *" styleClass="FontBold DispBlock"/>
+		    			<div class="EmptyBox5"/>
+			    		<p:calendar id="calDesde" value="#{repClienteProductosCtrl.desde}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calDesde"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+		    			<h:outputText value="Hasta *" styleClass="FontBold DispBlock"/>
+		    			<div class="EmptyBox5"/>
+			    		<p:calendar id="calHasta" value="#{repClienteProductosCtrl.hasta}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:message for="calHasta"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-4">
+		    			<h:outputText value="Cliente *" styleClass="FontBold DispBlock"/>
+		    			<div class="EmptyBox5"/>
+		    			
+		    			<p:autoComplete id="intCriterioBusqueda" value="#{repClienteProductosCtrl.criterioBusqueda}" completeMethod="#{repClienteProductosCtrl.completeClienteCriterio}"
+                        	forceSelection="true" 
+                        	styleClass="Wid100" requiredMessage="REQUERIDO"
+                        	placeholder="C.I., R.U.C., Nombre del cliente"
+                        	minQueryLength="2"/>
+		    			
+			    		<p:message for="intCriterioBusqueda"/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+			    		<p:commandButton id="cmdRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{repClienteProductosCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
+							/>
+		    		</div>
+		    		
+		    		<div class="p-col-12 p-md-2">
+			    		<p:commandButton id="cmdGlobalExcel"
+		  						value="EXPORTAR"
+								icon="fa fa-sort-down" 
+								styleClass="secondary-button Wid100"
+								disabled="#{empty repClienteProductosCtrl.ventasQuerieList}"
+								ajax="false">
+								<p:fileDownload value="#{repClienteProductosCtrl.fileResumen}" contentDisposition="inline"/>
+							</p:commandButton>
+		    		</div>
+		    	</div>
+		   		
+		   	</div>
+		   	
+		   	<!-- Mensajes -->
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			<div class="EmptyBox5"/>
+			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repClienteProductosCtrl.ventasQuerieList}">
+				<p:chart type="bar" model="#{repClienteProductosCtrl.barChartModel}" style="height:400px" responsive="true"/>
+			</p:panelGrid>
+			<div class="EmptyBox5"/>
+			<div class="card card-w-title">
+				
+				<p:dataTable id="pvUnoDT"
+		       			scrollable="true"
+		       			value="#{repClienteProductosCtrl.ventasQuerieList}"
+		       			var="v"
+		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvUnoDT Fs11"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowKey="#{v.idproducto}"
+						rows="20"
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+					
+					<p:column headerText="CODIGO" style="width:40px;">
+						<h:outputText value="#{v.codigoprincipal}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="ITEM" style="width:200px;">
+						<h:outputText value="#{v.nombregenerico}" >
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="CANTIDAD" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.cantidad}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="VALOR" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{v.preciototalsinimpuesto}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+							
+						
+				</p:dataTable>
+				
+				<div class="EmptyBox20"/>
+			
+			</div>
+	    	
+	    	
+	    </h:form>
+	    
+    </ui:define>
+
+</ui:composition>

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  */
 public enum GenTipoDocumentoEnum {
 	
-	FACTURA("01","FAC"),RECIBO("00","REC"),RETENCION("07","RET"),NOTA_CREDITO("04","NC"),NOTA_DEBITO("","ND"),GUIA_REMISION("08","GR");
+	FACTURA("01","FAC"),RECIBO("00","REC"),RETENCION("07","RET"),NOTA_CREDITO("04","NC"),NOTA_DEBITO("05","ND"),GUIA_REMISION("08","GR"),LIQUIDACION_COMPRA("03","LC"),COTIZACION("99","CT");
 	
 	private String identificador;
 	private String inicial;

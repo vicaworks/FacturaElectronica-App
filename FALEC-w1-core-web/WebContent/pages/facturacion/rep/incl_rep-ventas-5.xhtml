@@ -89,8 +89,8 @@
                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                 paginatorPosition="bottom">
 			
-			<p:column headerText="N." style="width:40px;">
-				<h:outputText value="#{rn.secuencial}" />
+			<p:column headerText="N." style="width:80px;">
+				<h:outputText value="#{repRecibAnuCtrl.getFormatoNumDocumento(rn.numdocumento)}" />
 			</p:column>
 			
 			<p:column headerText="FECHA" style="width:40px;">
@@ -111,20 +111,20 @@
 			
 			<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
 				<h:outputText value="#{rn.subtotal}" >
-					<f:convertNumber pattern="$#,##0.00"/>
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 				<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
 				<h:outputText value="#{rn.totaldescuento}" >
-					<f:convertNumber pattern="$#,##0.00"/>
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			
 			<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
 				<h:outputText value="#{rn.total}" styleClass="markBlack">
-					<f:convertNumber pattern="$#,##0.00"/>
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 						
@@ -135,27 +135,27 @@
     		<div class="p-col-3" style="text-align: center;">
     			<h:outputText value="CANTIDAD" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repRecibAnuCtrl.totalesDto.cantidad}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="#,##0"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
     			</h:outputText>
     		</div>
     		
     		<div class="p-col-3" style="text-align: center;">
     			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repRecibAnuCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold markBlack">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     		
     		<div class="p-col-3" style="text-align: center;">
     			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repRecibAnuCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     		<div class="p-col-3" style="text-align: center;">
     			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
     			<h:outputText value="#{repRecibAnuCtrl.totalesDto.total}" styleClass="Fs16 FontBold markBlack">
-    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
     	</div>

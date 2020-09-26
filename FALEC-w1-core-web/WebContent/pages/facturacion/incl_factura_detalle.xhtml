@@ -10,7 +10,7 @@
 		
 		.pvDetalleDT .ui-datatable-scrollable-body{
 			min-height: 20vh !important;
-			height: calc(100vh - 330px)!important;
+			height: calc(100vh - 385px)!important;
 		}
 		
 		.divTotal{
@@ -63,7 +63,7 @@
 		                        <p:commandButton id="cmdConsultarProducto"
 									icon="fa fa-search" 
 									action="#{compFacCtrl.buscarCodigoProducto()}" 
-									styleClass="Fs12 Wid100 displayButton" 
+									styleClass="Fs12 Wid100" 
 									update="@this :formMain:msgFormMain :formMain:intCriterioBusqueda :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" 
 									process="@this :formMain:intCriterioBusqueda"/>
 		                    </span>
@@ -74,12 +74,12 @@
 					
 					<div class="p-col-12 p-md-3">
 		 				<p:commandButton id="cmdFacProducto"
-							value="AGREG PRODUCTO" icon="fa fa-search" 
-							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
+							value="PRODUCTO" icon="fa fa-search" 
+							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
 							
 							<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 							<f:setPropertyActionListener value="FACTURA_FORM2" target="#{listaProductoCtrl.callModule}"/>
-							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal" target="#{listaProductoCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
 							<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 							
 						</p:commandButton>
@@ -87,7 +87,7 @@
 					
 					<div class="p-col-12 p-md-3">
 		 				<p:commandButton id="cmdFacDetalle"
-							value="AGREGAR ITEM" icon="fa fa-plus" 
+							value="ITEM" icon="fa fa-plus" 
 							action="#{compFacCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal" process="@this :formMain:pvDetalleDT">
 						</p:commandButton> 
 					</div>
@@ -117,7 +117,10 @@
 							<div class="p-col-9">
 								<div class="p-grid">
 									<div class="p-col-12">
-										<h:outputText value="#{d.descripcion}" styleClass="Fs12 FontBold"/>
+										<p:inputText id="intDetNombreProducto2" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
+											<p:ajax event="change"></p:ajax>
+										</p:inputText>
+										<p:message for="intDetNombreProducto2"/>
 									</div>
 									<div class="p-md-3 dt-spinner">
 										<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs12 FontBold" style="margin-right:10px;">
@@ -173,7 +176,7 @@
 											styleClass="Wid100 Fs8">
 					
 											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
-												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
+												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
 												
 											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
 											
@@ -183,7 +186,7 @@
 							</div>
 							<div class="p-col-3" style="text-align: right;">
 								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 						</div>
@@ -257,7 +260,7 @@
 											styleClass="Wid100">
 					
 											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
-												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
+												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
 												
 											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
 											
@@ -267,7 +270,7 @@
 							</div>
 							<div class="p-col-3" style="text-align: right;">
 								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
@@ -292,7 +295,7 @@
 			</div>
 			
 			<!-- Totales -->
-			
+			<div class="EmptyBox20"/>
 			<div class="p-col-12">
 			
 				<p:outputPanel id="oupFacTotal">
@@ -301,49 +304,49 @@
 							
 						<div class="p-grid p-col-12 p-md-6 divResumen">
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="Subtotal" styleClass="Fs12" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totalsinimpuestos}" styleClass="Fs12">
-									<f:convertNumber pattern="$ #,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="I.C.E." styleClass="Fs12" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totalice}" styleClass="Fs12">
-									<f:convertNumber pattern="$ #,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="I.V.A." styleClass="Fs12" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totaliva}" styleClass="Fs12">
-									<f:convertNumber pattern="$ #,##0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
-							<div class="p-col-8">
+							<div class="p-col-6">
 							</div>
-							<div class="p-grid p-col-4">
+							<div class="p-grid p-col-6">
 								<div class="p-col-12 bordeSubtotal"></div>
 							</div>
 							
-							<div class="p-col-8 subtotal">
+							<div class="p-col-6 subtotal">
 								<h:outputText value="Total" styleClass="FontBold Fs16" />
 							</div>
 							
-							<div class="p-col-4 subtotalValor">
+							<div class="p-col-6 subtotalValor">
 								<h:outputText value="#{compFacCtrl.cabecerSelected.totalconimpuestos}" styleClass="FontBold Fs16 DispBlock Wid100">
-									<f:convertNumber pattern="$ 0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 								
@@ -355,8 +358,9 @@
 				
 			</div>
 			
+			<div class="EmptyBox20"/>
+			
 		</div>
-		
 				
 	</div>
 	

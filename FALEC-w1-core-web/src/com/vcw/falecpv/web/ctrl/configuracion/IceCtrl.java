@@ -116,8 +116,9 @@ public class IceCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
+			
 			//validar unico codigo ice
-			if (iceServicio.getIceDao().existeCodigo(iceSelected.getCodigo(), iceSelected.getIdice())) {
+			if (iceServicio.getIceDao().existeCodigo(iceSelected.getCodigo(), iceSelected.getIdice(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmIce", "ERROR", "CODIGO DUPLICADO");
 				iceAllList = null;
 				consultarIce();
@@ -153,11 +154,24 @@ public class IceCtrl extends BaseCtrl {
 	@Override
 	public void nuevo() {
 		try {
-			iceSelected = new Ice();
-			iceSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
-			iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-	
+			nuevoIce();
 			AppJsfUtil.showModalRender("dlgIce", "frmIce");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void nuevoIce() {
+		iceSelected = new Ice();
+		iceSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+		iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+	}
+	
+	
+	public void nuevoForm() {
+		try {
+			nuevoIce();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmIce", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -209,7 +223,7 @@ public class IceCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getNombrecomercial());
 			
 			// lista de IVA
 			int fila = 9;
@@ -264,7 +278,7 @@ public class IceCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-iceList.xls");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-iceList" +  AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -509,7 +523,7 @@ public class IceCtrl extends BaseCtrl {
 			
 			if(ice.getCodigo()!=null) {
 				
-				if(iceServicio.getIceDao().existeCodigo(ice.getCodigo(), ice.getIdice())) {
+				if(iceServicio.getIceDao().existeCodigo(ice.getCodigo(), ice.getIdice(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 					ice.setError(true);
 					ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO CODIGO  YA EXISTE"):"CAMPO CODIGO  YA EXISTE");
 				}

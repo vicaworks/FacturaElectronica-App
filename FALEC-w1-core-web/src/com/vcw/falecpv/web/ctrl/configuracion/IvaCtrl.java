@@ -121,7 +121,7 @@ public class IvaCtrl extends BaseCtrl {
 			Iva ivaUpdate= new Iva();
 			
 			//validar unico codigo iva
-			if (ivaServicio.getIvaDao().existeCodigo(ivaSelected.getCodigo(), ivaSelected.getIdiva())) {
+			if (ivaServicio.getIvaDao().existeCodigo(ivaSelected.getCodigo(), ivaSelected.getIdiva(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmIva", "ERROR", "CODIGO DUPLICADO");
 				ivaAllList = null;
 				consultarIva();
@@ -129,7 +129,7 @@ public class IvaCtrl extends BaseCtrl {
 			}
 			//validar unico valor iva!
 			if(!ivaSelected.getValor().equals(BigDecimal.ZERO)) {
-					if (ivaServicio.getIvaDao().existeValor(ivaSelected.getValor().abs(), ivaSelected.getIdiva())) {
+					if (ivaServicio.getIvaDao().existeValor(ivaSelected.getValor().abs(), ivaSelected.getIdiva(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 						AppJsfUtil.addErrorMessage("frmIva", "ERROR", "VALOR DUPLICADO");
 						ivaAllList = null;
 						consultarIva();
@@ -137,13 +137,15 @@ public class IvaCtrl extends BaseCtrl {
 					}						
 			}
 			//valida si el valor es x defecto 
-			if(ivaSelected.getDefecto()==1) {
-				ivaUpdate=ivaServicio.getIvaDao().existeValorDefecto(defecto, ivaSelected.getIdiva());
-			if (ivaUpdate!= null) {
-				// actualizo objeto
-				ivaUpdate.setDefecto(0);
-				ivaServicio.actualizar(ivaUpdate);
-			}}	
+			if (ivaSelected.getDefecto() == 1) {
+				ivaUpdate = ivaServicio.getIvaDao().existeValorDefecto(defecto, ivaSelected.getIdiva(),
+						AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+				if (ivaUpdate != null) {
+					// actualizo objeto
+					ivaUpdate.setDefecto(0);
+					ivaServicio.actualizar(ivaUpdate);
+				}
+			}	
 			
 			//guarda-edita
 			ivaSelected.setUpdated(new Date());
@@ -176,11 +178,25 @@ public class IvaCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			
-			ivaSelected = new Iva();
-			ivaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
-			ivaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-	
+			nuevoIva();
 			AppJsfUtil.showModalRender("dlgIva", "frmIva");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmIva", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void nuevoIva() {
+		
+		ivaSelected = new Iva();
+		ivaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+		ivaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		
+	}
+	
+	public void nuevoForm() {
+		try {
+			nuevoIva();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmIva", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -233,7 +249,7 @@ public class IvaCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getNombrecomercial());
 			
 			// lista de IVA
 			int fila = 9;
@@ -280,7 +296,7 @@ public class IvaCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-ivaList.xls");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-ivaList" +  AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

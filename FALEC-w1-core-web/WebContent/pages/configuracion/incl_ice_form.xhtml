@@ -29,6 +29,10 @@
 						value="GUARDAR" icon="fa fa-check" 
 						action="#{iceCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
 						/>
+					
+					<p:commandButton id="cmdNuevoIceForm"
+							value="NUEVO" icon="fa fa-plus" 
+							action="#{ivaCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
 						
 					<p:commandButton id="cmdCerrar"
 						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
@@ -57,28 +61,31 @@
 					<h:outputText value="#{msg['label.codigo']} * : " styleClass="cpoRequerido"/>
 					<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" 
 					requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="4" 
-					validatorMessage="SOLO NÚMEROS">
+					validatorMessage="SOLO NÚMEROS" placeholder="#{msg['label.codigo']} SRI">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 							</p:inputText>
 					<p:message for="intCodigo"/>
 					
-					<h:outputText value="#{msg['label.descripcion']} * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter"/>
-					<p:message for="intDescripcion"/>
-					
-					<h:outputText value="TARIFA AD VALOREM : " styleClass="cpoRequerido"/>
-					<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="Wid100" />
+					<h:outputText value="TARIFA AD VALOREM * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="Wid100" maxlength="10" placeholder="VALOR EN CADENA Ejm 0%" required="true" requiredMessage="REQUERIDO"/>
 					<p:message for="intTarifaAdValorem"/>
 					
+					<h:outputText value="#{msg['label.descripcion']} * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']}"/>
+					<p:message for="intDescripcion"/>
+					
+					
 					<h:outputText value="TARIFA ESPECIFICA : " styleClass="cpoRequerido"/>
-					<p:inputText id="intTarifaEspecifica" value="#{iceCtrl.iceSelected.tarifaespecifica}"  styleClass="Wid100" />
+					<p:inputText id="intTarifaEspecifica" value="#{iceCtrl.iceSelected.tarifaespecifica}"  styleClass="Wid100"  placeholder="VALOR ejm: 2 o 2.75">
+						<!-- <f:convertNumber locale="es_EC" pattern="0.###"/> -->
+					</p:inputText>
 					<p:message for="intTarifaEspecifica"/>
 					
 					<h:outputText value="VALOR * : " styleClass="cpoRequerido" required="true" requiredMessage="REQUERIDO" />
 					<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  requiredMessage="REQUERIDO" styleClass="Wid100" 
-						 converterMessage="SOLO NUMEROS">
-						    <f:convertNumber locale="es_EC" pattern="0.###"/>
-							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+						 converterMessage="SOLO NUMEROS"  placeholder="VALOR ejm: 2 o 2.75">
+						    <!-- <f:convertNumber locale="es_EC" pattern="0.###"/> -->
+							<!-- <o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/> -->
 					</p:inputText>
 					<p:message for="intValor"/>
 					

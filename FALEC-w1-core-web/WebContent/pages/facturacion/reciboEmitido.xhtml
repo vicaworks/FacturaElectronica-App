@@ -7,14 +7,14 @@
 				xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/template/template.xhtml">
 
-    <ui:define name="title">RECIBOS</ui:define>
+    <ui:define name="title">Recibos emitidos</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 380px)!important;				
+				height: calc(100vh - 420px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -59,6 +59,31 @@
 				padding: 0.2em !important;
 			}
 			
+			.boxMain{
+				padding: 15px;
+				text-align: center;
+				border-radius: 4px;
+			}
+			
+			.box-header{
+				font-size: 10px;
+			}
+			
+			.box-content{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			
+			.box-gray{
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.box-border-gray{
+				border:1px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
         </style>
     </ui:define>
 
@@ -70,8 +95,7 @@
     	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Punto de Venta"  url="#{request.contextPath}/pages/facturacion/factura.jsf"/>
-		    <p:menuitem value="Recibos Emitidas" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf"/>
+		    <p:menuitem value="Recibos emitidos" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf"/>
 		</p:breadCrumb>
     	
     	<!-- Reporte global -->
@@ -84,7 +108,7 @@
 				</h3>
 		   		<div class="EmptyBox5"/>
 		   		
-		   		<div class="p-grid p-align-end vertical-container">
+		   		<div class="p-grid p-align-top vertical-container">
 		    		<div class="p-col-12 p-md-3">
 		    			<h:outputText value="Vendedor" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
 		    			<p:selectOneMenu id="somVendedor"
@@ -127,14 +151,29 @@
 		    		<div class="p-col-12 p-md-2">
 	  					<p:commandButton id="cmdGlobalBuscar"
 							icon="fa fa-search"
-							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100 Fs16" update="@form" style="margin-right:5px;"/>
-						<p:spacer width="5"/>
-	  					<p:commandButton id="cmdGlobalExcel"
-							icon="fa fa-file-excel-o" 
-							styleClass="success-btn Wid100 Fs16"
-							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
-							<p:fileDownload value="#{recEmitidoCtrl.file}"/>
+							action="#{recEmitidoCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+						<div class="EmptyBox5"/>
+						<p:commandButton id="cmdRtnNuevo"
+							value="NUEVO RECIBO" icon="fa fa-plus" 
+							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button" update="@form">
+							<f:setPropertyActionListener value="RECIBO" target="#{compFacCtrl.callModule}"/>
+	   					</p:commandButton>
+						<div class="EmptyBox5"/>
+						<p:commandButton id="cmdGlobalExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							immediate="true">
 						</p:commandButton>
+						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{recEmitidoCtrl.file}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{recEmitidoCtrl.fileDetalle}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
+						
 		    		</div>
 		    		
 		   		</div>
@@ -167,11 +206,16 @@
 					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtRecEmitidas">
-							<i class="fa fa-plus-square Fs14" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtRecEmitidas" my="left top" at="left bottom">
-							<p:menuitem value="Ver" action="#" icon="fa fa-eye" >
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye">
+								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+							</p:menuitem>
+							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+								<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 							</p:menuitem>
 							<p:menuitem value="Anular" action="#{recEmitidoCtrl.eliminar()}" icon="fa fa-trash-o" disabled="#{v.estado=='ANULADO'}" update="@form">
 								<f:setPropertyActionListener value="#{v}" target="#{recEmitidoCtrl.ventasQuerySelected}"/>
@@ -181,8 +225,8 @@
 					
 					</p:column>
 					
-					<p:column headerText="N." style="width:40px;">
-						<h:outputText value="#{v.secuencial}" />
+					<p:column headerText="N." style="width:80px;">
+						<h:outputText value="#{recEmitidoCtrl.getFormatoNumDocumento(v.numdocumento)}" />
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -191,12 +235,12 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CLIENTE" style="width:125px;">
+					<p:column headerText="CLIENTE" style="width:140px;">
 						<h:outputText value="#{v.razonsocial}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VENDEDOR" style="width:60px;">
+					<p:column headerText="VENDEDOR" style="width:80px;">
 						<h:outputText value="#{v.nombrepantalla}" >
 						</h:outputText>
 					</p:column>
@@ -208,40 +252,41 @@
 					
 					<p:column headerText="SUBTOT" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.subtotal}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="DESC" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.totaldescuento}" >
-							<f:convertNumber pattern="$#,##0.00"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.total}" styleClass="markBlack">
-							<f:convertNumber pattern="$#,##0.00"/>
+						<h:outputText value="#{v.total}" styleClass="markGray DispBlock Wid100">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PAGO" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.total.doubleValue()?'markRed':'markGreen'}">
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
+					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlRight">
+						
+						<div class="p-grid" style="padding-top:2px;">
+							<div class="p-col-9" style="text-align: right;">
+								<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.valorapagar.doubleValue() and v.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							<div class="p-col-1">
+								<p:commandLink action="#{pagoCtrl.cargarPagos()}" process="@this">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="#{v}" target="#{pagoCtrl.ventasQuery}"/>
+								</p:commandLink>
+							</div>
+						</div>
+						
+						
 					</p:column>
 					
-					<p:column headerText="ENTREG" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.licitado}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="CAMBIO" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.cambio}" >
-							<f:convertNumber pattern="$#,##0.00"/>
-						</h:outputText>
-					</p:column>
-								
 				</p:dataTable>
 				
 				<div class="EmptyBox5"/>
@@ -250,31 +295,36 @@
 		    		<div class="p-col-6 p-md-2" style="text-align: center;">
 		    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
 		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
-		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+		    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 		    			</h:outputText>
 		    		</div>
 		    		<div class="p-col-6 p-md-2" style="text-align: center;">
 		    			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
 		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
-		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+		    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 		    			</h:outputText>
 		    		</div>
 		    		<div class="p-col-6 p-md-2" style="text-align: center;">
 		    			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
 		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.total}" styleClass="Fs16 FontBold">
-		    				<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
+		    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 		    			</h:outputText>
 		    		</div>
 		    		<div class="p-col-6 p-md-2" style="text-align: center;">
 		    			<h:outputText value="PAGO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
 		    			<h:outputText value="#{recEmitidoCtrl.totalesDto.pago}" styleClass="Fs16 FontBold">
-		    				<f:convertNumber locale="es_EC" pattern="#,##0.00"/>
+		    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 		    			</h:outputText>
 		    		</div>
 		    	</div>
+		    	<div class="EmptyBox20"/>
 			</div>
 	    	
 	    </h:form>
+	    
+	    <ui:include src="../common/incl_comprobante_pagos.xhtml" />
+	    <!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
 	    
     </ui:define>
 

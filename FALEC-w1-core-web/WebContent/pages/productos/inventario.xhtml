@@ -14,7 +14,7 @@
 			
 			.inventarioDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 430px)!important;
+				height: calc(100vh - 400px)!important;
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -27,8 +27,15 @@
 				vertical-align: top;
 			}
 			
+			body .ui-messages, 
 			body .ui-message {
 				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
 			}
 			
 			.cardTitle{
@@ -75,7 +82,8 @@
     	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Productos" url="#" />
+		    <p:menuitem value="Productos" url="#{request.contextPath}/pages/productos/producto.jsf" />
+		    <p:menuitem value="Kardex producto" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf"/>
 		    <p:menuitem value="Inventario" url="#{request.contextPath}/pages/productos/inventario.jsf"/>
 		</p:breadCrumb>
 		
@@ -283,7 +291,7 @@
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtInventario">
-							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
 						
@@ -326,31 +334,33 @@
 					</p:column>
 					
 					<p:column headerText="FECHA VENCIMIENTO" style="width:60px;" styleClass="TexAlCenter" rendered="#{inventarioCtrl.opcionBusqueda=='FECHACADUCIDAD'}">
-						<h:outputText value="#{i.fechavencimiento}" styleClass="markRed">
-							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+						<h:outputText value="#{i.fechavencimiento}" styleClass="#{i.fechavencimiento!=null?'markRed':''} ">
+							<f:convertDateTime  pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="STOCK" style="width:30px;" styleClass="TexAlRight">
 						<h:outputText value="#{i.stock}" styleClass="#{i.stock.doubleValue()==0.0?'markRed':'markGreen'}">
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="COST. UNIT." style="width:30px;" styleClass="TexAlRight">
 						<h:outputText value="#{i.preciounitario}" >
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="COST. TOTAL." style="width:30px;" styleClass="TexAlRight">
 						<h:outputText value="#{i.costototal}" >
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					
 				</p:dataTable>
+				
+				<div class="EmptyBox20"/>
 				
 			</div>
 			
@@ -365,6 +375,12 @@
 	    
 	    <!-- Form Producto -->
 	    <ui:include src="incl_producto_form.xhtml" />
+	    
+	    <!-- Form Fabricante -->
+	    <ui:include src="incl_fabricante_form.xhtml" />
+	    
+	    <!-- Form Categoria -->
+	    <ui:include src="incl_categoria_form.xhtml" />
         
     </ui:define>
 

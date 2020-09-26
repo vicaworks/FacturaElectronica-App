@@ -183,15 +183,29 @@ public class FabricanteCtrl extends BaseCtrl {
 	@Override
 	public void nuevo() {
 		try {
-			fabricanteSelected = new Fabricante();
-			fabricanteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-			fabricanteSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());			
+			nuevoFabricante();			
 			AppJsfUtil.showModalRender("dlgFabricante", "frmFabricante");
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}	
 	}
+	
+	private void nuevoFabricante() {
+		fabricanteSelected = new Fabricante();
+		fabricanteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+		fabricanteSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+	}
+	
+	public void nuevoForm() {
+		try {
+			nuevoFabricante();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}	
+	}
+	
 
 	public StreamedContent getFileFabricante() {
 		try {

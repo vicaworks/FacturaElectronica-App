@@ -45,6 +45,10 @@
 				padding: 0.2em 0.5em !important;
 			}
 			
+			.ui-menu .ui-menu-list .ui-widget-header {
+				background-color: #d8d8dc !important;
+			}
+			
         </style>
     </ui:define>
 
@@ -56,7 +60,6 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Retenciones" url="#" />
 		    <p:menuitem value="Lista de Retenciones" url="#{request.contextPath}/pages/adquisicion/retenciones.jsf"/>
 		</p:breadCrumb>
 		
@@ -69,11 +72,23 @@
 	    		
 	    		<div class="p-grid p-align-center">
 	    			
-	    			<div class="p-col-12 p-md-8">
+	    			<div class="p-col-12 p-md-9">
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
+	    						<h:outputText value="ESTADO * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+		    					<p:selectOneMenu  value="#{retencionMainCtrl.estado}" 
+												 styleClass="Wid100" 
+												 required="false" requiredMessage="REQUERIDO">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
+									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
+									<f:selectItem itemLabel="ANULADO" itemValue="I" />
+								</p:selectOneMenu>
+							</div>
+	    					
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- desde -->
 	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -85,7 +100,7 @@
 								<p:message for="claretencionFechaDesde" style="padding:0em;"/>
 	    						
 	    					</div>
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- hasts  -->
 	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -106,7 +121,7 @@
 	    			</div>
 	    			
 	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-4">
+	    			<div class="p-col-12 p-md-3">
 	    				
 	    				<div class="EmptyBox5"/>
 	    				
@@ -131,15 +146,21 @@
 	   					
 	   					<div class="EmptyBox5"/>
 	   					
-	   					<p:commandButton  id="cmdRtnExcel" 
-									title="EXPORTAR"
-									icon="fa fa-file-excel-o"
-									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-									value="REPORTE"
-									styleClass="success-btn Wid100"
-									disabled="#{empty retencionMainCtrl.retencionList}">
-							<p:fileDownload value="#{retencionMainCtrl.fileRetencion}"/>
+						<p:commandButton id="cmdRtnExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty retencionMainCtrl.retencionList}">
 						</p:commandButton>
+						
+						<p:menu overlay="true" trigger="cmdRtnExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+								<p:fileDownload value="#{retencionMainCtrl.fileRetencion}" contentDisposition="inline"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+								<p:fileDownload value="#{retencionMainCtrl.fileRetencionDetalle}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
 	    				
 	    			</div>
 	    			
@@ -166,18 +187,38 @@
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"  
-					rows="15"
+					rows="20"
 					rowsPerPageTemplate="15,20,25,30,35,40,45,50">
 					
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtRetencion">
-							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
-						<p:menu overlay="true" trigger="cmlDtRetencion" my="left top" at="left bottom">
+						<p:menu overlay="true" trigger="cmlDtRetencion" my="left top" at="left bottom" style="width:200px;">
 							
-							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+							</p:menuitem>
+							
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{r.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+							</p:menuitem>
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{r.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:retencionDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
+							</p:menuitem>
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{r.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:retencionDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
+							</p:menuitem>
+							
+							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
@@ -187,40 +228,63 @@
 								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Eliminar #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form">
+							<p:menuitem value="Anular #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r}" target="#{retencionMainCtrl.retencionSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
-							<p:menuitem value="Ver Factura" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
-							</p:menuitem>
+							<p:submenu label="Comprobantes">
+								<p:menuitem value="Ver documento asociado" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null}">
+								</p:menuitem>
+							</p:submenu>
 							
 						</p:menu>
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:40px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{r.numdocumento}" />
+					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numdocumento)}" />
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:40px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle}"/>
-					</p:column>
-					
-					<p:column headerText="RUC / CI" style="width:40px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{r.proveedor.identificacion}" />
-					</p:column>
-					
-					<p:column headerText="FACTURA" style="width:40px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
-						<h:outputText value="#{r.numfactura}" />
-					</p:column>
-					
-					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:100px;" filterBy="#{r.proveedor.nombrecomercial}" filterMatchMode="contains">
-						<h:outputText value="#{r.proveedor.nombrecomercial}" />
+						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
 						<h:outputText value="#{r.fechaemision}" >
+							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="RUC / CI" style="width:50px;" filterBy="#{r.cliente.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{r.cliente.identificacion}" />
+					</p:column>
+					
+					
+					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:150px;" filterBy="#{r.cliente.razonsocial}" filterMatchMode="contains">
+						<h:outputText value="#{r.cliente.razonsocial}" />
+					</p:column>
+					
+					<p:column style="width:5px;" styleClass="TexAlCenter">
+						<f:facet name="header">
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope Fs14"/>
+						</f:facet>
+						<f:subview rendered="#{r.envioemail==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{r.envioemail==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
+					
+					<p:column headerText="DOC ASOCIADO" style="width:90px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
+						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numfactura)}" />
+					</p:column>
+					
+					<p:column headerText="FECHA" style="width:40px;">
+						<h:outputText value="#{r.fechaemisiondocasociado}" >
 							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
@@ -230,21 +294,25 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="VALOR" style="width:40px;">
-						<h:outputText value="#{r.totalretencion}" styleClass="markGreen">
-							<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+					<p:column headerText="VALOR" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{r.totalretencion}" styleClass="markGray DispBlock Wid100">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<!-- <p:column headerText="AUTO S.R.I." style="width:100px;" filterBy="#{r.claveacceso}" filterMatchMode="contains">
-						<h:outputText value="#{r.claveacceso}" />
-					</p:column> -->					
-					
 				</p:dataTable>
+				
+				<div class="EmptyBox20"/>
 				
 			</div>
 	    	
 	    </h:form>
+        
+        <!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
+		<!-- FIRMAR ENVIAR EMAIL -->
+	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
+		
         
     </ui:define>
 

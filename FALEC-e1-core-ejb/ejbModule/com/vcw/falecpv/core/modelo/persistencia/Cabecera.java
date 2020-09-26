@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import javax.validation.constraints.Size;
 
 import com.servitec.common.util.PojoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 
 /**
  * @author cristianvillarreal
@@ -147,6 +149,11 @@ public class Cabecera implements Serializable {
     @Column(name = "numdocumento", nullable = true, length = 15)
     private String numdocumento;
     
+    @Basic(optional = true)
+    @Size(min = 1, max = 40)
+    @Column(name = "idguiaremision", nullable = true, length = 40)
+    private String idguiaremision;
+    
     @ManyToOne(optional = true)
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = true)
     private Cliente cliente;
@@ -163,9 +170,9 @@ public class Cabecera implements Serializable {
     @JoinColumn(name = "idadquisicion", referencedColumnName = "idadquisicion", nullable = true)
     private Adquisicion adquisicion;
     
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = true)
-    private Proveedor proveedor;
+//    @ManyToOne(optional = true)
+//    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = true)
+//    private Proveedor proveedor;
     
     @Basic(optional = false)
     @NotNull
@@ -187,6 +194,48 @@ public class Cabecera implements Serializable {
     @Column(name = "idcabecerapadre", nullable = true, length = 40)
     private String idcabecerapadre;
     
+    @Column(name = "valorretenidoiva", precision = 12, scale = 2)
+    private BigDecimal valorretenidoiva = BigDecimal.ZERO;
+    
+    @Column(name = "valorretenidorenta", precision = 12, scale = 2)
+    private BigDecimal valorretenidorenta = BigDecimal.ZERO;
+    
+    @Column(name = "valorretenido", precision = 12, scale = 2)
+    private BigDecimal valorretenido = BigDecimal.ZERO;
+    
+    @Column(name = "envioemail")
+    private Integer envioemail = 0;
+    
+    @Size(min = 1, max = 100)
+    @Column(name = "resumenpago", nullable = false, length = 100)
+    private String resumenpago = "EFECTIVO";
+    
+    @Column(name = "valorapagar", precision = 12, scale = 2)
+    private BigDecimal valorapagar = BigDecimal.ZERO;
+    
+    @Size(max = 2147483647)
+    @Column(name = "contenido1", length = 2147483647)
+    private String contenido1;
+    
+    @Size(max = 2147483647)
+    @Column(name = "contenido2", length = 2147483647)
+    private String contenido2;
+    
+    @Size(max = 2147483647)
+    @Column(name = "contenido3", length = 2147483647)
+    private String contenido3;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fechavencimiento")
+    private Date fechaVencimiento;
+    
+    @Size(max = 400)
+    @Column(name = "resumen", length = 400)
+    private String resumen;
+    
+    @Size(max = 3)
+    @Column(name = "secuencialcaja", length = 3)
+    private String secuencialCaja;
     
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
@@ -196,20 +245,18 @@ public class Cabecera implements Serializable {
     @JoinColumn(name = "idtransportista", referencedColumnName = "idtransportista", nullable = true)
     private Transportista transportista;
     
-    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
     @Transient
     private List<Motivo> motivoList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
+    
     @Transient
     private List<Totalimpuesto> totalimpuestoList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
+    
     @Transient
     private List<Destinatario> destinatarioList;
-//    @OneToMany(mappedBy = "idcabecera")
+    
     @Transient
     private List<Detalle> detalleList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcabecera")
+    
     @Transient
     private List<Infoadicional> infoadicionalList;
     
@@ -224,6 +271,24 @@ public class Cabecera implements Serializable {
     
     @Transient
     private BigDecimal total = BigDecimal.ZERO;
+    
+    @Transient
+    private boolean editarSecuencial;
+    
+    @Transient
+    private String secuencialEstablecimiento;
+    
+    @Transient
+    private String secuencialNumero;
+    
+    @Transient
+    private GenTipoDocumentoEnum genTipoDocumentoEnum;
+    
+    @Transient
+    private BigDecimal totalpagar = BigDecimal.ZERO;
+    
+    @Transient
+    private boolean envioEmailBol=false;
 
 	/**
 	 * 
@@ -868,20 +933,6 @@ public class Cabecera implements Serializable {
 	}
 
 	/**
-	 * @return the proveedor
-	 */
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-
-	/**
-	 * @param proveedor the proveedor to set
-	 */
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	/**
 	 * @return the totalbaseimponible
 	 */
 	public BigDecimal getTotalbaseimponible() {
@@ -991,6 +1042,285 @@ public class Cabecera implements Serializable {
 	 */
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+
+	/**
+	 * @return the idguiaremision
+	 */
+	public String getIdguiaremision() {
+		return idguiaremision;
+	}
+
+	/**
+	 * @param idguiaremision the idguiaremision to set
+	 */
+	public void setIdguiaremision(String idguiaremision) {
+		this.idguiaremision = idguiaremision;
+	}
+
+	/**
+	 * @return the secuencialEstablecimiento
+	 */
+	public String getSecuencialEstablecimiento() {
+		return secuencialEstablecimiento;
+	}
+
+	/**
+	 * @param secuencialEstablecimiento the secuencialEstablecimiento to set
+	 */
+	public void setSecuencialEstablecimiento(String secuencialEstablecimiento) {
+		this.secuencialEstablecimiento = secuencialEstablecimiento;
+	}
+
+	/**
+	 * @return the secuencialCaja
+	 */
+	public String getSecuencialCaja() {
+		return secuencialCaja;
+	}
+
+	/**
+	 * @param secuencialCaja the secuencialCaja to set
+	 */
+	public void setSecuencialCaja(String secuencialCaja) {
+		this.secuencialCaja = secuencialCaja;
+	}
+
+	/**
+	 * @return the secuencialNumero
+	 */
+	public String getSecuencialNumero() {
+		return secuencialNumero;
+	}
+
+	/**
+	 * @param secuencialNumero the secuencialNumero to set
+	 */
+	public void setSecuencialNumero(String secuencialNumero) {
+		this.secuencialNumero = secuencialNumero;
+	}
+
+	/**
+	 * @return the editarSecuencial
+	 */
+	public boolean isEditarSecuencial() {
+		return editarSecuencial;
+	}
+
+	/**
+	 * @param editarSecuencial the editarSecuencial to set
+	 */
+	public void setEditarSecuencial(boolean editarSecuencial) {
+		this.editarSecuencial = editarSecuencial;
+	}
+
+	/**
+	 * @return the genTipoDocumentoEnum
+	 */
+	public GenTipoDocumentoEnum getGenTipoDocumentoEnum() {
+		return genTipoDocumentoEnum;
+	}
+
+	/**
+	 * @param genTipoDocumentoEnum the genTipoDocumentoEnum to set
+	 */
+	public void setGenTipoDocumentoEnum(GenTipoDocumentoEnum genTipoDocumentoEnum) {
+		this.genTipoDocumentoEnum = genTipoDocumentoEnum;
+	}
+
+	/**
+	 * @return the valorretenidoiva
+	 */
+	public BigDecimal getValorretenidoiva() {
+		return valorretenidoiva;
+	}
+
+	/**
+	 * @param valorretenidoiva the valorretenidoiva to set
+	 */
+	public void setValorretenidoiva(BigDecimal valorretenidoiva) {
+		this.valorretenidoiva = valorretenidoiva;
+	}
+
+	/**
+	 * @return the valorretenidorenta
+	 */
+	public BigDecimal getValorretenidorenta() {
+		return valorretenidorenta;
+	}
+
+	/**
+	 * @param valorretenidorenta the valorretenidorenta to set
+	 */
+	public void setValorretenidorenta(BigDecimal valorretenidorenta) {
+		this.valorretenidorenta = valorretenidorenta;
+	}
+
+	/**
+	 * @return the valorretenido
+	 */
+	public BigDecimal getValorretenido() {
+		return valorretenido;
+	}
+
+	/**
+	 * @param valorretenido the valorretenido to set
+	 */
+	public void setValorretenido(BigDecimal valorretenido) {
+		this.valorretenido = valorretenido;
+	}
+
+	/**
+	 * @return the totalpagar
+	 */
+	public BigDecimal getTotalpagar() {
+		return totalpagar;
+	}
+
+	/**
+	 * @param totalpagar the totalpagar to set
+	 */
+	public void setTotalpagar(BigDecimal totalpagar) {
+		this.totalpagar = totalpagar;
+	}
+
+	/**
+	 * @return the envioemail
+	 */
+	public Integer getEnvioemail() {
+		return envioemail;
+	}
+
+	/**
+	 * @param envioemail the envioemail to set
+	 */
+	public void setEnvioemail(Integer envioemail) {
+		this.envioemail = envioemail;
+	}
+
+	/**
+	 * @return the resumenpago
+	 */
+	public String getResumenpago() {
+		return resumenpago;
+	}
+
+	/**
+	 * @param resumenpago the resumenpago to set
+	 */
+	public void setResumenpago(String resumenpago) {
+		this.resumenpago = resumenpago;
+	}
+
+	/**
+	 * @return the valorapagar
+	 */
+	public BigDecimal getValorapagar() {
+		return valorapagar;
+	}
+
+	/**
+	 * @param valorapagar the valorapagar to set
+	 */
+	public void setValorapagar(BigDecimal valorapagar) {
+		this.valorapagar = valorapagar;
+	}
+	
+	public BigDecimal getTotalPagadoSum() {
+		if(pagoList!=null && !pagoList.isEmpty()) {
+			return BigDecimal.valueOf(pagoList.stream().mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		}
+		return BigDecimal.ZERO;
+	}
+
+	/**
+	 * @return the resumen
+	 */
+	public String getResumen() {
+		return resumen;
+	}
+
+	/**
+	 * @param resumen the resumen to set
+	 */
+	public void setResumen(String resumen) {
+		this.resumen = resumen;
+	}
+
+	/**
+	 * @return the contenido1
+	 */
+	public String getContenido1() {
+		return contenido1;
+	}
+
+	/**
+	 * @param contenido1 the contenido1 to set
+	 */
+	public void setContenido1(String contenido1) {
+		this.contenido1 = contenido1;
+	}
+
+	/**
+	 * @return the contenido2
+	 */
+	public String getContenido2() {
+		return contenido2;
+	}
+
+	/**
+	 * @param contenido2 the contenido2 to set
+	 */
+	public void setContenido2(String contenido2) {
+		this.contenido2 = contenido2;
+	}
+
+	/**
+	 * @return the fechaVencimiento
+	 */
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	/**
+	 * @param fechaVencimiento the fechaVencimiento to set
+	 */
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	/**
+	 * @return the envioEmailBol
+	 */
+	public boolean isEnvioEmailBol() {
+		if(envioemail==null) {
+			envioEmailBol = false;
+		}else {
+			envioEmailBol = envioemail==1;
+		}
+		return envioEmailBol;
+	}
+
+	/**
+	 * @param envioEmailBol the envioEmailBol to set
+	 */
+	public void setEnvioEmailBol(boolean envioEmailBol) {
+		this.envioemail = envioEmailBol?1:0;
+		this.envioEmailBol = envioEmailBol;
+	}
+
+	/**
+	 * @return the contenido3
+	 */
+	public String getContenido3() {
+		return contenido3;
+	}
+
+	/**
+	 * @param contenido3 the contenido3 to set
+	 */
+	public void setContenido3(String contenido3) {
+		this.contenido3 = contenido3;
 	}
 
 }

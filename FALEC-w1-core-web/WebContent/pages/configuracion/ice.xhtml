@@ -133,12 +133,13 @@
 		  		<p:column headerText="OPC" style="width:80px;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtIce">
-							<i class="fa fa-plus-square Fs14" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtIce" my="left top" at="left bottom">
 							
 							<p:menuitem value="Editar" action="#{iceCtrl.editar()}" icon="fa fa-edit">
+								<f:setPropertyActionListener value="#{ice}" target="#{iceCtrl.iceSelected}"/>
 							</p:menuitem>
 							
 							<p:menuitem value="Eliminar" action="#{iceCtrl.eliminar()}" update="@form" icon="fa fa-trash-o" >
@@ -165,6 +166,10 @@
 						<h:outputText value="#{ice.codigo}" />
 				</p:column>
 					
+		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
+		             <h:outputText value="#{ice.tarifaadvalorem}" />
+		        </p:column>
+		        
 		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:420px;">
 		                <f:facet name="header">
 							<h:outputText value="#{msg['label.descripcion']}" />
@@ -173,16 +178,15 @@
 						 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
-		             <h:outputText value="#{ice.tarifaadvalorem}" />
-		        </p:column>
 		        
-		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;" >
+		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;"  styleClass="TexAlRight">
 		            <h:outputText value="#{ice.tarifaespecifica}" />
 		        </p:column>
 		        
-		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" >
-		            <h:outputText value="#{ice.valor}" />
+		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" styleClass="TexAlRight">
+		            <h:outputText value="#{ice.valor}" >
+		            	<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
+		            </h:outputText>
 		        </p:column>
 		 
 		        

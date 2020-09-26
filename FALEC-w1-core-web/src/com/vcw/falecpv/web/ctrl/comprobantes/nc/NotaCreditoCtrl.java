@@ -24,11 +24,10 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
-import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
@@ -41,6 +40,7 @@ import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
@@ -88,10 +88,12 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	@EJB
 	private DetalleServicio detalleServicio;
 	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
+	
 	
 	private String callModule;
 	private String viewUpdate;
-	private List<Cliente> clienteList;
 	private List<Tipocomprobante> tipocomprobanteList;
 	private Cabecera notaCreditoSeleccion;
 	private Cabecera facturaSeleccion;
@@ -103,6 +105,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	private List<Iva> ivaList;
 	private List<Ice> iceList;
 	private String criterioBusqueda;
+	private String criterioCliente;
 	
 	/**
 	 * 
@@ -116,7 +119,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 			callModule = "NOTACREDITO";
 			notaCreditoSeleccion = new Cabecera();
-			consultarCliente();
 			consultarTipoComprobante();
 			consultarIce();
 			consultarIva();
@@ -135,15 +137,15 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
-	public void consultarCliente()throws DaoException{
-		clienteList = null;
-		clienteList = clienteServicio.getClienteDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+	public void consultarCliente(String identificador)throws DaoException{
+		notaCreditoSeleccion.setCliente(null);
+		notaCreditoSeleccion.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 	public void consultarTipoComprobante()throws DaoException{
 		
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
-				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-						TipoComprobanteEnum.NOTACREDITO));
+				.getByEmpresaFormulario(TipoComprobanteEnum.NOTACREDITO));
 	}
 	
 	@Override
@@ -167,19 +169,42 @@ public class NotaCreditoCtrl extends BaseCtrl {
 				
 			}
 			
+			if(detalleNcList==null || detalleNcList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE.");
+				return;
+			}
+			
 			notaCreditoSeleccion.setDetalleList(detalleNcList);
+			notaCreditoSeleccion.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.NOTA_CREDITO);
+			notaCreditoSeleccion.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.NOTA_CREDITO);
 			notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			notaCreditoSeleccion.setUpdated(new Date());
 			notaCreditoSeleccion = cabeceraServicio.guardarComprobanteFacade(notaCreditoSeleccion);
-			if(callModule.equals("FACTURAS_EMITIDAS")) {
-				FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
+			noEditarSecuencial(notaCreditoSeleccion);
+			FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
+			if(facEmitidaCtrl!=null) {
 				facEmitidaCtrl.consultar();
 			}
+			CompNcCtrl compNcCtrl = (CompNcCtrl) AppJsfUtil.getManagedBean("compNcCtrl");
+			if(compNcCtrl!=null) {
+				compNcCtrl.consultar();
+			}
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK", "TODO: GUARDADO IMPRIMIR");
+			switch (callModule) {
+			case "FACTURAS_EMITIDAS":
+				break;
+			case "NOTACREDITO":
+				break;	
+			default:
+				break;
+			}
 			
+			messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.credito") + " GENERADA CORRECTAMENTE.", "OK");
 			
+		} catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -189,31 +214,23 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		notaCreditoSeleccion.setTipoemision("1");
-		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
 		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		notaCreditoSeleccion.setContribuyenteespecial("5368");
 		determinarPeriodoFiscal();
 		notaCreditoSeleccion.setMoneda("DOLAR");
-		if(notaCreditoSeleccion.getSecuencial()==null) {
-			notaCreditoSeleccion.setSecuencial(contadorPkServicio.generarNumeroDocumento(genTipoDocumentoEnum,
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
-			// clave de acceso
-			notaCreditoSeleccion.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(notaCreditoSeleccion, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIONOTACREDITO, notaCreditoSeleccion.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			notaCreditoSeleccion.setNumdocumento(TextoUtil.leftPadTexto(notaCreditoSeleccion.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(notaCreditoSeleccion.getSecuencial()));
-		}
-		
 		notaCreditoSeleccion.setPropina(BigDecimal.ZERO);
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		notaCreditoSeleccion.setTipodocasociado(notaCreditoSeleccion.getTipocomprobanteretencion().getIdentificador());
 		
 		formatoNumDoc(notaCreditoSeleccion.getNumfactura());
 		if(notaCreditoSeleccion.getIdcabecerapadre()==null) {
 			notaCreditoSeleccion.setValordocasociado(notaCreditoSeleccion.getTotalconimpuestos());
 		}
 		notaCreditoSeleccion.setImportetotal(notaCreditoSeleccion.getTotalconimpuestos());
-		
+		notaCreditoSeleccion.setNumdocasociado(notaCreditoSeleccion.getNumfactura());
 		
 		// tabla de total impuesto
 		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
@@ -225,7 +242,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		ComprobanteHelper.determinarDetalleImpuesto(notaCreditoSeleccion.getDetalleList());
 		
 		// infromacion adicional 
-		notaCreditoSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notaCreditoSeleccion));
+		notaCreditoSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notaCreditoSeleccion,infoadicionalList));
 		
 	}
 
@@ -241,7 +258,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	public void nuevaNotaCredito()throws DaoException {
 		consultarTipoComprobante();
-		consultarCliente();
 		consultarIce();
 		consultarIva();
 		notaCreditoSeleccion = null;
@@ -259,6 +275,8 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setTotalice(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotaliva(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotalsinimpuestos(BigDecimal.ZERO);
+		infoadicionalList = null;
+		inicializarSecuencia(notaCreditoSeleccion);
 		
 		if(facturaSeleccion!=null) {
 			notaCreditoSeleccion.setIdcabecera(facturaSeleccion.getIdcabecera());
@@ -469,7 +487,16 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			detalleSelected.setPreciounitario(BigDecimal.ZERO);
 			detalleSelected.setProducto(null);
 			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
-			detalleSelected.setIce(iceList.stream().filter(x->x.getValor().doubleValue()==0d).findFirst().get());
+			// valida
+			if(detalleSelected.getIva()==null) {
+				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				return;
+			}
+			detalleSelected.setIce(iceList.stream().filter(x->x.getValor().doubleValue()==0d).findFirst().orElse(null));
+			if(detalleSelected.getIce()==null) {
+				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0.");
+				return;
+			}
 			detalleNcList.add(detalleSelected);
 			
 			calcularItem(detalleSelected, false);
@@ -502,6 +529,8 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		notaCreditoSeleccion.setSecuencial(null);
 		notaCreditoSeleccion.setTipocomprobante(null);
+		infoadicionalList = null;
+		inicializarSecuencia(notaCreditoSeleccion);
 		detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
 		for (Detalle de : detalleNcList) {
 			de.setCabecera(null);
@@ -520,12 +549,70 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			Cabecera c = cabeceraServicio.getCabeceraDao().getByTipoComprobante(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), notaCreditoSeleccion.getTipocomprobanteretencion() ,notaCreditoSeleccion.getNumfactura());
 			if(c!=null) {
 				nuevoByFacturaEmitida(c.getIdcabecera());
+			}else {
+				AppJsfUtil.addErrorMessage("formMain:inpNcNumFac", "ERROR", "NO EXISTE");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(notaCreditoSeleccion, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(notaCreditoSeleccion);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void buscarCliente() {
+		try {
+			
+			if(notaCreditoSeleccion==null) return;
+			
+			if(criterioCliente==null || criterioCliente.trim().length()==0) {
+				AppJsfUtil.addErrorMessage("formMain:inpCriterioCliente", "ERROR", "REQUERIDO");
+				return;
+			}
+			
+			consultarCliente(criterioCliente);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public String editar(String idNotaCredito) throws DaoException {
+		
+		nuevaNotaCredito();
+		notaCreditoSeleccion = cabeceraServicio.consultarByPk(idNotaCredito);
+		
+		if(idNotaCredito==null) {
+			return "NO EXISTE EL REGISTRO SELECCIONADO";
+		}
+		
+	 	detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idNotaCredito);
+	 	infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotaCredito);
+		totalizar();
+		
+		return null;
 	}
 	
 	/**
@@ -617,20 +704,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	/**
-	 * @return the clienteList
-	 */
-	public List<Cliente> getClienteList() {
-		return clienteList;
-	}
-
-	/**
-	 * @param clienteList the clienteList to set
-	 */
-	public void setClienteList(List<Cliente> clienteList) {
-		this.clienteList = clienteList;
 	}
 
 	/**
@@ -729,6 +802,20 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 */
 	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
+	}
+
+	/**
+	 * @return the criterioCliente
+	 */
+	public String getCriterioCliente() {
+		return criterioCliente;
+	}
+
+	/**
+	 * @param criterioCliente the criterioCliente to set
+	 */
+	public void setCriterioCliente(String criterioCliente) {
+		this.criterioCliente = criterioCliente;
 	}
 
 }

@@ -27,6 +27,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
@@ -76,7 +77,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -90);
+			desde = FechaUtil.agregarDias(hasta, -21);
 			criterioBusqueda = null;
 			retencionFormCtrl = (RetencionFrmCtrl) AppJsfUtil.getManagedBean("retencionFrmCtrl");
 			consultarRetenciones();
@@ -89,7 +90,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void consultarRetenciones()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:retencionDT");
 		retencionList = null;
-		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),estado);
 	}
 	
 	@Override
@@ -162,6 +163,149 @@ public class RetencionMainCtrl extends BaseCtrl {
 		return null;
 	}
 	
+	public StreamedContent getFileRetencionDetalle() {
+		
+		try {
+			
+			if(retencionList==null || retencionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-RetencionesDet.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			// datos de la cabecera
+			Row row = sheet.getRow(3);
+			Cell cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			row = sheet.getRow(4);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(desde));
+			
+			row = sheet.getRow(5);
+			cell = row.createCell(1);
+			cell.setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			row = sheet.getRow(6);
+			cell = row.createCell(1);
+			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			int fila = 10;
+			int filaDt = 10;
+			
+			for (Cabecera r : retencionList) {
+				
+				row = sheet.createRow(fila);
+				int col =0;
+				
+				// datos de la cabecera
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(r.getNumdocumento()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(r.getFechaemision()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getEstado());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getCliente().getIdentificacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getCliente().getRazonsocial());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getTipocomprobanteretencion().getComprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(r.getNumdocasociado()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(r.getFechaemisiondocasociado()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getPeriodofiscal());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(r.getTotalretencion().doubleValue());
+				
+				filaDt = fila;
+				for (Impuestoretencion rd : cabeceraRetencionServicio.getDetalleById(r.getIdcabecera())) {
+					
+					col = 10;
+					
+					row = sheet.getRow(filaDt);
+					if(row==null) {
+						row = sheet.createRow(filaDt);
+					}
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getCodigo());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getRetencionimpuestodet().getNombre());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getBaseimponible().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getRetencionimpuestodet().getValor().doubleValue());
+					
+					cell = row.createCell(col++);
+					cell.setCellValue(rd.getValorretenido().doubleValue());
+					
+					filaDt++;
+					
+				}
+				
+				fila += (filaDt - fila);
+				
+			}
+			
+			
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A3", sheet)));
+			
+
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-RetencionesDet_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+		return null;
+		
+	}
+	
 	public StreamedContent getFileRetencion() {
 		
 		try {
@@ -199,8 +343,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			cell = row.createCell(1);
 			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
 			
-			int fila = 10;
-			int filaDt = 10;
+			int fila = 9;
 			
 			for (Cabecera r : retencionList) {
 				
@@ -209,68 +352,46 @@ public class RetencionMainCtrl extends BaseCtrl {
 				
 				// datos de la cabecera
 				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(r.getNumdocumento()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(r.getFechaemision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(FechaUtil.getAnio(r.getFechaemision()));
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(FechaUtil.getMes(r.getFechaemision()));
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(r.getNumdocumento());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(r.getClaveacceso());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(r.getTipocomprobanteretencion().getComprobante());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(r.getNumfactura());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(r.getProveedor().getIdentificacion());
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(r.getProveedor().getRazonsocial());
-				
-				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(r.getEstado());
 				
 				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getCliente().getIdentificacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getCliente().getRazonsocial());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getTipocomprobanteretencion().getComprobante());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(r.getNumdocasociado()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(r.getFechaemisiondocasociado()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(r.getPeriodofiscal());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(r.getTotalretencion().doubleValue());
 				
-				filaDt = fila + 1;
-				for (Impuestoretencion rd : cabeceraRetencionServicio.getDetalleById(r.getIdcabecera())) {
-					
-					col = 11;
-					
-					row = sheet.getRow(filaDt);
-					if(row==null) {
-						row = sheet.createRow(filaDt);
-					}
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(rd.getCodigo());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(rd.getRetencionimpuestodet().getNombre());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(rd.getBaseimponible().doubleValue());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(rd.getRetencionimpuestodet().getValor().doubleValue());
-					
-					cell = row.createCell(col++);
-					cell.setCellValue(rd.getValorretenido().doubleValue());
-					
-					filaDt++;
-					
-				}
-				
-				fila += (filaDt - fila);
+				fila ++;
 				
 			}
 			
@@ -395,6 +516,5 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void setRetencionSelected(Cabecera retencionSelected) {
 		this.retencionSelected = retencionSelected;
 	}
-	
 
 }

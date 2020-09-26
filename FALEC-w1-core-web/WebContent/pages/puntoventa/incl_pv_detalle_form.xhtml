@@ -200,27 +200,27 @@
 									<h:outputText value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 									
 									<h:outputText value="#{d.cantidad}" styleClass="Fs10">
-										<f:convertNumber locale="es_EC" pattern="0.##"/>
+										<f:convertNumber  pattern="#{appSessionCtrl.formatoNumber}"/>
 									</h:outputText>
 									
 								</div>
 								<div class="p-md-4">
 									<h:outputText value="P.UNI" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 									<h:outputText value="#{d.preciounitario}" styleClass="Fs10">
-										<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 								</div>
 								<div class="p-md-4">
 									<h:outputText value="DES" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 									<h:outputText value="#{d.descuento}" styleClass="Fs10">
-										<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
 								</div>
 							</div>
 						</div>
 						<div class="p-col-3" style="text-align: right;">
-							<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
-								<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+							<h:outputText value="#{d.preciototal}" styleClass="Fs12 FontBold">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</div>
 					</div>
@@ -247,7 +247,7 @@
 			</div>
 			<div class="p-col-5" style="text-align: right;">
 				<p:outputPanel id="oupTotales">
-					<h:outputText value="#{factMainCtrl.cabeceraFac!=null?factMainCtrl.cabeceraFac.totalsinimpuestos:0}" styleClass="Fs18 FontBold">
+					<h:outputText value="#{factMainCtrl.cabeceraFac!=null?factMainCtrl.cabeceraFac.totalconimpuestos:0}" styleClass="Fs18 FontBold">
 						<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
 					</h:outputText>
 				</p:outputPanel>

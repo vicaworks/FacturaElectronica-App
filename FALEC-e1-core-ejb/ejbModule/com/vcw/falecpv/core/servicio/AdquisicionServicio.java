@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -17,12 +18,13 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.FechaUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCAdquisicion;
+import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
 import com.vcw.falecpv.core.dao.impl.AdquisicionDao;
 import com.vcw.falecpv.core.dao.impl.AdquisiciondetalleDao;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisiciondetalle;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
-import com.vcw.falecpv.core.modelo.persistencia.Pagodetalle;
+import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.xpert.persistence.query.QueryBuilder;
 
@@ -52,8 +54,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 	private AdquisiciondetalleServicio adquisiciondetalleServicio;
 	
 	@EJB
-	private PagodetalleServicio pagodetalleServicio;
-	
+	private PagoServicio pagoServicio;
 	
 	/**
 	 * @author cristianvillarreal
@@ -63,13 +64,13 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 	 * @return
 	 * @throws DaoException
 	 */
-	public Adquisicion guadarFacade(Adquisicion adquisicion,List<Adquisiciondetalle> adquisiciondetalleList,List<Pagodetalle> pagodetalleList)throws DaoException{
+	public Adquisicion guadarFacade(Adquisicion adquisicion,List<Adquisiciondetalle> adquisiciondetalleList,List<Pago> pagoList)throws DaoException{
 		try {
 			
 			// datos de la adquisicion
 			
 			if(adquisicion.getIdadquisicion()==null) {
-				adquisicion.setIdadquisicion(contadorPkServicio.generarContadorTabla(TCAdquisicion.ADQUISICION,
+				adquisicion.setIdadquisicion(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.CABECERA,
 						adquisicion.getEstablecimiento().getIdestablecimiento()));
 				crear(adquisicion);
 			}else {
@@ -90,29 +91,29 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
 					// ingreso de kardex
 					KardexProducto k = kardexProductoServicio.getByEstablecimientoModulo(d.getProducto().getIdproducto(), adquisicion.getEstablecimiento().getIdestablecimiento(), d.getIdadquisiciondetalle(), "ADQ");
-					int cantidad = d.getCantidad();
-					if(k!=null && d.getCantidad()>k.getCantidad().intValue()) {
-						cantidad = d.getCantidad() - k.getCantidad().intValue();
+					BigDecimal cantidad = d.getCantidad();
+					if(k!=null && d.getCantidad().doubleValue()>k.getCantidad().doubleValue()) {
+						cantidad =   d.getCantidad().add(k.getCantidad().negate());
 						
-						k.setCantidad(BigDecimal.valueOf(d.getCantidad()));
-						k.setSaldo(k.getSaldo().add(BigDecimal.valueOf(cantidad)));
+						k.setCantidad(d.getCantidad());
+						k.setSaldo(k.getSaldo().add(cantidad));
 						Producto p = productoServicio.consultarByPk(d.getProducto().getIdproducto());
-						p.setStock(p.getStock().add(BigDecimal.valueOf(cantidad)));
+						p.setStock(p.getStock().add(cantidad));
 						kardexProductoServicio.actualizar(k);
 						productoServicio.actualizar(p);
-					}else if(k!=null && d.getCantidad()<k.getCantidad().intValue()) {
-						cantidad = k.getCantidad().intValue() - d.getCantidad();
+					}else if(k!=null && d.getCantidad().doubleValue()<k.getCantidad().doubleValue()) {
+						cantidad = k.getCantidad().add(d.getCantidad().negate());
 						
-						k.setCantidad(BigDecimal.valueOf(d.getCantidad()));
-						k.setSaldo(k.getSaldo().add(BigDecimal.valueOf(cantidad).negate()));
+						k.setCantidad(d.getCantidad());
+						k.setSaldo(k.getSaldo().add(cantidad).negate());
 						Producto p = productoServicio.consultarByPk(d.getProducto().getIdproducto());
-						p.setStock(p.getStock().add(BigDecimal.valueOf(cantidad).negate()));
+						p.setStock(p.getStock().add(cantidad).negate());
 						kardexProductoServicio.actualizar(k);
 						productoServicio.actualizar(p);
 					}else if(k==null) {
 						// registra la entrada de kardex
 						k = new KardexProducto();
-						k.setCantidad(BigDecimal.valueOf(d.getCantidad()));
+						k.setCantidad(d.getCantidad());
 						k.setEstablecimiento(adquisicion.getEstablecimiento());
 						k.setFechacompra(adquisicion.getFecha());
 						k.setFecharegistro(adquisicion.getFecha());
@@ -127,10 +128,12 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 						k.setFechavencimiento(d.getProducto().getFechavencimiento());
 						StringBuilder obs = new StringBuilder();
 						obs.append("COMPRA ");
-						obs.append(" / PROVEEDOR : " + adquisicion.getProveedor().getNombrecomercial());
+						obs.append(" / PROVEEDOR : " + adquisicion.getCliente().getRazonsocial());
 						obs.append(" / FACTURA : " + adquisicion.getNumfactura());
 						obs.append(" / FECHA : " + FechaUtil.formatoFecha(adquisicion.getFecha()));
-						obs.append(" / PAGO : " + adquisicion.getTipopago().getNombre());
+						if(pagoList!=null && !pagoList.isEmpty()) {
+							obs.append(" / PAGO : " + (pagoList.size()>0?"VARIOS":pagoList.get(0).getTipopago().getDescripcion()));
+						}
 						k.setObservacion(obs.toString());
 						kardexProductoServicio.registrarKardexFacade(k);
 					}
@@ -140,22 +143,15 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 			}
 			
 			// detalle del pago
-			if(pagodetalleList!=null && !adquisicion.getTipopago().getNombre().equals("EFECTIVO")) {
-				for (Pagodetalle pd : pagodetalleList) {
-					pd.setUpdated(new Date());
-					if(pd.getIdpagodetalle().contains("MM") || pd.getIdpagodetalle()==null) {
-						pd.setIdpagodetalle(contadorPkServicio.generarContadorTabla(TCAdquisicion.ADQUISICIONDETALLE, adquisicion.getEstablecimiento().getIdestablecimiento()));
-						pagodetalleServicio.crear(pd);
-					}else {
-						pagodetalleServicio.actualizar(pd);
+			pagoServicio.getPagoDao().eliminarByAdquisicion(adquisicion.getIdadquisicion());
+			if(pagoList!=null) {
+				for (Pago	p : pagoList) {
+					if(p.getIdpago()==null || p.getIdpago().contains("M")) {
+						p.setIdpago(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.PAGO, adquisicion.getEstablecimiento().getIdestablecimiento()));
 					}
+					p.setAdquisicion(adquisicion);
+					pagoServicio.crear(p);
 				}
-				
-			}
-			
-			// si pago efectivo 
-			if(adquisicion.getTipopago().getNombre().equals("EFECTIVO")) {
-				pagodetalleServicio.eliminarByAdquisicion(adquisicion.getIdadquisicion());
 			}
 			
 			return adquisicion;
@@ -236,11 +232,11 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				BigDecimal cant = BigDecimal.ZERO;
 				// datos de producto
 				Producto p = productoServicio.consultarByPk(ad.getProducto().getIdproducto());
-				if (p.getStock().compareTo(BigDecimal.valueOf(ad.getCantidad()))>=0) {
-					if(p.getStock().add(BigDecimal.valueOf(ad.getCantidad()).negate()).doubleValue()<0.0) {
+				if (p.getStock().compareTo(ad.getCantidad())>=0) {
+					if(p.getStock().add(ad.getCantidad().negate()).doubleValue()<0.0) {
 						cant = p.getStock();
 					}else {
-						cant = BigDecimal.valueOf(ad.getCantidad());
+						cant = ad.getCantidad();
 					}
 				}
 					// kardex
@@ -248,8 +244,6 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 					k.setEstablecimiento(ad.getAdquisicion().getEstablecimiento());
 					k.setFechacompra(ad.getAdquisicion().getFecha());
 					k.setFecharegistro(ad.getAdquisicion().getFecha());
-	//				k.setIdreferencia(ad.getIdadquisiciondetalle());
-	//				k.setModuloreferencia("ADQ");
 					k.setIdusuario(idusuario);
 					k.setProducto(ad.getProducto());
 					k.setTiporegistro("S");
@@ -259,10 +253,9 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 					k.setFechavencimiento(ad.getProducto().getFechavencimiento());
 					StringBuilder obs = new StringBuilder();
 					obs.append("ANULACION COMPRA ");
-					obs.append(" / PROVEEDOR : " + ad.getAdquisicion().getProveedor().getNombrecomercial());
+					obs.append(" / PROVEEDOR : " + ad.getAdquisicion().getCliente().getRazonsocial());
 					obs.append(" / FACTURA : " + ad.getAdquisicion().getNumfactura());
 					obs.append(" / FECHA : " + FechaUtil.formatoFecha(ad.getAdquisicion().getFecha()));
-					obs.append(" / PAGO : " + ad.getAdquisicion().getTipopago().getNombre());
 					k.setObservacion(obs.toString());
 					kardexProductoServicio.registrarKardexFacade(k);
 				
@@ -317,7 +310,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 			return (Adquisicion) q.select("a")
 					.from(Adquisicion.class,"a")
 					.equals("a.establecimiento.idestablecimiento",idEstablecimiento)
-					.equals("a.proveedor.idproveedor",idProveedor)
+					.equals("a.cliente.idcliente",idProveedor)
 					.equals("a.numfactura",numFactura)
 					.notEquals("a.estado", "ANU").getSingleResult();
 			
@@ -411,6 +404,42 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 		}
 		
 		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param fechaIni
+	 * @param fechaFin
+	 * @param criteria
+	 * @param estado
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Adquisicion> getByDateCriteria(String idEstablecimiento,Date fechaIni,Date fechaFin,String criteria,String estado)throws DaoException{
+		try {
+			
+			List<Adquisicion> adquisicionList = adquisicionDao.getByDateCriteria(idEstablecimiento, fechaIni, fechaFin, criteria, estado);
+			if(adquisicionList==null || adquisicionList.isEmpty()) {
+				return new ArrayList<>();
+			}
+			
+			List<String> idList = adquisicionList.stream().map(x->x.getIdadquisicion()).collect(Collectors.toList());
+			
+			List<Adquisiciondetalle> adquisiciondetalleList = adquisiciondetalleDao.getByIdAdquisicion(idList);
+			List<Pago> pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(idList);
+			
+			adquisicionList.stream().forEach(a->{
+				a.setAdquisiciondetalleList(adquisiciondetalleList.stream().filter(d->d.getAdquisicion().getIdadquisicion().equals(a.getIdadquisicion())).collect(Collectors.toList()));
+				a.setPagoList(pagoList.stream().filter(p->p.getAdquisicion().getIdadquisicion().equals(a.getIdadquisicion())).collect(Collectors.toList()));
+			});
+			
+			return adquisicionList;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

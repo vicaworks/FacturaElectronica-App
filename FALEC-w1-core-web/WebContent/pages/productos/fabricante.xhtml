@@ -25,7 +25,6 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Productos" url="#" />
 		    <p:menuitem value="Fabricante" url="#{request.contextPath}/pages/productos/fabricante.jsf"/>
 		</p:breadCrumb>
 		
@@ -41,7 +40,7 @@
 						</div>
 						
 						<div class="p-col-8">
-							<p:selectOneMenu id="somCategoria" value="#{categoriaCtrl.estadoRegBusqueda}" style="width:100%">
+							<p:selectOneMenu id="somCategoria" value="#{fabricanteCtrl.estadoRegBusqueda}" style="width:100%">
 				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
 				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
 				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
@@ -115,7 +114,7 @@
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtFabricante">
-							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtFabricante" my="left top" at="left bottom">
@@ -153,6 +152,7 @@
 					</p:column>
 					
 				</p:dataTable>
+				<div class="EmptyBox20"/>
 			</div>
 	    	
 	    </h:form>

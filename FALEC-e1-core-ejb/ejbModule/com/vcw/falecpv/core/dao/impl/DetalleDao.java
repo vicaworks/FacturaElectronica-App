@@ -67,5 +67,24 @@ public class DetalleDao extends AppGenericDao<Detalle, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabeceraList
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Detalle> getByIdCabecera(List<String> idCabeceraList)throws DaoException{
+		try {
+			Query q = getEntityManager().createQuery("SELECT d FROM Detalle d WHERE d.cabecera.idcabecera in :idCabecera ORDER BY d.descripcion");
+			q.setParameter("idCabecera", idCabeceraList);
+			
+			return q.getResultList();
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 }

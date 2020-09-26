@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmTransportista {
+				height: 350px;
+		}	
+		
+	</style>
+	
+	<p:dialog header="Transportista" widgetVar="dlgTransportista" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	
+		
+		<h:form id="frmTransportista">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdGuardarTransportista"
+						value="GUARDAR" icon="fa fa-check" 
+						action="#{transportistaCtrl.guardar()}" styleClass="MRight10" update="@form #{transportistaCtrl.viewUpdate}"/>
+						
+					<p:commandButton id="cmdNuevoTransportista"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{transportistaCtrl.nuevoAction()}" styleClass="secondary-button MRight10" update="@form" process="@this">
+							
+					</p:commandButton>
+						
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgTransportista').hide()" immediate="true"/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmTransportista"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmTransportista contenedorFormulario">
+
+				<!-- Datos Generales -->	
+				<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Generales</div>
+				
+				<p:panelGrid id="gridTransportistaDG" columns="3"
+						styleClass="ui-panelgrid-blank Wid100"
+						columnClasses="ui-g-12 ui-md-4,
+									   ui-g-12 ui-md-6,
+									   ui-g-12 ui-md-2">
+									   
+					<h:outputText value="ID" />
+					<h:outputText value="#{transportistaCtrl.transportistaSelected.idtransportista}" />
+					<h:outputText value="" />
+					
+					<h:outputText value="TIPO #{msg['label.identificacion']} * : " styleClass="cpoRequerido"/>
+					<h:panelGroup>
+						<p:selectOneMenu id="somTransportistaTipoIden"
+							value="#{transportistaCtrl.transportistaSelected.tipoIdentificacion}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100">
+							
+							<f:selectItem itemLabel="[seleccionar] ..."
+									itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+									
+							<f:selectItems value="#{transportistaCtrl.tipoIdentificacionList}" var="tip"
+								itemLabel="#{tip.tipoidentificacion}" itemValue="#{tip}" />
+							<p:ajax event="change" update=":frmTransportista:intTransportistaIentifiaccion " process="@this :frmTransportista:intTransportistaIentifiaccion"/>
+						</p:selectOneMenu>
+					</h:panelGroup>
+					<p:message for="somTransportistaTipoIden" />
+					
+					<h:outputText value="#{msg['label.identificacion']} * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTransportistaIentifiaccion"
+						value="#{transportistaCtrl.transportistaSelected.identificacion}"
+						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="SOLO NUMEROS; 10 DIGITOS PARA CI, 13 DIGITOS PARA RUC">
+						<f:validateRegex pattern="^\d{10}+$" disabled="#{transportistaCtrl.transportistaSelected.tipoIdentificacion==null or transportistaCtrl.transportistaSelected.tipoIdentificacion.codigo=='04'}"/>
+						<f:validateRegex pattern="^\d{13}+$" disabled="#{transportistaCtrl.transportistaSelected.tipoIdentificacion==null or transportistaCtrl.transportistaSelected.tipoIdentificacion.codigo=='05'}"/>
+					</p:inputText>
+					<p:message for="intTransportistaIentifiaccion"/>
+					
+					<h:outputText value="RAZON SOCIAL * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTransportistaRazonSocial"
+						value="#{transportistaCtrl.transportistaSelected.razonsocial}"
+						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="200" converter="omnifaces.ToUpperCaseConverter" />
+					<p:message for="intTransportistaRazonSocial"/>
+					
+					<h:outputText value="PLACA * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intTransportistaPlaca"
+						value="#{transportistaCtrl.transportistaSelected.placa}"
+						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="10" converter="omnifaces.ToUpperCaseConverter" />
+					<p:message for="intTransportistaPlaca"/>
+					
+					<h:outputText value="#{msg['label.telefono']} : "/>
+					<p:inputText id="intTransportistaTelefono"
+						value="#{transportistaCtrl.transportistaSelected.telefono}"
+						required="false" requiredMessage="REQUERIDO" styleClass="Wid100"
+						maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="#{msg['converter.solonumeros']}">
+						<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+					</p:inputText>
+					<p:message for="intTransportistaTelefono"/>
+					
+					<h:outputText value="#{msg['label.correoelectronico']} : "/>
+					<p:inputText id="intTransportistaEmail"
+						value="#{transportistaCtrl.transportistaSelected.email}"
+						styleClass="Wid100" maxlength="100" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
+						<f:validator validatorId="emailValidator"/>
+					</p:inputText>
+					<p:message for="intTransportistaEmail"/>
+					
+					<h:outputText value="ESTADO * :" />
+					<p:selectOneMenu id="somestadoTransportista" value="#{transportistaCtrl.transportistaSelected.estado}" style="width:100%" disabled="#{transportistaCtrl.transportistaSelected.idtransportista==null}">
+		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+		    		</p:selectOneMenu>
+		    		<p:message for="somestadoTransportista"/>
+					
+			    </p:panelGrid>
+				
+			</div>
+		
+		</h:form>
+	
+	</p:dialog>
+	
+</ui:composition>

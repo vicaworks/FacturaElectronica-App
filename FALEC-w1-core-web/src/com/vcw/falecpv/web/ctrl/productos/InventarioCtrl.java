@@ -200,7 +200,7 @@ public class InventarioCtrl extends BaseCtrl {
 			
 			
 			int fila = 8;
-			sheet.shiftRows(fila, (fila+productoFormList.size()), productoFormList.size());
+			sheet.shiftRows(fila, (fila+(productoList.size()<4?4:productoList.size())), (productoList.size()<4?4:productoList.size()));
 			
 			for (Producto p : productoList) {
 				
@@ -267,13 +267,27 @@ public class InventarioCtrl extends BaseCtrl {
 						.multiply(x.getPreciounitario()).setScale(2, RoundingMode.HALF_UP).doubleValue()).sum());
 			}
 			
-			// totales
-			fila+=3;
-			rowCliente = sheet.getRow(fila++);
-			rowCliente.createCell(1).setCellValue(totalStock.doubleValue());
+			for (int i = fila; i < fila+100; i++) {
+				fila = i;
+				rowCliente = sheet.getRow(fila);
+				if(rowCliente!=null && rowCliente.getCell(0).getStringCellValue().contains("STOCK")) {
+					break;
+				}
+				
+			}
 			
-			rowCliente = sheet.getRow(fila++);
-			rowCliente.createCell(1).setCellValue(totalCosto.doubleValue());
+			// totales
+//			fila+=3;
+			rowCliente = sheet.getRow(fila);
+			if(rowCliente!=null) {
+				rowCliente.createCell(1).setCellValue(totalStock.doubleValue());
+			}
+			
+			fila++;
+			rowCliente = sheet.getRow(fila);
+			if(rowCliente!=null) {
+				rowCliente.createCell(1).setCellValue(totalCosto.doubleValue());
+			}
 			
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);

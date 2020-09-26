@@ -39,10 +39,16 @@ import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ImportarClienteServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.adquisicion.RetencionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.cajachica.CajaChicaCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FactMainPagoCtrl;
-import com.vcw.falecpv.web.ctrl.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -71,6 +77,10 @@ public class ClienteCtrl extends BaseCtrl {
 	private Cliente clienteSelected;
 	private String callModule;
 	private String updateView;	
+	private AdquisicionFrmCtrl adquisicionFrmCtrl;
+	private RetencionFrmCtrl retencionFrmCtrl;
+	private CajaChicaCtrl cajaChicaCtrl;
+	private LiqCompraFormCtrl liqCompraFormCtrl;
 	
 	
 	public ClienteCtrl() {
@@ -121,6 +131,22 @@ public class ClienteCtrl extends BaseCtrl {
 				AppJsfUtil.addInfoMessage("frmCliente","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 				
 				break;
+			case "LIQCOMPRA":
+				liqCompraFormCtrl.getLiqCompraSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "RETENCION":
+				retencionFrmCtrl.getRetencionSeleccion().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "CAJACHICA":
+				cajaChicaCtrl.getTransaccionSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "ADQUISICION":
+				adquisicionFrmCtrl.getAdquisicionSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
 			case "FactMainPagoCtrl":
 				
 				FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
@@ -139,7 +165,6 @@ public class ClienteCtrl extends BaseCtrl {
 				break;
 			case "NotaCreditoCtrl":
 				NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
-				notaCreditoCtrl.consultarCliente();
 				notaCreditoCtrl.getNotaCreditoSeleccion().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
@@ -148,6 +173,16 @@ public class ClienteCtrl extends BaseCtrl {
 				guiaRemFormCtrl.getDestinatarioSelected().setCliente(clienteSelected);
 				guiaRemFormCtrl.getDestinatarioSelected().setIdentificaciondestinatario(clienteSelected.getIdentificacion());
 				guiaRemFormCtrl.getDestinatarioSelected().setRazonsocialdestinatario(clienteSelected.getRazonsocial());
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "NotaDebitoFrmCtrl":
+				NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
+				notaDebitoFrmCtrl.getNotDebitoSelected().setCliente(clienteSelected);
+				AppJsfUtil.hideModal("dlgCliente");
+				break;
+			case "cotizacionFormCtrl":
+				CotizacionFormCtrl cotizacionFormCtrl = (CotizacionFormCtrl)AppJsfUtil.getManagedBean("cotizacionFormCtrl");
+				cotizacionFormCtrl.getCabecerSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
 			default:
@@ -334,7 +369,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdTipoIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO ID TIPO IDENTIFICACI�N ERROR");
+						c.setNovedad("FORMATO ID TIPO IDENTIFICACION ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -349,7 +384,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO IDENTIFICACI�N ERROR");
+						c.setNovedad("FORMATO IDENTIFICACION ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -364,7 +399,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setRazonSocial(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO RAZ�N SOCIAL ERROR");
+						c.setNovedad("FORMATO RAZON SOCIAL ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -379,7 +414,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCI�N ERROR");
+						c.setNovedad("FORMATO DIRECCION ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -391,10 +426,11 @@ public class ClienteCtrl extends BaseCtrl {
 				if(cell!=null) {
 					try {
 						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						
 						c.setCorreoElectronico(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CORREO ELECTR�NICO ERROR");
+						c.setNovedad("FORMATO CORREO ELECTRONICO ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -409,7 +445,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefono(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TEL�FONO ERROR");
+						c.setNovedad("FORMATO TELOFONO ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -439,7 +475,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO C�DULA GARANTE 1 ERROR");
+						c.setNovedad("FORMATO CODULA GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -454,7 +490,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCI�N GARANTE 1 ERROR");
+						c.setNovedad("FORMATO DIRECCION GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -469,7 +505,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TEL�FONO GARANTE 1 ERROR");
+						c.setNovedad("FORMATO TELOFONO GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -484,7 +520,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACI�N GARANTE 1 ERROR");
+						c.setNovedad("FORMATO OCUPACION GARANTE 1 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -514,7 +550,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO C�DULA GARANTE 2 ERROR");
+						c.setNovedad("FORMATO CODULA GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -529,7 +565,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCI�N GARANTE 2 ERROR");
+						c.setNovedad("FORMATO DIRECCION GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -544,7 +580,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TEL�FONO GARANTE 2 ERROR");
+						c.setNovedad("FORMATO TELOFONO GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -559,7 +595,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACI�N GARANTE 2 ERROR");
+						c.setNovedad("FORMATO OCUPACION GARANTE 2 ERROR");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -572,7 +608,7 @@ public class ClienteCtrl extends BaseCtrl {
 				
 			}
 			
-			// validaci�n formato
+			// validaciOn formato
 			validarFormatoImportCliente(importClienteDtoList);
 			
 			// cargar los datos
@@ -707,7 +743,6 @@ public class ClienteCtrl extends BaseCtrl {
 			} catch (ValidarExpresionException e) {
 				c.setError(true);
 				c.setNovedad("CAMPO CORREO ELECTRONICO, FORMATO INCORRECTO "+e.getMessage());
-				
 			}
 			
 		}
@@ -1002,5 +1037,61 @@ public class ClienteCtrl extends BaseCtrl {
 	 */
 	public void setUpdateView(String updateView) {
 		this.updateView = updateView;
+	}
+
+	/**
+	 * @return the adquisicionFrmCtrl
+	 */
+	public AdquisicionFrmCtrl getAdquisicionFrmCtrl() {
+		return adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @param adquisicionFrmCtrl the adquisicionFrmCtrl to set
+	 */
+	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
+		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @return the retencionFrmCtrl
+	 */
+	public RetencionFrmCtrl getRetencionFrmCtrl() {
+		return retencionFrmCtrl;
+	}
+
+	/**
+	 * @param retencionFrmCtrl the retencionFrmCtrl to set
+	 */
+	public void setRetencionFrmCtrl(RetencionFrmCtrl retencionFrmCtrl) {
+		this.retencionFrmCtrl = retencionFrmCtrl;
+	}
+
+	/**
+	 * @return the cajaChicaCtrl
+	 */
+	public CajaChicaCtrl getCajaChicaCtrl() {
+		return cajaChicaCtrl;
+	}
+
+	/**
+	 * @param cajaChicaCtrl the cajaChicaCtrl to set
+	 */
+	public void setCajaChicaCtrl(CajaChicaCtrl cajaChicaCtrl) {
+		this.cajaChicaCtrl = cajaChicaCtrl;
+	}
+
+	/**
+	 * @return the liqCompraFormCtrl
+	 */
+	public LiqCompraFormCtrl getLiqCompraFormCtrl() {
+		return liqCompraFormCtrl;
+	}
+
+	/**
+	 * @param liqCompraFormCtrl the liqCompraFormCtrl to set
+	 */
+	public void setLiqCompraFormCtrl(LiqCompraFormCtrl liqCompraFormCtrl) {
+		this.liqCompraFormCtrl = liqCompraFormCtrl;
 	}
 }

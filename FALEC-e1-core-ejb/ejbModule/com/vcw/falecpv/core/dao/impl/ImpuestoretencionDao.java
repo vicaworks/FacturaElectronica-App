@@ -3,6 +3,8 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
@@ -38,6 +40,27 @@ public class ImpuestoretencionDao extends AppGenericDao<Impuestoretencion, Strin
 			q.setParameter("id", idCabecera);
 			
 			return q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Impuestoretencion> getByCabecera(String idCabecera)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT i FROM Impuestoretencion i WHERE i.cabecera.idcabecera=:id");
+			q.setParameter("id", idCabecera);
+			
+			return q.getResultList();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

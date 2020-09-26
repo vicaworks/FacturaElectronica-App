@@ -6,8 +6,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.persistence.Query;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
@@ -15,21 +21,31 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
+import com.vcw.falecpv.core.constante.contadores.TCGuiaRemision;
+import com.vcw.falecpv.core.constante.contadores.TablaContadorBaseEnum;
 import com.vcw.falecpv.core.dao.impl.CabeceraDao;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalleimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
+import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.xpert.persistence.query.QueryBuilder;
 
-@Stateless
+@Singleton
+@Startup
+@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 
 	@Inject
@@ -65,7 +81,17 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Inject
 	private AdquisicionServicio adquisicionServicio;
 	
+	@Inject
+	private DestinatarioServicio destinatarioServicio;
 	
+	@Inject
+	private DetalledestinatarioServicio detalledestinatarioServicio;
+	
+	@Inject
+	private MotivoServicio motivoServicio;
+	
+	@Inject
+	private EstablecimientoServicio establecimientoServicio;
 	
 	public CabeceraServicio() {
 	}
@@ -100,7 +126,83 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @throws DaoException
 	 * @throws ParametroRequeridoException
 	 */
-	public Cabecera guardarComprobanteFacade(Cabecera cabecera)throws DaoException, ParametroRequeridoException{
+	@Lock(LockType.WRITE)
+	public Cabecera guardarComprobanteFacade(Cabecera cabecera)throws DaoException, ParametroRequeridoException,ExisteNumDocumentoException{
+		
+		TablaContadorBaseEnum aleatorio = null;
+		
+		switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
+		case COTIZACION:
+			aleatorio = TCAleatorio.ALEATORIOCOTIZACION;
+			break;
+		case FACTURA:
+			aleatorio = TCAleatorio.ALEATORIOFACTURA;
+			break;
+		case GUIA_REMISION:
+			aleatorio = TCAleatorio.ALEATORIOGUIAREMISION;
+			break;
+		case LIQUIDACION_COMPRA:
+			aleatorio = TCAleatorio.ALEATORIOLIQCOMPRA;
+			break;	
+		case NOTA_CREDITO:
+			aleatorio = TCAleatorio.ALEATORIONOTACREDITO;
+			break;
+		case NOTA_DEBITO:
+			aleatorio = TCAleatorio.ALEATORIONOTADEBITO;
+			break;
+		case RECIBO:
+			aleatorio = TCAleatorio.ALEATORIORECIBO;
+			break;
+		case RETENCION:
+			aleatorio = TCAleatorio.ALEATORIORETENCION;
+			break;
+		default:
+			break;
+		}
+		
+		// 0. Asignar secuencia
+		if(cabecera.getSecuencial()==null && !cabecera.isEditarSecuencial()) {
+			
+			cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(), cabecera.getEstablecimiento().getIdestablecimiento()));
+			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			cabecera.setNumeroautorizacion(cabecera.getClaveacceso());
+			
+		}else if(cabecera.isEditarSecuencial()) {
+			
+			cabecera.setSecuencial(cabecera.getSecuencialNumero());
+			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
+			cabecera.setNumeroautorizacion(cabecera.getClaveacceso());
+			
+		}
+		if(cabecera.getNumdocumento()==null) {
+			cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
+		}
+		
+		switch (cabecera.getGenTipoDocumentoEnum()) {
+		case FACTURA:
+			cabecera.setNumfactura(cabecera.getNumdocumento());
+			break;
+		case LIQUIDACION_COMPRA:
+			cabecera.setNumfactura(cabecera.getNumdocumento());
+		case GUIA_REMISION:
+			cabecera.setNumfactura(cabecera.getNumdocumento());	
+			break;	
+		case NOTA_DEBITO:
+			cabecera.setNumfactura(cabecera.getNumdocumento());	
+			break;	
+		default:
+			break;
+		}
+		
+		// 0.1 Valida que no exista duplicado el comprobante
+		if (existeNumComprobante(cabecera.getEstablecimiento().getIdestablecimiento(),
+				cabecera.getGenTipoDocumentoEnum().getIdentificador(), cabecera.getSecuencial(),
+				cabecera.getIdcabecera())) {
+			
+			throw new ExisteNumDocumentoException("EL SECUENCIAL : " + cabecera.getSecuencial() + " YA EXISTE NO SE PUEDE DUPLICAR.");
+			
+		}
+		
 		
 		// 1. crear la cabecera
 		if(cabecera.getIdcabecera()==null) {
@@ -149,12 +251,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
 					
 					switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
-					case FACTURA:
+					case FACTURA: case RECIBO:
 						salidaKardex(d);
 						break;
-					case NOTA_CREDITO:
-						entredaKardex(d);
-						break;	
 					default:
 						break;
 					}
@@ -176,7 +275,19 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 5. pago
+		// 5. motivo
+		motivoServicio.getMotivoDao().eliminarByCabecera(cabecera.getIdcabecera());
+		if(cabecera.getMotivoList()!=null) {
+			for (Motivo	m : cabecera.getMotivoList()) {
+				m.setCabecera(cabecera);
+				if(m.getIdmotivo()==null || m.getIdmotivo().contains("M")) {
+					m.setIdmotivo(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.MOTIVO, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				motivoServicio.crear(m);
+			}
+		}
+		
+		// 6. pago
 		pagoServicio.getPagoDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getPagoList()!=null) {
 			for (Pago	p : cabecera.getPagoList()) {
@@ -188,7 +299,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 6. infoadicional
+		// 7. infoadicional
 		infoadicionalServicio.getInfoadicionalDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getInfoadicionalList()!=null) {
 			for (Infoadicional	ia : cabecera.getInfoadicionalList()) {
@@ -200,7 +311,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 7. impuestoretencion
+		// 8. impuestoretencion
 		impuestoretencionServicio.getImpuestoretencionDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getImpuestoretencionList()!=null) {
 			for (Impuestoretencion ir : cabecera.getImpuestoretencionList()) {
@@ -212,21 +323,35 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			}
 		}
 		
-		// 8. Si es retencion y tiene una compra actualiza los datos de la compra
-		if(cabecera.getAdquisicion()!=null && cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.RETENCION.getIdentificador())) {
-			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
-			adquisicion.setTotalretencion(cabecera.getTotalretencion());
-			adquisicion.setTotalpagar(adquisicion.getTotalfactura().add(cabecera.getTotalretencion().negate()).setScale(2, RoundingMode.HALF_UP));
-			adquisicion.setEstado("RETENCION");
-			adquisicionServicio.actualizar(adquisicion);
+		// 9. destinatario guia remision
+		destinatarioServicio.getDestinatarioDao().eliminarByCabecera(cabecera.getIdcabecera());
+		if(cabecera.getDestinatarioList()!=null) {
+			for (Destinatario des : cabecera.getDestinatarioList()) {
+				if(des.getIddestinatario()==null || des.getIddestinatario().contains("M")) {
+					des.setIddestinatario(contadorPkServicio.generarContadorTabla(TCGuiaRemision.DESTINATARIO, cabecera.getEstablecimiento().getIdestablecimiento()));
+				}
+				des.setCabecera(cabecera);
+				destinatarioServicio.crear(des);
+				// almacenar detalle
+				for (Detalledestinatario dd : des.getDetalledestinatarioList()) {
+					if(dd.getIddetalledestinatario()==null || dd.getIddetalledestinatario().contains("M")) {
+						dd.setIddetalledestinatario(contadorPkServicio.generarContadorTabla(TCGuiaRemision.DETALLE_DESTINATARIO, cabecera.getEstablecimiento().getIdestablecimiento()));
+					}
+					dd.setDestinatario(des);
+					detalledestinatarioServicio.crear(dd);
+				}
+				// actualizar la guia remision a la factura relacionada
+				if(des.getIdVenta()!=null) {
+					cabeceraDao.asignarRefGuiaRemicion(des.getIdVenta(), cabecera.getIdcabecera());
+				}
+			}
 		}
 		
-		// 9. si es nota de credito y tiene referencia a la cabecera anular la factura 
-		if(GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()).equals(GenTipoDocumentoEnum.NOTA_CREDITO) && cabecera.getIdcabecerapadre()!=null) {
-			Cabecera c= consultarByPk(cabecera.getIdcabecerapadre());
-			if(c!=null) {
-				c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
-			}
+		// 10. Si es retencion y tiene una compra actualiza los datos de la compra
+		if(cabecera.getAdquisicion()!=null && cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.RETENCION.getIdentificador())) {
+			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
+			adquisicion.setEstado("RETENCION");
+			adquisicionServicio.actualizar(adquisicion);
 		}
 		
 		return cabecera;
@@ -360,6 +485,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @param detalleFac
 	 * @throws DaoException
 	 */
+	@Lock(LockType.WRITE)
 	public void salidaKardex(Detalle detalleFac)throws DaoException{
 		try {
 			
@@ -434,6 +560,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @param detalleFac
 	 * @throws DaoException
 	 */
+	@Lock(LockType.WRITE)
 	public void entredaKardex(Detalle detalleFac)throws DaoException{
 		try {
 			
@@ -464,7 +591,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			k.setFechafabricacion(detalleFac.getProducto().getFechafabricacion());
 			k.setFechavencimiento(detalleFac.getProducto().getFechavencimiento());
 			StringBuilder obs = new StringBuilder();
-			obs.append(" / CLIENTE : " + detalleFac.getCabecera().getCliente().getRazonsocial());
+			obs.append("CLIENTE : " + detalleFac.getCabecera().getCliente().getRazonsocial());
 			switch (GenTipoDocumentoEnum.getEnumByIdentificador(detalleFac.getCabecera().getTipocomprobante().getIdentificador())) {
 			case RECIBO:
 				obs.append("ANULACION RECIBO : ");
@@ -510,16 +637,119 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @param idCabecera
 	 * @throws DaoException
 	 */
-	public void anularById(String idCabecera)throws DaoException{
+	@Lock(LockType.WRITE)
+	public int anularById(String idCabecera)throws DaoException{
 		try {
 			
 			String sql = "UPDATE cabecera SET estado='" + ComprobanteEstadoEnum.ANULADO.toString() + "' WHERE idcabecera='" + idCabecera + "'";
-			execute(sql);
+			return execute(sql);
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
 		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @throws DaoException
+	 */
+	@Lock(LockType.WRITE)
+	public void anularComprobanteReversoKardex(String idCabecera,String idUsuarioEliminacion) throws DaoException {
+		try {
+			
+			// 1. consultar cabecera 
+			Cabecera c = consultarByPk(idCabecera);
+			
+			if(c==null || c.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())) {
+				return;
+			}
+			
+			c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
+			c.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador()));
+			List<Detalle> detalleList = detalleServicio.getDetalleDao().getByIdCabecera(idCabecera);
+			for (Detalle d : detalleList) {
+				d.setIdUsuarioEliminacion(idUsuarioEliminacion);
+				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
+					
+					switch (GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador())) {
+					case FACTURA: case RECIBO:
+						entredaKardex(d);
+						break;
+					default:
+						break;
+					}
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	@Lock(LockType.WRITE)
+	public int anularGuiaRemisionFacade(String idCabecera)throws DaoException{
+		try {
+			
+			Query q = getCabeceraDao().getEntityManager().createNativeQuery("UPDATE cabecera set idguiaremision=null WHERE idguiaremision=:idcabecera");
+			q.setParameter("idcabecera", idCabecera);
+			q.executeUpdate();
+			
+			return anularById(idCabecera);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param iEstablecimeinto
+	 * @param tipComprobanteIdentificador
+	 * @param secuencial
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	@Lock(LockType.READ)
+	public boolean existeNumComprobante(String iEstablecimeinto,String tipComprobanteIdentificador, String secuencial,String idCabecera)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(cabeceraDao.getEntityManager());
+			
+			List<Cabecera> lista = null;
+			
+			if(idCabecera!=null) {
+				lista = q.select("c")
+						.from(Cabecera.class,"c")
+						.notEquals("c.idcabecera", idCabecera)
+						.equals("c.establecimiento.idestablecimiento", iEstablecimeinto)
+						.equals("c.tipocomprobante.identificador",tipComprobanteIdentificador)
+						.equals("c.secuencial",secuencial).getResultList();
+			}else {
+				lista = q.select("c")
+						.from(Cabecera.class,"c")
+						.equals("c.establecimiento.idestablecimiento", iEstablecimeinto)
+						.equals("c.tipocomprobante.identificador",tipComprobanteIdentificador)
+						.equals("c.secuencial",secuencial).getResultList();
+			}
+			
+			return !lista.isEmpty();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

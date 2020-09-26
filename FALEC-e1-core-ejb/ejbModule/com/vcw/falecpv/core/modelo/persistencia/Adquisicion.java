@@ -5,7 +5,9 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -94,6 +97,21 @@ public class Adquisicion implements Serializable {
     
     @Basic(optional = false)
     @NotNull
+    @Column(name = "totalice", nullable = false, precision = 12, scale = 2)
+    private BigDecimal totalice;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valorretenidoiva", nullable = false, precision = 12, scale = 2)
+    private BigDecimal valorretenidoiva = BigDecimal.ZERO;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valorretenidorenta", nullable = false, precision = 12, scale = 2)
+    private BigDecimal valorretenidorenta = BigDecimal.ZERO;
+    
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "updated", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
@@ -108,22 +126,34 @@ public class Adquisicion implements Serializable {
     @ManyToOne(optional = false)
     private Establecimiento establecimiento;
     
-    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = false)
+    @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = false)
     @ManyToOne(optional = false)
-    private Proveedor proveedor;
+    private Cliente cliente;
     
     @JoinColumn(name = "idtipocomprobante", referencedColumnName = "idtipocomprobante", nullable = false)
     @ManyToOne(optional = false)
     private Tipocomprobante tipocomprobante;
     
-    @JoinColumn(name = "idtipopago", referencedColumnName = "idtipopago", nullable = false)
-    @ManyToOne(optional = false)
-    private Tipopago tipopago;
+    @Transient
+    private List<Adquisiciondetalle> adquisiciondetalleList;
+    
+    @Transient
+    private List<Pago> pagoList;
     
 	/**
 	 * 
 	 */
 	public Adquisicion() {
+	}
+	
+	public BigDecimal getTotalPagoSum() {
+		
+		if(this.pagoList==null || this.pagoList.isEmpty()) {
+			return BigDecimal.ZERO;
+		}
+		
+		return BigDecimal.valueOf(pagoList.stream().mapToDouble(p->p.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+		
 	}
 	
 	@Override
@@ -305,20 +335,6 @@ public class Adquisicion implements Serializable {
 	}
 
 	/**
-	 * @return the proveedor
-	 */
-	public Proveedor getProveedor() {
-		return proveedor;
-	}
-
-	/**
-	 * @param proveedor the proveedor to set
-	 */
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	/**
 	 * @return the tipocomprobante
 	 */
 	public Tipocomprobante getTipocomprobante() {
@@ -330,20 +346,6 @@ public class Adquisicion implements Serializable {
 	 */
 	public void setTipocomprobante(Tipocomprobante tipocomprobante) {
 		this.tipocomprobante = tipocomprobante;
-	}
-
-	/**
-	 * @return the tipopago
-	 */
-	public Tipopago getTipopago() {
-		return tipopago;
-	}
-
-	/**
-	 * @param tipopago the tipopago to set
-	 */
-	public void setTipopago(Tipopago tipopago) {
-		this.tipopago = tipopago;
 	}
 
 	/**
@@ -398,6 +400,90 @@ public class Adquisicion implements Serializable {
 			e.printStackTrace();
 			return "";
 		}
+	}
+
+	/**
+	 * @return the totalice
+	 */
+	public BigDecimal getTotalice() {
+		return totalice;
+	}
+
+	/**
+	 * @param totalice the totalice to set
+	 */
+	public void setTotalice(BigDecimal totalice) {
+		this.totalice = totalice;
+	}
+
+	/**
+	 * @return the valorretenidoiva
+	 */
+	public BigDecimal getValorretenidoiva() {
+		return valorretenidoiva;
+	}
+
+	/**
+	 * @param valorretenidoiva the valorretenidoiva to set
+	 */
+	public void setValorretenidoiva(BigDecimal valorretenidoiva) {
+		this.valorretenidoiva = valorretenidoiva;
+	}
+
+	/**
+	 * @return the valorretenidorenta
+	 */
+	public BigDecimal getValorretenidorenta() {
+		return valorretenidorenta;
+	}
+
+	/**
+	 * @param valorretenidorenta the valorretenidorenta to set
+	 */
+	public void setValorretenidorenta(BigDecimal valorretenidorenta) {
+		this.valorretenidorenta = valorretenidorenta;
+	}
+
+	/**
+	 * @return the adquisiciondetalleList
+	 */
+	public List<Adquisiciondetalle> getAdquisiciondetalleList() {
+		return adquisiciondetalleList;
+	}
+
+	/**
+	 * @param adquisiciondetalleList the adquisiciondetalleList to set
+	 */
+	public void setAdquisiciondetalleList(List<Adquisiciondetalle> adquisiciondetalleList) {
+		this.adquisiciondetalleList = adquisiciondetalleList;
+	}
+
+	/**
+	 * @return the pagoList
+	 */
+	public List<Pago> getPagoList() {
+		return pagoList;
+	}
+
+	/**
+	 * @param pagoList the pagoList to set
+	 */
+	public void setPagoList(List<Pago> pagoList) {
+		this.pagoList = pagoList;
+	}
+
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

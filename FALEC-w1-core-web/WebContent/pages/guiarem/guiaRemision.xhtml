@@ -52,6 +52,7 @@
 				display: block !important;
 			}		
 			
+			
         </style>
     </ui:define>
 
@@ -63,7 +64,7 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <!-- <p:menuitem value="Retenciones" url="#" /> -->
+		    <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf" /> 
 		    <p:menuitem value="Lista de #{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf"/>
 		</p:breadCrumb>
 		
@@ -79,7 +80,19 @@
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
+	    						<h:outputText value="ESTADO * : " styleClass="cpoRequerido Wid100"/>
+	    						<div class="EmptyBox5"/>
+		    					<p:selectOneMenu  value="#{guiaRemCtrl.estado}" 
+												 styleClass="Wid100" 
+												 required="false" requiredMessage="REQUERIDO">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
+									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
+									<f:selectItem itemLabel="ANULADO" itemValue="I" />
+								</p:selectOneMenu>
+							</div>
+	    					
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- desde -->
 	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -92,7 +105,7 @@
 	    						
 	    					</div>
 	    					
-	    					<div class="p-col-12 p-md-6">
+	    					<div class="p-col-12 p-md-4">
 	    						<!-- hasts  -->
 	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
 	    						<div class="EmptyBox5"/>
@@ -132,14 +145,13 @@
 	   					
 	   					<div class="EmptyBox5"/>
 	   					
-	   					<p:commandButton  id="cmdRtnExcel" 
-									title="EXPORTAR"
-									icon="fa fa-file-excel-o"
-									ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-									value="REPORTE"
-									styleClass="success-btn Wid100"
-									disabled="#{empty retencionMainCtrl.retencionList}">
-							<p:fileDownload value="#{retencionMainCtrl.fileRetencion}"/>
+						<p:commandButton id="cmdRtnExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty guiaRemCtrl.destinatarioList}"
+							ajax="false">
+							<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
 						</p:commandButton>
 	    				
 	    			</div>
@@ -159,10 +171,10 @@
 			<div class="card card-w-title">
 				
 				<p:dataTable id="guiaRemDT" var="r"
-					value="#{guiaRemCtrl.guiaRemisionList}" scrollable="true"
+					value="#{guiaRemCtrl.destinatarioList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="guiaRemDT Fs11"  
-					rowKey="#{r.idcabecera}"
+					rowKey="#{r.iddestinatario}"
 					paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -173,16 +185,34 @@
 					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtRetencion">
-							<i class="fa fa-plus-square Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtRetencion" my="left top" at="left bottom">
 							
-							<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#" icon="fa fa-eye" process="guiaRemDT" update="@form">
-							</p:menuitem>
 							
-							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.estado=='ANULADO'}">
-								<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.cabecera.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+							</p:menuitem>
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{r.cabecera.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+							</p:menuitem>
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{r.cabecera.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>							
+							</p:menuitem>
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{r.cabecera.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>							
+							</p:menuitem>
+							<p:menuitem value="Editar" action="#{guiaRemCtrl.editarGuiaRem(r.cabecera.idcabecera)}" icon="fa fa-edit" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
+							</p:menuitem>
+							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
@@ -190,20 +220,81 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:80px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{r.numdocumento}" />
+					<p:column headerText="ID" style="width:80px;" filterBy="#{r.cabecera.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} Fs10"/>
+					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
+						<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} Fs10"/>
 					</p:column>
 					
-					<p:column headerText="RUC / CI " style="width:60px;" filterBy="#{r.transportista.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{r.transportista.identificacion}" />
+					<p:column headerText="DESTINATARIOS" style="width:150px;" filterBy="#{r.razonsocialdestinatario}" filterMatchMode="contains">
+						<div class="p-grid p-justify-start">
+								
+								<div class="p-col-12">
+									<h:outputText value="#{msg['label.identificacion']}" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{r.identificaciondestinatario}" styleClass="FontBold"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="NOMBRE" styleClass="cpoRequerido"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{r.razonsocialdestinatario}" styleClass="FontBold"/>
+								</div>
+								
+								<div class="p-col-12">
+									<h:outputText value="DOCUMENTO SUSTENTO" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.numdocsustento)}" styleClass="#{r.numdocsustento!=null?'markGray':''}"/>
+								</div>
+								
+								<div class="p-col-12">
+									<h:outputText value="RUTA" styleClass="cpoRequerido Fs10"/>
+								</div>
+								<div class="p-col-12">
+									<h:outputText value="#{r.ruta}" styleClass="FontBold"/>
+								</div>
+								
+								<div class="p-col-6">
+									<h:outputText value="ITEMS DETALLE :" styleClass="cpoRequerido Fs10"/>
+									<h:outputText value="#{r.detalledestinatarioList.size()}" styleClass="markGray"/>
+								</div>
+								
+						</div>
+					
 					</p:column>
 					
-					<p:column headerText="TRANSPORTISTA" style="width:120px;" filterBy="#{r.transportista.razonsocial}" filterMatchMode="contains">
-						<h:outputText value="#{r.transportista.razonsocial}" />
+					<p:column headerText="DET" style="width:10px;" styleClass="TexAlLeft">
+						<p:commandLink oncomplete="PF('dlgResGuiaRemision').show();" update="@form :frmDetGR">
+							<i class="fa fa-2x fa-list" style="color:black;"></i>
+							<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+							<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.destinatarioSelected}"/>
+							<f:setPropertyActionListener value="#{r.detalledestinatarioList}" target="#{guiaRemCtrl.detalledestinatarioList}"/>
+						</p:commandLink>
+					</p:column>
+					
+					<p:column style="width:5px;" styleClass="TexAlLeft">
+						<f:facet name="header">
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope Fs14"/>
+						</f:facet>
+						<f:subview rendered="#{r.cabecera.envioemail==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{r.cabecera.envioemail==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
+					
+					<p:column headerText="RUC / CI " style="width:60px;" filterBy="#{r.cabecera.transportista.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{r.cabecera.transportista.identificacion}" />
+					</p:column>
+					
+					<p:column headerText="TRANSPORTISTA" style="width:120px;" filterBy="#{r.cabecera.transportista.razonsocial}" filterMatchMode="contains">
+						<h:outputText value="#{r.cabecera.transportista.razonsocial}" />
 					</p:column>
 					
 					<p:column headerText="FECHA RUTA" style="width:90px;">
@@ -213,7 +304,7 @@
 								<h:outputText value="Inicio :" styleClass="FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{r.fechainiciotransporte}">
+								<h:outputText value="#{r.cabecera.fechainiciotransporte}">
 									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
@@ -221,14 +312,14 @@
 								<h:outputText value="Fin :" styleClass="FontBold"/>
 							</div>
 							<div class="p-col-7">
-								<h:outputText value="#{r.fechafintransporte}">
+								<h:outputText value="#{r.cabecera.fechafintransporte}">
 									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="DESTINATARIOS" style="width:150px;" >
+					<!-- <p:column headerText="DESTINATARIOS" style="width:150px;" >
 						<div class="p-grid p-justify-start">
 							<p:repeat var="det" value="#{r.destinatarioList}">
 								
@@ -249,7 +340,7 @@
 									<h:outputText value="DOCUMENTO SUSTENTO" styleClass="cpoRequerido Fs10"/>
 								</div>
 								<div class="p-col-12">
-									<h:outputText value="#{det.numdocsustento}" styleClass="markBlack"/>
+									<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(det.numdocsustento)}" styleClass="#{det.numdocsustento!=null?'markBlack':''}"/>
 								</div>
 								
 								<div class="p-col-12">
@@ -259,9 +350,17 @@
 									<h:outputText value="#{det.ruta}" styleClass="FontBold"/>
 								</div>
 								
-								<div class="p-col-12">
+								<div class="p-col-6">
 									<h:outputText value="DETALLE :" styleClass="cpoRequerido Fs10"/>
-									<h:outputText value="#{det.detalledestinatarioList.size()}" styleClass="markOrange"/>
+									<h:outputText value="#{det.detalledestinatarioList.size()}" styleClass="markBlack"/>
+								</div>
+								
+								<div class="p-col-12 p-md-6" style="text-align:center;">
+									<p:commandButton value="VER DETALLE" styleClass="Wid100 secondary-button Fs10" icon="fa fa-list" oncomplete="PF('dlgResGuiaRemision').show();" update="@form :frmDetGR">
+										<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+										<f:setPropertyActionListener value="#{det}" target="#{guiaRemCtrl.destinatarioSelected}"/>
+										<f:setPropertyActionListener value="#{det.detalledestinatarioList}" target="#{guiaRemCtrl.detalledestinatarioList}"/>
+									</p:commandButton>
 								</div>
 								
 								<f:subview rendered="#{r.destinatarioList.size()>1}">
@@ -271,15 +370,21 @@
 								</f:subview>
 								
 							</p:repeat>
-						</div>
-					</p:column>
+						</div> 
+					</p:column>-->
 					
 				</p:dataTable>
-			
+				<div class="EmptyBox20"/>			
 			</div>
 	    
 	    
 	    </h:form>
+        
+        <ui:include src="incl_gr_det_view.xhtml" />
+        <!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
+				<!-- FIRMAR ENVIAR EMAIL -->
+	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
         
     </ui:define>
 

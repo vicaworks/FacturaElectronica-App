@@ -1,0 +1,368 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+     <style type="text/css">
+     
+       	.pvDetalleDT .ui-datatable-scrollable-body{
+			min-height: 20vh !important;
+			height: calc(100vh - 390px)!important;
+		}
+		
+		.divTotal{
+			/* width: 100%; */
+			margin: 0px;
+			padding: 0.3em !important;
+			background-color: #0fc763;
+			color: white;
+			text-align: center;
+			font-size: 3em;
+			border-radius: 4px;
+		}
+		
+		.dt-selection .ui-inputfield {
+			padding: 0.2em 0.5em !important;
+		}
+		
+		.dt-selection .ui-selectonemenu-label {
+			text-align: right;
+		}
+		.ui-inputfield {
+			font-size: 12px !important;
+		}
+		
+		.contenedorDT{
+			display:grid;
+			grid-template-columns: 1fr;
+    		grid-template-rows: minmax(65px,1fr);
+    		justify-items: center;
+    		align-items: center;
+		}
+		
+    </style>
+	
+	<p:remoteCommand name="buscarCodigoProducto" actionListener="#{cotizacionFormCtrl.buscarCodigoProducto()}" global="true" update=":formMain:formulario:msgProformaForm :formMain:formulario:intCriterioBusqueda :formMain:formulario:pvDetalleDT :formMain:formulario:oupPagoDT"/>
+	
+	<div class="card card-w-title">
+		
+		<div class="EmptyBox10"/>
+		<div class="p-grid">
+				
+			<!-- Codigo de barra -->
+			<div class="p-col-12">
+				
+				<div class="p-grid">
+					
+					<div class="p-col-12 p-md-6">
+						<div class="ui-inputgroup">
+		                    <span class="ui-inputgroup-addon">
+		                        <p:commandButton id="cmdConsultarProducto"
+									icon="fa fa-search" 
+									action="#{cotizacionFormCtrl.buscarCodigoProducto()}" 
+									styleClass="Fs12 Wid100" 
+									update="@this :formMain:formulario:msgProformaForm :formMain:formulario:intCriterioBusqueda :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT" 
+									process="@this :formMain:formulario:intCriterioBusqueda"/>
+		                    </span>
+		                    <p:inputText id="intCriterioBusqueda" value="#{cotizacionFormCtrl.criterioBusqueda}" placeholder="#{msg['label.codigo2']} de barra / producto" styleClass="Wid100 Fs12" onkeydown="if(event.keyCode==13){ buscarCodigoProducto(); return false;}" >
+		                    </p:inputText>
+		                </div>	
+					</div>
+					
+					<div class="p-col-12 p-md-3">
+		 				<p:commandButton id="cmdCotProducto"
+							value="PRODUCTO" icon="fa fa-search" 
+							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:formulario:pvDetalleDT">
+							
+							<f:setPropertyActionListener value="#{cotizacionFormCtrl}" target="#{listaProductoCtrl.cotizacionFormCtrl}"/>
+							<f:setPropertyActionListener value="COTIZACION_FORM" target="#{listaProductoCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+							
+						</p:commandButton>
+					</div>
+					
+					<div class="p-col-12 p-md-3">
+		 				<p:commandButton id="cmdCotDetalle"
+							value="ITEM" icon="fa fa-plus" 
+							action="#{cotizacionFormCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal" process="@this :formMain:formulario:pvDetalleDT">
+						</p:commandButton> 
+					</div>
+					
+				</div>	
+				
+			</div>
+			
+			<!-- detalle factura -->
+			
+			<div class="p-col-12">
+				
+				<p:dataTable id="pvDetalleDT" var="d"
+						value="#{cotizacionFormCtrl.detalleFacList}" scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvDetalleDT Fs12"  
+						rowKey="#{d.iddetalle}"
+						selectionMode="single"
+						selection="#{cotizacionFormCtrl.detalleSelected}">
+					
+					<p:ajax event="rowSelect"  update=":formMain:formulario:pvDetalleDT">
+					</p:ajax>		
+					
+					<!-- item con producto -->	
+					<p:column headerText="ITEM" style="width:90%;" rendered="#{d.producto!=null}">
+					
+						<div class="EmptyBox5"/>
+						<div class="p-grid p-align-center vertical-container">
+							<div class="p-col-9">
+								<div class="p-grid">
+									<div class="p-col-12">
+										<p:inputText id="intDetNombreProducto1" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
+											<p:ajax event="change"></p:ajax>
+										</p:inputText>
+										<p:message for="intDetNombreProducto1"/>
+									</div>
+									<div class="p-md-3 dt-spinner">
+										<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs12 FontBold" style="margin-right:10px;">
+										</h:outputText>
+										<br/>
+										<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+											<p:ajax listener="#{cotizacionFormCtrl.calcularItemAction(true,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+										</p:spinner>
+									</div>
+									<div class="p-md-3 dt-spinner">
+									
+										<h:outputText value="P.UNITARIO" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+											<p:ajax listener="#{cotizacionFormCtrl.calcularItemAction(true,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+										</p:spinner>
+										
+									</div>
+									<div class="p-md-2 dt-spinner">
+									
+										<h:outputText value="DESCUTO($)" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8"  >
+											<p:ajax listener="#{cotizacionFormCtrl.calcularItemAction(false,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+										</p:spinner>
+										
+									</div>
+									<div class="p-md-2 dt-selection">
+										<h:outputText value="IVA" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:selectOneMenu id="somdetIvaItem1"
+											value="#{d.iva}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100 Fs8">
+					
+											<f:selectItems value="#{cotizacionFormCtrl.ivaList}" var="iva"
+												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+											
+											<p:ajax event="change" listener="#{cotizacionFormCtrl.calcularItemAction(true,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+											
+										</p:selectOneMenu>
+									</div>
+									<div class="p-md-2 dt-selection">
+										<h:outputText value="ICE" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:selectOneMenu id="somdetIceItem1"
+											value="#{d.ice}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100 Fs8">
+					
+											<f:selectItems value="#{cotizacionFormCtrl.iceList}" var="ice"
+												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
+												
+											<p:ajax event="change" listener="#{cotizacionFormCtrl.calcularItemAction(true,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+											
+										</p:selectOneMenu>
+									</div>
+								</div>
+							</div>
+							<div class="p-col-3" style="text-align: right;">
+								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+						</div>
+						
+					</p:column>
+					
+					<!-- item otros -->
+					<p:column headerText="ITEM" style="width:90%;" rendered="#{d.producto==null}">
+						
+						<div class="EmptyBox5"/>
+						<div class="p-grid p-align-center vertical-container">
+							<div class="p-col-9">
+								<div class="p-grid">
+									<div class="p-col-12">
+										<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
+											<p:ajax event="change"></p:ajax>
+										</p:inputText>
+										<p:message for="intDetNombreProducto"/>
+									</div>
+									<div class="p-md-3 dt-spinner">
+										<h:outputText id="intDetFacCantidad2" value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner id="insDetFacCanbtidad2" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+											<p:ajax listener="#{cotizacionFormCtrl.calcularItemAction(false,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+										</p:spinner>
+									</div>
+									<div class="p-md-3 dt-spinner">
+									
+										<h:outputText value="P.UNITARIO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+											<p:ajax listener="#{cotizacionFormCtrl.calcularItemAction(false,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+										</p:spinner>
+										
+									</div>
+									<div class="p-md-2 dt-spinner">
+									
+										<h:outputText value="DESCUENTO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" >
+											<p:ajax listener="#{cotizacionFormCtrl.calcularItemAction(false,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+										</p:spinner>
+										
+									</div>
+									
+									<div class="p-md-2 dt-selection">
+										<h:outputText value="IVA" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:selectOneMenu id="somdetIvaItem"
+											value="#{d.iva}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100">
+					
+											<f:selectItems value="#{cotizacionFormCtrl.ivaList}" var="iva"
+												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+											
+											<p:ajax event="change" listener="#{cotizacionFormCtrl.calcularItemAction(false,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+											
+										</p:selectOneMenu>
+									</div>
+									<div class="p-md-2 dt-selection">
+										<h:outputText value="ICE" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:selectOneMenu id="somdetIceItem"
+											value="#{d.ice}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100">
+					
+											<f:selectItems value="#{cotizacionFormCtrl.iceList}" var="ice"
+												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
+												
+											<p:ajax event="change" listener="#{cotizacionFormCtrl.calcularItemAction(false,d)}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"/>
+											
+										</p:selectOneMenu>
+									</div>
+								</div>
+							</div>
+							<div class="p-col-3" style="text-align: right;">
+								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							
+						</div>
+					</p:column>
+					
+					
+					<p:column style="width:10%;">
+						<div class="contenedorDT">
+							<p:commandLink id="clkEliminar" action="#{cotizacionFormCtrl.eliminarDetalle()}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT" process="@this :formMain:formulario:pvDetalleDT">
+								<f:setPropertyActionListener value="#{d}" target="#{cotizacionFormCtrl.detalleSelected}"/>
+								<i class="fa fa-trash-o Fs22" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					</p:column>
+				
+				</p:dataTable>
+			
+			</div>
+			
+			<!-- Totales -->
+			<div class="EmptyBox20"/>
+			<div class="p-col-12">
+				
+				<p:outputPanel id="oupFacTotal">
+				
+					<div class="p-grid p-align-top p-justify-end">
+							
+						<div class="p-grid p-col-12 p-md-6 divResumen">
+							
+							<div class="p-col-6 subtotal">
+								<h:outputText value="Subtotal" styleClass="Fs12" />
+							</div>
+							
+							<div class="p-col-6 subtotalValor">
+								<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.totalsinimpuestos}" styleClass="Fs12">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							
+							<div class="p-col-6 subtotal">
+								<h:outputText value="I.C.E." styleClass="Fs12" />
+							</div>
+							
+							<div class="p-col-6 subtotalValor">
+								<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.totalice}" styleClass="Fs12">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							
+							<div class="p-col-6 subtotal">
+								<h:outputText value="I.V.A." styleClass="Fs12" />
+							</div>
+							
+							<div class="p-col-6 subtotalValor">
+								<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.totaliva}" styleClass="Fs12">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							
+							<div class="p-col-6">
+							</div>
+							<div class="p-grid p-col-6">
+								<div class="p-col-12 bordeSubtotal"></div>
+							</div>
+							
+							<div class="p-col-6 subtotal">
+								<h:outputText value="Total" styleClass="FontBold Fs16" />
+							</div>
+							
+							<div class="p-col-6 subtotalValor">
+								<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.totalconimpuestos}" styleClass="FontBold Fs16 DispBlock Wid100">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+								
+						</div>
+						
+					</div>
+				
+				</p:outputPanel>
+			
+			</div>
+			
+			<div class="EmptyBox20"/>
+			
+		</div>
+		
+	</div>
+	
+</ui:composition>

@@ -1,0 +1,191 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.pvDetalleDT .ui-datatable-scrollable-body{
+			min-height: 20vh !important;
+			height: calc(100vh - 335px)!important;
+		}
+		
+	</style>
+	
+	<div class="card card-w-title">
+		
+		<div class="EmptyBox10"/>
+		
+		<div class="p-grid p-justify-start">
+			
+			<div class="p-col-12 p-md-3">
+				<p:commandButton id="cmdFacDetalle"
+								value="AGREGAR ITEM" icon="fa fa-plus" 
+								action="#{liqCompraFormCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this  :formMain:pvDetalleDT">
+				</p:commandButton>
+			</div>
+			
+			<div class="p-col-12">
+				
+				<p:dataTable id="pvDetalleDT" var="d"
+						value="#{liqCompraFormCtrl.liqCompraDetalleList}" scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvDetalleDT Fs12"  
+						rowKey="#{d.iddetalle}"
+						selectionMode="single"
+						selection="#{liqCompraFormCtrl.detalleSelected}">
+						
+					
+					<p:ajax event="rowSelect"  update=":formMain:pvDetalleDT">
+					</p:ajax>
+					
+					<p:column headerText="ITEM" style="width:90%;">
+						
+						<div class="EmptyBox5"/>
+						<div class="p-grid p-align-center vertical-container">
+							
+							<div class="p-col-9">
+								
+								<div class="p-grid">
+									
+									<div class="p-col-12">
+										<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
+											<p:ajax event="change"></p:ajax>
+										</p:inputText>
+										<p:message for="intDetNombreProducto"/>
+									</div>
+									
+									<div class="p-md-3 dt-spinner">
+										<h:outputText id="intDetFacCantidad2" value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner id="insDetFacCanbtidad2" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+											<p:ajax listener="#{liqCompraFormCtrl.calcularItemAction(d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+										</p:spinner>
+									</div>
+									<div class="p-md-3 dt-spinner">
+									
+										<h:outputText value="P.UNITARIO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+											<p:ajax listener="#{liqCompraFormCtrl.calcularItemAction(d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+										</p:spinner>
+										
+									</div>
+									<div class="p-md-3 dt-spinner">
+									
+										<h:outputText value="DESCUENTO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" >
+											<p:ajax listener="#{liqCompraFormCtrl.calcularItemAction(d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+										</p:spinner>
+										
+									</div>
+									
+									<div class="p-md-3 dt-selection">
+										<h:outputText value="IVA" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:selectOneMenu id="somdetIvaItem"
+											value="#{d.iva}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100">
+					
+											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
+												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+											
+											<p:ajax event="change" listener="#{liqCompraFormCtrl.calcularItemAction(d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+											
+										</p:selectOneMenu>
+									</div>
+									
+								</div>
+								
+							</div>
+							
+							<div class="p-col-3" style="text-align: right;">
+								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							
+						</div>
+						
+					</p:column>	
+					
+					<p:column style="width:10%;" styleClass="TexAlCenter">
+						<div class="p-grid p-justify-center p-align-center ">
+							<p:commandLink id="clkEliminar" action="#{liqCompraFormCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:pvDetalleDT">
+								<f:setPropertyActionListener value="#{d}" target="#{liqCompraFormCtrl.detalleSelected}"/>
+								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					</p:column>	
+						
+				</p:dataTable>
+			
+			</div>
+			
+			<!-- totales -->
+			
+			<div class="p-col-12">
+			
+				<p:outputPanel id="oupFacTotal">
+				
+					<div class="p-grid p-align-top p-justify-end">
+							
+						<div class="p-grid p-col-12 p-md-6 divResumen">
+							
+							<div class="p-col-8 subtotal">
+								<h:outputText value="Subtotal" styleClass="Fs12" />
+							</div>
+							
+							<div class="p-col-4 subtotalValor">
+								<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalsinimpuestos}" styleClass="Fs12">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							
+							<div class="p-col-8 subtotal">
+								<h:outputText value="I.V.A." styleClass="Fs12" />
+							</div>
+							
+							<div class="p-col-4 subtotalValor">
+								<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totaliva}" styleClass="Fs12">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							
+							<div class="p-col-8">
+							</div>
+							<div class="p-grid p-col-4">
+								<div class="p-col-12 bordeSubtotal"></div>
+							</div>
+							
+							<div class="p-col-8 subtotal">
+								<h:outputText value="Total" styleClass="FontBold Fs16" />
+							</div>
+							
+							<div class="p-col-4 subtotalValor">
+								<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalconimpuestos}" styleClass="FontBold Fs16 DispBlock Wid100">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+								
+						</div>
+						
+					</div>
+				
+				</p:outputPanel>
+				
+			</div>
+		
+		</div>
+		<div class="EmptyBox20"/>		
+	</div>
+	
+</ui:composition>

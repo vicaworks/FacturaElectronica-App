@@ -1,0 +1,304 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		.notMotivoDT .ui-datatable-scrollable-body{
+				min-height: 25vh !important;
+				/* height: calc(100vh - 381px); */
+			}
+		.pvPagoDetalleDT .ui-datatable-scrollable-body{
+			/* min-height: 30vh !important;
+			height: calc(100vh - 830px)!important; */
+		}
+		.selecOneIva .ui-selectonemenu .ui-selectonemenu-label {
+			text-align: right;
+			font-size: 14px !important;
+		}
+	</style>
+	
+	<p:outputPanel id="oupMotivos">
+		<div class="card card-w-title">
+		
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.motivorazon']}</h2>
+			<div class="EmptyBox5"/>			
+			<div class="p-grid p-justify-start">
+				<div class="p-col-12 p-md-4">
+					<p:commandButton id="cmdfacNuevoItem"
+							value="MOTIVO" icon="fa fa-plus" 
+							action="#{notaDebitoFrmCtrl.agregarItem()}" styleClass="secondary-button Wid100 Fs12" update="@form" process="@form">
+					</p:commandButton>
+				</div>
+			</div>
+			
+			<div class="EmptyBox5"/>
+			
+			<p:dataTable id="notMotivoDT" var="r"
+						value="#{notaDebitoFrmCtrl.motivoList}" scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="notMotivoDT Fs11"  
+						rowKey="#{r.idmotivo}">
+						
+				<p:column headerText="MOTIVO" style="width:70%;">
+					<p:inputText id="intNdMotivo" value="#{r.razon}" maxlength="300" required="true" requiredMessage="REQUERIDO" styleClass="Wid100"></p:inputText>
+					<p:message for="intNdMotivo"/>
+				</p:column>
+				<p:column headerText="VALOR" style="width:20%;">
+					<p:spinner id="intNdValor" value="#{r.valor}" decimalPlaces="2" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" min="0">
+						<p:ajax listener="#{notaDebitoFrmCtrl.calcularIvaAction()}" update="@form" process="@form"/>
+					</p:spinner>	
+					<p:message for="intNdValor"/>
+				</p:column>
+				
+				<p:column style="width:10%;" styleClass="TexAlCenter">
+					<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarDetalle()}" process="@this :formMain:notMotivoDT" update="@form">
+						<f:setPropertyActionListener value="#{r}" target="#{notaDebitoFrmCtrl.motivoSelected}"/>
+						<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+					</p:commandLink>
+				</p:column>
+						
+			</p:dataTable>
+			<div class="EmptyBox10"/>
+			<!-- Totales -->
+			<div class="p-grid p-align-center vertical-container">
+				<div class="p-col-6 p-md-8" style="text-align: right;">
+					<h:outputText value="Subtotal : " styleClass="FontBold Fs14"/>
+				</div>
+				<div class="p-col-6 p-md-4" style="text-align: right;">
+					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalsinimpuestos}" styleClass="Fs14">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+				<div class="p-col-6 p-md-8" style="text-align: right;">
+					<h:outputText value="% I.V.A. : " styleClass="FontBold Fs14"/>
+				</div>
+				<div class="p-col-6 p-md-4 selecOneIva" style="text-align: right;">
+					
+					<p:selectOneMenu id="somNdIva"
+						value="#{notaDebitoFrmCtrl.totalimpuesto.iva}"
+						converter="omnifaces.SelectItemsConverter"
+						required="true"
+						requiredMessage="REQUERIDO"
+						styleClass="Wid100">
+						<f:selectItem itemLabel="Seleccionar..." itemValue="#{null}"/>	
+						<f:selectItems value="#{notaDebitoFrmCtrl.ivaList}" var="iva"
+							itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+						
+						<p:ajax event="change" listener="#{notaDebitoFrmCtrl.calcularIvaAction()}" update="@form"  process="@form"/>
+						
+					</p:selectOneMenu>
+					<p:message for="somNdIva"/>
+				</div>
+				<div class="p-col-6 p-md-8" style="text-align: right;">
+					<h:outputText value="I.V.A. : " styleClass="FontBold Fs14"/>
+				</div>
+				<div class="p-col-6 p-md-4" style="text-align: right;">
+					<h:outputText value="#{notaDebitoFrmCtrl.totalimpuesto.valor}" styleClass="Fs14">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-6 p-md-8" style="text-align: right;">
+					<h:outputText value=" "/>
+				</div>
+				<div class="p-col-6 p-md-4" style="text-align: right;">
+					<hr/>
+				</div>
+				
+				<div class="p-col-6 p-md-8" style="text-align: right;">
+					<h:outputText value="Total : " styleClass="FontBold Fs14"/>
+				</div>
+				<div class="p-col-6 p-md-4" style="text-align: right;">
+					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalconimpuestos}" styleClass="Fs14">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+			</div>
+		</div>
+		<div class="EmptyBox5"/>
+		<div class="card card-w-title">	
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Valor a Pagar</h2>
+			
+			
+			<div class="EmptyBox20"/>
+			
+			<div class="p-grid p-justify-even">
+				<div class="p-col-12 p-md-3 boxMain box-gray">
+					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
+					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalpagar}" styleClass="box-content">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">TOTAL PAGADO</div>
+					<h:outputText value="#{notaDebitoFrmCtrl.totalPago}" styleClass="box-content">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
+					<h:outputText value="#{notaDebitoFrmCtrl.totalSaldo}" styleClass="box-content">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+			</div>	
+			
+			<div class="EmptyBox10"/>			
+		</div>
+		<div class="EmptyBox5"/>
+		<div class="card card-w-title">	
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h2>
+			
+			<p:panelGrid id="gridOpcPagos" columns="2"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12 ui-md-10,
+				 				ui-g-12 ui-md-2">
+				 				
+				 <p:selectOneMenu id="somFrmListaProducto"
+											value="#{notaDebitoFrmCtrl.tipopagoSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+
+					<f:selectItems value="#{notaDebitoFrmCtrl.tipopagoList}" var="tp"
+						itemLabel="#{tp.nombre}" itemValue="#{tp}" />
+						
+					<p:ajax event="valueChange" listener="#{notaDebitoFrmCtrl.aplicarPago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:pvPagoDetalleDT"/>	
+						
+				</p:selectOneMenu>
+				 					 
+				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.aplicarPago()}" process="@this :formMain:pvPagoDetalleDT" styleClass="secondary-button Wid100 Fs11" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:pvPagoDetalleDT">
+				 </p:commandButton>
+				
+			</p:panelGrid>
+			
+			<!-- detalle pago -->
+			<div class="EmptyBox5"/>
+			<p:dataTable id="pvPagoDetalleDT"
+	        			scrollable="true"
+	        			value="#{notaDebitoFrmCtrl.pagoList}"
+	        			var="p"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvPagoDetalleDT Fs12"  
+						rowKey="#{p.idpago}"
+						selectionMode="single"
+						selection="#{notaDebitoFrmCtrl.pagoSelected}">
+				
+				<p:ajax event="rowSelect"  update=":formMain:pvPagoDetalleDT">
+				</p:ajax>
+				
+				<p:column headerText="ITEM" style="width:90%;">
+					
+					<div class="EmptyBox5"/>
+					<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
+						
+						<div class="p-col-12">
+							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markBlack"/>
+						</div>
+						
+						<div class="p-col-12">
+						
+							<div class="p-grid Fs10">
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+								
+									<h:outputText value="VALOR" styleClass="Fs12"/>
+									
+									<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" >
+										<p:ajax listener="#{notaDebitoFrmCtrl.totalizarPagoaction(p)}" update=":formMain:msgFormMain :formMain:oupMotivos" process="@this :formMain:oupMotivos"/>
+									</p:spinner>
+									
+								</div>
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+									<!-- Efectivo -->								
+									<h:outputText value="IMPORTE" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" >
+										<p:ajax listener="#{notaDebitoFrmCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupMotivos" process="@this :formMain:oupMotivos"/>
+									</p:spinner>
+									
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{notaDebitoFrmCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
+									
+									<!-- credito -->
+									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" >
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{notaDebitoFrmCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
+									
+								</div>
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+									<!-- Efectivo -->
+									<h:outputText value="CAMBIO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true" >
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{notaDebitoFrmCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
+									
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{notaDebitoFrmCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
+									
+									<!-- credito -->
+									<h:outputText value="FECHA PAGO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:calendar id="claAdqFechaCompra" value="#{p.fechapago}"
+										pattern="dd/MM/yyyy"
+										locale="es"
+										requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="Fecha tentativa de pago"
+										rendered="#{p.tipopago.subdetalle == '4'}">
+									</p:calendar>
+								</div>
+								
+								
+								
+							</div>
+						</div>
+					</div>
+				</p:column>
+				
+				<p:column style="width:10%;" styleClass="TexAlCenter">
+					
+					<div class="p-grid p-justify-center p-align-center">
+						<div class="p-col-12">
+							<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupMotivos">
+								<f:setPropertyActionListener value="#{p}" target="#{notaDebitoFrmCtrl.pagoSelected}"/>
+								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>		
+						</div>
+					</div>
+				
+				</p:column>
+							
+			</p:dataTable>
+			
+			<div class="EmptyBox20"/>
+			
+		</div>
+			
+	</p:outputPanel>
+		
+	
+</ui:composition>

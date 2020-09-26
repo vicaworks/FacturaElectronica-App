@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+     <style type="text/css">
+       	
+    </style>
+	
+	<div class="card card-w-title" >
+				
+		<div class="EmptyBox10"/>
+   		
+   		<div class="p-grid p-align-left">
+   			
+   			<div class="p-col-12 p-md-5">
+   				
+   				<div class="p-grid">
+   					
+   					<div class="p-col-12 p-md-4">
+	    				<p:commandButton id="cmdCotNuevo"
+								value="NUEVO" icon="fa fa-plus" 
+								action="#{cotizacionFormCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
+						</p:commandButton>
+   					</div>
+   					
+   					<div class="p-col-12 p-md-4">
+	    				<p:commandButton id="cmdGenCotizacion"
+								value="GUARDAR" icon="fa fa-floppy-o" 
+								action="#{cotizacionFormCtrl.generarCotizacion()}" styleClass="secondary-button Wid100 Fs12" update="@form"/>
+					</div>
+					
+					<div class="p-col-12 p-md-4">
+	    				<!-- <p:commandButton id="cmdGenRecibo"
+								value="RECIBO" icon="fa fa-floppy-o" 
+								action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100 Fs12" update="@form :formMain:msgFormMain"/> -->
+					</div>
+					
+   					
+   				</div>
+   				
+   			</div>
+   			
+   		</div>
+	
+	</div>
+	
+	<!-- Mensajes -->
+	<p:messages id="msgProformaForm" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+		closable="true" >
+		<p:autoUpdate></p:autoUpdate>
+	</p:messages>
+	<div class="EmptyBox10"/>
+	<div class="p-grid">
+	    		
+   		<div class="p-col-12 p-lg-7">
+   			<!-- Detalle de la cotizacion -->
+   			<ui:include src="./incl_proforma_form_detalle.xhtml" />
+   		</div>
+   		
+   		<div class="p-col-12 p-lg-5">
+   			<!-- Datos de la cabecera / pagos -->
+   			<ui:include src="./incl_proforma_form_cabecera.xhtml" />
+   		</div>
+   	
+   	</div>
+
+</ui:composition>

@@ -9,7 +9,7 @@ package com.vcw.falecpv.core.constante.contadores;
  */
 public enum TCGuiaRemision implements TablaContadorBaseEnum {
 	
-	TRANSPORTISTA("TRANSPORTISTA");
+	TRANSPORTISTA("TRANSPORTISTA"),DESTINATARIO("DESTINATARIO"),DETALLE_DESTINATARIO("DETALLEDESTINATARIO");
 	
 	private String nombreTabla;
 

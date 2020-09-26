@@ -32,9 +32,6 @@ public class ResumenCabeceraQuery implements Serializable {
 	private String idcliente;
 	private String clienteidentificacion;
 	private String cliente;
-	private String idproveedor;
-	private String proveedoridentificacion;
-	private String proveedor;
 	private String estado;	
 	private String claveacceso;
 	private String estadoautorizacion;
@@ -44,6 +41,7 @@ public class ResumenCabeceraQuery implements Serializable {
 	private BigDecimal totalice = BigDecimal.ZERO;
 	private BigDecimal totaliva = BigDecimal.ZERO;
 	private BigDecimal totalconimpuestos = BigDecimal.ZERO;
+	private String idguiaremision;
 	
 
 	/**
@@ -221,48 +219,6 @@ public class ResumenCabeceraQuery implements Serializable {
 	}
 
 	/**
-	 * @return the idproveedor
-	 */
-	public String getIdproveedor() {
-		return idproveedor;
-	}
-
-	/**
-	 * @param idproveedor the idproveedor to set
-	 */
-	public void setIdproveedor(String idproveedor) {
-		this.idproveedor = idproveedor;
-	}
-
-	/**
-	 * @return the proveedoridentificacion
-	 */
-	public String getProveedoridentificacion() {
-		return proveedoridentificacion;
-	}
-
-	/**
-	 * @param proveedoridentificacion the proveedoridentificacion to set
-	 */
-	public void setProveedoridentificacion(String proveedoridentificacion) {
-		this.proveedoridentificacion = proveedoridentificacion;
-	}
-
-	/**
-	 * @return the proveedor
-	 */
-	public String getProveedor() {
-		return proveedor;
-	}
-
-	/**
-	 * @param proveedor the proveedor to set
-	 */
-	public void setProveedor(String proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	/**
 	 * @return the estado
 	 */
 	public String getEstado() {
@@ -386,6 +342,20 @@ public class ResumenCabeceraQuery implements Serializable {
 	 */
 	public void setTotalconimpuestos(BigDecimal totalconimpuestos) {
 		this.totalconimpuestos = totalconimpuestos;
+	}
+
+	/**
+	 * @return the idguiaremision
+	 */
+	public String getIdguiaremision() {
+		return idguiaremision;
+	}
+
+	/**
+	 * @param idguiaremision the idguiaremision to set
+	 */
+	public void setIdguiaremision(String idguiaremision) {
+		this.idguiaremision = idguiaremision;
 	}
 
 }

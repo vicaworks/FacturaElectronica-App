@@ -1,0 +1,273 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightDetGr {
+				height: 550px;
+		}
+		
+		.guiaRemDetalleDT2 .ui-datatable-scrollable-body{
+				/* min-height: 43vh !important;
+				height: calc(100vh - 325px); */ 
+		}
+		
+	</style>
+	
+	<p:dialog header="#{msg['label.guiaremision']}" widgetVar="dlgResGuiaRemision" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	
+	
+		<h:form id="frmDetGR">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-3" style="text-align:left;">					
+					
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgResGuiaRemision').hide()" immediate="true"/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmDetGR"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="form-ui Wid100 OvYScroll heightDetGr contenedorFormulario">
+				
+				<div class="p-grid p-align-top vertical-container">
+					
+					<!-- Transportista -->
+					<div class="p-col-12 p-md-6">
+							
+						<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Transportista</h3>
+						
+						<p:panelGrid  columns="2"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12 ui-md-6,
+										   ui-g-12 ui-md-6">
+										   
+							<h:panelGroup>
+								<h:outputText value="Estado" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.estado}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="#Comprobante" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(guiaRemCtrl.guiaRemisionSelected.numdocumento)}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>			   
+							
+							<h:panelGroup>
+								<h:outputText value="Identificador Transportista" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.transportista.identificacion}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Transportista" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.transportista.razonsocial}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+						
+						</p:panelGrid>
+						
+						<p:panelGrid  columns="1"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12">
+							
+							<h:panelGroup>
+								<h:outputText value="#{msg['label.direccion.capital']} de salida" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.direccionpartida}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+						</p:panelGrid>
+						
+						<p:panelGrid  columns="2"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12 ui-md-6,
+										   ui-g-12 ui-md-6">
+							<h:panelGroup>
+								<h:outputText value="Fecha salida" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.fechainiciotransporte}" styleClass="FontBold DispBlock">
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Fecha llegada" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.fechafintransporte}" styleClass="FontBold DispBlock">
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</h:panelGroup>				   
+										   
+						</p:panelGrid>
+						
+						<hr/>
+						
+						<h3 class="cardTitle"><i class="fa fa-check-circle"></i>  Destinatario</h3>
+						
+						<p:panelGrid  columns="2"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12 ui-md-6,
+										   ui-g-12 ui-md-6">
+										   
+							<h:panelGroup>
+								<h:outputText value="#{msg['label.identificacion.capital']}" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.identificaciondestinatario}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Nombre" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.razonsocialdestinatario}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+						</p:panelGrid>						
+						
+						<p:panelGrid  columns="1"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12">
+							
+							<h:panelGroup>
+								<h:outputText value="Destino" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.dirdestinatario}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+						</p:panelGrid>
+						
+						<p:panelGrid  columns="2"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12 ui-md-6,
+										   ui-g-12 ui-md-6">
+										   
+							<h:panelGroup>
+								<h:outputText value="Motivo" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.motivotraslado}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Cod. establecimiento" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.codestabdestino}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Tipo documento sustento" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.tipocomprobante!=null?guiaRemCtrl.destinatarioSelected.tipocomprobante.comprobante:'-'}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Documento sustento" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(guiaRemCtrl.destinatarioSelected.numdocsustento)}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Fecha #{msg['label.emision.lower']}" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.fechaemisiondocsustento}" styleClass="FontBold DispBlock">
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="Documento aduanero" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.docaduanerounico}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+						</p:panelGrid>
+						
+						<p:panelGrid  columns="1"
+							styleClass="ui-panelgrid-blank Wid100"
+							columnClasses="ui-g-12">
+							
+							<h:panelGroup>
+								<h:outputText value="Ruta" styleClass="cpoRequerido DispBlock"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{guiaRemCtrl.destinatarioSelected.ruta}" styleClass="FontBold DispBlock"/>
+							</h:panelGroup>
+							
+						</p:panelGrid>
+					
+					</div>
+					
+					<!-- Destinatario -->
+					<div class="p-col-12 p-md-6">
+						
+						<p:dataTable var="det"
+							value="#{guiaRemCtrl.detalledestinatarioList}" scrollable="true"
+							emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="guiaRemDetalleDT2 Fs11"  
+							rowKey="#{det.iddetalledestinatario}"
+							paginator="true"
+			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+			                paginatorPosition="bottom"  
+							rows="6"
+							rowsPerPageTemplate="6,12">
+							
+							<p:column headerText="ITEM" style="width:100%">
+					
+								<div class="p-grid">
+									
+									<div class="p-col-12">
+										<h:outputText value="DESCRIPCION" styleClass="DispBlock cpoRequerido Fs10"/>
+										<h:outputText value="#{det.descripcion}"  styleClass="DispBlock FontBold"/>
+									</div>
+									<div class="p-md-4">
+										<h:outputText value="COD PRINCIPAL" styleClass="DispBlock cpoRequerido Fs10"/>
+										<h:outputText value="#{det.codigointerno}"  styleClass="DispBlock FontBold"/>
+									</div>
+									
+									<div class="p-md-4">
+										<h:outputText value="COD INTERNO" styleClass="DispBlock cpoRequerido Fs10"/>
+										<h:outputText value="#{det.codigointerno}"  styleClass="DispBlock FontBold"/>
+									</div>
+									<div class="p-md-4">
+										<h:outputText value="CANTIDAD" styleClass="DispBlock cpoRequerido Fs10"/>
+										<h:outputText value="#{det.cantidad}"  styleClass="DispBlock FontBold">
+											<f:convertNumber pattern="#,##0"/>
+										</h:outputText>
+									</div>
+								</div>
+								
+							</p:column>
+							
+						</p:dataTable>
+						
+					
+					</div>
+				
+				</div>				
+			
+			</div>
+			
+		
+		</h:form>
+	
+	
+	
+	</p:dialog>
+	
+	
+</ui:composition>

@@ -111,17 +111,19 @@
 							</h:panelGroup>
 							<p:message for="intRazonSocial" />
 							
-							<h:outputText value="DIRECCIÓN : " style="font-weight: bold" />
+							<h:outputText value="DIRECCIÓN * : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter" required="true" requiredMessage="REQUERIDO"/>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intDireccion" />
 							
-							<h:outputText value="CORREO ELECTRÓNICO : " style="font-weight: bold" />
+							<h:outputText value="#{msg['label.correoelectronico']} * : " style="font-weight: bold" />
 							<h:panelGroup>
-								<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="Wid100" maxlength="50" />
+								<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="Wid100" maxlength="50" validatorMessage="EMAIL INVALIDO" required="true" requiredMessage="REQUERIDO">
+									<f:validator validatorId="emailValidator"/>
+								</p:inputText>
 							</h:panelGroup>
-							<h:outputText value="" />
+							<p:message for="intCorreo" />
 							
 							<h:outputText value="TELEFÓNO : " style="font-weight: bold" />
 							<h:panelGroup>
@@ -151,7 +153,7 @@
 					
 						<!-- Garante 1 -->
 					
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Garante 1</div>
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 1</div>
 					
 						<p:panelGrid id="gridClienteGar1" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 							
@@ -193,7 +195,7 @@
 						
 						<!-- Garante 2 -->
 						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Garante 2</div>
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 2</div>
 						
 						<p:panelGrid id="gridClienteGar2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 							

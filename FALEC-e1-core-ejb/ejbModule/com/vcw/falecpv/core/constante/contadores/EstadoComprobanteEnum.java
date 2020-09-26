@@ -8,5 +8,5 @@ package com.vcw.falecpv.core.constante.contadores;
  *
  */
 public enum EstadoComprobanteEnum {
-	GENERADO, ANULADO, OK_RETENCION, ERROR_RETENCION;
+	GENERADO, ANULADO, OK_RETENCION, ERROR_RETENCION,REGISTRADO;
 }

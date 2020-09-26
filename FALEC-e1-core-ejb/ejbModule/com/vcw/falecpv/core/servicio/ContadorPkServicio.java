@@ -152,8 +152,8 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 	 * @return
 	 * @throws DaoException
 	 */
+//	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Lock(LockType.WRITE)
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public String generarNumeroDocumento(GenTipoDocumentoEnum geTipoDocumentoEnum,String idEStablecimiento)throws DaoException{
 		return establecimientoServicio.generarNumeroDocumento(geTipoDocumentoEnum, idEStablecimiento);
 	}

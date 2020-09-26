@@ -27,12 +27,12 @@
 				<div class="p-col-12 p-md-6" style="text-align:left;">					
 					
 					<p:commandButton id="cmdGuardarTransportista"
-						value="GUARDAR" icon="fa fa-check" 
+						value="ACEPTAR" icon="fa fa-check" 
 						action="#{guiaRemFormCtrl.guardarDestinatario()}" styleClass="MRight10" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
 					</p:commandButton>
 					
 					<p:commandButton id="cmdGuardarTransportista2"
-						value="GUARDAR" icon="fa fa-check" 
+						value="ACEPTAR" icon="fa fa-check" 
 						action="#{guiaRemFormCtrl.guardarDestinatarioByOtros()}" styleClass="MRight10" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
 					</p:commandButton>
 						
@@ -189,11 +189,13 @@
 						<div class="EmptyBox5"/>
 							
 						<p:inputMask id="intGrDestNumDocAsociado"
-								mask="999-999-9999999"
+								mask="999-999-999999999"
 								value="#{guiaRemFormCtrl.destinatarioSelected.numdocsustento}" required="false"
 								requiredMessage="REQUERIDO" styleClass="Wid100"
-								maxlength="17" placeholder="000-000-0000000"
-								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}"></p:inputMask>	
+								maxlength="17" placeholder="000-000-000000000"
+								onkeydown="if(event.keyCode==13){event.keyCode=123; return false;}">
+								<f:converter converterId="formatoNumComprobanteConverter"/>
+						</p:inputMask>	
 						
 			            <p:message for="intGrDestNumDocAsociado" styleClass="Wid100"/>
 			            

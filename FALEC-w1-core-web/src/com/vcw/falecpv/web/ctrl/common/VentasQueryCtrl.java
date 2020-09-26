@@ -18,7 +18,8 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
 import com.vcw.falecpv.core.servicio.query.ConsultaGeneralComprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
-import com.vcw.falecpv.web.ctrl.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -83,7 +84,7 @@ public class VentasQueryCtrl extends BaseCtrl {
 	
 	private void consultar() throws DaoException {
 		resumenCabeceraQueryList = null;
-		resumenCabeceraQueryList = consultaGeneralComprobanteServicio.getComprovantesVentasByDateCriteria(AppJsfUtil.getUsuario().getIdusuario(), criterio, desde, hasta);
+		resumenCabeceraQueryList = consultaGeneralComprobanteServicio.getComprovantesVentasByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), criterio, desde, hasta,callModule);
 	}
 	
 	@Override
@@ -115,7 +116,11 @@ public class VentasQueryCtrl extends BaseCtrl {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmDestinatario:intGrDestMotTraslado');");
 				}
 				break;
-
+			case "NOTA_DEBITO":
+				NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
+				notaDebitoFrmCtrl.nuevoByFacturaEmitida(resumenCabeceraQuery.getIdcabecera());
+				AppJsfUtil.hideModal("dlgListaVentas");
+				break;
 			default:
 				break;
 			}

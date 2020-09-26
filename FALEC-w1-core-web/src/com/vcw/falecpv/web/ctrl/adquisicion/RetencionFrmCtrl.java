@@ -22,23 +22,23 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
-import com.vcw.falecpv.core.constante.contadores.TCAleatorio;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
-import com.vcw.falecpv.core.modelo.persistencia.Proveedor;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuestodet;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ImpuestoretencionServicio;
-import com.vcw.falecpv.core.servicio.ProveedorServicio;
+import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
@@ -65,7 +65,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private RetencionimpuestodetServicio retencionimpuestodetServicio;
 	
 	@EJB
-	private ProveedorServicio proveedorServicio;
+	private ClienteServicio clienteServicio;
 	
 	@EJB
 	private AdquisicionServicio adquisicionServicio;
@@ -88,10 +88,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	@EJB
 	private ContadorPkServicio contadorPkServicio;
 	
+	@EJB
+	private InfoadicionalServicio infoadicionalServicio;
+	
 	private String callModule;
 	private String viewUpdate;
 	private Adquisicion adquisicionSelected = new Adquisicion();
-	private List<Proveedor> proveedorList;
 	private List<Retencionimpuesto> retencionimpuestoList;
 	private List<Retencionimpuestodet> retencionimpuestodetList;
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -102,6 +104,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private RetencionMainCtrl retencionMainCtrl;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private AdquisicionMainCtrl adquisicionMainCtrl;
+	private String criterioProveedor;
 	
 	
 	/**
@@ -117,7 +120,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			callModule = "RETENCION";
 			retencionSeleccion = new Cabecera();
 			retenciondetalleSelected = new Impuestoretencion();
-			consultarProveedor();
 			consultarTipoComprobante();
 			consultarRetencionImpuesto();
 			
@@ -127,17 +129,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void consultarProveedor()throws DaoException {
-		
-		setProveedorList(proveedorServicio.getProveedorDao().getByConsulta(
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), EstadoRegistroEnum.ACTIVO, null));
-		
-	}
-	
 	public void consultarTipoComprobante()throws DaoException{
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
-				.getByEmpresaFormulario(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-						TipoComprobanteEnum.RETENCION));
+				.getByEmpresaFormulario(TipoComprobanteEnum.RETENCION));
 	}
 	
 	public void consultarRetencionImpuesto()throws DaoException {
@@ -178,10 +172,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	private void nuevaRetencion()throws DaoException {
 		
-		consultarProveedor();
 		consultarTipoComprobante();
 		consultarRetencionImpuesto();
-		
+		criterioProveedor = null;
 		retencionimpuesto = null;
 		retencionSeleccion = new Cabecera();
 		retencionSeleccion.setAdquisicion(null);
@@ -191,13 +184,16 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setTotalbaseimponible(BigDecimal.ZERO);
 		retencionSeleccion.setTotalretencion(BigDecimal.ZERO);
+		infoadicionalList = null;
+		inicializarSecuencia(retencionSeleccion);
 		
 		if(adquisicionSelected!=null) {
 			retencionSeleccion.setFechaemision(adquisicionSelected.getFecha());
 			retencionSeleccion.setNumfactura(adquisicionSelected.getNumfactura());
-			retencionSeleccion.setProveedor(adquisicionSelected.getProveedor());
+			retencionSeleccion.setCliente(adquisicionSelected.getCliente());
 			retencionSeleccion.setTipocomprobanteretencion(adquisicionSelected.getTipocomprobante());
 		}
+		retencionSeleccion.setFechaemisiondocasociado(retencionSeleccion.getFechaemision());
 		retenciondetalleList = null;
 		nuevaRetencionDetalle();
 		determinarPeriodoFiscal();
@@ -205,7 +201,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	private void determinarPeriodoFiscal() {
 		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
-		retencionSeleccion.setPeriodofiscal(sf.format(retencionSeleccion.getFechaemision()));
+		retencionSeleccion.setPeriodofiscal(sf.format(retencionSeleccion.getFechaemisiondocasociado()));
 	}
 	
 	private void nuevaRetencionDetalle() {
@@ -272,11 +268,11 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			// verifica numfactura proveedor establecimeinto
 			if (cabeceraRetencionServicio.existeRetencionProveedor(retencionSeleccion.getIdcabecera(),
 					retencionSeleccion.getEstablecimiento().getIdestablecimiento(),
-					retencionSeleccion.getProveedor().getIdproveedor(), retencionSeleccion.getNumfactura())) {
+					retencionSeleccion.getCliente().getIdcliente(), retencionSeleccion.getNumfactura())) {
 				
 				AppJsfUtil.addErrorMessage("formMain", "ERROR",
 						"YA EXISTE UNA RETENCION DE LA FACTURA : " + retencionSeleccion.getNumfactura()
-								+ " DEL PROVEEDOR : " + retencionSeleccion.getProveedor().getNombrecomercial());
+								+ " DEL PROVEEDOR : " + retencionSeleccion.getCliente().getRazonsocial());
 				return;
 				
 			}
@@ -284,7 +280,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			// verifica si existe la adquisicion
 			if(adquisicionSelected==null) {
 				adquisicionSelected = adquisicionServicio.getByFactura(
-						retencionSeleccion.getProveedor().getIdproveedor(), retencionSeleccion.getNumfactura(),
+						retencionSeleccion.getCliente().getIdcliente(), retencionSeleccion.getNumfactura(),
 						retencionSeleccion.getEstablecimiento().getIdestablecimiento());
 			}
 			
@@ -329,9 +325,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			}
 			
 			retencionSeleccion.setUpdated(new Date());
+			retencionSeleccion.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.RETENCION);
+			retencionSeleccion.setSecuencial(null);
 			populateretencion();
 			// guarda los datos
 			retencionSeleccion = cabeceraServicio.guardarComprobanteFacade(retencionSeleccion);
+			noEditarSecuencial(retencionSeleccion);
 			
 			// Manage de session para actualizar las pantallas
 			adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
@@ -357,8 +356,11 @@ public class RetencionFrmCtrl extends BaseCtrl {
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("formMain", "OK","REGISTRO GUARDADO CORRECTAMENTE.");
+			messageCtrl.cargarMenssage("OK", msg.getString("label.retencion") + " GENERADA CORRECTAMENTE.", "OK");
 			
+		}  catch (ExisteNumDocumentoException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -368,30 +370,26 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private void populateretencion() throws DaoException, ParametroRequeridoException {
 		
 		retencionSeleccion.setTipoemision("1");
-		retencionSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.RETENCION,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		retencionSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.RETENCION));
 		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		retencionSeleccion.setContribuyenteespecial("5368");
 		retencionSeleccion.setMoneda("DOLAR");
-		if(retencionSeleccion.getSecuencial()==null) {
-			retencionSeleccion.setSecuencial(contadorPkServicio.generarNumeroDocumento(GenTipoDocumentoEnum.RETENCION,
-					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
-			// clave de acceso
-			retencionSeleccion.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(retencionSeleccion, contadorPkServicio.generarContadorTabla(TCAleatorio.ALEATORIORETENCION, retencionSeleccion.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
-			retencionSeleccion.setNumdocumento(TextoUtil.leftPadTexto(retencionSeleccion.getEstablecimiento().getCodigoestablecimiento(),3, "0").concat("001").concat(retencionSeleccion.getSecuencial()));
-		}
-		
 		retencionSeleccion.setPropina(BigDecimal.ZERO);
 		retencionSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
 		// detalle retencion
 		retencionSeleccion.setImpuestoretencionList(retenciondetalleList);
+		for (Impuestoretencion i : retencionSeleccion.getImpuestoretencionList()) {
+			i.setCoddocsustento(retencionSeleccion.getTipocomprobanteretencion().getIdentificador());
+			i.setNumdocsustento(retencionSeleccion.getNumfactura());
+			i.setFechaemisiondocsustento(retencionSeleccion.getFechaemisiondocasociado());
+		}
 		
 		// infromacion adicional 
-		retencionSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(retencionSeleccion));
-		
+		retencionSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(retencionSeleccion,infoadicionalList));
+		retencionSeleccion.setNumdocasociado(retencionSeleccion.getNumfactura());
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setUpdated(new Date());
 		determinarPeriodoFiscal();
@@ -399,7 +397,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 
 	public void editarRetencion(String idRetencion)throws DaoException{
-		
+		criterioProveedor = null;
 		retencionSeleccion = cabeceraServicio.consultarByPk(idRetencion);
 		retenciondetalleList = cabeceraRetencionServicio.getDetalleById(idRetencion);
 		adquisicionSelected = null;
@@ -407,9 +405,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			adquisicionSelected = adquisicionServicio.consultarByPk(retencionSeleccion.getAdquisicion().getIdadquisicion());
 		}
 		nuevaRetencionDetalle();
-		consultarProveedor();
 		consultarTipoComprobante();
 		consultarRetencionImpuesto();
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idRetencion);
 		totalizar();
 	}
 	
@@ -510,6 +508,52 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}
 		
 	}
+	
+	public void editarSecuencialAction() {
+		try {
+			
+			editarSecuencial(retencionSeleccion, "formMain:intSecDocumento");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void noEditarSecuencialAction() {
+		try {
+			
+			noEditarSecuencial(retencionSeleccion);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void buscarProveedor() {
+		try {
+			
+			if(retencionSeleccion==null) return;
+			
+			if(criterioProveedor==null || criterioProveedor.trim().length()==0) {
+				AppJsfUtil.addErrorMessage("formMain:inpCriterioProveedor", "ERROR", "REQUERIDO");
+				return;
+			}
+			
+			consultarProveedor(criterioProveedor);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void consultarProveedor(String identificador) throws DaoException {
+		retencionSeleccion.setCliente(null);
+		retencionSeleccion.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+	}
 
 	/**
 	 * @return the callModule
@@ -551,20 +595,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	 */
 	public void setAdquisicionSelected(Adquisicion adquisicionSelected) {
 		this.adquisicionSelected = adquisicionSelected;
-	}
-
-	/**
-	 * @return the proveedorList
-	 */
-	public List<Proveedor> getProveedorList() {
-		return proveedorList;
-	}
-
-	/**
-	 * @param proveedorList the proveedorList to set
-	 */
-	public void setProveedorList(List<Proveedor> proveedorList) {
-		this.proveedorList = proveedorList;
 	}
 
 	/**
@@ -705,6 +735,20 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	 */
 	public void setRetenciondetalleSelected(Impuestoretencion retenciondetalleSelected) {
 		this.retenciondetalleSelected = retenciondetalleSelected;
+	}
+
+	/**
+	 * @return the criterioProveedor
+	 */
+	public String getCriterioProveedor() {
+		return criterioProveedor;
+	}
+
+	/**
+	 * @param criterioProveedor the criterioProveedor to set
+	 */
+	public void setCriterioProveedor(String criterioProveedor) {
+		this.criterioProveedor = criterioProveedor;
 	}
 
 }

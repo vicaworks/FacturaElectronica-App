@@ -89,19 +89,20 @@
 	
 	            <p:ajaxStatus styleClass="layout-ajax-loader">
 	                <f:facet name="start">
-	                    <i class="fa fa-circle-o-notch fa-spin layout-ajax-loader-icon" aria-hidden="true"></i>
+	                    <i class="fa fa-circle-o-notch fa-spin layout-ajax-loader-icon Fs30" aria-hidden="true"></i>
 	                </f:facet>
 	
 	                <f:facet name="complete">
 	                    <h:outputText value="" />
 	                </f:facet>
 	            </p:ajaxStatus>
+	            <ui:include src="../../pages/common/incl_message.xhtml" />
 	        </div>
 	       
 	        <h:outputStylesheet name="css/primeflex.css" library="roma-layout" />
 	        <h:outputStylesheet name="css/nanoscroller.css" library="roma-layout" />
 	        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="roma-layout" />
-	        <h:outputStylesheet name="farlecpv_v2.css" library="css" />
+	        <h:outputStylesheet name="farlecpv_v4.css" library="css" />
 	        
 	    </h:body>
 	</f:view>

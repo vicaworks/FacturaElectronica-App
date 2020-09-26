@@ -230,7 +230,7 @@ public class FactMainCtrl extends BaseCtrl {
 		opcionCantidadPrecio = "CANTIDAD";
 		inicioCalculadora = false;
 		separadorDecimal = null;
-		
+		inicializarSecuencia(cabeceraFac);
 		// encerar el pago
 		FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
 		fp.encerar();

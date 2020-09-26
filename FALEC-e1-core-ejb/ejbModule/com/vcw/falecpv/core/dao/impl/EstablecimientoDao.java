@@ -52,6 +52,29 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param estadoRegistroEnum
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Establecimiento> getByEmpresa(String idEmpresa)throws DaoException{
+		try {
+			
+			Query q = null;
+			q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.empresa.idempresa=:id ORDER BY e.nombrecomercial");
+			q.setParameter("id", idEmpresa);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 	
 
 	/**
@@ -61,20 +84,22 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeMatriz(String idestablecimiento, String matriz)throws DaoException{
+	public boolean existeMatriz(String idestablecimiento, String matriz, String idempresa)throws DaoException{
 		try {
 			
 			Query q = null;
 			
 			if(idestablecimiento!=null) {
 				
-				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz AND e.idestablecimiento<>:idestablecimiento");
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz AND e.idestablecimiento<>:idestablecimiento AND e.empresa.idempresa=:idempresa");
 				q.setParameter("matriz", matriz);
 				q.setParameter("idestablecimiento", idestablecimiento);
+				q.setParameter("idempresa", idempresa);
 			}else {
 				
-				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz");
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz AND e.empresa.idempresa=:idempresa");
 				q.setParameter("matriz", matriz);
+				q.setParameter("idempresa", idempresa);
 			}
 			
 			if(q.getResultList().size()>0) {
@@ -95,21 +120,23 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeCodEstablecimiento(String idestablecimiento, String codigoestablecimiento)throws DaoException{
+	public boolean existeCodEstablecimiento(String idestablecimiento, String codigoestablecimiento,String idEmpresa)throws DaoException{
 		try {
 			
 			Query q = null;
 			
 			if(idestablecimiento!=null) {
 				
-				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.codigoestablecimiento=:codigoestablecimiento AND e.idestablecimiento<>:idestablecimiento");
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.empresa.idempresa=:id and e.codigoestablecimiento=:codigoestablecimiento AND e.idestablecimiento<>:idestablecimiento");
 				q.setParameter("codigoestablecimiento", codigoestablecimiento);
 				q.setParameter("idestablecimiento", idestablecimiento);
 			}else {
 				
-				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.codigoestablecimiento=:codigoestablecimiento");
+				q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.empresa.idempresa=:id and e.codigoestablecimiento=:codigoestablecimiento");
 				q.setParameter("codigoestablecimiento", codigoestablecimiento);
 			}
+			
+			q.setParameter("id", idEmpresa);
 			
 			if(q.getResultList().size()>0) {
 				return true;
@@ -131,13 +158,14 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public  List<Establecimiento> getEstablecimientobyMatriz(String matriz) throws DaoException{
+	public  List<Establecimiento> getEstablecimientobyMatriz(String matriz,String idEmpresa) throws DaoException{
 		try {
 
 			Query q = null;
 
-			q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.matriz=:matriz");
+			q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.empresa.idempresa=:id and e.matriz=:matriz");
 			q.setParameter("matriz", matriz);
+			q.setParameter("id", idEmpresa);
 
 			if (q.getResultList().size() > 0) {
 				return q.getResultList();

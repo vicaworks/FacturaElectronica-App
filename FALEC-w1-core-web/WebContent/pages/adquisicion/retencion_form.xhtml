@@ -12,9 +12,70 @@
     <ui:define name="head">
         <style type="text/css">
 			
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			.ui-calendar .ui-inputfield{
+				font-size: 14px !important;
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #e6e6e6;
+				color: black;
+				cursor: default;
+			}
+			
+			.ui-panelgrid .ui-panelgrid-cell {
+				padding: 0.25em !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			body .ui-datatable thead th {
+				/* padding: 0px !important; */
+			}
+			
+			.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+				/* padding: 0px !important; */
+			}
+			
+			.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+			}
+			
+			body .ui-inputgroup .ui-inputgroup-addon, 
+			body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+			 padding: 0px !important;
+			}
+			
+			/* =========================================================================================================================== */
+			
+			.disable-color{
+				background-color: #F4F6F7 !important;
+			}
+			
 			.retencionDetDT .ui-datatable-scrollable-body{
 				/* min-height: 42vh !important; */
-				height: calc(100vh - 525px);
+				height: calc(100vh - 495px);
 				
 			}
 			
@@ -22,38 +83,21 @@
 				text-align: right;
 			}
 			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-message {
-				padding: 0em !important;
-			}
-			
-			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
 			.disable .ui-inputfield{
-				background-color: #ccc !important;
+				background-color: #F4F6F7 !important;
 			}
+			
+			.ui-selectonemenu-item {
+			    font-size: 10px;
+			}
+			
 			
         </style>
     </ui:define>
 
     <ui:define name="content">
+    	
+    	
     	
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
@@ -63,8 +107,8 @@
     	<f:subview rendered="#{retencionFrmCtrl.callModule=='RETENCION'}">
 	    	<p:breadCrumb>
 			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-			    <p:menuitem value="Adquisiciones" url="#" />
 		    	<p:menuitem value="Lista de Retenciones" url="#{request.contextPath}/pages/adquisicion/retenciones.jsf"/>
+		    	<p:menuitem value="#{msg['label.retencion2']}" url="#{request.contextPath}/pages/adquisicion/retencion_form.jsf"/>
 			</p:breadCrumb>
     	</f:subview>
     	
@@ -72,8 +116,7 @@
     	
     		<p:breadCrumb>
 			    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-			    <p:menuitem value="Adquisiciones" url="#" />
-			    <p:menuitem value="Lista Adquisiciones" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf"/>
+			    <p:menuitem value="Lista de compras" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf" />
 			    <p:menuitem value="Compra" url="#{request.contextPath}/pages/adquisicion/adquisicion_form.jsf"/>
 			    <p:menuitem value="#{msg['label.retencion2']}" url="#{request.contextPath}/pages/adquisicion/retencion_form.jsf"/>
 			</p:breadCrumb>
@@ -90,13 +133,13 @@
 	    		
 	    		<div class="p-grid p-align-left">
 	    			
-	    			<div class="p-col-12 p-md-5">
+	    			<div class="p-col-12 p-md-4">
 	    				
 	    				<div class="p-grid">
 	    					
-	    					<div class="p-col-12 p-md-4">
+	    					<div class="p-col-12 p-md-6">
 			    				<p:commandButton id="cmdRtnNuevo"
-										value="NUEVA #{msg['label.retencion']}" icon="fa fa-plus" 
+										value="NUEVO" icon="fa fa-plus" 
 										action="#{retencionFrmCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true">
 										
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
@@ -111,27 +154,10 @@
 							
 	    					</div>
 		    				
-		    				<div class="p-col-12 p-md-4">
+		    				<div class="p-col-12 p-md-6">
 			    				<p:commandButton id="cmdrtnGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{retencionFrmCtrl.guardar()}" styleClass="secondary-button Wid100 Fs11" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
-							</div>
-							
-							<div class="p-col-12 p-md-4">
-							
-								<p:commandButton  id="cmdRtnProveedor" 
-										title="NUEVO PROVEEDOR"
-										icon="fa fa-plus"
-										value="PROVEEDOR"
-										styleClass="secondary-button Wid100 Fs11"
-										action="#{proveedorCtrl.nuevo()}"
-										immediate="true">
-										<f:setPropertyActionListener value="RETENCION" target="#{proveedorCtrl.callModule}"/>
-										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/>
-										<f:setPropertyActionListener value=":formMain:somRtnProveedor :formMain:inpRtnRuc" target="#{proveedorCtrl.viewUpdate}"/>
-										<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{proveedorCtrl.retencionFrmCtrl}"/>
-								</p:commandButton>
-									
+										action="#{retencionFrmCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							</div>
 							
 	    				</div>
@@ -144,7 +170,7 @@
 	    	
 	    	<!-- Mensajes -->
 			<div class="EmptyBox5"/>
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
@@ -157,46 +183,135 @@
 					<div class="card card-w-title">
 						
 						<!-- Formulario -->
-						<div class="EmptyBox5"/>
+						<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.retencion2']}</h2>
+						
+						
+						<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+							<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:outputLabel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera!=null}">
+									<div class="EmptyBox5"></div>
+									<h:outputText value="#{retencionFrmCtrl.getFormatoNumDocumento(retencionFrmCtrl.retencionSeleccion.numdocumento)}" styleClass="Fs18 FontBold"/>
+									<div class="EmptyBox5"></div>
+								</p:outputLabel>
+								<p:outputLabel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera==null}">
+									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.secuencialEstablecimiento}" />
+									<h:outputText value=" - " />
+									<p:inputMask id="intSecCaja" value="#{retencionFrmCtrl.retencionSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+									<h:outputText value=" - " />
+									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" rendered="#{not retencionFrmCtrl.retencionSeleccion.editarSecuencial}"/>
+									<p:inputMask id="intSecDocumento" value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" maxlength="7" mask="999999999" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+									<p:spacer width="5px;"/>
+									<p:commandLink action="#{retencionFrmCtrl.editarSecuencialAction()}" process=":formMain:grid :formMain:grid2" update=":formMain:msgFormMain :formMain:grid :formMain:grid2">
+										<i class="fa fa-edit Fs18"/>
+									</p:commandLink>
+									<p:spacer width="5px;"/>
+									<p:commandLink action="#{retencionFrmCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid :formMain:grid2">
+										<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+									</p:commandLink>
+									<p:message styleClass="Wid100" for="intSecCaja"/>
+									<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+								</p:outputLabel>
+								
+							</h:panelGroup>
+							
+						</p:panelGrid>
+						
+						<!-- consulta cliente return keycode 13 -->
+						<p:remoteCommand name="buscarProveedor"  action="#{retencionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion"/>
 						
 						<p:panelGrid id="gridRetencionDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 							
-							<h:outputText value="NUM COMPROBANTE * : " styleClass="cpoRequerido"/>
+							<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<!-- <p:inputMask id="inpRtnNumComp" value="#{retencionFrmCtrl.retencionSeleccion.numdocumento}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
-								<p:message for="inpRtnNumComp" /> -->
-								<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.numdocumento}" styleClass="Fs16 FontBold" rendered="#{retencionFrmCtrl.retencionSeleccion.numdocumento != null}"/>
-								<h:outputText value="00000000000000" styleClass="Fs16 FontBold" rendered="#{retencionFrmCtrl.retencionSeleccion.numdocumento == null}"/>
+								<p:calendar id="claRtnFechaEmision" value="#{retencionFrmCtrl.retencionSeleccion.fechaemision}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+								</p:calendar>
+								<p:message for="claRtnFechaEmision" />
 							</h:panelGroup>
 							
 							<h:outputText value="PROVEEDOR *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:selectOneMenu id="somRtnProveedor"
-											value="#{retencionFrmCtrl.retencionSeleccion.proveedor}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{retencionFrmCtrl.proveedorList}" var="pv"
-										itemLabel="#{pv.nombrecomercial}" itemValue="#{pv}" />
-									
-									<p:ajax update=":formMain:inpRtnRuc :formMain:somRtnImpuesto" />
-										
-								</p:selectOneMenu>
-								<p:message for="somRtnProveedor" />
-								
+								<div class="ui-inputgroup">
+					                <span class="ui-inputgroup-addon">
+					                	
+					                	<p:commandButton process="@this :formMain:inpCriterioProveedor"
+											update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" 
+											action="#{retencionFrmCtrl.buscarProveedor()}" icon="fa fa-search">
+					                	</p:commandButton>
+					                
+					                </span>
+					                
+					                <p:inputText id="inpCriterioProveedor"
+										value="#{retencionFrmCtrl.criterioProveedor}" required="false"
+										requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+										maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+										validatorMessage="SOLO NUMEROS"
+										onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
+										<f:validateRegex pattern="^\d+$" />
+									</p:inputText>
+					                
+					            </div>
+					            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
 							</h:panelGroup>
+							
+							
+							<h:panelGroup>
+								<p:commandButton  id="cmdRtnProveedor" 
+										title="NUEVO/EDITAR PROVEEDOR"
+										icon="fa fa-plus"
+										value="NUEVO / EDITAR PROVEEDOR"
+										styleClass="secondary-button Wid100 Fs11"
+										action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}"
+										immediate="true">
+										<f:setPropertyActionListener value="RETENCION" target="#{cliente.callModule}"/>
+<!-- 										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/> -->
+										<f:setPropertyActionListener value=":formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{clienteCtrl.updateView}"/>
+										<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{clienteCtrl.retencionFrmCtrl}"/>
+								</p:commandButton>
+							</h:panelGroup>
+							
 							
 							<h:outputText value="CI / RUC * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.proveedor.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" readonly="true">
+								<p:inputText id="inpRtnRuc" value="#{retencionFrmCtrl.retencionSeleccion.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
 								</p:inputText>
 								<p:message for="inpRtnRuc" />
 							</h:panelGroup>
+							
+							<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="inpRtNombre" value="#{retencionFrmCtrl.retencionSeleccion.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpRtNombre" />
+							</h:panelGroup>
+							
+							<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="inpRtnEmail" value="#{retencionFrmCtrl.retencionSeleccion.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpRtnEmail" />
+							</h:panelGroup>
+							
+							<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
+							<h:panelGroup>
+								<p:inputText id="inpRtnDireccion" value="#{retencionFrmCtrl.retencionSeleccion.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+								<p:message for="inpRtnDireccion" />
+							</h:panelGroup>
+						</p:panelGrid>			
+				</div>
+				<div class="EmptyBox5"/>			
+				<div class="card card-w-title">
+					
+					<!-- Formulario -->
+					<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Documento Asociado</h2>
+						
+						
+						<p:panelGrid id="grid2" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">		
 							
 							<h:outputText value="TIPO COMPROBANTE*" styleClass="cpoRequerido"/>
 							<h:panelGroup>
@@ -212,14 +327,14 @@
 			
 									<f:selectItems value="#{retencionFrmCtrl.tipocomprobanteList}" var="tp"
 										itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
-										
+									
 								</p:selectOneMenu>
 								<p:message for="somRtnTipComprobante" />
 							</h:panelGroup>
 							
-							<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+							<h:outputText value="FECHA #{msg['label.emision']} DOC ASOCIADO *" styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:calendar id="claRtnFechaCompra" value="#{retencionFrmCtrl.retencionSeleccion.fechaemision}"
+								<p:calendar id="claRtnFechaCompra" value="#{retencionFrmCtrl.retencionSeleccion.fechaemisiondocasociado}"
 									pattern="dd/MM/yyyy"
 									locale="es" 
 									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
@@ -237,14 +352,66 @@
 								</p:outputPanel>
 							</h:panelGroup>
 							
-							<h:outputText value="NUM FACTURA * : " styleClass="cpoRequerido"/>
+							<h:outputText value="NUM COMPROBANTE * : " styleClass="cpoRequerido"/>
 							<h:panelGroup>
-								<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999999999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="15" validatorMessage="SOLO NUMEROS, 15 DIGITOS" placeholder="FORMATO : 15 DIGITOS"/>
+								<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
+									<f:converter converterId="formatoNumComprobanteConverter"/>
+								</p:inputMask>
 								<p:message for="inpRtnNumFac" />
 							</h:panelGroup>
 						
 						</p:panelGrid>
 						
+				</div>
+				<div class="EmptyBox5"/>
+				<div class="card card-w-title">		
+						<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+						<p:outputPanel id="oupInfoAdicionalMain">
+							<p:panelGrid columns="2"
+								 styleClass="ui-panelgrid-blank Wid100" 
+								 columnClasses="ui-g-12 ui-md-6,
+								 				ui-g-12 ui-md-6">
+								 				
+								 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{retencionFrmCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+								<h:panelGroup>
+								</h:panelGroup>				 
+								
+							</p:panelGrid>
+							
+							<p:outputPanel id="grdInfoAdicional">
+							
+								<div class="EmptyBox5"/>
+								
+								<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+									<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+									<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+								</p:panelGrid>
+								
+								<div class="p-grid p-align-center vertical-container">
+									
+									<p:repeat var="info" value="#{retencionFrmCtrl.infoadicionalList}" >
+										<div class="p-col-5">
+											<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+											<p:message for="inpInfoAdicionalNombre"/>
+										</div>
+										<div class="p-col-6">
+											<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+											<p:message for="inpInfoAdicionalValor"/>
+										</div>
+										<div class="p-col-1" style="text-align: center;">
+											<p:commandLink  action="#{retencionFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+												<f:setPropertyActionListener value="#{info}" target="#{retencionFrmCtrl.infoadicionalSelected}"/>
+												<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+												<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+											</p:commandLink>
+										</div>
+									
+									</p:repeat>
+								</div>
+							
+							</p:outputPanel>
+						</p:outputPanel>
+						<div class="EmptyBox20"/>
 					</div>
 				</div>
 				
@@ -272,7 +439,7 @@
 											<f:selectItems value="#{retencionFrmCtrl.retencionimpuestoList}" var="ri"
 												itemLabel="#{ri.nombre}" itemValue="#{ri}" />
 												
-											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioImpuesto()}" update=":formMain" process="@this :formMain:gridRetencionDG"/>
+											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioImpuesto()}" update=":formMain" process="@form"/>
 												
 										</p:selectOneMenu>
 										<p:message for="somRtnImpuesto" />
@@ -292,9 +459,9 @@
 													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 					
 											<f:selectItems value="#{retencionFrmCtrl.retencionimpuestodetList}" var="rid"
-												itemLabel="#{rid.nombre}" itemValue="#{rid}" />
+												itemLabel="#{rid.display}" itemValue="#{rid}" itemDescription="#{rid.nombre}"/>
 											
-											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update="@form" process="@this"/>
+											<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update="@form" process="@form"/>
 											
 										</p:selectOneMenu>
 										<p:message for="somRtnImpuestoDet" />
@@ -340,7 +507,7 @@
 							<div class="p-col-12 p-md-6">
 								<p:commandButton  id="cmdAdqAgregarDetalle" 
 									icon="fa fa-plus"
-									value="AGREGAR #{msg['label.retencion']}"
+									value="AGREGAR #{msg['label.retencion']} CALCULADA"
 									styleClass="Wid100"
 									action="#{retencionFrmCtrl.agregarDetalle()}"
 									update="@form">
@@ -376,20 +543,20 @@
 							
 							<p:column headerText="BASE IMPONIBLE" style="width:30px;">
 								<h:outputText value="#{d.baseimponible}">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="%" style="width:30px;">
 								<h:outputText value="% "/>
 								<h:outputText value="#{d.porcentajeretener}">
-									<f:convertNumber locale="es_EC" pattern="0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
 								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="TOTAL RTN." style="width:30px;">
 								<h:outputText value="#{d.valorretenido}">
-									<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</p:column>
 							
@@ -404,33 +571,30 @@
 								<div class="p-grid p-col-12 p-md-6 divResumen">
 										
 									<div class="p-col-8 subtotal">
-										<h:outputText value="Total #{msg[label.retencion2]}" styleClass="FontBold Fs14" />
+										<h:outputText value="Valor Total Retenido : " styleClass="FontBold Fs16" />
 									</div>
 									
 									<div class="p-col-4 subtotalValor">
-										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs14">
-											<f:convertNumber locale="es_EC" pattern="$ 0.00"/>
+										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs16">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 										</h:outputText>
 									</div>
 										
 								</div>
 								
-								
 							</div>
 						</p:outputPanel>
-					
+						<div class="EmptyBox20"/>
 					</div>
 					
 				</div>
 				
-				
 			</div>
-	    
 	    
 	    </h:form>
     	
     	<!-- Form Proveedor -->
-	    <ui:include src="incl_proveedor_form.xhtml" />
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
         
     </ui:define>
 

@@ -38,12 +38,11 @@ public class TipopagoDao extends AppGenericDao<Tipopago, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Tipopago> getByEmpresaFormulario(String idEmpresa,TipoPagoEnum tipoPago)throws DaoException{
+	public List<Tipopago> getByEmpresaFormulario(TipoPagoEnum tipoPago)throws DaoException{
 		try {
 			
-			String sql = "SELECT t FROM Tipopago t WHERE t.empresa.idempresa=:idempresa AND t.formulario like :formulario ORDER BY t.nombre";
+			String sql = "SELECT t FROM Tipopago t WHERE t.formulario like :formulario ORDER BY t.nombre";
 			Query q = getEntityManager().createQuery(sql);
-			q.setParameter("idempresa", idEmpresa);
 			q.setParameter("formulario", "%".concat(tipoPago.getFormulario()).concat("%"));
 			
 			return q.getResultList();
@@ -61,11 +60,10 @@ public class TipopagoDao extends AppGenericDao<Tipopago, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public Tipopago getByNombre(String idempresa,String nombre)throws DaoException{
+	public Tipopago getByNombre(String nombre)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT p FROM Tipopago p WHERE p.empresa.idempresa=:idempresa AND p.nombre=:nombre");
-			q.setParameter("idempresa", idempresa);
+			Query q = getEntityManager().createQuery("SELECT p FROM Tipopago p WHERE p.nombre=:nombre");
 			q.setParameter("nombre", nombre);
 			return (Tipopago) q.getSingleResult();
 			

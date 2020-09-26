@@ -116,7 +116,7 @@ public class Ice implements Serializable {
 
     @Override
     public String toString() {
-    	return String.format("[%s, %s]", idice, descripcion);
+    	return String.format("[%s, %s]", idice, tarifaadvalorem);
     }
     
     public String toStringObject() {

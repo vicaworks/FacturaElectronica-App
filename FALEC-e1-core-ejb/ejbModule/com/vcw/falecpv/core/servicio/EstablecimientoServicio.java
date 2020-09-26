@@ -133,9 +133,7 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			
 			Establecimiento e = consultarByPk(idEStablecimiento);
 			
-//			String numDoc =  TextoUtil.leftPadTexto(e.getCodigoestablecimiento(), 3, "0");
-//			numDoc += "001";
-			int cantidadZero = 7;
+			int cantidadZero = 9;
 			String numDoc =  "";
 			
 			switch (geTipoDocumentoEnum) {
@@ -148,7 +146,7 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 				numDoc += TextoUtil.leftPadTexto(e.getSecuencialrecibo()+"", cantidadZero, "0");
 				break;
 			case NOTA_CREDITO:
-				e.setSecuencialNotaCredito(e.getSecuencialrecibo()+1);
+				e.setSecuencialNotaCredito(e.getSecuencialNotaCredito()+1);
 				numDoc += TextoUtil.leftPadTexto(e.getSecuencialNotaCredito()+"", cantidadZero, "0");
 				break;
 			case NOTA_DEBITO:
@@ -158,6 +156,18 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			case RETENCION:
 				e.setSecuencialretencion(e.getSecuencialretencion()+1);
 				numDoc += TextoUtil.leftPadTexto(e.getSecuencialretencion()+"", cantidadZero, "0");
+				break;
+			case GUIA_REMISION:
+				e.setSecuencialguiaremision(e.getSecuencialguiaremision()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialguiaremision()+"", cantidadZero, "0");
+				break;
+			case LIQUIDACION_COMPRA:
+				e.setSecuencialliquidacioncompra(e.getSecuencialliquidacioncompra()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialliquidacioncompra()+"", cantidadZero, "0");
+				break;	
+			case COTIZACION:
+				e.setSecuencialcotizacion(e.getSecuencialcotizacion()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialcotizacion()+"", cantidadZero, "0");
 				break;
 			default:
 				break;

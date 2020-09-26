@@ -43,7 +43,8 @@ public class VentasQuery implements Serializable {
 	private BigDecimal totalpago = BigDecimal.ZERO;
 	private String iddetalle;
 	private String idtipocomprobante;
-	private String identificador; 
+	private String identificador;
+	private String nombregenerico;
 	private String idproducto;
 	private String descripcion;
 	private BigDecimal preciounitario = BigDecimal.ZERO;
@@ -59,6 +60,18 @@ public class VentasQuery implements Serializable {
 	private String categoria;
 	private String codigoprincipal;
 	private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
+	private BigDecimal impuestos = BigDecimal.ZERO;
+	private String idguiaremision;
+	private String numdocumento;
+	private String resumenpago;
+	private Integer envioemail = 0;
+	private BigDecimal valorretenido = BigDecimal.ZERO;
+	private BigDecimal valorapagar = BigDecimal.ZERO;
+	private BigDecimal totalconimpuestos = BigDecimal.ZERO;
+	private BigDecimal totalrecibos = BigDecimal.ZERO;
+	private String identificacion;
+	private Integer contador = 0;
+	private Date updated;
 	
 	/**
 	 * 
@@ -586,6 +599,188 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setTotalsinimpuestos(BigDecimal totalsinimpuestos) {
 		this.totalsinimpuestos = totalsinimpuestos;
+	}
+
+	/**
+	 * @return the idguiaremision
+	 */
+	public String getIdguiaremision() {
+		return idguiaremision;
+	}
+
+	/**
+	 * @param idguiaremision the idguiaremision to set
+	 */
+	public void setIdguiaremision(String idguiaremision) {
+		this.idguiaremision = idguiaremision;
+	}
+
+	/**
+	 * @return the numdocumento
+	 */
+	public String getNumdocumento() {
+		return numdocumento;
+	}
+
+	/**
+	 * @param numdocumento the numdocumento to set
+	 */
+	public void setNumdocumento(String numdocumento) {
+		this.numdocumento = numdocumento;
+	}
+
+	/**
+	 * @return the resumenpago
+	 */
+	public String getResumenpago() {
+		return resumenpago;
+	}
+
+	/**
+	 * @param resumenpago the resumenpago to set
+	 */
+	public void setResumenpago(String resumenpago) {
+		this.resumenpago = resumenpago;
+	}
+
+	/**
+	 * @return the envioemail
+	 */
+	public Integer getEnvioemail() {
+		return envioemail;
+	}
+
+	/**
+	 * @param envioemail the envioemail to set
+	 */
+	public void setEnvioemail(Integer envioemail) {
+		this.envioemail = envioemail;
+	}
+
+	/**
+	 * @return the valorretenido
+	 */
+	public BigDecimal getValorretenido() {
+		return valorretenido;
+	}
+
+	/**
+	 * @param valorretenido the valorretenido to set
+	 */
+	public void setValorretenido(BigDecimal valorretenido) {
+		this.valorretenido = valorretenido;
+	}
+
+	/**
+	 * @return the valorapagar
+	 */
+	public BigDecimal getValorapagar() {
+		return valorapagar;
+	}
+
+	/**
+	 * @param valorapagar the valorapagar to set
+	 */
+	public void setValorapagar(BigDecimal valorapagar) {
+		this.valorapagar = valorapagar;
+	}
+
+	/**
+	 * @return the identificacion
+	 */
+	public String getIdentificacion() {
+		return identificacion;
+	}
+
+	/**
+	 * @param identificacion the identificacion to set
+	 */
+	public void setIdentificacion(String identificacion) {
+		this.identificacion = identificacion;
+	}
+
+	/**
+	 * @return the nombregenerico
+	 */
+	public String getNombregenerico() {
+		return nombregenerico;
+	}
+
+	/**
+	 * @param nombregenerico the nombregenerico to set
+	 */
+	public void setNombregenerico(String nombregenerico) {
+		this.nombregenerico = nombregenerico;
+	}
+
+	/**
+	 * @return the impuestos
+	 */
+	public BigDecimal getImpuestos() {
+		return impuestos;
+	}
+
+	/**
+	 * @param impuestos the impuestos to set
+	 */
+	public void setImpuestos(BigDecimal impuestos) {
+		this.impuestos = impuestos;
+	}
+
+	/**
+	 * @return the totalconimpuestos
+	 */
+	public BigDecimal getTotalconimpuestos() {
+		return totalconimpuestos;
+	}
+
+	/**
+	 * @param totalconimpuestos the totalconimpuestos to set
+	 */
+	public void setTotalconimpuestos(BigDecimal totalconimpuestos) {
+		this.totalconimpuestos = totalconimpuestos;
+	}
+
+	/**
+	 * @return the totalrecibos
+	 */
+	public BigDecimal getTotalrecibos() {
+		return totalrecibos;
+	}
+
+	/**
+	 * @param totalrecibos the totalrecibos to set
+	 */
+	public void setTotalrecibos(BigDecimal totalrecibos) {
+		this.totalrecibos = totalrecibos;
+	}
+
+	/**
+	 * @return the contador
+	 */
+	public Integer getContador() {
+		return contador;
+	}
+
+	/**
+	 * @param contador the contador to set
+	 */
+	public void setContador(Integer contador) {
+		this.contador = contador;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 
 }
