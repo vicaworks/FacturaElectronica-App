@@ -184,6 +184,54 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	
 	/**
 	 * @author cristianvillarreal
+	 * @param desde
+	 * @param hasta
+	 * @param criteria
+	 * @param idEstablecimiento
+	 * @param estado
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Cabecera> getByCotizacionCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento,String estado)throws DaoException{
+		
+		try {
+			
+			Query q = null;
+			
+			if(criteria==null || criteria.trim().isEmpty()) {
+				
+				if(estado!=null) {
+					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.estado=:estado AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+					q.setParameter("estado", estado);
+				}else {
+					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+				}
+				q.setParameter("desde", desde);
+				q.setParameter("hasta", hasta);
+			}else {
+				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante "
+						+ " AND (c.cliente.identificacion like :rucCliente "
+						+ " OR UPPER(c.cliente.razonsocial) like :nombrecliente "
+						+ " OR c.numdocumento like :numfactura) "
+						+ " AND c.establecimiento.idestablecimiento=:idEstablecimiento "
+						+ " ORDER BY c.fechaemision ASC,c.idcabecera DESC");
+				q.setParameter("rucCliente", criteria.concat("%"));
+				q.setParameter("nombrecliente", "%".concat(criteria.toUpperCase()).concat("%"));
+				q.setParameter("numfactura", "%".concat(criteria).concat("%"));
+			}
+			q.setParameter("idEstablecimiento", idEstablecimiento);
+			q.setParameter("idtipocomprobante", GenTipoDocumentoEnum.COTIZACION.getIdentificador());
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
 	 * 
 	 * @param idEstablecimiento
 	 * @param tipocomprobante

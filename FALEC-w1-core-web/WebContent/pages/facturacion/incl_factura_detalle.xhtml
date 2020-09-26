@@ -117,7 +117,10 @@
 							<div class="p-col-9">
 								<div class="p-grid">
 									<div class="p-col-12">
-										<h:outputText value="#{d.descripcion}" styleClass="Fs12 FontBold"/>
+										<p:inputText id="intDetNombreProducto2" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
+											<p:ajax event="change"></p:ajax>
+										</p:inputText>
+										<p:message for="intDetNombreProducto2"/>
 									</div>
 									<div class="p-md-3 dt-spinner">
 										<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs12 FontBold" style="margin-right:10px;">

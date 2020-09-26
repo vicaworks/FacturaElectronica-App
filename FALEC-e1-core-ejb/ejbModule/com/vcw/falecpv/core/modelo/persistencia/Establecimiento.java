@@ -124,6 +124,11 @@ public class Establecimiento implements Serializable {
     @Column(name = "secuencialretencion", nullable = false)
     private int secuencialretencion;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "secuencialcotizacion", nullable = false)
+    private int secuencialcotizacion;
+    
     @Column(name = "nombreimagen",length = 200)
     private String nombreimagen;
     
@@ -492,6 +497,20 @@ public class Establecimiento implements Serializable {
 	 */
 	public void setAmbiente(String ambiente) {
 		this.ambiente = ambiente;
+	}
+
+	/**
+	 * @return the secuencialcotizacion
+	 */
+	public int getSecuencialcotizacion() {
+		return secuencialcotizacion;
+	}
+
+	/**
+	 * @param secuencialcotizacion the secuencialcotizacion to set
+	 */
+	public void setSecuencialcotizacion(int secuencialcotizacion) {
+		this.secuencialcotizacion = secuencialcotizacion;
 	}		
 	
 	

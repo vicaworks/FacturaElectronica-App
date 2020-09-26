@@ -165,6 +165,10 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 				e.setSecuencialliquidacioncompra(e.getSecuencialliquidacioncompra()+1);
 				numDoc += TextoUtil.leftPadTexto(e.getSecuencialliquidacioncompra()+"", cantidadZero, "0");
 				break;	
+			case COTIZACION:
+				e.setSecuencialcotizacion(e.getSecuencialcotizacion()+1);
+				numDoc += TextoUtil.leftPadTexto(e.getSecuencialcotizacion()+"", cantidadZero, "0");
+				break;
 			default:
 				break;
 			}
