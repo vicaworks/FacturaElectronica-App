@@ -21,24 +21,53 @@ public class XAdESBESSignature extends GenericXMLSignature
     private static String pathFile;
     private String fileToSign;
 
-    public XAdESBESSignature(String fileToSign)
+    public XAdESBESSignature()
     {
-        this.fileToSign = fileToSign;
     }
 
-    public static void firmar(String xmlPath, String pathSignature, String passSignature, 
-            String pathOut, String nameFileOut) throws CertificateException
+    /**
+     * @param xmlPath
+     * @param pathSignature
+     * @param passSignature
+     * @param pathOut
+     * @param nameFileOut
+     * @throws CertificateException
+     * @throws FirmaElectronicaException
+     */
+    public static void firmarFacade(String xmlPath, String pathSignature, String passSignature, 
+            String pathOut, String nameFileOut) throws CertificateException, FirmaElectronicaException
     {
-        XAdESBESSignature signature = new XAdESBESSignature(xmlPath);
+        XAdESBESSignature signature = new XAdESBESSignature();
+        signature.setFileToSign(xmlPath);
         signature.setPassSignature(passSignature);
         signature.setPathSignature(pathSignature);
         pathFile = pathOut;
         nameFile = nameFileOut;
-
         signature.execute();
     }
-
-    protected DataToSign createDataToSign()
+    
+    
+    /**
+     * @author cristianvillarreal
+     * 
+     * @param xmlToSign
+     * @param penFile
+     * @param passSignature
+     * @return
+     * @throws CertificateException
+     * @throws FirmaElectronicaException 
+     */
+    public static byte[] firmarFacade(byte[] xmlToSign,byte[] penSignature,String passSignature)throws CertificateException, FirmaElectronicaException{
+    	
+    	XAdESBESSignature signature = new XAdESBESSignature();
+    	signature.setPassSignature(passSignature);
+    	
+    	return signature.execute(xmlToSign, penSignature);
+    }
+    
+    
+    @Override
+    protected DataToSign createDataToSign() throws FirmaElectronicaException
     {
         DataToSign datosAFirmar = new DataToSign();
 
@@ -55,6 +84,25 @@ public class XAdESBESSignature extends GenericXMLSignature
 
         return datosAFirmar;
     }
+    
+    @Override
+    protected DataToSign createDataToSign(byte[] xmlToSign) throws FirmaElectronicaException {
+    	DataToSign datosAFirmar = new DataToSign();
+
+        datosAFirmar.setXadesFormat(EnumFormatoFirma.XAdES_BES);
+
+        datosAFirmar.setEsquema(XAdESSchemas.XAdES_132);
+        datosAFirmar.setXMLEncoding("UTF-8");
+        datosAFirmar.setEnveloped(true);
+        datosAFirmar.addObject(new ObjectToSign(new InternObjectToSign("comprobante"), "contenido comprobante", null, "text/xml", null));
+        datosAFirmar.setParentSignNode("comprobante");
+
+        Document docToSign = getDocument(xmlToSign);
+        datosAFirmar.setDocument(docToSign);
+
+        return datosAFirmar;
+    }
+    
 
     protected String getSignatureFileName()
     {
@@ -65,4 +113,19 @@ public class XAdESBESSignature extends GenericXMLSignature
     {
         return pathFile;
     }
+
+	/**
+	 * @return the fileToSign
+	 */
+	public String getFileToSign() {
+		return fileToSign;
+	}
+
+	/**
+	 * @param fileToSign the fileToSign to set
+	 */
+	public void setFileToSign(String fileToSign) {
+		this.fileToSign = fileToSign;
+	}
+
 }

@@ -3,6 +3,8 @@
  */
 package com.mako.util.firma;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -61,13 +63,16 @@ public abstract class GenericXMLSignature
         this.passSignature = passSignature;
     }
 
-    protected void execute() throws CertificateException
+    /**
+     * @throws CertificateException
+     * @throws FirmaElectronicaException
+     */
+    protected void execute() throws CertificateException,FirmaElectronicaException
     {
         KeyStore keyStore = getKeyStore();
         if(keyStore == null)
         {
-            System.err.println("No se pudo obtener almacén de firma");
-            return;
+        	throw new FirmaElectronicaException("No se pudo obtener el archivo de firma electronica");
         }
         String alias = getAlias(keyStore);
 
@@ -77,13 +82,12 @@ public abstract class GenericXMLSignature
             certificate = (X509Certificate) keyStore.getCertificate(alias);
             if(certificate == null)
             {
-                System.err.println("No existe ningún certificado para firmar");
-                return;
+            	throw new FirmaElectronicaException("No existe ningun certifcado para firmar");
             }
         }
         catch(KeyStoreException e1)
         {
-            System.err.println("Error: " + e1.getMessage());
+        	throw new FirmaElectronicaException(e1);
         }
         PrivateKey privateKey = null;
         KeyStore tmpKs = keyStore;
@@ -93,15 +97,18 @@ public abstract class GenericXMLSignature
         }
         catch(UnrecoverableKeyException e)
         {
-            System.err.println("No existe clave privada para firmar");
+        	e.printStackTrace();
+            throw new FirmaElectronicaException("No existe clave privada para firmar");
         }
         catch(KeyStoreException e)
         {
-            System.err.println("No existe clave privada para firmar");
+        	e.printStackTrace();
+            throw new FirmaElectronicaException("No existe clave privada para firmar");
         }
         catch(NoSuchAlgorithmException e)
         {
-            System.err.println("No existe clave privada para firmar");
+        	e.printStackTrace();
+            throw new FirmaElectronicaException("No existe clave privada para firmar");
         }
         Provider provider = keyStore.getProvider();
 
@@ -117,22 +124,120 @@ public abstract class GenericXMLSignature
         }
         catch(Exception ex)
         {
-            System.err.println("Error realizando la firma: " + ex.getMessage());
-            return;
+        	throw new FirmaElectronicaException("Error realizando la firma: " ,ex);
         }
         String filePath = getPathOut() + File.separatorChar + getSignatureFileName();
         System.out.println("Firma guardada en: " + filePath);
 
         saveDocumenteDisk(docSigned, filePath);
     }
+    
+    
+    /**
+     * @author cristianvillarreal
+     * @param xmlToSign
+     * @param penSignature
+     * @return
+     * @throws CertificateException
+     */
+    protected byte[] execute(byte[] xmlToSign,byte[] penSignature) throws CertificateException,FirmaElectronicaException{
+    	
+    	// 1 keystore a partir del archivo de firma digital
+    	KeyStore keyStore = getKeyStore(penSignature);
+    	
+    	if(keyStore == null)
+        {
+    		throw new FirmaElectronicaException("No se pudo obtener el archivo de firma electronica");
+        }
+    	
+    	String alias = getAlias(keyStore);
+    	
+    	X509Certificate certificate = null;
+        try
+        {
+            certificate = (X509Certificate) keyStore.getCertificate(alias);
+            if(certificate == null)
+            {
+            	throw new FirmaElectronicaException("No existe ningun certifcado para firmar");
+            }
+        }
+        catch(KeyStoreException e1)
+        {
+        	throw new FirmaElectronicaException(e1);
+        }
+    	
+        PrivateKey privateKey = null;
+        KeyStore tmpKs = keyStore;
+        
+        try
+        {
+            privateKey = (PrivateKey) tmpKs.getKey(alias, this.passSignature.toCharArray());
+        }
+        catch(UnrecoverableKeyException e)
+        {
+        	e.printStackTrace();
+            throw new FirmaElectronicaException("No existe clave privada para firmar");
+        }
+        catch(KeyStoreException e)
+        {
+        	e.printStackTrace();
+            throw new FirmaElectronicaException("No existe clave privada para firmar");
+        }
+        catch(NoSuchAlgorithmException e)
+        {
+        	e.printStackTrace();
+            throw new FirmaElectronicaException("No existe clave privada para firmar");
+        }
+        
+        Provider provider = keyStore.getProvider();
+        
+        DataToSign dataToSign = createDataToSign(xmlToSign);
+        
+        FirmaXML firma = new FirmaXML();
 
-    protected abstract DataToSign createDataToSign();
+        Document docSigned = null;
+        try
+        {
+            Object[] res = firma.signFile(certificate, dataToSign, privateKey, provider);
+            docSigned = (Document) res[0];
+        }
+        catch(Exception ex)
+        {
+        	throw new FirmaElectronicaException("Error realizando la firma: " ,ex);
+        }
+        
+    	return documenteToByte(docSigned);
+    	
+    }
 
+    /**
+     * @return
+     * @throws FirmaElectronicaException
+     */
+    protected abstract DataToSign createDataToSign() throws FirmaElectronicaException;
+    /**
+     * @param xmlToSign
+     * @return
+     * @throws FirmaElectronicaException
+     */
+    protected abstract DataToSign createDataToSign(byte[] xmlToSign) throws FirmaElectronicaException;
+
+    /**
+     * @return
+     */
     protected abstract String getSignatureFileName();
 
+    /**
+     * @return
+     */
     protected abstract String getPathOut();
 
-    protected Document getDocument(String resource)
+    /**
+     * @param resource
+     * @return
+     * @throws FirmaElectronicaException
+     */
+    protected Document getDocument(String resource)throws FirmaElectronicaException
     {
         Document doc = null;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -141,55 +246,117 @@ public abstract class GenericXMLSignature
         try
         {
             DocumentBuilder db = dbf.newDocumentBuilder();
-//            byte[] data = new byte[5/2];
-//    		IOUtils.toInputStream(new String(data));
             doc = db.parse(file);
-//            doc = db.parse(IOUtils.toInputStream(new String(data)));
         }
         catch(ParserConfigurationException | SAXException | IOException | IllegalArgumentException ex)
         {
-            System.err.println("Error al parsear el documento: " + ex.getMessage());
-            System.exit(-1);
+            throw new FirmaElectronicaException(ex);
+        }
+        return doc;
+    }
+    
+    /**
+     * @author cristianvillarreal
+     * 
+     * @param xmlToSign
+     * @return
+     * @throws FirmaElectronicaException 
+     */
+    protected Document getDocument(byte[] xmlToSign) throws FirmaElectronicaException
+    {
+        Document doc = null;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        try
+        {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            doc = db.parse(new ByteArrayInputStream(xmlToSign));
+        }
+        catch(ParserConfigurationException | SAXException | IOException | IllegalArgumentException ex)
+        {
+        	throw new FirmaElectronicaException(ex);
         }
         return doc;
     }
 
-    private KeyStore getKeyStore() throws CertificateException
+    /**
+     * @return
+     * @throws CertificateException
+     * @throws FirmaElectronicaException
+     */
+    private KeyStore getKeyStore() throws CertificateException,FirmaElectronicaException
     {
         KeyStore ks = null;
         try
         {
             ks = KeyStore.getInstance("PKCS12");
             ks.load(new FileInputStream(this.pathSignature), this.passSignature.toCharArray());
-//            byte[] data = new byte[5/2];
-//    		IOUtils.toInputStream(new String(data));
-//            ks.load(IOUtils.toInputStream(new String(data)), this.passSignature.toCharArray());
         }
         catch(KeyStoreException e)
         {
-            System.err.println("Error: " + e.getMessage());
+        	throw new FirmaElectronicaException(e);
         }
         catch(NoSuchAlgorithmException e)
         {
-            System.err.println("Error: " + e.getMessage());
+        	throw new FirmaElectronicaException(e);
         }
         catch(CertificateException e)
         {
-            System.err.println("Error: " + e.getMessage());
+        	throw new FirmaElectronicaException(e);
         }
         catch(IOException e)
         {
-            System.err.println("Error: " + e.getMessage());
+        	throw new FirmaElectronicaException(e);
+        }
+        return ks;
+    }
+    
+    /**
+     * @author cristianvillarreal
+     * 
+     * @param penSignature
+     * @return
+     * @throws CertificateException
+     */
+    private KeyStore getKeyStore(byte[] penSignature) throws CertificateException,FirmaElectronicaException
+    {
+        KeyStore ks = null;
+        try
+        {
+            ks = KeyStore.getInstance("PKCS12");
+            ks.load(new ByteArrayInputStream(penSignature),this.passSignature.toCharArray());
+        }
+        catch(KeyStoreException e)
+        {
+        	throw new FirmaElectronicaException(e);
+        }
+        catch(NoSuchAlgorithmException e)
+        {
+        	throw new FirmaElectronicaException(e);
+        }
+        catch(CertificateException e)
+        {
+        	throw new FirmaElectronicaException(e);
+        }
+        catch(IOException e)
+        {
+        	throw new FirmaElectronicaException(e);
         }
         return ks;
     }
 
-    private static String getAlias(KeyStore keyStore)
+    /**
+     * @param keyStore
+     * @return
+     * @throws FirmaElectronicaException
+     */
+    private static String getAlias(KeyStore keyStore)throws FirmaElectronicaException
     {
         String alias = null;
         try
         {
-            Enumeration nombres = keyStore.aliases();
+            @SuppressWarnings("rawtypes")
+			Enumeration nombres = keyStore.aliases();
             while(nombres.hasMoreElements())
             {
                 String tmpAlias = (String) nombres.nextElement();
@@ -201,21 +368,23 @@ public abstract class GenericXMLSignature
         }
         catch(KeyStoreException e)
         {
-            System.err.println("Error: " + e.getMessage());
+        	throw new FirmaElectronicaException(e);
         }
         return alias;
     }
 
-    public static void saveDocumenteDisk(Document document, String pathXml)
+    /**
+     * @author cristianvillarreal
+     * @param document
+     * @param pathXml
+     * @throws FirmaElectronicaException
+     */
+    public static void saveDocumenteDisk(Document document, String pathXml)throws FirmaElectronicaException
     {
         try
         {
             DOMSource source = new DOMSource(document);
-//            byte[] var1 = "inicializar".getBytes();
             StreamResult result = new StreamResult(new File(pathXml));
-//            ByteArrayOutputStream arr = new ByteArrayOutputStream();
-//            StreamResult result = new StreamResult(arr);
-//            arr.toByteArray();
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
             Transformer transformer = transformerFactory.newTransformer();
@@ -223,11 +392,42 @@ public abstract class GenericXMLSignature
         }
         catch(TransformerConfigurationException e)
         {
-            System.err.println("Error: " + e.getMessage());
+        	throw new FirmaElectronicaException(e);
         }
         catch(TransformerException e)
         {
-            System.err.println("Error: " + e.getMessage());
+        	throw new FirmaElectronicaException(e);
         }
+    }
+    
+    /**
+     * @author cristianvillarreal
+     * 
+     * @param document
+     * @return
+     * @throws FirmaElectronicaException
+     */
+    public static byte[] documenteToByte(Document document)throws FirmaElectronicaException
+    {
+    	ByteArrayOutputStream arr = new ByteArrayOutputStream();
+        try
+        {
+            DOMSource source = new DOMSource(document);
+            StreamResult result = new StreamResult(arr);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.transform(source, result);
+            
+        }
+        catch(TransformerConfigurationException e)
+        {
+        	throw new FirmaElectronicaException(e);
+        }
+        catch(TransformerException e)
+        {
+        	throw new FirmaElectronicaException(e);
+        }
+        return arr.toByteArray();
     }
 }

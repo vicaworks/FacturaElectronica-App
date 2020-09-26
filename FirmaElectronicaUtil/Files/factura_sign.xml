@@ -66,19 +66,19 @@
     <infoAdicional>
         <campoAdicional nombre="email">aa@aa.com</campoAdicional>
     </infoAdicional>
-<ds:Signature xmlns:etsi="http://uri.etsi.org/01903/v1.3.2#" Id="Signature572492">
-<ds:SignedInfo Id="Signature-SignedInfo590125">
+<ds:Signature xmlns:etsi="http://uri.etsi.org/01903/v1.3.2#" Id="Signature708117">
+<ds:SignedInfo Id="Signature-SignedInfo301218">
 <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
 <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
-<ds:Reference Id="SignedPropertiesID962288" Type="http://uri.etsi.org/01903#SignedProperties" URI="#Signature572492-SignedProperties464505">
+<ds:Reference Id="SignedPropertiesID763105" Type="http://uri.etsi.org/01903#SignedProperties" URI="#Signature708117-SignedProperties341973">
 <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-<ds:DigestValue>qqTeGwvM5NIurB6oMJ+0mDhundI=</ds:DigestValue>
+<ds:DigestValue>OI1vi96kEaL+GumjN1E8tKFCyC0=</ds:DigestValue>
 </ds:Reference>
-<ds:Reference URI="#Certificate1887400">
+<ds:Reference URI="#Certificate1571571">
 <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-<ds:DigestValue>G5pIn1Yhng8ri5IkXXyDf5K1nTQ=</ds:DigestValue>
+<ds:DigestValue>oRyFMvqrbFfiJTJet2/1O3UVLz4=</ds:DigestValue>
 </ds:Reference>
-<ds:Reference Id="Reference-ID-80016" URI="#comprobante">
+<ds:Reference Id="Reference-ID-1016422" URI="#comprobante">
 <ds:Transforms>
 <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
 </ds:Transforms>
@@ -86,14 +86,14 @@
 <ds:DigestValue>I2RVbTjYNRp1LiC8hE+7r4HXs4Q=</ds:DigestValue>
 </ds:Reference>
 </ds:SignedInfo>
-<ds:SignatureValue Id="SignatureValue852154">
-XPn0bgaMxNoqMSjZl8NNNRP0mJiwLHdoqOUYH8B9SxXoI+dRXfwa+w16vTIN7IXV0x8fy3tdruJo
-NK/gfG7lyiJsThpCiQGVYwyaoX1XjyDbuhelHdKkturaaoufThZAZcq//ytrjDsJNt8nhESngHOB
-kMUcWtyiLZUJJlkXGNHr/w8QEIvvGkL3/fWtDMwXNlTmp2fzFNA1mSx8ybc5LfllFXGk8pYsi/2s
-SciYiBrNxvwKrDQ09yvd36DhtzIWfIdXAA6Fj5NDs8Zxi1iAMKQXHzbJSYPw9FOq2aGgC8IWnk8E
-gaBz0AtxL0yOvmV74kKkkK/csWQfizKWvT0g/A==
+<ds:SignatureValue Id="SignatureValue615959">
+WORvArnd2Qop75qOJRIDofDvfZn0XAjS1f4Pnh+1qsy+vgxp+u4Sh+KvozdxLZxH4Ck7/K+3GwKf
+J+/eAwBedmLh+qYeFHL75sgFUZ3p+BRjz0cYOUKr03jDURMQnDOnb6ggz/S1FZWpDaIwqmSk6zwW
+a0p/7bm19ZFApocg3afZovLE5JsSdLT0lpILEcM/tXnFIVRFnpWaF84sof4D2cDeRJ9xG86PQvwW
+ujRdsWrd9jVEXvfUiup0aknVh0OkahrD4BkflVNJ9XjsMk6x9t8CAszFvg1iiUMHBYyKpa6Um9YC
+I+8bymIq1p3pDmLNh+vlbgfcu9qBRxTYzhCipA==
 </ds:SignatureValue>
-<ds:KeyInfo Id="Certificate1887400">
+<ds:KeyInfo Id="Certificate1571571">
 <ds:X509Data>
 <ds:X509Certificate>
 MIILwTCCCamgAwIBAgIEK/F7rDANBgkqhkiG9w0BAQsFADCBmTELMAkGA1UEBhMCRUMxHTAbBgNV
@@ -164,4 +164,4 @@ AFoKflYZOUSQzDLVVMtdmGBBAmgY9IsnSJokTQ==
 </ds:RSAKeyValue>
 </ds:KeyValue>
 </ds:KeyInfo>
-<ds:Object Id="Signature572492-Object247233"><etsi:QualifyingProperties Target="#Signature572492"><etsi:SignedProperties Id="Signature572492-SignedProperties464505"><etsi:SignedSignatureProperties><etsi:SigningTime>2020-09-25T12:33:02-05:00</etsi:SigningTime><etsi:SigningCertificate><etsi:Cert><etsi:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>V2sac9HBeNsMlpXfQUDlqlYjHaM=</ds:DigestValue></etsi:CertDigest><etsi:IssuerSerial><ds:X509IssuerName>CN=AUTORIDAD DE CERTIFICACION SUBCA-1 SECURITY DATA,OU=ENTIDAD DE CERTIFICACION DE INFORMACION,O=SECURITY DATA S.A. 1,C=EC</ds:X509IssuerName><ds:X509SerialNumber>737246124</ds:X509SerialNumber></etsi:IssuerSerial></etsi:Cert></etsi:SigningCertificate></etsi:SignedSignatureProperties><etsi:SignedDataObjectProperties><etsi:DataObjectFormat ObjectReference="#Reference-ID-80016"><etsi:Description>contenido comprobante</etsi:Description><etsi:MimeType>text/xml</etsi:MimeType></etsi:DataObjectFormat></etsi:SignedDataObjectProperties></etsi:SignedProperties></etsi:QualifyingProperties></ds:Object></ds:Signature></factura>
+<ds:Object Id="Signature708117-Object909818"><etsi:QualifyingProperties Target="#Signature708117"><etsi:SignedProperties Id="Signature708117-SignedProperties341973"><etsi:SignedSignatureProperties><etsi:SigningTime>2020-09-25T21:08:35-05:00</etsi:SigningTime><etsi:SigningCertificate><etsi:Cert><etsi:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>V2sac9HBeNsMlpXfQUDlqlYjHaM=</ds:DigestValue></etsi:CertDigest><etsi:IssuerSerial><ds:X509IssuerName>CN=AUTORIDAD DE CERTIFICACION SUBCA-1 SECURITY DATA,OU=ENTIDAD DE CERTIFICACION DE INFORMACION,O=SECURITY DATA S.A. 1,C=EC</ds:X509IssuerName><ds:X509SerialNumber>737246124</ds:X509SerialNumber></etsi:IssuerSerial></etsi:Cert></etsi:SigningCertificate></etsi:SignedSignatureProperties><etsi:SignedDataObjectProperties><etsi:DataObjectFormat ObjectReference="#Reference-ID-1016422"><etsi:Description>contenido comprobante</etsi:Description><etsi:MimeType>text/xml</etsi:MimeType></etsi:DataObjectFormat></etsi:SignedDataObjectProperties></etsi:SignedProperties></etsi:QualifyingProperties></ds:Object></ds:Signature></factura>
