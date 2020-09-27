@@ -123,7 +123,7 @@ public abstract class BaseCtrl implements Serializable {
 	protected void noEditarSecuencial(Cabecera cabecera) {
 			
 		cabecera.setEditarSecuencial(false);
-		cabecera.setSecuencialNumero(TextoUtil.leftPadTexto("0", 7, "0"));
+		cabecera.setSecuencialNumero(TextoUtil.leftPadTexto("0", 9, "0"));
 			
 	}
 	

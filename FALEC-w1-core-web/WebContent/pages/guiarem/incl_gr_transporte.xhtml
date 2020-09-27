@@ -29,7 +29,7 @@
 					<p:inputMask id="intSecCaja" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
 					<h:outputText value=" - " />
 					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" rendered="#{not guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}"/>
-					<p:inputMask id="intSecDocumento" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" maxlength="7" mask="9999999" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" style="width:80px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+					<p:inputMask id="intSecDocumento" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{guiaRemFormCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:grid">
 						<i class="fa fa-edit Fs18"/>

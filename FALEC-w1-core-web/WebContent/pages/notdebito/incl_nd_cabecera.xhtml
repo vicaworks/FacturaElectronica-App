@@ -31,7 +31,7 @@
 					<p:inputMask id="intSecCaja" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
 					<h:outputText value=" - " />
 					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" rendered="#{not notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}"/>
-					<p:inputMask id="intSecDocumento" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" maxlength="7" mask="999999999" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+					<p:inputMask id="intSecDocumento" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{notaDebitoFrmCtrl.editarSecuencialAction()}" process=":formMain:grid2" update=":formMain:msgFormMain :formMain:grid2">
 						<i class="fa fa-edit Fs18"/>
@@ -187,7 +187,7 @@
 				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
 				<div class="EmptyBox5"/>
 				<p:calendar id="claFacFechaDocAsociado" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemisiondocasociado}"
-					pattern="dd/MMMM/yyyy"
+					pattern="dd/MMM/yyyy"
 					locale="es" 
 					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
 				</p:calendar>

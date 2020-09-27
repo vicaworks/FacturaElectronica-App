@@ -197,8 +197,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			}
 			
 			liqCompraSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.LIQUIDACION_COMPRA);
-			liqCompraSelected.setSecuencial(null);
-			populatefactura(GenTipoDocumentoEnum.LIQUIDACION_COMPRA);
+			populateLiqCompra(GenTipoDocumentoEnum.LIQUIDACION_COMPRA);
 			liqCompraSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			liqCompraSelected.setUpdated(new Date());
 			liqCompraSelected.setPagoList(pagoList);			
@@ -214,13 +213,17 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			liqCompraSelected.setSecuencial(null);
+			liqCompraSelected.setNumdocumento(null);
+			liqCompraSelected.setClaveacceso(null);
+			liqCompraSelected.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
-	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
+	private void populateLiqCompra(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		liqCompraSelected.setTipoemision("1");
 		liqCompraSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));

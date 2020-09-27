@@ -31,7 +31,7 @@
 						<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
 						<h:outputText value=" - " />
 						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
-						<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="7" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+						<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 						<p:spacer width="5px;"/>
 						<p:commandLink action="#{notaCreditoCtrl.editarSecuencialAction()}" process=":formMain:oupSecuenalNc" update=":formMain:msgFormMain :formMain:oupSecuenalNc">
 							<i class="fa fa-edit Fs18"/>

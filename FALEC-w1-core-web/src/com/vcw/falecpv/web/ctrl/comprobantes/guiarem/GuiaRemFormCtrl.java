@@ -152,8 +152,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 			// 2. populate valores
 			guiaRemisionSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.GUIA_REMISION);
-			guiaRemisionSelected.setSecuencial(null);
-			populatefactura(GenTipoDocumentoEnum.GUIA_REMISION);
+			populateGuiaRemision(GenTipoDocumentoEnum.GUIA_REMISION);
 			guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			guiaRemisionSelected.setUpdated(new Date());
 			guiaRemisionSelected = cabeceraServicio.guardarComprobanteFacade(guiaRemisionSelected);
@@ -176,6 +175,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			guiaRemisionSelected.setSecuencial(null);
+			guiaRemisionSelected.setNumdocumento(null);
+			guiaRemisionSelected.setClaveacceso(null);
+			guiaRemisionSelected.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -195,7 +198,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	}
 	
 	
-	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
+	private void populateGuiaRemision(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		guiaRemisionSelected.setTipoemision("1");
 		guiaRemisionSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
