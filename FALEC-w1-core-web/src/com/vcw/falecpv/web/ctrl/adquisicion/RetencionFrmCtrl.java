@@ -326,7 +326,6 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 			retencionSeleccion.setUpdated(new Date());
 			retencionSeleccion.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.RETENCION);
-			retencionSeleccion.setSecuencial(null);
 			populateretencion();
 			// guarda los datos
 			retencionSeleccion = cabeceraServicio.guardarComprobanteFacade(retencionSeleccion);
@@ -361,6 +360,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			retencionSeleccion.setSecuencial(null);
+			retencionSeleccion.setNumdocumento(null);
+			retencionSeleccion.setClaveacceso(null);
+			retencionSeleccion.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

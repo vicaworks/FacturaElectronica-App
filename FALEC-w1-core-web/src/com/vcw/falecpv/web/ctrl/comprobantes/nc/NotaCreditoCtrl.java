@@ -164,9 +164,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 					return;
 				}
 				
-				AppJsfUtil.addInfoMessage("formMain", "OK", "TODO: IMPRIMIR");
-				return;
-				
 			}
 			
 			if(detalleNcList==null || detalleNcList.isEmpty()) {
@@ -176,8 +173,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 			notaCreditoSeleccion.setDetalleList(detalleNcList);
 			notaCreditoSeleccion.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.NOTA_CREDITO);
-			notaCreditoSeleccion.setSecuencial(null);
-			populatefactura(GenTipoDocumentoEnum.NOTA_CREDITO);
+			populateNotaCredito(GenTipoDocumentoEnum.NOTA_CREDITO);
 			notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			notaCreditoSeleccion.setUpdated(new Date());
 			notaCreditoSeleccion = cabeceraServicio.guardarComprobanteFacade(notaCreditoSeleccion);
@@ -205,13 +201,17 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			notaCreditoSeleccion.setSecuencial(null);
+			notaCreditoSeleccion.setNumdocumento(null);
+			notaCreditoSeleccion.setClaveacceso(null);
+			notaCreditoSeleccion.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
-	private void populatefactura(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
+	private void populateNotaCredito(GenTipoDocumentoEnum genTipoDocumentoEnum) throws DaoException, ParametroRequeridoException {
 		
 		notaCreditoSeleccion.setTipoemision("1");
 		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
@@ -263,11 +263,12 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion = null;
 		detalleNcList = null;
 		detalleSelected = null;
-		
+		criterioCliente = null;
 		notaCreditoSeleccion = new Cabecera();
 		notaCreditoSeleccion.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		notaCreditoSeleccion.setFechaemision(new Date());
+		notaCreditoSeleccion.setFechaemisiondocasociado(new Date());
 		notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		notaCreditoSeleccion.setTotalbaseimponible(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotalconimpuestos(BigDecimal.ZERO);
