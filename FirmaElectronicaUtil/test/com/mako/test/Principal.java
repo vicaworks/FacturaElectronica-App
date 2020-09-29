@@ -19,7 +19,7 @@ public class Principal
 		
 		String xmlPath = getPath(pathInit) + "fact69.xml";
         String pathSignature = getPath(pathInit) + "CRISTIAN ALEX VILLARREAL ALEMAN 100920085643.p12";
-        String passSignature = "vcw2pass";
+        String passSignature = "vcw2passx";
         String pathOut = getPath(pathInit);
         String nameFileOut = "factura_sign.xml";
         

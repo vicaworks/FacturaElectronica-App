@@ -99,6 +99,17 @@ public class Empresa implements Serializable {
     @Column(name = "idusuario", nullable = false, length = 40)
     private String idusuario;
     
+    @Basic(optional = true)
+    @NotNull
+    @Size(min = 1, max = 300)
+    @Column(name = "nombrearchivo", nullable = true, length = 300)
+    private String nombrearchivo;
+    
+    @Basic(optional = true)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fechavigencia")
+    private Date  fechavigencia;
+    
     @OneToMany(mappedBy = "empresa",fetch = FetchType.LAZY)
     private List<Establecimiento> establecimientoList;
     
@@ -296,6 +307,34 @@ public class Empresa implements Serializable {
 	 */
 	public void setEstablecimientoList(List<Establecimiento> establecimientoList) {
 		this.establecimientoList = establecimientoList;
+	}
+
+	/**
+	 * @return the fechavigencia
+	 */
+	public Date getFechavigencia() {
+		return fechavigencia;
+	}
+
+	/**
+	 * @param fechavigencia the fechavigencia to set
+	 */
+	public void setFechavigencia(Date fechavigencia) {
+		this.fechavigencia = fechavigencia;
+	}
+
+	/**
+	 * @return the nombrearchivo
+	 */
+	public String getNombrearchivo() {
+		return nombrearchivo;
+	}
+
+	/**
+	 * @param nombrearchivo the nombrearchivo to set
+	 */
+	public void setNombrearchivo(String nombrearchivo) {
+		this.nombrearchivo = nombrearchivo;
 	}
 
 	
