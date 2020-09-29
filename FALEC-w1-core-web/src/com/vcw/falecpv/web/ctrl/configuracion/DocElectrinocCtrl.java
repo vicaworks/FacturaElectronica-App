@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -21,6 +22,7 @@ import org.xml.sax.SAXException;
 
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGXsdValidacionEnum;
@@ -116,6 +118,17 @@ public class DocElectrinocCtrl extends BaseCtrl {
 			}
 			
 			Empresa emp = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+			
+			if(emp.getArchivofirmaelectronica()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE ARCHI p12 PARA LA FIRMA" + msg.getString("label.electronica") + " DE ASIGNAR EL " + msg.getString("label.configuracion")  + " / EMPRESA");
+				return;
+			}
+			
+			if(emp.getFechavigencia()!=null && FechaUtil.comparaFechas(emp.getFechavigencia(),new Date())>0) {
+				AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", "LA FECHA DE VIGENCIA CADUCO : " + FechaUtil.formatoFecha(emp.getFechavigencia()));
+				return;
+			}
+			
 			
 			xmlDocElectronico = firmaElectronicaServicio.firmarXml(xmlDocElectronico, emp.getArchivofirmaelectronica(), emp.getClavefirmaelectronica());
 			flagFirma = true;
