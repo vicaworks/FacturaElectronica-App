@@ -218,7 +218,7 @@
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Editar #{msg['label.retencion2']}" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
@@ -228,7 +228,7 @@
 								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Anular #{msg['label.retencion2']}" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Anular" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r}" target="#{retencionMainCtrl.retencionSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>

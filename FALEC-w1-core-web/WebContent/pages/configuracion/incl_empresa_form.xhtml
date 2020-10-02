@@ -106,26 +106,51 @@
 					</p:selectOneMenu>
 					<p:message for="somAmbiente" />
 					
-					<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
-                    <p:password id="intclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="Wid100" />
-                    <p:message for="intclavefirmaelectrónica" />
-             		
+				</p:panelGrid>
+             	
+             	<p:panelGrid id="gridFE" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
 	           		<h:panelGroup>
+	           			<h:outputText value="#{empresaCtrl.empresaSelected.nombrearchivo}" />
 		           		<p:fileUpload label="Examinar..." 
 		           					  mode="advanced" 
 		           					  skinSimple="true" 
 		           					  listener="#{empresaCtrl.upload}" 
 		           					  auto="true" 
 		           					  sizeLimit="25242880"
-									  invalidSizeMessage="#{msg['file.size']} 2MB" 
+									  invalidSizeMessage="#{msg['file.size']} 1MB" 
 		           					  uploadLabel="Cargar" 
-		           					  styleClass="Wid100">
+		           					  styleClass="Wid100"
+		           					  allowTypes="/(\.|\/)(p12)$/"
+									  invalidFileMessage="SOLO FORMATOS [.p12]">
 				  		</p:fileUpload>
+				  		<div class="EmptyBox5"/>
+						<p:commandButton id="cmdLimpiarFirma"
+							value="Limpiar" icon="fa fa-eraser" ajax="true"
+							styleClass="secondary-button Wid100" update="@form:gridFE" process="@this @form:gridFE">
+							<f:setPropertyActionListener value="#{null}" target="#{empresaCtrl.empresaSelected.nombrearchivo}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{empresaCtrl.empresaSelected.archivofirmaelectronica}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{empresaCtrl.empresaSelected.fechavigencia}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{empresaCtrl.empresaSelected.clavefirmaelectronica}"/>
+						</p:commandButton>				  		
 				  	</h:panelGroup>
 	           		<h:outputText value="" />
+	           		
+	           		<p:outputLabel value="ARCHIVO FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
+	           		<h:panelGroup>
+		           		<p:calendar id="calFechaCaducidad" value="#{empresaCtrl.empresaSelected.fechavigencia}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="false" styleClass="Wid100" placeholder="dd/MM/yyyy">
+						</p:calendar>
+					</h:panelGroup>
+					<p:message for="calFechaCaducidad"/>
+	           		
+					<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA :" style="vertical-align: middle; font-weight: bold" />
+                    <p:password id="intclavefirmaelectrónica" value="#{empresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="Wid100" />
+                    <p:message for="intclavefirmaelectrónica" />
+             	</p:panelGrid>	
 					
-				</p:panelGrid>
 				
 			</div>
 			

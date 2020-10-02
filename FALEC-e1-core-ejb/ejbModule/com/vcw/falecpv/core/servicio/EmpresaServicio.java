@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
-import com.servitec.common.util.UtilMd5;
 import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
 import com.vcw.falecpv.core.dao.impl.EmpresaDao;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
@@ -61,11 +60,11 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 		try {
 			if (empresa.getIdempresa()==null) { // si no existe la empresa
 				empresa.setIdempresa(contadorPkServicio.generarContadorTabla(TCEmpresa.EMPRESA, null));
-				empresa.setClavefirmaelectronica(UtilMd5.hash(empresa.getClavefirmaelectronica()));
+//				empresa.setClavefirmaelectronica(UtilMd5.hash(empresa.getClavefirmaelectronica()));
 				crear(empresa);
 			}
 			else { // si ya existe la empresa
-				empresa.setClavefirmaelectronica(UtilMd5.hash(empresa.getClavefirmaelectronica()));
+//				empresa.setClavefirmaelectronica(UtilMd5.hash(empresa.getClavefirmaelectronica()));
 				actualizar(empresa);
 			}
 			return empresa;

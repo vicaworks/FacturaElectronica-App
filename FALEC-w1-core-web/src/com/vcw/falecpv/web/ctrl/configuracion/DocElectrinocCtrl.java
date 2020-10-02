@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -21,11 +22,16 @@ import org.xml.sax.SAXException;
 
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGXsdValidacionEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.ParametroGenericoBaseEnum;
+import com.vcw.falecpv.core.exception.KeystorePassException;
 import com.vcw.falecpv.core.exception.NoExisteRegistroException;
+import com.vcw.falecpv.core.modelo.persistencia.Empresa;
+import com.vcw.falecpv.core.servicio.EmpresaServicio;
+import com.vcw.falecpv.core.servicio.FirmaElectronicaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.sri.DocElectronicoProxy;
@@ -52,11 +58,16 @@ public class DocElectrinocCtrl extends BaseCtrl {
 	private DocElectronicoProxy docElectronicoProxy;
 	@EJB
 	private ParametroGenericoServicio parametroGenericoServicio;
+	@EJB
+	private FirmaElectronicaServicio firmaElectronicaServicio;
+	@EJB
+	private EmpresaServicio empresaServicio;
 	
 	private String tipoDocumentoIdentificador;
 	private String numDocumento;
 	private String xmlDocElectronico;
 	private String xmlError;
+	private boolean flagFirma = false;
 	
 	/**
 	 * 
@@ -77,15 +88,52 @@ public class DocElectrinocCtrl extends BaseCtrl {
 	@Override
 	public void buscar() {
 		try {
-			
+			flagFirma = false;
 			xmlDocElectronico = null;
 			xmlError = null;
 			String idCabecera = docElectronicoServicio.getIdDocElectronico(tipoDocumentoIdentificador, AppJsfUtil.getEstablecimiento().getIdestablecimiento(), numDocumento);
 			xmlDocElectronico = docElectronicoProxy.getDocElectronicoFacade(idCabecera,
 					AppJsfUtil.getEstablecimiento().getIdestablecimiento(),
 					GenTipoDocumentoEnum.getEnumByIdentificador(tipoDocumentoIdentificador));
-			
 		} catch (NoExisteRegistroException e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void firmar() {
+		try {
+			
+			if (xmlDocElectronico==null || xmlDocElectronico.trim().length()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE COMPROBANTE " + msg.getString("label.electronico"));
+				return;
+			}
+			
+			if(flagFirma) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "COMPROBANTE " + msg.getString("label.electronico") + " YA ESTA FIRMADO.");
+				return;
+			}
+			
+			Empresa emp = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+			
+			if(emp.getArchivofirmaelectronica()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE ARCHI p12 PARA LA FIRMA" + msg.getString("label.electronica") + " DE ASIGNAR EL " + msg.getString("label.configuracion")  + " / EMPRESA");
+				return;
+			}
+			
+			if(FechaUtil.comparaFechas(emp.getFechavigencia(),new Date())<0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FECHA DE VIGENCIA CADUCO : " + FechaUtil.formatoFecha(emp.getFechavigencia()));
+				return;
+			}
+			
+			
+			xmlDocElectronico = firmaElectronicaServicio.firmarXml(xmlDocElectronico, emp.getArchivofirmaelectronica(), emp.getClavefirmaelectronica());
+			flagFirma = true;
+			AppJsfUtil.addInfoMessage("formMain", "OK", "Firmado correctamente");
+		} catch (KeystorePassException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
 		} catch (Exception e) {
@@ -205,6 +253,20 @@ public class DocElectrinocCtrl extends BaseCtrl {
 	 */
 	public void setXmlError(String xmlError) {
 		this.xmlError = xmlError;
+	}
+
+	/**
+	 * @return the flagFirma
+	 */
+	public boolean isFlagFirma() {
+		return flagFirma;
+	}
+
+	/**
+	 * @param flagFirma the flagFirma to set
+	 */
+	public void setFlagFirma(boolean flagFirma) {
+		this.flagFirma = flagFirma;
 	}
 	
 }

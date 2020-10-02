@@ -201,7 +201,7 @@
 									<p:inputMask id="intSecCaja" value="#{retencionFrmCtrl.retencionSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
 									<h:outputText value=" - " />
 									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" rendered="#{not retencionFrmCtrl.retencionSeleccion.editarSecuencial}"/>
-									<p:inputMask id="intSecDocumento" value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" maxlength="7" mask="999999999" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+									<p:inputMask id="intSecDocumento" value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 									<p:spacer width="5px;"/>
 									<p:commandLink action="#{retencionFrmCtrl.editarSecuencialAction()}" process=":formMain:grid :formMain:grid2" update=":formMain:msgFormMain :formMain:grid :formMain:grid2">
 										<i class="fa fa-edit Fs18"/>

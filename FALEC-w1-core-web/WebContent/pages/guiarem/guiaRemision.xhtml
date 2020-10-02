@@ -210,9 +210,11 @@
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>							
 							</p:menuitem>
 							<p:menuitem value="Editar" action="#{guiaRemCtrl.editarGuiaRem(r.cabecera.idcabecera)}" icon="fa fa-edit" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>
 							</p:menuitem>
 							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
+								<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							

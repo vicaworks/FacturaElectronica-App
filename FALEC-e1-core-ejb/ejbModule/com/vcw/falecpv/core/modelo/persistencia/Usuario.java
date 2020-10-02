@@ -71,6 +71,12 @@ public class Usuario implements Serializable {
     @Column(name = "puntoemision", nullable = false, length = 3)
     private String puntoemision;
     
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "correoelectronico", nullable = false, length = 100)
+    private String correoelectronico;
+    
     @Size(max = 20)
     @Column(name = "telefono", length = 20)
     private String telefono;
@@ -413,6 +419,24 @@ public class Usuario implements Serializable {
 	 */
 	public void setActualizarCredenciales(boolean actualizarCredenciales) {
 		this.actualizarCredenciales = actualizarCredenciales;
+	}
+
+
+
+	/**
+	 * @return the correoelectronico
+	 */
+	public String getCorreoelectronico() {
+		return correoelectronico;
+	}
+
+
+
+	/**
+	 * @param correoelectronico the correoelectronico to set
+	 */
+	public void setCorreoelectronico(String correoelectronico) {
+		this.correoelectronico = correoelectronico;
 	}
 
 

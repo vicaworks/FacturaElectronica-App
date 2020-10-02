@@ -157,6 +157,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTotalconimpuestos(BigDecimal.ZERO);
 		notDebitoSelected.setDetalleList(new ArrayList<>());
 		notDebitoSelected.setFechaemision(new Date());
+		notDebitoSelected.setFechaemisiondocasociado(new Date());
 		notDebitoSelected.setCliente(new Cliente());
 		infoadicionalList = null;
 		inicializarSecuencia(notDebitoSelected);
@@ -519,7 +520,6 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			}
 			
 			notDebitoSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.NOTA_DEBITO);
-			notDebitoSelected.setSecuencial(null);
 			populateNotaDebito(GenTipoDocumentoEnum.NOTA_DEBITO);
 			notDebitoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			notDebitoSelected.setUpdated(new Date());
@@ -537,6 +537,10 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			notDebitoSelected.setSecuencial(null);
+			notDebitoSelected.setNumdocumento(null);
+			notDebitoSelected.setClaveacceso(null);
+			notDebitoSelected.setNumeroautorizacion(null);
 		}  catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
