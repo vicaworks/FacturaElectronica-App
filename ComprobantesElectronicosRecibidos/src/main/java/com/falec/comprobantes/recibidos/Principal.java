@@ -28,7 +28,7 @@ public class Principal
 	private static String nombreMes = "";
 	private static String fechaInicioConsulta = "";
 	private static String fechaFinConsulta = "";
-	private static String rutaChromeDriver = "";
+	private static String rutaDriver = "";
 	private static String rutaDescargaReporte = "";
 	
     public static void main( String[] args )
@@ -69,7 +69,7 @@ public class Principal
 	    	diasEjecutarMesAnterior = new ArrayList<>();
 	    	diasEjecutarMesAnterior.addAll(Arrays.asList(arregloDiasMesAnterior));
 	    	
-	    	rutaChromeDriver = pr.getProperty("rutaChromeDriver");
+	    	rutaDriver = pr.getProperty("rutaDriver");
 	    	
 	    	rutaDescargaReporte = pr.getProperty("rutaDescargaReporte");
     	}
@@ -83,7 +83,7 @@ public class Principal
     {
     	boolean reporteDescargado = false;
     	obtenerNombreMes();
-    	Chrome chrome = new Chrome(rutaChromeDriver);
+    	Chrome chrome = new Chrome(rutaDriver);
     	if(ejecutarMesAnterior.compareTo("sí") == 0)
     	{
     		if(mes.compareTo("01") == 0)
@@ -201,7 +201,7 @@ public class Principal
     		nombreMes = "Enero";
     		fechaFinConsulta += "31";
     	}
-    	if(mes.compareTo("02") == 0)
+    	else if(mes.compareTo("02") == 0)
     	{
     		nombreMes = "Febrero";
     		Integer anioInt = Integer.parseInt(anio);
@@ -213,52 +213,52 @@ public class Principal
     			fechaFinConsulta += "28";
     		}
     	}
-    	if(mes.compareTo("03") == 0)
+    	else if(mes.compareTo("03") == 0)
     	{
     		nombreMes = "Marzo";
     		fechaFinConsulta += "31";
     	}
-    	if(mes.compareTo("04") == 0)
+    	else if(mes.compareTo("04") == 0)
     	{
     		nombreMes = "Abril";
     		fechaFinConsulta += "30";
     	}
-    	if(mes.compareTo("05") == 0)
+    	else if(mes.compareTo("05") == 0)
     	{
     		nombreMes = "Mayo";
     		fechaFinConsulta += "31";
     	}
-    	if(mes.compareTo("06") == 0)
+    	else if(mes.compareTo("06") == 0)
     	{
     		nombreMes = "Junio";
     		fechaFinConsulta += "30";
     	}
-    	if(mes.compareTo("07") == 0)
+    	else if(mes.compareTo("07") == 0)
     	{
     		nombreMes = "Julio";
     		fechaFinConsulta += "31";
     	}
-    	if(mes.compareTo("08") == 0)
+    	else if(mes.compareTo("08") == 0)
     	{
     		nombreMes = "Agosto";
     		fechaFinConsulta += "31";
     	}
-    	if(mes.compareTo("09") == 0)
+    	else if(mes.compareTo("09") == 0)
     	{
     		nombreMes = "Septiembre";
     		fechaFinConsulta += "30";
     	}
-    	if(mes.compareTo("10") == 0)
+    	else if(mes.compareTo("10") == 0)
     	{
     		nombreMes = "Octubre";
     		fechaFinConsulta += "31";
     	}
-    	if(mes.compareTo("11") == 0)
+    	else if(mes.compareTo("11") == 0)
     	{
     		nombreMes = "Noviembre";
     		fechaFinConsulta += "30";
     	}
-    	if(mes.compareTo("12") == 0)
+    	else if(mes.compareTo("12") == 0)
     	{
     		nombreMes = "Diciembre";
     		fechaFinConsulta += "31";

@@ -9,6 +9,7 @@ import com.falec.comprobantes.anticaptcha.Anticaptcha;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.JavascriptExecutor;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.concurrent.TimeUnit;
@@ -29,16 +30,22 @@ public class Chrome
 	
 	public Chrome(String rutaChromeDriver)
 	{
+		// Chrome driver
 		System.setProperty("webdriver.chrome.driver", rutaChromeDriver);
 		WebDriverManager.chromedriver().setup();
+		// Firefox driver
+		System.setProperty("webdriver.gecko.driver", rutaChromeDriver);
 	}
 	
 	public void inicializarDriver()
 	{
+		// Chrome driver
 		ChromeOptions opciones = new ChromeOptions();
 		opciones.addArguments("--no-sandbox"); // Confiar totalmente en el contenido que abrirá Chrome
 		opciones.addArguments("--disable-dev-shm-usage"); // Evitar la caída del navegador por recursos limitados
-		driver = new ChromeDriver(opciones);
+//		driver = new ChromeDriver(opciones);
+		// Firefox driver
+		driver = new FirefoxDriver();
 		webdriverwait = new WebDriverWait(driver, 30); // Tiempo máximo de espera en segundos
 	}
 	
@@ -182,7 +189,7 @@ public class Chrome
                 else // Sí existen datos para los parámetros ingresados
                 {
                     // Mover el reporte descargado de Descargas a la ruta de descarga de reportes
-                    Path origen = FileSystems.getDefault().getPath(System.getProperty("user.home") + java.nio.file.FileSystems.getDefault().getSeparator() + "Descargas" + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
+                    Path origen = FileSystems.getDefault().getPath(System.getProperty("user.home") + java.nio.file.FileSystems.getDefault().getSeparator() + "Downloads" + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
                     Path destino = FileSystems.getDefault().getPath(rutaDescargaReporte + java.nio.file.FileSystems.getDefault().getSeparator() + ruc + "_Recibidos.txt");
                     try
                     {
