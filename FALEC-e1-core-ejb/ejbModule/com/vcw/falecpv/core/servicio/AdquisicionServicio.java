@@ -346,9 +346,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
 				lista.add(ComprobanteEstadoEnum.RETENCION);
-				lista.add(ComprobanteEstadoEnum.SRI);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
 					return "NO SE PUEDE ANULAR, POR QUE SE ENCUENTRA EN ESTADO: " + ad.getEstado();
@@ -360,9 +358,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
 				lista.add(ComprobanteEstadoEnum.RETENCION);
-				lista.add(ComprobanteEstadoEnum.SRI);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
 					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + ad.getEstado();
@@ -374,9 +370,7 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
 				lista.add(ComprobanteEstadoEnum.RETENCION);
-				lista.add(ComprobanteEstadoEnum.SRI);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
 					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + ad.getEstado();
@@ -388,8 +382,6 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 				
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
-				lista.add(ComprobanteEstadoEnum.SRI);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(ad.getEstado()))) {
 					return "NO SE PUEDE MODIFICAR LA RETENCION YA QUE LA COMPRA ASOCIADA SE ENCUENTRA EN ESTADO: " + ad.getEstado();

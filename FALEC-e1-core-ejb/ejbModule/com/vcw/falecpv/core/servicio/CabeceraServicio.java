@@ -377,12 +377,39 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				return null;
 			}
 			
-			if(c!=null && accion.equals("GUARDAR")) {
-				
+			
+			if(c!=null && accion.equals("ANULAR")) {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
-				lista.add(ComprobanteEstadoEnum.SRI);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
+				}
+				
+			}
+			
+			if(c!=null && accion.equals("ELIMINAR_DETALLE")) {
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
+				}
+				
+			}
+			
+			if(c!=null && accion.equals("GUARDAR")) {
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
 					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
@@ -418,12 +445,38 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				return null;
 			}
 			
-			if(c!=null && accion.equals("GUARDAR")) {
-				
+			if(c!=null && accion.equals("ANULAR")) {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
-				lista.add(ComprobanteEstadoEnum.SRI);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
+				}
+				
+			}
+			
+			if(c!=null && accion.equals("ELIMINAR_DETALLE")) {
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
+				}
+				
+			}
+			
+			if(c!=null && accion.equals("GUARDAR")) {
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
 					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();

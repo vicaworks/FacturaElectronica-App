@@ -60,11 +60,12 @@ public class NotaCreditoServicio {
 			if(r!=null && accion.equals("ANULAR")) {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
-				lista.add(ComprobanteEstadoEnum.SRI);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(r.getEstado()))) {
-					return "NO SE PUEDE ANULAR, POR QUE SE ENCUENTRA EN ESTADO: " + r.getEstado();
+					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + r.getEstado();
 				}
 				
 			}
@@ -72,8 +73,9 @@ public class NotaCreditoServicio {
 			if(r!=null && accion.equals("ELIMINAR_DETALLE")) {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
-				lista.add(ComprobanteEstadoEnum.SRI);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(r.getEstado()))) {
 					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + r.getEstado();
@@ -84,8 +86,9 @@ public class NotaCreditoServicio {
 			if(r!=null && accion.equals("GUARDAR")) {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZACION);
-				lista.add(ComprobanteEstadoEnum.SRI);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(r.getEstado()))) {
 					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + r.getEstado();

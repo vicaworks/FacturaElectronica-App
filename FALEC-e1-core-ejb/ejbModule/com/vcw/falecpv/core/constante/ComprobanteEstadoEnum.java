@@ -11,7 +11,16 @@ import java.util.stream.Stream;
  */
 public enum ComprobanteEstadoEnum {
 	
-	ANULADO("markRed"),REGISTRADO("markGreen"),RETENCION("markOrange"),AUTORIZACION("markOrange"),SRI("markBlack");
+	BORRADOR("markGreen"),
+	ERROR("markRed"),
+	PENDIENTE("markGreen"),
+	RECIBIDO("markGreen"),
+	ERROR_SRI("markRed"),
+	AUTORIZADO("markBlack"),
+	ANULADO("markBlack"),
+	RETENCION("markOrange"),
+	REGISTRADO("markGreen");
+	
 	private String style;
 
 	private ComprobanteEstadoEnum(String style) {
