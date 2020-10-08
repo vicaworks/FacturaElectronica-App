@@ -112,6 +112,11 @@ public class GuiaRemCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
+			if(guiaRemisionSelected==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				return;
+			}
+			
 			String analisis = cabeceraServicio.analizarEstadoComprobante(guiaRemisionSelected.getIdcabecera(), "ANULAR");
 			if(analisis!=null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);

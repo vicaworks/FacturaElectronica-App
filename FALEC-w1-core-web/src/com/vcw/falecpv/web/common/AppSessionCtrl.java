@@ -94,7 +94,7 @@ public class AppSessionCtrl implements Serializable {
 	
 	public boolean isAnularFactura(String estado) {
 		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
-		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.AUTORIZADO,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.PENDIENTE});
+		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.ANULADO,ComprobanteEstadoEnum.RECIBIDO_SRI,ComprobanteEstadoEnum.PENDIENTE});
 		
 		return !lista.contains(estadoEnum);
 	}

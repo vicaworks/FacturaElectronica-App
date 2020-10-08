@@ -695,7 +695,7 @@ public class CompFacCtrl extends BaseCtrl {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 					return;
 				}
-				
+				return;
 			}
 			
 			// validar el valor
@@ -744,9 +744,11 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		cabecerSelected.setEstado(
-				genTipoDocumentoEnum.equals(GenTipoDocumentoEnum.FACTURA) ? ComprobanteEstadoEnum.PENDIENTE.toString()
-						: ComprobanteEstadoEnum.REGISTRADO.toString());
+		if(cabecerSelected.getIdcabecera()==null) {
+			cabecerSelected.setEstado(
+					genTipoDocumentoEnum.equals(GenTipoDocumentoEnum.FACTURA) ? ComprobanteEstadoEnum.PENDIENTE.toString()
+							: ComprobanteEstadoEnum.REGISTRADO.toString());
+		}
 		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
 		

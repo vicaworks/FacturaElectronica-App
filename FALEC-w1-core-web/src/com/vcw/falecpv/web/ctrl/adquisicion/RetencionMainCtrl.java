@@ -109,14 +109,14 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
-			retencionSelected = cabeceraServicio.consultarByPk(retencionSelected.getIdcabecera());
+			if(retencionSelected==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				return;
+			}
 			
-			if(retencionSelected == null) return;
-			
-			String analisisEstado = cabeceraServicio.analizarEstadoComprobante(retencionSelected.getIdcabecera() ,"ANULAR");
-			
-			if(analisisEstado!=null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+			String analisis = cabeceraServicio.analizarEstadoComprobante(retencionSelected.getIdcabecera(), "ANULAR");
+			if(analisis!=null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
 				return;
 			}
 			

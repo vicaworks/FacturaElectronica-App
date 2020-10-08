@@ -225,8 +225,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setMoneda("DOLAR");
 		guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
 		guiaRemisionSelected.setPropina(BigDecimal.ZERO);
-		guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		
+		if(guiaRemisionSelected.getIdcabecera()==null) {
+			guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		}
 		
 		// infromacion adicional 
 		guiaRemisionSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(guiaRemisionSelected,infoadicionalList));

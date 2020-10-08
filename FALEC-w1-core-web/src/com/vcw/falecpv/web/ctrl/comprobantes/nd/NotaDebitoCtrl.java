@@ -105,6 +105,11 @@ public class NotaDebitoCtrl extends BaseCtrl {
 	@Override
 	public void eliminar() {
 		try {
+
+			if(notDebitoSelected==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				return;
+			}
 			
 			String analisis = cabeceraServicio.analizarEstadoComprobante(notDebitoSelected.getIdcabecera(), "ANULAR");
 			if(analisis!=null) {

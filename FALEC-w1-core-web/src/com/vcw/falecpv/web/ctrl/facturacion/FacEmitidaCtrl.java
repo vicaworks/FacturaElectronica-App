@@ -583,6 +583,12 @@ public class FacEmitidaCtrl extends BaseCtrl {
 				return;
 			}
 			
+			String analisis = cabeceraServicio.analizarEstadoComprobante(ventasQuerySelected.getIdcabecera(), "ANULAR");
+			if(analisis!=null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
+				return;
+			}
+			
 			cabeceraServicio.anularComprobanteReversoKardex(ventasQuerySelected.getIdcabecera(),AppJsfUtil.getUsuario().getIdusuario());
 			ventasQuerySelected = null;
 			consultar();

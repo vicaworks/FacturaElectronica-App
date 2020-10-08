@@ -380,7 +380,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setContribuyenteespecial("5368");
 		retencionSeleccion.setMoneda("DOLAR");
 		retencionSeleccion.setPropina(BigDecimal.ZERO);
-		retencionSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		if(retencionSeleccion.getIdcabecera()==null) {
+			retencionSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		}
 		
 		// detalle retencion
 		retencionSeleccion.setImpuestoretencionList(retenciondetalleList);

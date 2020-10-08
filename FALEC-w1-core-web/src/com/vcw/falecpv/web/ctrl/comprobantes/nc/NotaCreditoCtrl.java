@@ -222,7 +222,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		notaCreditoSeleccion.setMoneda("DOLAR");
 		notaCreditoSeleccion.setPropina(BigDecimal.ZERO);
-		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		if(notaCreditoSeleccion.getIdcabecera()==null) {
+			notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		}
 		notaCreditoSeleccion.setTipodocasociado(notaCreditoSeleccion.getTipocomprobanteretencion().getIdentificador());
 		
 		formatoNumDoc(notaCreditoSeleccion.getNumfactura());

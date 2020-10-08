@@ -235,7 +235,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setContribuyenteespecial("5368");
 		liqCompraSelected.setMoneda("DOLAR");
 		liqCompraSelected.setPropina(BigDecimal.ZERO);
-		liqCompraSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		if(liqCompraSelected.getIdcabecera()==null) {
+			liqCompraSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		}
 		liqCompraSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		liqCompraSelected.setValorapagar(liqCompraSelected.getTotalpagar());
 		liqCompraSelected.setDetalleList(liqCompraDetalleList);

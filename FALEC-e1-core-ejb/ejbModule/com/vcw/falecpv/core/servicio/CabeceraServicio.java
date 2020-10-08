@@ -95,7 +95,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Inject
 	private EstablecimientoServicio establecimientoServicio;
 	
-	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.AUTORIZADO,ComprobanteEstadoEnum.PENDIENTE});
+	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.ANULADO,ComprobanteEstadoEnum.RECIBIDO_SRI,ComprobanteEstadoEnum.PENDIENTE});
 	
 	public CabeceraServicio() {
 	}
@@ -387,6 +387,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
 					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
@@ -399,7 +400,18 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
 				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
-				lista.add(ComprobanteEstadoEnum.PENDIENTE);
+				
+				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
+				}
+				
+			}
+			
+			if(c!=null && accion.equals("ELIMINAR")) {
+				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
+				lista.add(ComprobanteEstadoEnum.ANULADO);
+				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
 					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
@@ -631,7 +643,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			// 1. consultar cabecera 
 			Cabecera c = consultarByPk(idCabecera);
 			
-			if(c==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+			if (c == null || estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
 				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + c.getEstado());
 			}
 			
@@ -668,7 +680,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			// 1. consultar cabecera 
 			Cabecera c = consultarByPk(idCabecera);
 			
-			if(c==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+			if(c==null || estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
 				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + c.getEstado());
 			}
 			
@@ -722,7 +734,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			// 1. consultar cabecera 
 			Cabecera c = consultarByPk(idCabecera);
 			
-			if(c==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+			if(c==null || estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
 				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + c.getEstado());
 			}
 			

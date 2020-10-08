@@ -113,10 +113,14 @@ public class LiqCompraCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
-			String analizar = cabeceraServicio.analizarEstadoComprobante(liqCompraSelected.getIdcabecera() ,"ANULAR");
+			if(liqCompraSelected==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				return;
+			}
 			
-			if(analizar!=null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", analizar);
+			String analisis = cabeceraServicio.analizarEstadoComprobante(liqCompraSelected.getIdcabecera(), "ANULAR");
+			if(analisis!=null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
 				return;
 			}
 			

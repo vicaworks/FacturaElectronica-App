@@ -558,7 +558,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setContribuyenteespecial("5368");
 		notDebitoSelected.setMoneda("DOLAR");
 		notDebitoSelected.setPropina(BigDecimal.ZERO);
-		notDebitoSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		if(notDebitoSelected.getIdcabecera()==null) {
+			notDebitoSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		}
 		notDebitoSelected.setTipodocasociado(notDebitoSelected.getTipocomprobanteretencion().getIdentificador());
 		notDebitoSelected.setValorapagar(notDebitoSelected.getTotalconimpuestos());
 		
