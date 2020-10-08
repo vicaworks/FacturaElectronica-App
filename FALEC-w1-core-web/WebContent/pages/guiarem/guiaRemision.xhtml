@@ -194,16 +194,16 @@
 							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.cabecera.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{r.cabecera.estado=='ANULADO'}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}">
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{r.cabecera.estado=='ANULADO'}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}">
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callForm}"/>
 								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>							
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{r.cabecera.estado=='ANULADO'}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}">
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callForm}"/>
 								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
@@ -212,7 +212,7 @@
 							<p:menuitem value="Editar" action="#{guiaRemCtrl.editarGuiaRem(r.cabecera.idcabecera)}" icon="fa fa-edit" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>
 							</p:menuitem>
-							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}">
+							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(r.cabecera.estado)}">
 								<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -226,8 +226,8 @@
 						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains" styleClass="TexAlCenter">
-						<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} Fs10"/>
+					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains">
+						<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} DispBlock Wid100"/>
 					</p:column>
 					
 					<p:column headerText="DESTINATARIOS" style="width:150px;" filterBy="#{r.razonsocialdestinatario}" filterMatchMode="contains">

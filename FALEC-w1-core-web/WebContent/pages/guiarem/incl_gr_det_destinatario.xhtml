@@ -90,7 +90,7 @@
 					</div>					
 					<div class="EmptyBox5"/>
 					<div class="p-col-12">
-						<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" title="Eliminar" update="@form">
+						<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" title="Eliminar" update="@form" disabled="#{guiaRemFormCtrl.enableAccion}">
 							<i class="fa fa-trash-o Fs20" style="color:red;"/>
 							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>

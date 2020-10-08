@@ -139,6 +139,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setDestinatarioList(new ArrayList<>());
 		infoadicionalList = null;
 		inicializarSecuencia(guiaRemisionSelected);
+		enableAccion=false;
 	}
 	
 	@Override
@@ -611,7 +612,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idGuiaRem);
 		totalizarGuiaRemision();
-		
+		habilitarCrud(guiaRemisionSelected.getEstado());
 		return null;
 	}
 	
