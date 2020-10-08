@@ -231,8 +231,10 @@ public class ComprobanteHelper {
 			Infoadicional ia = new Infoadicional();
 			ia.setNombre("email");
 			ia.setValor(cabeceraFac.getCliente().getCorreoelectronico());
-			infoadicionalList.add(ia);
 			
+			if(infoadicionalList.stream().filter(x->x.getNombre().equals(ia.getNombre()) && x.getValor().equals(ia.getValor())).findFirst().orElse(null)==null) {
+				infoadicionalList.add(ia);
+			}
 		}
 		
 		return infoadicionalList;
