@@ -225,19 +225,19 @@
 						
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
 								
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{v.estado=='ANULADO' or v.estado=='BORRADOR'}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
 								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
 								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
 								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
@@ -247,25 +247,25 @@
 								<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Anular" action="#{facEmitidaCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Anular" action="#{facEmitidaCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(v.estado)}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
 							<p:submenu label="Comprobantes">
-								<p:menuitem value="#{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{v.estado=='ANULADO'}">
+								<p:menuitem value="#{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
 									<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 								</p:menuitem>
 								
-								<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#{rideCtrl.showRide()}" icon="fa fa-eye" disabled="#{v.estado=='ANULADO' or v.idguiaremision==null}">
+								<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#{rideCtrl.showRide()}" icon="fa fa-eye" disabled="#{appSessionCtrl.isComprobantes(v.estado) or v.idguiaremision==null}">
 									<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								</p:menuitem>
 								
-								<p:menuitem value="#{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-plus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
+								<p:menuitem value="#{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-plus-circle" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
 									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								</p:menuitem>	
 								
-								<p:menuitem value="#{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-minus-circle" update="@form" disabled="#{v.estado=='ANULADO'}">
+								<p:menuitem value="#{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-minus-circle" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
 									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								</p:menuitem>
 							</p:submenu>
@@ -278,8 +278,8 @@
 						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;">
-						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
+					<p:column headerText="ESTADO" style="width:70px;">
+						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} DispBlock Wid100">
 						</h:outputText>
 					</p:column>
 					
@@ -289,8 +289,8 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{r.proveedor.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{n.cliente.identificacion}" />
+					<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{v.identificacion}" filterMatchMode="contains">
+						<h:outputText value="#{v.identificacion}" />
 					</p:column>
 					
 					<p:column headerText="CLIENTE" style="width:125px;">

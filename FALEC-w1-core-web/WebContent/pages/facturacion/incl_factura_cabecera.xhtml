@@ -173,7 +173,7 @@
 							<p:message for="inpInfoAdicionalValor"/>
 						</div>
 						<div class="p-col-1" style="text-align: center;">
-							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
 								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -308,7 +308,7 @@
 						
 				</p:selectOneMenu>
 				 					 
-				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100 Fs11" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT">
+				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100 Fs11" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" disabled="#{compFacCtrl.enableAccion}">
 				 </p:commandButton>
 				
 			</p:panelGrid>
@@ -415,7 +415,7 @@
 					
 					<div class="p-grid p-justify-center p-align-center">
 						<div class="p-col-12">
-							<p:commandLink  action="#{compFacCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT">
+							<p:commandLink  action="#{compFacCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT" disabled="#{compFacCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
 								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

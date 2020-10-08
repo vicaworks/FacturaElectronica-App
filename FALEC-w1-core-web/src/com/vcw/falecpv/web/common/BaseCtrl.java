@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -12,6 +13,7 @@ import javax.ejb.EJB;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
@@ -41,6 +43,7 @@ public abstract class BaseCtrl implements Serializable {
 	private List<Tipopago> tipopagoList;
 	private Tipopago tipopagoSelected;
 	protected MessageCtrl messageCtrl = (MessageCtrl) AppJsfUtil.getManagedBean("messageCtrl");
+	protected boolean enableAccion = false;
 	
 	/**
 	 * 
@@ -83,6 +86,14 @@ public abstract class BaseCtrl implements Serializable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	
+	public void habilitarCrud(String estado) {
+		enableAccion = false;
+		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
+		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI});
+		enableAccion = !lista.contains(estadoEnum);
+	}
+	
 	
 	/**
 	 * @author cristianvillarreal
@@ -278,6 +289,20 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setMessageCtrl(MessageCtrl messageCtrl) {
 		this.messageCtrl = messageCtrl;
+	}
+
+	/**
+	 * @return the enableAccion
+	 */
+	public boolean isEnableAccion() {
+		return enableAccion;
+	}
+
+	/**
+	 * @param enableAccion the enableAccion to set
+	 */
+	public void setEnableAccion(boolean enableAccion) {
+		this.enableAccion = enableAccion;
 	}
 	
 }

@@ -236,6 +236,22 @@
 	font-weight: 500;
 }
 
+.markBlue{
+	color: #fff !important;
+	background-color: #024f9e !important;
+	padding: 0.2em 0.5em !important;
+	border-radius: 3px;
+	font-weight: 500;
+}
+
+.markVino{
+	color: #fff !important;
+	background-color: #c03995 !important;
+	padding: 0.2em 0.5em !important;
+	border-radius: 3px;
+	font-weight: 500;
+}
+
 
 /* FLEXGRID CSS formulario */
 .p-grid .p-sm-1, .p-sm-2, .p-sm-3, .p-sm-4, .p-sm-5, .p-sm-6,

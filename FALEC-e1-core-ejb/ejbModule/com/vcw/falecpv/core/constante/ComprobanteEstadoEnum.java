@@ -11,13 +11,13 @@ import java.util.stream.Stream;
  */
 public enum ComprobanteEstadoEnum {
 	
-	BORRADOR("markGreen"),
+	BORRADOR("markBlue"),
 	ERROR("markRed"),
-	PENDIENTE("markGreen"),
-	RECIBIDO("markGreen"),
+	PENDIENTE("markOrange"),
+	RECIBIDO_SRI("markGreen"),
 	ERROR_SRI("markRed"),
 	AUTORIZADO("markBlack"),
-	ANULADO("markBlack"),
+	ANULADO("markVino"),
 	RETENCION("markOrange"),
 	REGISTRADO("markGreen");
 	

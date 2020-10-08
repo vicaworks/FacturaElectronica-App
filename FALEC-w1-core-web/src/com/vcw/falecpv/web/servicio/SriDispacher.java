@@ -31,7 +31,7 @@ public class SriDispacher {
 	private SriUtilServicio sriUtilServicio;
 	
 	// estados para enviar los documentos al SRI	
-	private static final List<ComprobanteEstadoEnum> estadosEnviosri = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.PENDIENTE,ComprobanteEstadoEnum.RECIBIDO,ComprobanteEstadoEnum.ERROR_SRI});
+	private static final List<ComprobanteEstadoEnum> estadosEnviosri = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.PENDIENTE,ComprobanteEstadoEnum.ERROR_SRI});
 	
 	/**
 	 * @author cristianvillarreal
@@ -63,7 +63,7 @@ public class SriDispacher {
 				EnviarComprobanteSRI comprobantePendiente = new ComprobantePendiente(enviarComprobanteSRI);
 				resultado = comprobantePendiente.enviarComprobante(parametros);
 				break;
-			case RECIBIDO:
+			case RECIBIDO_SRI:
 				EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibido(enviarComprobanteSRI);
 				resultado = comprobanteRecibido.enviarComprobante(parametros);
 				break;

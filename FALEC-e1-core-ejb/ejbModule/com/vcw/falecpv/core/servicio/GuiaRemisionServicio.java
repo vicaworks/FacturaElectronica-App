@@ -242,7 +242,7 @@ public class GuiaRemisionServicio extends DBUtilGenericoApp {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(r.getEstado()))) {
@@ -255,7 +255,7 @@ public class GuiaRemisionServicio extends DBUtilGenericoApp {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(r.getEstado()))) {
@@ -268,7 +268,7 @@ public class GuiaRemisionServicio extends DBUtilGenericoApp {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(r.getEstado()))) {

@@ -3,6 +3,7 @@ package com.vcw.falecpv.core.servicio;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import com.vcw.falecpv.core.constante.contadores.TCComprobanteEnum;
 import com.vcw.falecpv.core.constante.contadores.TCGuiaRemision;
 import com.vcw.falecpv.core.constante.contadores.TablaContadorBaseEnum;
 import com.vcw.falecpv.core.dao.impl.CabeceraDao;
+import com.vcw.falecpv.core.exception.EstadoComprobanteException;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
@@ -92,6 +94,8 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	
 	@Inject
 	private EstablecimientoServicio establecimientoServicio;
+	
+	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.AUTORIZADO});
 	
 	public CabeceraServicio() {
 	}
@@ -382,7 +386,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
@@ -395,7 +399,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
@@ -408,7 +412,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
@@ -449,7 +453,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
@@ -462,7 +466,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
@@ -475,7 +479,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
 				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO);
+				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
@@ -708,15 +712,28 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @throws DaoException
 	 */
 	@Lock(LockType.WRITE)
-	public void anularComprobanteReversoKardex(String idCabecera,String idUsuarioEliminacion) throws DaoException {
+	public void anularComprobanteReversoKardex(String idCabecera,String idUsuarioEliminacion) throws DaoException,EstadoComprobanteException {
 		try {
 			
 			// 1. consultar cabecera 
 			Cabecera c = consultarByPk(idCabecera);
 			
-			if(c==null || c.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())) {
+			if(c==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + c.getEstado());
+			}
+			
+			// si es factura y estado borrador se elimina de la base de datos
+			
+			if (ComprobanteEstadoEnum.getByEstado(c.getEstado()).equals(ComprobanteEstadoEnum.BORRADOR)
+					&& GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador())
+							.equals(GenTipoDocumentoEnum.FACTURA)) {
+				
+				eliminar(c);
+				
 				return;
 			}
+			
+			// si es anulacion se cambia de estado y se hace un reverso
 			
 			c.setEstado(ComprobanteEstadoEnum.ANULADO.toString());
 			c.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador()));

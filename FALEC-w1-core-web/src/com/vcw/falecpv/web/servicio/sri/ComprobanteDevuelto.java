@@ -24,6 +24,17 @@ public class ComprobanteDevuelto extends EnviarComprobanteSRIDecorador {
 	public HashMap<String, Object> enviarComprobante(HashMap<String, Object> parametros)
 			throws EnviarComprobanteSRIException {
 		System.out.println("============== IMPL COMPROBANTE DEVUELTO CON ERRRORES ===============");
+		
+		// 1. armar xml
+		
+		// 2. validar 
+		
+		// 5. enviar sri
+		
+		// 6. cambiar de estado en respuesta al SRI
+		
+		
+		
 		return super.enviarComprobante(parametros);
 	}
 	

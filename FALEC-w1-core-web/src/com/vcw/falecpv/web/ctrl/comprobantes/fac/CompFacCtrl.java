@@ -243,6 +243,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected = new Cabecera();
 		cabecerSelected.setFechaemision(new Date());
 		infoadicionalList = null;
+		enableAccion = false;
 		inicializarSecuencia(cabecerSelected);
 		
 		criterioCliente = null;
@@ -743,7 +744,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		cabecerSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
 		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
 		
@@ -846,6 +847,9 @@ public class CompFacCtrl extends BaseCtrl {
 		if(cabecerSelected==null) {
 			return "NO EXISTE LA FACTURA SELECCIONADA";
 		}
+		
+		// analizar estado para habilitar crud
+		habilitarCrud(cabecerSelected.getEstado());
 		
 		detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
 		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idFactura);

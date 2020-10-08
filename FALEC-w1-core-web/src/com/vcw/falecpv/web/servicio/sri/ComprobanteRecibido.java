@@ -26,6 +26,10 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 		
 		System.out.println("============== IMPL COMPROBANTE RECIBIDO ===============");
 		
+		// 5. enviar sri
+		
+		// 6. cambiar estado
+		
 		return super.enviarComprobante(parametros);
 	}
 	

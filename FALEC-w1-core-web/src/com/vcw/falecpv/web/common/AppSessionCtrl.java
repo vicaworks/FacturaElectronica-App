@@ -4,6 +4,8 @@
 package com.vcw.falecpv.web.common;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -12,6 +14,7 @@ import javax.inject.Named;
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -87,6 +90,27 @@ public class AppSessionCtrl implements Serializable {
 	
 	public String getFormatoNumberDecimalOpcional() {
 		return "#,##0.##";
+	}
+	
+	public boolean isAnularFactura(String estado) {
+		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
+		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.AUTORIZADO,ComprobanteEstadoEnum.ERROR});
+		
+		return !lista.contains(estadoEnum);
+	}
+	
+	public boolean isComprobantes(String estado) {
+		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
+		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ANULADO,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI});
+		
+		return lista.contains(estadoEnum);
+	}
+	
+	public boolean isEnviarSri(String estado) {
+		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
+		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ANULADO});
+		
+		return lista.contains(estadoEnum);
 	}
 	
 	/**
