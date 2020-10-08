@@ -147,7 +147,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 					"		c.fechaemision between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' " +
 					"		and c.idestablecimiento = '" + idEstablecimiento + "' " +
 					"		and tc.identificador = '" +  genTipoDocumentoEnum.getIdentificador() + "' " +
-				    (comprobanteEstadoEnum.equals(ComprobanteEstadoEnum.ANULADO)?" and c.estado = 'ANULADO' ":" and c.estado <> 'ANULADO' ") + " ";
+				    (comprobanteEstadoEnum.equals(ComprobanteEstadoEnum.ANULADO)?" and c.estado = 'ANULADO' ":" and c.estado not in ('ANULADO','BORRADOR') ") + " ";
 			
 			
 			if(usuario!=null) {
@@ -231,7 +231,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"		c.fechaemision between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' " +
 						"		and c.idestablecimiento  = '" + idEstablecimiento + "' " +
 						"		and tc.identificador in ('00','01') " +
-						"		and c.estado <> 'ANULADO' ";
+						"		and c.estado not in ('ANULADO','BORRADOR') ";
 						
 						
 				if(usuario!=null) {
@@ -366,7 +366,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		and tc.identificador in ('00','01') " +
 			"		and upper(cl.razonsocial) like '%" + razonSocial.toUpperCase() + "%' " +
 			"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
-			"		and c.estado <> 'ANULADO' " +
+			"		and c.estado not in ('ANULADO','BORRADOR') " +
 			"	group by " +
 			"		d.idproducto, " +
 			"		p.codigoprincipal, " +
@@ -408,7 +408,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 					"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 					"		and tc.identificador in ('00','01') " +
 					"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
-					"		and c.estado <> 'ANULADO' " +
+					"		and c.estado not in ('ANULADO','BORRADOR') " +
 					(producto!=null? "		and d.idproducto = '" + producto.getIdproducto() + "'":" ") +
 					"	group by " +
 					"		d.idproducto, " +
@@ -440,7 +440,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('01') " +
 			"		and c.fechaemision = '" + formatoFecha(fecha) + "'  " +
-			"		and c.estado <> 'ANULADO' " +
+			"		and c.estado not in ('ANULADO','BORRADOR') " +
 			"	group by " +
 			"		tc.identificador " +
 			"	union " +
@@ -457,7 +457,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('00') " +
 			"		and c.fechaemision = '" + formatoFecha(fecha) + "'  " +
-			"		and c.estado <> 'ANULADO' " +
+			"		and c.estado not in ('ANULADO','BORRADOR') " +
 			"	group by " +
 			"		tc.identificador ";
 			
@@ -491,7 +491,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 				"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 				"		and tc.identificador in ('01','00') " +
 				"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
-				"		and c.estado <> 'ANULADO' ";
+				"		and c.estado not in ('ANULADO','BORRADOR') ";
 			
 			Map<String, Object> r = singleResultMap(sql);
 			
@@ -529,7 +529,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"			and tc.identificador in ('01','00') " +
 			"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
-			"			and c.estado <> 'ANULADO' ";
+			"			and c.estado not in ('ANULADO','BORRADOR') ";
 			
 			Map<String, Object> r = singleResultMap(sql);
 			
@@ -575,7 +575,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('01','00') " +
 			"		and c.fechaemision = '" + formatoFecha(fecha) + "' " +
-			"		and c.estado <> 'ANULADO' " +
+			"		and c.estado not in ('ANULADO','BORRADOR') " +
 			"	order by " +
 			"		c.fechaemision, " +
 			"		c.updated ";
