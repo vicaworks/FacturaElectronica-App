@@ -744,7 +744,9 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		cabecerSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		cabecerSelected.setEstado(
+				genTipoDocumentoEnum.equals(GenTipoDocumentoEnum.FACTURA) ? ComprobanteEstadoEnum.PENDIENTE.toString()
+						: ComprobanteEstadoEnum.REGISTRADO.toString());
 		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
 		

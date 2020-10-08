@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 420px)!important;				
+				height: calc(100vh - 440px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -215,7 +215,7 @@
 							</p:menuitem>
 							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
-								<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
+								<f:setPropertyActionListener value="RECIBO" target="#{compFacCtrl.callModule}"/>
 							</p:menuitem>
 							<p:menuitem value="Anular" action="#{recEmitidoCtrl.eliminar()}" icon="fa fa-trash-o" disabled="#{v.estado=='ANULADO'}" update="@form">
 								<f:setPropertyActionListener value="#{v}" target="#{recEmitidoCtrl.ventasQuerySelected}"/>
@@ -225,8 +225,13 @@
 					
 					</p:column>
 					
-					<p:column headerText="N." style="width:80px;">
+					<p:column headerText="N." style="width:80px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{recEmitidoCtrl.getFormatoNumDocumento(v.numdocumento)}" />
+					</p:column>
+					
+					<p:column headerText="ESTADO" style="width:60px;" filterBy="#{v.estado}" filterMatchMode="contains">
+						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} DispBlock Wid100">
+						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -235,18 +240,13 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CLIENTE" style="width:140px;">
+					<p:column headerText="CLIENTE" style="width:140px;" filterBy="#{v.razonsocial}" filterMatchMode="contains">
 						<h:outputText value="#{v.razonsocial}" >
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="VENDEDOR" style="width:80px;">
 						<h:outputText value="#{v.nombrepantalla}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="ESTADO" style="width:60px;">
-						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs9">
 						</h:outputText>
 					</p:column>
 					

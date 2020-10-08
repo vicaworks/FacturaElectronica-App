@@ -119,6 +119,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 	}
 	
 	private void consultar()throws DaoException {
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		ventasQueryList = null;
 		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),GenTipoDocumentoEnum.RECIBO);
 	}

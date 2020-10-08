@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 35vh !important;
-				height: calc(100vh - 450px)!important;				
+				height: calc(100vh - 440px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -274,7 +274,7 @@
 					
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:100px;">
+					<p:column headerText="NUM COMP" style="width:100px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
 					</p:column>
 					
@@ -293,7 +293,7 @@
 						<h:outputText value="#{v.identificacion}" />
 					</p:column>
 					
-					<p:column headerText="CLIENTE" style="width:125px;">
+					<p:column headerText="CLIENTE" style="width:125px;" filterBy="#{v.razonsocial}" filterMatchMode="contains">
 						<h:outputText value="#{v.razonsocial}" >
 						</h:outputText>
 					</p:column>

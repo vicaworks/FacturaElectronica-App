@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.servicio;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.exception.EstadoComprobanteException;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.xpert.persistence.query.QueryBuilder;
@@ -28,6 +30,8 @@ public class ReciboServicio {
 	@Inject
 	private DetalleServicio detalleServicio;
 	
+	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.AUTORIZADO,ComprobanteEstadoEnum.PENDIENTE,ComprobanteEstadoEnum.REGISTRADO});
+	
 	/**
 	 * @author cristianvillarreal
 	 * 
@@ -39,6 +43,10 @@ public class ReciboServicio {
 		try {
 			
 			Cabecera c = cabeceraServicio.consultarByPk(idRecibo);
+			
+			if(c==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + c.getEstado());
+			}
 			
 			if(c!=null) {
 				// 1. anular 

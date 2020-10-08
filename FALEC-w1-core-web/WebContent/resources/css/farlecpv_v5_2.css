@@ -396,6 +396,10 @@ body .ui-dialog .ui-dialog-titlebar {
 	padding: 1em !important;
 }
 
+.ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield {
+	padding: 2px;
+}
+
 /* ================= MESSAGE =================== */
 
 body .ui-messages .ui-messages-info {
