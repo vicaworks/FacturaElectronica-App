@@ -285,6 +285,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 		
 		determinarPeriodoFiscal();
+		enableAccion = false;
 	}
 	
 	private void formatoNumDoc(String numDoc) {
@@ -612,6 +613,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 	detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idNotaCredito);
 	 	infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotaCredito);
 		totalizar();
+		habilitarCrud(notaCreditoSeleccion.getEstado());
 		
 		return null;
 	}

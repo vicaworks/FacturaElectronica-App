@@ -278,7 +278,7 @@
 						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:70px;">
+					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{v.estado}" filterMatchMode="contains">
 						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} DispBlock Wid100">
 						</h:outputText>
 					</p:column>

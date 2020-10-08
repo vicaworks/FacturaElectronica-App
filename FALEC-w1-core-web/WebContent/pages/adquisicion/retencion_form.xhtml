@@ -157,7 +157,7 @@
 		    				<div class="p-col-12 p-md-6">
 			    				<p:commandButton id="cmdrtnGuardar"
 										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{retencionFrmCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
+										action="#{retencionFrmCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{retencionFrmCtrl.enableAccion}"/>
 							</div>
 							
 	    				</div>
@@ -399,7 +399,7 @@
 											<p:message for="inpInfoAdicionalValor"/>
 										</div>
 										<div class="p-col-1" style="text-align: center;">
-											<p:commandLink  action="#{retencionFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+											<p:commandLink  action="#{retencionFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{retencionFrmCtrl.enableAccion}">
 												<f:setPropertyActionListener value="#{info}" target="#{retencionFrmCtrl.infoadicionalSelected}"/>
 												<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 												<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -524,7 +524,7 @@
 							rowKey="#{d.idimpuestoretencion}">
 							
 							<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
-								<p:commandLink id="clkRtnDelete" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:retencionDetDT" disabled="#{retencionFrmCtrl.retencionSeleccion.estado!=ComprobanteEstadoEnum.REGISTRADO}">
+								<p:commandLink id="clkRtnDelete" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:retencionDetDT" disabled="#{retencionFrmCtrl.enableAccion}">
 									<i class="fa fa-trash-o Fs16" style="color:red;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 									<f:setPropertyActionListener value="#{d}" target="#{retencionFrmCtrl.retenciondetalleSelected}"/>

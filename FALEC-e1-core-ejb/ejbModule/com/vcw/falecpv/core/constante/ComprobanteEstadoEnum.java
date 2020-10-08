@@ -55,7 +55,7 @@ public enum ComprobanteEstadoEnum {
 	 * @return
 	 */
 	public static ComprobanteEstadoEnum getByEstado(String estado) {
-		ComprobanteEstadoEnum estadoEnum = Stream.of(ComprobanteEstadoEnum.values()).filter(x->x.toString().equals(estado)).findFirst().get();
+		ComprobanteEstadoEnum estadoEnum = Stream.of(ComprobanteEstadoEnum.values()).filter(x->x.toString().equals(estado)).findFirst().orElse(null);
 		if(estadoEnum!=null) {
 			return estadoEnum;
 		}

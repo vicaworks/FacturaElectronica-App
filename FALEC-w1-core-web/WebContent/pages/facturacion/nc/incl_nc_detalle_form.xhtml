@@ -255,7 +255,7 @@
 						<div class="EmptyBox20"></div>
 						<div class="p-grid p-justify-center p-align-center vertical-container">
 							<div class="p-col-12">
-								<p:commandLink id="clkEliminar" action="#{notaCreditoCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal" process="@this :formMain:pvDetalleDT">
+								<p:commandLink id="clkEliminar" action="#{notaCreditoCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal" process="@this :formMain:pvDetalleDT" disabled="#{notaCreditoCtrl.enableAccion}">
 									<f:setPropertyActionListener value="#{d}" target="#{notaCreditoCtrl.detalleSelected}"/>
 									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

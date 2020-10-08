@@ -233,7 +233,7 @@
 							<p:message for="inpInfoAdicionalValor"/>
 						</div>
 						<div class="p-col-1" style="text-align: center;">
-							<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+							<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{notaDebitoFrmCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{info}" target="#{notaDebitoFrmCtrl.infoadicionalSelected}"/>
 								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

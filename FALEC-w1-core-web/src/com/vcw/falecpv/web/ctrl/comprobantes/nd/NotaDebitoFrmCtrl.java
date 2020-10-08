@@ -173,7 +173,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		pagoSelected = null;
 		totalPago = BigDecimal.ZERO;
 		totalSaldo = BigDecimal.ZERO;
-		
+		enableAccion = false;
 	}
 	
 	public void buscarCliente() {
@@ -494,7 +494,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotDebito);
 		totalizar();
 		totalizarPago();
-		
+		habilitarCrud(notDebitoSelected.getEstado());
 		return null;
 	}
 	

@@ -95,7 +95,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Inject
 	private EstablecimientoServicio establecimientoServicio;
 	
-	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.AUTORIZADO});
+	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.AUTORIZADO,ComprobanteEstadoEnum.PENDIENTE});
 	
 	public CabeceraServicio() {
 	}
@@ -696,8 +696,26 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	public int anularById(String idCabecera)throws DaoException{
 		try {
 			
+			// 1. consultar cabecera 
+			Cabecera c = consultarByPk(idCabecera);
+			
+			if(c==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + c.getEstado());
+			}
+			
+			// si es factura y estado borrador se elimina de la base de datos
+			
+			if (ComprobanteEstadoEnum.getByEstado(c.getEstado()).equals(ComprobanteEstadoEnum.BORRADOR)) {
+				
+				eliminar(c);
+				
+				return 1;
+			}
+			
 			String sql = "UPDATE cabecera SET estado='" + ComprobanteEstadoEnum.ANULADO.toString() + "' WHERE idcabecera='" + idCabecera + "'";
 			return execute(sql);
+			
+			
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
@@ -769,11 +787,28 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	public int anularGuiaRemisionFacade(String idCabecera)throws DaoException{
 		try {
 			
+			// 1. consultar cabecera 
+			Cabecera c = consultarByPk(idCabecera);
+			
+			if(c==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
+				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + c.getEstado());
+			}
+			
 			Query q = getCabeceraDao().getEntityManager().createNativeQuery("UPDATE cabecera set idguiaremision=null WHERE idguiaremision=:idcabecera");
 			q.setParameter("idcabecera", idCabecera);
 			q.executeUpdate();
 			
-			return anularById(idCabecera);
+			// si es factura y estado borrador se elimina de la base de datos
+			
+			if (ComprobanteEstadoEnum.getByEstado(c.getEstado()).equals(ComprobanteEstadoEnum.BORRADOR)) {
+				
+				eliminar(c);
+				
+				return 1;
+			}
+			
+			String sql = "UPDATE cabecera SET estado='" + ComprobanteEstadoEnum.ANULADO.toString() + "' WHERE idcabecera='" + idCabecera + "'";
+			return execute(sql);
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

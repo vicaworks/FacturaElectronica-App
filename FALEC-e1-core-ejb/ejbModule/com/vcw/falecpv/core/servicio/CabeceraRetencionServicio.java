@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.servicio;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.dao.impl.CabeceraDao;
+import com.vcw.falecpv.core.exception.EstadoComprobanteException;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
@@ -31,6 +33,8 @@ public class CabeceraRetencionServicio {
 	
 	@Inject
 	private AdquisicionServicio adquisicionServicio;
+	
+	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.AUTORIZADO});
 	
 	/**
 	 * @author cristianvillarreal
@@ -116,6 +120,10 @@ public class CabeceraRetencionServicio {
 					.from(Cabecera.class,"r")
 					.equals("r.idcabecera",idRetencion).getSingleResult();
 			
+			if(r==null ||  !estadosAnulacion.contains(ComprobanteEstadoEnum.getByEstado(r.getEstado()))) {
+				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + r.getEstado());
+			}
+			
 			r.setEstado("ANULADO");
 			if (r.getAdquisicion()!=null) {
 				Adquisicion a = adquisicionServicio.consultarByPk(r.getAdquisicion().getIdadquisicion());
@@ -127,6 +135,14 @@ public class CabeceraRetencionServicio {
 			
 			r.setAdquisicion(null);
 			cabeceraDao.actualizar(r);
+			
+			if (ComprobanteEstadoEnum.getByEstado(r.getEstado()).equals(ComprobanteEstadoEnum.BORRADOR)) {
+				
+				cabeceraDao.eliminacionFisica(r);
+				
+				return null;
+			}
+			
 			return r;
 			
 		} catch (Exception e) {

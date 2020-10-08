@@ -167,7 +167,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}else {
 			nuevaRetencion();
 		}
-			
+		enableAccion = false;	
 	}
 	
 	private void nuevaRetencion()throws DaoException {
@@ -380,7 +380,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setContribuyenteespecial("5368");
 		retencionSeleccion.setMoneda("DOLAR");
 		retencionSeleccion.setPropina(BigDecimal.ZERO);
-		retencionSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		retencionSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
 		
 		// detalle retencion
 		retencionSeleccion.setImpuestoretencionList(retenciondetalleList);
@@ -412,6 +412,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		consultarRetencionImpuesto();
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idRetencion);
 		totalizar();
+		habilitarCrud(retencionSeleccion.getEstado());
 	}
 	
 	@Override
