@@ -120,7 +120,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 				return;
 			}
 			
-			cabeceraServicio.getCabeceraDao().anularById(liqCompraSelected.getIdcabecera());
+			cabeceraServicio.anularById(liqCompraSelected.getIdcabecera());
 			liqCompraSelected = null;
 			consultar();
 			

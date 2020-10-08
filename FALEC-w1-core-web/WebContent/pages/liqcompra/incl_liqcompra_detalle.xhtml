@@ -118,7 +118,7 @@
 					
 					<p:column style="width:10%;" styleClass="TexAlCenter">
 						<div class="p-grid p-justify-center p-align-center ">
-							<p:commandLink id="clkEliminar" action="#{liqCompraFormCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:pvDetalleDT">
+							<p:commandLink id="clkEliminar" action="#{liqCompraFormCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:pvDetalleDT" disabled="#{liqCompraFormCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{d}" target="#{liqCompraFormCtrl.detalleSelected}"/>
 								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

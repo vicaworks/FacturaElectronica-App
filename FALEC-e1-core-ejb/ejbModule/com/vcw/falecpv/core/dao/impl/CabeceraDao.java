@@ -10,7 +10,6 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import com.servitec.common.dao.exception.DaoException;
-import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -310,25 +309,6 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 		}
 	}
 	
-	
-	/**
-	 * @author cristianvillarreal
-	 * 
-	 * @param idcabecera
-	 * @return
-	 * @throws DaoException
-	 */
-	public int anularById(String idCabecera)throws DaoException{
-		try {
-			
-			String sql = "UPDATE cabecera SET estado='" + ComprobanteEstadoEnum.ANULADO.toString() + "' WHERE idcabecera='" + idCabecera + "'";
-			return getEntityManager().createNativeQuery(sql).executeUpdate();
-			
-			
-		} catch (Exception e) {
-			throw new DaoException(e);
-		}
-	}
 	
 	/**
 	 * @author cristianvillarreal

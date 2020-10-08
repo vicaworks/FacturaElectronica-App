@@ -172,7 +172,7 @@
 							<p:message for="inpInfoAdicionalValor"/>
 						</div>
 						<div class="p-col-1" style="text-align: center;">
-							<p:commandLink  action="#{liqCompraFormCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+							<p:commandLink  action="#{liqCompraFormCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{liqCompraFormCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{info}" target="#{liqCompraFormCtrl.infoadicionalSelected}"/>
 								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -414,7 +414,7 @@
 						
 						<div class="p-grid p-justify-center p-align-center">
 							<div class="p-col-12">
-								<p:commandLink  action="#{liqCompraFormCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT">
+								<p:commandLink  action="#{liqCompraFormCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT" disabled="#{liqCompraFormCtrl.enableAccion}">
 									<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
 									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

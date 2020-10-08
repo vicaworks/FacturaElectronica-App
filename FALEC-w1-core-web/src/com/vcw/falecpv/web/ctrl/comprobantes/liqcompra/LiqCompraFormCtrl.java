@@ -159,6 +159,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		consultarProveedor();
 		consultarIva();
 		populateTipoPago();
+		enableAccion = false;
 		
 	}
 
@@ -560,7 +561,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		
 		totalizar();
 		totalizarPago();
-		
+		habilitarCrud(liqCompraSelected.getEstado());
 		return null;
 	}
 	
