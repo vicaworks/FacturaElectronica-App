@@ -113,7 +113,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			
 			if(retencionSelected == null) return;
 			
-			String analisisEstado = cabeceraRetencionServicio.analizarEstado(retencionSelected.getIdcabecera(), retencionSelected.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			String analisisEstado = cabeceraServicio.analizarEstadoComprobante(retencionSelected.getIdcabecera() ,"ANULAR");
 			
 			if(analisisEstado!=null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);

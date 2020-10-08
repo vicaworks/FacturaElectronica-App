@@ -554,7 +554,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			// validar estado
 			if(cabecerSelected.getIdcabecera()!=null) {
 				
-				String analisisEstado = cabeceraServicio.analizarEstadoFactura(cabecerSelected.getIdcabecera(), "GUARDAR");
+				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(cabecerSelected.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);

@@ -285,7 +285,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			}
 			
 			if(retencionSeleccion.getIdcabecera()!=null) {
-				String analisisEstado = cabeceraRetencionServicio.analizarEstado(retencionSeleccion.getIdcabecera(), retencionSeleccion.getEstablecimiento().getIdestablecimiento(), "GUARDAR");
+				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(retencionSeleccion.getIdcabecera(), "GUARDAR");
 				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 					return;
@@ -493,7 +493,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 			if(retencionSeleccion.getIdcabecera()!=null) {
 				
-				String analisisEstado = cabeceraRetencionServicio.analizarEstado(retencionSeleccion.getIdcabecera(), retencionSeleccion.getEstablecimiento().getIdestablecimiento(), "ELIMINAR_DETALLE");
+				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(retencionSeleccion.getIdcabecera(), "ELIMINAR_DETALLE");
 				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 					return;

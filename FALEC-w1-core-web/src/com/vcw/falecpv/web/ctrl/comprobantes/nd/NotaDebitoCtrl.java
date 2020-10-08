@@ -106,7 +106,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
-			String analisis = notaDebitoServicio.analizarEstado(notDebitoSelected.getIdcabecera(), AppJsfUtil.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			String analisis = cabeceraServicio.analizarEstadoComprobante(notDebitoSelected.getIdcabecera(), "ANULAR");
 			if(analisis!=null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
 				return;

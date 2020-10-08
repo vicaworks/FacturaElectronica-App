@@ -157,7 +157,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			// validar estado
 			if(notaCreditoSeleccion.getIdcabecera()!=null) {
 				
-				String analisisEstado = cabeceraServicio.analizarNotaCredito(notaCreditoSeleccion.getIdcabecera(), "GUARDAR");
+				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(notaCreditoSeleccion.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);

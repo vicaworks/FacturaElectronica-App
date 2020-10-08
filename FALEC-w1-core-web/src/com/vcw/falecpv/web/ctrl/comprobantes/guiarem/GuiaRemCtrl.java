@@ -112,7 +112,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
-			String analisis = guiaRemisionServicio.analizarEstado(guiaRemisionSelected.getIdcabecera(), AppJsfUtil.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			String analisis = cabeceraServicio.analizarEstadoComprobante(guiaRemisionSelected.getIdcabecera(), "ANULAR");
 			if(analisis!=null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
 				return;

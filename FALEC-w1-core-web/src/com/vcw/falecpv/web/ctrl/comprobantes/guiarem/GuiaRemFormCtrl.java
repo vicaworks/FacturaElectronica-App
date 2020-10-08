@@ -151,6 +151,20 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 				return;
 			}
 			
+			
+			// validar estado
+			if(guiaRemisionSelected.getIdcabecera()!=null) {
+				
+				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(guiaRemisionSelected.getIdcabecera(), "GUARDAR");
+				
+				if(analisisEstado!=null) {
+					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					return;
+				}
+				
+			}
+			
+			
 			// 2. populate valores
 			guiaRemisionSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.GUIA_REMISION);
 			populateGuiaRemision(GenTipoDocumentoEnum.GUIA_REMISION);

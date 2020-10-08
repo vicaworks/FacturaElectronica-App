@@ -113,7 +113,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
-			String analizar = liqCompraServicio.analizarEstado(liqCompraSelected.getIdcabecera(), liqCompraSelected.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			String analizar = cabeceraServicio.analizarEstadoComprobante(liqCompraSelected.getIdcabecera() ,"ANULAR");
 			
 			if(analizar!=null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", analizar);

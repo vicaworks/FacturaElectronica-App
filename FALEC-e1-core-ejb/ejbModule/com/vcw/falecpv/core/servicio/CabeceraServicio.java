@@ -359,6 +359,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		return cabecera;
 	}
 	
+	
 	/**
 	 * @author cristianvillarreal
 	 * 
@@ -368,7 +369,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public String analizarEstadoFactura(String idcabecera,String accion)throws DaoException{
+	public String analizarEstadoComprobante(String idcabecera,String accion)throws DaoException{
 		try {
 			
 			QueryBuilder q = new QueryBuilder(cabeceraDao.getEntityManager());
@@ -385,75 +386,6 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			if(c!=null && accion.equals("ANULAR")) {
 				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
 				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
-				lista.add(ComprobanteEstadoEnum.PENDIENTE);
-				
-				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
-					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
-				}
-				
-			}
-			
-			if(c!=null && accion.equals("ELIMINAR_DETALLE")) {
-				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
-				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
-				lista.add(ComprobanteEstadoEnum.PENDIENTE);
-				
-				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
-					return "NO SE PUEDE ELIMINAR, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
-				}
-				
-			}
-			
-			if(c!=null && accion.equals("GUARDAR")) {
-				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
-				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
-				lista.add(ComprobanteEstadoEnum.PENDIENTE);
-				
-				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {
-					return "NO SE PUEDE REALIZAR NINGUNA MODIFICACION, POR QUE SE ENCUENTRA EN ESTADO: " + c.getEstado();
-				}
-				
-			}
-			
-			return null;
-			
-		} catch (Exception e) {
-			throw new DaoException(e);
-		}
-	}
-	
-	/**
-	 * @author cristianvillarreal
-	 * 
-	 * @param idcabecera
-	 * @param accion
-	 * @return
-	 * @throws DaoException
-	 */
-	public String analizarNotaCredito(String idcabecera,String accion)throws DaoException{
-		try {
-			
-			QueryBuilder q = new QueryBuilder(cabeceraDao.getEntityManager());
-			
-			Cabecera c = (Cabecera) q.select("c")
-							.from(Cabecera.class,"c")
-							.equals("c.idcabecera",idcabecera).getSingleResult();
-			
-			if(c==null) {
-				return null;
-			}
-			
-			if(c!=null && accion.equals("ANULAR")) {
-				List<ComprobanteEstadoEnum> lista = new ArrayList<>();
-				lista.add(ComprobanteEstadoEnum.ANULADO);
-				lista.add(ComprobanteEstadoEnum.AUTORIZADO);
-				lista.add(ComprobanteEstadoEnum.RECIBIDO_SRI);
 				lista.add(ComprobanteEstadoEnum.PENDIENTE);
 				
 				if(lista.contains(ComprobanteEstadoEnum.getByEstado(c.getEstado()))) {

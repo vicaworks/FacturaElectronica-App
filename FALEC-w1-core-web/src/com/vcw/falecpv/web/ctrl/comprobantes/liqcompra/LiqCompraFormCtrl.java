@@ -182,7 +182,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			// validar estado
 			if(liqCompraSelected.getIdcabecera()!=null) {
 				
-				String analisisEstado = liqCompraServicio.analizarEstado(liqCompraSelected.getIdcabecera(),liqCompraSelected.getEstablecimiento().getIdestablecimiento() ,"GUARDAR");
+				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(liqCompraSelected.getIdcabecera() ,"GUARDAR");
 				
 				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);

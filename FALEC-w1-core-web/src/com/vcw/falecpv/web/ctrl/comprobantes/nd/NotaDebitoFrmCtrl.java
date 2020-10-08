@@ -505,7 +505,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			// validar estado
 			if(notDebitoSelected.getIdcabecera()!=null) {
 				
-				String analisisEstado = notaDebitoServicio.analizarEstado(notDebitoSelected.getIdcabecera(),notDebitoSelected.getEstablecimiento().getIdestablecimiento(), "GUARDAR");
+				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(notDebitoSelected.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
