@@ -604,7 +604,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		cabecerSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
 		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalconimpuestos());
 		

@@ -123,7 +123,7 @@
 			
 			
 			<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{rn.total}" styleClass="markBlack">
+				<h:outputText value="#{rn.total}" styleClass="markGray">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
@@ -141,7 +141,7 @@
     		
     		<div class="p-col-3" style="text-align: center;">
     			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repRecibAnuCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold markBlack">
+    			<h:outputText value="#{repRecibAnuCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold markGray">
     				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>
@@ -154,7 +154,7 @@
     		</div>
     		<div class="p-col-3" style="text-align: center;">
     			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repRecibAnuCtrl.totalesDto.total}" styleClass="Fs16 FontBold markBlack">
+    			<h:outputText value="#{repRecibAnuCtrl.totalesDto.total}" styleClass="Fs16 FontBold markGray">
     				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>

@@ -111,7 +111,7 @@
 				</p:column>
 				
 				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.subtotal}" styleClass="markBlack">
+					<h:outputText value="#{fn.subtotal}" styleClass="markGray">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
@@ -152,7 +152,7 @@
     	<div class="p-grid p-justify-center">
     		<div class="p-col-4 p-md-2" style="text-align: center;">
     			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacAnuCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold markBlack">
+    			<h:outputText value="#{repFacAnuCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold markGray">
     				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
     			</h:outputText>
     		</div>

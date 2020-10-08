@@ -141,7 +141,7 @@
 			</p:column>
 			
 			<p:column headerText="TIP" style="width:15px;">
-				<h:outputText value="#{v.tipoComprobanteInicual}" style="font-size:8px;" styleClass="#{v.identificador=='00'?'markBlack':'markOrange'}">
+				<h:outputText value="#{v.tipoComprobanteInicual}" style="font-size:8px;" styleClass="#{v.identificador=='00'?'markGray':'markGreen'}">
 				</h:outputText>
 			</p:column>
 			
@@ -172,7 +172,7 @@
 			</p:column>
 			
 			<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.subtotal}" styleClass="markBlack">
+				<h:outputText value="#{v.subtotal}" styleClass="markGray">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
