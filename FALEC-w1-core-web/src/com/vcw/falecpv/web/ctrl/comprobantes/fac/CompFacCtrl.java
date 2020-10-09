@@ -623,13 +623,6 @@ public class CompFacCtrl extends BaseCtrl {
 				return;
 			}
 			
-			// TODO revisar este cambio
-			
-//			if(cabecerSelected.getTotaliva().doubleValue()>0) {
-//				AppJsfUtil.addErrorMessage("formMain", "ERROR", "EL RECIBO NO PUEDE TENER VALOR DE IMPUESTOS  > 0.");
-//				return;
-//			}
-			
 			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "FACTURA SIN DETALLE DE FACTURACION.");
 				return;
@@ -657,7 +650,6 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected.setPagoList(pagoList);
 			noEditarSecuencial(cabecerSelected);
 			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.RECIBO);
-			cabecerSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.RECIBO);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
@@ -695,7 +687,6 @@ public class CompFacCtrl extends BaseCtrl {
 					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
 					return;
 				}
-				return;
 			}
 			
 			// validar el valor

@@ -14,7 +14,7 @@ import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.exception.EnviarComprobanteSRIException;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
-import com.vcw.falecpv.web.servicio.sri.ComprobanteDevuelto;
+import com.vcw.falecpv.web.servicio.sri.ComprobanteResultado;
 import com.vcw.falecpv.web.servicio.sri.ComprobantePendiente;
 import com.vcw.falecpv.web.servicio.sri.ComprobanteRecibido;
 import com.vcw.falecpv.web.servicio.sri.EnviarComprobanteSRI;
@@ -68,7 +68,7 @@ public class SriDispacher {
 				resultado = comprobanteRecibido.enviarComprobante(parametros);
 				break;
 			case ERROR_SRI:
-				EnviarComprobanteSRI omprobanteDevuelto = new ComprobanteDevuelto(enviarComprobanteSRI);
+				EnviarComprobanteSRI omprobanteDevuelto = new ComprobanteResultado(enviarComprobanteSRI);
 				resultado = omprobanteDevuelto.enviarComprobante(parametros);
 				break;	
 			default:

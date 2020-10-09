@@ -38,29 +38,33 @@
 			</p:messages>
 			
 			<div class="p-grid">
-				<div class="p-col-12" style="text-align: center">
+				<div class="p-col-12 p-md-3" style="text-align: center;">
 					<p:outputPanel rendered="#{messageCtrl.icono=='OK'}">
-						<i class="fa fa-check" style="color:#28B463;font-size: 70px;"/>
+						<i class="fa fa-check Fs100" style="color:#28B463;"/>
 					</p:outputPanel>
 					<p:outputPanel rendered="#{messageCtrl.icono=='WARNING'}">
-						<i class="fa fa-warning Fs40" style="color:orange;"/>
+						<i class="fa fa-warning Fs100" style="color:orange;"/>
 					</p:outputPanel>
 					<p:outputPanel rendered="#{messageCtrl.icono=='ERROR'}">
-						<i class="fa fa-times-circle-o Fs40" style="color:red;"/>
+						<i class="fa fa-times-circle-o Fs100" style="color:red;"/>
 					</p:outputPanel>
 				</div>
-				<div class="p-col-12" style="text-align: center">
-					<h2 style="color:#2C3E50;" class="Fs20">#{messageCtrl.header}</h2>
+				
+				<div class="p-col-12 p-md-9" style="text-align: center">
+					<div class="p-col-12" style="text-align: center">
+						<h2 style="color:#2C3E50;" class="Fs20">#{messageCtrl.header}</h2>
+					</div>
+					<div class="p-col-12" style="text-align: center">
+						<h:outputText value="#{messageCtrl.message}" style="color:#797D7F;" styleClass="Fs14"/>
+					</div>
 				</div>
-				<div class="p-col-12" style="text-align: center">
-					<h:outputText value="#{messageCtrl.message}" style="color:#797D7F;" styleClass="Fs14"/>
-				</div>
+				
 			</div>
 			
 			
 			<div class="p-grid toolBarUp p-justify-end">
 				
-				<div class="p-col-2" style="text-align:center;">					
+				<div class="p-col-3" style="text-align:center;">					
 					
 					<p:commandButton 
 						value="OK" styleClass="secondary-button Wid100 Fs18" 

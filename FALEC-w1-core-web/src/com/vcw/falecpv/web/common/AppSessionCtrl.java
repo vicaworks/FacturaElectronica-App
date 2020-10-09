@@ -96,7 +96,7 @@ public class AppSessionCtrl implements Serializable {
 		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
 		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.ANULADO,ComprobanteEstadoEnum.RECIBIDO_SRI,ComprobanteEstadoEnum.PENDIENTE});
 		
-		return !lista.contains(estadoEnum);
+		return lista.contains(estadoEnum);
 	}
 	
 	public boolean isComprobantes(String estado) {
