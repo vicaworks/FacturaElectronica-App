@@ -690,7 +690,7 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(totalPago.doubleValue()<cabecerSelected.getTotalpagar().doubleValue()) {
+			if(!cabecerSelected.isBorrador() && totalPago.doubleValue()<cabecerSelected.getTotalpagar().doubleValue()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR A PAGAR.");
 				return;
 			}
@@ -704,7 +704,13 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			noEditarSecuencial(cabecerSelected);
 			
-			messageCtrl.cargarMenssage("OK", "FACTURA GENERADA CORRECTAMENTE.", "OK");
+			if(cabecerSelected.isBorrador()) {
+				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE FACTURA GENERADA CORRECTAMENTE.", "WARNING");
+			}else {
+				messageCtrl.cargarMenssage("OK", "FACTURA GENERADA CORRECTAMENTE.", "OK");
+			}
+			
+			
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
@@ -735,10 +741,21 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		if(cabecerSelected.getIdcabecera()==null) {
-			cabecerSelected.setEstado(
-					genTipoDocumentoEnum.equals(GenTipoDocumentoEnum.FACTURA) ? ComprobanteEstadoEnum.PENDIENTE.toString()
-							: ComprobanteEstadoEnum.REGISTRADO.toString());
+		if(cabecerSelected.getIdcabecera()==null || (cabecerSelected.getIdcabecera()!=null&&cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+			
+			if(genTipoDocumentoEnum.equals(GenTipoDocumentoEnum.FACTURA)) {
+				
+				if(cabecerSelected.isBorrador()) {
+					cabecerSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+				}else {
+					cabecerSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+				}
+				
+			}else {
+				
+				cabecerSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+			}
+			
 		}
 		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
@@ -854,10 +871,23 @@ public class CompFacCtrl extends BaseCtrl {
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idFactura);
 		totalizar();
 		totalizarPago();
+		if (cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+			cabecerSelected.setBorrador(true);
+		}
+		
 		
 		return null;
 	}
 
+	public void cambioEstadoBorrador(Cabecera cabecera){
+		if(cabecera.isBorrador()) {
+			
+		}else {
+			inicializarSecuencia(cabecera);
+			cabecera.setSecuencial(null);
+		}
+	}
+	
 	/**
 	 * @return the clienteServicio
 	 */

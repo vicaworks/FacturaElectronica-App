@@ -209,13 +209,13 @@
 	    					<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenFactura"
 										value="FACTURA" icon="fa fa-floppy-o" 
-										action="#{compFacCtrl.generarFactura()}" styleClass="Wid100 Fs12" update="@form" disabled="#{compFacCtrl.enableAccion}"/>
+										action="#{compFacCtrl.generarFactura()}" styleClass="Wid100 Fs12" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
 							</div>
 							
 							<div class="p-col-12 p-md-4">
 			    				<p:commandButton id="cmdGenRecibo"
 										value="RECIBO" icon="fa fa-floppy-o" 
-										action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100 Fs12" update="@form :formMain:msgFormMain"/>
+										action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100 Fs12" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}"/>
 							</div>
 							
 	    					

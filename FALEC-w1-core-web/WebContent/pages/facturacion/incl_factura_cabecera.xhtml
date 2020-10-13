@@ -22,16 +22,25 @@
 	
 		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Factura</h2>
 		
-		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+		<p:panelGrid id="gridSecuencial" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
-			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera!=null}">
+				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<p:selectBooleanButton value="#{compFacCtrl.cabecerSelected.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}">
+					<p:ajax event="change" process="@this :formMain:gridSecuencial" update=":formMain:gridSecuencial" listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
+						
+					</p:ajax>
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido" rendered="#{not compFacCtrl.cabecerSelected.borrador}"/>
+			<h:panelGroup  rendered="#{not compFacCtrl.cabecerSelected.borrador}">
+				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado!='BORRADOR'}">
 					<div class="EmptyBox5"></div>
 					<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(compFacCtrl.cabecerSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
 					<div class="EmptyBox5"></div>
 				</p:outputLabel>
-				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera==null}">
+				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera==null or(compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado=='BORRADOR')}">
 					<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialEstablecimiento}" />
 					<h:outputText value=" - " />
 					<p:inputMask id="intSecCaja" value="#{compFacCtrl.cabecerSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
@@ -39,11 +48,11 @@
 					<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialNumero}" rendered="#{not compFacCtrl.cabecerSelected.editarSecuencial}"/>
 					<p:inputMask id="intSecDocumento" value="#{compFacCtrl.cabecerSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 					<p:spacer width="5px;"/>
-					<p:commandLink action="#{compFacCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:grid">
+					<p:commandLink action="#{compFacCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:gridSecuencial">
 						<i class="fa fa-edit Fs18"/>
 					</p:commandLink>
 					<p:spacer width="5px;"/>
-					<p:commandLink action="#{compFacCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid">
+					<p:commandLink action="#{compFacCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:gridSecuencial">
 						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
 					</p:commandLink>
 					<p:message styleClass="Wid100" for="intSecCaja"/>
@@ -51,7 +60,9 @@
 				</p:outputLabel>
 				
 			</h:panelGroup>
-			
+		</p:panelGrid>
+		
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">	
 			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"

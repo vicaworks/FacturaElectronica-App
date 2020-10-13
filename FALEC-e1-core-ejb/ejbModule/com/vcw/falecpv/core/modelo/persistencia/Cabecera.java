@@ -289,8 +289,11 @@ public class Cabecera implements Serializable {
     
     @Transient
     private boolean envioEmailBol=false;
-
-	/**
+    
+    @Transient
+    private boolean borrador=false;
+    
+    /**
 	 * 
 	 */
 	public Cabecera() {
@@ -319,6 +322,10 @@ public class Cabecera implements Serializable {
             return false;
         }
         return true;
+    }
+    
+    public boolean isEstadoBorrador() {
+    	return idcabecera==null || estado.equals(ComprobanteEstadoEnum.BORRADOR.toString());
     }
 
 	/**
@@ -1321,6 +1328,46 @@ public class Cabecera implements Serializable {
 	 */
 	public void setContenido3(String contenido3) {
 		this.contenido3 = contenido3;
+	}
+
+	/**
+	 * @return the borrador
+	 */
+	public boolean isBorrador() {
+		return borrador;
+	}
+
+	/**
+	 * @param borrador the borrador to set
+	 */
+	public void setBorrador(boolean borrador) {
+		this.borrador = borrador;
+	}
+
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 */
+	public boolean isComprobanteFactura() {
+		if(idcabecera== null) {
+			return false;
+		}
+		
+		return !tipocomprobante.getIdentificador().equals(GenTipoDocumentoEnum.FACTURA.getIdentificador());
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 */
+	public boolean isComprobanteRecibo() {
+		if(idcabecera== null) {
+			return false;
+		}
+		
+		return !tipocomprobante.getIdentificador().equals(GenTipoDocumentoEnum.RECIBO.getIdentificador());
 	}
 
 }

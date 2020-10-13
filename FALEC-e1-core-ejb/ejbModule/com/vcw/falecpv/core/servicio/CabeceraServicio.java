@@ -129,9 +129,10 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	 * @return
 	 * @throws DaoException
 	 * @throws ParametroRequeridoException
+	 * @throws EstadoComprobanteException 
 	 */
 	@Lock(LockType.WRITE)
-	public Cabecera guardarComprobanteFacade(Cabecera cabecera)throws DaoException, ParametroRequeridoException,ExisteNumDocumentoException{
+	public Cabecera guardarComprobanteFacade(Cabecera cabecera)throws DaoException, ParametroRequeridoException,ExisteNumDocumentoException, EstadoComprobanteException{
 		
 		TablaContadorBaseEnum aleatorio = null;
 		
@@ -167,14 +168,26 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		// 0. Asignar secuencia
 		if(cabecera.getSecuencial()==null && !cabecera.isEditarSecuencial()) {
 			
-			cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(), cabecera.getEstablecimiento().getIdestablecimiento()));
+			if(cabecera.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+				cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumentoBorrador(cabecera.getEstablecimiento().getIdestablecimiento()));
+				
+			}else {
+				cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumento(cabecera.getGenTipoDocumentoEnum(), cabecera.getEstablecimiento().getIdestablecimiento()));
+			}
+			
 			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			cabecera.setNumeroautorizacion(cabecera.getClaveacceso());
 			cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
 			
 		}else if(cabecera.isEditarSecuencial()) {
 			
-			cabecera.setSecuencial(cabecera.getSecuencialNumero());
+			if(cabecera.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+				cabecera.setSecuencial(establecimientoServicio.generarNumeroDocumentoBorrador(cabecera.getEstablecimiento().getIdestablecimiento()));
+				
+			}else {
+				cabecera.setSecuencial(cabecera.getSecuencialNumero());
+			}
+			
 			cabecera.setClaveacceso(ComprobanteHelper.generarAutorizacionFacade(cabecera, contadorPkServicio.generarContadorTabla(aleatorio, cabecera.getEstablecimiento().getIdestablecimiento(),new Object[] {false})));
 			cabecera.setNumeroautorizacion(cabecera.getClaveacceso());
 			cabecera.setNumdocumento(cabecera.getSecuencialEstablecimiento() + cabecera.getSecuencialCaja() + cabecera.getSecuencial());
@@ -234,7 +247,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			for (Detalle det : cabecera.getDetalleEliminarList()) {
 				if(det.getIddetalle()!=null && !det.getIddetalle().contains("M") && det.getProducto()!=null) {
 					if(det.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
-						entredaKardex(det);
+						if(!cabecera.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+							entredaKardex(det);
+						}
 					}
 				}
 			}
@@ -253,7 +268,13 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				if(d.getProducto()!=null && d.getProducto().getTipoProducto().getNombre().equals("PRODUCTO")) {
 					
 					switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
-					case FACTURA: case RECIBO:
+					case FACTURA:
+						if(!cabecera.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+							salidaKardex(d);
+						}
+						break;
+					case RECIBO:
+						
 						salidaKardex(d);
 						break;
 					default:

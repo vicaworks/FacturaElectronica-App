@@ -129,6 +129,11 @@ public class Establecimiento implements Serializable {
     @Column(name = "secuencialcotizacion", nullable = false)
     private int secuencialcotizacion;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "secuencialborrador", nullable = false)
+    private int secuencialborrador;
+    
     @Column(name = "nombreimagen",length = 200)
     private String nombreimagen;
     
@@ -511,6 +516,20 @@ public class Establecimiento implements Serializable {
 	 */
 	public void setSecuencialcotizacion(int secuencialcotizacion) {
 		this.secuencialcotizacion = secuencialcotizacion;
+	}
+
+	/**
+	 * @return the secuencialborrador
+	 */
+	public int getSecuencialborrador() {
+		return secuencialborrador;
+	}
+
+	/**
+	 * @param secuencialborrador the secuencialborrador to set
+	 */
+	public void setSecuencialborrador(int secuencialborrador) {
+		this.secuencialborrador = secuencialborrador;
 	}		
 	
 	

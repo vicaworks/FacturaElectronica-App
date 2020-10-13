@@ -275,7 +275,7 @@ public class ComprobanteHelper {
 	 */
 	public static String determinarResumenPago(List<Pago> pagoList) {
 		String resumen = null;
-		if(pagoList.size()==1) {
+		if(pagoList!=null  && pagoList.size()==1) {
 			return pagoList.get(0).getTipopago().getNombre().toUpperCase();
 		}
 		resumen = "VARIOS";

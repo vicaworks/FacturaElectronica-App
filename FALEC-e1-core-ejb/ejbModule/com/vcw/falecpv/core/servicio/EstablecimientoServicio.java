@@ -182,5 +182,33 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 		}
 		
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEStablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public String generarNumeroDocumentoBorrador(String idEStablecimiento)throws DaoException{
+		
+		try {
+			
+			Establecimiento e = consultarByPk(idEStablecimiento);
+			
+			int cantidadZero = 9;
+			String numDoc =  "";
+			e.setSecuencialborrador(e.getSecuencialborrador()+1);
+			numDoc += TextoUtil.leftPadTexto(e.getSecuencialborrador()+"", cantidadZero, "0");
+			
+			actualizar(e);
+			
+			return "2"+ numDoc.substring(1, 9);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
+	}
 
 }
