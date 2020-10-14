@@ -24,15 +24,22 @@
 		
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
-			
-			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:outputLabel rendered="#{liqCompraFormCtrl.liqCompraSelected.idcabecera!=null}">
+				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{liqCompraFormCtrl.liqCompraSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<p:selectBooleanButton value="#{liqCompraFormCtrl.liqCompraSelected.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{liqCompraFormCtrl.liqCompraSelected.estadoBorrador}">
+					<p:ajax event="change" process="@this :formMain:grid" update=":formMain:grid" listener="#{liqCompraFormCtrl.cambioEstadoBorrador(liqCompraFormCtrl.liqCompraSelected)}">
+					</p:ajax>
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"  rendered="#{not liqCompraFormCtrl.liqCompraSelected.borrador}"/>
+			<h:panelGroup  rendered="#{not liqCompraFormCtrl.liqCompraSelected.borrador}">
+				<p:outputLabel rendered="#{liqCompraFormCtrl.liqCompraSelected.idcabecera!=null  and liqCompraFormCtrl.liqCompraSelected.estado!='BORRADOR'}">
 					<div class="EmptyBox5"></div>
 					<h:outputText value="#{liqCompraFormCtrl.getFormatoNumDocumento(liqCompraFormCtrl.liqCompraSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
 					<div class="EmptyBox5"></div>
 				</p:outputLabel>
-				<p:outputLabel rendered="#{liqCompraFormCtrl.liqCompraSelected.idcabecera==null}">
+				<p:outputLabel rendered="#{liqCompraFormCtrl.liqCompraSelected.idcabecera==null or (liqCompraFormCtrl.liqCompraSelected.idcabecera!=null and liqCompraFormCtrl.liqCompraSelected.estado=='BORRADOR')}">
 					<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.secuencialEstablecimiento}" />
 					<h:outputText value=" - " />
 					<p:inputMask id="intSecCaja" value="#{liqCompraFormCtrl.liqCompraSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>

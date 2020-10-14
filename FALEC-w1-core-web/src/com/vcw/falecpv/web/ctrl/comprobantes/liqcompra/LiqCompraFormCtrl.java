@@ -192,7 +192,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(totalPago.doubleValue()<liqCompraSelected.getValorapagar().doubleValue()) {
+			if(!liqCompraSelected.isBorrador() && totalPago.doubleValue()<liqCompraSelected.getValorapagar().doubleValue()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA LIQUIDACION DE COMPRA.");
 				return;
 			}
@@ -209,7 +209,11 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			LiqCompraCtrl liqCompraCtrl = (LiqCompraCtrl) AppJsfUtil.getManagedBean("liqCompraCtrl");
 			liqCompraCtrl.consultar();
 			
-			messageCtrl.cargarMenssage("OK", msg.getString("label.liquidacion") + " DE COMPRA GENERADA CORRECTAMENTE.", "OK");
+			if(liqCompraSelected.isBorrador()) {
+				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE " + msg.getString("label.liquidacion") + " DE COMPRA GENERADA CORRECTAMENTE.", "WARNING");
+			}else {
+				messageCtrl.cargarMenssage("OK", msg.getString("label.liquidacion") + " DE COMPRA GENERADA CORRECTAMENTE.", "OK");
+			}
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
@@ -235,9 +239,15 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setContribuyenteespecial("5368");
 		liqCompraSelected.setMoneda("DOLAR");
 		liqCompraSelected.setPropina(BigDecimal.ZERO);
-		if(liqCompraSelected.getIdcabecera()==null) {
-			liqCompraSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		
+		if(liqCompraSelected.getIdcabecera()==null || (liqCompraSelected.getIdcabecera()!=null && liqCompraSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+			if(liqCompraSelected.isBorrador()) {
+				liqCompraSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			}else {
+				liqCompraSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+			}
 		}
+		
 		liqCompraSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
 		liqCompraSelected.setValorapagar(liqCompraSelected.getTotalpagar());
 		liqCompraSelected.setDetalleList(liqCompraDetalleList);
@@ -564,6 +574,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		totalizar();
 		totalizarPago();
 		habilitarCrud(liqCompraSelected.getEstado());
+		if (liqCompraSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+			liqCompraSelected.setBorrador(true);
+		}
 		return null;
 	}
 	
