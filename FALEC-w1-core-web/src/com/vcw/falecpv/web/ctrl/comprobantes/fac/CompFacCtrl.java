@@ -873,7 +873,6 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected.setBorrador(true);
 		}
 		
-		
 		return null;
 	}
 	

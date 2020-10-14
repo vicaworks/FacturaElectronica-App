@@ -152,8 +152,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
-//			notaCreditoSeleccion.setIdcabecera(null);
-			
 			// validar estado
 			if(notaCreditoSeleccion.getIdcabecera()!=null) {
 				
@@ -196,7 +194,12 @@ public class NotaCreditoCtrl extends BaseCtrl {
 				break;
 			}
 			
-			messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.credito") + " GENERADA CORRECTAMENTE.", "OK");
+			if(notaCreditoSeleccion.isBorrador()) {
+				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE " + "NOTA DE " +  msg.getString("label.credito") + " GENERADA CORRECTAMENTE.", "WARNING");
+			}else {
+				messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.credito") + " GENERADA CORRECTAMENTE.", "OK");
+			}
+			
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
@@ -222,9 +225,18 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		determinarPeriodoFiscal();
 		notaCreditoSeleccion.setMoneda("DOLAR");
 		notaCreditoSeleccion.setPropina(BigDecimal.ZERO);
-		if(notaCreditoSeleccion.getIdcabecera()==null) {
-			notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		
+		if (notaCreditoSeleccion.getIdcabecera() == null || (notaCreditoSeleccion.getIdcabecera() != null
+				&& notaCreditoSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+			
+			if(notaCreditoSeleccion.isBorrador()) {
+				notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			}else {
+				notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+			}
+			
 		}
+		
 		notaCreditoSeleccion.setTipodocasociado(notaCreditoSeleccion.getTipocomprobanteretencion().getIdentificador());
 		
 		formatoNumDoc(notaCreditoSeleccion.getNumfactura());
@@ -615,7 +627,11 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 	detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idNotaCredito);
 	 	infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotaCredito);
 		totalizar();
+		enableAccion=false;
 		habilitarCrud(notaCreditoSeleccion.getEstado());
+		if (notaCreditoSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+			notaCreditoSeleccion.setBorrador(true);
+		}
 		
 		return null;
 	}

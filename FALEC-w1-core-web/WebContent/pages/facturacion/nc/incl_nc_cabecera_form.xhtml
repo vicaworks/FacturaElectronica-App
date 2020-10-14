@@ -17,15 +17,59 @@
 		<!-- Formulario -->
 		<p:panelGrid id="gridNotaCreditoDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 			
-			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
 			<h:panelGroup>
+				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<p:selectBooleanButton value="#{notaCreditoCtrl.notaCreditoSeleccion.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.estadoBorrador}">
+					<p:ajax event="change" process="@this :formMain:gridNotaCreditoDG" update=":formMain:gridNotaCreditoDG" listener="#{notaCreditoCtrl.cambioEstadoBorrador(notaCreditoCtrl.notaCreditoSeleccion)}">
+					</p:ajax>
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido" rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.borrador}"/>	
+				
+			<h:panelGroup rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.borrador}">
 				<p:outputPanel id="oupSecuenalNc">
-					<f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null}">
+					
+					<p:outputLabel rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado!='BORRADOR'}">
 						<div class="EmptyBox5"></div>
 						<h:outputText value="#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}" styleClass="Fs18 FontBold"/>
 						<div class="EmptyBox5"></div>
-					</f:subview>
-					<f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera==null}">
+					</p:outputLabel>
+					
+					<p:outputLabel rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera==null or(notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado=='BORRADOR')}">
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialEstablecimiento}" />
+						<h:outputText value=" - " />
+						<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+						<h:outputText value=" - " />
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
+						<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+						<p:spacer width="5px;"/>
+						<p:commandLink action="#{notaCreditoCtrl.editarSecuencialAction()}" process=":formMain:gridNotaCreditoDG" update=":formMain:msgFormMain :formMain:gridNotaCreditoDG">
+							<i class="fa fa-edit Fs18"/>
+						</p:commandLink>
+						<p:spacer width="5px;"/>
+						<p:commandLink action="#{notaCreditoCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:gridNotaCreditoDG">
+							<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+						</p:commandLink>
+						<p:message styleClass="Wid100" for="intSecCaja"/>
+						<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
+					</p:outputLabel>
+					
+					
+					
+					<!-- <f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado!='BORRADOR'}">
+						<div class="EmptyBox5"></div>
+						<h:outputText value="#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}" styleClass="Fs18 FontBold"/>
+						<div class="EmptyBox5"></div>
+					</f:subview> -->
+					
+					
+					
+					
+					
+					
+					
+					<!-- <f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera==null or (notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado=='BORRADOR')}">
 						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialEstablecimiento}" />
 						<h:outputText value=" - " />
 						<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
@@ -42,12 +86,15 @@
 						</p:commandLink>
 						<p:message styleClass="Wid100" for="intSecCaja"/>
 						<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
-					</f:subview>
+					</f:subview> -->
 				</p:outputPanel>					
 			
 				
 			</h:panelGroup>
 			
+		</p:panelGrid>
+			
+		<p:panelGrid id="gridNotaCreditoDG3" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:calendar id="claNcFechaEmision" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemision}"

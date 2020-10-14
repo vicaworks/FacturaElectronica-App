@@ -71,7 +71,7 @@
 	    <h:form id="formMain">
 	    	
 	    	<!-- Opciones -->
-	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	<div class="card card-w-title" style="margin-top:5px;">
 	    		
 	    		<div class="p-grid p-align-center">
 	    			
@@ -230,11 +230,11 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{n.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numdocumento)}" styleClass="Fs10"/>
+					<p:column headerText="NUM COMP" style="width:100px;" filterBy="#{n.numdocumento}" filterMatchMode="contains">
+						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numdocumento)}" rendered="#{n.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:50px;" filterBy="#{n.estado}" filterMatchMode="contains">
+					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{n.estado}" filterMatchMode="contains">
 						<h:outputText value="#{n.estado}" styleClass="#{n.estadoStyle} DispBlock Wid100"/>
 					</p:column>
 					
@@ -325,7 +325,7 @@
 					
 					</p:column> -->
 					
-					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
+					<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totalconimpuestos}" styleClass="DispBlock Wid100 markGray">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
