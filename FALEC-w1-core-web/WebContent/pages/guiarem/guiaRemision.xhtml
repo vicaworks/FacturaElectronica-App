@@ -223,7 +223,7 @@
 					</p:column>
 					
 					<p:column headerText="ID" style="width:80px;" filterBy="#{r.cabecera.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" />
+						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" rendered="#{r.cabecera.estado!='BORRADOR'}"/>
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains">

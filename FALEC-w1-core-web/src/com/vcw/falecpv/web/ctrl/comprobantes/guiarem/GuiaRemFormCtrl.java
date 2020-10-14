@@ -185,7 +185,11 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 				break;
 			}
 			
-			messageCtrl.cargarMenssage("OK", msg.getString("label.guiaremision.upper") + " GENERADA CORRECTAMENTE.", "OK");
+			if(guiaRemisionSelected.isBorrador()) {
+				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE " + msg.getString("label.guiaremision.upper") + " GENERADA CORRECTAMENTE.", "WARNING");
+			}else {
+				messageCtrl.cargarMenssage("OK", msg.getString("label.guiaremision.upper") + " GENERADA CORRECTAMENTE.", "OK");
+			}
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
@@ -226,8 +230,12 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
 		guiaRemisionSelected.setPropina(BigDecimal.ZERO);
 		
-		if(guiaRemisionSelected.getIdcabecera()==null) {
-			guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		if(guiaRemisionSelected.getIdcabecera()==null || (guiaRemisionSelected.getIdcabecera()!=null && guiaRemisionSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+			if(guiaRemisionSelected.isBorrador()) {
+				guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			}else {
+				guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+			}
 		}
 		
 		// infromacion adicional 
@@ -629,6 +637,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idGuiaRem);
 		totalizarGuiaRemision();
 		habilitarCrud(guiaRemisionSelected.getEstado());
+		if (guiaRemisionSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+			guiaRemisionSelected.setBorrador(true);
+		}
 		return null;
 	}
 	

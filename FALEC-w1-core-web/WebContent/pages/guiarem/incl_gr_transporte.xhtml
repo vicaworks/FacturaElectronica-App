@@ -16,14 +16,22 @@
 		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.guiaremision']}</h2>
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
-			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera!=null}">
+				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<p:selectBooleanButton value="#{guiaRemFormCtrl.guiaRemisionSelected.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.estadoBorrador}">
+					<p:ajax event="change" process="@this :formMain:grid" update=":formMain:grid" listener="#{guiaRemFormCtrl.cambioEstadoBorrador(guiaRemFormCtrl.guiaRemisionSelected)}">
+					</p:ajax>
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido" rendered="#{not guiaRemFormCtrl.guiaRemisionSelected.borrador}"/>
+			<h:panelGroup  rendered="#{not guiaRemFormCtrl.guiaRemisionSelected.borrador}">
+				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera!=null and guiaRemFormCtrl.guiaRemisionSelected.estado!='BORRADOR'}">
 					<div class="EmptyBox5"></div>
 					<h:outputText value="#{guiaRemFormCtrl.getFormatoNumDocumento(guiaRemFormCtrl.guiaRemisionSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
 					<div class="EmptyBox5"></div>
 				</p:outputLabel>
-				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera==null}">
+				<p:outputLabel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera==null  or (guiaRemFormCtrl.guiaRemisionSelected.idcabecera!=null and guiaRemFormCtrl.guiaRemisionSelected.estado=='BORRADOR')}">
 					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialEstablecimiento}" />
 					<h:outputText value=" - " />
 					<p:inputMask id="intSecCaja" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
