@@ -251,7 +251,7 @@
 					</p:column>
 					
 					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{notaDebitoCtrl.getFormatoNumDocumento(r.numdocumento)}" />
+						<h:outputText value="#{notaDebitoCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.estado}" filterMatchMode="contains">
@@ -315,11 +315,11 @@
 						<div class="p-grid p-align-top vertical-container">
 							
 							<p:repeat var="m" value="#{r.motivoList}">
-								<div class="p-col-12 p-md-7">
+								<div class="p-col-12 p-lg-7">
 									<h:outputText value="- #{m.razon}" styleClass="DispBlock"/>
 								</div>
 								
-								<div class="p-col-12 p-md-5" style="text-align: right;">
+								<div class="p-col-12 p-lg-5">
 									<h:outputText value="#{m.valor}">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>

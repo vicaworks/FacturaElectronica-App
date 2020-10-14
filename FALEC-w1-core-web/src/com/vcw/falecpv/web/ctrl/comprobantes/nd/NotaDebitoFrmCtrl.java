@@ -495,6 +495,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		totalizar();
 		totalizarPago();
 		habilitarCrud(notDebitoSelected.getEstado());
+		if (notDebitoSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+			notDebitoSelected.setBorrador(true);
+		}
 		return null;
 	}
 	
@@ -519,6 +522,12 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 				return;
 			}
 			
+			// validar el valor
+			if(!notDebitoSelected.isBorrador() && totalPago.doubleValue() < notDebitoSelected.getTotalpagar().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR A PAGAR.");
+				return;
+			}
+			
 			notDebitoSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.NOTA_DEBITO);
 			populateNotaDebito(GenTipoDocumentoEnum.NOTA_DEBITO);
 			notDebitoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
@@ -532,7 +541,12 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			NotaDebitoCtrl notaDebitoCtrl = (NotaDebitoCtrl) AppJsfUtil.getManagedBean("notaDebitoCtrl");
 			notaDebitoCtrl.consultar();
 			
-			messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.debito") + " GENERADA CORRECTAMENTE.", "OK");
+			if(notDebitoSelected.isBorrador()) {
+				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE NOTA DE " +  msg.getString("label.debito") + "  GENERADA CORRECTAMENTE.", "WARNING");
+			}else {
+				messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.debito") + " GENERADA CORRECTAMENTE.", "OK");
+			}
+			
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
@@ -558,8 +572,12 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setContribuyenteespecial("5368");
 		notDebitoSelected.setMoneda("DOLAR");
 		notDebitoSelected.setPropina(BigDecimal.ZERO);
-		if(notDebitoSelected.getIdcabecera()==null) {
-			notDebitoSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		if(notDebitoSelected.getIdcabecera()==null || (notDebitoSelected.getIdcabecera()!=null && notDebitoSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+			if(notDebitoSelected.isBorrador()) {
+				notDebitoSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			}else {
+				notDebitoSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+			}
 		}
 		notDebitoSelected.setTipodocasociado(notDebitoSelected.getTipocomprobanteretencion().getIdentificador());
 		notDebitoSelected.setValorapagar(notDebitoSelected.getTotalconimpuestos());

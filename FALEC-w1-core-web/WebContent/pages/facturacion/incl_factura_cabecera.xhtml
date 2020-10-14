@@ -39,7 +39,7 @@
 					<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(compFacCtrl.cabecerSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
 					<div class="EmptyBox5"></div>
 				</p:outputLabel>
-				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera==null or(compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado=='BORRADOR')}">
+				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera==null or (compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado=='BORRADOR')}">
 					<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialEstablecimiento}" />
 					<h:outputText value=" - " />
 					<p:inputMask id="intSecCaja" value="#{compFacCtrl.cabecerSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>

@@ -18,14 +18,22 @@
 		
 		<p:panelGrid id="grid2" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
-			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
 			<h:panelGroup>
-				<p:outputLabel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera!=null}">
+				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<p:selectBooleanButton value="#{notaDebitoFrmCtrl.notDebitoSelected.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.estadoBorrador}">
+					<p:ajax event="change" process="@this :formMain:grid2" update=":formMain:grid2" listener="#{notaDebitoFrmCtrl.cambioEstadoBorrador(notaDebitoFrmCtrl.notDebitoSelected)}">
+					</p:ajax>
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido" rendered="#{not notaDebitoFrmCtrl.notDebitoSelected.borrador}"/>
+			<h:panelGroup  rendered="#{not notaDebitoFrmCtrl.notDebitoSelected.borrador}">
+				<p:outputLabel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera!=null  and notaDebitoFrmCtrl.notDebitoSelected.estado!='BORRADOR'}">
 					<div class="EmptyBox5"></div>
 					<h:outputText value="#{notaDebitoFrmCtrl.getFormatoNumDocumento(notaDebitoFrmCtrl.notDebitoSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
 					<div class="EmptyBox5"></div>
 				</p:outputLabel>
-				<p:outputLabel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera==null}">
+				<p:outputLabel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera==null or (notaDebitoFrmCtrl.notDebitoSelected.idcabecera!=null and notaDebitoFrmCtrl.notDebitoSelected.estado=='BORRADOR')}">
 					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialEstablecimiento}" />
 					<h:outputText value=" - " />
 					<p:inputMask id="intSecCaja" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
@@ -41,7 +49,7 @@
 						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
 					</p:commandLink>
 					<p:message styleClass="Wid100" for="intSecCaja"/>
-					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}"/>
 				</p:outputLabel>
 				
 			</h:panelGroup>
