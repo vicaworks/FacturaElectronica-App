@@ -243,7 +243,7 @@
 					</p:column>
 					
 					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
-						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numdocumento)}" />
+						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.estado}" filterMatchMode="contains">

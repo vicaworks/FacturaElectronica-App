@@ -193,6 +193,15 @@ public abstract class BaseCtrl implements Serializable {
 		}
 	}
 	
+	public void cambioEstadoBorrador(Cabecera cabecera){
+		if(cabecera.isBorrador()) {
+			
+		}else {
+			inicializarSecuencia(cabecera);
+			cabecera.setSecuencial(null);
+		}
+	}
+	
 	/**
 	 * @return the infoadicionalSelected
 	 */

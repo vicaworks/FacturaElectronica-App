@@ -28,7 +28,6 @@
 				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
 				<p:selectBooleanButton value="#{compFacCtrl.cabecerSelected.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}">
 					<p:ajax event="change" process="@this :formMain:gridSecuencial" update=":formMain:gridSecuencial" listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
-						
 					</p:ajax>
 				</p:selectBooleanButton>
 			</h:panelGroup>

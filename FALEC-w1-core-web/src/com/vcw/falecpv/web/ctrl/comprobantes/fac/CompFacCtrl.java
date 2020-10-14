@@ -710,8 +710,6 @@ public class CompFacCtrl extends BaseCtrl {
 				messageCtrl.cargarMenssage("OK", "FACTURA GENERADA CORRECTAMENTE.", "OK");
 			}
 			
-			
-			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", msg.getString("mensaje.secuencialconprobante", cabecerSelected.getSecuencial()));
@@ -877,15 +875,6 @@ public class CompFacCtrl extends BaseCtrl {
 		
 		
 		return null;
-	}
-
-	public void cambioEstadoBorrador(Cabecera cabecera){
-		if(cabecera.isBorrador()) {
-			
-		}else {
-			inicializarSecuencia(cabecera);
-			cabecera.setSecuencial(null);
-		}
 	}
 	
 	/**

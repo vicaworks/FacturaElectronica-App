@@ -75,7 +75,7 @@
 			
 			.retencionDetDT .ui-datatable-scrollable-body{
 				/* min-height: 42vh !important; */
-				height: calc(100vh - 495px);
+				height: calc(100vh - 465px);
 				
 			}
 			
@@ -127,7 +127,7 @@
 	    <h:form id="formMain">
 	    	
 	    	<!-- OPCIONES -->
-	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	<div class="card card-w-title" style="margin-top:5px;">
 	    		
 	    		<div class="EmptyBox10"/>
 	    		
@@ -175,6 +175,8 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
+			<div class="EmptyBox5"/>
+			
 			<div class="p-grid p-align-top">
 				
 				<!-- Datos de cabecera -->
@@ -187,15 +189,23 @@
 						
 						
 						<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
-			
-							<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido"/>
+						
 							<h:panelGroup>
-								<p:outputLabel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera!=null}">
+								<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{retencionFrmCtrl.retencionSeleccion.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+								<p:selectBooleanButton value="#{retencionFrmCtrl.retencionSeleccion.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{retencionFrmCtrl.retencionSeleccion.estadoBorrador}">
+									<p:ajax event="change" process="@this :formMain:grid" update=":formMain:grid" listener="#{retencionFrmCtrl.cambioEstadoBorrador(retencionFrmCtrl.retencionSeleccion)}">
+									</p:ajax>
+								</p:selectBooleanButton>
+							</h:panelGroup>
+			
+							<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido" rendered="#{not retencionFrmCtrl.retencionSeleccion.borrador}"/>
+							<h:panelGroup rendered="#{not retencionFrmCtrl.retencionSeleccion.borrador}">
+								<p:outputLabel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera!=null and retencionFrmCtrl.retencionSeleccion.estado!='BORRADOR'}">
 									<div class="EmptyBox5"></div>
 									<h:outputText value="#{retencionFrmCtrl.getFormatoNumDocumento(retencionFrmCtrl.retencionSeleccion.numdocumento)}" styleClass="Fs18 FontBold"/>
 									<div class="EmptyBox5"></div>
 								</p:outputLabel>
-								<p:outputLabel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera==null}">
+								<p:outputLabel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera==null or (retencionFrmCtrl.retencionSeleccion.idcabecera!=null and retencionFrmCtrl.retencionSeleccion.estado=='BORRADOR')}">
 									<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.secuencialEstablecimiento}" />
 									<h:outputText value=" - " />
 									<p:inputMask id="intSecCaja" value="#{retencionFrmCtrl.retencionSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
@@ -211,7 +221,7 @@
 										<i class="fa fa-trash-o Fs18 " style="color:red;"/>
 									</p:commandLink>
 									<p:message styleClass="Wid100" for="intSecCaja"/>
-									<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+									<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}"/>
 								</p:outputLabel>
 								
 							</h:panelGroup>

@@ -185,6 +185,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setTotalbaseimponible(BigDecimal.ZERO);
 		retencionSeleccion.setTotalretencion(BigDecimal.ZERO);
 		infoadicionalList = null;
+		enableAccion = false;
 		inicializarSecuencia(retencionSeleccion);
 		
 		if(adquisicionSelected!=null) {
@@ -355,7 +356,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 				break;
 			}
 			
-			messageCtrl.cargarMenssage("OK", msg.getString("label.retencion") + " GENERADA CORRECTAMENTE.", "OK");
+			if(retencionSeleccion.isBorrador()) {
+				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE LA " + msg.getString("label.retencion") + " GENERADA CORRECTAMENTE.", "WARNING");
+			}else {
+				messageCtrl.cargarMenssage("OK", msg.getString("label.retencion") + " GENERADA CORRECTAMENTE.", "OK");
+			}
+			
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
@@ -380,8 +386,15 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setContribuyenteespecial("5368");
 		retencionSeleccion.setMoneda("DOLAR");
 		retencionSeleccion.setPropina(BigDecimal.ZERO);
-		if(retencionSeleccion.getIdcabecera()==null) {
-			retencionSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+		
+		if(retencionSeleccion.getIdcabecera()==null || (retencionSeleccion.getIdcabecera()!=null&&retencionSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+			
+			if(retencionSeleccion.isBorrador()) {
+				retencionSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			}else {
+				retencionSeleccion.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+			}
+			
 		}
 		
 		// detalle retencion
@@ -415,6 +428,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idRetencion);
 		totalizar();
 		habilitarCrud(retencionSeleccion.getEstado());
+		if (retencionSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+			retencionSeleccion.setBorrador(true);
+		}
 	}
 	
 	@Override

@@ -54,7 +54,6 @@ public class CabeceraRetencionServicio {
 				throw new EstadoComprobanteException("NO SE PUEDE ANULAR SE ENCUENTRA EN ESTADO:" + r.getEstado());
 			}
 			
-			r.setEstado("ANULADO");
 			if (r.getAdquisicion()!=null) {
 				Adquisicion a = adquisicionServicio.consultarByPk(r.getAdquisicion().getIdadquisicion());
 				a.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
@@ -63,15 +62,17 @@ public class CabeceraRetencionServicio {
 				adquisicionServicio.actualizar(a);
 			}
 			
-			r.setAdquisicion(null);
-			cabeceraDao.actualizar(r);
-			
+			// en caso de ser borrador se elimina
 			if (ComprobanteEstadoEnum.getByEstado(r.getEstado()).equals(ComprobanteEstadoEnum.BORRADOR)) {
 				
 				cabeceraDao.eliminacionFisica(r);
 				
 				return null;
 			}
+			
+			r.setEstado("ANULADO");
+			r.setAdquisicion(null);
+			cabeceraDao.actualizar(r);
 			
 			return r;
 			
