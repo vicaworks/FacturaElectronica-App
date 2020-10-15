@@ -233,42 +233,26 @@
 	    		
 	    		<div class="EmptyBox10"/>
 	    		
-	    		<div class="p-grid p-align-left">
+	    		<div class="p-grid p-justify-start">
 	    			
-	    			<div class="p-col-12 p-md-5">
-	    				
-	    				<div class="p-grid">
-	    					
-	    					<div class="p-col-12 p-md-4">
-			    				<p:commandButton id="cmdAdqNuevo"
-										value="NUEVO" icon="fa fa-plus" 
-										action="#{adquisicionFrmCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true"/>
-	    					</div>
-		    				
-		    				<div class="p-col-12 p-md-4">
-			    				<p:commandButton id="cmdAdqGuardar"
-										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{adquisicionFrmCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
-							</div>
+	    				<p:commandButton id="cmdAdqNuevo"
+								value="NUEVO" icon="fa fa-plus" 
+								action="#{adquisicionFrmCtrl.nuevo()}" styleClass="secondary-button m-button Fs11" update="@form" immediate="true"/>
+	    				<p:commandButton id="cmdAdqGuardar"
+								value="GUARDAR" icon="fa fa-floppy-o" 
+								action="#{adquisicionFrmCtrl.guardar()}" styleClass=" m-button Fs11" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
+						<p:commandButton id="cmdAdqRetencion"
+							value="#{msg['label.retencion']}" icon="fa fa-plus" 
+							action="#{retencionMainCtrl.nuevaRetencion()}" 
+							styleClass="warning-btn m-button Fs11" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
 							
-							<div class="p-col-12 p-md-4">
-								<p:commandButton id="cmdAdqRetencion"
-									value="#{msg['label.retencion']}" icon="fa fa-plus" 
-									action="#{retencionMainCtrl.nuevaRetencion()}" 
-									styleClass="warning-btn Wid100 Fs11" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
-									
-									<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
-									<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
-									<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
-									<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
-									<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
-									
-								</p:commandButton>
-							</div>
-	    				</div>
-	    				
-	    			
-	    			</div>
+							<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
+							<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
+							<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
+							
+						</p:commandButton>
 	    			
 	    		</div>
 	    		

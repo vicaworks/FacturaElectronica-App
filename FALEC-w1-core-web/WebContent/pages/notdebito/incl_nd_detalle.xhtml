@@ -27,12 +27,10 @@
 			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.motivorazon']}</h2>
 			<div class="EmptyBox5"/>			
 			<div class="p-grid p-justify-start">
-				<div class="p-col-12 p-md-4">
-					<p:commandButton id="cmdfacNuevoItem"
-							value="MOTIVO" icon="fa fa-plus" 
-							action="#{notaDebitoFrmCtrl.agregarItem()}" styleClass="secondary-button Wid100 Fs12" update="@form" process="@form">
-					</p:commandButton>
-				</div>
+				<p:commandButton id="cmdfacNuevoItem"
+						value="MOTIVO" icon="fa fa-plus" 
+						action="#{notaDebitoFrmCtrl.agregarItem()}" styleClass="secondary-button Fs11 m-button" update="@form" process="@form">
+				</p:commandButton>
 			</div>
 			
 			<div class="EmptyBox5"/>

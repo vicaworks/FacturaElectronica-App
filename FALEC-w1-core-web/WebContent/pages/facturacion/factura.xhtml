@@ -193,35 +193,20 @@
 				
 				<div class="EmptyBox10"/>
 	    		
-	    		<div class="p-grid p-align-left">
+	    		<div class="p-grid p-justify-start">
 	    			
-	    			<div class="p-col-12 p-md-5">
-	    				
-	    				<div class="p-grid">
-	    					
-	    					<div class="p-col-12 p-md-4">
-			    				<p:commandButton id="cmdfacNuevo"
-										value="NUEVO" icon="fa fa-plus" 
-										action="#{compFacCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
-								</p:commandButton>
-	    					</div>
-	    					
-	    					<div class="p-col-12 p-md-4">
-			    				<p:commandButton id="cmdGenFactura"
-										value="FACTURA" icon="fa fa-floppy-o" 
-										action="#{compFacCtrl.generarFactura()}" styleClass="Wid100 Fs12" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
-							</div>
-							
-							<div class="p-col-12 p-md-4">
-			    				<p:commandButton id="cmdGenRecibo"
-										value="RECIBO" icon="fa fa-floppy-o" 
-										action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Wid100 Fs12" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}"/>
-							</div>
-							
-	    					
-	    				</div>
-	    				
-	    			</div>
+    				<p:commandButton id="cmdfacNuevo"
+							value="NUEVO" icon="fa fa-plus" 
+							action="#{compFacCtrl.nuevo()}" styleClass="secondary-button Fs12 m-button" update="@form" immediate="true">
+					</p:commandButton>
+  					
+    				<p:commandButton id="cmdGenFactura"
+							value="FACTURA" icon="fa fa-floppy-o" 
+							action="#{compFacCtrl.generarFactura()}" styleClass="Fs12 m-button" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
+				
+    				<p:commandButton id="cmdGenRecibo"
+							value="RECIBO" icon="fa fa-floppy-o" 
+							action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Fs12 m-button" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}"/>
 	    			
 	    		</div>
 			

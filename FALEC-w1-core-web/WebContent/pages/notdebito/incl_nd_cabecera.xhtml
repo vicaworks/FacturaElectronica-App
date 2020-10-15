@@ -209,12 +209,11 @@
 		<h3 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h3>
 		<p:outputPanel id="oupInfoAdicionalMain">
 			
-			<p:panelGrid columns="2"
+			<p:panelGrid columns="1"
 				 styleClass="ui-panelgrid-blank Wid100" 
-				 columnClasses="ui-g-12 ui-md-6,
-				 				ui-g-12 ui-md-6">
+				 columnClasses="ui-g-12">
 				 				
-				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs11"/>
 				<h:panelGroup>
 				</h:panelGroup>				 
 				
@@ -222,8 +221,6 @@
 					
 			<p:outputPanel id="grdInfoAdicional">
 			
-				<div class="EmptyBox5"/>
-				
 				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
 					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
 					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />

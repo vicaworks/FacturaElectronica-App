@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.adquisicionDetDT .ui-datatable-scrollable-body{
-				min-height: 45vh !important;
+				min-height: 43vh !important;
 				/* height: calc(100vh - 430px); */
 				
 		}
@@ -20,7 +20,7 @@
 	
 		<!-- Opciones -->
 		
-		<p:panelGrid id="gridAdqFrmOP2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-lg-3,ui-g-12 ui-lg-3,ui-g-12 ui-lg-3">
+		<p:panelGrid id="gridAdqFrmOP2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-6 ui-lg-3,ui-g-6 ui-lg-3,ui-g-6 ui-lg-3">
 			<p:commandButton id="cmdAdqBuscarProducto"
 				value="PRODUCTO" icon="fa fa-search" 
 				action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100 Fs11" update="@form" process="@form @this :formMain:adquisicionDetDT">

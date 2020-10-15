@@ -54,39 +54,6 @@
 						<p:message styleClass="Wid100" for="intSecCaja"/>
 						<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
 					</p:outputLabel>
-					
-					
-					
-					<!-- <f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado!='BORRADOR'}">
-						<div class="EmptyBox5"></div>
-						<h:outputText value="#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}" styleClass="Fs18 FontBold"/>
-						<div class="EmptyBox5"></div>
-					</f:subview> -->
-					
-					
-					
-					
-					
-					
-					
-					<!-- <f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera==null or (notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado=='BORRADOR')}">
-						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialEstablecimiento}" />
-						<h:outputText value=" - " />
-						<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
-						<h:outputText value=" - " />
-						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
-						<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
-						<p:spacer width="5px;"/>
-						<p:commandLink action="#{notaCreditoCtrl.editarSecuencialAction()}" process=":formMain:oupSecuenalNc" update=":formMain:msgFormMain :formMain:oupSecuenalNc">
-							<i class="fa fa-edit Fs18"/>
-						</p:commandLink>
-						<p:spacer width="5px;"/>
-						<p:commandLink action="#{notaCreditoCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:oupSecuenalNc">
-							<i class="fa fa-trash-o Fs18 " style="color:red;"/>
-						</p:commandLink>
-						<p:message styleClass="Wid100" for="intSecCaja"/>
-						<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
-					</f:subview> -->
 				</p:outputPanel>					
 			
 				
@@ -257,12 +224,11 @@
 	<div class="card card-w-title">	
 		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
 		<p:outputPanel id="oupInfoAdicionalMain">
-			<p:panelGrid columns="2"
+			<p:panelGrid columns="1"
 				 styleClass="ui-panelgrid-blank Wid100" 
-				 columnClasses="ui-g-12 ui-md-6,
-				 				ui-g-12 ui-md-6">
+				 columnClasses="ui-g-12">
 				 				
-			 	<p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaCreditoCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Wid100 Fs10"/>
+			 	<p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaCreditoCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs11 m-button"/>
 				<h:panelGroup>
 				</h:panelGroup>				 
 				
@@ -270,8 +236,6 @@
 				
 			<p:outputPanel id="grdInfoAdicional">
 			
-				<div class="EmptyBox5"/>
-				
 				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
 					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
 					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />

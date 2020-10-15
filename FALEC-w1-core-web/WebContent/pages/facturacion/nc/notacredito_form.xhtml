@@ -131,37 +131,24 @@
 	    		
 	    		<div class="EmptyBox10"/>
 	    		
-	    		<div class="p-grid p-align-left">
+	    		<div class="p-grid p-justify-start">
 	    			
-	    			<div class="p-col-12 p-md-4">
-	    				
-	    				<div class="p-grid">
-	    					
-	    					<div class="p-col-12 p-md-6">
-			    				<p:commandButton id="cmdRtnNuevo"
-										value="NUEVO" icon="fa fa-plus" 
-										action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs11" update="@form" immediate="true">
-										
-								<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facturaSeleccion}"/>
-								<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facEmitidaCtrl}"/>
-								<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.compNcCtrl}"/>
-								<f:setPropertyActionListener value="NOTACREDITO" target="#{notaCreditoCtrl.callModule}"/>
-								<f:setPropertyActionListener value=":formMain" target="#{notaCreditoCtrl.viewUpdate}"/>
-								<f:setPropertyActionListener value="#{compNcCtrl}" target="#{notaCreditoCtrl.compNcCtrl}"/>
+	    			<p:commandButton id="cmdRtnNuevo"
+								value="NUEVO" icon="fa fa-plus" 
+								action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button m-button Fs11" update="@form" immediate="true">
 								
-							</p:commandButton>
-							
-	    					</div>
-		    				
-		    				<div class="p-col-12 p-md-6">
-			    				<p:commandButton id="cmdrtnGuardar"
-										value="GUARDAR" icon="fa fa-floppy-o" 
-										action="#{notaCreditoCtrl.guardar()}" styleClass="Wid100 Fs11" update="@form" disabled="#{notaCreditoCtrl.enableAccion}"/>
-							</div>
-							
-	    				</div>
-	    				
-	    			</div>
+						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facturaSeleccion}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facEmitidaCtrl}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.compNcCtrl}"/>
+						<f:setPropertyActionListener value="NOTACREDITO" target="#{notaCreditoCtrl.callModule}"/>
+						<f:setPropertyActionListener value=":formMain" target="#{notaCreditoCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value="#{compNcCtrl}" target="#{notaCreditoCtrl.compNcCtrl}"/>
+						
+					</p:commandButton>
+					
+    				<p:commandButton id="cmdrtnGuardar"
+							value="GUARDAR" icon="fa fa-floppy-o" 
+							action="#{notaCreditoCtrl.guardar()}" styleClass="m-button Fs11" update="@form" disabled="#{notaCreditoCtrl.enableAccion}"/>
 	    			
 	    		</div>
 	    		

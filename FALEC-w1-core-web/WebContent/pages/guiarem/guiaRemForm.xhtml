@@ -122,28 +122,15 @@
 			<div class="card card-w-title" >
 				
 	    		<div class="EmptyBox10"/>
-	    		<div class="p-grid p-align-left">
+	    		<div class="p-grid p-justify-start">
 	    			
-	    			<div class="p-col-12 p-md-4">
-	    				
-	    				<div class="p-grid">
-	    					
-	    					<div class="p-col-12 p-md-6">
-			    				<p:commandButton id="cmdfacNuevo"
-										value="NUEVO" icon="fa fa-plus" 
-										action="#{guiaRemFormCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12" update="@form" immediate="true">
-								</p:commandButton>
-	    					</div>
-	    					
-							<div class="p-col-12 p-md-6">
-			    				<p:commandButton id="cmduardar"
-										value="GUARDAR" icon="fa fa-floppy-o"  
-										action="#{guiaRemFormCtrl.guardar()}" styleClass=" Wid100 Fs12" update=":formMain" disabled="#{guiaRemFormCtrl.enableAccion}"/>
-							</div>
-							
-	    				</div>
-	    				
-	    			</div>
+	    				<p:commandButton id="cmdfacNuevo"
+								value="NUEVO" icon="fa fa-plus" 
+								action="#{guiaRemFormCtrl.nuevo()}" styleClass="secondary-button Fs11 m-button" update="@form" immediate="true">
+						</p:commandButton>
+	    				<p:commandButton id="cmduardar"
+								value="GUARDAR" icon="fa fa-floppy-o"  
+								action="#{guiaRemFormCtrl.guardar()}" styleClass=" Fs11 m-button" update=":formMain" disabled="#{guiaRemFormCtrl.enableAccion}"/>
 	    			
 	    		</div>
 			
