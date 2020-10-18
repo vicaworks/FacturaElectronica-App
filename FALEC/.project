@@ -5,6 +5,7 @@
 	<projects>
 		<project>FALEC-w1-core-web</project>
 		<project>FALEC-e1-core-ejb</project>
+		<project>SRI-ws-cliente</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

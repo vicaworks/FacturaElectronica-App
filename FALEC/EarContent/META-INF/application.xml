@@ -10,5 +10,11 @@
   <module>
     <ejb>FALEC-e1-core-ejb.jar</ejb>
   </module>
+  <module>
+    <web>
+      <web-uri>SRI-ws-cliente.war</web-uri>
+      <context-root>SRI-ws-cliente</context-root>
+    </web>
+  </module>
   <library-directory>lib</library-directory>
 </application>
