@@ -12,6 +12,7 @@ import javax.inject.Named;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -30,7 +31,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 
 	private Date desde;
 	private Date hasta;
-	private Date criterioBusqueda;
+	private String criterioBusqueda;
 	
 	/**
 	 * 
@@ -43,6 +44,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 		try {
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
+			super.totalizarComprobantesRecibidos();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -52,6 +54,10 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	@Override
 	public void buscar() {
 		try {
+			
+			AppJsfUtil.limpiarFiltrosDataTable("formMain:fsvFactura:compFacSriDT");
+			super.consultarComprobanteRecibido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), GenTipoDocumentoEnum.FACTURA, desde, hasta, criterioBusqueda);
+			super.totalizarComprobantesRecibidos();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,14 +96,14 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	/**
 	 * @return the criterioBusqueda
 	 */
-	public Date getCriterioBusqueda() {
+	public String getCriterioBusqueda() {
 		return criterioBusqueda;
 	}
 
 	/**
 	 * @param criterioBusqueda the criterioBusqueda to set
 	 */
-	public void setCriterioBusqueda(Date criterioBusqueda) {
+	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
 	}
 

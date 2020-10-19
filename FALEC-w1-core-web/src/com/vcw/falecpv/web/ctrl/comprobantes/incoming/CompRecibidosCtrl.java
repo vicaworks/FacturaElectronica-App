@@ -32,6 +32,8 @@ import com.vcw.falecpv.core.modelo.dto.SriAccesoDto;
 import com.vcw.falecpv.core.servicio.sriimportarcomp.SriImportarComprobantesServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.sri.ws.exception.AccesoWsdlSriException;
+import com.vcw.sri.ws.exception.SriWebServiceExeption;
 
 /**
  * @author cristianvillarreal
@@ -205,14 +207,14 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			SriAccesoDto sriAccesoDto = sriAccesoHelper.consultarDatosAcceso("APROBACION", true);
 			int cont = 1;
 			for (FileSriDto f : fileSriDtoList) {
-				
-				System.out.println("==== Comprobante : " + f.getComprobante() + " serie : " + f.getSerieComprobante());
-				
 				// validaciones
 				validar(f);
 				f.setRegistrado(false);
 				if(f.isValidacion()) {
-					sriImportarComprobantesServicio.importarComprobanteFacade(f, sriAccesoDto, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), AppJsfUtil.getEstablecimiento().getIdestablecimiento(), AppJsfUtil.getUsuario().getIdusuario());
+					sriImportarComprobantesServicio.importarComprobanteFacade(f, sriAccesoDto,
+							AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
+							AppJsfUtil.getEstablecimiento().getIdestablecimiento(),
+							AppJsfUtil.getUsuario().getIdusuario());
 				}
 				
 				if(progress<100) {					
@@ -222,7 +224,6 @@ public class CompRecibidosCtrl extends BaseCtrl {
 					progress = 100;
 				}
 				cont++;
-				
 			}
 			progress = 0;
 			flagCargando = false;
@@ -235,14 +236,22 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			listaErrores.addAll(lista);
 			fileSriDtoList = listaErrores;
 			
-			
 			if(errores>0) {
-				AppJsfUtil.executeJavaScript("alert('ERRORES : "   + errores  + "')");
+				messageCtrl.cargarMenssage("WARNING", "EXISTEN ERRORES :" + errores  + " EN LA CARGA DE COMPROBANTES.", "WARNING");
+			}else {
+				messageCtrl.cargarMenssage("OK", "TODOS LOS COMPROBANTES FUERON GUARDADOS CORRECTAMENTE.", "OK");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			if (e instanceof AccesoWsdlSriException || e instanceof SriWebServiceExeption) {
+				messageCtrl.cargarMenssage("ERROR", e.getMessage(), "ERROR");
+			}else {
+				messageCtrl.cargarMenssage("ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")), "ERROR");
+			}
+		}finally {
+			progress = 0;
+			flagCargando = false;
 		}
 	}
 	

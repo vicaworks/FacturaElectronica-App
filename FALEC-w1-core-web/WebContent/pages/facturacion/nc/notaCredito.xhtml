@@ -302,29 +302,6 @@
 						</h:outputText>
 					</p:column>
 					
-					<!-- <p:column headerText="IMPUESTO" style="width:70px;" styleClass="TexAlCenter">
-						
-						<div class="p-grid Fs10 p-justify-end">
-							<div class="p-col-3" >
-								<h:outputText value="I.V.A." styleClass="FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{n.totaliva}" >
-									<f:convertNumber pattern="$#,##0.00"/>
-								</h:outputText>
-							</div>
-							<div class="p-col-3">
-								<h:outputText value="I.C.E." styleClass="FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{n.totalice}" >
-									<f:convertNumber pattern="$#,##0.00"/>
-								</h:outputText>
-							</div>
-						</div>
-					
-					</p:column> -->
-					
 					<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totalconimpuestos}" styleClass="DispBlock Wid100 markGray">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>

@@ -57,32 +57,103 @@
 			
 			.tabComprobante{
  				padding: 0px 2em !important; 
- 				border-bottom: solid 1px #ccc;
+ 				border-bottom: solid 5px #F0F3F4;
 			}
 			
+			.tabComprobanteSeleccion{
+ 				border-bottom: solid 5px #34495E;
+			}
+			
+			.tabComprobante:hover > h3,
 			.tabComprobante:hover {
- 				background-color:#ff9800 !important; 
- 				border-bottom: solid 1px ff9800 !important;
+ 				/* background-color:#424949 !important;
+ 				border-bottom: solid 1px #424949 !important; */ 
+ 				color:#FBFCFC;
  				cursor: pointer !important;
  				
- 				/* background-color:#EB984E !important; 
- 				border-bottom: solid 1px #EB984E !important;
- 				cursor: pointer !important; */
+ 				background-color:#34495E !important;
+ 				border-bottom: solid 1px #34495E !important;
+ 				
  				
 			}
 			
 			.tabComprobante h4{
- 				margin-bottom: 5px;
+ 				margin-top: 10px !important;
+ 				margin-bottom: 0px !important;
 			}
 			
 			.tabComprobante h3{
- 				margin-top: 5px;
+ 				margin: 10px 0px !important;
  				color:#1B2631;
 			}
 			
 			.tabComprobanteBg{
 				background-color: #fff !important;
 			}
+			
+			/* -- card contador -- */
+			
+			.cardContador{
+				border-radius:4px;
+				margin:5px;
+				display: grid;
+				grid-gap: 3px;
+			    grid-template-columns: 1fr;
+			    grid-template-rows: 20px auto;
+			    grid-template-areas: "cardContador-header  cardContador-header"
+			    					 "cardContador-content cardContador-content";
+			}
+			
+			.cardContador .cardContador-header{
+				grid-area: cardContador-header;
+				padding: 3px;
+				justify-self: center;
+				align-self:center;
+				font-size: 10px;
+				
+			}
+			
+			.cardContador .cardContador-content{
+				grid-area: cardContador-content;
+				padding: 3px;
+				justify-self: center;
+				align-self:center;
+				font-size: 16px;
+				font-weight: 900;
+			}
+			
+			.cardContador-bgBlack{
+				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.cardContador-borderBlack{
+				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderGreen{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #1E8449;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderOrange{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #BA4A00;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderYellow{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #F1C40F;
+				color: #2f2f2f;
+			}
+			
+			/* ============================================= */
 			
 			
         </style>
@@ -93,12 +164,6 @@
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	
-    	
-<!--     	<p:breadCrumb>
-		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Recibos emitidos" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf"/>
-		</p:breadCrumb>
- -->    	
     	<!-- Reporte global -->
 	    <h:form id="formMain">
 	    	<pe:remoteCommand name="switchComprobante" process="@this" update="@form" actionListener="#{compRecibidosCtrl.switchComprobante}">
@@ -107,7 +172,7 @@
 	    	</pe:remoteCommand>
 	    	
 			<div class="p-grid">
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobanteBg tabComprobante" onclick="switchComprobante('IMPORTAR');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobanteBg tabComprobante #{compRecibidosCtrl.comprobanteRender=='IMPORTAR'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('IMPORTAR');">
 					
 					<h4>
 						<h:outputText value="01."/>
@@ -117,7 +182,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg" onclick="switchComprobante('FACTURA');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='FACTURA'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('FACTURA');">
 					
 					<h4>
 						<h:outputText value="02."/>
@@ -127,7 +192,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg" onclick="switchComprobante('RETENCION');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='RETENCION'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('RETENCION');">
 					
 					<h4>
 						<h:outputText value="03."/>
@@ -137,7 +202,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg" onclick="switchComprobante('NOTA_CREDITO');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_CREDITO'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('NOTA_CREDITO');">
 					
 					<h4>
 						<h:outputText value="04."/>
@@ -147,7 +212,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg" onclick="switchComprobante('NOTA_DEBITO');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_DEBITO'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('NOTA_DEBITO');">
 					
 					<h4>
 						<h:outputText value="05."/>
@@ -157,7 +222,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg" onclick="switchComprobante('GUIA_REMISION');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='GUIA_REMISION'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('GUIA_REMISION');">
 					
 					<h4>
 						<h:outputText value="06."/>
@@ -168,36 +233,46 @@
 					
 				</div>
 			</div>
+			
+			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
 			<!-- <h:outputText value="#{compRecibidosCtrl.comprobanteRender}" /> -->
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='IMPORTAR'}">
+			<f:subview id="fsvImportar" rendered="#{compRecibidosCtrl.comprobanteRender=='IMPORTAR'}">
 				<ui:include src="./import/incl_compRecibido_import.xhtml" />
 			</f:subview>
 			
 				
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='FACTURA'}">
+			<f:subview id="fsvFactura" rendered="#{compRecibidosCtrl.comprobanteRender=='FACTURA'}">
 				<ui:include src="./factura/incl_compRecibido_factura.xhtml" />
 			</f:subview>
 			
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='RETENCION'}">
+			<f:subview id="fsvRetencion" rendered="#{compRecibidosCtrl.comprobanteRender=='RETENCION'}">
 				<ui:include src="./retencion/incl_compRecibido_retencion.xhtml" />
 			</f:subview>
 			
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='NOTA_CREDITO'}">
+			<f:subview id="fsvNotaCredito" rendered="#{compRecibidosCtrl.comprobanteRender=='NOTA_CREDITO'}">
 				<ui:include src="./notacredito/incl_compRecibido_notaCredito.xhtml" />
 			</f:subview>
 			
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='NOTA_DEBITO'}">
+			<f:subview id="fsvNotaDebito" rendered="#{compRecibidosCtrl.comprobanteRender=='NOTA_DEBITO'}">
 				<ui:include src="./notadebito/incl_compRecibido_notaDebito.xhtml" />
 			</f:subview>
 			
-			<f:subview rendered="#{compRecibidosCtrl.comprobanteRender=='GUIA_REMISION'}">
+			<f:subview id="fsvGuiaRemision" rendered="#{compRecibidosCtrl.comprobanteRender=='GUIA_REMISION'}">
 				<ui:include src="./guiaremision/incl_compRecibido_guiaRemision.xhtml" />
 			</f:subview>
 			
 				    
 	    </h:form>
 		
+		<!-- POP UP IMPORTAR FILE -->
 		<ui:include src="./import/incl_compRecibido_file.xhtml" />
+		<!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
 	    
     </ui:define>
     

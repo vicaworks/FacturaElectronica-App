@@ -25,10 +25,17 @@
 			padding-top: 1em;
 			margin-bottom: 0.5em;
 		}
+		.title_header{
+			font-family: 'Orbitron', sans-serif !important;
+			font-weight: 400;
+		}
 	</style>
 	
 	
-	<p:dialog widgetVar="dlMessage" modal="true" responsive="true" width="50%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog widgetVar="dlMessage" modal="true" responsive="true" width="40%" closeOnEscape="true" styleClass="modalResponsivo">
+		<f:facet name="header">
+			<h:outputText value="mako®" styleClass="title_header Fs20"/>
+		</f:facet>
 		
 		<h:form id="formMessage">
 			<p:hotkey bind="return" action="#{messageCtrl.hideMenssage()}"/>
@@ -37,22 +44,22 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="p-grid">
-				<div class="p-col-12 p-md-3" style="text-align: center;">
+			<div class="p-grid p-align-center">
+				<div class="p-col-12 p-md-3" style="text-align: right;">
 					<p:outputPanel rendered="#{messageCtrl.icono=='OK'}">
-						<i class="fa fa-check Fs100" style="color:#28B463;"/>
+						<i class="fa fa-check Fs50" style="color:#28B463;"/>
 					</p:outputPanel>
 					<p:outputPanel rendered="#{messageCtrl.icono=='WARNING'}">
-						<i class="fa fa-warning Fs100" style="color:orange;"/>
+						<i class="fa fa-warning Fs50" style="color:orange;"/>
 					</p:outputPanel>
 					<p:outputPanel rendered="#{messageCtrl.icono=='ERROR'}">
-						<i class="fa fa-times-circle-o Fs100" style="color:red;"/>
+						<i class="fa fa-times-circle-o Fs50" style="color:red;"/>
 					</p:outputPanel>
 				</div>
 				
 				<div class="p-col-12 p-md-9" style="text-align: center">
 					<div class="p-col-12" style="text-align: center">
-						<h2 style="color:#2C3E50;" class="Fs20">#{messageCtrl.header}</h2>
+						<h2 style="color:#2C3E50;" class="Fs18">#{messageCtrl.header}</h2>
 					</div>
 					<div class="p-col-12" style="text-align: center">
 						<h:outputText value="#{messageCtrl.message}" style="color:#797D7F;" styleClass="Fs14"/>
@@ -61,13 +68,12 @@
 				
 			</div>
 			
-			
 			<div class="p-grid toolBarUp p-justify-end">
 				
 				<div class="p-col-3" style="text-align:center;">					
 					
 					<p:commandButton 
-						value="OK" styleClass="secondary-button Wid100 Fs18" 
+						value="OK" styleClass="secondary-button Wid100 Fs16" 
 						onclick="PF('dlMessage').hide()" immediate="true"  
 						/>
 					

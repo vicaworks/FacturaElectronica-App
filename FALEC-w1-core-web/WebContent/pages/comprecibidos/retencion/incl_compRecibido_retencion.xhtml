@@ -7,13 +7,14 @@
 				xmlns:of="http://omnifaces.org/functions"
 				xmlns:pe="http://primefaces.org/ui/extensions">
 	
-	<ui:define name="head">
-        <style type="text/css">
-        	
-        	
-        	
-        </style>
-    </ui:define>
+    <style type="text/css">
+    	
+    	.compRetSriDT .ui-datatable-scrollable-body{
+			min-height: 35vh !important;
+			height: calc(100vh - 450px)!important;
+		}
+    	
+    </style>
 
 	<div class="card card-w-title">
 		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right" /> Retenciones</h3>
@@ -65,5 +66,138 @@
     		</div>
 		</div>
 	</div>
+	
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
+		
+		<div class="p-grid p-nogutter p-justify-around">
+			
+			<div class="p-col-4 p-lg-3">
+				
+				<div class="cardContador cardContador-borderBlack">
+					<div class="cardContador-header">
+						<h:outputText value="RENTA" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{compRecRetencionCtrl.comprobanteRecibidoTotal.totalrenta}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="p-col-4 p-lg-3">
+				
+				<div class="cardContador cardContador-borderBlack">
+					<div class="cardContador-header">
+						<h:outputText value="IVA" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{compRecRetencionCtrl.comprobanteRecibidoTotal.totaliva}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			<div class="p-col-4 p-lg-3">
+				
+				<div class="cardContador cardContador-bgBlack">
+					<div class="cardContador-header">
+						<h:outputText value="TOTAL" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{compRecRetencionCtrl.comprobanteRecibidoTotal.totalretencion}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div class="EmptyBox5"/>
+		
+		<p:dataTable id="compRetSriDT" var="ret"
+						value="#{compRecRetencionCtrl.comprobanteRecibidoList}" 
+						scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="compRetSriDT Fs11"  
+						rowKey="#{ret.idcomprobanterecibido}"
+						rows="30"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+		    
+		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+		    	<p:commandLink id="cmlDtFacEmitidas">
+					<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+				</p:commandLink>
+				
+				<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
+					<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
+						<!-- <f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/> -->
+					</p:menuitem>
+					<p:menuitem value="Ver XML" action="#" icon="fa fa-eye">
+					</p:menuitem>
+				</p:menu>	
+		    </p:column>    
+		    
+		    <p:column headerText="COMPROBANTE" style="width:90px;">
+				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(ret.serieComprobante)}" />
+			</p:column>
+			
+			<p:column headerText="FECHA #msg{label.emision}" style="width:40px;">
+				<h:outputText value="#{ret.fechaEmision}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="FECHA AUTOR." style="width:40px;">
+				<h:outputText value="#{ret.fechaAutorizacion}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="RUC / CI EMISOR" style="width:90px;" filterBy="#{ret.rucEmisor}" filterMatchMode="contains">
+				<h:outputText value="#{ret.rucEmisor}" />
+			</p:column>
+			
+			<p:column headerText="EMISOR" style="width:200px;" filterBy="#{ret.razonSocialEmisor}" filterMatchMode="contains">
+				<h:outputText value="#{ret.razonSocialEmisor}" >
+				</h:outputText>
+			</p:column>
+					
+			<p:column headerText="RENTA" style="width:50px;" styleClass="TexAlRight">
+				<h:outputText value="#{ret.totalrenta}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
+				<h:outputText value="#{ret.totaliva}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
+				<h:outputText value="#{ret.totalretencion}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+					
+		
+		</p:dataTable>
+		
+		<div class="EmptyBox20"/>
+		
+	</div>
+	
+	<div class="EmptyBox20"/>
 
 </ui:composition>

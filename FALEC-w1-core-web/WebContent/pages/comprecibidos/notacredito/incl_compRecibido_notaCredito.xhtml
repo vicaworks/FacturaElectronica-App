@@ -7,13 +7,14 @@
 				xmlns:of="http://omnifaces.org/functions"
 				xmlns:pe="http://primefaces.org/ui/extensions">
 	
-	<ui:define name="head">
-        <style type="text/css">
-        	
-        	
-        	
-        </style>
-    </ui:define>
+    <style type="text/css">
+    	
+    	.compNCSriDT .ui-datatable-scrollable-body{
+			min-height: 35vh !important;
+			height: calc(100vh - 450px)!important;
+		}
+    	
+    </style>
 
 	<div class="card card-w-title">
 		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right" /> Notas de Crédito</h3>
@@ -65,5 +66,162 @@
     		</div>
 		</div>
 	</div>
+	
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
+		
+		<div class="p-grid p-nogutter p-justify-around">
+			<div class="p-col-4 p-lg-2">
+				
+				<div class="cardContador cardContador-borderOrange">
+					<div class="cardContador-header">
+						<h:outputText value="SUBTOTAL" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{compRecNotaCreditoCtrl.comprobanteRecibidoTotal.totalsinimpuestos}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="p-col-4 p-lg-2">
+				
+				<div class="cardContador cardContador-borderBlack">
+					<div class="cardContador-header">
+						<h:outputText value="ICE" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{compRecNotaCreditoCtrl.comprobanteRecibidoTotal.totalice}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="p-col-4 p-lg-2">
+				
+				<div class="cardContador cardContador-borderBlack">
+					<div class="cardContador-header">
+						<h:outputText value="IVA" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{compRecNotaCreditoCtrl.comprobanteRecibidoTotal.totaliva}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="p-col-4 p-lg-2">
+				
+				<div class="cardContador cardContador-bgBlack">
+					<div class="cardContador-header">
+						<h:outputText value="TOTAL" />
+					</div>
+					<div class="cardContador-content">
+						<h:outputText value="#{compRecNotaCreditoCtrl.comprobanteRecibidoTotal.totalconimpuestos}" >
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div class="EmptyBox5"/>
+		<p:dataTable id="compNCSriDT" var="nc"
+						value="#{compRecNotaCreditoCtrl.comprobanteRecibidoList}" 
+						scrollable="true"
+						emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="compNCSriDT Fs11"  
+						rowKey="#{nc.idcomprobanterecibido}"
+						rows="30"
+		                paginator="true"
+		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+		                paginatorPosition="bottom"  
+						rowsPerPageTemplate="10,15,20,25,30,35,40">
+		    
+		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+		    	<p:commandLink id="cmlDtFacEmitidas">
+					<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+				</p:commandLink>
+				
+				<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
+					<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
+						<!-- <f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/> -->
+					</p:menuitem>
+					<p:menuitem value="Ver XML" action="#" icon="fa fa-eye">
+					</p:menuitem>
+				</p:menu>	
+		    </p:column>    
+		    
+		    <p:column headerText="COMPROBANTE" style="width:90px;">
+				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(nc.serieComprobante)}" />
+			</p:column>
+			
+			<p:column headerText="FECHA #msg{label.emision}" style="width:40px;">
+				<h:outputText value="#{nc.fechaEmision}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="FECHA AUTOR." style="width:40px;">
+				<h:outputText value="#{nc.fechaAutorizacion}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="RUC / CI EMISOR" style="width:80px;" filterBy="#{nc.rucEmisor}" filterMatchMode="contains">
+				<h:outputText value="#{nc.rucEmisor}" />
+			</p:column>
+			
+			<p:column headerText="EMISOR" style="width:125px;" filterBy="#{nc.razonSocialEmisor}" filterMatchMode="contains">
+				<h:outputText value="#{nc.razonSocialEmisor}" >
+				</h:outputText>
+			</p:column>
+					
+			<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+				<h:outputText value="#{nc.totalsinimpuestos}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="DESCUENTO" style="width:40px;" styleClass="TexAlRight">
+				<h:outputText value="#{nc.totaldescuento}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="ICE" style="width:40px;" styleClass="TexAlRight">
+				<h:outputText value="#{nc.totalice}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="IVA" style="width:40px;" styleClass="TexAlRight">
+				<h:outputText value="#{nc.totaliva}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+				<h:outputText value="#{nc.totalconimpuestos}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+			</p:column>
+					
+		
+		</p:dataTable>
+		
+		<div class="EmptyBox20"/>
+	
+	</div>
+	
+	<div class="EmptyBox30"/>
 
 </ui:composition>

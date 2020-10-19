@@ -16,7 +16,7 @@ import com.vcw.falecpv.core.exception.EnviarComprobanteSRIException;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.web.servicio.sri.ComprobanteResultado;
 import com.vcw.falecpv.web.servicio.sri.ComprobantePendiente;
-import com.vcw.falecpv.web.servicio.sri.ComprobanteRecibido;
+import com.vcw.falecpv.web.servicio.sri.ComprobanteRecibidoBase;
 import com.vcw.falecpv.web.servicio.sri.EnviarComprobanteSRI;
 import com.vcw.falecpv.web.servicio.sri.ImplEnviarComprobanteSRI;
 
@@ -64,7 +64,7 @@ public class SriDispacher {
 				resultado = comprobantePendiente.enviarComprobante(parametros);
 				break;
 			case RECIBIDO_SRI:
-				EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibido(enviarComprobanteSRI);
+				EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibidoBase(enviarComprobanteSRI);
 				resultado = comprobanteRecibido.enviarComprobante(parametros);
 				break;
 			case ERROR_SRI:

@@ -4,8 +4,10 @@
 package com.vcw.falecpv.web.common;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -14,10 +16,13 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
+import com.vcw.falecpv.core.servicio.ComprobanterecibidoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.ctrl.common.MessageCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -36,6 +41,9 @@ public abstract class BaseCtrl implements Serializable {
 	@EJB
 	private TipopagoServicio tipopagoServicio;
 	
+	@EJB
+	private ComprobanterecibidoServicio comprobanterecibidoServicio;
+	
 	protected MessageWebUtil msg = new MessageWebUtil();
 	protected String estado;
 	protected List<Infoadicional> infoadicionalList;
@@ -44,6 +52,12 @@ public abstract class BaseCtrl implements Serializable {
 	private Tipopago tipopagoSelected;
 	protected MessageCtrl messageCtrl = (MessageCtrl) AppJsfUtil.getManagedBean("messageCtrl");
 	protected boolean enableAccion = false;
+	
+	// comprobantes importados
+	protected List<Comprobanterecibido> comprobanteRecibidoList;
+	protected List<Comprobanterecibido> comprobanteRecibidoSeleccionList;
+	protected Comprobanterecibido comprobanteRecibidoSelected;
+	protected Comprobanterecibido comprobanteRecibidoTotal;
 	
 	/**
 	 * 
@@ -73,6 +87,45 @@ public abstract class BaseCtrl implements Serializable {
 	public void nuevo() {
 	}
 
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @param genTipoDocumentoEnum
+	 * @param desde
+	 * @param hasta
+	 * @param criterio
+	 * @throws DaoException
+	 */
+	public void consultarComprobanteRecibido(String idEmpresa,GenTipoDocumentoEnum genTipoDocumentoEnum, Date desde,Date hasta,String criterio) throws DaoException {
+		comprobanteRecibidoList = null;
+		comprobanteRecibidoList = comprobanterecibidoServicio.getComprobanterecibidoDao().getByComprobanteEmpresa(idEmpresa, genTipoDocumentoEnum, desde, hasta, criterio);
+	}
+	
+	public void totalizarComprobantesRecibidos() {
+		comprobanteRecibidoTotal = new Comprobanterecibido();
+		comprobanteRecibidoTotal.setTotalbaseimponible(BigDecimal.ZERO);
+		comprobanteRecibidoTotal.setTotalconimpuestos(BigDecimal.ZERO);
+		comprobanteRecibidoTotal.setTotaldescuento(BigDecimal.ZERO);
+		comprobanteRecibidoTotal.setTotalice(BigDecimal.ZERO);
+		comprobanteRecibidoTotal.setTotaliva(BigDecimal.ZERO);
+		comprobanteRecibidoTotal.setTotalrenta(BigDecimal.ZERO);
+		comprobanteRecibidoTotal.setTotalretencion(BigDecimal.ZERO);
+		comprobanteRecibidoTotal.setTotalsinimpuestos(BigDecimal.ZERO);
+		
+		if(comprobanteRecibidoList!=null) {
+			comprobanteRecibidoTotal.setTotalbaseimponible(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalbaseimponible()==null?0d:x.getTotalbaseimponible().doubleValue()).sum()));
+			comprobanteRecibidoTotal.setTotalconimpuestos(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalconimpuestos()==null?0d:x.getTotalconimpuestos().doubleValue()).sum()));
+			comprobanteRecibidoTotal.setTotaldescuento(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotaldescuento()==null?0d:x.getTotaldescuento().doubleValue()).sum()));
+			comprobanteRecibidoTotal.setTotalice(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalice()==null?0d:x.getTotalice().doubleValue()).sum()));
+			comprobanteRecibidoTotal.setTotaliva(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotaliva()==null?0d:x.getTotaliva().doubleValue()).sum()));
+			comprobanteRecibidoTotal.setTotalrenta(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalrenta()==null?0d:x.getTotalrenta().doubleValue()).sum()));
+			comprobanteRecibidoTotal.setTotalretencion(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalretencion()==null?0d:x.getTotalretencion().doubleValue()).sum()));
+			comprobanteRecibidoTotal.setTotalsinimpuestos(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalsinimpuestos()==null?0d:x.getTotalsinimpuestos().doubleValue()).sum()));
+		}
+	}
+	
 	/**
 	 * @return the estado
 	 */
@@ -114,13 +167,7 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	protected void editarSecuencial(Cabecera cabecera,String focus) {
 			
-			cabecera.setEditarSecuencial(true);
-			
-//		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "IMPORTANTE",
-//				"Al asignar un nuevo secuencial del documento, el sistema valida que no se haya utilizado anteriormente, posterior a usar esta opción se debe actulizar la secuencia, en configuración establecimiento, para que el sistema continúe, generando automáticamnete.");
-//	        PrimeFaces.current().dialog().showMessageDynamic(message,true);
-//	        AppJsfUtil.executeJavaScript("PrimeFaces.focus('" + focus + "');");
-	    
+	   cabecera.setEditarSecuencial(true);
 	   messageCtrl.cargarMenssage("IMPORTANTE", msg.getString("mensaje.editarsecuencial"), "WARNING");     
 	        
 			
@@ -313,5 +360,76 @@ public abstract class BaseCtrl implements Serializable {
 	public void setEnableAccion(boolean enableAccion) {
 		this.enableAccion = enableAccion;
 	}
+
+	/**
+	 * @return the comprobanterecibidoServicio
+	 */
+	public ComprobanterecibidoServicio getComprobanterecibidoServicio() {
+		return comprobanterecibidoServicio;
+	}
+
+	/**
+	 * @param comprobanterecibidoServicio the comprobanterecibidoServicio to set
+	 */
+	public void setComprobanterecibidoServicio(ComprobanterecibidoServicio comprobanterecibidoServicio) {
+		this.comprobanterecibidoServicio = comprobanterecibidoServicio;
+	}
+
+	/**
+	 * @return the comprobanteRecibidoList
+	 */
+	public List<Comprobanterecibido> getComprobanteRecibidoList() {
+		return comprobanteRecibidoList;
+	}
+
+	/**
+	 * @param comprobanteRecibidoList the comprobanteRecibidoList to set
+	 */
+	public void setComprobanteRecibidoList(List<Comprobanterecibido> comprobanteRecibidoList) {
+		this.comprobanteRecibidoList = comprobanteRecibidoList;
+	}
+
+	/**
+	 * @return the comprobanteRecibidoSeleccionList
+	 */
+	public List<Comprobanterecibido> getComprobanteRecibidoSeleccionList() {
+		return comprobanteRecibidoSeleccionList;
+	}
+
+	/**
+	 * @param comprobanteRecibidoSeleccionList the comprobanteRecibidoSeleccionList to set
+	 */
+	public void setComprobanteRecibidoSeleccionList(List<Comprobanterecibido> comprobanteRecibidoSeleccionList) {
+		this.comprobanteRecibidoSeleccionList = comprobanteRecibidoSeleccionList;
+	}
+
+	/**
+	 * @return the comprobanteRecibidoSelected
+	 */
+	public Comprobanterecibido getComprobanteRecibidoSelected() {
+		return comprobanteRecibidoSelected;
+	}
+
+	/**
+	 * @param comprobanteRecibidoSelected the comprobanteRecibidoSelected to set
+	 */
+	public void setComprobanteRecibidoSelected(Comprobanterecibido comprobanteRecibidoSelected) {
+		this.comprobanteRecibidoSelected = comprobanteRecibidoSelected;
+	}
+
+	/**
+	 * @return the comprobanteRecibidoTotal
+	 */
+	public Comprobanterecibido getComprobanteRecibidoTotal() {
+		return comprobanteRecibidoTotal;
+	}
+
+	/**
+	 * @param comprobanteRecibidoTotal the comprobanteRecibidoTotal to set
+	 */
+	public void setComprobanteRecibidoTotal(Comprobanterecibido comprobanteRecibidoTotal) {
+		this.comprobanteRecibidoTotal = comprobanteRecibidoTotal;
+	}
+	
 	
 }

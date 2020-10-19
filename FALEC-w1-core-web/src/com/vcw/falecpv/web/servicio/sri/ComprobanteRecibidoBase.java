@@ -11,12 +11,12 @@ import com.vcw.falecpv.core.exception.EnviarComprobanteSRIException;
  * @author cristianvillarreal
  *
  */
-public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
+public class ComprobanteRecibidoBase extends EnviarComprobanteSRIDecorador {
 
 	/**
 	 * @param enviarComprobanteSRI
 	 */
-	public ComprobanteRecibido(EnviarComprobanteSRI enviarComprobanteSRI) {
+	public ComprobanteRecibidoBase(EnviarComprobanteSRI enviarComprobanteSRI) {
 		super(enviarComprobanteSRI);
 	}
 

@@ -109,7 +109,7 @@ public class SriImportarComprobantesServicio {
 		if (respuestaComprobante.getAutorizacionList().get(0).getEstado()==null) {
 			fileSriDto.setRegistrado(false);
 			fileSriDto.setEstado(ImportComprobanteEnum.NO_EXISTE);
-			fileSriDto.setMensaje("NO EXISTE COMPROBANTE CON LA CLAVE DE ACCESO");
+			fileSriDto.setMensaje("NO EXISTE COMPROBANTE EN EL SISTEMA DEL SRI");
 			return;
 		}
 		
@@ -135,7 +135,7 @@ public class SriImportarComprobantesServicio {
 		Comprobanterecibido temp = comprobanterecibidoServicio.getByComprobanteEmpresa(idEmpresa,
 				GenTipoDocumentoEnum
 						.getEnumByIdentificador(comprobanterecibido.getTipocomprobante().getIdentificador()),
-				comprobanterecibido.getClaveAcceso(), comprobanterecibido.getComprobante());
+				comprobanterecibido.getClaveAcceso(), comprobanterecibido.getSerieComprobante());
 		
 		fileSriDto.setRegistrado(true);
 		if(temp!=null) {
@@ -178,9 +178,12 @@ public class SriImportarComprobantesServicio {
 		c.setIdentificacionReceptor(fileSriDto.getIdentificacionReceptor());
 		c.setImporteTotal(BigDecimal.ZERO);
 		c.setNumeroAutorizacion(fileSriDto.getNumeroAutorizacion());
-		c.setRazonSocialEmisor(fileSriDto.getEmisor());
+		
+		String razonSocial = XmlCommonsUtil.valorXpath(xmlComprobante, "//infoTributaria/razonSocial");
+		c.setRazonSocialEmisor(razonSocial!=null?razonSocial:fileSriDto.getEmisor());
+		
 		c.setRucEmisor(fileSriDto.getRucEmisor());
-		c.setSerieComprobante(fileSriDto.getSerieComprobante());
+		c.setSerieComprobante(fileSriDto.getSerieComprobante().replace("-", ""));
 		c.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(codDoc)));
 		c.setTipoEmision(fileSriDto.getTipoEmision());
 		c.setTotalbaseimponible(BigDecimal.ZERO);

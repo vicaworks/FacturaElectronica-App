@@ -65,7 +65,7 @@ public class ComprobanterecibidoServicio extends AppGenericService<Comprobantere
 			List<Comprobanterecibido> lista =	qb.select("c")
 					.from(Comprobanterecibido.class, "c")
 					.equals("c.empresa.idempresa", idEmpresa)
-					.equals("c.comprobante", numComprobante)
+					.equals("c.serieComprobante", numComprobante)
 					.equals("c.tipocomprobante.identificador", tipoComprobante.getIdentificador())
 					.equals("c.claveAcceso",claveAcceso).getResultList();
 			
