@@ -140,7 +140,16 @@
 					<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
 						<!-- <f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/> -->
 					</p:menuitem>
-					<p:menuitem value="Ver XML" action="#" icon="fa fa-eye">
+					<p:menuitem value="Ver XML formato" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
+						<f:setPropertyActionListener value="#{nd}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>
+						<f:setPropertyActionListener value="#{nd.valorXml}" target="#{compRecibidosCtrl.xml}"/>
+						<f:setPropertyActionListener value="#{true}" target="#{compRecibidosCtrl.formatoXml}"/>
+					</p:menuitem>
+					
+					<p:menuitem value="Ver XML original" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
+						<f:setPropertyActionListener value="#{nd}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>
+						<f:setPropertyActionListener value="#{nd.valorXml}" target="#{compRecibidosCtrl.xml}"/>
+						<f:setPropertyActionListener value="#{false}" target="#{compRecibidosCtrl.formatoXml}"/>
 					</p:menuitem>
 				</p:menu>	
 		    </p:column>    
@@ -149,7 +158,7 @@
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(nd.serieComprobante)}" />
 			</p:column>
 			
-			<p:column headerText="FECHA #msg{label.emision}" style="width:40px;">
+			<p:column headerText="FECHA #{msg['label.emision']}" style="width:40px;">
 				<h:outputText value="#{nd.fechaEmision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>

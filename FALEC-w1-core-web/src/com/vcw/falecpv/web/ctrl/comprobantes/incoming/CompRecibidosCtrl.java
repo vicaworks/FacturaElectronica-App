@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -29,6 +29,7 @@ import com.vcw.falecpv.core.exception.FormatoArchivoException;
 import com.vcw.falecpv.core.helper.SriAccesoHelper;
 import com.vcw.falecpv.core.modelo.dto.FileSriDto;
 import com.vcw.falecpv.core.modelo.dto.SriAccesoDto;
+import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
 import com.vcw.falecpv.core.servicio.sriimportarcomp.SriImportarComprobantesServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -40,7 +41,7 @@ import com.vcw.sri.ws.exception.SriWebServiceExeption;
  *
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class CompRecibidosCtrl extends BaseCtrl {
 
 	/**
@@ -60,6 +61,8 @@ public class CompRecibidosCtrl extends BaseCtrl {
 	private List<FileSriDto> fileSriDtoList;
 	private Integer progress = 0;
 	private boolean flagCargando = false;
+	private Comprobanterecibido comprobanterecibidoSelected;
+	private boolean formatoXml;
 	
 	/**
 	 * 
@@ -349,6 +352,34 @@ public class CompRecibidosCtrl extends BaseCtrl {
 	 */
 	public void setFlagCargando(boolean flagCargando) {
 		this.flagCargando = flagCargando;
+	}
+
+	/**
+	 * @return the comprobanterecibidoSelected
+	 */
+	public Comprobanterecibido getComprobanterecibidoSelected() {
+		return comprobanterecibidoSelected;
+	}
+
+	/**
+	 * @param comprobanterecibidoSelected the comprobanterecibidoSelected to set
+	 */
+	public void setComprobanterecibidoSelected(Comprobanterecibido comprobanterecibidoSelected) {
+		this.comprobanterecibidoSelected = comprobanterecibidoSelected;
+	}
+
+	/**
+	 * @return the formatoXml
+	 */
+	public boolean isFormatoXml() {
+		return formatoXml;
+	}
+
+	/**
+	 * @param formatoXml the formatoXml to set
+	 */
+	public void setFormatoXml(boolean formatoXml) {
+		this.formatoXml = formatoXml;
 	}
 
 }

@@ -64,7 +64,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-
+	
 	/**
 	 * @return the desde
 	 */

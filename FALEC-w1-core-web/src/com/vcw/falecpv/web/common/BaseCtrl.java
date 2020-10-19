@@ -4,6 +4,7 @@
 package com.vcw.falecpv.web.common;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +12,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.xml.bind.JAXBException;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.XmlCommonsUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
@@ -22,6 +25,11 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
+import com.vcw.falecpv.core.modelo.xml.XmlComprobanteRetencion;
+import com.vcw.falecpv.core.modelo.xml.XmlFactura;
+import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
+import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
+import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
 import com.vcw.falecpv.core.servicio.ComprobanterecibidoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.ctrl.common.MessageCtrl;
@@ -58,6 +66,7 @@ public abstract class BaseCtrl implements Serializable {
 	protected List<Comprobanterecibido> comprobanteRecibidoSeleccionList;
 	protected Comprobanterecibido comprobanteRecibidoSelected;
 	protected Comprobanterecibido comprobanteRecibidoTotal;
+	protected String xml;
 	
 	/**
 	 * 
@@ -123,6 +132,36 @@ public abstract class BaseCtrl implements Serializable {
 			comprobanteRecibidoTotal.setTotalrenta(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalrenta()==null?0d:x.getTotalrenta().doubleValue()).sum()));
 			comprobanteRecibidoTotal.setTotalretencion(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalretencion()==null?0d:x.getTotalretencion().doubleValue()).sum()));
 			comprobanteRecibidoTotal.setTotalsinimpuestos(BigDecimal.valueOf(comprobanteRecibidoList.stream().mapToDouble(x-> x.getTotalsinimpuestos()==null?0d:x.getTotalsinimpuestos().doubleValue()).sum()));
+		}
+	}
+	
+	public void formatoValorXml() throws UnsupportedEncodingException, JAXBException {
+		if(xml==null) {
+			return;
+		}
+		switch (GenTipoDocumentoEnum.getEnumByIdentificador(comprobanteRecibidoSelected.getTipocomprobante().getIdentificador())) {
+		case FACTURA:
+			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xml, new XmlFactura());
+			xml = XmlCommonsUtil.jaxbMarshall(f, true, false);
+			break;
+		case RETENCION:
+			XmlComprobanteRetencion rt = XmlCommonsUtil.jaxbunmarshall(xml, new XmlComprobanteRetencion());
+			xml = XmlCommonsUtil.jaxbMarshall(rt, true, false);
+			break;	
+		case NOTA_CREDITO:
+			XmlNotaCredito nc = XmlCommonsUtil.jaxbunmarshall(xml, new XmlNotaCredito());
+			xml = XmlCommonsUtil.jaxbMarshall(nc, true, false);
+			break;
+		case NOTA_DEBITO:
+			XmlNotaDebito nd = XmlCommonsUtil.jaxbunmarshall(xml, new XmlNotaDebito());
+			xml = XmlCommonsUtil.jaxbMarshall(nd, true, false);
+			break;
+		case GUIA_REMISION:
+			XmlGuiaRemision gr = XmlCommonsUtil.jaxbunmarshall(xml, new XmlGuiaRemision());
+			xml = XmlCommonsUtil.jaxbMarshall(gr, true, false);
+			break;
+		default:
+			break;
 		}
 	}
 	
@@ -429,6 +468,20 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setComprobanteRecibidoTotal(Comprobanterecibido comprobanteRecibidoTotal) {
 		this.comprobanteRecibidoTotal = comprobanteRecibidoTotal;
+	}
+
+	/**
+	 * @return the xml
+	 */
+	public String getXml() {
+		return xml;
+	}
+
+	/**
+	 * @param xml the xml to set
+	 */
+	public void setXml(String xml) {
+		this.xml = xml;
 	}
 	
 	
