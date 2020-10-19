@@ -12,7 +12,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -22,9 +24,13 @@ import org.primefaces.model.file.UploadedFile;
 
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ImportComprobanteEnum;
 import com.vcw.falecpv.core.exception.FormatoArchivoException;
+import com.vcw.falecpv.core.helper.SriAccesoHelper;
+import com.vcw.falecpv.core.modelo.dto.FileSriDto;
+import com.vcw.falecpv.core.modelo.dto.SriAccesoDto;
+import com.vcw.falecpv.core.servicio.sriimportarcomp.SriImportarComprobantesServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
-import com.vcw.falecpv.web.dto.FileSriDto;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -39,6 +45,12 @@ public class CompRecibidosCtrl extends BaseCtrl {
 	 * 
 	 */
 	private static final long serialVersionUID = 919159256550312725L;
+	
+	@EJB
+	private SriImportarComprobantesServicio sriImportarComprobantesServicio;
+	@EJB
+	private SriAccesoHelper sriAccesoHelper;
+	
 
 	private String comprobanteRender = "IMPORTAR";
 	private File fileComprobantes;
@@ -74,6 +86,21 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formCRFile", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
+	}
+	
+	
+	public void limpiar() {
+		try {
+			flagCargando = false;
+			fileComprobantes = null;
+			fileSriDtoList=null;
+			nombreFile = null;
+			AppJsfUtil.ajaxUpdate("formCRFile");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	public void showUploadFile() {
@@ -137,7 +164,7 @@ public class CompRecibidosCtrl extends BaseCtrl {
 	
 	private FileSriDto populateFileSriDto(String line,Integer id)throws FormatoArchivoException {
 		FileSriDto fileSriDto = new FileSriDto();
-		fileSriDto.setEstado("PENDIENTE");
+		fileSriDto.setEstado(ImportComprobanteEnum.PENDIENTE);
 		String[] fileLine = line.split("\t");
 		fileSriDto.setId(id);
 		fileSriDto.setComprobante(fileLine[0]);
@@ -174,12 +201,19 @@ public class CompRecibidosCtrl extends BaseCtrl {
 		try {
 			
 			flagCargando = true;
+			// determina el acceso a los ws
+			SriAccesoDto sriAccesoDto = sriAccesoHelper.consultarDatosAcceso("APROBACION", true);
 			int cont = 1;
 			for (FileSriDto f : fileSriDtoList) {
 				
 				System.out.println("==== Comprobante : " + f.getComprobante() + " serie : " + f.getSerieComprobante());
-				f.setEstado("REGISTRADO");
-				Thread.sleep(250);
+				
+				// validaciones
+				validar(f);
+				f.setRegistrado(false);
+				if(f.isValidacion()) {
+					sriImportarComprobantesServicio.importarComprobanteFacade(f, sriAccesoDto, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), AppJsfUtil.getEstablecimiento().getIdestablecimiento(), AppJsfUtil.getUsuario().getIdusuario());
+				}
 				
 				if(progress<100) {					
 					progress = ((cont*100)/fileSriDtoList.size());
@@ -192,10 +226,36 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			}
 			progress = 0;
 			flagCargando = false;
+			
+			int errores = (int) fileSriDtoList.stream().filter(x->x.isValidacion()==false || x.isRegistrado()==false).count();
+			
+			// ordenan la lista primero los errores 
+			List<FileSriDto> listaErrores = fileSriDtoList.stream().filter(x->x.isRegistrado()==false).collect(Collectors.toList());
+			List<FileSriDto> lista = fileSriDtoList.stream().filter(x->x.isRegistrado()).collect(Collectors.toList());
+			listaErrores.addAll(lista);
+			fileSriDtoList = listaErrores;
+			
+			
+			if(errores>0) {
+				AppJsfUtil.executeJavaScript("alert('ERRORES : "   + errores  + "')");
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	private void validar(FileSriDto fileSriDto) {
+		fileSriDto.setValidacion(true);
+		// valida si pertenece a la empresa
+		if(!AppJsfUtil.getEstablecimiento().getEmpresa().getRuc().contains(fileSriDto.getIdentificacionReceptor())) {
+			fileSriDto.setValidacion(false);
+			fileSriDto.setEstado(ImportComprobanteEnum.ERROR);
+			fileSriDto.setMensaje(msg.getString("mensaje.importcomprobante_1"));
+			return;
+		}
+		
 	}
 
 	/**

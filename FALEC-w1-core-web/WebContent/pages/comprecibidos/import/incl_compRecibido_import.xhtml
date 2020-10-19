@@ -19,27 +19,31 @@
 	<div class="card card-w-title">
 		<h3 class="cardTitle">Importar Comprobantes Recibidos</h3>
 		<div class="EmptyBox5" />
-		<div class="p-grid p-align-top vertical-container">
-			<div class="p-col-12 p-md-4 p-lg-3">
+		<div class="p-grid p-justify-start">
+		
+			<div class="p-col-12 p-md-6">
+				
+				<p:commandButton id="cmdCRlimpiar" widgetVar="w_cmdCRlimpiar"
+							icon="fa fa-eraser"
+							process="@this"
+							styleClass="secondary-button Fs11 m-button" update="@form" style="margin-right:5px;" value="LIMPIAR" action="#{compRecibidosCtrl.limpiar()}">
+				</p:commandButton>
+				
 				<p:commandButton id="cmdCRSeleccionarFile" widgetVar="w_cmdCRSeleccionarFile"
 							icon="fa fa-search"
 							process="@this"
-							action="#{compRecibidosCtrl.showUploadFile()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="SELECCIONAR ARCHIVO"/>
+							action="#{compRecibidosCtrl.showUploadFile()}" styleClass="secondary-button Fs11 m-button" update="@form" style="margin-right:5px;" value="SELECCIONAR ARCHIVO"/>
 				    			
-    		</div>
-    		
-    		<div class="p-col-12 p-md-2">
-    			
     			<p:commandButton id="cmdCRGuardar" widgetVar="w_cmdCRGuardar"
 							icon="fa fa-floppy-o"
 							process="@this"
-							onclick="PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
-							action="#{compRecibidosCtrl.cargarComprobantes()}" styleClass="Wid100" update="@form" style="margin-right:5px;" value="GUARDAR" disabled="#{compRecibidosCtrl.fileComprobantes==null}"/>
-    			
+							onclick="PF('w_cmdCRlimpiar').disable();PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
+							action="#{compRecibidosCtrl.cargarComprobantes()}" styleClass="Fs11 m-button" update="@form" style="margin-right:5px;" value="GUARDAR" disabled="#{compRecibidosCtrl.fileComprobantes==null}"/>
     		</div>
     		
-    		<div class="p-col-12 p-lg-7">
-    			<p:progressBar widgetVar="pbAjax" ajax="true" value="#{compRecibidosCtrl.progress}" labelTemplate="{value}%" styleClass="animated" global="false" interval="250">
+    		<div class="p-col-12 p-md-6">
+    			<div class="EmptyBox5"/>
+    			<p:progressBar widgetVar="pbAjax" ajax="true" value="#{compRecibidosCtrl.progress}" labelTemplate="{value}%" styleClass="animated" global="false" interval="250" >
 						<p:ajax event="complete" update="@form" oncomplete="PF('w_cmdCRGuardar').enable();PF('w_cmdCRSeleccionarFile').enable();"/>
 			    </p:progressBar>
     		</div>
@@ -55,19 +59,31 @@
 						emptyMessage="#{msg['mensaje.noexistenDatos']}"
 						styleClass="compSriDT Fs11"  
 						rowKey="#{f.id}"
-						rows="20"
+						rows="30"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
 						rowsPerPageTemplate="10,15,20,25,30,35,40">
 		    
-		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+		    <!-- <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 		    	
-		    </p:column>    
+		    </p:column> -->    
 		    
-		    <p:column headerText="ESTADO" style="width:60px;">
-				<h:outputText value="#{f.estado}" styleClass="DispBlock #{f.estado=='PENDIENTE'?'markGray':f.estado=='ERROR'?'markRed':'markGreen'}"/>
+		    <p:column headerText="ESTADO" style="width:70px;">
+		    	<p:outputPanel id="oupestado">
+			    	<div class="p-grid Fs11	">
+			    		<div class="p-col-fixed" style="width:20px;text-align: left;">
+			    			<f:subview rendered="#{f.desplegarInfo}">
+				    			<i class="fa fa-comments Fs14"></i>
+			    			</f:subview>
+			    		</div>
+			    		<div class="p-col">
+							<h:outputText value="#{f.estado}" styleClass="DispBlock #{f.styleEstado}"/>
+			    		</div>
+			    	</div>
+		    	</p:outputPanel>
+		    	<p:tooltip id="toolTipEstado" for="oupestado" value="#{f.mensaje}" position="top" rendered="#{f.desplegarInfo}"/>
 			</p:column>
 		    
 		    <p:column headerText="COMPROBANTE" style="width:90px;">

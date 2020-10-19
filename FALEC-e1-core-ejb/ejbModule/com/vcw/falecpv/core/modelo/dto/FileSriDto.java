@@ -1,13 +1,14 @@
 /**
  * 
  */
-package com.vcw.falecpv.web.dto;
+package com.vcw.falecpv.core.modelo.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.servitec.common.util.PojoUtil;
+import com.vcw.falecpv.core.constante.ImportComprobanteEnum;
 
 /**
  * @author cristianvillarreal
@@ -32,14 +33,57 @@ public class FileSriDto implements Serializable {
 	private String claveAcceso;
 	private String numeroAutorizacion;
 	private BigDecimal importeTotal;
-	private String estado;
-	private String observacion;
+	private ImportComprobanteEnum estado;
+	private String mensaje;
+	private boolean registrado;
+	private boolean validacion = false;
 
 	/**
 	 * 
 	 */
 	public FileSriDto() {
 	}
+	
+	public String getStyleEstado() {
+		String style = "";
+    	switch (estado) {
+		case ACTUALIZADO:
+			style = "markOrange";
+			break;
+		case PENDIENTE:
+			style = "markGray";
+			break;	
+		case REGISTRADO:
+			style = "markGreen";
+			break;
+		default:
+			style = "markRed";
+			break;
+		}
+    	
+    	return style;
+    }
+	
+	public boolean getDesplegarInfo() {
+		boolean info = false;
+    	switch (estado) {
+		case ACTUALIZADO:
+			info = false;
+			break;
+		case PENDIENTE:
+			info = false;
+			break;	
+		case REGISTRADO:
+			info = false;
+			break;
+		default:
+			info = true;
+			break;
+		}
+    	
+    	return info;
+    }
+
 	
 	/**
 	 * @return the id
@@ -215,31 +259,62 @@ public class FileSriDto implements Serializable {
 	}
 
 	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the registrado
+	 */
+	public boolean isRegistrado() {
+		return registrado;
+	}
+
+	/**
+	 * @param registrado the registrado to set
+	 */
+	public void setRegistrado(boolean registrado) {
+		this.registrado = registrado;
+	}
+
+	/**
 	 * @return the estado
 	 */
-	public String getEstado() {
+	public ImportComprobanteEnum getEstado() {
 		return estado;
 	}
 
 	/**
 	 * @param estado the estado to set
 	 */
-	public void setEstado(String estado) {
+	public void setEstado(ImportComprobanteEnum estado) {
 		this.estado = estado;
 	}
 
 	/**
-	 * @return the observacion
+	 * @return the validacion
 	 */
-	public String getObservacion() {
-		return observacion;
+	public boolean isValidacion() {
+		return validacion;
 	}
 
 	/**
-	 * @param observacion the observacion to set
+	 * @param validacion the validacion to set
 	 */
-	public void setObservacion(String observacion) {
-		this.observacion = observacion;
+	public void setValidacion(boolean validacion) {
+		this.validacion = validacion;
 	}
+	
+	
+
 
 }

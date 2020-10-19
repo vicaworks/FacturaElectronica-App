@@ -126,6 +126,29 @@ public class Comprobanterecibido implements Serializable {
     @NotNull
     @Column(name = "totalretencion", nullable = false, precision = 12, scale = 2)
     private BigDecimal totalretencion;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "totalrenta", nullable = false, precision = 12, scale = 2)
+    private BigDecimal totalrenta;
+    
+    @Basic(optional = true)
+    @Size(min = 1, max = 400)
+    @Column(name = "motivo", nullable = true, length = 400)
+    private String motivo;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 40)
+    @Column(name = "idusuario", nullable = false, length = 40)
+    private String idusuario;
+    
     @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
     @ManyToOne(optional = false)
     private Empresa empresa;
@@ -162,7 +185,8 @@ public class Comprobanterecibido implements Serializable {
     public String toString() {
         return PojoUtil.toString(this);
     }
-
+    
+    
 	/**
 	 * @return the idcomprobanterecibido
 	 */
@@ -469,6 +493,62 @@ public class Comprobanterecibido implements Serializable {
 	 */
 	public void setTipocomprobante(Tipocomprobante tipocomprobante) {
 		this.tipocomprobante = tipocomprobante;
+	}
+
+	/**
+	 * @return the motivo
+	 */
+	public String getMotivo() {
+		return motivo;
+	}
+
+	/**
+	 * @param motivo the motivo to set
+	 */
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
+	}
+
+	/**
+	 * @return the totalrenta
+	 */
+	public BigDecimal getTotalrenta() {
+		return totalrenta;
+	}
+
+	/**
+	 * @param totalrenta the totalrenta to set
+	 */
+	public void setTotalrenta(BigDecimal totalrenta) {
+		this.totalrenta = totalrenta;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
 
 }
