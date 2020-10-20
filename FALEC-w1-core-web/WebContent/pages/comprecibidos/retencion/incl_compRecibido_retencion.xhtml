@@ -52,15 +52,15 @@
 	  						value="EXPORTAR"
 							icon="fa fa-sort-down" 
 							styleClass="secondary-button Wid100"
-							disabled="#{empty facEmitidaCtrl.ventasQueryList}">
+							disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}">
 				</p:commandButton>
 				
 				<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
 					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-						<p:fileDownload value="#{facEmitidaCtrl.fileResumen}" contentDisposition="inline"/>
+						<p:fileDownload value="#{compRecRetencionCtrl.fileResumen}" contentDisposition="inline"/>
 					</p:menuitem>
 					<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-						<p:fileDownload value="#{facEmitidaCtrl.fileDetalle}" contentDisposition="inline"/>
+						<p:fileDownload value="#{null}" contentDisposition="inline"/>
 					</p:menuitem>
 				</p:menu>
     		</div>

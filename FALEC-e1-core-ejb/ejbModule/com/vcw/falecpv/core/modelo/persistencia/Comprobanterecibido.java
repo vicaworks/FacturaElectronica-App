@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -19,7 +20,11 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.dom4j.DocumentException;
+
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.PojoUtil;
+import com.servitec.common.util.XmlCommonsUtil;
 
 /**
  * @author cristianvillarreal
@@ -185,6 +190,39 @@ public class Comprobanterecibido implements Serializable {
     public String toString() {
         return PojoUtil.toString(this);
     }
+    
+    
+    public String getPlaca() throws DocumentException {
+    	if(valorXml!=null) {
+    		return XmlCommonsUtil.valorXpath(getValorXml(), "//placa");
+    	}
+    	
+    	return "";
+    }
+    
+    public String getDireccionPartida() throws DocumentException {
+    	if(valorXml!=null) {
+    		return XmlCommonsUtil.valorXpath(getValorXml(), "//dirPartida");
+    	}
+    	
+    	return "";
+    }
+    
+    public Date getFechaPartida() throws ParseException, DocumentException {
+    	if(valorXml!=null) {
+    		return FechaUtil.formatoFecha(XmlCommonsUtil.valorXpath(getValorXml(), "//fechaIniTransporte"));
+    	}
+    	return null;
+    }
+    
+    public Date getFechaLlegada() throws ParseException, DocumentException {
+    	if(valorXml!=null) {
+    		return FechaUtil.formatoFecha(XmlCommonsUtil.valorXpath(getValorXml(), "//fechaFinTransporte"));
+    	}
+    	return null;
+    }
+    
+    
     
     
 	/**
