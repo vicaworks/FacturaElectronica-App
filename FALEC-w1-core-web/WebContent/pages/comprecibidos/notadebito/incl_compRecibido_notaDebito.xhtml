@@ -52,17 +52,18 @@
 	  						value="EXPORTAR"
 							icon="fa fa-sort-down" 
 							styleClass="secondary-button Wid100"
-							disabled="#{empty compRecNotaDebitoCtrl.comprobanteRecibidoList}">
+							disabled="#{empty compRecNotaDebitoCtrl.comprobanteRecibidoList}" ajax="false">
+							<p:fileDownload value="#{compRecNotaDebitoCtrl.fileResumen}" contentDisposition="inline"/>
 				</p:commandButton>
 				
-				<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+				<!-- <p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
 					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
 						<p:fileDownload value="#{compRecNotaDebitoCtrl.fileResumen}" contentDisposition="inline"/>
 					</p:menuitem>
 					<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
 						<p:fileDownload value="#{null}" contentDisposition="inline"/>
 					</p:menuitem>
-				</p:menu>
+				</p:menu> -->
     		</div>
 		</div>
 	</div>

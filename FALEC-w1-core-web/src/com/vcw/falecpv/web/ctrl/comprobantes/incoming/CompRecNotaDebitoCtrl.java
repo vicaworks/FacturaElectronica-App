@@ -185,6 +185,114 @@ public class CompRecNotaDebitoCtrl extends BaseCtrl {
 		}
 		return null;
 	}
+	
+	
+	public StreamedContent getFileDetalle() {
+		try {
+			
+			if(comprobanteRecibidoList==null || comprobanteRecibidoList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-NotDebitoDetRecibidas.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			Row row = sheet.getRow(3);
+			row.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			row = sheet.getRow(4);
+			row.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			row = sheet.getRow(5);
+			row.createCell(1).setCellValue(FechaUtil.formatoFecha(desde));
+			
+			row = sheet.getRow(6);
+			row.createCell(1).setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			
+			int fila = 9;
+			for (Comprobanterecibido c : comprobanteRecibidoList) {
+				
+				row = sheet.createRow(fila);
+				int col =0;
+				
+				Cell cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(c.getRucEmisor());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(c.getRazonSocialEmisor());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//codDocModificado")!=null?GenTipoDocumentoEnum.getByIdentificador(XmlCommonsUtil.valorXpath(c.getValorXml(), "//codDocModificado")):"");
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//numDocModificado"));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(c.getTotalsinimpuestos().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(c.getTotaliva().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(c.getTotalconimpuestos().doubleValue());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(c.getNumeroAutorizacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(c.getClaveAcceso());
+				
+				fila ++;
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-NotDebitoDetRecibidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
 
 	/**
 	 * @return the desde

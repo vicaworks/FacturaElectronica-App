@@ -9,8 +9,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
+import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.dao.impl.RetencionimpuestoDao;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author cristianvillarreal
@@ -42,6 +44,27 @@ public class RetencionimpuestoServicio extends AppGenericService<Retencionimpues
 	 */
 	public RetencionimpuestoDao getRetencionimpuestoDao() {
 		return retencionimpuestoDao;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param codigo
+	 * @return
+	 * @throws DaoException
+	 */
+	public Retencionimpuesto getByCodSri(String codigo)throws DaoException{
+		try {
+				
+			QueryBuilder qb = new QueryBuilder(retencionimpuestoDao.getEntityManager());
+			
+			return (Retencionimpuesto)qb.select("r")
+					.from(Retencionimpuesto.class,"r")
+					.equals("r.codigo",codigo).getSingleResult();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

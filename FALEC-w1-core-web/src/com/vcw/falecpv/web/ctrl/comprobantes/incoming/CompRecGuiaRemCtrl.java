@@ -28,6 +28,9 @@ import com.servitec.common.util.XmlCommonsUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
+import com.vcw.falecpv.core.modelo.xml.XmlDestinatario;
+import com.vcw.falecpv.core.modelo.xml.XmlDestinatarioDetalle;
+import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -182,6 +185,200 @@ public class CompRecGuiaRemCtrl extends BaseCtrl {
 		}
 		return null;
 	}
+	
+	public StreamedContent getFileDetalle() {
+		try {
+			
+			if(comprobanteRecibidoList==null || comprobanteRecibidoList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-GuiaRemisionDetRecibidas.xlsx");
+			
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			Row row = sheet.getRow(3);
+			row.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			
+			row = sheet.getRow(4);
+			row.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			row = sheet.getRow(5);
+			row.createCell(1).setCellValue(FechaUtil.formatoFecha(desde));
+			
+			row = sheet.getRow(6);
+			row.createCell(1).setCellValue(FechaUtil.formatoFecha(hasta));
+			
+			
+			int fila = 10;
+			int filaDestinatario = fila;
+			int filaDetalle = fila;
+			for (Comprobanterecibido c : comprobanteRecibidoList) {
+				
+				row = sheet.createRow(fila);
+				int col =0;
+				
+				Cell cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//rucTransportista"));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//razonSocialTransportista"));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//placa"));
+				
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//dirPartida"));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//fechaIniTransporte"));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//fechaFinTransporte"));
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(c.getNumeroAutorizacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(c.getClaveAcceso());
+				
+				
+				XmlGuiaRemision g = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlGuiaRemision());
+				filaDestinatario = fila;
+				
+				
+				for (XmlDestinatario d : g.getDestinatarioList()) {
+					
+					col = 9;
+					
+					row = sheet.getRow(filaDestinatario);
+					if(row==null) {
+						row = sheet.createRow(filaDestinatario);
+					}
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getIdentificacionDestinatario());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getRazonSocialDestinatario());
+					
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getDirDestinatario()!=null?d.getDirDestinatario():d.getDirDestinatario());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getMotivoTraslado()!=null?d.getMotivoTraslado():"");
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getCodEstabDestino()!=null?d.getCodEstabDestino():"");
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getCodDocSustento()!=null?GenTipoDocumentoEnum.getByIdentificador(d.getCodDocSustento()):"");
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getNumDocSustento()!=null?ComprobanteHelper.formatNumDocumento(d.getNumDocSustento()):"");
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getFechaEmisionDocSustento()!=null?FechaUtil.formatoFecha(d.getFechaEmisionDocSustento()):"");
+					
+					cell = row.createCell(col++);
+					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellValue(d.getNumAutDocSustento()!=null?d.getNumAutDocSustento():"");
+					
+					
+					filaDetalle = filaDestinatario;
+					for (XmlDestinatarioDetalle dd : d.getDestinatarioDetallesList()) {
+						
+						col = 18;
+						
+						row = sheet.getRow(filaDetalle);
+						if(row==null) {
+							row = sheet.createRow(filaDetalle);
+						}
+						
+						cell = row.createCell(col++);
+						cell.setCellType(Cell.CELL_TYPE_STRING);
+						cell.setCellValue(dd.getCodigoInterno());
+						
+						cell = row.createCell(col++);
+						cell.setCellType(Cell.CELL_TYPE_STRING);
+						cell.setCellValue(dd.getDescripcion());
+						
+						cell = row.createCell(col++);
+						cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+						cell.setCellValue(dd.getCantidad());
+						
+						
+						filaDetalle++;
+					}
+					
+					filaDestinatario = filaDetalle;
+					
+				}
+				
+				if(filaDetalle>filaDestinatario) {
+					fila = filaDetalle;
+				}else {
+					fila = filaDestinatario;
+				}
+				fila ++;
+			}
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-GuiaRemisionDetRecibidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
 
 	/**
 	 * @return the desde
