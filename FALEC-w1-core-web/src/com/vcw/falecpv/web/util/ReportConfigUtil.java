@@ -21,7 +21,6 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-//import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -179,7 +178,6 @@ public class ReportConfigUtil implements Serializable{
          
         // coding For Excel:
         JRXlsExporter exporterXLS = new JRXlsExporter();
-        
         exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
         exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
         exporterXLS.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
@@ -195,9 +193,9 @@ public class ReportConfigUtil implements Serializable{
 				.setParameter(
 						JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS,
 						Boolean.TRUE);
-//		exporterXLS.setParameter(
-//				JExcelApiExporterParameter.IS_DETECT_CELL_TYPE,
-//				Boolean.TRUE);
+		exporterXLS.setParameter(
+				JRXlsExporterParameter.IS_DETECT_CELL_TYPE,
+				Boolean.TRUE);
 		
         setExporterParameters(exporterXLS, exporterParameters);
         exporterXLS.exportReport();
