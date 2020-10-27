@@ -58,6 +58,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
+	private boolean aplicarFechas=true;
 	
 	/**
 	 * 
@@ -70,6 +71,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 		try {
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
+			aplicarFechas=true;
 			super.totalizarComprobantesRecibidos();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +84,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 		try {
 			
 			AppJsfUtil.limpiarFiltrosDataTable("formMain:fsvFactura:compFacSriDT");
-			super.consultarComprobanteRecibido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), GenTipoDocumentoEnum.FACTURA, desde, hasta, criterioBusqueda);
+			super.consultarComprobanteRecibido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), GenTipoDocumentoEnum.FACTURA, desde, hasta, criterioBusqueda,aplicarFechas);
 			super.totalizarComprobantesRecibidos();
 			
 		} catch (Exception e) {
@@ -464,6 +466,20 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	 */
 	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
+	}
+
+	/**
+	 * @return the aplicarFechas
+	 */
+	public boolean isAplicarFechas() {
+		return aplicarFechas;
+	}
+
+	/**
+	 * @param aplicarFechas the aplicarFechas to set
+	 */
+	public void setAplicarFechas(boolean aplicarFechas) {
+		this.aplicarFechas = aplicarFechas;
 	}
 
 }

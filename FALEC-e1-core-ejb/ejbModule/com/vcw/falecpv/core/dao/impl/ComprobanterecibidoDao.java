@@ -41,7 +41,7 @@ public class ComprobanterecibidoDao extends AppGenericDao<Comprobanterecibido, S
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Comprobanterecibido> getByComprobanteEmpresa(String idEmpresa, GenTipoDocumentoEnum tipoComprobante,
-			Date desde, Date hasta, String criteria) throws DaoException {
+			Date desde, Date hasta, String criteria,boolean aplicarfechas) throws DaoException {
 		
 		try {
 			
@@ -49,11 +49,16 @@ public class ComprobanterecibidoDao extends AppGenericDao<Comprobanterecibido, S
 			
 			if(criteria!=null && criteria.trim().length()>0) {
 				
-				q = getEntityManager().createQuery("SELECT c FROM Comprobanterecibido c WHERE c.empresa.idempresa=:empresa AND c.tipocomprobante.identificador= :tipocomprobante AND (c.rucEmisor like :rucEmisor OR UPPER(c.razonSocialEmisor) like :razonSocialEmisor OR c.serieComprobante like :serieComprobante) ORDER BY c.fechaEmision");
+				q = getEntityManager().createQuery("SELECT c FROM Comprobanterecibido c WHERE c.empresa.idempresa=:empresa AND c.tipocomprobante.identificador= :tipocomprobante AND " + (aplicarfechas? " c.fechaEmision BETWEEN :fechaIni AND :fechaHasta AND " :"")  + " (c.rucEmisor like :rucEmisor OR UPPER(c.razonSocialEmisor) like :razonSocialEmisor OR c.serieComprobante like :serieComprobante) ORDER BY c.fechaEmision");
 				
 				q.setParameter("rucEmisor", "%".concat(criteria).concat("%"));
 				q.setParameter("razonSocialEmisor", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("serieComprobante", "%".concat(criteria).concat("%"));
+				
+				if(aplicarfechas) {
+					q.setParameter("fechaIni", desde);
+					q.setParameter("fechaHasta", hasta);
+				}
 				
 			}else {
 				

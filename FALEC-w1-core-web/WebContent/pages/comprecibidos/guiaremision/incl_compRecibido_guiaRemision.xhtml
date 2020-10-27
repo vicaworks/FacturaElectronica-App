@@ -40,7 +40,9 @@
 				<p:message for="calHasta"/>
     		</div>
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<div style="margin-bottom: 1px;">
+	    			<p:selectBooleanCheckbox value="#{compRecGuiaRemCtrl.aplicarFechas}"/><h:outputText value=" Aplicar fechas criterio de búsqueda" styleClass="FontBold"/>
+				</div>
     			<p:inputText value="#{compRecGuiaRemCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Emisor" styleClass="Wid100"/>
     		</div>
     		<div class="p-col-12 p-lg-3">

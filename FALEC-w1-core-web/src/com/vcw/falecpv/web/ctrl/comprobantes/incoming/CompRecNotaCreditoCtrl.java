@@ -52,6 +52,7 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
+	private boolean aplicarFechas=true;
 	
 	/**
 	 * 
@@ -64,6 +65,7 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 		try {
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
+			aplicarFechas=true;
 			super.totalizarComprobantesRecibidos();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,7 +77,7 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 	public void buscar() {
 		try {
 			AppJsfUtil.limpiarFiltrosDataTable("formMain:fsvNotaCredito:compNCSriDT");
-			super.consultarComprobanteRecibido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), GenTipoDocumentoEnum.NOTA_CREDITO, desde, hasta, criterioBusqueda);
+			super.consultarComprobanteRecibido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), GenTipoDocumentoEnum.NOTA_CREDITO, desde, hasta, criterioBusqueda,aplicarFechas);
 			super.totalizarComprobantesRecibidos();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -418,6 +420,20 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 	 */
 	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
+	}
+
+	/**
+	 * @return the aplicarFechas
+	 */
+	public boolean isAplicarFechas() {
+		return aplicarFechas;
+	}
+
+	/**
+	 * @param aplicarFechas the aplicarFechas to set
+	 */
+	public void setAplicarFechas(boolean aplicarFechas) {
+		this.aplicarFechas = aplicarFechas;
 	}
 
 }

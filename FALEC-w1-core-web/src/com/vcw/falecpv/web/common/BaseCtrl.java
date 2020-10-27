@@ -107,9 +107,9 @@ public abstract class BaseCtrl implements Serializable {
 	 * @param criterio
 	 * @throws DaoException
 	 */
-	public void consultarComprobanteRecibido(String idEmpresa,GenTipoDocumentoEnum genTipoDocumentoEnum, Date desde,Date hasta,String criterio) throws DaoException {
+	public void consultarComprobanteRecibido(String idEmpresa,GenTipoDocumentoEnum genTipoDocumentoEnum, Date desde,Date hasta,String criterio,boolean aplicarFechas) throws DaoException {
 		comprobanteRecibidoList = null;
-		comprobanteRecibidoList = comprobanterecibidoServicio.getComprobanterecibidoDao().getByComprobanteEmpresa(idEmpresa, genTipoDocumentoEnum, desde, hasta, criterio);
+		comprobanteRecibidoList = comprobanterecibidoServicio.getComprobanterecibidoDao().getByComprobanteEmpresa(idEmpresa, genTipoDocumentoEnum, desde, hasta, criterio,aplicarFechas);
 	}
 	
 	public void totalizarComprobantesRecibidos() {
