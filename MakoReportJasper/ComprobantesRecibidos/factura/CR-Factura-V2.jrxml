@@ -67,6 +67,13 @@
 				</textElement>
 				<text><![CDATA[R.U.C. :]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="360" y="10" width="180" height="20" uuid="86ae228e-e388-4bac-a52b-a630db9aeb3c"/>
+				<textElement>
+					<font fontName="Calibri" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getRuc()]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="290" y="30" width="250" height="20" uuid="c41cb83d-f553-4ccf-a44a-87ae8a415972"/>
 				<textElement>
@@ -74,6 +81,13 @@
 				</textElement>
 				<text><![CDATA[FACTURA]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="290" y="50" width="250" height="20" uuid="f1f2fdf4-d6e4-4c7a-a71b-fce02056d3fe"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No." + $F{infoTributaria}.getEstab() + "-" + $F{infoTributaria}.getPtoEmi() + "-" + $F{infoTributaria}.getSecuencial()]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="290" y="70" width="250" height="20" uuid="8cc32123-2b06-4e83-b793-9d024603fc17"/>
 				<textElement>
@@ -81,6 +95,13 @@
 				</textElement>
 				<text><![CDATA[NÚMERO DE AUTORIZACIÓN]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="290" y="90" width="250" height="20" uuid="7ff683fa-6eca-4478-a496-929e8fdaf7b2"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroAutorizacion}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="290" y="110" width="110" height="30" uuid="704179ca-c5ce-4743-b9a9-dbb586f12906"/>
 				<textElement>
@@ -88,6 +109,13 @@
 				</textElement>
 				<text><![CDATA[FECHA Y HORA DE AUTORIZACIÓN]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="400" y="110" width="140" height="30" uuid="912862f5-8ccd-460b-bfd3-100ba94938c4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{fechaAutorizacion},"dd/MM/yyyy HH:mm") ]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="290" y="140" width="110" height="20" uuid="06dcf4ae-64c4-48ac-ab99-288181a657f1"/>
 				<textElement>
@@ -109,6 +137,13 @@
 				</textElement>
 				<text><![CDATA[CLAVE DE ACCESO]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="400" y="140" width="140" height="20" uuid="47f0007a-c612-4893-84cb-572a3c812da6"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getAmbiente().equals("2")?"PRODUCCIÓN":"PRUEBAS"]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="400" y="160" width="140" height="20" uuid="18275732-efea-4634-a8bf-b0742480f23c"/>
 				<textElement>
@@ -116,9 +151,29 @@
 				</textElement>
 				<text><![CDATA[NORMAL]]></text>
 			</staticText>
+			<componentElement>
+				<reportElement x="290" y="200" width="250" height="40" uuid="36b0dbee-c486-4048-b286-171313d12720"/>
+				<jr:EAN13 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
+				</jr:EAN13>
+			</componentElement>
 			<rectangle radius="8">
 				<reportElement x="0" y="90" width="270" height="160" uuid="23e43fa3-bcc3-4ed4-b029-ca460baa3ac6"/>
 			</rectangle>
+			<textField>
+				<reportElement x="10" y="100" width="250" height="20" uuid="d9ea4590-0b49-44cd-8082-42c76867728a"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getRazonSocial()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="120" width="250" height="20" uuid="430957a7-018f-4e24-b9bd-6fa5934f9c99"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getNombreComercial()]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="10" y="140" width="70" height="35" uuid="e8bb8ab2-c177-4fd8-9824-1a679e0741e2"/>
 				<textElement>
@@ -147,6 +202,34 @@
 				</textElement>
 				<text><![CDATA[OBLIGADO A LLEVAR CONTABILIDAD :]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="80" y="140" width="180" height="35" uuid="75e4587c-3598-4c3e-afd8-bdd98efa04cc"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getDirMatriz()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="175" width="180" height="35" uuid="810fd212-b2ee-4644-bad3-ae9cc76e15e2"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getDirEstablecimiento()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="210" width="40" height="20" uuid="14c8dde5-1505-406a-b5f9-017a221aa2cc"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getContribuyenteEspecial()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="230" width="40" height="20" uuid="73a79c34-6a0c-457e-beaa-ce776474e651"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getObligadoContabilidad()]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="260" height="50" forecolor="#FF0033" uuid="25daae51-25de-464d-a095-c7ce946c6c6b"/>
 				<textElement textAlignment="Center">
@@ -154,12 +237,6 @@
 				</textElement>
 				<text><![CDATA[NO TIENE LOGO]]></text>
 			</staticText>
-			<componentElement>
-				<reportElement x="290" y="201" width="250" height="30" uuid="535e78bd-9cf6-4dca-b158-412900d959a2"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Codabar" drawText="false" checksumRequired="false">
-					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
 		</band>
 	</pageHeader>
 	<columnHeader>
