@@ -46,104 +46,107 @@
 	<field name="retencioneList" class="java.util.List">
 		<fieldDescription><![CDATA[retencioneList]]></fieldDescription>
 	</field>
-	<field name="numeroAutorizacion" class="java.util.Date">
-		<fieldDescription><![CDATA[numeroAutorizacion]]></fieldDescription>
-	</field>
 	<field name="fechaAutorizacion" class="java.util.Date">
 		<fieldDescription><![CDATA[fechaAutorizacion]]></fieldDescription>
+	</field>
+	<field name="numeroAutorizacion" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroAutorizacion]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="250" splitType="Stretch">
+		<band height="271" splitType="Stretch">
 			<rectangle radius="8">
-				<reportElement x="280" y="0" width="274" height="250" uuid="061ebe86-4bd1-4627-8307-7587648bd948"/>
+				<reportElement x="280" y="0" width="274" height="271" uuid="061ebe86-4bd1-4627-8307-7587648bd948"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="290" y="10" width="70" height="20" uuid="07768a77-cfa8-4d41-a838-6b9e17f09cb6"/>
 				<textElement>
-					<font fontName="Calibri" size="16"/>
+					<font fontName="Tahoma" size="14"/>
 				</textElement>
 				<text><![CDATA[R.U.C. :]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="30" width="250" height="20" uuid="c41cb83d-f553-4ccf-a44a-87ae8a415972"/>
-				<textElement>
-					<font fontName="Calibri" size="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[FACTURA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="70" width="250" height="20" uuid="8cc32123-2b06-4e83-b793-9d024603fc17"/>
-				<textElement>
-					<font fontName="Calibri" size="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<text><![CDATA[NÚMERO DE AUTORIZACIÓN]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="110" width="110" height="30" uuid="704179ca-c5ce-4743-b9a9-dbb586f12906"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[FECHA Y HORA DE AUTORIZACIÓN]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="140" width="110" height="20" uuid="06dcf4ae-64c4-48ac-ab99-288181a657f1"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[AMBIENTE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="160" width="110" height="20" uuid="06f07d49-6720-4b84-8e7c-62ec49f156d4"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[EMISIÓN]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="180" width="250" height="20" uuid="0686b0ca-3e34-48ce-b50b-c2560c5ab306"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[CLAVE DE ACCESO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="400" y="160" width="140" height="20" uuid="18275732-efea-4634-a8bf-b0742480f23c"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[NORMAL]]></text>
 			</staticText>
 			<rectangle radius="8">
-				<reportElement x="0" y="90" width="270" height="160" uuid="23e43fa3-bcc3-4ed4-b029-ca460baa3ac6"/>
+				<reportElement x="0" y="90" width="270" height="181" uuid="23e43fa3-bcc3-4ed4-b029-ca460baa3ac6"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="10" y="140" width="70" height="35" uuid="e8bb8ab2-c177-4fd8-9824-1a679e0741e2"/>
+				<reportElement x="10" y="160" width="70" height="35" uuid="e8bb8ab2-c177-4fd8-9824-1a679e0741e2"/>
 				<textElement>
-					<font fontName="Calibri" size="12"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[DIRECCIÓN MATRIZ :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="175" width="70" height="35" uuid="33ca6229-9f83-4b60-9e7c-03152ddc30aa"/>
+				<reportElement x="10" y="195" width="70" height="35" uuid="33ca6229-9f83-4b60-9e7c-03152ddc30aa">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
 				<textElement>
-					<font fontName="Calibri" size="12"/>
+					<font fontName="Tahoma" size="10"/>
+					<paragraph rightIndent="0"/>
 				</textElement>
 				<text><![CDATA[DIRECCIÓN SUCURSAL :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="210" width="210" height="20" uuid="fab3d0f4-3eae-446a-858a-aa8579f6b187"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
+				<reportElement x="10" y="230" width="210" height="20" uuid="fab3d0f4-3eae-446a-858a-aa8579f6b187"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[CONTRIBUYENTE ESPECIAL :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="230" width="210" height="20" uuid="24708791-1159-4326-9ca1-69c4e0d9965b"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
+				<reportElement x="10" y="250" width="210" height="20" uuid="24708791-1159-4326-9ca1-69c4e0d9965b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[OBLIGADO A LLEVAR CONTABILIDAD :]]></text>
 			</staticText>
@@ -154,12 +157,102 @@
 				</textElement>
 				<text><![CDATA[NO TIENE LOGO]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="360" y="10" width="180" height="20" uuid="3d119679-6ac7-47d0-a754-f442535718ae"/>
+				<textElement>
+					<font fontName="Tahoma" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getRuc()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="50" width="250" height="20" uuid="50ae3bcd-111b-433e-a461-b93f7b2da6fb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No.		" + $F{infoTributaria}.getEstab() + "-" + $F{infoTributaria}.getPtoEmi() + "-" + $F{infoTributaria}.getSecuencial()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="110" width="140" height="30" uuid="9f07c8fe-6dd8-4e24-a89d-5168d076e72a"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{fechaAutorizacion},"dd/MM/yyyy HH:mm")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="140" width="140" height="20" uuid="68812ca5-c711-4175-9f90-ff7a3c7cae7f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getAmbiente().equals("2")?"PRODUCCIÓN":"PRUEBAS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="90" width="250" height="20" uuid="bb50f1ce-ee71-4fb6-8fec-49b2a01dcaa0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroAutorizacion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="100" width="250" height="40" uuid="681221c4-2905-4671-8f8b-f0c8c3a62cff"/>
+				<textElement>
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getRazonSocial()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="140" width="250" height="20" uuid="a0926e4d-0a89-41a5-b6ff-8bfcb7b9b1dc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getNombreComercial()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="160" width="180" height="35" uuid="40742c85-45fa-4e0f-bd0b-d7930f671760">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="10"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getDirMatriz()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="195" width="180" height="35" uuid="4046afce-7b06-4564-a271-6fa29be20e56">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="10"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getDirEstablecimiento()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="220" y="230" width="40" height="20" uuid="0da8ffc6-14f5-41e0-88d0-89638b962727"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getContribuyenteEspecial()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="250" width="40" height="20" uuid="cb68461d-808f-416c-abad-9a706e596a2c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getObligadoContabilidad()]]></textFieldExpression>
+			</textField>
 			<componentElement>
-				<reportElement x="290" y="201" width="250" height="30" uuid="535e78bd-9cf6-4dca-b158-412900d959a2"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Codabar" drawText="false" checksumRequired="false">
+				<reportElement x="290" y="200" width="250" height="50" uuid="53d345d4-775a-4eed-9e03-243f4baf0491"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
 					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
+			<textField>
+				<reportElement x="290" y="250" width="250" height="20" uuid="b2a67256-4146-49a8-8dc0-c2dd29a6ffe1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
