@@ -151,7 +151,7 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 		return download;
 	}
 
-	private <T> List<T> generateList(T t) {
+	public <T> List<T> generateList(T t) {
 		List<T> lista = new ArrayList<>();
 		lista.add(t);
 		return lista;
@@ -478,6 +478,22 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 			}
 
 		return bytesArray;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param srcFile
+	 * @param dirDestFile
+	 * @throws IOException
+	 */
+	public static void moveFile(File srcFile,String dirDestFile) throws IOException {
+		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+		System.out.println(servletContext.getRealPath(dirDestFile));
+		
+		FileUtils.moveFile(srcFile, new File(servletContext.getRealPath(dirDestFile).concat("/").concat(srcFile.getName())));
+		FileUtils.deleteDirectory(srcFile);
+		
 	}
 
 	/**

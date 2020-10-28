@@ -73,7 +73,7 @@ public class Comprobanterecibido implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_autorizacion", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAutorizacion;
     @Basic(optional = false)
     @NotNull

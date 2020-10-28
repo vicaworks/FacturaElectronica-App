@@ -15,29 +15,30 @@ import javax.servlet.ServletContext;
 import com.servitec.common.util.AppConfiguracion;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.engine.export.JRTextExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.export.SimpleCsvExporterConfiguration;
+import net.sf.jasperreports.export.SimpleDocxReportConfiguration;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
+import net.sf.jasperreports.export.SimpleRtfExporterConfiguration;
+import net.sf.jasperreports.export.SimpleTextExporterConfiguration;
+import net.sf.jasperreports.export.SimpleWriterExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
+import net.sf.jasperreports.export.SimpleXmlExporterOutput;
 
-@SuppressWarnings("deprecation")
 public class ReportConfigUtil implements Serializable{
 
-	
-
-	
 	/**
 	 * 
 	 */
@@ -47,8 +48,8 @@ public class ReportConfigUtil implements Serializable{
 	 * 
 	 */
 	public ReportConfigUtil() {
+		
 	}
-	
 	
 	/**
 	 * @param context
@@ -144,27 +145,6 @@ public class ReportConfigUtil implements Serializable{
         return context.getRealPath(reportDir + jasperFile);
     }
     
-	/**
-	 * 
-	 * Clase que inserta parametros en los formatos de exporter
-	 * 
-	 * @param exporter - {@link JRExporter}
-	 * @param exporterParameters - Lista de parametros a ser a�adidos {@link JRExporterParameter}
-	 */
-	@SuppressWarnings("rawtypes")
-	private static <T extends JRExporter, M extends JRExporterParameter> void setExporterParameters(
-			T exporter, Map<M, Object> exporterParameters) {
-
-		if (exporterParameters!=null){
-			
-			for (Map.Entry<M, Object> entry : exporterParameters.entrySet()) {
-				exporter.setParameter(entry.getKey(), entry.getValue());
-			}
-			
-		}
-
-	}
-    
     /**
      * @param jasperPrint
      * @param out
@@ -173,74 +153,98 @@ public class ReportConfigUtil implements Serializable{
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static <M extends JRExporterParameter> void exportReportAsExcel(JasperPrint jasperPrint, OutputStream out,
-			Map<M, Object> exporterParameters) throws JRException, FileNotFoundException, IOException {
+    public static void exportReportAsExcel(JasperPrint jasperPrint, OutputStream out,
+    		SimpleXlsReportConfiguration exporterConfiguration) throws JRException, FileNotFoundException, IOException {
          
         // coding For Excel:
         JRXlsExporter exporterXLS = new JRXlsExporter();
-        exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
-        exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
-        exporterXLS.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
-        exporterXLS.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
-        exporterXLS.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
-        exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
-        exporterXLS.setParameter(
-				JRXlsExporterParameter.MAXIMUM_ROWS_PER_SHEET, 10000);
-		exporterXLS.setParameter(
-				JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS,
-				Boolean.TRUE);
-		exporterXLS
-				.setParameter(
-						JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS,
-						Boolean.TRUE);
-		exporterXLS.setParameter(
-				JRXlsExporterParameter.IS_DETECT_CELL_TYPE,
-				Boolean.TRUE);
-		
-        setExporterParameters(exporterXLS, exporterParameters);
-        exporterXLS.exportReport();
+        exporterXLS.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporterXLS.setExporterOutput(new SimpleOutputStreamExporterOutput(out));
         
+        // configuraciones
+        SimpleXlsReportConfiguration xlsReportConfiguration = new SimpleXlsReportConfiguration();
+        xlsReportConfiguration.setOnePagePerSheet(true);
+        xlsReportConfiguration.setDetectCellType(true);
+        xlsReportConfiguration.setWhitePageBackground(true);
+        xlsReportConfiguration.setRemoveEmptySpaceBetweenRows(true);
+        xlsReportConfiguration.setRemoveEmptySpaceBetweenColumns(true);
+        xlsReportConfiguration.setMaxRowsPerSheet(10000);
+     // ===========================================================
+        if(exporterConfiguration!=null) {
+        	exporterXLS.setConfiguration(exporterConfiguration);
+        }else {
+        	exporterXLS.setConfiguration(xlsReportConfiguration);
+        }
+        exporterXLS.exportReport();
     }
     
-    
     /**
+     * @author cristianvillarreal
+     * 
      * @param jasperPrint
      * @param out
-     * @param exporterParameters
+     * @param exporterConfiguration
      * @throws JRException
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static <M extends JRExporterParameter> void exportReportAsWord(JasperPrint jasperPrint, OutputStream out,
-			Map<M, Object> exporterParameters) throws JRException, FileNotFoundException, IOException {
+    public static void exportReportAsWord(JasperPrint jasperPrint, OutputStream out,
+    		SimpleDocxReportConfiguration exporterConfiguration) throws JRException, FileNotFoundException, IOException {
          
     	JRDocxExporter exporter = new JRDocxExporter();
-
-		// JRExporterParameter
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
-		setExporterParameters(exporter, exporterParameters);
+    	exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    	exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(out));
+    	
+    	// configuracion
+    	SimpleDocxReportConfiguration docxConfiguration = new SimpleDocxReportConfiguration();
+    	
+    	// ===========================================================
+    	if(exporterConfiguration!=null) {
+    		exporter.setConfiguration(exporterConfiguration);
+        }else {
+        	exporter.setConfiguration(docxConfiguration);
+        }
+    	exporter.setConfiguration(docxConfiguration);
 		exporter.exportReport();
         
     }
     
-	public static <M extends JRExporterParameter> void exportReportAsPdf(
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param jasperPrint
+	 * @param out
+	 * @param exporterConfiguration
+	 * @throws JRException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public static void exportReportAsPdf(
 			JasperPrint jasperPrint, OutputStream out,
-			Map<M, Object> exporterParameters) throws JRException,
+			SimplePdfReportConfiguration exporterConfiguration) throws JRException,
 			FileNotFoundException, IOException {
 
 		// coding For Excel:
 		JRPdfExporter exporter = new JRPdfExporter();
-		// JRExporterParameter
-		exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint);
-		
-		exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
-		setExporterParameters(exporter, exporterParameters);
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    	exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(out));
+    	
+    	// configuracion
+    	SimplePdfReportConfiguration pdfConfiguration = new SimplePdfReportConfiguration();
+    	
+    	// ===========================================================
+    	if(exporterConfiguration!=null) {
+    		exporter.setConfiguration(exporterConfiguration);
+        }else {
+        	exporter.setConfiguration(pdfConfiguration);
+        }
 		exporter.exportReport();
 
 	}
     
 	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param jasperPrint
 	 * @param out
 	 * @param exporterParameters
@@ -248,26 +252,36 @@ public class ReportConfigUtil implements Serializable{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public static <M extends JRExporterParameter> void exportReportAsCsv(
+	public static void exportReportAsCsv(
 			JasperPrint jasperPrint, OutputStream out,
-			Map<M, Object> exporterParameters) throws JRException,
+			SimpleCsvExporterConfiguration exporterConfiguration) throws JRException,
 			FileNotFoundException, IOException {
 
 		// coding For Excel:
 		JRCsvExporter exporter = new JRCsvExporter();
-
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    	exporter.setExporterOutput(new SimpleWriterExporterOutput(out));
+		
 		// JRExporterParameter
-		exporter.setParameter(JRCsvExporterParameter.JASPER_PRINT, jasperPrint);
-		exporter.setParameter(JRCsvExporterParameter.OUTPUT_STREAM, out);
-		exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER, ",");
-
-		setExporterParameters(exporter, exporterParameters);
+    	SimpleCsvExporterConfiguration csvConfiguration = new SimpleCsvExporterConfiguration();
+    	csvConfiguration.setFieldDelimiter(",");
+    	
+    	
+    	// ===========================================================
+    	if(exporterConfiguration!=null) {
+    		exporter.setConfiguration(exporterConfiguration);
+        }else {
+        	exporter.setConfiguration(csvConfiguration);
+        }
+		
 		exporter.exportReport();
 
 	}
     
     
 	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param jasperPrint
 	 * @param out
 	 * @param exporterParameters
@@ -275,23 +289,19 @@ public class ReportConfigUtil implements Serializable{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public static <M extends JRExporterParameter> void exportReportAsXml(
-			JasperPrint jasperPrint, OutputStream out,
-			Map<M, Object> exporterParameters) throws JRException,
+	public static void exportReportAsXml(
+			JasperPrint jasperPrint, OutputStream out) throws JRException,
 			FileNotFoundException, IOException {
         
         // coding For Excel:
     	JRXmlExporter exporter = new JRXmlExporter();
+    	exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    	exporter.setExporterOutput(new SimpleXmlExporterOutput(out));
     	
     	//JRExporterParameter
-    	exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
-        setExporterParameters(exporter, exporterParameters);
         exporter.exportReport();
         
     }
-    
-    
     
     /**
      * @param jasperPrint
@@ -301,23 +311,35 @@ public class ReportConfigUtil implements Serializable{
      * @throws FileNotFoundException
      * @throws IOException
      */
-	public static <M extends JRExporterParameter> void exportReportAsRtf(
+	public static void exportReportAsRtf(
 			JasperPrint jasperPrint, OutputStream out,
-			Map<M, Object> exporterParameters) throws JRException,
+			SimpleRtfExporterConfiguration exporterConfiguration) throws JRException,
 			FileNotFoundException, IOException {
 
 		// coding For Excel:
 		JRRtfExporter exporter = new JRRtfExporter();
-
-		// JRExporterParameter
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
-		setExporterParameters(exporter, exporterParameters);
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    	exporter.setExporterOutput(new SimpleWriterExporterOutput(out));
+		
+		// confiuguration
+    	
+    	SimpleRtfExporterConfiguration rtfConfiguration = new SimpleRtfExporterConfiguration();
+    	
+    	
+    	// ===========================================================
+    	
+    	if(exporterConfiguration!=null) {
+    		exporter.setConfiguration(exporterConfiguration);
+        }else {
+        	exporter.setConfiguration(rtfConfiguration);
+        }
 		exporter.exportReport();
 
 	}
     
 	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param jasperPrint
 	 * @param out
 	 * @param exporterParameters
@@ -325,19 +347,27 @@ public class ReportConfigUtil implements Serializable{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public static <M extends JRExporterParameter> void exportReportAsText(
+	public static void exportReportAsText(
 			JasperPrint jasperPrint, OutputStream out,
-			Map<M, Object> exporterParameters) throws JRException,
+			SimpleTextExporterConfiguration exporterConfiguration) throws JRException,
 			FileNotFoundException, IOException {
 
 		// coding For Excel:
 		JRTextExporter exporter = new JRTextExporter();
-
-		// JRExporterParameter
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
-		setExporterParameters(exporter, exporterParameters);
-		exporter.exportReport();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    	exporter.setExporterOutput(new SimpleWriterExporterOutput(out));
+		// Configuracion
+		SimpleTextExporterConfiguration txtConfiguration = new SimpleTextExporterConfiguration();
+		
+		
+		
+		// ===========================================================
+    	
+    	if(exporterConfiguration!=null) {
+    		exporter.setConfiguration(exporterConfiguration);
+        }else {
+        	exporter.setConfiguration(txtConfiguration);
+        }
 
 	}
 }

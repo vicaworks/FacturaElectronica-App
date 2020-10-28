@@ -67,6 +67,7 @@ public abstract class BaseCtrl implements Serializable {
 	protected Comprobanterecibido comprobanteRecibidoSelected;
 	protected Comprobanterecibido comprobanteRecibidoTotal;
 	protected String xml;
+	protected RideCtrl rideCtrl;
 	
 	/**
 	 * 
@@ -482,6 +483,20 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setXml(String xml) {
 		this.xml = xml;
+	}
+
+	/**
+	 * @return the rideCtrl
+	 */
+	public RideCtrl getRideCtrl() {
+		return rideCtrl;
+	}
+
+	/**
+	 * @param rideCtrl the rideCtrl to set
+	 */
+	public void setRideCtrl(RideCtrl rideCtrl) {
+		this.rideCtrl = rideCtrl;
 	}
 	
 	

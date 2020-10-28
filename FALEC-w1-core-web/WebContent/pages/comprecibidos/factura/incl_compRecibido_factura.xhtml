@@ -172,8 +172,9 @@
 				</p:commandLink>
 				
 				<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-					<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
-						<!-- <f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/> -->
+					<p:menuitem value="RIDE" action="#{compRecFacturaCtrl.showRide()}" icon="fa fa-file-pdf-o">
+						<f:setPropertyActionListener value="#{fac}" target="#{compRecFacturaCtrl.comprobanteRecibidoSelected}"/>
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compRecFacturaCtrl.rideCtrl}"/>
 					</p:menuitem>
 					<p:menuitem value="Ver XML formato" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
 						<f:setPropertyActionListener value="#{fac}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>

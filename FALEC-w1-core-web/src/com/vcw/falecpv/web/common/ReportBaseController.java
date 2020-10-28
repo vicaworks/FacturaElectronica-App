@@ -19,10 +19,11 @@ import com.vcw.falecpv.web.constante.ExportarFileEnum;
 import com.vcw.falecpv.web.util.ReportConfigUtil;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.export.SimpleDocxReportConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
+import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
 
-@SuppressWarnings("deprecation")
 public abstract class ReportBaseController {
 
 	public enum TipoDataSorce {
@@ -56,8 +57,8 @@ public abstract class ReportBaseController {
 	 * @throws IOException
 	 * @throws URISyntaxException 
 	 */
-	public <T extends JRExporterParameter,P> void generarReporte(Map<String, Object> parametrosReporte,
-			Map<T, Object> exporterParameter,OutputStream out,List<P> dsCollection) throws JRException, FileNotFoundException, IOException,ParametroRequeridoException, URISyntaxException {
+	public <P> void generarReporte(Map<String, Object> parametrosReporte,
+			Object exporterParameter,OutputStream out,List<P> dsCollection) throws JRException, FileNotFoundException, IOException,ParametroRequeridoException, URISyntaxException {
 		
 		ValidarParametro.validar(getReportDir(), "Ditrectorio Reporte");
 		ValidarParametro.validar(getReportName(), "Nombre del reporte");
@@ -92,23 +93,23 @@ public abstract class ReportBaseController {
 			ReportConfigUtil.exportReportAsCsv(jasperPrint, out, exporterParameter);
 			break;*/
 		case EXCEL:
-			ReportConfigUtil.exportReportAsExcel(jasperPrint, out, exporterParameter);
+			ReportConfigUtil.exportReportAsExcel(jasperPrint, out, exporterParameter!=null?(SimpleXlsReportConfiguration)exporterParameter:null);
 			break;
 		case PDF:
-			ReportConfigUtil.exportReportAsPdf(jasperPrint, out, exporterParameter);
+			ReportConfigUtil.exportReportAsPdf(jasperPrint, out, exporterParameter!=null?(SimplePdfReportConfiguration)exporterParameter:null);
 			break;
 		case WORD:
-			ReportConfigUtil.exportReportAsWord(jasperPrint, out, exporterParameter);
+			ReportConfigUtil.exportReportAsWord(jasperPrint, out, exporterParameter!=null?(SimpleDocxReportConfiguration)exporterParameter:null);
 			break;
-		/*case RTF:
-			ReportConfigUtil.exportReportAsRtf(jasperPrint, out, exporterParameter);
-			break;
-		case TEXT:
-			ReportConfigUtil.exportReportAsText(jasperPrint, out, exporterParameter);
-			break;
-		case XML:
-			ReportConfigUtil.exportReportAsXml(jasperPrint, out, exporterParameter);
-			break;*/
+//		case RTF:
+//			ReportConfigUtil.exportReportAsRtf(jasperPrint, out, exporterParameter);
+//			break;
+//		case TEXT:
+//			ReportConfigUtil.exportReportAsText(jasperPrint, out, exporterParameter);
+//			break;
+//		case XML:
+//			ReportConfigUtil.exportReportAsXml(jasperPrint, out, exporterParameter);
+//			break;
 		default:
 			break;
 		}
@@ -124,8 +125,8 @@ public abstract class ReportBaseController {
 	 * @throws IOException
 	 * @throws URISyntaxException 
 	 */
-	public <T extends JRExporterParameter,P> void generarReporteExterno(Map<String, Object> parametrosReporte,
-			Map<T, Object> exporterParameter,OutputStream out,List<P> dsCollection,String direccionReporte) throws JRException, FileNotFoundException, IOException,ParametroRequeridoException, URISyntaxException {
+	public <P> void generarReporteExterno(Map<String, Object> parametrosReporte,
+			Object exporterParameter,OutputStream out,List<P> dsCollection,String direccionReporte) throws JRException, FileNotFoundException, IOException,ParametroRequeridoException, URISyntaxException {
 		
 		ValidarParametro.validar(getReportDir(), "Ditrectorio Reporte");
 		ValidarParametro.validar(getReportName(), "Nombre del reporte");
@@ -157,13 +158,13 @@ public abstract class ReportBaseController {
 			ReportConfigUtil.exportReportAsCsv(jasperPrint, out, exporterParameter);
 			break;*/
 		case EXCEL:
-			ReportConfigUtil.exportReportAsExcel(jasperPrint, out, exporterParameter);
+			ReportConfigUtil.exportReportAsExcel(jasperPrint, out, exporterParameter!=null?(SimpleXlsReportConfiguration)exporterParameter:null);
 			break;
 		case PDF:
-			ReportConfigUtil.exportReportAsPdf(jasperPrint, out, exporterParameter);
+			ReportConfigUtil.exportReportAsPdf(jasperPrint, out, exporterParameter!=null?(SimplePdfReportConfiguration)exporterParameter:null);
 			break;
 		case WORD:
-			ReportConfigUtil.exportReportAsWord(jasperPrint, out, exporterParameter);
+			ReportConfigUtil.exportReportAsWord(jasperPrint, out, exporterParameter!=null?(SimpleDocxReportConfiguration)exporterParameter:null);
 			break;
 		/*case RTF:
 			ReportConfigUtil.exportReportAsRtf(jasperPrint, out, exporterParameter);

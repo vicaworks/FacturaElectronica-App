@@ -8,11 +8,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -36,7 +40,9 @@ import com.vcw.falecpv.core.modelo.xml.XmlImpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlPago;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.constante.ExportarFileEnum;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.FileUtilApp;
 import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
@@ -424,6 +430,49 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		return null;
+	}
+	
+	public void showRide() {
+		try {
+			
+			for (Map.Entry<File, String> map : getAdjuntos(comprobanteRecibidoSelected).entrySet()) {
+				
+				FileUtilApp.moveFile(map.getKey(), "temp");
+				rideCtrl.setUrl("../../temp/" + map.getKey().getName());
+				
+			}
+			
+			AppJsfUtil.showModalRender("dlgRide", "formRide");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private Map<File, String> getAdjuntos(Comprobanterecibido cr){
+		try {
+			
+			Map<File, String> adjuntos = new HashMap<>();
+			
+			FileUtilApp fileUtilApp = new FileUtilApp();
+			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/"));
+			
+			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlFactura());
+			f.setFechaAutorizacion(cr.getFechaAutorizacion());
+			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
+			
+			
+			String nombredocumento= f.getInfoTributaria().getRazonSocial() + "-" + f.getInfoTributaria().getSecuencial();
+			String documento="CR-Factura-V1";
+			adjuntos.put(fileUtilApp.getFileFile(documento, f, ExportarFileEnum.PDF),nombredocumento);
+			
+			return adjuntos;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HashMap<>();
+		}
 	}
 	
 	/**

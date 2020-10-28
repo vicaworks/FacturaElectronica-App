@@ -37,6 +37,7 @@ public class RideCtrl extends BaseCtrl {
 	private StreamedContent rideFile;
 	private String idCabecera;
 	private String downloadFileName;
+	private String url;
 	
 	/**
 	 * 
@@ -59,6 +60,7 @@ public class RideCtrl extends BaseCtrl {
 
 	public void showRide() {
 		try {
+			url = "../../reportes/3768600815.pdf";
 			cargarFile();
 			Thread.sleep(2000);
 			AppJsfUtil.showModalRender("dlgRide", "formRide");
@@ -113,6 +115,22 @@ public class RideCtrl extends BaseCtrl {
 	 */
 	public void setDownloadFileName(String downloadFileName) {
 		this.downloadFileName = downloadFileName;
+	}
+
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	
