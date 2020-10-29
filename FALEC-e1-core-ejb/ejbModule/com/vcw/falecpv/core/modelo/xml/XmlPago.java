@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriNumero;
@@ -36,6 +37,9 @@ public class XmlPago implements Serializable {
     private Double plazo;
 	@XmlElement
     private String unidadTiempo;
+	
+	@XmlTransient
+	private String descripcion;
 
 	/**
 	 * 
@@ -97,6 +101,20 @@ public class XmlPago implements Serializable {
 	 */
 	public void setUnidadTiempo(String unidadTiempo) {
 		this.unidadTiempo = unidadTiempo;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

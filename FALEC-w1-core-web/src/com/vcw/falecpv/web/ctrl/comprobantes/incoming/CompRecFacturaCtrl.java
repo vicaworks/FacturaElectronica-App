@@ -456,10 +456,14 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 			FileUtilApp fileUtilApp = new FileUtilApp();
 			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/"));
 			
+			
 			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlFactura());
 			f.setFechaAutorizacion(cr.getFechaAutorizacion());
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			
+			for (XmlPago p : f.getInfoFactura().getPagoList()) {
+				p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+			}
 			
 			String nombredocumento= f.getInfoTributaria().getRazonSocial() + "-" + f.getInfoTributaria().getSecuencial();
 			String documento="CR-Factura-V1";

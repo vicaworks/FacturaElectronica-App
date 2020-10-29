@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CR-Factura-V1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="12062b0b-7d5f-467b-bcc0-60bbe245d53c">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -55,8 +58,9 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<pageHeader>
-		<band height="271" splitType="Stretch">
+	<title>
+		<band height="381">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<rectangle radius="8">
 				<reportElement x="280" y="0" width="274" height="271" uuid="061ebe86-4bd1-4627-8307-7587648bd948"/>
 			</rectangle>
@@ -253,18 +257,129 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></textFieldExpression>
 			</textField>
+			<rectangle>
+				<reportElement x="0" y="280" width="554" height="101" uuid="6eded55f-931b-4142-a2d0-955f75f989a9"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="290" width="160" height="20" uuid="b97b8006-9b8f-4176-8be6-98c000dd133a"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[Razón Social / Nombres y Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="310" width="160" height="20" uuid="c979e1b7-5e9e-4c10-9529-2b73a2e3a013"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[Identificación : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="330" width="70" height="20" uuid="cd158756-7aec-4dd3-b495-40b75d49740e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[Fecha :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="350" width="70" height="20" uuid="14bb5d1c-1360-4c20-9385-7afe6319ae02"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[Dirección :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="330" width="90" height="20" uuid="7e893719-f086-4e45-bfad-fc835f126733"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[PLaca / Matrícula : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="330" width="40" height="20" uuid="49b2acb3-d05d-463d-a8c7-5924b712238d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[Guía :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="170" y="290" width="384" height="20" uuid="19502f66-e65b-4da8-88f5-d5eff7fb41e4">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="Tahoma" size="10"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getRazonSocialComprador()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="310" width="384" height="20" uuid="fe9b1bc4-e3e2-4ad5-b029-5132b4b77e80">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="Tahoma" size="10"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getIdentificacionComprador()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="80" y="350" width="460" height="31" uuid="b7be0373-e8b9-4131-b725-8d1ec992c9ab">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="Tahoma" size="10"/>
+					<paragraph leftIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getDireccionComprador()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="80" y="330" width="120" height="20" uuid="43b03b65-bcc0-46a7-bf37-27d56e68aba1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getFechaEmision()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="290" y="330" width="90" height="20" uuid="8e7ecfbb-c97c-45a4-8f8c-eaa0adec1b3c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getPlaca()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="330" width="134" height="20" uuid="64a152c0-93dd-4eaa-93fb-b311b20c8f9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoFactura}.getGuiaRemision()]]></textFieldExpression>
+			</textField>
 		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="61" splitType="Stretch"/>
-	</columnHeader>
+	</title>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="50" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="554" height="50" uuid="5130678b-1a99-47ce-ae78-b9e3900f6d82">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{detalleList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CR-Factura-Det-V1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
+	<summary>
+		<band height="75">
+			<subreport>
+				<reportElement x="0" y="6" width="300" height="34" uuid="92abf6a2-04e7-4186-b6d0-4b6b6a2c7b8b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{campoAdicionalList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CR-Factura-Inf-V1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="45" width="300" height="30" uuid="d04e4f60-2118-4955-9e42-aea3091288c4"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{infoFactura}.getPagoList())]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CR-Factura-Pag-V1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
 </jasperReport>
