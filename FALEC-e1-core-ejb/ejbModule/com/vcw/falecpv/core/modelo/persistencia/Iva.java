@@ -73,6 +73,23 @@ public class Iva implements Serializable {
 	private Integer defecto;
 	
 	@Basic(optional = false)
+	@NotNull
+	@Column(name = "ordenfactura", nullable = false)
+	private Integer ordenfactura;
+	
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 150)
+	@Column(name = "labelfactura", nullable = false, length = 150)
+	private String labelfactura;
+	
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 1)
+	@Column(name = "estado", nullable = false, length = 1)
+	private String estado;
+	
+	@Basic(optional = false)
     @NotNull
     @Column(name = "valor", nullable = false, precision = 6, scale = 3)
     private BigDecimal valor;
@@ -234,6 +251,48 @@ public class Iva implements Serializable {
 
 	public void setCodigoIva(String codigoIva) {
 		this.codigoIva = codigoIva;
+	}
+
+	/**
+	 * @return the ordenfactura
+	 */
+	public Integer getOrdenfactura() {
+		return ordenfactura;
+	}
+
+	/**
+	 * @param ordenfactura the ordenfactura to set
+	 */
+	public void setOrdenfactura(Integer ordenfactura) {
+		this.ordenfactura = ordenfactura;
+	}
+
+	/**
+	 * @return the labelfactura
+	 */
+	public String getLabelfactura() {
+		return labelfactura;
+	}
+
+	/**
+	 * @param labelfactura the labelfactura to set
+	 */
+	public void setLabelfactura(String labelfactura) {
+		this.labelfactura = labelfactura;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public String getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	

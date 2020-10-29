@@ -82,6 +82,36 @@
 					</p:inputText>
 					<p:message for="intValor"/>
 					
+					<h:outputText value="ETIQUETA COMPROBANTE *: " styleClass="cpoRequerido"/>
+					<p:inputText id="intEtqComprobante" value="#{ivaCtrl.ivaSelected.labelfactura}" required="true" 
+						requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']} COMPROBANTE Ejm. SUBTOTAL 12%" maxlength="150"/>
+					<p:message for="intEtqComprobante"/>
+					
+					<h:outputText value="ORDEN EN LA IMPRESIÓN COMPROBANTE *: " styleClass="cpoRequerido"/>
+					<p:inputText id="intOrden" value="#{ivaCtrl.ivaSelected.ordenfactura}" required="true" 
+						requiredMessage="REQUERIDO" styleClass="Wid100" 
+						 converterMessage="SOLO NUMEROS" placeholder="ORDEN DE IMPRESION COMPROBANTE">
+						    <f:convertNumber locale="es_EC" pattern="0"/>
+							<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+					</p:inputText>
+					<p:message for="intOrden"/>
+					
+					<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
+					<h:panelGroup>
+						<p:selectOneMenu id="somEstado"
+							value="#{ivaCtrl.ivaSelected.estado}"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100" disabled="#{ivaCtrl.ivaSelected.idiva==null}">
+							
+							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+			    			
+						</p:selectOneMenu>
+					</h:panelGroup>
+					<p:message for="somEstado" />
+					
+					
 					<h:outputText value="DEFECTO * : " styleClass="cpoRequerido"/>
 						<p:selectOneMenu id="intDefecto" value="#{ivaCtrl.ivaSelected.defecto}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
 					            <f:selectItem itemLabel="Seleccione" itemValue="" />

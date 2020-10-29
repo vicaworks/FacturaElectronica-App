@@ -29,6 +29,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
@@ -191,6 +192,7 @@ public class IvaCtrl extends BaseCtrl {
 		ivaSelected = new Iva();
 		ivaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 		ivaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		ivaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 		
 	}
 	
@@ -266,21 +268,36 @@ public class IvaCtrl extends BaseCtrl {
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(2);
-				cell.setCellValue(e.getPorcentaje());
+				cell.setCellValue(e.getEstado().equals("I")?"INACTIVO":"ACTIVO");
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(3);
-				cell.setCellValue(e.getValor().doubleValue());
+				cell.setCellValue(e.getPorcentaje());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(4);
-				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
+				cell.setCellValue(e.getValor().doubleValue());
 				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(5);
+				cell.setCellValue(e.getDefecto()==1?"SI":"NO");
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(6);
+				cell.setCellValue(e.getLabelfactura());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(7);
+				cell.setCellValue(e.getOrdenfactura());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(8);
+				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
+				UtilExcel.setHSSBordeCell(cell);
+				
+				cell = row.createCell(9);
 				cell.setCellValue(e.getUpdated());
 				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
-				
 				
 				fila++;
 			}
@@ -289,7 +306,6 @@ public class IvaCtrl extends BaseCtrl {
 			wb.setActiveSheet(0);
 			sheet = wb.getSheetAt(0);
 			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
-			
 
 			// cerrando recursos
 			FileOutputStream out = new FileOutputStream(tempXls);
