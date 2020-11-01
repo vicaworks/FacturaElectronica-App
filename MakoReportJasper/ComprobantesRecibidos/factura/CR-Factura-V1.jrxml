@@ -55,6 +55,9 @@
 	<field name="numeroAutorizacion" class="java.lang.String">
 		<fieldDescription><![CDATA[numeroAutorizacion]]></fieldDescription>
 	</field>
+	<field name="totalComprobanteList" class="java.util.List">
+		<fieldDescription><![CDATA[totalComprobanteList]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -367,7 +370,7 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="75">
+		<band height="100">
 			<subreport>
 				<reportElement x="0" y="6" width="300" height="34" uuid="92abf6a2-04e7-4186-b6d0-4b6b6a2c7b8b">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -379,6 +382,14 @@
 				<reportElement positionType="Float" x="0" y="45" width="300" height="30" uuid="d04e4f60-2118-4955-9e42-aea3091288c4"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{infoFactura}.getPagoList())]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CR-Factura-Pag-V1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="313" y="0" width="241" height="40" uuid="11f89838-7be4-40ff-ac05-7530ec991d6a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{totalComprobanteList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Cr-factura-Tot-V1.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>
