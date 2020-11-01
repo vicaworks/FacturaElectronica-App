@@ -219,4 +219,36 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Iva> getLabelComprobante(String idEmpresa){
+		
+		Query q = getEntityManager().createQuery("SELECT i FROM Iva i WHERE i.estado='A' AND i.empresa.idempresa=:idEmpresa ORDER BY i.ordenfactura");
+		q.setParameter("idEmpresa", idEmpresa);
+		return q.getResultList();
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @param codigoImpuesto
+	 * @return
+	 */
+	public Iva getIva(String idEmpresa,String codigoImpuesto) {
+		
+		Query q = getEntityManager().createQuery("SELECT i FROM Iva i WHERE i.codigoIva='2' AND i.empresa.idempresa=:idEmpresa AND i.codigo=:codigo ORDER BY i.ordenfactura");
+		q.setParameter("idEmpresa", idEmpresa);
+		q.setParameter("codigo", codigoImpuesto);
+		
+		return (Iva) q.getResultList().get(0);
+		
+	}
+	
 }

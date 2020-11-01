@@ -11,7 +11,7 @@
 	
 		.compFacSriDT .ui-datatable-scrollable-body{
 			min-height: 35vh !important;
-			height: calc(100vh - 450px)!important;
+			height: calc(100vh - 465px)!important;
 		}        	
       	
       	
@@ -153,7 +153,17 @@
 			
 		</div>
 		<div class="EmptyBox5"/>
-		<p:dataTable id="compFacSriDT" var="fac"
+		
+		<div class="p-grid p-justify-start p-align-center">
+			<p:spacer width="10px"/>
+			<i class="fa fa-ellipsis-v fa-lg"/>
+			<p:spacer width="10px"/>
+			<p:commandButton disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)" value="Descargar selección" icon="fa fa-download" styleClass="secondary-button Fs10">
+				<p:fileDownload value="#{compRecFacturaCtrl.descargarSeleccion}" contentDisposition="inline"/>
+			</p:commandButton>
+		</div>
+		<div class="EmptyBox5"/>
+		<p:dataTable id="compFacSriDT" var="fac" widgetVar="w_compFacSriDT"
 						value="#{compRecFacturaCtrl.comprobanteRecibidoList}" 
 						scrollable="true"
 						emptyMessage="#{msg['mensaje.noexistenDatos']}"
@@ -164,7 +174,12 @@
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
+						rowsPerPageTemplate="10,15,20,25,30,35,40"
+						selection="#{compRecFacturaCtrl.comprobanteRecibidoSeleccionList}">
+		    
+		     <p:ajax  event="toggleSelect" listener="#{compRecFacturaCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
+		    
+		    <p:column selectionMode="multiple" style="text-align: center;width:10px" />
 		    
 		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 		    	<p:commandLink id="cmlDtFacEmitidas">
@@ -210,7 +225,7 @@
 				<h:outputText value="#{fac.rucEmisor}" />
 			</p:column>
 			
-			<p:column headerText="EMISOR" style="width:125px;" filterBy="#{fac.razonSocialEmisor}" filterMatchMode="contains">
+			<p:column headerText="EMISOR" style="width:150px;" filterBy="#{fac.razonSocialEmisor}" filterMatchMode="contains">
 				<h:outputText value="#{fac.razonSocialEmisor}" >
 				</h:outputText>
 			</p:column>

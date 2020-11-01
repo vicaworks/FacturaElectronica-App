@@ -14,6 +14,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.xml.bind.JAXBException;
 
+import org.primefaces.event.ToggleSelectEvent;
+
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -110,6 +112,7 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void consultarComprobanteRecibido(String idEmpresa,GenTipoDocumentoEnum genTipoDocumentoEnum, Date desde,Date hasta,String criterio,boolean aplicarFechas) throws DaoException {
 		comprobanteRecibidoList = null;
+		comprobanteRecibidoSeleccionList = null;
 		comprobanteRecibidoList = comprobanterecibidoServicio.getComprobanterecibidoDao().getByComprobanteEmpresa(idEmpresa, genTipoDocumentoEnum, desde, hasta, criterio,aplicarFechas);
 	}
 	
@@ -286,6 +289,15 @@ public abstract class BaseCtrl implements Serializable {
 		}else {
 			inicializarSecuencia(cabecera);
 			cabecera.setSecuencial(null);
+		}
+	}
+	
+	public void selectAllComprobantesRecibidos(ToggleSelectEvent event) {
+		if (comprobanteRecibidoSeleccionList != null) {
+			comprobanteRecibidoSeleccionList.clear();
+			if (event.isSelected()) {
+				comprobanteRecibidoSeleccionList.addAll(comprobanteRecibidoList); // Add all the elements from getSomeList()
+			}
 		}
 	}
 	

@@ -166,6 +166,7 @@ public class IceCtrl extends BaseCtrl {
 		iceSelected = new Ice();
 		iceSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 		iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		iceSelected.setCodigoIce("3");
 	}
 	
 	

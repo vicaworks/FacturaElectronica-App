@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.omnifaces.util.Faces;
 import org.primefaces.model.StreamedContent;
 
 import com.servitec.common.jsf.FacesUtil;
@@ -36,6 +37,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlDetalle;
 import com.vcw.falecpv.core.modelo.xml.XmlFactura;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlPago;
+import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.constante.ExportarFileEnum;
@@ -58,6 +60,9 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	
 	@EJB
 	private TipopagoServicio tipopagoServicio;
+	
+	@EJB
+	private ComprobanteUtilServicio comprobanteUtilServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -465,7 +470,11 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 				p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
 			}
 			
-			String nombredocumento= f.getInfoTributaria().getRazonSocial() + "-" + f.getInfoTributaria().getSecuencial();
+			// totalizar el comprobante
+			f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteFactura(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), true));
+			
+			
+			String nombredocumento= f.getInfoTributaria().getRazonSocial() + "-" + f.getInfoTributaria().getSecuencial() + ".pdf";
 			String documento="CR-Factura-V1";
 			adjuntos.put(fileUtilApp.getFileFile(documento, f, ExportarFileEnum.PDF),nombredocumento);
 			
@@ -474,6 +483,68 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new HashMap<>();
+		}
+	}
+	
+	public StreamedContent getDescargarSeleccion() {
+		try {
+			
+			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
+				return null;
+			}
+			
+			Map<File, String> map = new HashMap<>();
+			
+			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
+				map.putAll(getAdjuntos(comprobanterecibido));
+			}
+			
+			if (comprobanteRecibidoSeleccionList.size() == 1) {
+				for (Map.Entry<File, String> map2 : map.entrySet()) {
+					return AppJsfUtil.downloadFile(map2.getKey(), map2.getValue());
+				}
+			} 
+			
+			FileUtilApp.setFileMap(map);
+			String nombreFisico = FileUtilApp.zipDirectory("Facturas");
+			return FileUtilApp.downloadZip(nombreFisico, "Facturas");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	
+	public void descargarSeleccion2() {
+		try {
+			
+			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
+				return;
+			}
+			
+			Map<File, String> map = new HashMap<>();
+			
+			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
+				map.putAll(getAdjuntos(comprobanterecibido));
+			}
+			
+			if (comprobanteRecibidoSeleccionList.size() == 1) {
+				for (Map.Entry<File, String> map2 : map.entrySet()) {
+					Faces.sendFile(map2.getKey(), true);
+				}
+			}else {
+				FileUtilApp.setFileMap(map);
+				Faces.sendFile(new File(FileUtilApp.zipDirectory("Facturas")), true);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

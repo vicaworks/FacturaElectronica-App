@@ -77,9 +77,12 @@ public class XmlFactura implements Serializable {
 	// Valores transient
 	@XmlTransient
 	private Date fechaAutorizacion;
+	
 	@XmlTransient
 	private String numeroAutorizacion;
 	
+	@XmlTransient
+	private List<XmlTotalComprobante> totalComprobanteList;
 	
 	/**
 	 * 
@@ -339,6 +342,22 @@ public class XmlFactura implements Serializable {
 	 */
 	public void setNumeroAutorizacion(String numeroAutorizacion) {
 		this.numeroAutorizacion = numeroAutorizacion;
+	}
+
+
+	/**
+	 * @return the totalComprobanteList
+	 */
+	public List<XmlTotalComprobante> getTotalComprobanteList() {
+		return totalComprobanteList;
+	}
+
+
+	/**
+	 * @param totalComprobanteList the totalComprobanteList to set
+	 */
+	public void setTotalComprobanteList(List<XmlTotalComprobante> totalComprobanteList) {
+		this.totalComprobanteList = totalComprobanteList;
 	}
 	
 }

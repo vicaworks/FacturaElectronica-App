@@ -193,6 +193,7 @@ public class IvaCtrl extends BaseCtrl {
 		ivaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 		ivaSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		ivaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+		ivaSelected.setCodigoIva("2");
 		
 	}
 	
@@ -219,7 +220,6 @@ public class IvaCtrl extends BaseCtrl {
 	 */
 	public StreamedContent getFileIva()  {
 		try {
-			
 			
 			if(ivaAllList==null || ivaAllList.size()==0) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
