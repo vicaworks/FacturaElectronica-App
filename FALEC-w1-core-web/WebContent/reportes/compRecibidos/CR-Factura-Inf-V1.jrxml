@@ -48,8 +48,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="100" y="0" width="200" height="15" uuid="b235f47e-97ca-41af-a82f-c3c05523a108">
+			<textField textAdjust="ScaleFont">
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="200" height="15" uuid="b235f47e-97ca-41af-a82f-c3c05523a108">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="29ac494b-d016-4781-b079-2b7603fb8221"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
