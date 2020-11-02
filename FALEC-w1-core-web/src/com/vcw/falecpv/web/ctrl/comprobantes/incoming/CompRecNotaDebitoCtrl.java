@@ -7,8 +7,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -28,8 +31,15 @@ import com.servitec.common.util.XmlCommonsUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
+import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
+import com.vcw.falecpv.core.modelo.xml.XmlPago;
+import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
+import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.constante.ExportarFileEnum;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.FileUtilApp;
 import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
@@ -44,6 +54,15 @@ public class CompRecNotaDebitoCtrl extends BaseCtrl {
 	 * 
 	 */
 	private static final long serialVersionUID = 7254601440848632731L;
+	
+	@EJB
+	private TipopagoServicio tipopagoServicio;
+	
+	@EJB
+	private ComprobanteUtilServicio comprobanteUtilServicio;
+	
+	@EJB
+	private TipocomprobanteServicio tipocomprobanteServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -288,6 +307,94 @@ public class CompRecNotaDebitoCtrl extends BaseCtrl {
 			out.close();
 			
 			return AppJsfUtil.downloadFile(tempXls, "FALECPV-NotDebitoDetRecibidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public void showRide() {
+		try {
+			
+			for (Map.Entry<File, String> map : getAdjuntos(comprobanteRecibidoSelected).entrySet()) {
+				
+				FileUtilApp.moveFile(map.getKey(), "temp");
+				rideCtrl.setUrl("../../temp/" + map.getKey().getName());
+				
+			}
+			
+			AppJsfUtil.showModalRender("dlgRide", "formRide");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private Map<File, String> getAdjuntos(Comprobanterecibido cr){
+		try {
+			
+			Map<File, String> adjuntos = new HashMap<>();
+			
+			FileUtilApp fileUtilApp = new FileUtilApp();
+			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/notaDebito/"));
+			
+			
+			XmlNotaDebito f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlNotaDebito());
+			f.setFechaAutorizacion(cr.getFechaAutorizacion());
+			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
+			
+			// tipo de comprobante
+			f.getInfoNotaDebito().setComprobanteModificado(tipocomprobanteServicio
+					.getByTipoDocumento(
+							GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaDebito().getCodDocModificado()))
+					.getComprobante());
+			
+			for (XmlPago p : f.getInfoNotaDebito().getPagoList()) {
+				p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+			}
+			
+			// totalizar el comprobante
+			f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteNotaDebito(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			
+			
+			String nombredocumento= f.getInfoTributaria().getRazonSocial() + "-" + f.getInfoTributaria().getSecuencial() + ".pdf";
+			String documento="CR-NotaDebito-V1";
+			adjuntos.put(fileUtilApp.getFileFile(documento, f, ExportarFileEnum.PDF),nombredocumento);
+			
+			return adjuntos;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HashMap<>();
+		}
+	}
+	
+	public StreamedContent getDescargarSeleccion() {
+		try {
+			
+			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
+				return null;
+			}
+			
+			Map<File, String> map = new HashMap<>();
+			
+			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
+				map.putAll(getAdjuntos(comprobanterecibido));
+			}
+			
+			if (comprobanteRecibidoSeleccionList.size() == 1) {
+				for (Map.Entry<File, String> map2 : map.entrySet()) {
+					return AppJsfUtil.downloadFile(map2.getKey(), map2.getValue());
+				}
+			} 
+			
+			FileUtilApp.setFileMap(map);
+			String nombreFisico = FileUtilApp.zipDirectory("Facturas");
+			return FileUtilApp.downloadZip(nombreFisico, "Facturas");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

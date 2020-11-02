@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriDate;
@@ -73,6 +74,9 @@ public class XmlInfoNotaDebito implements Serializable {
 	@XmlElementRef
 	@XmlElementWrapper(name = "pagos")
 	private List<XmlPago> pagoList;
+	
+	@XmlTransient
+	private String comprobanteModificado;
 	
 	/**
 	 * 
@@ -364,6 +368,20 @@ public class XmlInfoNotaDebito implements Serializable {
 	 */
 	public void setPagoList(List<XmlPago> pagoList) {
 		this.pagoList = pagoList;
+	}
+
+	/**
+	 * @return the comprobanteModificado
+	 */
+	public String getComprobanteModificado() {
+		return comprobanteModificado;
+	}
+
+	/**
+	 * @param comprobanteModificado the comprobanteModificado to set
+	 */
+	public void setComprobanteModificado(String comprobanteModificado) {
+		this.comprobanteModificado = comprobanteModificado;
 	}
 
 }
