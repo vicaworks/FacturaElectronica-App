@@ -75,7 +75,7 @@ Principal]]></text>
 Auxiliar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="0" width="50" height="30" uuid="c81a399e-7f47-4080-9b5e-a7057dfed121">
+				<reportElement x="110" y="0" width="40" height="30" uuid="c81a399e-7f47-4080-9b5e-a7057dfed121">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="41f13210-2863-463d-a268-ce9e18d28c31"/>
 				</reportElement>
 				<box>
@@ -90,7 +90,7 @@ Auxiliar]]></text>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="0" width="153" height="30" uuid="df284669-a37c-4064-b810-f4af92d86e6d">
+				<reportElement x="150" y="0" width="163" height="30" uuid="df284669-a37c-4064-b810-f4af92d86e6d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="22b7c6ac-53ea-45da-aa27-980efd80eda9"/>
 				</reportElement>
 				<box>
@@ -221,7 +221,7 @@ Subsidio]]></text>
 				<textFieldExpression><![CDATA[$F{codigoAuxiliar}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="110" y="0" width="50" height="30" uuid="bd950fbf-433f-4ea6-a939-ee6f1fb799a4">
+				<reportElement x="110" y="0" width="40" height="30" uuid="bd950fbf-433f-4ea6-a939-ee6f1fb799a4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="41f13210-2863-463d-a268-ce9e18d28c31"/>
 				</reportElement>
 				<box>
@@ -236,7 +236,7 @@ Subsidio]]></text>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement stretchType="ContainerBottom" x="160" y="0" width="153" height="30" uuid="96cebb2c-1afb-4ce7-9a2e-22e5b91a572e">
+				<reportElement stretchType="ElementGroupBottom" x="150" y="0" width="163" height="30" uuid="96cebb2c-1afb-4ce7-9a2e-22e5b91a572e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="22b7c6ac-53ea-45da-aa27-980efd80eda9"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -249,7 +249,7 @@ Subsidio]]></text>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8"/>
-					<paragraph leftIndent="3" rightIndent="3"/>
+					<paragraph leftIndent="3" rightIndent="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
