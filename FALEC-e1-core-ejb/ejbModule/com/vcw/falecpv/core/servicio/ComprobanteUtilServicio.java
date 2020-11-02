@@ -11,8 +11,12 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
+import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
+import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.xml.XmlFactura;
+import com.vcw.falecpv.core.modelo.xml.XmlImpuestoRetencion;
 import com.vcw.falecpv.core.modelo.xml.XmlTotalComprobante;
 import com.vcw.falecpv.core.modelo.xml.XmlTotalImpuesto;
 
@@ -25,6 +29,12 @@ public class ComprobanteUtilServicio {
 
 	@Inject
 	private IvaServicio ivaServicio;
+	
+	@Inject
+	private RetencionimpuestoServicio retencionimpuestoServicio;
+	
+	@Inject
+	private TipocomprobanteServicio tipocomprobanteServicio;
 	
 	/**
 	 * @author cristianvillarreal
@@ -109,5 +119,21 @@ public class ComprobanteUtilServicio {
 		return totales;
 	}
 	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param xmlImpuestoRetencion
+	 * @throws DaoException
+	 */
+	public void populateImpuestoRetencion(XmlImpuestoRetencion xmlImpuestoRetencion)throws DaoException{
+		
+		Retencionimpuesto ri = retencionimpuestoServicio.getRetencionimpuestoDao().getByCodigoSri(xmlImpuestoRetencion.getCodigo());
+		xmlImpuestoRetencion.setDesCodigoRetencion(ri!=null?ri.getDescripcion():"");
+		
+		Tipocomprobante tc = tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(xmlImpuestoRetencion.getCodDocSustento()));
+		xmlImpuestoRetencion.setDesCodDocSustento(tc!=null?tc.getComprobante():"");
+		
+	}
 	
 }

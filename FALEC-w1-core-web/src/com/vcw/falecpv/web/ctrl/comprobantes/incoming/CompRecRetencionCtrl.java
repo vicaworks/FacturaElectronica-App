@@ -8,7 +8,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -37,10 +39,14 @@ import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuestodet;
 import com.vcw.falecpv.core.modelo.xml.XmlComprobanteRetencion;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuestoRetencion;
+import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
+import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.constante.ExportarFileEnum;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.FileUtilApp;
 import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
@@ -60,6 +66,10 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 	private RetencionimpuestoServicio retencionimpuestoServicio;
 	@EJB
 	private RetencionimpuestodetServicio retencionimpuestodetServicio;
+	@EJB
+	private TipopagoServicio tipopagoServicio;
+	@EJB
+	private ComprobanteUtilServicio comprobanteUtilServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -439,6 +449,84 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
+		return null;
+	}
+	
+	public void showRide() {
+		try {
+			
+			for (Map.Entry<File, String> map : getAdjuntos(comprobanteRecibidoSelected).entrySet()) {
+				
+				FileUtilApp.moveFile(map.getKey(), "temp");
+				rideCtrl.setUrl("../../temp/" + map.getKey().getName());
+				
+			}
+			
+			AppJsfUtil.showModalRender("dlgRide", "formRide");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private Map<File, String> getAdjuntos(Comprobanterecibido cr){
+		try {
+			
+			Map<File, String> adjuntos = new HashMap<>();
+			
+			FileUtilApp fileUtilApp = new FileUtilApp();
+			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/retencion/"));
+			
+			
+			XmlComprobanteRetencion f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlComprobanteRetencion());
+			
+			for (XmlImpuestoRetencion c : f.getImpuestoretencionList()) {
+				comprobanteUtilServicio.populateImpuestoRetencion(c);
+			}
+			
+			f.setFechaAutorizacion(cr.getFechaAutorizacion());
+			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
+			String nombredocumento= f.getInfoTributaria().getRazonSocial() + "-" + f.getInfoTributaria().getSecuencial() + ".pdf";
+			String documento="CR-Retencion-V1";
+			adjuntos.put(fileUtilApp.getFileFile(documento, f, ExportarFileEnum.PDF),nombredocumento);
+			
+			return adjuntos;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HashMap<>();
+		}
+	}
+	
+	public StreamedContent getDescargarSeleccion() {
+		try {
+			
+			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
+				return null;
+			}
+			
+			Map<File, String> map = new HashMap<>();
+			
+			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
+				map.putAll(getAdjuntos(comprobanterecibido));
+			}
+			
+			if (comprobanteRecibidoSeleccionList.size() == 1) {
+				for (Map.Entry<File, String> map2 : map.entrySet()) {
+					return AppJsfUtil.downloadFile(map2.getKey(), map2.getValue());
+				}
+			} 
+			
+			FileUtilApp.setFileMap(map);
+			String nombreFisico = FileUtilApp.zipDirectory("Retencion");
+			return FileUtilApp.downloadZip(nombreFisico, "Retencion");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 		return null;
 	}
 

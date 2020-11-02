@@ -207,5 +207,4 @@ public class XmlInfoTributaria implements Serializable {
 		this.dirMatriz = dirMatriz;
 	}
 
-
 }

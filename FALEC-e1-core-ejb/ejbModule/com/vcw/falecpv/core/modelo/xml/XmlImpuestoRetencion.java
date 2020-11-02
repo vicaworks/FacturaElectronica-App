@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriDate;
@@ -42,6 +43,13 @@ public class XmlImpuestoRetencion implements Serializable {
 	@XmlJavaTypeAdapter(XmlAdapterSriDate.class)
 	private Date fechaEmisionDocSustento;
 	
+	
+	@XmlTransient
+	private String desCodigo;
+	@XmlTransient
+	private String desCodDocSustento;
+	@XmlTransient
+	private String desCodigoRetencion;
 	
 	public XmlImpuestoRetencion() {
 		
@@ -172,6 +180,48 @@ public class XmlImpuestoRetencion implements Serializable {
 	 */
 	public void setFechaEmisionDocSustento(Date fechaEmisionDocSustento) {
 		this.fechaEmisionDocSustento = fechaEmisionDocSustento;
+	}
+
+	/**
+	 * @return the desCodigo
+	 */
+	public String getDesCodigo() {
+		return desCodigo;
+	}
+
+	/**
+	 * @param desCodigo the desCodigo to set
+	 */
+	public void setDesCodigo(String desCodigo) {
+		this.desCodigo = desCodigo;
+	}
+
+	/**
+	 * @return the desCodDocSustento
+	 */
+	public String getDesCodDocSustento() {
+		return desCodDocSustento;
+	}
+
+	/**
+	 * @param desCodDocSustento the desCodDocSustento to set
+	 */
+	public void setDesCodDocSustento(String desCodDocSustento) {
+		this.desCodDocSustento = desCodDocSustento;
+	}
+
+	/**
+	 * @return the desCodigoRetencion
+	 */
+	public String getDesCodigoRetencion() {
+		return desCodigoRetencion;
+	}
+
+	/**
+	 * @param desCodigoRetencion the desCodigoRetencion to set
+	 */
+	public void setDesCodigoRetencion(String desCodigoRetencion) {
+		this.desCodigoRetencion = desCodigoRetencion;
 	}
 
 }

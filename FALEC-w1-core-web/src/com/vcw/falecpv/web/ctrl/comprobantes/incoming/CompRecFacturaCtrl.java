@@ -22,7 +22,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.omnifaces.util.Faces;
 import org.primefaces.model.StreamedContent;
 
 import com.servitec.common.jsf.FacesUtil;
@@ -459,7 +458,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 			Map<File, String> adjuntos = new HashMap<>();
 			
 			FileUtilApp fileUtilApp = new FileUtilApp();
-			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/"));
+			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/factura/"));
 			
 			
 			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlFactura());
@@ -518,35 +517,35 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	}
 	
 	
-	public void descargarSeleccion2() {
-		try {
-			
-			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
-				return;
-			}
-			
-			Map<File, String> map = new HashMap<>();
-			
-			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
-				map.putAll(getAdjuntos(comprobanterecibido));
-			}
-			
-			if (comprobanteRecibidoSeleccionList.size() == 1) {
-				for (Map.Entry<File, String> map2 : map.entrySet()) {
-					Faces.sendFile(map2.getKey(), true);
-				}
-			}else {
-				FileUtilApp.setFileMap(map);
-				Faces.sendFile(new File(FileUtilApp.zipDirectory("Facturas")), true);
-			}
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
+//	public void descargarSeleccion2() {
+//		try {
+//			
+//			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
+//				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
+//				return;
+//			}
+//			
+//			Map<File, String> map = new HashMap<>();
+//			
+//			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
+//				map.putAll(getAdjuntos(comprobanterecibido));
+//			}
+//			
+//			if (comprobanteRecibidoSeleccionList.size() == 1) {
+//				for (Map.Entry<File, String> map2 : map.entrySet()) {
+//					Faces.sendFile(map2.getKey(), true);
+//				}
+//			}else {
+//				FileUtilApp.setFileMap(map);
+//				Faces.sendFile(new File(FileUtilApp.zipDirectory("Facturas")), true);
+//			}
+//			
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+//		}
+//	}
 	
 	/**
 	 * @return the desde

@@ -11,7 +11,7 @@
     	
     	.compRetSriDT .ui-datatable-scrollable-body{
 			min-height: 35vh !important;
-			height: calc(100vh - 450px)!important;
+			height: calc(100vh - 465px)!important;
 		}
     	
     </style>
@@ -122,7 +122,15 @@
 			
 		</div>
 		<div class="EmptyBox5"/>
-		
+		<div class="p-grid p-justify-start p-align-center">
+			<p:spacer width="10px"/>
+			<i class="fa fa-ellipsis-v fa-lg"/>
+			<p:spacer width="10px"/>
+			<p:commandButton disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)" value="Descargar selección" icon="fa fa-download" styleClass="secondary-button Fs10">
+				<p:fileDownload value="#{compRecRetencionCtrl.descargarSeleccion}" contentDisposition="inline"/>
+			</p:commandButton>
+		</div>
+		<div class="EmptyBox5"/>
 		<p:dataTable id="compRetSriDT" var="ret"
 						value="#{compRecRetencionCtrl.comprobanteRecibidoList}" 
 						scrollable="true"
@@ -134,16 +142,22 @@
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
+						rowsPerPageTemplate="10,15,20,25,30,35,40"
+						selection="#{compRecRetencionCtrl.comprobanteRecibidoSeleccionList}">
 		    
-		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+		    <p:ajax  event="toggleSelect" listener="#{compRecRetencionCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
+		    
+		    <p:column selectionMode="multiple" style="text-align: center;width:10px" />
+		    
+		    <p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
 		    	<p:commandLink id="cmlDtFacEmitidas">
 					<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 				</p:commandLink>
 				
 				<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-					<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
-						<!-- <f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/> -->
+					<p:menuitem value="RIDE" action="#{compRecRetencionCtrl.showRide()}" icon="fa fa-file-pdf-o">
+						<f:setPropertyActionListener value="#{ret}" target="#{compRecRetencionCtrl.comprobanteRecibidoSelected}"/>
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compRecRetencionCtrl.rideCtrl}"/>
 					</p:menuitem>
 					<p:menuitem value="Ver XML formato" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
 						<f:setPropertyActionListener value="#{ret}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>

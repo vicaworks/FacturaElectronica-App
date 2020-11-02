@@ -153,7 +153,6 @@
 			
 		</div>
 		<div class="EmptyBox5"/>
-		
 		<div class="p-grid p-justify-start p-align-center">
 			<p:spacer width="10px"/>
 			<i class="fa fa-ellipsis-v fa-lg"/>
@@ -177,7 +176,7 @@
 						rowsPerPageTemplate="10,15,20,25,30,35,40"
 						selection="#{compRecFacturaCtrl.comprobanteRecibidoSeleccionList}">
 		    
-		     <p:ajax  event="toggleSelect" listener="#{compRecFacturaCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
+		    <p:ajax  event="toggleSelect" listener="#{compRecFacturaCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
 		    
 		    <p:column selectionMode="multiple" style="text-align: center;width:10px" />
 		    
