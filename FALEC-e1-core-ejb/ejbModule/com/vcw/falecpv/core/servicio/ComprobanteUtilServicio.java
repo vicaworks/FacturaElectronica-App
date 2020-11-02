@@ -17,6 +17,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.xml.XmlFactura;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuestoRetencion;
+import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
 import com.vcw.falecpv.core.modelo.xml.XmlTotalComprobante;
 import com.vcw.falecpv.core.modelo.xml.XmlTotalImpuesto;
 
@@ -110,6 +111,77 @@ public class ComprobanteUtilServicio {
 			total = new XmlTotalComprobante();
 			total.setLabel("VALOR TOTAL");
 			total.setValor(BigDecimal.valueOf(factura.getInfoFactura().getImporteTotal()));
+			totales.add(total);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
+		return totales;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param nc
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<XmlTotalComprobante> populateTotalesComprobantenotaCredito(XmlNotaCredito nc,String idEmpresa)throws DaoException{
+		List<XmlTotalComprobante> totales = new ArrayList<>();
+		
+		try {
+			XmlTotalComprobante total = new XmlTotalComprobante();
+			// consultar los valores del iva
+			
+			List<Iva> ivaList = ivaServicio.getIvaDao().getLabelComprobante(idEmpresa);
+			for (Iva iva : ivaList) {
+				total = new XmlTotalComprobante();
+				total.setCodigoSri("2");
+				total.setIva(iva);
+				total.setLabel(iva.getLabelfactura());
+				
+				XmlTotalImpuesto xmlTotalImpuesto =  nc.getInfoNotaCredito().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals(iva.getCodigoIva()) && x.getCodigoPorcentaje().equals(iva.getCodigo())).findFirst().orElse(null);
+				if(xmlTotalImpuesto!=null) {
+					total.setValor(BigDecimal.valueOf(xmlTotalImpuesto.getBaseImponible()));
+				}
+				totales.add(total);
+			}
+			
+			// total sin dispuesto
+			total = new XmlTotalComprobante();
+			total.setLabel("TOTAL SIN IMPUESTOS");
+			total.setValor(BigDecimal.valueOf(nc.getInfoNotaCredito().getTotalSinImpuestos()));
+			totales.add(total);
+			
+			total = new XmlTotalComprobante();
+			total.setLabel("ICE");
+			total.setValor(BigDecimal.ZERO);
+			if(nc.getInfoNotaCredito().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("3")).count()>0) {
+				total.setValor(BigDecimal.valueOf(nc.getInfoNotaCredito().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("3")).mapToDouble(x->x.getValor()).sum()));
+			}
+			totales.add(total);
+			
+			// determinar el IVA
+			total = new XmlTotalComprobante();
+			if(nc.getInfoNotaCredito().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2") && x.getValor()>0d).count()>0) {
+				// consultar el codigo
+				XmlTotalImpuesto xmlTotalImpuesto =  nc.getInfoNotaCredito().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2") && x.getValor()>0d).findFirst().orElse(null);
+				Iva iva = ivaServicio.getIvaDao().getIva(idEmpresa, xmlTotalImpuesto.getCodigoPorcentaje());
+				
+				total.setLabel("IVA " + iva.getValor().intValue() + "%");
+				total.setValor(BigDecimal.valueOf(nc.getInfoNotaCredito().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2")).mapToDouble(x->x.getValor()).sum()));
+				
+			}else {
+				total.setLabel("IVA");
+				total.setValor(BigDecimal.ZERO);
+			}
+			totales.add(total);
+			
+			total = new XmlTotalComprobante();
+			total.setLabel("VALOR TOTAL");
+			total.setValor(BigDecimal.valueOf(nc.getInfoNotaCredito().getValorModificacion()));
 			totales.add(total);
 			
 		} catch (Exception e) {
