@@ -3,7 +3,6 @@
  */
 package com.vcw.falecpv.core.servicio.sriimportarcomp;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,7 +16,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.ws.WebServiceException;
 
 import org.dom4j.DocumentException;
 
@@ -42,11 +41,9 @@ import com.vcw.falecpv.core.servicio.ComprobanterecibidoServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
-import com.vcw.sri.ws.cliente.SriMetodos;
-import com.vcw.sri.ws.cliente.SriWsServicio;
-import com.vcw.sri.ws.cliente.dto.RespuestaComprobante;
+import com.vcw.sri.ws.ClienteWsSriServicio;
+import com.vcw.sri.ws.autorizacion.Mensaje;
 import com.vcw.sri.ws.exception.AccesoWsdlSriException;
-import com.vcw.sri.ws.exception.SriWebServiceExeption;
 
 /**
  * @author cristianvillarreal
@@ -67,91 +64,6 @@ public class SriImportarComprobantesServicio {
 	@Inject
 	private ContadorPkServicio contadorPkServicio;
 	
-	/**
-	 * @author cristianvillarreal
-	 * 
-	 * @param fileSriDto
-	 * @param sriAccesoDto
-	 * @param idEmpresa
-	 * @param idEstablecimiento
-	 * @param idusuario
-	 * @throws AccesoWsdlSriException
-	 * @throws SriWebServiceExeption
-	 * @throws IOException
-	 * @throws DocumentException
-	 * @throws DatatypeConfigurationException
-	 * @throws JAXBException
-	 * @throws DaoException
-	 * @throws ParametroRequeridoException
-	 */
-	@Lock(LockType.WRITE)
-	public void importarComprobanteFacade(FileSriDto fileSriDto, 
-			SriAccesoDto sriAccesoDto, 
-			String idEmpresa,
-			String idEstablecimiento, 
-			String idusuario)
-			throws AccesoWsdlSriException, SriWebServiceExeption, IOException, 
-			DatatypeConfigurationException, JAXBException, DaoException, ParametroRequeridoException, DocumentException {
-		
-		sriAccesoDto.setMetodoPost(
-				SriMetodos.getAutorizacionComprobantesOfflinePost(fileSriDto.getClaveAcceso()));
-		
-		RespuestaComprobante respuestaComprobante = null;
-		
-		SriWsServicio ws = new SriWsServicio();
-		ws.setWsdl(sriAccesoDto.getWsdl());
-		ws.setMetodoPost(sriAccesoDto.getMetodoPost());
-		ws.setHost(sriAccesoDto.getHost());
-		respuestaComprobante = ws.autorizacionComprobante();
-		
-		// analizar la consulta
-		// si no existe comprobante
-		if (respuestaComprobante.getAutorizacionList().get(0).getEstado()==null) {
-			fileSriDto.setRegistrado(false);
-			fileSriDto.setEstado(ImportComprobanteEnum.NO_EXISTE);
-			fileSriDto.setMensaje("NO EXISTE COMPROBANTE EN EL SISTEMA DEL SRI");
-			return;
-		}
-		
-		// si no esta autorizado
-		if(!respuestaComprobante.getAutorizacionList().get(0).getEstado().equals("AUTORIZADO")) {
-			fileSriDto.setRegistrado(false);
-			fileSriDto.setEstado(ImportComprobanteEnum.NO_AUTORIZADO);
-			if(!respuestaComprobante.getAutorizacionList().get(0).getMensajeList().isEmpty()) {
-				StringBuffer msg = new StringBuffer();
-				msg.append("COD ERROR: ");
-				msg.append(respuestaComprobante.getAutorizacionList().get(0).getMensajeList().get(0).getIdentificador());
-				msg.append(" INFO : ");
-				msg.append(respuestaComprobante.getAutorizacionList().get(0).getMensajeList().get(0).getMensaje());
-				fileSriDto.setMensaje(msg.toString());
-			}
-			return;
-		}
-		
-		// populate comprobante
-		Comprobanterecibido comprobanterecibido = populateComprobanteRecibido(fileSriDto,idEmpresa,respuestaComprobante.getAutorizacionList().get(0).getComprobante(),idusuario);
-		
-		// comprobar si existe comprobante
-		Comprobanterecibido temp = comprobanterecibidoServicio.getByComprobanteEmpresa(idEmpresa,
-				GenTipoDocumentoEnum
-						.getEnumByIdentificador(comprobanterecibido.getTipocomprobante().getIdentificador()),
-				comprobanterecibido.getClaveAcceso(), comprobanterecibido.getSerieComprobante());
-		
-		fileSriDto.setRegistrado(true);
-		if(temp!=null) {
-			// actualizar
-			comprobanterecibido.setIdcomprobanterecibido(temp.getIdcomprobanterecibido());
-			fileSriDto.setEstado(ImportComprobanteEnum.ACTUALIZADO);
-			comprobanterecibidoServicio.actualizar(comprobanterecibido);
-		}else {
-			// nuevo
-			comprobanterecibido.setIdcomprobanterecibido(contadorPkServicio.generarContadorTabla(TCComprobanteRecibido.COMPROBANTERECIBIDO, idEstablecimiento));
-			fileSriDto.setEstado(ImportComprobanteEnum.REGISTRADO);
-			comprobanterecibidoServicio.crear(comprobanterecibido);
-		}
-		
-	}
-
 	/**
 	 * @author cristianvillarreal
 	 * 
@@ -295,5 +207,91 @@ public class SriImportarComprobantesServicio {
 		
 		return c;
 	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param fileSriDto
+	 * @param sriAccesoDto
+	 * @param idEmpresa
+	 * @param idEstablecimiento
+	 * @param idusuario
+	 * @throws WebServiceException
+	 * @throws AccesoWsdlSriException
+	 * @throws UnsupportedEncodingException
+	 * @throws DocumentException
+	 * @throws DaoException
+	 * @throws JAXBException
+	 * @throws ParametroRequeridoException
+	 */
+	@Lock(LockType.WRITE)
+	public void importarComprobanteSriFacade(FileSriDto fileSriDto, 
+			SriAccesoDto sriAccesoDto, 
+			String idEmpresa,
+			String idEstablecimiento, 
+			String idusuario) throws WebServiceException, AccesoWsdlSriException, UnsupportedEncodingException, DocumentException, DaoException, JAXBException, ParametroRequeridoException {
+		
+		// 1. acceso al ws
+		ClienteWsSriServicio wsAutorizacion = new ClienteWsSriServicio(sriAccesoDto.getWsdl());
+		
+		com.vcw.sri.ws.autorizacion.RespuestaComprobante rc = wsAutorizacion.autorizacionComprobanteFacade(fileSriDto.getClaveAcceso());
+		// analizar la consulta
+		// si no existe comprobante
+		if(rc.getNumeroComprobantes()!=null) {
+			if(Integer.valueOf(rc.getNumeroComprobantes())>0) {
+				// si no esta autorizado
+				if(!rc.getAutorizaciones().getAutorizacion().get(0).getEstado().equals("AUTORIZADO")) {
+					fileSriDto.setRegistrado(false);
+					fileSriDto.setEstado(ImportComprobanteEnum.NO_AUTORIZADO);
+					if(rc.getAutorizaciones().getAutorizacion().get(0).getMensajes()!=null && !rc.getAutorizaciones().getAutorizacion().get(0).getMensajes().getMensaje().isEmpty()) {
+						Mensaje msj  = rc.getAutorizaciones().getAutorizacion().get(0).getMensajes().getMensaje().get(0);
+						StringBuffer msg = new StringBuffer();
+						msg.append("COD ERROR: ");
+						msg.append(msj.getIdentificador());
+						msg.append(" INFO : ");
+						msg.append(msj.getMensaje());
+						fileSriDto.setMensaje(msg.toString());
+					}
+					return;
+				}
+			}else {
+				fileSriDto.setRegistrado(false);
+				fileSriDto.setEstado(ImportComprobanteEnum.NO_EXISTE);
+				fileSriDto.setMensaje("NO EXISTE COMPROBANTE EN EL SISTEMA DEL SRI");
+				return;
+			}
+		}else if(rc.getAutorizaciones().getAutorizacion().get(0).getMensajes().getMensaje()!=null && rc.getAutorizaciones().getAutorizacion().get(0).getMensajes().getMensaje().size()>0) {
+			Mensaje msj  = rc.getAutorizaciones().getAutorizacion().get(0).getMensajes().getMensaje().get(0);
+			System.out.println("Cor error: " + msj.getIdentificador());
+			System.out.println("Mensaje: " + msj.getMensaje());
+			return;
+		}
+		
+		// populate comprobante
+		Comprobanterecibido comprobanterecibido = populateComprobanteRecibido(fileSriDto,idEmpresa,rc.getAutorizaciones().getAutorizacion().get(0).getComprobante(),idusuario);
+		// comprobar si existe comprobante
+		Comprobanterecibido temp = comprobanterecibidoServicio.getByComprobanteEmpresa(idEmpresa,
+				GenTipoDocumentoEnum
+						.getEnumByIdentificador(comprobanterecibido.getTipocomprobante().getIdentificador()),
+				comprobanterecibido.getClaveAcceso(), comprobanterecibido.getSerieComprobante());
+		
+		fileSriDto.setRegistrado(true);
+		if(temp!=null) {
+			// actualizar
+			comprobanterecibido.setIdcomprobanterecibido(temp.getIdcomprobanterecibido());
+			fileSriDto.setEstado(ImportComprobanteEnum.ACTUALIZADO);
+			comprobanterecibidoServicio.actualizar(comprobanterecibido);
+		}else {
+			// nuevo
+			comprobanterecibido.setIdcomprobanterecibido(contadorPkServicio.generarContadorTabla(TCComprobanteRecibido.COMPROBANTERECIBIDO, idEstablecimiento));
+			fileSriDto.setEstado(ImportComprobanteEnum.REGISTRADO);
+			comprobanterecibidoServicio.crear(comprobanterecibido);
+		}
+		
+	}
+		
+	
+	
 	
 }

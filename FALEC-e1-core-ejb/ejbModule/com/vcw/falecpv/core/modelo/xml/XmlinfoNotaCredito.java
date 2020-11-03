@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriDate;
@@ -75,6 +76,9 @@ public class XmlinfoNotaCredito implements Serializable {
 	
 	@XmlElement
 	private String motivo;
+	
+	@XmlTransient
+	private String comprobanteModificado;
 	
 	/**
 	 * 
@@ -318,6 +322,20 @@ public class XmlinfoNotaCredito implements Serializable {
 	 */
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
+	}
+
+	/**
+	 * @return the comprobanteModificado
+	 */
+	public String getComprobanteModificado() {
+		return comprobanteModificado;
+	}
+
+	/**
+	 * @param comprobanteModificado the comprobanteModificado to set
+	 */
+	public void setComprobanteModificado(String comprobanteModificado) {
+		this.comprobanteModificado = comprobanteModificado;
 	}
 
 }

@@ -117,7 +117,7 @@ Auxiliar]]></text>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="9"/>
 				</textElement>
-				<text><![CDATA[Precion
+				<text><![CDATA[Precio
 Unitario]]></text>
 			</staticText>
 			<staticText>

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.xml.ws.WebServiceException;
 
 import org.apache.commons.io.FileUtils;
 import org.primefaces.event.FileUploadEvent;
@@ -34,7 +35,6 @@ import com.vcw.falecpv.core.servicio.sriimportarcomp.SriImportarComprobantesServ
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.sri.ws.exception.AccesoWsdlSriException;
-import com.vcw.sri.ws.exception.SriWebServiceExeption;
 
 /**
  * @author cristianvillarreal
@@ -214,7 +214,7 @@ public class CompRecibidosCtrl extends BaseCtrl {
 				validar(f);
 				f.setRegistrado(false);
 				if(f.isValidacion()) {
-					sriImportarComprobantesServicio.importarComprobanteFacade(f, sriAccesoDto,
+					sriImportarComprobantesServicio.importarComprobanteSriFacade(f, sriAccesoDto,
 							AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
 							AppJsfUtil.getEstablecimiento().getIdestablecimiento(),
 							AppJsfUtil.getUsuario().getIdusuario());
@@ -247,7 +247,7 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (e instanceof AccesoWsdlSriException || e instanceof SriWebServiceExeption) {
+			if (e instanceof AccesoWsdlSriException || e instanceof WebServiceException) {
 				messageCtrl.cargarMenssage("ERROR", e.getMessage(), "ERROR");
 			}else {
 				messageCtrl.cargarMenssage("ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")), "ERROR");

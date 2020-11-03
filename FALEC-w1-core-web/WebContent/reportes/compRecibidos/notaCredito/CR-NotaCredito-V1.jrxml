@@ -322,7 +322,7 @@
 					<font fontName="Tahoma" size="10"/>
 					<paragraph leftIndent="20"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{infoNotaCredito}.getNumDocModificado()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{infoNotaCredito}.getComprobanteModificado() + ": " + $F{infoNotaCredito}.getNumDocModificado()]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont" pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement stretchType="ElementGroupHeight" x="170" y="395" width="384" height="20" uuid="935e9877-08d4-4013-8458-76c060ef363a">

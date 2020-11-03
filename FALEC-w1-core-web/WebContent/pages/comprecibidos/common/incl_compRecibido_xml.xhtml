@@ -11,7 +11,7 @@
  	</style>
 	
 	
-	<p:dialog header="XML" widgetVar="dlgCRImportXml" modal="true" responsive="true" width="60%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="XML" widgetVar="dlgCRImportXml" modal="true" responsive="true" width="80%" closeOnEscape="true" styleClass="modalResponsivo" position="center">
 		
 		<h:form id="formCRXml">
 			
@@ -29,9 +29,9 @@
 			</div>
 			
 			<div class="EmptyBox10"/>
-			<p:inputTextarea value="#{compRecibidosCtrl.comprobanteRecibidoSelected.valorXml}" styleClass="Wid100" style="max-height:350px;" rendered="#{not compRecibidosCtrl.formatoXml}">
+			<p:inputTextarea value="#{compRecibidosCtrl.comprobanteRecibidoSelected.valorXml}" styleClass="Wid100" style="max-height:450px;" rendered="#{not compRecibidosCtrl.formatoXml}">
 			</p:inputTextarea>
-			<p:inputTextarea value="#{compRecibidosCtrl.xml}" styleClass="Wid100" style="max-height:350px;" rendered="#{compRecibidosCtrl.formatoXml}">
+			<p:inputTextarea value="#{compRecibidosCtrl.xml}" styleClass="Wid100" style="max-height:450px;" rendered="#{compRecibidosCtrl.formatoXml}">
 			</p:inputTextarea>
 						
 			

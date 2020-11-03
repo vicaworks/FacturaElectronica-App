@@ -36,6 +36,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlImpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCreditoDetalle;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.constante.ExportarFileEnum;
@@ -61,6 +62,9 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 	
 	@EJB
 	private ComprobanteUtilServicio comprobanteUtilServicio;
+	
+	@EJB
+	private TipocomprobanteServicio tipocomprobanteServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -423,6 +427,12 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 			XmlNotaCredito f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlNotaCredito());
 			f.setFechaAutorizacion(cr.getFechaAutorizacion());
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
+			
+			// tipo de comprobante
+			f.getInfoNotaCredito().setComprobanteModificado(tipocomprobanteServicio
+					.getByTipoDocumento(
+							GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaCredito().getCodDocModificado()))
+					.getComprobante());
 			
 			// totalizar el comprobante
 			f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobantenotaCredito(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
