@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<factura id="comprobante" version="1.1.0">
+	<infoTributaria>
+		<ambiente>2</ambiente>
+		<tipoEmision>1</tipoEmision>
+		<razonSocial>Servicios de Telecomunicaciones SETEL S.A.</razonSocial>
+		<nombreComercial>Setel</nombreComercial>
+		<ruc>1791847652001</ruc>
+		<claveAcceso>0110202001179184765200120010010160319631603196310
+		</claveAcceso>
+		<codDoc>01</codDoc>
+		<estab>001</estab>
+		<ptoEmi>001</ptoEmi>
+		<secuencial>016031963</secuencial>
+		<dirMatriz>AV. ELOY ALFARO N44-406 Y DE LAS HIGUERAS EDIF.GRUPO
+			TVCABLE</dirMatriz>
+	</infoTributaria>
+	<infoFactura>
+		<fechaEmision>01/10/2020</fechaEmision>
+		<contribuyenteEspecial>1308</contribuyenteEspecial>
+		<obligadoContabilidad>SI</obligadoContabilidad>
+		<tipoIdentificacionComprador>05</tipoIdentificacionComprador>
+		<razonSocialComprador>CRISTIAN ALEX VILLARREAL ALEMAN
+		</razonSocialComprador>
+		<identificacionComprador>0400946125</identificacionComprador>
+		<direccionComprador>PICHINCHA - QUITO - INAQUITO ALTO - URBANO | JORGE
+			GONZALEZ #N77 Y HERNAN VASQUEZ | EDIFICIO EDIF. LUBLIANA DEPARTAMENTO
+			DPTO. 5 PISO PISO 2</direccionComprador>
+		<totalSinImpuestos>51.86</totalSinImpuestos>
+		<totalDescuento>0.00</totalDescuento>
+		<totalConImpuestos>
+			<totalImpuesto>
+				<codigo>3</codigo>
+				<codigoPorcentaje>3092</codigoPorcentaje>
+				<baseImponible>23.45</baseImponible>
+				<tarifa>15.00</tarifa>
+				<valor>3.52</valor>
+			</totalImpuesto>
+			<totalImpuesto>
+				<codigo>2</codigo>
+				<codigoPorcentaje>2</codigoPorcentaje>
+				<baseImponible>55.38</baseImponible>
+				<tarifa>12.00</tarifa>
+				<valor>6.65</valor>
+			</totalImpuesto>
+		</totalConImpuestos>
+		<propina>0.00</propina>
+		<importeTotal>62.03</importeTotal>
+		<moneda>DOLAR</moneda>
+		<pagos>
+			<pago>
+				<formaPago>19</formaPago>
+				<total>62.03</total>
+				<plazo>10</plazo>
+				<unidadTiempo>dias</unidadTiempo>
+			</pago>
+		</pagos>
+	</infoFactura>
+	<detalles>
+		<detalle>
+			<codigoPrincipal>39-0000003-500145</codigoPrincipal>
+			<descripcion>REVISTA - Nuevo Basico</descripcion>
+			<cantidad>1.00</cantidad>
+			<precioUnitario>1.50</precioUnitario>
+			<descuento>0.00</descuento>
+			<precioTotalSinImpuesto>1.50</precioTotalSinImpuesto>
+			<detallesAdicionales>
+				<detAdicional nombre="Desde" valor="0" />
+				<detAdicional nombre="Hasta" valor="0" />
+				<detAdicional nombre="Categoria"
+					valor="TELEVISION|(IVA)" />
+			</detallesAdicionales>
+			<impuestos>
+				<impuesto>
+					<codigo>2</codigo>
+					<codigoPorcentaje>2</codigoPorcentaje>
+					<tarifa>12.00</tarifa>
+					<baseImponible>1.50</baseImponible>
+					<valor>0.18</valor>
+				</impuesto>
+			</impuestos>
+		</detalle>
+		<detalle>
+			<codigoPrincipal>44-0000003-500145</codigoPrincipal>
+			<descripcion>SERVICIO ADICIONAL - Nuevo Basico</descripcion>
+			<cantidad>1.00</cantidad>
+			<precioUnitario>5.00</precioUnitario>
+			<descuento>0.00</descuento>
+			<precioTotalSinImpuesto>5.00</precioTotalSinImpuesto>
+			<detallesAdicionales>
+				<detAdicional nombre="Desde" valor="0" />
+				<detAdicional nombre="Hasta" valor="0" />
+				<detAdicional nombre="Categoria"
+					valor="TELEVISION|(ICE+IVA)" />
+			</detallesAdicionales>
+			<impuestos>
+				<impuesto>
+					<codigo>3</codigo>
+					<codigoPorcentaje>3092</codigoPorcentaje>
+					<tarifa>15.00</tarifa>
+					<baseImponible>5.00</baseImponible>
+					<valor>0.75</valor>
+				</impuesto>
+				<impuesto>
+					<codigo>2</codigo>
+					<codigoPorcentaje>2</codigoPorcentaje>
+					<tarifa>12.00</tarifa>
+					<baseImponible>5.75</baseImponible>
+					<valor>0.69</valor>
+				</impuesto>
+			</impuestos>
+		</detalle>
+		<detalle>
+			<codigoPrincipal>43-0000003-500145</codigoPrincipal>
+			<descripcion>SERVICIO PRINCIPAL - Nuevo Basico</descripcion>
+			<cantidad>1.00</cantidad>
+			<precioUnitario>18.45</precioUnitario>
+			<descuento>0.00</descuento>
+			<precioTotalSinImpuesto>18.45</precioTotalSinImpuesto>
+			<detallesAdicionales>
+				<detAdicional nombre="Desde" valor="0" />
+				<detAdicional nombre="Hasta" valor="0" />
+				<detAdicional nombre="Categoria"
+					valor="TELEVISION|(ICE+IVA)" />
+			</detallesAdicionales>
+			<impuestos>
+				<impuesto>
+					<codigo>3</codigo>
+					<codigoPorcentaje>3092</codigoPorcentaje>
+					<tarifa>15.00</tarifa>
+					<baseImponible>18.45</baseImponible>
+					<valor>2.77</valor>
+				</impuesto>
+				<impuesto>
+					<codigo>2</codigo>
+					<codigoPorcentaje>2</codigoPorcentaje>
+					<tarifa>12.00</tarifa>
+					<baseImponible>21.22</baseImponible>
+					<valor>2.55</valor>
+				</impuesto>
+			</impuestos>
+		</detalle>
+		<detalle>
+			<codigoPrincipal>939-0000003-500145</codigoPrincipal>
+			<descripcion>Servicio Internet - INT Mejorado 2:1</descripcion>
+			<cantidad>1.00</cantidad>
+			<precioUnitario>26.91</precioUnitario>
+			<descuento>0.00</descuento>
+			<precioTotalSinImpuesto>26.91</precioTotalSinImpuesto>
+			<detallesAdicionales>
+				<detAdicional nombre="Desde" valor="0" />
+				<detAdicional nombre="Hasta" valor="0" />
+				<detAdicional nombre="Categoria" valor="INTERNET|(IVA)" />
+			</detallesAdicionales>
+			<impuestos>
+				<impuesto>
+					<codigo>2</codigo>
+					<codigoPorcentaje>2</codigoPorcentaje>
+					<tarifa>12.00</tarifa>
+					<baseImponible>26.91</baseImponible>
+					<valor>3.23</valor>
+				</impuesto>
+			</impuestos>
+		</detalle>
+	</detalles>
+	<infoAdicional>
+		<campoAdicional nombre="MarketInfo">102020MK02|102020DEFAULT_PUB01
+		</campoAdicional>
+		<campoAdicional nombre="LinkInfo">http://wa.me/593968600400|http://supermercadosantamaria.com/
+		</campoAdicional>
+		<campoAdicional nombre="Mensajes">vacio|vacio|vacio
+		</campoAdicional>
+		<campoAdicional nombre="CorreoInfo">22 de AGOSTO 2020 al 22 de
+			SEPTIEMBRE 2020;01 de OCTUBRE 2020;10 de OCTUBRE 2020
+		</campoAdicional>
+		<campoAdicional nombre="EstCuenta">0.00|0.00|62.03|22 AGO 2020|22
+			SEP 2020|01 OCT 2020|10 OCT 2020|62.03</campoAdicional>
+		<campoAdicional nombre="CodigoInterno">110603243</campoAdicional>
+		<campoAdicional nombre="Contrato">4818111</campoAdicional>
+		<campoAdicional nombre="Cuenta">15964550</campoAdicional>
+		<campoAdicional nombre="FormatoPriori">OTR|MAS|SI</campoAdicional>
+		<campoAdicional nombre="DatosExternos">OTR|Descuentos solo aplican IVA
+		</campoAdicional>
+		<campoAdicional nombre="ordenCompra">0</campoAdicional>
+		<campoAdicional nombre="Correo">cristian.villarreal.aleman@gmail.com
+		</campoAdicional>
+		<campoAdicional nombre="PagueHasta">10/10/2020</campoAdicional>
+		<campoAdicional nombre="Convenio">0|0|0.00|0.00</campoAdicional>
+	</infoAdicional>
+	<ds:Signature
+		xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+		xmlns:etsi="http://uri.etsi.org/01903/v1.3.2#" Id="Signature539846">
+		<ds:SignedInfo Id="Signature-SignedInfo476000">
+			<ds:CanonicalizationMethod
+				Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+			<ds:SignatureMethod
+				Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+			<ds:Reference Id="SignedPropertiesID84381"
+				Type="http://uri.etsi.org/01903#SignedProperties"
+				URI="#Signature539846-SignedProperties496469">
+				<ds:DigestMethod
+					Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+				<ds:DigestValue>5BbnFepoCoqnlIk8KucP2ZA/fnE=</ds:DigestValue>
+			</ds:Reference>
+			<ds:Reference URI="#Certificate1929063">
+				<ds:DigestMethod
+					Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+				<ds:DigestValue>/DTc8d1s8K1tdfPye9n6f+D8qFg=</ds:DigestValue>
+			</ds:Reference>
+			<ds:Reference Id="Reference-ID-759210"
+				URI="#comprobante">
+				<ds:Transforms>
+					<ds:Transform
+						Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+				</ds:Transforms>
+				<ds:DigestMethod
+					Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+				<ds:DigestValue>QZuB4ujEqh21VQv76vOB+6Qosws=</ds:DigestValue>
+			</ds:Reference>
+		</ds:SignedInfo>
+		<ds:SignatureValue Id="SignatureValue852587">
+			Tww02hlUUK7Aeq0ue42JQHusDbTEKTNp+9PmArPHZC3pfmaikfZ+hnyLEp1CayctpK2kV/o0zsST
+			c4cgZP+OkVDnffnijA+MCVm4WACUDweZtfbvtktGHddyS0MvIh6FTeer/YbTZlapO+2Ez7eN4jCT
+			cruDDcjzgtVHgjjS7yd8hcxQU5Z0nKwgx98zGQe7Dmn+GBrRMYXEYp/kP0vwSZYOkM0kZl73VnfW
+			ZJGmShA5xYLGxdbtZejYdFjb1sx+PDgAFYW9AnbJv0uICI/rgEvIvcqD2NFGozYkkXQaKUUpP/eu
+			LreN6uBAA7qaA0aCsFIFx+HzlEq1Jk52YrUing==
+		</ds:SignatureValue>
+		<ds:KeyInfo Id="Certificate1929063">
+			<ds:X509Data>
+				<ds:X509Certificate>
+					MIIMHTCCCgWgAwIBAgIIDdQD81vpikUwDQYJKoZIhvcNAQELBQAwgZoxFjAUBgNVBAUTDTE3OTI2
+					MDEyMTUwMDExGDAWBgNVBAMMD0FORiBFY3VhZG9yIENBMTELMAkGA1UEBhMCRUMxIzAhBgNVBAsM
+					GkFORiBBdXRvcmlkYWQgUmFpeiBFY3VhZG9yMTQwMgYDVQQKDCtBTkZBQyBBdXRvcmlkYWQgZGUg
+					Q2VydGlmaWNhY2lvbiBFY3VhZG9yIENBMB4XDTE5MTEwNDA5MzAwNFoXDTIxMTEwMzA5MzAwNFow
+					ggIrMRYwFAYDVQQFEw0xNzkxODQ3NjUyMDAxMRYwFAYDVQRhEw0xNzkxODQ3NjUyMDAxMXwwegYD
+					VQQNDHNSZWcuIFB1Yi46ICBJbnNjcmlwY2nDs246ICBDYXJnbzpSRVBSRVNFTlRBTlRFIExFR0FM
+					ICBOb3RhcmlvOiAgIE7Dum0uIFByb3RvY29sbzogIEZlY2hhIGRlIE90b3JnYW1pZW50bzoyOS8x
+					MC8yMDE5MRwwGgYDVQQMDBNSRVBSRVNFTlRBTlRFIExFR0FMMTMwMQYDVQQKDCpTRVJWSUNJT1Mg
+					REUgVEVMRUNPTVVOSUNBQ0lPTkVTIFNFVEVMIFMuQS4xFTATBgNVBAQMDFNPU0EgRVNDT0JBUjEV
+					MBMGA1UEKgwMTUFOVUVMIE1BUklBMSwwKgYJKoZIhvcNAQkBFh1zb3NhZXNjb2Jhcm1hbnVlbEB5
+					b3BtYWlsLmNvbTFKMEgGA1UECwxBQ2VydGlmaWNhZG8gZGUgUmVwcmVzZW50YW50ZSBMZWdhbCBk
+					ZSBQZXJzb25hIEp1cmlkaWNhIEVDIChGSVJNQSkxDjAMBgNVBAcMBVFVSVRPMRIwEAYDVQQIDAlQ
+					SUNISU5DSEExCzAJBgNVBAYTAkVDMTMwMQYDVQQDDCpTRVJWSUNJT1MgREUgVEVMRUNPTVVOSUNB
+					Q0lPTkVTIFNFVEVMIFMuQS4xGjAYBgorBgEEAYGTFgEBEwoxNzE5MDEzOTM4MIIBIjANBgkqhkiG
+					9w0BAQEFAAOCAQ8AMIIBCgKCAQEAguDH6/VY6dCV3h7jO1I8tMB90x27J+FLyDhTB8ntcKgUQtpU
+					X2lJ+FZ0B0EvTMDQC4Hhr6QE1xD+H4WpIi7GDPGtnNbbjGkwT8seYM1cPzMVK0Wj5ktEmkuBgh7C
+					QSm6FZV5i1cRwlfuqXuVhFYWddGRFU8gBeFfbZtUV7x/E91CpZDCi3UWZ80OH+I34UU/BKKqFrwv
+					ce8oBhb7wSDqN5TWUt245jZOa5EY+fp+TZsLhHuLn4fe4kfhxwL3lfI1TpwRY8myqSYCJ2kl4Kps
+					jvpCpxHcbAh0xs8MqoFi03XpEdR0Md72ixppwiGRqdRntrq+Df2aG1D5wNz35V9OfQIDAQABo4IF
+					0TCCBc0wHwYDVR0jBBgwFoAUNJyTJrWWWDBIiFe3LtzUMecNHEswHQYDVR0OBBYEFNaLsA/4HI22
+					Ou85Y33DYkEpvvTlMCgGA1UdEQQhMB+BHXNvc2Flc2NvYmFybWFudWVsQHlvcG1haWwuY29tMA4G
+					A1UdDwEB/wQEAwIGwDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwQQYDVR0fBDowODA2
+					oDSgMoYwaHR0cDovL3d3dy5hbmYuZXMvY3JsL0FORl9FY3VhZG9yX0NBMV9TSEEyNTYuY3JsMIIB
+					AwYDVR0gBIH7MIH4MIHfBgwrBgEEAYGPHAIFAQMwgc4wKAYIKwYBBQUHAgEWHGh0dHA6Ly93d3cu
+					YW5mLmVzL2RvY3VtZW50b3MwgaEGCCsGAQUFBwICMIGUDIGRQ2VydGlmaWNhZG8gY29uZm9ybWUg
+					YSBsYSBsZWdpc2xhY2nDs24gZGUgZmlybWEgZWxlY3Ryw7NuaWNhLiBBbnRlcyBkZSBhY2VwdGFy
+					bG8gY29tcHJ1ZWJlIGludGVncmlkYWQsIGxpbWl0YWNpb25lcywgdmlnZW5jaWEgeSB1c29zIGF1
+					dG9yaXphZG9zLjAJBgcEAIvsQAEAMAkGB2CFVAEDBQgwgZQGCCsGAQUFBwEBBIGHMIGEMCcGCCsG
+					AQUFBzABhhtodHRwOi8vb2NzcC5hbmYuZXMvc3BhaW4vQVYwWQYIKwYBBQUHMAKGTWh0dHA6Ly93
+					d3cuYW5mLmVzL2VzL2NlcnRpZmljYXRlc19kb3dubG9hZC9BTkZfR2xvYmFsX1Jvb3RfQ0FfU0hB
+					MjU2XzIwMzYuY2VyMAwGA1UdEwEB/wQCMAAwJgYKKwYBBAGBjxwTAQQYDBY1MDcyMi0zNDc4NDgy
+					NjcxNjM0MzUwMCIGCSsGAQQBgY8cEwQVDBMxNTIyODQ2MzktMTM2MTE0MjE2MB0GCisGAQQBgY8c
+					AwsEDwwNMTc5MTg0NzY1MjAwMTA1BgorBgEEAYGPHAMKBCcMJVNFUlZJQ0lPUyBERSBURUxFQ09N
+					VU5JQ0FDSU9ORVMgU0VURUwwGgYKKwYBBAGBjxwvAQQMDAoxODU2OTQwMzY1MIIBJQYDVR0JBIIB
+					HDCCARgwNQYLKwYBBAGCNzwCAQExJhMkQVYuIEVMT1kgQUxGQVJPIE40NC00MDYgTEFTIEhJR1VF
+					UkFTMBoGCysGAQQBgjc8AgECMQsTCVBJQ0hJTkNIQTAnBgorBgEEAYGPHCgBMRkTF0NFUlRJRklD
+					QURPIENVQUxJRklDQURPMBQGCisGAQQBgY8cKQExBhMEMTAwMDAVBgNVBCoxDhMMTUFOVUVMIE1B
+					UklBMBUGA1UEBDEOEwxTT1NBIEVTQ09CQVIwHgYKKwYBBAGBjxwqCzEQEw5ESUxBTiBWQUxFTkNJ
+					QTAeBgorBgEEAYGPHCoNMRATDkRJTEFOIFZBTEVOQ0lBMBYGCisGAQQBgY8cKgExCBMGQkNOLTAw
+					MBUGCisGAQQBgY8cAwkEBwwFUVVJVE8wNAYKKwYBBAGBjxwDBwQmDCRBVi4gRUxPWSBBTEZBUk8g
+					TjQ0LTQwNiBMQVMgSElHVUVSQVMwFwYKKwYBBAGBjxwDBAQJDAdFU0NPQkFSMBQGCisGAQQBgY8c
+					AwMEBgwEU09TQTATBgorBgEEAYGPHC4BBAUMAzczMDAcBgorBgEEAYGPHAMCBA4MDE1BTlVFTCBN
+					QVJJQTAaBgorBgEEAYGPHAMBBAwMCjE3MTkwMTM5MzgwgZAGCCsGAQUFBwEDBIGDMIGAMAgGBgQA
+					jkYBATAVBgYEAI5GAQIwCxMDRVVSAgEBAgEDMAsGBgQAjkYBAwIBDzAkBgYEAI5GAQUwGjAYFhJo
+					dHRwczovL2FuZi5lcy9lbi8TAmVuMBMGBgQAjkYBBjAJBgcEAI5GAQYBMAkGBwQAi+xJAQEwCgYI
+					KwYBBQUHCwIwDQYJKoZIhvcNAQELBQADggIBAG5QgQm3UlQe+Z/Vj0PV9AfjHj1wemO9+ickOvBQ
+					Dry70YwrRe5aMBseLBEI1ZPEC2YcUuqjlN8dIaYOOE6OhkDprhf6BK4k+zwEX1wZ8vVATlkTPrxk
+					Mmui5WcRDNquip9Q4/uZCWw1tkd7xh/a4mn2MU4jplT38tlD20V/fu5QiSj8X2sPBicS6BfGHBdK
+					5YpK23FyRDpTC1HHgEnprG29LNgegXpenzfgb3Ufw7XiscEhMCRw425n6wiiBHgj26m1vQXcNLu9
+					Td3pXFy/7lVsEbWZQ4mr2t9Sjljn7Z1udC92HubpikgxqI82smayHIOW914q9/9Gr9ukjKuitHeU
+					fKKhEVGbZTE576EwDFSccBZAio6Jdufb2Y9LxvYP4qaHiSEINdSZ4c1i8H4sROXKDBmujIbIeqIj
+					d1cShhrPUvItwdjJ0G3Y0g3hXFTJyZXPjnhoAkWDfAAxdFuGv86GzJuP3xZ4HCWK9mK//qZFtqKr
+					zQ9+PGgE24NaQP0XFIMr6ExYqFxJ5N1FCVFFzPK/78lFlXJrGDVywYxY10GAFuk68hX/mCgAGTMM
+					ZwClqlJo4V4J83wCnp9RYDVXkiN6EBOdA7ew/SunWiHUn5/n2H898jrDHhKc/lgEkr+djLKftbv+
+					dGbrcIhISaIz2hb04daxml/7d+L2n678a7Vr
+				</ds:X509Certificate>
+			</ds:X509Data>
+			<ds:KeyValue>
+				<ds:RSAKeyValue>
+					<ds:Modulus>
+						guDH6/VY6dCV3h7jO1I8tMB90x27J+FLyDhTB8ntcKgUQtpUX2lJ+FZ0B0EvTMDQC4Hhr6QE1xD+
+						H4WpIi7GDPGtnNbbjGkwT8seYM1cPzMVK0Wj5ktEmkuBgh7CQSm6FZV5i1cRwlfuqXuVhFYWddGR
+						FU8gBeFfbZtUV7x/E91CpZDCi3UWZ80OH+I34UU/BKKqFrwvce8oBhb7wSDqN5TWUt245jZOa5EY
+						+fp+TZsLhHuLn4fe4kfhxwL3lfI1TpwRY8myqSYCJ2kl4KpsjvpCpxHcbAh0xs8MqoFi03XpEdR0
+						Md72ixppwiGRqdRntrq+Df2aG1D5wNz35V9OfQ==
+					</ds:Modulus>
+					<ds:Exponent>AQAB</ds:Exponent>
+				</ds:RSAKeyValue>
+			</ds:KeyValue>
+		</ds:KeyInfo>
+		<ds:Object Id="Signature539846-Object512854">
+			<etsi:QualifyingProperties
+				Target="#Signature539846">
+				<etsi:SignedProperties
+					Id="Signature539846-SignedProperties496469">
+					<etsi:SignedSignatureProperties>
+						<etsi:SigningTime>2020-09-30T01:44:27-05:00</etsi:SigningTime>
+						<etsi:SigningCertificate>
+							<etsi:Cert>
+								<etsi:CertDigest>
+									<ds:DigestMethod
+										Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+									<ds:DigestValue>3MRm32jX9LxGurcKYbhXfKPgtM4=</ds:DigestValue>
+								</etsi:CertDigest>
+								<etsi:IssuerSerial>
+									<ds:X509IssuerName>O=ANFAC Autoridad de Certificacion Ecuador
+										CA,OU=ANF Autoridad Raiz Ecuador,C=EC,CN=ANF Ecuador
+										CA1,2.5.4.5=#130d31373932363031323135303031</ds:X509IssuerName>
+									<ds:X509SerialNumber>996425761309690437</ds:X509SerialNumber>
+								</etsi:IssuerSerial>
+							</etsi:Cert>
+						</etsi:SigningCertificate>
+					</etsi:SignedSignatureProperties>
+					<etsi:SignedDataObjectProperties>
+						<etsi:DataObjectFormat
+							ObjectReference="#Reference-ID-759210">
+							<etsi:Description>comprobante</etsi:Description>
+							<etsi:MimeType>text/xml</etsi:MimeType>
+						</etsi:DataObjectFormat>
+					</etsi:SignedDataObjectProperties>
+				</etsi:SignedProperties>
+			</etsi:QualifyingProperties>
+		</ds:Object>
+	</ds:Signature>
+</factura>
