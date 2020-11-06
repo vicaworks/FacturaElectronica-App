@@ -429,10 +429,13 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			
 			// tipo de comprobante
-			f.getInfoNotaCredito().setComprobanteModificado(tipocomprobanteServicio
-					.getByTipoDocumento(
-							GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaCredito().getCodDocModificado()))
-					.getComprobante());
+			f.getInfoNotaCredito().setComprobanteModificado("");
+			if(GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaCredito().getCodDocModificado())!=null) {
+				f.getInfoNotaCredito().setComprobanteModificado(tipocomprobanteServicio
+						.getByTipoDocumento(
+								GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaCredito().getCodDocModificado()))
+						.getComprobante());
+			}
 			
 			// totalizar el comprobante
 			f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobantenotaCredito(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));

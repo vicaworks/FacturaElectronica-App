@@ -347,13 +347,17 @@ public class CompRecNotaDebitoCtrl extends BaseCtrl {
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			
 			// tipo de comprobante
-			f.getInfoNotaDebito().setComprobanteModificado(tipocomprobanteServicio
-					.getByTipoDocumento(
-							GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaDebito().getCodDocModificado()))
-					.getComprobante());
-			
-			for (XmlPago p : f.getInfoNotaDebito().getPagoList()) {
-				p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+			f.getInfoNotaDebito().setComprobanteModificado("");
+			if(GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaDebito().getCodDocModificado())!=null) {
+				f.getInfoNotaDebito().setComprobanteModificado(tipocomprobanteServicio
+						.getByTipoDocumento(
+								GenTipoDocumentoEnum.getEnumByIdentificador(f.getInfoNotaDebito().getCodDocModificado()))
+						.getComprobante());
+			}
+			if(f.getInfoNotaDebito().getPagoList()!=null) {
+				for (XmlPago p : f.getInfoNotaDebito().getPagoList()) {
+					p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+				}
 			}
 			
 			// totalizar el comprobante

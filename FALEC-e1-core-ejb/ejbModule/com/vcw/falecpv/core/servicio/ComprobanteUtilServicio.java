@@ -279,8 +279,12 @@ public class ComprobanteUtilServicio {
 		Retencionimpuesto ri = retencionimpuestoServicio.getRetencionimpuestoDao().getByCodigoSri(xmlImpuestoRetencion.getCodigo());
 		xmlImpuestoRetencion.setDesCodigoRetencion(ri!=null?ri.getDescripcion():"");
 		
-		Tipocomprobante tc = tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(xmlImpuestoRetencion.getCodDocSustento()));
-		xmlImpuestoRetencion.setDesCodDocSustento(tc!=null?tc.getComprobante():"");
+		System.out.println("=== " + xmlImpuestoRetencion.getCodDocSustento());
+		xmlImpuestoRetencion.setDesCodDocSustento("NA");
+		if(GenTipoDocumentoEnum.getEnumByIdentificador(xmlImpuestoRetencion.getCodDocSustento())!=null) {
+			Tipocomprobante tc = tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(xmlImpuestoRetencion.getCodDocSustento()));
+			xmlImpuestoRetencion.setDesCodDocSustento(tc!=null?tc.getComprobante():"");
+		}
 		
 	}
 	
@@ -291,9 +295,13 @@ public class ComprobanteUtilServicio {
 	 * @throws DaoException
 	 */
 	public void populateGuiaRemision(XmlGuiaRemision xmlGuiaRemision)throws DaoException{
-		
-		for (XmlDestinatario d : xmlGuiaRemision.getDestinatarioList()) {
-			d.setTipoDocSustento(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(d.getCodDocSustento())).getComprobante());
+		if(xmlGuiaRemision.getDestinatarioList()!=null) {
+			for (XmlDestinatario d : xmlGuiaRemision.getDestinatarioList()) {
+				d.setTipoDocSustento("");
+				if(GenTipoDocumentoEnum.getEnumByIdentificador(d.getCodDocSustento())!=null) {
+					d.setTipoDocSustento(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(d.getCodDocSustento())).getComprobante());
+				}
+			}
 		}
 		
 	}

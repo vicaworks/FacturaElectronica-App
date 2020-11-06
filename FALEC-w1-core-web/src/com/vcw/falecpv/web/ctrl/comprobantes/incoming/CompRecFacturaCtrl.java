@@ -455,6 +455,8 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	private Map<File, String> getAdjuntos(Comprobanterecibido cr){
 		try {
 			
+			System.out.println(cr.getSerieComprobante());
+			
 			Map<File, String> adjuntos = new HashMap<>();
 			
 			FileUtilApp fileUtilApp = new FileUtilApp();
@@ -465,8 +467,10 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 			f.setFechaAutorizacion(cr.getFechaAutorizacion());
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			
-			for (XmlPago p : f.getInfoFactura().getPagoList()) {
-				p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+			if(f.getInfoFactura().getPagoList()!=null) {
+				for (XmlPago p : f.getInfoFactura().getPagoList()) {
+					p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+				}
 			}
 			
 			// totalizar el comprobante
