@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriDate;
@@ -57,6 +58,10 @@ public class XmlDestinatario implements Serializable {
 	@XmlElementRef
 	@XmlElementWrapper(name = "detalles")
 	private List<XmlDestinatarioDetalle> destinatarioDetallesList;
+	
+	
+	@XmlTransient
+	private String tipoDocSustento;
 	
 	/**
 	 * 
@@ -230,6 +235,20 @@ public class XmlDestinatario implements Serializable {
 	 */
 	public void setDestinatarioDetallesList(List<XmlDestinatarioDetalle> destinatarioDetallesList) {
 		this.destinatarioDetallesList = destinatarioDetallesList;
+	}
+
+	/**
+	 * @return the tipoDocSustento
+	 */
+	public String getTipoDocSustento() {
+		return tipoDocSustento;
+	}
+
+	/**
+	 * @param tipoDocSustento the tipoDocSustento to set
+	 */
+	public void setTipoDocSustento(String tipoDocSustento) {
+		this.tipoDocSustento = tipoDocSustento;
 	}
 
 }

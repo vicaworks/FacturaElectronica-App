@@ -7,8 +7,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -31,8 +34,11 @@ import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
 import com.vcw.falecpv.core.modelo.xml.XmlDestinatario;
 import com.vcw.falecpv.core.modelo.xml.XmlDestinatarioDetalle;
 import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
+import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.constante.ExportarFileEnum;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.FileUtilApp;
 import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
@@ -47,6 +53,9 @@ public class CompRecGuiaRemCtrl extends BaseCtrl {
 	 * 
 	 */
 	private static final long serialVersionUID = 7254601440848632731L;
+	
+	@EJB
+	private ComprobanteUtilServicio comprobanteUtilServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -373,6 +382,80 @@ public class CompRecGuiaRemCtrl extends BaseCtrl {
 			out.close();
 			
 			return AppJsfUtil.downloadFile(tempXls, "FALECPV-GuiaRemisionDetRecibidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
+	
+	public void showRide() {
+		try {
+			
+			for (Map.Entry<File, String> map : getAdjuntos(comprobanteRecibidoSelected).entrySet()) {
+				
+				FileUtilApp.moveFile(map.getKey(), "temp");
+				rideCtrl.setUrl("../../temp/" + map.getKey().getName());
+				
+			}
+			
+			AppJsfUtil.showModalRender("dlgRide", "formRide");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private Map<File, String> getAdjuntos(Comprobanterecibido cr){
+		try {
+			
+			Map<File, String> adjuntos = new HashMap<>();
+			
+			FileUtilApp fileUtilApp = new FileUtilApp();
+			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/guiaRem/"));
+			
+			
+			XmlGuiaRemision f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlGuiaRemision());
+			f.setFechaAutorizacion(cr.getFechaAutorizacion());
+			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
+			comprobanteUtilServicio.populateGuiaRemision(f);
+			String nombredocumento= f.getInfoTributaria().getRazonSocial() + "-" + f.getInfoTributaria().getSecuencial() + ".pdf";
+			String documento="CR-GuiaRem-V1";
+			adjuntos.put(fileUtilApp.getFileFile(documento, f, ExportarFileEnum.PDF),nombredocumento);
+			
+			return adjuntos;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HashMap<>();
+		}
+	}
+	
+	public StreamedContent getDescargarSeleccion() {
+		try {
+			
+			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
+				return null;
+			}
+			
+			Map<File, String> map = new HashMap<>();
+			
+			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
+				map.putAll(getAdjuntos(comprobanterecibido));
+			}
+			
+			if (comprobanteRecibidoSeleccionList.size() == 1) {
+				for (Map.Entry<File, String> map2 : map.entrySet()) {
+					return AppJsfUtil.downloadFile(map2.getKey(), map2.getValue());
+				}
+			} 
+			
+			FileUtilApp.setFileMap(map);
+			String nombreFisico = FileUtilApp.zipDirectory("GuiaRemision");
+			return FileUtilApp.downloadZip(nombreFisico, "GuiaRemision");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -71,6 +71,16 @@
 	
 	<div class="EmptyBox5"/>
 	<div class="card card-w-title">
+		<div class="EmptyBox5"/>
+		<div class="p-grid p-justify-start p-align-center">
+			<p:spacer width="10px"/>
+			<i class="fa fa-ellipsis-v fa-lg"/>
+			<p:spacer width="10px"/>
+			<p:commandButton disabled="#{empty compRecGuiaRemCtrl.comprobanteRecibidoList}" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)" value="Descargar selección" icon="fa fa-download" styleClass="secondary-button Fs10">
+				<p:fileDownload value="#{compRecGuiaRemCtrl.descargarSeleccion}" contentDisposition="inline"/>
+			</p:commandButton>
+		</div>
+		<div class="EmptyBox5"/>
 		<p:dataTable id="compGRSriDT" var="gr"
 						value="#{compRecGuiaRemCtrl.comprobanteRecibidoList}" 
 						scrollable="true"
@@ -82,7 +92,12 @@
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
+						rowsPerPageTemplate="10,15,20,25,30,35,40"
+						selection="#{compRecGuiaRemCtrl.comprobanteRecibidoSeleccionList}">
+		    
+		    <p:ajax  event="toggleSelect" listener="#{compRecGuiaRemCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
+		    
+		    <p:column selectionMode="multiple" style="text-align: center;width:10px" />
 		    
 		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 		    	<p:commandLink id="cmlDtFacEmitidas">
@@ -90,8 +105,9 @@
 				</p:commandLink>
 				
 				<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-					<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
-						<!-- <f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/> -->
+					<p:menuitem value="RIDE" action="#{compRecGuiaRemCtrl.showRide()}" icon="fa fa-file-pdf-o">
+						<f:setPropertyActionListener value="#{gr}" target="#{compRecGuiaRemCtrl.comprobanteRecibidoSelected}"/>
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compRecGuiaRemCtrl.rideCtrl}"/>
 					</p:menuitem>
 					<p:menuitem value="Ver XML formato" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
 						<f:setPropertyActionListener value="#{gr}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>

@@ -15,7 +15,9 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
+import com.vcw.falecpv.core.modelo.xml.XmlDestinatario;
 import com.vcw.falecpv.core.modelo.xml.XmlFactura;
+import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuestoRetencion;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
@@ -279,6 +281,20 @@ public class ComprobanteUtilServicio {
 		
 		Tipocomprobante tc = tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(xmlImpuestoRetencion.getCodDocSustento()));
 		xmlImpuestoRetencion.setDesCodDocSustento(tc!=null?tc.getComprobante():"");
+		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param xmlGuiaRemision
+	 * @throws DaoException
+	 */
+	public void populateGuiaRemision(XmlGuiaRemision xmlGuiaRemision)throws DaoException{
+		
+		for (XmlDestinatario d : xmlGuiaRemision.getDestinatarioList()) {
+			d.setTipoDocSustento(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(d.getCodDocSustento())).getComprobante());
+		}
 		
 	}
 	
