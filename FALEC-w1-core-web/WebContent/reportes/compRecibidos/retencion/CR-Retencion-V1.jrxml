@@ -191,23 +191,25 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getNombreComercial()]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement stretchType="ElementGroupHeight" x="80" y="160" width="180" height="35" uuid="10005da9-cb3d-4113-b5c4-4bfb75717330">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="80" y="160" width="190" height="35" uuid="10005da9-cb3d-4113-b5c4-4bfb75717330">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Tahoma" size="10"/>
-					<paragraph leftIndent="10"/>
+					<font fontName="Tahoma" size="9"/>
+					<paragraph leftIndent="10" rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getDirMatriz()]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement stretchType="ElementGroupHeight" x="80" y="195" width="180" height="35" uuid="effb9bbc-e4fa-498f-8ecd-b710b7b0f9bb">
+				<reportElement stretchType="RelativeToBandHeight" x="80" y="195" width="190" height="35" uuid="effb9bbc-e4fa-498f-8ecd-b710b7b0f9bb">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Tahoma" size="10"/>
-					<paragraph leftIndent="10"/>
+					<font fontName="Tahoma" size="9"/>
+					<paragraph leftIndent="10" rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoCompRetencion}.getDirEstablecimiento()]]></textFieldExpression>
 			</textField>

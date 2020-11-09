@@ -192,22 +192,24 @@
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getNombreComercial()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="80" y="160" width="180" height="35" uuid="b3c4b7e8-8f09-488c-9b28-f13bfb59b624">
+				<reportElement stretchType="ContainerHeight" x="80" y="160" width="190" height="35" uuid="b3c4b7e8-8f09-488c-9b28-f13bfb59b624">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Tahoma" size="10"/>
-					<paragraph leftIndent="20"/>
+					<font fontName="Tahoma" size="9"/>
+					<paragraph leftIndent="20" rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getDirMatriz()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="80" y="195" width="180" height="35" uuid="da012337-1590-462f-8052-c160cc25f119">
+				<reportElement stretchType="ContainerHeight" x="80" y="195" width="190" height="35" uuid="da012337-1590-462f-8052-c160cc25f119">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Tahoma" size="10"/>
-					<paragraph leftIndent="20"/>
+					<font fontName="Tahoma" size="9"/>
+					<paragraph leftIndent="20" rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoNotaCredito}.getDirEstablecimiento()]]></textFieldExpression>
 			</textField>
