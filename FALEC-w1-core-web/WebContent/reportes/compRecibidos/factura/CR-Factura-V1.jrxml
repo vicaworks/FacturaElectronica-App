@@ -256,12 +256,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoFactura}.getObligadoContabilidad()]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="290" y="200" width="250" height="50" uuid="53d345d4-775a-4eed-9e03-243f4baf0491"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
-					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
 			<textField>
 				<reportElement x="290" y="250" width="250" height="20" uuid="b2a67256-4146-49a8-8dc0-c2dd29a6ffe1"/>
 				<textElement verticalAlignment="Middle">
@@ -365,6 +359,16 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoFactura}.getGuiaRemision()]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement x="290" y="200" width="250" height="50" uuid="aac07a9a-3d0c-453e-b805-3f8bdceebd12">
+					<property name="com.jaspersoft.studio.unit.barWidth" value="px"/>
+					<property name="com.jaspersoft.studio.unit.barHeight" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="true" checksumRequired="false" barHeight="150">
+					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
 		</band>
 	</title>
 	<detail>

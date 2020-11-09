@@ -225,12 +225,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoNotaCredito}.getObligadoContabilidad()]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="290" y="200" width="250" height="50" uuid="2ad5250b-db44-4c24-bf05-39247fbda6f8"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
-					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
 			<textField>
 				<reportElement x="290" y="250" width="250" height="20" uuid="2d5f3e5e-fa6f-4aa9-975c-7141e0c11189"/>
 				<textElement verticalAlignment="Middle">
@@ -344,6 +338,16 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoNotaCredito}.getFechaEmisionDocSustento()]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement x="290" y="200" width="250" height="50" uuid="a9e90574-b255-4579-8701-85be802ca949">
+					<property name="com.jaspersoft.studio.unit.barWidth" value="px"/>
+					<property name="com.jaspersoft.studio.unit.barHeight" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="true" checksumRequired="false" barHeight="150">
+					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
 		</band>
 	</title>
 	<detail>
