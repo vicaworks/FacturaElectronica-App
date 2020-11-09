@@ -256,6 +256,15 @@
 						</h:outputText>
 					</p:column>
 					
+					<p:column headerText="GASTO" style="width:20px;" styleClass="TexAlCenter">
+						<f:subview rendered="#{a.esgasto==1}">
+							<i class="fa fa-check Fs14" style="color:black;"/>
+						</f:subview>
+						<f:subview rendered="#{a.esgasto==0}">
+							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+						</f:subview>
+					</p:column>
+										
 					<p:column headerText="ESTADO" style="width:50px;">
 						<h:outputText value="#{a.estado}" styleClass="#{a.style} Fs10">
 						</h:outputText>

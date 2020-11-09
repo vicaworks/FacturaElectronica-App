@@ -121,6 +121,10 @@ public class Adquisicion implements Serializable {
 	@Size(min = 1, max = 40)
 	@Column(name = "idusuario", nullable = false, length = 40)
 	private String idusuario;
+	
+	
+	@Column(name = "esgasto", nullable = false)
+	private Integer esgasto;
     
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     @ManyToOne(optional = false)
@@ -139,6 +143,9 @@ public class Adquisicion implements Serializable {
     
     @Transient
     private List<Pago> pagoList;
+    
+    @Transient
+    private boolean esGastoBol;
     
 	/**
 	 * 
@@ -486,4 +493,35 @@ public class Adquisicion implements Serializable {
 		this.cliente = cliente;
 	}
 
+	/**
+	 * @return the esgasto
+	 */
+	public Integer getEsgasto() {
+		return esgasto;
+	}
+
+	/**
+	 * @param esgasto the esgasto to set
+	 */
+	public void setEsgasto(Integer esgasto) {
+		this.esgasto = esgasto;
+	}
+
+	public boolean getEsGastoBol() {
+		if(this.esgasto==null) {
+			esGastoBol = false;
+			return false;
+		}
+		esGastoBol = this.esgasto==1?true:false;
+		return this.esgasto==1?true:false;
+	}
+	
+	/**
+	 * @param esGastoBol the esGastoBol to set
+	 */
+	public void setEsGastoBol(boolean esGastoBol) {
+		this.esGastoBol = esGastoBol;
+		this.esgasto = esGastoBol?1:0;
+	}
+	
 }

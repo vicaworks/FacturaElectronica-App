@@ -218,6 +218,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisicionSelected.setTotalpagar(BigDecimal.ZERO);
 		adquisicionSelected.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		adquisicionSelected.setFecha(new Date());
+		adquisicionSelected.setEsgasto(0);
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
 				.getByEmpresaFormulario(TipoComprobanteEnum.ADQUICIION));
 		

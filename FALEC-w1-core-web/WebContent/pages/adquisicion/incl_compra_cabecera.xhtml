@@ -141,6 +141,12 @@
 				<p:message for="inpAdqNumAut" />
 			</h:panelGroup>
 			
+			<h:outputText value="ES GASTO *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:selectBooleanButton value="#{adquisicionFrmCtrl.adquisicionSelected.esGastoBol}" onLabel="SI" offLabel="No" style="width:80px">
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
 		</p:panelGrid>
 		<div class="EmptyBox10"/>
 		

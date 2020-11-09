@@ -229,6 +229,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				cell.setCellValue(adq.getCliente().getRazonsocial());
 				
 				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getEsGastoBol()?"S":"N");
+				
+				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(adq.getSubtotal().doubleValue());
 				
@@ -265,7 +269,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				filaPago = fila + 1;
 				for (Adquisiciondetalle ad : adq.getAdquisiciondetalleList()) {
 					
-					col = 14;
+					col = 15;
 					
 					row = sheet.getRow(filaDt);
 					if(row==null) {
@@ -309,7 +313,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				}
 				
 				for (Pago p : adq.getPagoList()) {
-					col = 22;
+					col = 23;
 					row = sheet.getRow(filaPago);
 					if(row==null) {
 						row = sheet.createRow(filaPago);
@@ -443,6 +447,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_STRING);
 				cell.setCellValue(adq.getCliente().getRazonsocial());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(adq.getEsGastoBol()?"S":"N");
 				
 				cell = row.createCell(col++);
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
