@@ -355,6 +355,10 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 				}
 				des.setCabecera(cabecera);
 				destinatarioServicio.crear(des);
+				// consultar si existe comprobante factura
+				
+				des.setIdVenta(cabeceraDao.getFacturaGuiaRemision(cabecera.getEstablecimiento().getIdestablecimiento(), des.getNumdocsustento().replace("-", "")));
+				
 				// almacenar detalle
 				for (Detalledestinatario dd : des.getDetalledestinatarioList()) {
 					if(dd.getIddetalledestinatario()==null || dd.getIddetalledestinatario().contains("M")) {

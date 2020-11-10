@@ -321,6 +321,10 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	public int asignarRefGuiaRemicion(String idFactura,String idGuiaRemision)throws DaoException{
 		try {
 			
+			if(idFactura==null || (idGuiaRemision==null || idGuiaRemision.trim().length()==0)) {
+				return 0;
+			}
+			
 			String sql = "UPDATE cabecera SET idguiaremision=:idGuiaRemision WHERE idcabecera=:idFactura";
 			Query q = getEntityManager().createNativeQuery(sql);
 			q.setParameter("idGuiaRemision", idGuiaRemision);
@@ -379,6 +383,33 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 			q.setParameter("idtipocomprobante", GenTipoDocumentoEnum.NOTA_DEBITO.getIdentificador());
 			
 			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param numDocumento
+	 * @return
+	 * @throws DaoException
+	 */
+	public String getFacturaGuiaRemision(String idEstablecimiento,String numDocumento)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.establecimiento.idestablecimiento=:idEstablecimineto AND c.estado <> 'ANULADO' AND c.numdocumento=:numDocumento");
+			q.setParameter("idEstablecimineto", idEstablecimiento);
+			q.setParameter("numDocumento", numDocumento);
+			
+			@SuppressWarnings("unchecked")
+			List<Cabecera> rs = q.getResultList();
+			if(rs.isEmpty()) {
+				return null;
+			}
+			return rs.get(0).getIdcabecera();
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

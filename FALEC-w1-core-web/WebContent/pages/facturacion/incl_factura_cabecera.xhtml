@@ -226,7 +226,7 @@
 					<p:spacer width="3"/>
 					<h:outputText value="Val retenido Renta" styleClass="cpoRequerido"/>
 					<div class="EmptyBox5"/>
-					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidorenta}" decimalPlaces="2"  styleClass="Wid100">
+					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidorenta}" decimalPlaces="2"  styleClass="Wid100" onkeydown="if(event.keyCode==13){return false;}">
 						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
 					</p:spinner>
 				</div>
@@ -247,7 +247,7 @@
 					<p:spacer width="3"/>
 					<h:outputText value="Val retenido I.V.A." styleClass="cpoRequerido"/>
 					<div class="EmptyBox5"/>
-					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidoiva}" decimalPlaces="2"  styleClass="Wid100">
+					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidoiva}" decimalPlaces="2"  styleClass="Wid100" onkeydown="if(event.keyCode==13){return false;}">
 						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
 					</p:spinner>
 				</div>
