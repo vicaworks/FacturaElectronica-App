@@ -400,9 +400,10 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	public String getFacturaGuiaRemision(String idEstablecimiento,String numDocumento)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.establecimiento.idestablecimiento=:idEstablecimineto AND c.estado <> 'ANULADO' AND c.numdocumento=:numDocumento");
+			Query q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:identificador AND c.establecimiento.idestablecimiento=:idEstablecimineto AND c.estado <> 'ANULADO' AND c.numdocumento=:numDocumento");
 			q.setParameter("idEstablecimineto", idEstablecimiento);
 			q.setParameter("numDocumento", numDocumento);
+			q.setParameter("identificador", GenTipoDocumentoEnum.FACTURA.getIdentificador());
 			
 			@SuppressWarnings("unchecked")
 			List<Cabecera> rs = q.getResultList();
