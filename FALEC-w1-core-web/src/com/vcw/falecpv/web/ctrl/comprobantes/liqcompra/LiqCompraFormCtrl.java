@@ -263,7 +263,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		ComprobanteHelper.determinarDetalleImpuesto(liqCompraSelected.getDetalleList());
 		
 		// infromacion adicional 
-		liqCompraSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(liqCompraSelected,infoadicionalList));
+		liqCompraSelected.setInfoadicionalList(infoadicionalList);
 		
 	}
 	

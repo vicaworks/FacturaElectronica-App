@@ -239,7 +239,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		}
 		
 		// infromacion adicional 
-		guiaRemisionSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(guiaRemisionSelected,infoadicionalList));
+		guiaRemisionSelected.setInfoadicionalList(infoadicionalList);
 		
 	}
 	

@@ -24,7 +24,6 @@ import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
-import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
@@ -406,7 +405,8 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}
 		
 		// infromacion adicional 
-		retencionSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(retencionSeleccion,infoadicionalList));
+		retencionSeleccion.setInfoadicionalList(infoadicionalList);
+		
 		retencionSeleccion.setNumdocasociado(retencionSeleccion.getNumfactura());
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		retencionSeleccion.setUpdated(new Date());

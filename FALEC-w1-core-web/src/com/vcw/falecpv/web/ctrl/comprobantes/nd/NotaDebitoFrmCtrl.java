@@ -27,7 +27,6 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
-import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
@@ -594,7 +593,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTotalimpuestoList(totalimpuestoList);
 		notDebitoSelected.setMotivoList(motivoList);
 		// infromacion adicional 
-		notDebitoSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notDebitoSelected,infoadicionalList));
+		notDebitoSelected.setInfoadicionalList(infoadicionalList);
 	}
 	
 	private void determinarPeriodoFiscal() {

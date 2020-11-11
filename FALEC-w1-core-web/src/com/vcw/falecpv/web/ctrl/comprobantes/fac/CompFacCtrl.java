@@ -772,8 +772,7 @@ public class CompFacCtrl extends BaseCtrl {
 		ComprobanteHelper.determinarDetalleImpuesto(cabecerSelected.getDetalleList());
 		
 		// infromacion adicional 
-		
-		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected,infoadicionalList));
+		cabecerSelected.setInfoadicionalList(infoadicionalList);
 		
 	}
 	

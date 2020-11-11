@@ -256,7 +256,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		ComprobanteHelper.determinarDetalleImpuesto(notaCreditoSeleccion.getDetalleList());
 		
 		// infromacion adicional 
-		notaCreditoSeleccion.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(notaCreditoSeleccion,infoadicionalList));
+		notaCreditoSeleccion.setInfoadicionalList(infoadicionalList);
 		
 	}
 

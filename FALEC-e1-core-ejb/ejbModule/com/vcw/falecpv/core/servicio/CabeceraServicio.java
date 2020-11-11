@@ -95,6 +95,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Inject
 	private EstablecimientoServicio establecimientoServicio;
 	
+	@Inject
+	private ConfiguracionServicio configuracionServicio;
+	
 	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.ANULADO,ComprobanteEstadoEnum.RECIBIDO_SRI,ComprobanteEstadoEnum.PENDIENTE});
 	
 	public CabeceraServicio() {
@@ -325,6 +328,12 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		// 7. infoadicional
 		infoadicionalServicio.getInfoadicionalDao().eliminarByCabecera(cabecera.getIdcabecera());
 		if(cabecera.getInfoadicionalList()!=null) {
+			
+			// determina en la configuracion
+			if(!cabecera.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+				configuracionServicio.populateInformacionAdicional(cabecera);
+			}
+			
 			for (Infoadicional	ia : cabecera.getInfoadicionalList()) {
 				if(ia.getIdinfoadicional()==null || ia.getIdinfoadicional().contains("M")) {
 					ia.setIdinfoadicional(contadorPkServicio.generarContadorTabla(TCComprobanteEnum.INFOADICIONAL, cabecera.getEstablecimiento().getIdestablecimiento()));

@@ -78,6 +78,10 @@ public class Transportista implements Serializable {
     @Column(name = "email", nullable = true, length = 100)
     private String email;
     
+    @Size(max = 300)
+	@Column(name = "direccion", length = 300)
+	private String direccion;
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "idtipoidentificacion", referencedColumnName = "idtipoidentificacion", nullable = false)
     private TipoIdentificacion tipoIdentificacion;
@@ -271,6 +275,20 @@ public class Transportista implements Serializable {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	/**
+	 * @return the direccion
+	 */
+	public String getDireccion() {
+		return direccion;
+	}
+
+	/**
+	 * @param direccion the direccion to set
+	 */
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 	
 }
