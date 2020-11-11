@@ -148,23 +148,7 @@
 										</p:spinner>
 										
 									</div>
-									<div class="p-md-2 dt-selection">
-										<h:outputText value="IVA" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:selectOneMenu id="somdetIvaItem1"
-											value="#{d.iva}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100 Fs8">
-					
-											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
-												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
-											
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-											
-										</p:selectOneMenu>
-									</div>
+									
 									<div class="p-md-2 dt-selection">
 										<h:outputText value="ICE" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
 										<br/>
@@ -182,6 +166,25 @@
 											
 										</p:selectOneMenu>
 									</div>
+									
+									<div class="p-md-2 dt-selection">
+										<h:outputText value="IVA" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:selectOneMenu id="somdetIvaItem1"
+											value="#{d.iva}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100 Fs8">
+					
+											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
+												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+											
+											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+											
+										</p:selectOneMenu>
+									</div>
+									
 								</div>
 							</div>
 							<div class="p-col-3" style="text-align: right;">
@@ -233,23 +236,6 @@
 									</div>
 									
 									<div class="p-md-2 dt-selection">
-										<h:outputText value="IVA" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:selectOneMenu id="somdetIvaItem"
-											value="#{d.iva}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100">
-					
-											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
-												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
-											
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-											
-										</p:selectOneMenu>
-									</div>
-									<div class="p-md-2 dt-selection">
 										<h:outputText value="ICE" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
 										<br/>
 										<p:selectOneMenu id="somdetIceItem"
@@ -266,6 +252,25 @@
 											
 										</p:selectOneMenu>
 									</div>
+									
+									<div class="p-md-2 dt-selection">
+										<h:outputText value="IVA" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
+										<br/>
+										<p:selectOneMenu id="somdetIvaItem"
+											value="#{d.iva}"
+											converter="omnifaces.SelectItemsConverter"
+											required="true"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100">
+					
+											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
+												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+											
+											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+											
+										</p:selectOneMenu>
+									</div>
+									
 								</div>
 							</div>
 							<div class="p-col-3" style="text-align: right;">
@@ -300,56 +305,78 @@
 			
 				<p:outputPanel id="oupFacTotal">
 				
-					<div class="p-grid p-align-top p-justify-end">
-							
-						<div class="p-grid p-col-12 p-md-6 divResumen">
-							
-							<div class="p-col-6 subtotal">
-								<h:outputText value="Subtotal" styleClass="Fs12" />
-							</div>
-							
-							<div class="p-col-6 subtotalValor">
-								<h:outputText value="#{compFacCtrl.cabecerSelected.totalsinimpuestos}" styleClass="Fs12">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-6 subtotal">
-								<h:outputText value="I.C.E." styleClass="Fs12" />
-							</div>
-							
-							<div class="p-col-6 subtotalValor">
-								<h:outputText value="#{compFacCtrl.cabecerSelected.totalice}" styleClass="Fs12">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-6 subtotal">
-								<h:outputText value="I.V.A." styleClass="Fs12" />
-							</div>
-							
-							<div class="p-col-6 subtotalValor">
-								<h:outputText value="#{compFacCtrl.cabecerSelected.totaliva}" styleClass="Fs12">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-6">
-							</div>
-							<div class="p-grid p-col-6">
-								<div class="p-col-12 bordeSubtotal"></div>
-							</div>
-							
-							<div class="p-col-6 subtotal">
-								<h:outputText value="Total" styleClass="FontBold Fs16" />
-							</div>
-							
-							<div class="p-col-6 subtotalValor">
-								<h:outputText value="#{compFacCtrl.cabecerSelected.totalconimpuestos}" styleClass="FontBold Fs16 DispBlock Wid100">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
+					<div class="p-grid p-nogutter p-align-center">
+						
+						<div class="p-col-12 p-md-7">
+							<div class="p-grid p-nogutter">
 								
+								<div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="Subtotal :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{compFacCtrl.cabecerSelected.totalsinimpuestos}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								
+								<div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="Descuento :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{compFacCtrl.cabecerSelected.totaldescuento}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								
+								<div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="I.C.E. :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{compFacCtrl.cabecerSelected.totalice}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								
+								<div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="I.V.A. #{compFacCtrl.descripcionIva} :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{compFacCtrl.cabecerSelected.totaliva}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+																
+							</div>
+						</div>
+						
+						<div class="p-col-12 p-md-5">
+							<!-- TOTAL -->
+							
+							<div class="cardTotal cardTotal-bgBlue">
+								<div class="cardTotal-header">
+									<h:outputText value="TOTAL" />
+								</div>
+								<div class="cardTotal-content-total">
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{compFacCtrl.cabecerSelected.totalconimpuestos}" styleClass="Fs20">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+									<div class="EmptyBox5"/>
+								</div>
+							</div>
+							
 						</div>
 						
 					</div>

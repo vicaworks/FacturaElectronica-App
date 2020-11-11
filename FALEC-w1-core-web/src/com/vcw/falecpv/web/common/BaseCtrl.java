@@ -25,6 +25,7 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
+import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.xml.XmlComprobanteRetencion;
@@ -70,6 +71,7 @@ public abstract class BaseCtrl implements Serializable {
 	protected Comprobanterecibido comprobanteRecibidoTotal;
 	protected String xml;
 	protected RideCtrl rideCtrl;
+	protected String descripcionIva;
 	
 	/**
 	 * 
@@ -301,6 +303,19 @@ public abstract class BaseCtrl implements Serializable {
 		}
 	}
 	
+	public void determinarDescripcionIVA(List<Detalle> detalleList) {
+		descripcionIva = "(0%)";
+		
+		if(detalleList==null || detalleList.isEmpty()) return;
+		
+		Detalle d = detalleList.stream().filter(x->x.getValoriva().doubleValue()>0).findFirst().orElse(null);
+		if(d==null) {
+			descripcionIva = "(0%)";
+		}else {
+			descripcionIva = "(" + d.getIva().getPorcentaje() + ")";
+		}
+	}
+	
 	/**
 	 * @return the infoadicionalSelected
 	 */
@@ -509,6 +524,20 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setRideCtrl(RideCtrl rideCtrl) {
 		this.rideCtrl = rideCtrl;
+	}
+
+	/**
+	 * @return the descripcionIva
+	 */
+	public String getDescripcionIva() {
+		return descripcionIva;
+	}
+
+	/**
+	 * @param descripcionIva the descripcionIva to set
+	 */
+	public void setDescripcionIva(String descripcionIva) {
+		this.descripcionIva = descripcionIva;
 	}
 	
 	

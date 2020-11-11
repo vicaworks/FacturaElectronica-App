@@ -291,6 +291,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setTotaliva(BigDecimal.ZERO);
 		notaCreditoSeleccion.setTotalsinimpuestos(BigDecimal.ZERO);
 		infoadicionalList = null;
+		descripcionIva = "(0%)";
 		inicializarSecuencia(notaCreditoSeleccion);
 		
 		if(facturaSeleccion!=null) {
@@ -370,6 +371,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 			i++;
 		}
+		
+		// determinar descripcion iva
+		determinarDescripcionIVA(detalleNcList);
 		
 		notaCreditoSeleccion.setTotaliva(notaCreditoSeleccion.getTotaliva().setScale(2, RoundingMode.HALF_UP));
 		notaCreditoSeleccion.setTotalice(notaCreditoSeleccion.getTotalice().setScale(2, RoundingMode.HALF_UP));

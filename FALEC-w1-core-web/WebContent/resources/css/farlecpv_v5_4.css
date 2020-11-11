@@ -383,6 +383,74 @@
 	border: 1px solid #AEAEAC;
 	border-radius: 3px;
 }
+
+
+/* ========= CARD TOTALES COMPROBANTES=========== */
+			
+.cardTotal{
+	border-radius:4px;
+	display: grid;
+	grid-gap: 0px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 10px auto;
+    grid-template-areas: "cardContador-header  cardContador-header"
+    					 "cardContador-content cardContador-content";
+}
+
+.cardTotal .cardTotal-header{
+	grid-area: cardContador-header;
+	justify-self: center;
+	align-self:center;
+	font-size: 10px;
+	padding-top: 5px !important;
+}
+
+.cardTotal .cardTotal-content{
+	grid-area: cardContador-content;
+	padding: 3px;
+	justify-self: center;
+	align-self:center;
+	font-size: 16px;
+	font-weight: 900;
+	color:#6E6E6E;
+}
+
+.cardTotal .cardTotal-content-total{
+	grid-area: cardContador-content;
+	padding: 3px;
+	padding-top:5px;
+	justify-self: center;
+	align-self:center;
+	font-size: 16px;
+	font-weight: 900;
+}
+
+.cardTotal-bgBlue{
+	border: 1px solid #34495E;
+	/* border-top: 5px solid #34495E; */
+	/* background-color: #34495E; */
+	background: linear-gradient(to right, rgba(39, 70, 133, 0.9) 40%, rgba(61, 179, 197, 0.9) 100%);
+	color: #fff;
+}
+
+.cardSubtotal{
+	font-size:12px;
+	border-bottom: 1px dotted #d8d8dc;
+	color: black;
+}
+
+.cardSubtotal-valor{
+	font-size:12px;
+}
+
+.cardSubtotal i{
+	color:#34495E;
+}
+
+
+
+
+
 /* ===============  ROMA LAYOUT   ================ */
 
 .layout-wrapper .layout-main .layout-content {

@@ -253,6 +253,7 @@ public class CompFacCtrl extends BaseCtrl {
 		totalSaldo = BigDecimal.ZERO;
 		porcentajeIva = null;
 		porcentajeRenta = null;
+		descripcionIva = "(0%)";
 		consultarIce();
 		consultarIva();
 		populateTipoPago();
@@ -351,6 +352,9 @@ public class CompFacCtrl extends BaseCtrl {
 			
 			i++;
 		}
+		
+		// determinar descripcion iva
+		determinarDescripcionIVA(detalleFacList);
 		
 		cabecerSelected.setTotaliva(cabecerSelected.getTotaliva().setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalice(cabecerSelected.getTotalice().setScale(2, RoundingMode.HALF_UP));

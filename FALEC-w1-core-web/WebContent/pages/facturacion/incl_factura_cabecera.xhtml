@@ -145,54 +145,6 @@
 			
 		</p:panelGrid>
 	</div>
-	<div class="EmptyBox5"/>
-	<div class="card card-w-title">	
-		
-		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
-		<p:outputPanel id="oupInfoAdicionalMain">
-			
-			<p:panelGrid columns="1"
-				 styleClass="ui-panelgrid-blank Wid100" 
-				 columnClasses="ui-g-12">
-				 				
-				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{compFacCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs11"/>
-				<h:panelGroup>
-				</h:panelGroup>				 
-				
-			</p:panelGrid>
-			
-			<p:outputPanel id="grdInfoAdicional">
-			
-				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
-					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
-					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
-				</p:panelGrid>
-				
-				<div class="p-grid p-align-center vertical-container">
-					
-					<p:repeat var="info" value="#{compFacCtrl.infoadicionalList}" >
-						<div class="p-col-5">
-							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalNombre"/>
-						</div>
-						<div class="p-col-6">
-							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalValor"/>
-						</div>
-						<div class="p-col-1" style="text-align: center;">
-							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
-						</div>
-					
-					</p:repeat>
-				</div>
-			
-			</p:outputPanel>
-		</p:outputPanel>
-	</div>
 	<div class="EmptyBox5"/>	
 	<!--
 		Funciones de calculo de la retencion renta e iva 
@@ -433,11 +385,57 @@
 				</p:column>
 							
 			</p:dataTable>
-			
-		
-			<div class="EmptyBox20"/>
 		
 		</div>
+		<div class="EmptyBox5"/>
+	<div class="card card-w-title">	
+		
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+		<p:outputPanel id="oupInfoAdicionalMain">
+			
+			<p:panelGrid columns="1"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12">
+				 				
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{compFacCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs11"/>
+				<h:panelGroup>
+				</h:panelGroup>				 
+				
+			</p:panelGrid>
+			
+			<p:outputPanel id="grdInfoAdicional">
+			
+				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+				</p:panelGrid>
+				
+				<div class="p-grid p-align-center vertical-container">
+					
+					<p:repeat var="info" value="#{compFacCtrl.infoadicionalList}" >
+						<div class="p-col-5">
+							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalNombre"/>
+						</div>
+						<div class="p-col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalValor"/>
+						</div>
+						<div class="p-col-1" style="text-align: center;">
+							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
+								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
+								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					
+					</p:repeat>
+				</div>
+			
+			</p:outputPanel>
+		</p:outputPanel>
+		
+	</div>
 	</p:outputPanel>	
 	
 	

@@ -39,7 +39,15 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 	@SuppressWarnings("unchecked")
 	public List<Iva> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idEmpresa)throws DaoException{
 		try {
-			Query q = getEntityManager().createQuery("SELECT i FROM Iva i WHERE i.empresa.idempresa=:idempresa ORDER BY i.porcentaje");
+			
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				q = getEntityManager().createQuery("SELECT i FROM Iva i WHERE i.empresa.idempresa=:idempresa AND i.estado=:estado ORDER BY i.porcentaje");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+				q = getEntityManager().createQuery("SELECT i FROM Iva i WHERE i.empresa.idempresa=:idempresa ORDER BY i.porcentaje");
+			}
+			
 			q.setParameter("idempresa", idEmpresa);
 			return q.getResultList();
 		} catch (Exception e) {

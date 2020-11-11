@@ -143,55 +143,6 @@
 		</p:panelGrid>
 	</div>
 	<div class="EmptyBox5"/>
-	<div class="card card-w-title">	
-		
-		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
-	
-		<p:outputPanel id="oupInfoAdicionalMain">
-			
-			<p:panelGrid columns="1"
-					 styleClass="ui-panelgrid-blank Wid100" 
-					 columnClasses="ui-g-12">
-					 				
-				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{liqCompraFormCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs11 m-button"/>
-				<h:panelGroup>
-				</h:panelGroup>				 
-				
-			</p:panelGrid>
-		
-			<p:outputPanel id="grdInfoAdicional">
-				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
-					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
-					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
-				</p:panelGrid>
-				
-				<div class="p-grid p-align-center vertical-container">
-					
-					<p:repeat var="info" value="#{liqCompraFormCtrl.infoadicionalList}" >
-						<div class="p-col-5">
-							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalNombre"/>
-						</div>
-						<div class="p-col-6">
-							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalValor"/>
-						</div>
-						<div class="p-col-1" style="text-align: center;">
-							<p:commandLink  action="#{liqCompraFormCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{liqCompraFormCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{info}" target="#{liqCompraFormCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
-						</div>
-					
-					</p:repeat>
-				</div>
-			
-			</p:outputPanel>
-		</p:outputPanel>
-		<div class="EmptyBox10"/>
-	</div>	
-	<div class="EmptyBox5"/>
 	<!--
 		Funciones de calculo de la retencion renta e iva 
 	 -->
@@ -431,10 +382,56 @@
 								
 				</p:dataTable>
 			</div>
-				
-			<div class="EmptyBox20"/>
 		
 		</p:outputPanel>
+		<div class="EmptyBox5"/>
+		<div class="card card-w-title">	
+			
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+		
+			<p:outputPanel id="oupInfoAdicionalMain">
+				
+				<p:panelGrid columns="1"
+						 styleClass="ui-panelgrid-blank Wid100" 
+						 columnClasses="ui-g-12">
+						 				
+					 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{liqCompraFormCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs11 m-button"/>
+					<h:panelGroup>
+					</h:panelGroup>				 
+					
+				</p:panelGrid>
+			
+				<p:outputPanel id="grdInfoAdicional">
+					<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+						<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+						<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+					</p:panelGrid>
+					
+					<div class="p-grid p-align-center vertical-container">
+						
+						<p:repeat var="info" value="#{liqCompraFormCtrl.infoadicionalList}" >
+							<div class="p-col-5">
+								<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+								<p:message for="inpInfoAdicionalNombre"/>
+							</div>
+							<div class="p-col-6">
+								<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+								<p:message for="inpInfoAdicionalValor"/>
+							</div>
+							<div class="p-col-1" style="text-align: center;">
+								<p:commandLink  action="#{liqCompraFormCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{liqCompraFormCtrl.enableAccion}">
+									<f:setPropertyActionListener value="#{info}" target="#{liqCompraFormCtrl.infoadicionalSelected}"/>
+									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+							</div>
+						
+						</p:repeat>
+					</div>
+				
+				</p:outputPanel>
+			</p:outputPanel>
+		</div>	
 		
 	
 </ui:composition>

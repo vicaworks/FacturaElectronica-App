@@ -145,6 +145,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setDetalleList(new ArrayList<>());
 		liqCompraSelected.setFechaemision(new Date());
 		infoadicionalList = null;
+		descripcionIva = "(0%)";
 		inicializarSecuencia(liqCompraSelected);
 		liqCompraDetalleList = null;
 		criterioProveedor = null;
@@ -364,6 +365,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			
 			i++;
 		}
+		
+		// determinar descripcion iva
+		determinarDescripcionIVA(liqCompraDetalleList);
 		
 		liqCompraSelected.setTotaliva(liqCompraSelected.getTotaliva().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotaldescuento(liqCompraSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));

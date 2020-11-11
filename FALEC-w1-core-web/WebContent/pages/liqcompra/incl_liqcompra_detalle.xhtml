@@ -133,47 +133,79 @@
 			<div class="p-col-12">
 			
 				<p:outputPanel id="oupFacTotal">
-				
-					<div class="p-grid p-align-top p-justify-end">
-							
-						<div class="p-grid p-col-12 p-md-6 divResumen">
-							
-							<div class="p-col-8 subtotal">
-								<h:outputText value="Subtotal" styleClass="Fs12" />
-							</div>
-							
-							<div class="p-col-4 subtotalValor">
-								<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalsinimpuestos}" styleClass="Fs12">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-8 subtotal">
-								<h:outputText value="I.V.A." styleClass="Fs12" />
-							</div>
-							
-							<div class="p-col-4 subtotalValor">
-								<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totaliva}" styleClass="Fs12">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							
-							<div class="p-col-8">
-							</div>
-							<div class="p-grid p-col-4">
-								<div class="p-col-12 bordeSubtotal"></div>
-							</div>
-							
-							<div class="p-col-8 subtotal">
-								<h:outputText value="Total" styleClass="FontBold Fs16" />
-							</div>
-							
-							<div class="p-col-4 subtotalValor">
-								<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalconimpuestos}" styleClass="FontBold Fs16 DispBlock Wid100">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
+					
+					<div class="p-grid p-nogutter p-align-center">
+						
+						<div class="p-col-12 p-md-7">
+							<div class="p-grid p-nogutter">
 								
+								<div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="Subtotal :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalsinimpuestos}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								
+								<div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="Descuento :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totaldescuento}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								
+								<!-- <div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="I.C.E. :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalice}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div> -->
+								
+								<div class="p-col-7 cardSubtotal">
+									<i class="fa fa-caret-right"></i>
+									<p:spacer width="10px"/>
+									<h:outputText value="I.V.A. #{liqCompraFormCtrl.descripcionIva} :" />
+								</div>
+								
+								<div class="p-col-5 cardSubtotal-valor">
+									<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totaliva}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+																
+							</div>
+						</div>
+						
+						<div class="p-col-12 p-md-5">
+							<!-- TOTAL -->
+							
+							<div class="cardTotal cardTotal-bgBlue">
+								<div class="cardTotal-header">
+									<h:outputText value="TOTAL" />
+								</div>
+								<div class="cardTotal-content-total">
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{liqCompraFormCtrl.liqCompraSelected.totalconimpuestos}" styleClass="Fs20">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+									<div class="EmptyBox5"/>
+								</div>
+							</div>
+							
 						</div>
 						
 					</div>
