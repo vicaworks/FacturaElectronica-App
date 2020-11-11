@@ -447,8 +447,12 @@
 	color:#34495E;
 }
 
+/*====== INPUT INFO ADCIONAL ============*/
 
-
+.grdInfoAdicional .ui-inputfield{
+	padding: 0.2em !important;
+	font-size: 11px !important;
+}
 
 
 /* ===============  ROMA LAYOUT   ================ */
