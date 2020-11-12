@@ -59,9 +59,13 @@ public class Ice implements Serializable {
     @Size(max = 10)
     @Column(name = "tarifaadvalorem", length = 10)
     private String tarifaadvalorem;
-    @Size(max = 100)
-    @Column(name = "tarifaespecifica", length = 100)
-    private String tarifaespecifica;
+    
+    @Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 1)
+	@Column(name = "estado", nullable = false, length = 1)
+	private String estado = "A";
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "updated", nullable = false)
@@ -180,20 +184,6 @@ public class Ice implements Serializable {
 	}
 
 	/**
-	 * @return the tarifaespecifica
-	 */
-	public String getTarifaespecifica() {
-		return tarifaespecifica;
-	}
-
-	/**
-	 * @param tarifaespecifica the tarifaespecifica to set
-	 */
-	public void setTarifaespecifica(String tarifaespecifica) {
-		this.tarifaespecifica = tarifaespecifica;
-	}
-
-	/**
 	 * @return the updated
 	 */
 	public Date getUpdated() {
@@ -279,6 +269,20 @@ public class Ice implements Serializable {
 
 	public void setCodigoIce(String codigoIce) {
 		this.codigoIce = codigoIce;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public String getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}	
 
 }

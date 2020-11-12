@@ -62,7 +62,7 @@
 					<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" 
 					requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="4" 
 					validatorMessage="SOLO NÚMEROS" placeholder="#{msg['label.codigo']} SRI">
-							<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+							<f:validateRegex pattern="^[+-]?[0-9]*$"></f:validateRegex> 
 							</p:inputText>
 					<p:message for="intCodigo"/>
 					
@@ -74,13 +74,6 @@
 					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']}"/>
 					<p:message for="intDescripcion"/>
 					
-					
-					<h:outputText value="TARIFA ESPECIFICA : " styleClass="cpoRequerido"/>
-					<p:inputText id="intTarifaEspecifica" value="#{iceCtrl.iceSelected.tarifaespecifica}"  styleClass="Wid100"  placeholder="VALOR ejm: 2 o 2.75">
-						<!-- <f:convertNumber locale="es_EC" pattern="0.###"/> -->
-					</p:inputText>
-					<p:message for="intTarifaEspecifica"/>
-					
 					<h:outputText value="VALOR * : " styleClass="cpoRequerido" required="true" requiredMessage="REQUERIDO" />
 					<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  requiredMessage="REQUERIDO" styleClass="Wid100" 
 						 converterMessage="SOLO NUMEROS"  placeholder="VALOR ejm: 2 o 2.75">
@@ -89,7 +82,22 @@
 					</p:inputText>
 					<p:message for="intValor"/>
 					
-					</p:panelGrid>
+					<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
+					<h:panelGroup>
+						<p:selectOneMenu id="somEstado"
+							value="#{iceCtrl.iceSelected.estado}"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100" disabled="#{iceCtrl.iceSelected.idice==null}">
+							
+							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+			    			
+						</p:selectOneMenu>
+					</h:panelGroup>
+					<p:message for="somEstado" />
+					
+				</p:panelGrid>
 				
 			</div>
 			

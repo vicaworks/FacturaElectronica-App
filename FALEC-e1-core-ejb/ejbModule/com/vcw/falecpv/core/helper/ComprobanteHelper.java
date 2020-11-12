@@ -122,7 +122,8 @@ public class ComprobanteHelper {
 		
 		List<Totalimpuesto> impuestoList = new ArrayList<>();
 		
-		List<Iva> ivaList = detallefacList.stream().map(x->x.getIva()).filter(x->x.getValor().doubleValue()>0).distinct().collect(Collectors.toList());
+		List<Iva> ivaList = detallefacList.stream().map(x->x.getIva()).filter(x->x.getCodigo()!=null).distinct().collect(Collectors.toList());
+		
 		for (Iva iva : ivaList) {
 			Totalimpuesto ti = new Totalimpuesto();
 			ti.setIva(iva);
@@ -152,7 +153,8 @@ public class ComprobanteHelper {
 		
 		List<Totalimpuesto> impuestoList = new ArrayList<>();
 		
-		List<Ice> iceList = detallefacList.stream().map(x->x.getIce()).filter(x->x.getValor().doubleValue()>0).distinct().collect(Collectors.toList());
+		List<Ice> iceList = detallefacList.stream().map(x->x.getIce()).filter(x->!x.getCodigo().equals("-1")).distinct().collect(Collectors.toList());
+		
 		for (Ice ice : iceList) {
 			Totalimpuesto ti = new Totalimpuesto();
 			ti.setIce(ice);

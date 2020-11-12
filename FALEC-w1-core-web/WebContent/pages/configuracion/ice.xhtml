@@ -14,8 +14,15 @@
         	
         	.iceDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 310px)!important;
+				height: calc(100vh - 260px)!important;
 			}	
+			
+			/* body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				display: block !important;
+			} */
 			
 			@media screen and (max-width: 40em){
 					.ui-fileupload-buttonbar .ui-button .ui-button-text {
@@ -55,8 +62,8 @@
 	    
 	    <!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	
-	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	<div class="EmptyBox5"/>
+	    	<div class="card card-w-title">
 	    	
 	    		<div class="p-grid p-align-center">
 	    			
@@ -114,12 +121,11 @@
 	    		</div>
 	    	</div>
 	    	
-	    	<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-		
+    	<!-- Mensajes -->
+		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			closable="true" >
+			<p:autoUpdate></p:autoUpdate>
+		</p:messages>
 		<div class="card card-w-title">
 			<p:dataTable id="iceDT" 
 						var="ice" 
@@ -165,6 +171,10 @@
 						</f:facet>
 						<h:outputText value="#{ice.codigo}" />
 				</p:column>
+				
+				<p:column headerText="ESTADO" style="width:40px;">
+					<h:outputText value="#{ice.estado=='I'?'INA':'ACT'}" styleClass="DispBlock #{ice.estado=='I'?'markRed':''}"/>
+				</p:column>
 					
 		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
 		             <h:outputText value="#{ice.tarifaadvalorem}" />
@@ -178,11 +188,6 @@
 						 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		        
-		        <p:column  headerText="TARIFA ESPECIFICA" filterMatchMode="contains" style="width:120px;"  styleClass="TexAlRight">
-		            <h:outputText value="#{ice.tarifaespecifica}" />
-		        </p:column>
-		        
 		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" styleClass="TexAlRight">
 		            <h:outputText value="#{ice.valor}" >
 		            	<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
@@ -192,6 +197,7 @@
 		        
            </p:dataTable>
 	    </div>
+	    	<div class="EmptyBox20"/>
 	    </h:form>
 	     <!-- formulario iva -->
 	    <ui:include src="incl_ice_form.xhtml" />

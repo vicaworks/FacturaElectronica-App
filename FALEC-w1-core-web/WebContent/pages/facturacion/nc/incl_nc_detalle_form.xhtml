@@ -121,7 +121,7 @@
 											styleClass="Wid100 Fs8">
 					
 											<f:selectItems value="#{notaCreditoCtrl.iceList}" var="ice"
-												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
+												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 												
 											<p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
 											
@@ -214,7 +214,7 @@
 											styleClass="Wid100">
 					
 											<f:selectItems value="#{notaCreditoCtrl.iceList}" var="ice"
-												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
+												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 												
 											<p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
 											

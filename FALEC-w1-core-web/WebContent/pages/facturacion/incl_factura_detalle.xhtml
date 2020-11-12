@@ -160,7 +160,7 @@
 											styleClass="Wid100 Fs8">
 					
 											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
-												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
+												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 												
 											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
 											
@@ -246,7 +246,7 @@
 											styleClass="Wid100">
 					
 											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
-												itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
+												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 												
 											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
 											

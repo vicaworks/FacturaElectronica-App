@@ -34,6 +34,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
@@ -166,6 +167,7 @@ public class IceCtrl extends BaseCtrl {
 		iceSelected = new Ice();
 		iceSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 		iceSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+		iceSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 		iceSelected.setCodigoIce("3");
 	}
 	
@@ -234,35 +236,37 @@ public class IceCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(e.getIdice());
-				UtilExcel.setHSSBordeCell(cell);
+//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(1);
 				cell.setCellValue(e.getCodigo());
-				UtilExcel.setHSSBordeCell(cell);
+//				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(2);
-				cell.setCellValue(e.getDescripcion());
-				UtilExcel.setHSSBordeCell(cell);
+				cell.setCellValue(e.getEstado().equals("I")?"INACTIVO":"ACTIVO");
+//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(3);
-				cell.setCellValue(e.getTarifaadvalorem());
-				UtilExcel.setHSSBordeCell(cell);
+				cell.setCellValue(e.getDescripcion());
+//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(4);
-				cell.setCellValue(e.getTarifaespecifica());
-				UtilExcel.setHSSBordeCell(cell);
+				cell.setCellValue(e.getTarifaadvalorem());
+//				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(5);
 				cell.setCellValue(e.getValor().doubleValue());
-				UtilExcel.setHSSBordeCell(cell);
+//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(6);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
-				UtilExcel.setHSSBordeCell(cell);
+//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(7);
-				cell.setCellValue(e.getUpdated());
-				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
+				cell.setCellValue(FechaUtil.formatoFechaHora(e.getUpdated()));
+//				UtilExcel.setHSSBordeCell(cell);
 				
 				
 				fila++;
@@ -350,7 +354,7 @@ public class IceCtrl extends BaseCtrl {
 			HSSFSheet sheet=wb.getSheetAt(0);
 			
 			List<Ice> importIceList = new ArrayList<>();
-			int fila=2;
+			int fila=3;
 			conti1:while(true) {
 				HSSFRow row = sheet.getRow(fila);
 				if(row==null) break;
@@ -410,11 +414,12 @@ public class IceCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							ice.setTarifaespecifica(cell.getStringCellValue());
+							cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+							ice.setValor(BigDecimal.valueOf(cell.getNumericCellValue()));
+							
 						} catch (Exception e) {
 							ice.setError(true);
-							ice.setNovedad("FORMATO TARIFA ESPECIFICA ERROR");
+							ice.setNovedad("FORMATO VALOR ERROR");
 							importIceList.add(ice);
 							e.printStackTrace();
 							fila++;
@@ -496,31 +501,34 @@ public class IceCtrl extends BaseCtrl {
 			if(ice.isError()) continue conti1;
 			
 			// datos obligatorios
-			if(ice.getCodigo()==null) {
+			if(ice.getCodigo()==null || ice.getCodigo().trim().length()==0) {
 				ice.setError(true);
 				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO CODIGO OBLIGATORIO"):"CAMPO CODIGO OBLIGATORIO");
 			}
-			if(ice.getDescripcion()==null) {
+			if(ice.getDescripcion()==null || ice.getDescripcion().trim().length()==0) {
 				ice.setError(true);
 				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO DESCRIPCION OBLIGATORIO"):"CAMPO DESCRIPCION OBLIGATORIO");
 			}
-			if((ice.getTarifaadvalorem()==null || ice.getTarifaadvalorem().compareTo("")==0) && (ice.getTarifaespecifica()==null ||ice.getTarifaespecifica().compareTo("")==0) ) {
+			if((ice.getTarifaadvalorem()==null || ice.getTarifaadvalorem().trim().length()==0)) {
 				ice.setError(true);
 				ice.setNovedad(ice.getNovedad() != null
 						? ice.getNovedad()
 								.concat(", UNO DE LOS CAMPOS TARIFA AD VALOREM Y TARIFA ESPECIFICA SON OBLIGATORIOS")
 						: "UNO DE LOS CAMPOS TARIFA AD VALOREM Y TARIFA ESPECIFICA SON OBLIGATORIOS");
 			}
-			if(ice.getTarifaespecifica()!=null) {
-			if(!validaTarEspecif(ice.getTarifaespecifica())) {
+			
+			if(ice.getTarifaadvalorem()==null) {
 				ice.setError(true);
-				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO TARIFA ESPECIFICA FORMATO INCORRECTO"):"CAMPO TARIFA ESPECIFICA FORMATO INCORRECTO");
-			}}
-			if(ice.getTarifaadvalorem()!=null) {
-			if(!validaTarifa(ice.getTarifaadvalorem())) {
+				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO TARIFA VALOREM OBLIGATORIO"):"CAMPO TARIFA VALOREM OBLIGATORIO");
+			}
+			
+			if(ice.getValor()==null) {
 				ice.setError(true);
-				ice.setNovedad(ice.getNovedad()!=null?ice.getNovedad().concat(", CAMPO TARIFA VALOREM FORMATO INCORRECTO"):"CAMPO TARIFA VALOREM FORMATO INCORRECTO");
-			}}
+				ice.setNovedad(ice.getNovedad() != null
+						? ice.getNovedad()
+								.concat(", EL CAMPO VALOR ES OBLIGATORIO")
+						: "EL CAMPO VALOR ES OBLIGATORIO");
+			}
 			
 			if(ice.getCodigo()!=null) {
 				
@@ -532,22 +540,6 @@ public class IceCtrl extends BaseCtrl {
 			}
 			
 		}
-	}
-	
-	@SuppressWarnings("unused")
-	public boolean validaTarifa(String valor) 
-	{
-		//valida tarifa valorem
-		boolean flag=false;
-		try {
-			BigDecimal tarifa=new BigDecimal(valor);
-			
-			flag= true;
-		} catch (NumberFormatException e) {
-			
-		}
-		return flag;
-		
 	}
 	
 	@SuppressWarnings("unused")

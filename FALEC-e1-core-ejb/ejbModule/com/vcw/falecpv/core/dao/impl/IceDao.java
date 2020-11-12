@@ -3,7 +3,6 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +53,17 @@ public class IceDao extends AppGenericDao<Ice, String> {
 	@SuppressWarnings("unchecked")
 	public List<Ice> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idEmpresa)throws DaoException{
 		try {
-			Query q = getEntityManager().createQuery("SELECT i FROM Ice i WHERE i.empresa.idempresa=:idempresa ORDER BY i.descripcion");
+			
+			Query q = null;
+			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
+				q = getEntityManager().createQuery("SELECT i FROM Ice i WHERE i.empresa.idempresa=:idempresa AND i.estado=:estado ORDER BY i.codigo");
+				q.setParameter("estado", estadoRegistroEnum.getInicial());
+			}else {
+				q = getEntityManager().createQuery("SELECT i FROM Ice i WHERE i.empresa.idempresa=:idempresa ORDER BY i.codigo");
+			}
+			
+			
+			
 			q.setParameter("idempresa", idEmpresa);
 			return q.getResultList();
 		} catch (Exception e) {
@@ -144,20 +153,7 @@ public class IceDao extends AppGenericDao<Ice, String> {
 				aux.setDescripcion(p.getDescripcion());
 				aux.setIdice(p.getIdice());
 				aux.setTarifaadvalorem(p.getTarifaadvalorem());
-				aux.setTarifaespecifica(p.getTarifaespecifica());
-				aux.setValor(p.getTarifaadvalorem()!=null?new BigDecimal(p.getTarifaadvalorem()).divide(new BigDecimal(100)):BigDecimal.ZERO);
-				aux.setIdice(contadorPkServicio.generarContadorTabla(TCIce.ICE, null));
-				listaaux.add(aux);
-			}
-			if(p.getTarifaespecifica()!=null && !p.isError()) {
-				aux= new Ice();
-				aux.setCodigo(p.getCodigo());
-				aux.setCodigoIce(p.getCodigoIce());
-				aux.setDescripcion(p.getDescripcion());
-				aux.setIdice(p.getIdice());
-				aux.setTarifaadvalorem(p.getTarifaadvalorem());
-				aux.setTarifaespecifica(p.getTarifaespecifica());
-				aux.setValor(p.getTarifaespecifica()!=null?new BigDecimal(p.getTarifaespecifica()):BigDecimal.ZERO);
+				aux.setValor(p.getValor());
 				aux.setIdice(contadorPkServicio.generarContadorTabla(TCIce.ICE, null));
 				listaaux.add(aux);
 			}
@@ -169,13 +165,6 @@ public class IceDao extends AppGenericDao<Ice, String> {
 			if (p.isError())
 				continue continuar1;
 
-			// verifica si ya existe el ice
-//			if (existeCodigo(p.getCodigo(), p.getIdice())) {
-//				p.setError(true);
-//				p.setNovedad("ICE YA EXISTE.");
-//				continue continuar1;
-//			}
-
 			Ice ice = new Ice();
 
 			// datos iniciales
@@ -183,13 +172,11 @@ public class IceDao extends AppGenericDao<Ice, String> {
 			ice.setDescripcion(p.getDescripcion());
 			ice.setEmpresa(empresa);
 			ice.setTarifaadvalorem(p.getTarifaadvalorem());
-			ice.setTarifaespecifica(p.getTarifaespecifica());
-			p.setTarifaespecifica(p.getTarifaespecifica().contains(",")?p.getTarifaespecifica().replace(",", "."):p.getTarifaespecifica());
 			ice.setIdusuario(idusuario);
 			ice.setCodigoIce(codigoIce);
 			ice.setUpdated(new Date());
 			ice.setValor(p.getValor());
-			ice.setTarifaadvalorem(p.getTarifaadvalorem()!=null?((new BigDecimal(p.getTarifaadvalorem())))+"%":"");
+			ice.setTarifaadvalorem(p.getTarifaadvalorem());
 			ice.setIdice(p.getIdice());
 			guardar(ice);
 			p.setIdice(ice.getIdice());
