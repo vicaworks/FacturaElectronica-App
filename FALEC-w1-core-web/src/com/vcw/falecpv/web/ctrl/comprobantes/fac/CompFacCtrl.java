@@ -48,6 +48,7 @@ import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -267,6 +268,8 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			detalleSelected = existeProductoLista();
+			// para que siemore agregue un producto a la lista 
+			detalleSelected = null;
 			boolean existe = false;
 			if(detalleSelected!=null) {
 				detalleSelected.setCantidad(
@@ -712,6 +715,11 @@ public class CompFacCtrl extends BaseCtrl {
 				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE FACTURA GENERADA CORRECTAMENTE.", "WARNING");
 			}else {
 				messageCtrl.cargarMenssage("OK", "FACTURA GENERADA CORRECTAMENTE.", "OK");
+			}
+			
+			FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl) AppJsfUtil.getManagedBean("facEmitidaCtrl");
+			if(facEmitidaCtrl!=null) {
+				facEmitidaCtrl.buscar();
 			}
 			
 		} catch (ExisteNumDocumentoException e) {

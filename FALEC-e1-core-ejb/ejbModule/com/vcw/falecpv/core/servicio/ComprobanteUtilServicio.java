@@ -98,7 +98,8 @@ public class ComprobanteUtilServicio {
 				
 				total.setLabel("IVA " + iva.getValor().intValue() + "%");
 				total.setValor(BigDecimal.valueOf(factura.getInfoFactura().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2")).mapToDouble(x->x.getValor()).sum()));
-				
+				// el primer sibtotal
+				totales.get(0).setLabel(totales.get(0).getLabel().replace("%", "") + iva.getValor().intValue() + "%");
 			}else {
 				total.setLabel("IVA");
 				total.setValor(BigDecimal.ZERO);

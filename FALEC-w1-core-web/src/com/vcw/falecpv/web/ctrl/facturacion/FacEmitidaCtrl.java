@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -60,7 +60,7 @@ import com.vcw.falecpv.web.util.UtilExcel;
  *
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class FacEmitidaCtrl extends BaseCtrl {
 
 	/**
@@ -145,7 +145,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		
 		if(ventasQueryList!=null) {
 			totalesDto.setCantidad(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getCantidad().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getSubtotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setSubtotal(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setDescuento(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaldescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setTotalsinimpuestos(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIva(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getIva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));

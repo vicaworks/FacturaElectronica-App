@@ -114,6 +114,7 @@ public class ProductoCtrl extends BaseCtrl {
 	private String formModule;
 	private String viewUpdate;
 	private InventarioCtrl inventarioCtrl;
+	private ListaProductoCtrl listaProductoCtrl;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 
 	/**
@@ -174,6 +175,14 @@ public class ProductoCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			nuevoProducto();
+			
+			switch (callModule) {
+			case "LISTA_PRODUCTO":
+//				AppJsfUtil.hideModal("dlgListaProducto");
+				break;
+			default:
+				break;
+			}
 			AppJsfUtil.showModalRender("dlgProducto", "frmProducto");
 			
 		} catch (Exception e) {
@@ -366,6 +375,10 @@ public class ProductoCtrl extends BaseCtrl {
 			case "ADQUISICION":
 				productoSelected.setCantidad(1);
 				adquisicionFrmCtrl.agregarProducto(productoSelected);
+				break;
+			case "LISTA_PRODUCTO":
+				listaProductoCtrl.setCriterioBusqueda(productoSelected.getNombregenerico());
+				listaProductoCtrl.refrescar();
 				break;
 			default:
 				break;
@@ -1392,6 +1405,20 @@ public class ProductoCtrl extends BaseCtrl {
 	 */
 	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
 		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @return the listaProductoCtrl
+	 */
+	public ListaProductoCtrl getListaProductoCtrl() {
+		return listaProductoCtrl;
+	}
+
+	/**
+	 * @param listaProductoCtrl the listaProductoCtrl to set
+	 */
+	public void setListaProductoCtrl(ListaProductoCtrl listaProductoCtrl) {
+		this.listaProductoCtrl = listaProductoCtrl;
 	}
 
 }

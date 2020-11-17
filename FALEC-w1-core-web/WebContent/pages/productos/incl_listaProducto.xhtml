@@ -48,6 +48,15 @@
 								value="BUSCAR" icon="fa fa-search" 
 								action="#{listaProductoCtrl.refrescar()}" styleClass="MRight10" update="@form"
 								/>
+							
+							<p:commandButton id="cmdFacDetalle"
+								value="PRODUCTO" icon="fa fa-plus" 
+								action="#{productoCtrl.nuevo()}" styleClass="secondary-button MRight10" update="@form">
+								<f:setPropertyActionListener value="LISTA_PRODUCTO" target="#{productoCtrl.callModule}"/>
+								<f:setPropertyActionListener value="frmListProducto" target="#{productoCtrl.formModule}"/>
+								<f:setPropertyActionListener value=":frmListProducto" target="#{productoCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="#{listaProductoCtrl}" target="#{productoCtrl.listaProductoCtrl}"/>
+							</p:commandButton>
 								
 							<p:commandButton id="cmdCerrar"
 								value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
