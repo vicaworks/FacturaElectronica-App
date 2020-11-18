@@ -78,7 +78,11 @@
 							<div class="p-col-9">
 								<div class="p-grid">
 									<div class="p-col-12">
-										<h:outputText value="#{d.descripcion}" styleClass="Fs12 FontBold"/>
+										<p:inputText id="intDetNombreProductoA" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
+											<p:ajax event="change"></p:ajax>
+										</p:inputText>
+										<p:message for="intDetNombreProductoA"/>
+										
 									</div>
 									
 									<div class="p-md-3 dt-spinner">
@@ -335,7 +339,7 @@
 						<div class="p-col-12 p-md-5">
 							<!-- TOTAL -->
 							
-							<div class="cardTotal cardTotal-bgBlue">
+							<div class="cardTotal cardTotal-borderOrange">
 								<div class="cardTotal-header">
 									<h:outputText value="TOTAL" />
 								</div>

@@ -10,7 +10,8 @@ package com.vcw.falecpv.core.constante.parametrosgenericos;
 public enum PGEmpresaSucursal implements ParametroGenericoBaseEnum {
 	
 	GENERAR_SUCURSAL("1"),
-	SUCURSAL("2");
+	SUCURSAL("2"),
+	ESTADO_BORRADOR("3");
 	
 	private String id;
 	

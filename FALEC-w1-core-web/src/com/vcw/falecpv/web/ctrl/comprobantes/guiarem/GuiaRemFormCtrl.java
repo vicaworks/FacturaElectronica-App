@@ -23,6 +23,7 @@ import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -41,8 +42,10 @@ import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.DetalledestinatarioServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -90,6 +93,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
 	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
+	
 	private String callModule;
 	private Cabecera guiaRemisionSelected;
 	private Destinatario destinatarioSelected;
@@ -126,7 +132,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		transportistaList = transportistaServicio.getTransportistaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
-	public void nuevaGuiaRemision() throws DaoException {
+	public void nuevaGuiaRemision() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		destinatarioSelected = null;
 		detalledestinatarioSeleted = null;
 		consultarTransportista();
@@ -138,6 +144,8 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setFechafintransporte(new Date());
 		guiaRemisionSelected.setDestinatarioList(new ArrayList<>());
 		infoadicionalList = null;
+		// estado borrador
+		guiaRemisionSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		inicializarSecuencia(guiaRemisionSelected);
 		enableAccion=false;
 	}
@@ -614,7 +622,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	public String editar(String idGuiaRem) throws DaoException {
+	public String editar(String idGuiaRem) throws DaoException, NumberFormatException, ParametroRequeridoException {
 		nuevaGuiaRemision();
 		guiaRemisionSelected = cabeceraServicio.consultarByPk(idGuiaRem);
 		

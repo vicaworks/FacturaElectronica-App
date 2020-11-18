@@ -48,11 +48,11 @@
 					<p:inputMask id="intSecDocumento" value="#{compFacCtrl.cabecerSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{compFacCtrl.editarSecuencialAction()}" process=":formMain:gridSecuencial" update=":formMain:msgFormMain :formMain:gridSecuencial">
-						<i class="fa fa-edit Fs18"/>
+						<i class="fa fa-edit Fs16" style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{compFacCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:gridSecuencial">
-						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+						<i class="fa fa-ban Fs16 " style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:message styleClass="Wid100" for="intSecCaja"/>
 					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
@@ -61,7 +61,7 @@
 			</h:panelGroup>
 		</p:panelGrid>
 		
-		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">	
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12" style="margin-top:0px;">	
 			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
@@ -99,12 +99,19 @@
 		
 		</p:panelGrid>
 		
-		<p:panelGrid id="grid2" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-lg-6,ui-g-12 ui-lg-6">
+		<p:panelGrid id="grid2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-6 ui-md-6 ui-lg-4,ui-g-6 ui-md-6 ui-lg-4,ui-g-6 ui-md-6 ui-lg-4">
 			
-			<p:commandButton value="CONSUMIDOR FINAL" action="#{compFacCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:msgFormMain :formMain:gridCliente" icon="fa fa-users" styleClass="secondary-button Wid100">
+			<p:commandButton value="CONS. FINAL" action="#{compFacCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:msgFormMain :formMain:gridCliente" icon="fa fa-users" styleClass="secondary-button Wid100 Fs10">
 			</p:commandButton>
 			
-			<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="Wid100">
+			<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
+				<f:setPropertyActionListener value="#{compFacCtrl}" target="#{listaClienteCtrl.compFacCtrl}"/>
+				<f:setPropertyActionListener value="FACTURA" target="#{listaClienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+			</p:commandButton>
+			
+			<p:commandButton value="CLIENTE / EDITAR" action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-plus" styleClass="Wid100 Fs10">
 				<f:setPropertyActionListener value="CompFacCtrl" target="#{clienteCtrl.callModule}"/>
 				<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 				<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
@@ -165,14 +172,14 @@
 			<div class="p-grid p-align-center vertical-container">
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorRenta" title="Calcular">
-						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+						<i class="fa fa-calculator" style="color:#B45F04;"/>
 					</p:commandLink>
 					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
 						<p:inputNumber symbol="%"  value="#{compFacCtrl.porcentajeRenta}" 
                                 symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionRenta();return false;}">
 		                </p:inputNumber>
 						<p:commandLink action="#{compFacCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
+							<i class="fa fa-floppy-o Fs14" style="color:#B45F04;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>
@@ -185,7 +192,7 @@
 				
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorIva" title="Calcular">
-						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+						<i class="fa fa-calculator" style="color:#B45F04;"/>
 					</p:commandLink>
 					<p:spacer width="3"/>
 					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
@@ -193,7 +200,7 @@
                                 symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionIva();return false;}">  
 		                </p:inputNumber>
 						<p:commandLink action="#{compFacCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs14" style="color:#2f2f2f;"></i>
+							<i class="fa fa-floppy-o Fs14" style="color:#B45F04;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>

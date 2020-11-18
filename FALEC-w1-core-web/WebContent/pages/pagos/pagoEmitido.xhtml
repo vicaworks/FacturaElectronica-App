@@ -162,7 +162,9 @@
 									converter="omnifaces.SelectItemsConverter"
 									required="false"
 									requiredMessage="REQUERIDO"
-									styleClass="Wid100">
+									styleClass="Wid100"
+									filter="true" 
+									filterMatchMode="contains">
 							<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 							<f:selectItems value="#{pagosMainCtrl.tipopagoList}" var="u"
 											itemLabel="#{u.nombre}" itemValue="#{u}" />	
@@ -299,6 +301,7 @@
 		   		<div class="p-grid">
 			   		<p:repeat var="t" value="#{pagosMainCtrl.pagosQueryTotal}">
 			   			<div class="p-col-4 pago-header">
+			   				<i class="fa fa-caret-right" style="margin-right: 10px;"/>
 			   				<h:outputText value="#{t.nombre}" />
 			   			</div>
 			   			<div class="p-col-8 pago-valor">

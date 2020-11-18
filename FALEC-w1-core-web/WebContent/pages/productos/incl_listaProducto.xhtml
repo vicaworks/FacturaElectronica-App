@@ -126,6 +126,9 @@
 						<h:outputText value="#{pr.stock}" styleClass="#{pr.stock.doubleValue()==0.0?'markRed':'markGreen'}" rendered="#{pr.tipoProducto.nombre=='PRODUCTO'}">
 							<f:convertNumber locale="es_EC" pattern="0.##"/>
 						</h:outputText>
+						
+						<h:outputText value="-" rendered="#{pr.tipoProducto.nombre!='PRODUCTO'}">
+						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="CANTIDAD" styleClass="TexAlCenter" style="width:40px;">

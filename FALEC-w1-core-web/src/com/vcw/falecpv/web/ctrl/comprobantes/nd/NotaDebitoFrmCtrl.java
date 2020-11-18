@@ -26,6 +26,7 @@ import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
@@ -44,9 +45,11 @@ import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.MotivoServicio;
 import com.vcw.falecpv.core.servicio.NotaDebitoServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.TotalimpuestoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -99,6 +102,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
 	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
+	
 	
 	private List<Iva> ivaList;
 	private BigDecimal totalPago = BigDecimal.ZERO;
@@ -141,7 +147,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		tipocomprobanteList = tipocomprobanteServicio.getTipocomprobanteDao().getByEmpresaFormulario(TipoComprobanteEnum.NOTA_DEBITO);
 	}
 	
-	public void nuevaNotDebito() throws DaoException{
+	public void nuevaNotDebito() throws DaoException, NumberFormatException, ParametroRequeridoException{
 		
 		consultarTipoComprobante();
 		consultarIva();
@@ -159,6 +165,8 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setFechaemisiondocasociado(new Date());
 		notDebitoSelected.setCliente(new Cliente());
 		infoadicionalList = null;
+		// estado borrador
+		notDebitoSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		inicializarSecuencia(notDebitoSelected);
 		totalimpuesto = new Totalimpuesto();
 		totalimpuesto.setBaseimponible(BigDecimal.ZERO);
@@ -215,7 +223,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void nuevoByFacturaEmitida(String idFactura)throws DaoException{
+	public void nuevoByFacturaEmitida(String idFactura)throws DaoException, NumberFormatException, ParametroRequeridoException{
 		
 		
 		nuevaNotDebito();
@@ -225,6 +233,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTipocomprobanteretencion(cabecera.getTipocomprobante());
 		notDebitoSelected.setFechaemisiondocasociado(cabecera.getFechaemision());
 		notDebitoSelected.setNumdocasociado(cabecera.getNumdocumento());
+		notDebitoSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		inicializarSecuencia(notDebitoSelected);
 		totalizar();
 		
@@ -283,7 +292,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		
 	}
 	
-	private void totalizar() throws DaoException {
+	private void totalizar() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		if(notDebitoSelected==null) nuevaNotDebito();		
 		
 		notDebitoSelected.setTotalsinimpuestos(BigDecimal.ZERO);
@@ -475,7 +484,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		
 	}
 	
-	public String editar(String idNotDebito) throws DaoException {
+	public String editar(String idNotDebito) throws DaoException, NumberFormatException, ParametroRequeridoException {
 		
 		nuevaNotDebito();
 		notDebitoSelected = cabeceraServicio.consultarByPk(idNotDebito);

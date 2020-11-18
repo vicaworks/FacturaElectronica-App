@@ -82,7 +82,7 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 							"		left join cliente cl on cl.idcliente = c.idcliente " + 
 							"	where " +
 							"		c.idestablecimiento = '" + idEstablecimiento + "' " +
-							"		and c.estado <> 'ANULADO' " +
+							"		and c.estado not in ('ANULADO','BORRADOR') " +
 							"		and tc.identificador in (" + identificadorComprobante + ")";
 //							"		and tc.identificador in ('00','01')";
 			

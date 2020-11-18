@@ -42,11 +42,11 @@
 					<p:inputMask id="intSecDocumento" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{notaDebitoFrmCtrl.editarSecuencialAction()}" process=":formMain:grid2" update=":formMain:msgFormMain :formMain:grid2">
-						<i class="fa fa-edit Fs18"/>
+						<i class="fa fa-edit Fs16" style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{notaDebitoFrmCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid2">
-						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+						<i class="fa fa-ban Fs16" style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:message styleClass="Wid100" for="intSecCaja"/>
 					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}"/>
@@ -99,13 +99,24 @@
 			</h:panelGroup>
 			
 			<h:panelGroup>
-				
-				<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="secondary-button Wid100">
-					<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
-				</p:commandButton>
-				
+				<div class="EmptyBox5"/>
+				<div class="p-grid">
+					<div class="p-col-6">
+						<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="Wid100">
+							<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{clienteCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+						</p:commandButton>
+					</div>
+					<div class="p-col-6">
+						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100">
+							<f:setPropertyActionListener value="#{notaDebitoFrmCtrl}" target="#{listaClienteCtrl.notaDebitoFrmCtrl}"/>
+							<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{listaClienteCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+						</p:commandButton>
+					</div>
+				</div>
 			</h:panelGroup>
 		
 		</p:panelGrid>
@@ -194,9 +205,9 @@
 			<h:panelGroup>
 				<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
 				<div class="EmptyBox5"/>
+				
 				<p:calendar id="claFacFechaDocAsociado" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemisiondocasociado}"
 					pattern="dd/MMM/yyyy"
-					locale="es" 
 					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
 				</p:calendar>
 				<p:message for="claFacFechaDocAsociado"/>

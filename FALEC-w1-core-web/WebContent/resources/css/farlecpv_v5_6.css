@@ -433,6 +433,12 @@
 	color: #fff;
 }
 
+.cardTotal-borderOrange{
+	border: 1px solid #797D7F;
+	border-top: 5px solid #B45F04;
+	color: #2f2f2f;
+}
+
 .cardSubtotal{
 	font-size:12px;
 	border-bottom: 1px dotted #d8d8dc;

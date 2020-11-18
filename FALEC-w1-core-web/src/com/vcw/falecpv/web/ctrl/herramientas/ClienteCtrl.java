@@ -125,49 +125,50 @@ public class ClienteCtrl extends BaseCtrl {
 			
 			switch (callModule) {
 			case "CLIENTE":
-				
-				// lista principal
 				consultarClientes();
 				AppJsfUtil.addInfoMessage("frmCliente","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
-				
 				break;
+				
 			case "LIQCOMPRA":
+				liqCompraFormCtrl = (LiqCompraFormCtrl) AppJsfUtil.getManagedBean("liqCompraFormCtrl");
 				liqCompraFormCtrl.getLiqCompraSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
+				
 			case "RETENCION":
+				retencionFrmCtrl = (RetencionFrmCtrl)AppJsfUtil.getManagedBean("retencionFrmCtrl");
 				retencionFrmCtrl.getRetencionSeleccion().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
+				
 			case "CAJACHICA":
 				cajaChicaCtrl.getTransaccionSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
+				
 			case "ADQUISICION":
 				adquisicionFrmCtrl.getAdquisicionSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
-			case "FactMainPagoCtrl":
 				
+			case "FactMainPagoCtrl":
 				FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
 				fp.getCabecerSelected().setCliente(clienteSelected);
-				
 				AppJsfUtil.hideModal("dlgCliente");
-				
 				break;
 			
 			case "CompFacCtrl":
 				CompFacCtrl cf = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
 				cf.getCabecerSelected().setCliente(clienteSelected);
-				
 				AppJsfUtil.hideModal("dlgCliente");
-				
 				break;
+				
 			case "NotaCreditoCtrl":
 				NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
 				notaCreditoCtrl.getNotaCreditoSeleccion().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
+				
 			case "guiaRemFormCtrl":
 				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
 				guiaRemFormCtrl.getDestinatarioSelected().setCliente(clienteSelected);
@@ -175,16 +176,19 @@ public class ClienteCtrl extends BaseCtrl {
 				guiaRemFormCtrl.getDestinatarioSelected().setRazonsocialdestinatario(clienteSelected.getRazonsocial());
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
+				
 			case "NotaDebitoFrmCtrl":
 				NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
 				notaDebitoFrmCtrl.getNotDebitoSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
+				
 			case "cotizacionFormCtrl":
 				CotizacionFormCtrl cotizacionFormCtrl = (CotizacionFormCtrl)AppJsfUtil.getManagedBean("cotizacionFormCtrl");
 				cotizacionFormCtrl.getCabecerSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
+				
 			default:
 				break;
 			}

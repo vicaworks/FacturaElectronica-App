@@ -149,11 +149,12 @@
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="clienteDT Fs11"  
 					rowKey="#{c.idcliente}"
-					rows="10"
 	                paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-	                paginatorPosition="bottom">
+	                paginatorPosition="bottom"
+	                rows="15"
+					rowsPerPageTemplate="10,15,20,25,30,35,40">
 	                
 	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:30px;">
 						
@@ -176,7 +177,7 @@
 					</p:column>
 					
 					<p:column headerText="CÓDIGO" style="width:30px;">
-						<h:outputText value="#{c.idcliente}" styleClass="FontBold Fs12" />
+						<h:outputText value="#{c.idcliente}"/>
 					</p:column>
 					
 					<p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
@@ -196,15 +197,15 @@
 					</p:column>
 					
 					<p:column headerText="DIRECCIÓN" style="width:50px;">
-						<h:outputText value="#{c.direccion}" styleClass="FontBold Fs12" />
+						<h:outputText value="#{c.direccion}"/>
 					</p:column>
 					
 					<p:column headerText="CORREO ELECTRÖNICO" style="width:50px;">
-						<h:outputText value="#{c.correoelectronico}" styleClass="FontBold Fs12" />
+						<h:outputText value="#{c.correoelectronico}"/>
 					</p:column>
 					
 					<p:column headerText="TELÉFONO" style="width:50px;">
-						<h:outputText value="#{c.telefono}" styleClass="FontBold Fs12" />
+						<h:outputText value="#{c.telefono}"/>
 					</p:column>
 	                
 				</p:dataTable>

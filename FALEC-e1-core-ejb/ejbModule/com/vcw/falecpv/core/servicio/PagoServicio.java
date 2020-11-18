@@ -105,7 +105,7 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " +
 			"		inner join tipopago tp on tp.idtipopago = p.idtipopago  " +
 			"	where " +
-			"		c.estado <> 'ANULADO' " +
+			"		c.estado not in ('ANULADO','BORRADOR') " +
 			"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
 			"		and c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tp.idtipopago not in (" + tipoPagoNoIncluido + ") " +

@@ -25,6 +25,7 @@ import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -44,8 +45,10 @@ import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.LiqCompraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -95,6 +98,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
 	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
 	private List<Cliente> proveedorList;
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -134,7 +139,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
-	public void nuevaLiqCompra() throws DaoException{
+	public void nuevaLiqCompra() throws DaoException, NumberFormatException, ParametroRequeridoException{
 		
 		liqCompraSelected = new Cabecera();
 		liqCompraSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
@@ -146,7 +151,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setFechaemision(new Date());
 		infoadicionalList = null;
 		descripcionIva = "(0%)";
-		inicializarSecuencia(liqCompraSelected);
+		// estado borrador
+		liqCompraSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));		inicializarSecuencia(liqCompraSelected);
 		liqCompraDetalleList = null;
 		criterioProveedor = null;
 		detalleSelected = null;
@@ -343,7 +349,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		
 	}
 	
-	private void totalizar() throws DaoException {
+	private void totalizar() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		if(liqCompraSelected==null) nuevaLiqCompra();;
 		
 		
@@ -559,7 +565,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
 	
-	public String editar(String idLiqCompra) throws DaoException {
+	public String editar(String idLiqCompra) throws DaoException, NumberFormatException, ParametroRequeridoException {
 		
 		nuevaLiqCompra();
 		liqCompraSelected = cabeceraServicio.consultarByPk(idLiqCompra);

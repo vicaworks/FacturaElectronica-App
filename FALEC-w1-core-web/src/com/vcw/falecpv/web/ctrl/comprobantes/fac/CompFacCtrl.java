@@ -25,6 +25,7 @@ import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -44,6 +45,8 @@ import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
@@ -99,6 +102,9 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
 	
 	private Cabecera cabecerSelected;
@@ -237,7 +243,7 @@ public class CompFacCtrl extends BaseCtrl {
 		productoList = productoServicio.getProductoDao().consultarAllImageEager(AppJsfUtil.getEstablecimiento().getIdestablecimiento(),criterioBusqueda);
 	}
 	
-	public void nuevaFactura() throws DaoException {
+	public void nuevaFactura() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		
 		criterioBusqueda = null;
 		criterioCliente = null;
@@ -246,7 +252,8 @@ public class CompFacCtrl extends BaseCtrl {
 		infoadicionalList = null;
 		enableAccion = false;
 		inicializarSecuencia(cabecerSelected);
-		
+		// estado borrador
+		cabecerSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		criterioCliente = null;
 		pagoList = null;
 		pagoSelected = null;
@@ -331,7 +338,7 @@ public class CompFacCtrl extends BaseCtrl {
 		
 	}
 	
-	private void totalizar() throws DaoException {
+	private void totalizar() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		if(cabecerSelected==null) nuevaFactura();
 		
 		
@@ -861,7 +868,7 @@ public class CompFacCtrl extends BaseCtrl {
 	}
 	
 	
-	public String editar(String idFactura) throws DaoException {
+	public String editar(String idFactura) throws DaoException, NumberFormatException, ParametroRequeridoException {
 		nuevaFactura();
 		cabecerSelected = cabeceraServicio.consultarByPk(idFactura);
 		

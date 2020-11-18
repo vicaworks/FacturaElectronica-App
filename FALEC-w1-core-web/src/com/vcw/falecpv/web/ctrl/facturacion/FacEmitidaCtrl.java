@@ -592,6 +592,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			cabeceraServicio.anularComprobanteReversoKardex(ventasQuerySelected.getIdcabecera(),AppJsfUtil.getUsuario().getIdusuario());
 			ventasQuerySelected = null;
 			consultar();
+			totalizar();
 			
 		} catch (EstadoComprobanteException e) {
 			e.printStackTrace();

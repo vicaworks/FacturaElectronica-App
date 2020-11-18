@@ -472,6 +472,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			reciboServicio.anularRecibo(ventasQuerySelected.getIdcabecera(),AppJsfUtil.getUsuario().getIdusuario());
 			
 			consultar();
+			totalizar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

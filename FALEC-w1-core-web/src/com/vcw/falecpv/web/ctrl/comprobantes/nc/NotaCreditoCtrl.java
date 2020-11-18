@@ -24,7 +24,9 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.constante.contadores.EstadoComprobanteEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -42,8 +44,10 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -90,6 +94,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
 	
 	private String callModule;
@@ -270,7 +277,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void nuevaNotaCredito()throws DaoException {
+	public void nuevaNotaCredito()throws DaoException, NumberFormatException, ParametroRequeridoException {
 		consultarTipoComprobante();
 		consultarIce();
 		consultarIva();
@@ -298,7 +305,8 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			notaCreditoSeleccion.setIdcabecera(facturaSeleccion.getIdcabecera());
 			formatoNumDoc(facturaSeleccion.getNumdocumento());
 		}
-		
+		// estado borrador
+		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		determinarPeriodoFiscal();
 		enableAccion = false;
 	}
@@ -347,7 +355,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		
 	}
 	
-	private void totalizar() throws DaoException {
+	private void totalizar() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		if(notaCreditoSeleccion==null) nuevaNotaCredito();
 		
 		
@@ -532,7 +540,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	
 	
-	public void nuevoByFacturaEmitida(String idFactura)throws DaoException{
+	public void nuevoByFacturaEmitida(String idFactura)throws DaoException, NumberFormatException, ParametroRequeridoException{
 		
 		
 		nuevaNotaCredito();
@@ -546,7 +554,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setFechaemision(new Date());
 		determinarPeriodoFiscal();
 		notaCreditoSeleccion.setValordocasociado(notaCreditoSeleccion.getTotalconimpuestos());
-		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
+		notaCreditoSeleccion.setEstado(EstadoComprobanteEnum.REGISTRADO.toString());
+		// estado borrador
+		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		notaCreditoSeleccion.setSecuencial(null);
 		notaCreditoSeleccion.setTipocomprobante(null);
 		infoadicionalList = null;
@@ -619,7 +629,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 	}
 	
-	public String editar(String idNotaCredito) throws DaoException {
+	public String editar(String idNotaCredito) throws DaoException, NumberFormatException, ParametroRequeridoException {
 		
 		nuevaNotaCredito();
 		notaCreditoSeleccion = cabeceraServicio.consultarByPk(idNotaCredito);

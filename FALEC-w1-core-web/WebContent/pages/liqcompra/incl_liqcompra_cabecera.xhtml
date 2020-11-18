@@ -48,11 +48,11 @@
 					<p:inputMask id="intSecDocumento" value="#{liqCompraFormCtrl.liqCompraSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{liqCompraFormCtrl.liqCompraSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{liqCompraFormCtrl.editarSecuencialAction()}" process=":formMain:grid" update=":formMain:msgFormMain :formMain:grid">
-						<i class="fa fa-edit Fs18"/>
+						<i class="fa fa-edit Fs16" style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:spacer width="5px;"/>
 					<p:commandLink action="#{liqCompraFormCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid">
-						<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+						<i class="fa fa-ban Fs16" style="color:#2f2f2f;"/>
 					</p:commandLink>
 					<p:message styleClass="Wid100" for="intSecCaja"/>
 					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{liqCompraFormCtrl.liqCompraSelected.editarSecuencial}"/>
@@ -100,11 +100,27 @@
 		
 		<p:panelGrid id="grid2" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
-			<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(liqCompraFormCtrl.liqCompraSelected.cliente!=null?liqCompraFormCtrl.liqCompraSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
-				<f:setPropertyActionListener value="LIQCOMPRA" target="#{clienteCtrl.callModule}"/>
-				<f:setPropertyActionListener value=":formMain:gridProveedor" target="#{clienteCtrl.updateView}"/>
-				<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{clienteCtrl.liqCompraFormCtrl}"/>
-			</p:commandButton>
+			
+			<h:panelGroup>
+				<div class="EmptyBox5"/>
+				<div class="p-grid">
+					<div class="p-col-6">
+						<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(liqCompraFormCtrl.liqCompraSelected.cliente!=null?liqCompraFormCtrl.liqCompraSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="Wid100">
+						<f:setPropertyActionListener value="LIQCOMPRA" target="#{clienteCtrl.callModule}"/>
+						<f:setPropertyActionListener value=":formMain:gridProveedor" target="#{clienteCtrl.updateView}"/>
+						<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{clienteCtrl.liqCompraFormCtrl}"/>
+					</p:commandButton>
+					</div>
+					<div class="p-col-6">
+						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100">
+							<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{listaClienteCtrl.liqCompraFormCtrl}"/>
+							<f:setPropertyActionListener value="LIQCOMPRA" target="#{listaClienteCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:gridProveedor" target="#{listaClienteCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+						</p:commandButton>
+					</div>
+				</div>
+			</h:panelGroup>
 			
 		</p:panelGrid>
 		
@@ -160,7 +176,7 @@
 			<div class="p-grid p-align-center vertical-container">
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorRenta" title="Calcular">
-						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+						<i class="fa fa-calculator"  style="color:#B45F04;"/>
 					</p:commandLink>
 					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
 						<p:inputNumber symbol="%"  value="#{liqCompraFormCtrl.porcentajeRenta}" 
@@ -168,7 +184,7 @@
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
 						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs14"></i>
+							<i class="fa fa-floppy-o Fs14" style="color:#B45F04;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>
@@ -181,7 +197,7 @@
 				
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorIva" title="Calcular">
-						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+						<i class="fa fa-calculator"  style="color:#B45F04;"/>
 					</p:commandLink>
 					<p:spacer width="3"/>
 					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
@@ -190,7 +206,7 @@
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
 						<p:commandLink action="#{liqCompraFormCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs14"></i>
+							<i class="fa fa-floppy-o Fs14" style="color:#B45F04;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>

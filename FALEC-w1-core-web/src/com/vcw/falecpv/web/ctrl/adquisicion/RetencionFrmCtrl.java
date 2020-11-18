@@ -23,6 +23,7 @@ import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -38,9 +39,11 @@ import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ImpuestoretencionServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -89,6 +92,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
 	private String callModule;
 	private String viewUpdate;
@@ -154,7 +160,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void nuevaRetencionDispacher() throws DaoException {
+	public void nuevaRetencionDispacher() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		if(adquisicionSelected!=null) {
 			Cabecera r = cabeceraRetencionServicio.getByAdquisicionEstado(adquisicionSelected.getIdadquisicion());
 			
@@ -169,7 +175,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		enableAccion = false;	
 	}
 	
-	private void nuevaRetencion()throws DaoException {
+	private void nuevaRetencion()throws DaoException, NumberFormatException, ParametroRequeridoException {
 		
 		consultarTipoComprobante();
 		consultarRetencionImpuesto();
@@ -195,6 +201,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}
 		retencionSeleccion.setFechaemisiondocasociado(retencionSeleccion.getFechaemision());
 		retenciondetalleList = null;
+		retencionSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		nuevaRetencionDetalle();
 		determinarPeriodoFiscal();
 	}

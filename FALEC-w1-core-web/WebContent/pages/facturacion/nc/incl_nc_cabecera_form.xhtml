@@ -45,11 +45,11 @@
 						<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 						<p:spacer width="5px;"/>
 						<p:commandLink action="#{notaCreditoCtrl.editarSecuencialAction()}" process=":formMain:gridNotaCreditoDG" update=":formMain:msgFormMain :formMain:gridNotaCreditoDG">
-							<i class="fa fa-edit Fs18"/>
+							<i class="fa fa-edit Fs16" style="color:#2f2f2f;"/>
 						</p:commandLink>
 						<p:spacer width="5px;"/>
 						<p:commandLink action="#{notaCreditoCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:gridNotaCreditoDG">
-							<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+							<i class="fa fa-ban Fs16" style="color:#2f2f2f;"/>
 						</p:commandLink>
 						<p:message styleClass="Wid100" for="intSecCaja"/>
 						<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
@@ -126,19 +126,34 @@
 	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
 			</h:panelGroup>
 			
-			<p:commandButton  id="cmdRtnCliente2" 
-					title="NUEVO / EDITAR CLIENTE"
-					icon="fa fa-user"
-					value="NUEVO / EDITAR CLIENTE"
-					styleClass="secondary-button Wid100 Fs11"
-					action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}"
-					immediate="true">
-					<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{clienteCtrl.updateView}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
-			</p:commandButton>
-			
-			
+			<h:panelGroup>
+				<div class="EmptyBox5"/>
+				<div class="p-grid">
+					<div class="p-col-6">
+						<p:commandButton  id="cmdRtnCliente2" 
+								title="NUEVO / EDITAR CLIENTE"
+								icon="fa fa-user"
+								value="NUEVO / EDITAR CLIENTE"
+								styleClass="Wid100 Fs11"
+								action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}"
+								immediate="true">
+								<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{clienteCtrl.updateView}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+						</p:commandButton>
+					</div>
+					<div class="p-col-6">
+						
+						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs11">
+							<f:setPropertyActionListener value="#{notaCreditoCtrl}" target="#{listaClienteCtrl.notaCreditoCtrl}"/>
+							<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{listaClienteCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{listaClienteCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+						</p:commandButton>
+					
+					</div>
+				</div>
+			</h:panelGroup>
 			
 			<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
 			<h:panelGroup>

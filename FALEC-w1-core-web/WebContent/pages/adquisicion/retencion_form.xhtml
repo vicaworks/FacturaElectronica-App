@@ -201,11 +201,11 @@
 									<p:inputMask id="intSecDocumento" value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
 									<p:spacer width="5px;"/>
 									<p:commandLink action="#{retencionFrmCtrl.editarSecuencialAction()}" process=":formMain:grid :formMain:grid2" update=":formMain:msgFormMain :formMain:grid :formMain:grid2">
-										<i class="fa fa-edit Fs18"/>
+										<i class="fa fa-edit Fs16" style="color:#2f2f2f;"/>
 									</p:commandLink>
 									<p:spacer width="5px;"/>
 									<p:commandLink action="#{retencionFrmCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:grid :formMain:grid2">
-										<i class="fa fa-trash-o Fs18 " style="color:red;"/>
+										<i class="fa fa-ban Fs16 " style="color:#2f2f2f;"/>
 									</p:commandLink>
 									<p:message styleClass="Wid100" for="intSecCaja"/>
 									<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}"/>
@@ -257,18 +257,31 @@
 							
 							
 							<h:panelGroup>
-								<p:commandButton  id="cmdRtnProveedor" 
-										title="NUEVO/EDITAR PROVEEDOR"
-										icon="fa fa-plus"
-										value="NUEVO / EDITAR PROVEEDOR"
-										styleClass="secondary-button Wid100 Fs11"
-										action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}"
-										immediate="true">
-										<f:setPropertyActionListener value="RETENCION" target="#{cliente.callModule}"/>
-<!-- 										<f:setPropertyActionListener value="formMain" target="#{proveedorCtrl.formModule}"/> -->
-										<f:setPropertyActionListener value=":formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{clienteCtrl.updateView}"/>
-										<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{clienteCtrl.retencionFrmCtrl}"/>
-								</p:commandButton>
+								<div class="EmptyBox5"/>
+								<div class="p-grid">
+									<div class="p-col-6">
+										<p:commandButton  id="cmdRtnProveedor" 
+												title="NUEVO/EDITAR PROVEEDOR"
+												icon="fa fa-plus"
+												value="NUEVO / EDITAR PROVEEDOR"
+												styleClass="Wid100 Fs11"
+												action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}"
+												immediate="true">
+												<f:setPropertyActionListener value="RETENCION" target="#{clienteCtrl.callModule}"/>
+												<f:setPropertyActionListener value=":formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{clienteCtrl.updateView}"/>
+												<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{clienteCtrl.retencionFrmCtrl}"/>
+										</p:commandButton>
+									</div>
+									<div class="p-col-6">
+										<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs11">
+											<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{listaClienteCtrl.retencionFrmCtrl}"/>
+											<f:setPropertyActionListener value="RETENCION" target="#{listaClienteCtrl.callModule}"/>
+											<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{listaClienteCtrl.viewUpdate}"/>
+											<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+										</p:commandButton>
+									</div>
+								</div>
+							
 							</h:panelGroup>
 							
 							
@@ -584,7 +597,10 @@
 			</div>
 	    
 	    </h:form>
-    	
+		
+		<!-- Form Lista Proveedor -->
+	    <ui:include src="../herramientas/incl_listaCliente.xhtml" />
+	        	
     	<!-- Form Proveedor -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
         
