@@ -24,13 +24,6 @@
 			border-radius: 4px;
 		}
 		
-		.dt-selection .ui-inputfield {
-			padding: 0.2em 0.5em !important;
-		}
-		
-		.dt-selection .ui-selectonemenu-label {
-			text-align: right;
-		}
 		.ui-inputfield {
 			font-size: 12px !important;
 		}
@@ -110,190 +103,116 @@
 					<p:ajax event="rowSelect"  update=":formMain:pvDetalleDT">
 					</p:ajax>
 					<!-- item con producto -->	
-					<p:column headerText="ITEM" style="width:90%;" rendered="#{d.producto!=null}">
-					
-						<div class="EmptyBox5"/>
-						<div class="p-grid p-align-center vertical-container">
-							<div class="p-col-9">
-								<div class="p-grid">
-									<div class="p-col-12">
-										<p:inputText id="intDetNombreProducto2" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
+					<p:column headerText="ITEM" style="width:100%;">
+						
+						<div class="p-grid p-nogutter p-align-center">
+							<div class="p-col-12 p-sm-9">
+								
+								<!-- item con producto -->	
+								<p:outputLabel rendered="#{d.producto!=null}">
+									<p:inputText id="intDetNombreProducto2" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400">
 											<p:ajax event="change"></p:ajax>
 										</p:inputText>
-										<p:message for="intDetNombreProducto2"/>
-									</div>
-									<div class="p-md-3 dt-spinner">
-										<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs12 FontBold" style="margin-right:10px;">
-										</h:outputText>
-										<br/>
-										<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-										</p:spinner>
-									</div>
-									<div class="p-md-3 dt-spinner">
-									
-										<h:outputText value="P.UNITARIO" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-										</p:spinner>
-										
-									</div>
-									<div class="p-md-2 dt-spinner">
-									
-										<h:outputText value="DESCUTO($)" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8"  >
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-										</p:spinner>
-										
-									</div>
-									
-									<div class="p-md-2 dt-selection">
-										<h:outputText value="ICE" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:selectOneMenu id="somdetIceItem1"
-											value="#{d.ice}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100 Fs8">
-					
-											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
-												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
-												
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-											
-										</p:selectOneMenu>
-									</div>
-									
-									<div class="p-md-2 dt-selection">
-										<h:outputText value="IVA" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:selectOneMenu id="somdetIvaItem1"
-											value="#{d.iva}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100 Fs8">
-					
-											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
-												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
-											
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-											
-										</p:selectOneMenu>
-									</div>
-									
-								</div>
+									<p:message for="intDetNombreProducto2"/>
+								</p:outputLabel>
+								
+								<!-- item sin producto -->
+								<p:outputLabel rendered="#{d.producto==null}">
+									<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400">
+											<p:ajax event="change"></p:ajax>
+										</p:inputText>
+									<p:message for="intDetNombreProducto"/>
+								</p:outputLabel>
+								
 							</div>
-							<div class="p-col-3" style="text-align: right;">
+							<div class="p-col-8 p-sm-2" style="text-align: right;">
+								<!-- Subtotal -->
 								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-						</div>
-						
-					</p:column>			
-					
-					<!-- item otros -->
-					<p:column headerText="ITEM" style="width:90%;" rendered="#{d.producto==null}">
-						
-						<div class="EmptyBox5"/>
-						<div class="p-grid p-align-center vertical-container">
-							<div class="p-col-9">
-								<div class="p-grid">
-									<div class="p-col-12">
-										<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" placeholder="DESCRIPCION DEL ITEM">
-											<p:ajax event="change"></p:ajax>
-										</p:inputText>
-										<p:message for="intDetNombreProducto"/>
-									</div>
-									<div class="p-md-3 dt-spinner">
-										<h:outputText id="intDetFacCantidad2" value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:spinner id="insDetFacCanbtidad2" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-										</p:spinner>
-									</div>
-									<div class="p-md-3 dt-spinner">
-									
-										<h:outputText value="P.UNITARIO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-										</p:spinner>
-										
-									</div>
-									<div class="p-md-2 dt-spinner">
-									
-										<h:outputText value="DESCUENTO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" >
-											<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-										</p:spinner>
-										
-									</div>
-									
-									<div class="p-md-2 dt-selection">
-										<h:outputText value="ICE" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:selectOneMenu id="somdetIceItem"
-											value="#{d.ice}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100">
-					
-											<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
-												itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
-												
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-											
-										</p:selectOneMenu>
-									</div>
-									
-									<div class="p-md-2 dt-selection">
-										<h:outputText value="IVA" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-										<br/>
-										<p:selectOneMenu id="somdetIvaItem"
-											value="#{d.iva}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100">
-					
-											<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
-												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
-											
-											<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-											
-										</p:selectOneMenu>
-									</div>
-									
-								</div>
-							</div>
-							<div class="p-col-3" style="text-align: right;">
-								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
-									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
+							<div class="p-col-4 p-sm-1" style="text-align: center;">
+								<p:commandLink id="clkEliminar" action="#{compFacCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:pvDetalleDT" disabled="#{compFacCtrl.enableAccion}">
+									<f:setPropertyActionListener value="#{d}" target="#{compFacCtrl.detalleSelected}"/>
+									<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
 							</div>
 							
 						</div>
+						
+						<!-- cantidad, subdetalle -->
+				
+						<div class="p-grid p-nogutter p-align-center">
+							<div class="EmptyBox5"/>
+							
+							<div class="p-col-6 p-md-2 dt-spinner">
+								<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs10" style="margin-right:10px;">
+								</h:outputText>
+								<br/>
+								<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+									<p:ajax listener="#{compFacCtrl.calcularItemAction(d.producto!=null,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+								</p:spinner>
+							</div>
+							<div class="p-col-6 p-md-2 dt-spinner">
+							
+								<h:outputText value="P.UNITARIO" styleClass="Fs10" style="margin-right:10px;"/>
+								<br/>
+								<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+									<p:ajax listener="#{compFacCtrl.calcularItemAction(d.producto!=null,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+								</p:spinner>
+								
+							</div>
+							<div class="p-col-6 p-md-2 dt-spinner">
+							
+								<h:outputText value="DESCUTO($)" styleClass="Fs10" style="margin-right:10px;"/>
+								<br/>
+								<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8"  >
+									<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+								</p:spinner>
+								
+							</div>
+							
+							<div class="p-col-6 p-md-3 dt-selection">
+								<h:outputText value="ICE" styleClass="Fs10" style="margin-right:10px;"/>
+								<br/>
+								<p:selectOneMenu id="somdetIceItem1"
+									value="#{d.ice}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100 Fs8">
+			
+									<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
+										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
+										
+									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(d.producto!=null,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+									
+								</p:selectOneMenu>
+							</div>
+							
+							<div class="p-col-6 p-md-3 dt-selection">
+								<h:outputText value="IVA" styleClass="Fs10" style="margin-right:10px;"/>
+								<br/>
+								<p:selectOneMenu id="somdetIvaItem1"
+									value="#{d.iva}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100 Fs8">
+			
+									<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
+										itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+									
+									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(d.producto!=null,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+									
+								</p:selectOneMenu>
+							</div>
+							
+						</div>
+						
 					</p:column>
 					
-					
-					
-					<p:column style="width:10%;" styleClass="TexAlCenter">
-						<div class="p-grid p-justify-center p-align-center ">
-							<p:commandLink id="clkEliminar" action="#{compFacCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:pvDetalleDT" disabled="#{compFacCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{d}" target="#{compFacCtrl.detalleSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
-						</div>
-					</p:column>	
-						
 				</p:dataTable>
 				
 				

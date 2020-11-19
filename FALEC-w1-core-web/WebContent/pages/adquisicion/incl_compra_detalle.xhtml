@@ -9,8 +9,8 @@
 	<style type="text/css">
 		
 		.adquisicionDetDT .ui-datatable-scrollable-body{
-				min-height: 43vh !important;
-				/* height: calc(100vh - 430px); */
+				min-height: 46vh !important;
+				/* height: calc(100vh - 420px); */
 				
 		}
 		
@@ -60,7 +60,7 @@
 		<p:dataTable id="adquisicionDetDT" var="d"
 			value="#{adquisicionFrmCtrl.adquisiciondetalleList}" scrollable="true"
 			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-			styleClass="adquisicionDetDT Fs11"  
+			styleClass="adquisicionDetDT Fs9"  
 			rowKey="#{d.idadquisiciondetalle}"
 			selectionMode="single"
 			selection="#{adquisicionFrmCtrl.adquisiciondetalleSelected}">
@@ -68,183 +68,111 @@
 			<p:ajax event="rowSelect"  update=":formMain:adquisicionDetDT">
 			</p:ajax>
 			
-			<!-- item con producto -->	
-			<p:column headerText="ITEM" style="width:90%;">
-				<div class="EmptyBox5"/>
-				<div class="p-grid p-align-center vertical-container">
+			<p:column headerText="ITEM" style="width:100%;">
+				
+				<div class="p-grid p-nogutter p-align-center">
+					<div class="p-col-12 p-sm-9">
 						
-					<div class="p-col-9">
-						<!-- DETALLE CON PRODUCTO -->
+						<!-- item con producto -->	
 						<p:outputLabel rendered="#{d.producto!=null}">
-						
-							 <div class="p-grid">
-							 	
-								 	<div class="p-col-12">
-										<h:outputText value="#{d.descripcion}" styleClass="Fs12 FontBold"/>
-									</div>
-									
-									<div class="p-md-3 dt-spinner">
-									<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs12 FontBold" style="margin-right:10px;">
-									</h:outputText>
-									<br/>
-									<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" stepFactor="1">
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-									</p:spinner>
-								</div>
-								<div class="p-md-3 dt-spinner">
-								
-									<h:outputText value="P.UNITARIO" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-									</p:spinner>
-									
-								</div>
-								<div class="p-md-2 dt-spinner">
-								
-									<h:outputText value="DESCUTO($)" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8"  >
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,false)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-									</p:spinner>
-									
-								</div>
-								<div class="p-md-2 dt-selection">
-									<h:outputText value="ICE" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:selectOneMenu id="somdetIceItem1"
-										value="#{d.ice}"
-										converter="omnifaces.SelectItemsConverter"
-										required="true"
-										requiredMessage="REQUERIDO"
-										styleClass="Wid100 Fs8">
-				
-										<f:selectItems value="#{adquisicionFrmCtrl.iceList}" var="ice"
-											itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
-											
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-										
-									</p:selectOneMenu>
-								</div>
-								
-								<div class="p-md-2 dt-selection">
-									<h:outputText value="IVA" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:selectOneMenu id="somdetIvaItem1"
-										value="#{d.iva}"
-										converter="omnifaces.SelectItemsConverter"
-										required="true"
-										requiredMessage="REQUERIDO"
-										styleClass="Wid100 Fs8">
-				
-										<f:selectItems value="#{adquisicionFrmCtrl.ivaList}" var="iva2"
-												itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
-												
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}" update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-										
-									</p:selectOneMenu>
-								</div>
-							 	
-							 </div>
-						 
+							<p:inputText id="intDetNombreProducto2" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400">
+									<p:ajax event="change"></p:ajax>
+								</p:inputText>
+							<p:message for="intDetNombreProducto2"/>
 						</p:outputLabel>
 						
+						<!-- item sin producto -->
 						<p:outputLabel rendered="#{d.producto==null}">
-							
-							<!-- DETALLE SIN PRODUCTO -->
-							<div class="p-grid">
-								<div class="p-col-12">
-									<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400">
-										<p:ajax event="change"></p:ajax>
-									</p:inputText>
-									<p:message for="intDetNombreProducto"/>
-								</div>
-								<div class="p-md-3 dt-spinner">
-									<h:outputText id="intDetFacCantidad2" value="CANT." styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:spinner id="insDetFacCanbtidad2" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,false)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-									</p:spinner>
-								</div>
-								<div class="p-md-3 dt-spinner">
-								
-									<h:outputText value="P.UNITARIO" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,false)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-									</p:spinner>
-									
-								</div>
-								<div class="p-md-2 dt-spinner">
-								
-									<h:outputText value="DESCUTO($)" styleClass="Fs10 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" >
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,false)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-									</p:spinner>
-									
-								</div>
-								
-								<div class="p-md-2 dt-selection">
-									<h:outputText value="ICE" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:selectOneMenu id="somdetIceItem2"
-										value="#{d.ice}"
-										converter="omnifaces.SelectItemsConverter"
-										required="true"
-										requiredMessage="REQUERIDO"
-										styleClass="Wid100 Fs8">
-				
-										<f:selectItems value="#{adquisicionFrmCtrl.iceList}" var="ice"
-											itemLabel="#{ice.tarifaadvalorem}" itemValue="#{ice}" />
-											
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,false)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-										
-									</p:selectOneMenu>
-								</div>
-								
-								<div class="p-md-2 dt-selection">
-									<h:outputText value="IVA" styleClass="Fs12 FontBold" style="margin-right:10px;"/>
-									<br/>
-									<p:selectOneMenu id="somdetIvaItem2"
-										value="#{d.iva}"
-										converter="omnifaces.SelectItemsConverter"
-										required="true"
-										requiredMessage="REQUERIDO"
-										styleClass="Wid100 Fs8">
-				
-										<f:selectItems value="#{adquisicionFrmCtrl.ivaList}" var="iva2"
-												itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
-												
-										<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,false)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
-										
-									</p:selectOneMenu>
-								</div>
-							</div>
-						
+							<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400">
+									<p:ajax event="change"></p:ajax>
+								</p:inputText>
+							<p:message for="intDetNombreProducto"/>
 						</p:outputLabel>
 						
 					</div>
-					
-					<div class="p-col-3" style="text-align: right;">
+					<div class="p-col-8 p-sm-2" style="text-align: right;">
+						<!-- Subtotal -->
 						<h:outputText value="#{d.preciototal}" styleClass="Fs12 FontBold">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</div>
+					<div class="p-col-4 p-sm-1" style="text-align: center;">
+						<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
+							<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
+						</p:commandLink>
+					</div>
+				</div>
+				
+				<!-- cantidad, subdetalle -->
+				
+				<div class="p-grid p-nogutter p-align-center">
+					<div class="EmptyBox5"/>
+					<div class="p-col-6 p-md-2 dt-spinner">
+						<h:outputText id="intDetFacCantidad2" value="CANT." styleClass="Fs10" style="margin-right:10px;"/>
+						<br/>
+						<p:spinner id="insDetFacCanbtidad2" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+							<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+						</p:spinner>
+					</div>
+					<div class="p-col-6 p-md-2 dt-spinner">
+					
+						<h:outputText value="P.UNITARIO" styleClass="Fs10" style="margin-right:10px;"/>
+						<br/>
+						<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+							<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+						</p:spinner>
+						
+					</div>
+					<div class="p-col-6 p-md-2 dt-spinner">
+					
+						<h:outputText value="DESCUTO($)" styleClass="Fs10" style="margin-right:10px;"/>
+						<br/>
+						<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100">
+							<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,false)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+						</p:spinner>
+						
+					</div>
+					
+					<div class="p-col-6 p-md-3 dt-selection">
+						<h:outputText value="ICE" styleClass="Fs10" style="margin-right:10px;"/>
+						<br/>
+						<p:selectOneMenu id="somdetIceItem2"
+							value="#{d.ice}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100 Fs8">
+	
+							<f:selectItems value="#{adquisicionFrmCtrl.iceList}" var="ice"
+								itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
+								
+							<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+							
+						</p:selectOneMenu>
+					</div>
+					
+					<div class="p-col-6 p-md-3 dt-selection">
+						<h:outputText value="IVA" styleClass="Fs10" style="margin-right:10px;"/>
+						<br/>
+						<p:selectOneMenu id="somdetIvaItem2"
+							value="#{d.iva}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100 Fs8">
+	
+							<f:selectItems value="#{adquisicionFrmCtrl.ivaList}" var="iva2"
+									itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
+									
+							<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+							
+						</p:selectOneMenu>
+					</div>
 					
 				</div>
 				
-			</p:column>
-			
-			
-			<p:column style="width:10%;" styleClass="TexAlCenter">
-				<div class="p-grid p-justify-center p-align-center ">
-					<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
-						<i class="fa fa-trash-o Fs16" style="color:red;"></i>
-						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-						<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
-					</p:commandLink>
-				</div>
 			</p:column>
 			
 		</p:dataTable>
@@ -253,68 +181,82 @@
 		
 		<!-- Totales -->
 		<p:outputPanel id="oupTotales">
-			<div class="p-grid p-align-top p-justify-end">
-			
-				<div class="p-grid p-col-12 p-md-7 divResumen">
+		
+			<div class="p-grid p-nogutter p-align-center">
+						
+				<div class="p-col-12 p-md-7">
+					<div class="p-grid p-nogutter">
+						
+						<div class="p-col-7 cardSubtotal">
+							<i class="fa fa-caret-right"></i>
+							<p:spacer width="10px"/>
+							<h:outputText value="Subtotal :" />
+						</div>
+						
+						<div class="p-col-5 cardSubtotal-valor">
+							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.subtotal}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						
+						<div class="p-col-7 cardSubtotal">
+							<i class="fa fa-caret-right"></i>
+							<p:spacer width="10px"/>
+							<h:outputText value="Descuento :" />
+						</div>
+						
+						<div class="p-col-5 cardSubtotal-valor">
+							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaldescuento}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						
+						<div class="p-col-7 cardSubtotal">
+							<i class="fa fa-caret-right"></i>
+							<p:spacer width="10px"/>
+							<h:outputText value="I.C.E. :" />
+						</div>
+						
+						<div class="p-col-5 cardSubtotal-valor">
+							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalice}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						
+						<div class="p-col-7 cardSubtotal">
+							<i class="fa fa-caret-right"></i>
+							<p:spacer width="10px"/>
+							<h:outputText value="I.V.A. :" />
+						</div>
+						
+						<div class="p-col-5 cardSubtotal-valor">
+							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaliva}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+														
+					</div>
+				</div>
+				
+				<div class="p-col-12 p-md-5">
+					<!-- TOTAL -->
 					
-					<div class="p-col-7 subtotal">
-						<h:outputText value="Subtotal" styleClass="Fs12" />
+					<div class="cardTotal cardTotal-borderOrange">
+						<div class="cardTotal-header">
+							<h:outputText value="TOTAL" />
+						</div>
+						<div class="cardTotal-content-total">
+							<div class="EmptyBox5"/>
+							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="Fs20">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<div class="EmptyBox5"/>
+						</div>
 					</div>
 					
-					<div class="p-col-5 subtotalValor">
-						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.subtotal}" styleClass="Fs12">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-					
-					<div class="p-col-7 subtotal">
-						<h:outputText value="Descuento" styleClass="Fs12" />
-					</div>
-					
-					<div class="p-col-5 subtotalValor">
-						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaldescuento}" styleClass="Fs12">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-					
-					<div class="p-col-7 subtotal">
-						<h:outputText value="Total I.C.E." styleClass="Fs12" />
-					</div>
-					
-					<div class="p-col-5 subtotalValor">
-						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalice}" styleClass="Fs12">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-					
-					<div class="p-col-7 subtotal">
-						<h:outputText value="Total I.V.A." styleClass="Fs12" />
-					</div>
-					
-					<div class="p-col-5 subtotalValor">
-						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totaliva}" styleClass="Fs12">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-					
-					<div class="p-col-7">
-					</div>
-					<div class="p-grid p-col-5">
-						<div class="p-col-12 bordeSubtotal"></div>
-					</div>
-					
-					<div class="p-col-7 subtotal">
-						<h:outputText value="Total" styleClass="FontBold Fs16" />
-					</div>
-					
-					<div class="p-col-5 subtotalValor">
-						<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="FontBold Fs16 DispBlock Wid100">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-							
 				</div>
 			</div>
+			
 		</p:outputPanel>
 		
 	</div>
@@ -336,7 +278,7 @@
 			<div class="p-grid p-align-center vertical-container">
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorRenta" title="Calcular">
-						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+						<i class="fa fa-calculator" style="color:#B45F04;"/>
 					</p:commandLink>
 					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
 						<p:inputNumber symbol="%"  value="#{adquisicionFrmCtrl.porcentajeRenta}" 
@@ -344,7 +286,7 @@
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
 						<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs16"></i>
+							<i class="fa fa-floppy-o Fs16" style="color:#B45F04;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>
@@ -357,7 +299,7 @@
 				
 				<div class="p-col-12 p-md-4">
 					<p:commandLink id="cmlCalValorIva" title="Calcular">
-						<i class="fa fa-calculator" style="color:#2f2f2f;"/>
+						<i class="fa fa-calculator" style="color:#B45F04;"/>
 					</p:commandLink>
 					<p:spacer width="3"/>
 					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
@@ -366,7 +308,7 @@
 		                </p:inputNumber>
 		                <p:spacer width="10px"/>
 						<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
-							<i class="fa fa-floppy-o Fs16"></i>
+							<i class="fa fa-floppy-o Fs16" style="color:#B45F04;"></i>
 						</p:commandLink>  
 				    </p:overlayPanel>
 					<p:spacer width="3"/>

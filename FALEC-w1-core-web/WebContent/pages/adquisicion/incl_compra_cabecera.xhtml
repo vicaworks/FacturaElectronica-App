@@ -49,11 +49,29 @@
 	            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
 			</h:panelGroup>
 			
-			<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(adquisicionFrmCtrl.adquisicionSelected.cliente!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
-				<f:setPropertyActionListener value="ADQUISICION" target="#{clienteCtrl.callModule}"/>
-				<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor" target="#{clienteCtrl.updateView}"/>
-				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
-			</p:commandButton>
+			
+			<h:panelGroup>
+				<div class="EmptyBox5"/>
+				<div class="p-grid">
+					<div class="p-col-12 p-md-6">
+						<p:commandButton value="PROVEEDOR/ EDITAR" action="#{clienteCtrl.nuevoEditar(adquisicionFrmCtrl.adquisicionSelected.cliente!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-plus" styleClass="Wid100">
+							<f:setPropertyActionListener value="ADQUISICION" target="#{clienteCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor" target="#{clienteCtrl.updateView}"/>
+							<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
+						</p:commandButton>
+					</div>
+					<div class="p-col-12 p-md-6">
+						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100">
+							<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaClienteCtrl.adquisicionFrmCtrl}"/>
+							<f:setPropertyActionListener value="ADQUISICION" target="#{listaClienteCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor" target="#{listaClienteCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+						</p:commandButton>
+					</div>
+				</div>
+			</h:panelGroup>
+			
+			
 			
 			<h:outputText value="C.I./RUC * " styleClass="cpoRequerido"/>
 			<h:panelGroup>

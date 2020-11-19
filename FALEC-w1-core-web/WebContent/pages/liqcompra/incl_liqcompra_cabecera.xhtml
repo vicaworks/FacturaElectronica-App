@@ -104,15 +104,15 @@
 			<h:panelGroup>
 				<div class="EmptyBox5"/>
 				<div class="p-grid">
-					<div class="p-col-6">
-						<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(liqCompraFormCtrl.liqCompraSelected.cliente!=null?liqCompraFormCtrl.liqCompraSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="Wid100">
+					<div class="p-col-12 p-md-6">
+						<p:commandButton value="PROVEEDOR/ EDITAR" action="#{clienteCtrl.nuevoEditar(liqCompraFormCtrl.liqCompraSelected.cliente!=null?liqCompraFormCtrl.liqCompraSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-plus" styleClass="Wid100 Fs10">
 						<f:setPropertyActionListener value="LIQCOMPRA" target="#{clienteCtrl.callModule}"/>
 						<f:setPropertyActionListener value=":formMain:gridProveedor" target="#{clienteCtrl.updateView}"/>
 						<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{clienteCtrl.liqCompraFormCtrl}"/>
 					</p:commandButton>
 					</div>
-					<div class="p-col-6">
-						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100">
+					<div class="p-col-12 p-md-6">
+						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
 							<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{listaClienteCtrl.liqCompraFormCtrl}"/>
 							<f:setPropertyActionListener value="LIQCOMPRA" target="#{listaClienteCtrl.callModule}"/>
 							<f:setPropertyActionListener value=":formMain:gridProveedor" target="#{listaClienteCtrl.viewUpdate}"/>

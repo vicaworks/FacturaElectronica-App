@@ -101,15 +101,15 @@
 			<h:panelGroup>
 				<div class="EmptyBox5"/>
 				<div class="p-grid">
-					<div class="p-col-6">
-						<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="Wid100">
+					<div class="p-col-6 p-md-6">
+						<p:commandButton value="CLIENTE/ EDITAR" action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-plus" styleClass="Wid100 Fs10">
 							<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{clienteCtrl.callModule}"/>
 							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 							<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 						</p:commandButton>
 					</div>
-					<div class="p-col-6">
-						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100">
+					<div class="p-col-6 p-md-6">
+						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
 							<f:setPropertyActionListener value="#{notaDebitoFrmCtrl}" target="#{listaClienteCtrl.notaDebitoFrmCtrl}"/>
 							<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{listaClienteCtrl.callModule}"/>
 							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>

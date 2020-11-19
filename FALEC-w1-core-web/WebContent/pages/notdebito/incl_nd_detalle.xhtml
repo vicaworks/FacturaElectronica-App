@@ -55,7 +55,7 @@
 				<p:column style="width:10%;" styleClass="TexAlCenter">
 					<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarDetalle()}" process="@this :formMain:notMotivoDT" update="@form" disabled="#{notaDebitoFrmCtrl.enableAccion}">
 						<f:setPropertyActionListener value="#{r}" target="#{notaDebitoFrmCtrl.motivoSelected}"/>
-						<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+						<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 					</p:commandLink>
 				</p:column>

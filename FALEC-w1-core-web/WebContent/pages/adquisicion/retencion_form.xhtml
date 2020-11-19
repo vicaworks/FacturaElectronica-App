@@ -91,6 +91,10 @@
 			    font-size: 10px;
 			}
 			
+			.ui-inputfield {
+				font-size: 12px !important;
+			}
+			
 			
         </style>
     </ui:define>
@@ -259,12 +263,12 @@
 							<h:panelGroup>
 								<div class="EmptyBox5"/>
 								<div class="p-grid">
-									<div class="p-col-6">
+									<div class="p-col-12 p-lg-6">
 										<p:commandButton  id="cmdRtnProveedor" 
 												title="NUEVO/EDITAR PROVEEDOR"
 												icon="fa fa-plus"
-												value="NUEVO / EDITAR PROVEEDOR"
-												styleClass="Wid100 Fs11"
+												value="PROVEEDOR/ EDITAR"
+												styleClass="Wid100 Fs10"
 												action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}"
 												immediate="true">
 												<f:setPropertyActionListener value="RETENCION" target="#{clienteCtrl.callModule}"/>
@@ -272,8 +276,8 @@
 												<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{clienteCtrl.retencionFrmCtrl}"/>
 										</p:commandButton>
 									</div>
-									<div class="p-col-6">
-										<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs11">
+									<div class="p-col-12 p-lg-6">
+										<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
 											<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{listaClienteCtrl.retencionFrmCtrl}"/>
 											<f:setPropertyActionListener value="RETENCION" target="#{listaClienteCtrl.callModule}"/>
 											<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:inpRtNombre :formMain:inpRtnRuc :formMain:inpRtnEmail :formMain:inpRtnDireccion" target="#{listaClienteCtrl.viewUpdate}"/>
@@ -513,7 +517,7 @@
 								<p:commandButton  id="cmdAdqAgregarDetalle" 
 									icon="fa fa-plus"
 									value="AGREGAR #{msg['label.retencion']} CALCULADA"
-									styleClass="Wid100"
+									styleClass="Wid100 Fs10"
 									action="#{retencionFrmCtrl.agregarDetalle()}"
 									update="@form">
 								</p:commandButton>

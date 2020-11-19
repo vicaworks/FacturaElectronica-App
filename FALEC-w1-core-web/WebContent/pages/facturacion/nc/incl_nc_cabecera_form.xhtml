@@ -129,11 +129,11 @@
 			<h:panelGroup>
 				<div class="EmptyBox5"/>
 				<div class="p-grid">
-					<div class="p-col-6">
+					<div class="p-col-12 p-md-6">
 						<p:commandButton  id="cmdRtnCliente2" 
 								title="NUEVO / EDITAR CLIENTE"
-								icon="fa fa-user"
-								value="NUEVO / EDITAR CLIENTE"
+								icon="fa fa-plus"
+								value="CLIENTE/ EDITAR"
 								styleClass="Wid100 Fs11"
 								action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}"
 								immediate="true">
@@ -142,7 +142,7 @@
 								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 						</p:commandButton>
 					</div>
-					<div class="p-col-6">
+					<div class="p-col-12 p-md-6">
 						
 						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs11">
 							<f:setPropertyActionListener value="#{notaCreditoCtrl}" target="#{listaClienteCtrl.notaCreditoCtrl}"/>

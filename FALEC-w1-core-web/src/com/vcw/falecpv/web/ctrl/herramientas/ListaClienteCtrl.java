@@ -16,6 +16,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.RetencionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
@@ -48,6 +49,7 @@ public class ListaClienteCtrl extends BaseCtrl {
 	private NotaDebitoFrmCtrl notaDebitoFrmCtrl;
 	private GuiaRemFormCtrl guiaRemFormCtrl;
 	private LiqCompraFormCtrl liqCompraFormCtrl;
+	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private String callModule;
 	private String formModule;
 	private String viewUpdate;
@@ -139,7 +141,12 @@ public class ListaClienteCtrl extends BaseCtrl {
 				liqCompraFormCtrl = (LiqCompraFormCtrl) AppJsfUtil.getManagedBean("liqCompraFormCtrl");
 				liqCompraFormCtrl.getLiqCompraSelected().setCliente(clienteSelected);
 				break;
-			
+				
+			case "ADQUISICION":
+				adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
+				adquisicionFrmCtrl.getAdquisicionSelected().setCliente(clienteSelected);
+				break;
+				
 			default:
 				break;
 			}
@@ -331,6 +338,20 @@ public class ListaClienteCtrl extends BaseCtrl {
 	 */
 	public void setLiqCompraFormCtrl(LiqCompraFormCtrl liqCompraFormCtrl) {
 		this.liqCompraFormCtrl = liqCompraFormCtrl;
+	}
+
+	/**
+	 * @return the adquisicionFrmCtrl
+	 */
+	public AdquisicionFrmCtrl getAdquisicionFrmCtrl() {
+		return adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @param adquisicionFrmCtrl the adquisicionFrmCtrl to set
+	 */
+	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
+		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
 	}
 	
 	
