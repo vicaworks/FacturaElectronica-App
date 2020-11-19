@@ -154,7 +154,7 @@
 									<f:selectItems value="#{notaCreditoCtrl.iceList}" var="ice"
 										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 										
-									<p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemAction(d.producto!=null,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
+									<p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
 									
 								</p:selectOneMenu>
 							</div>
@@ -172,7 +172,7 @@
 									<f:selectItems value="#{notaCreditoCtrl.ivaList}" var="iva"
 										itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
 									
-									<p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
+									<p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
 									
 								</p:selectOneMenu>
 							</div>

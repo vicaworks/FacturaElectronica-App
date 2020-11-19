@@ -186,7 +186,7 @@
 									<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
 										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
 										
-									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
 									
 								</p:selectOneMenu>
 							</div>
@@ -204,7 +204,7 @@
 									<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
 										itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
 									
-									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
+									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
 									
 								</p:selectOneMenu>
 							</div>
