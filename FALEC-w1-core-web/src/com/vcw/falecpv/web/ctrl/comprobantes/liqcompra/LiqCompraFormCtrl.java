@@ -51,6 +51,7 @@ import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -681,6 +682,14 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void establecerFocoDetalle() {
+		try {
+			detalleSelected = liqCompraDetalleList.stream().filter(x->x.getIddetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

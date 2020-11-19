@@ -180,8 +180,6 @@ public class ListaProductoCtrl extends BaseCtrl {
 			
 			productoSelected = productoList.stream().filter(x->x.getIdproducto().equals(FacesUtils.getParameter("idProducto"))).findFirst().orElse(null);
 			
-			System.out.println(productoSelected.toStringObject());
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

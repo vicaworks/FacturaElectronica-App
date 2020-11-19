@@ -534,7 +534,7 @@
 							
 							<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 								<p:commandLink id="clkRtnDelete" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update="@form" process="@this :formMain:retencionDetDT" disabled="#{retencionFrmCtrl.enableAccion}">
-									<i class="fa fa-trash-o Fs16" style="color:red;"></i>
+									<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 									<f:setPropertyActionListener value="#{d}" target="#{retencionFrmCtrl.retenciondetalleSelected}"/>
 								</p:commandLink>

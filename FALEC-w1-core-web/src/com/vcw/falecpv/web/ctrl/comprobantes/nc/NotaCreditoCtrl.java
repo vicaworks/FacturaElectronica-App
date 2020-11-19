@@ -51,6 +51,7 @@ import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetorn
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -648,6 +649,14 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 		
 		return null;
+	}
+	
+	public void establecerFocoDetalle() {
+		try {
+			detalleSelected = detalleNcList.stream().filter(x->x.getIddetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

@@ -39,6 +39,7 @@ import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -603,6 +604,14 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		default:
 			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
 			break;
+		}
+	}
+	
+	public void establecerFocoDetalle() {
+		try {
+			adquisiciondetalleSelected = adquisiciondetalleList.stream().filter(x->x.getIdadquisiciondetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

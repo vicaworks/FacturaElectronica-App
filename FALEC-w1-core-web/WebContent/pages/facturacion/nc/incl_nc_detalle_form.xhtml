@@ -7,6 +7,7 @@
 				xmlns:of="http://omnifaces.org/functions">
 	
 	<p:remoteCommand name="buscarCodigoProducto" actionListener="#{notaCreditoCtrl.buscarCodigoProducto()}" global="true" update="@form"/>
+	<p:remoteCommand name="establecerFocoDetalle" action="#{notaCreditoCtrl.establecerFocoDetalle}" update=":formMain:pvDetalleDT"/>
 	
 	<div class="card card-w-title">
 		
@@ -72,32 +73,21 @@
 					
 					<p:column headerText="ITEM" style="width:100%;">
 						
-						<div class="p-grid p-nogutter p-align-center">
+						<div class="p-grid p-nogutter p-align-center" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 							<div class="p-col-12 p-sm-9">
-								
-								<!-- item con producto -->	
-								<p:outputLabel rendered="#{d.producto!=null}">
-									<p:inputText id="intDetNombreProducto2" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400">
-											<p:ajax event="change"></p:ajax>
-										</p:inputText>
-									<p:message for="intDetNombreProducto2"/>
-								</p:outputLabel>
-								
-								<!-- item sin producto -->
-								<p:outputLabel rendered="#{d.producto==null}">
-									<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400">
-											<p:ajax event="change"></p:ajax>
-										</p:inputText>
-									<p:message for="intDetNombreProducto"/>
-								</p:outputLabel>
-								
+								<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
+										<p:ajax event="change"></p:ajax>
+									</p:inputText>
+								<p:message for="intDetNombreProducto"/>
 							</div>
+							
 							<div class="p-col-8 p-sm-2" style="text-align: right;">
 								<!-- Subtotal -->
 								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
+							
 							<div class="p-col-4 p-sm-1" style="text-align: center;">
 								<p:commandLink id="clkEliminar" action="#{notaCreditoCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal" process="@this :formMain:pvDetalleDT" disabled="#{notaCreditoCtrl.enableAccion}">
 									<f:setPropertyActionListener value="#{d}" target="#{notaCreditoCtrl.detalleSelected}"/>
@@ -105,6 +95,7 @@
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								</p:commandLink>
 							</div>
+							
 						</div>
 						
 						<!-- cantidad, subdetalle -->
@@ -116,7 +107,7 @@
 								<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs10" style="margin-right:10px;">
 								</h:outputText>
 								<br/>
-								<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+								<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 									<p:ajax listener="#{notaCreditoCtrl.calcularItemAction(d.producto!=null,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
 								</p:spinner>
 							</div>
@@ -125,7 +116,7 @@
 			
 								<h:outputText value="P.UNITARIO" styleClass="Fs10" style="margin-right:10px;"/>
 								<br/>
-								<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+								<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 									<p:ajax listener="#{notaCreditoCtrl.calcularItemAction(d.producto!=null,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
 								</p:spinner>
 								
@@ -135,7 +126,7 @@
 			
 								<h:outputText value="DESC" styleClass="Fs10" style="margin-right:10px;"/>
 								<br/>
-								<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8"  >
+								<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 									<p:ajax listener="#{notaCreditoCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal"/>
 								</p:spinner>
 								
@@ -149,7 +140,8 @@
 									converter="omnifaces.SelectItemsConverter"
 									required="true"
 									requiredMessage="REQUERIDO"
-									styleClass="Wid100 Fs8">
+									styleClass="Wid100 Fs8"
+									onchange="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 			
 									<f:selectItems value="#{notaCreditoCtrl.iceList}" var="ice"
 										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
@@ -167,7 +159,8 @@
 									converter="omnifaces.SelectItemsConverter"
 									required="true"
 									requiredMessage="REQUERIDO"
-									styleClass="Wid100 Fs8">
+									styleClass="Wid100 Fs8"
+									onchange="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 			
 									<f:selectItems value="#{notaCreditoCtrl.ivaList}" var="iva"
 										itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
