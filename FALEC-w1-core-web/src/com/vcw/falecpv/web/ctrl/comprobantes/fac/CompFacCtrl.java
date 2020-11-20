@@ -705,8 +705,8 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(!cabecerSelected.isBorrador() && totalPago.doubleValue()<cabecerSelected.getTotalpagar().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR A PAGAR.");
+			if(!cabecerSelected.isBorrador() && totalPago.doubleValue()!=cabecerSelected.getTotalpagar().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR A PAGAR.");
 				return;
 			}
 			
@@ -733,13 +733,19 @@ public class CompFacCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", msg.getString("mensaje.secuencialconprobante", cabecerSelected.getSecuencial()));
+			cabecerSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			cabecerSelected.setSecuencial(null);
 			cabecerSelected.setNumdocumento(null);
 			cabecerSelected.setClaveacceso(null);
 			cabecerSelected.setNumeroautorizacion(null);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			cabecerSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			cabecerSelected.setSecuencial(null);
+			cabecerSelected.setNumdocumento(null);
+			cabecerSelected.setClaveacceso(null);
+			cabecerSelected.setNumeroautorizacion(null);
 		}
 	}
 	

@@ -106,7 +106,7 @@
 			
 			<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
 				<f:setPropertyActionListener value="#{compFacCtrl}" target="#{listaClienteCtrl.compFacCtrl}"/>
-				<f:setPropertyActionListener value="FACTURA" target="#{listaClienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value="CompFacCtrl" target="#{listaClienteCtrl.callModule}"/>
 				<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
 				<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
 			</p:commandButton>

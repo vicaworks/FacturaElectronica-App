@@ -149,7 +149,7 @@
 							
 								<h:outputText value="P.UNITARIO" styleClass="Fs10" style="margin-right:10px;"/>
 								<br/>
-								<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
+								<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 									<p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
 								</p:spinner>
 								

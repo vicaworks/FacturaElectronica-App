@@ -110,7 +110,7 @@ public class ListaClienteCtrl extends BaseCtrl {
 			
 			switch (callModule) {
 			
-			case "FACTURA":
+			case "CompFacCtrl":
 				compFacCtrl = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
 				compFacCtrl.getCabecerSelected().setCliente(clienteSelected);
 				break;
