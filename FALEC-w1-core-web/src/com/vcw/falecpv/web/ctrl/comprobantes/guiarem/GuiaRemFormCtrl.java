@@ -202,6 +202,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			guiaRemisionSelected.setSecuencial(null);
 			guiaRemisionSelected.setNumdocumento(null);
 			guiaRemisionSelected.setClaveacceso(null);
@@ -209,6 +210,11 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			guiaRemisionSelected.setSecuencial(null);
+			guiaRemisionSelected.setNumdocumento(null);
+			guiaRemisionSelected.setClaveacceso(null);
+			guiaRemisionSelected.setNumeroautorizacion(null);
 		}
 	}
 	

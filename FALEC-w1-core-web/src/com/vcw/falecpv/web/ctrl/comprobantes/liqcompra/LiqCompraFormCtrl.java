@@ -200,8 +200,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(!liqCompraSelected.isBorrador() && totalPago.doubleValue()<liqCompraSelected.getValorapagar().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA LIQUIDACION DE COMPRA.");
+			if(!liqCompraSelected.isBorrador() && totalPago.doubleValue()!=liqCompraSelected.getValorapagar().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR DE LA LIQUIDACION DE COMPRA.");
 				return;
 			}
 			
@@ -226,6 +226,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			liqCompraSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			liqCompraSelected.setSecuencial(null);
 			liqCompraSelected.setNumdocumento(null);
 			liqCompraSelected.setClaveacceso(null);
@@ -233,6 +234,11 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			liqCompraSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			liqCompraSelected.setSecuencial(null);
+			liqCompraSelected.setNumdocumento(null);
+			liqCompraSelected.setClaveacceso(null);
+			liqCompraSelected.setNumeroautorizacion(null);
 		}
 	}
 	

@@ -212,6 +212,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			notaCreditoSeleccion.setSecuencial(null);
 			notaCreditoSeleccion.setNumdocumento(null);
 			notaCreditoSeleccion.setClaveacceso(null);
@@ -219,6 +220,11 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			notaCreditoSeleccion.setSecuencial(null);
+			notaCreditoSeleccion.setNumdocumento(null);
+			notaCreditoSeleccion.setClaveacceso(null);
+			notaCreditoSeleccion.setNumeroautorizacion(null);
 		}
 	}
 	

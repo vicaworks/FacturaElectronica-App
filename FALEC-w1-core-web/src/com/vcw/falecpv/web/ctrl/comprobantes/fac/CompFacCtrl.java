@@ -656,8 +656,8 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(totalPago.doubleValue()<cabecerSelected.getTotalconimpuestos().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+			if(totalPago.doubleValue()!=cabecerSelected.getTotalconimpuestos().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR DE LA FACTURA.");
 				return;
 			}
 			

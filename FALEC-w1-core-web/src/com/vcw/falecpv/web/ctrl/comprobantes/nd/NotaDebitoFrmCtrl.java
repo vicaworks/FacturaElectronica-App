@@ -531,8 +531,8 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(!notDebitoSelected.isBorrador() && totalPago.doubleValue() < notDebitoSelected.getTotalpagar().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR A PAGAR.");
+			if(!notDebitoSelected.isBorrador() && totalPago.doubleValue() != notDebitoSelected.getTotalpagar().doubleValue()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR A PAGAR.");
 				return;
 			}
 			
@@ -559,6 +559,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			notDebitoSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			notDebitoSelected.setSecuencial(null);
 			notDebitoSelected.setNumdocumento(null);
 			notDebitoSelected.setClaveacceso(null);
@@ -566,6 +567,11 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		}  catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			notDebitoSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
+			notDebitoSelected.setSecuencial(null);
+			notDebitoSelected.setNumdocumento(null);
+			notDebitoSelected.setClaveacceso(null);
+			notDebitoSelected.setNumeroautorizacion(null);
 		}
 	}
 
