@@ -147,23 +147,23 @@ public abstract class BaseCtrl implements Serializable {
 		}
 		switch (GenTipoDocumentoEnum.getEnumByIdentificador(comprobanteRecibidoSelected.getTipocomprobante().getIdentificador())) {
 		case FACTURA:
-			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xml, new XmlFactura());
+			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xml, new XmlFactura(),"UTF-8");
 			xml = XmlCommonsUtil.jaxbMarshall(f, true, false);
 			break;
 		case RETENCION:
-			XmlComprobanteRetencion rt = XmlCommonsUtil.jaxbunmarshall(xml, new XmlComprobanteRetencion());
+			XmlComprobanteRetencion rt = XmlCommonsUtil.jaxbunmarshall(xml, new XmlComprobanteRetencion(),"UTF-8");
 			xml = XmlCommonsUtil.jaxbMarshall(rt, true, false);
 			break;	
 		case NOTA_CREDITO:
-			XmlNotaCredito nc = XmlCommonsUtil.jaxbunmarshall(xml, new XmlNotaCredito());
+			XmlNotaCredito nc = XmlCommonsUtil.jaxbunmarshall(xml, new XmlNotaCredito(),"UTF-8");
 			xml = XmlCommonsUtil.jaxbMarshall(nc, true, false);
 			break;
 		case NOTA_DEBITO:
-			XmlNotaDebito nd = XmlCommonsUtil.jaxbunmarshall(xml, new XmlNotaDebito());
+			XmlNotaDebito nd = XmlCommonsUtil.jaxbunmarshall(xml, new XmlNotaDebito(),"UTF-8");
 			xml = XmlCommonsUtil.jaxbMarshall(nd, true, false);
 			break;
 		case GUIA_REMISION:
-			XmlGuiaRemision gr = XmlCommonsUtil.jaxbunmarshall(xml, new XmlGuiaRemision());
+			XmlGuiaRemision gr = XmlCommonsUtil.jaxbunmarshall(xml, new XmlGuiaRemision(),"UTF-8");
 			xml = XmlCommonsUtil.jaxbMarshall(gr, true, false);
 			break;
 		default:

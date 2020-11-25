@@ -368,7 +368,7 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 				cell.setCellValue(c.getClaveAcceso());
 				
 				filaDt = fila;
-				XmlComprobanteRetencion rt = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlComprobanteRetencion());
+				XmlComprobanteRetencion rt = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlComprobanteRetencion(),"UTF-8");
 				if(rt.getImpuestoretencionList()==null) {
 					rt.setImpuestoretencionList(new ArrayList<>());
 				}
@@ -479,7 +479,7 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/retencion/"));
 			
 			
-			XmlComprobanteRetencion f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlComprobanteRetencion());
+			XmlComprobanteRetencion f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlComprobanteRetencion(),"UTF-8");
 			
 			for (XmlImpuestoRetencion c : f.getImpuestoretencionList()) {
 				comprobanteUtilServicio.populateImpuestoRetencion(c);

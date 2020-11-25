@@ -284,7 +284,7 @@ public class CompRecGuiaRemCtrl extends BaseCtrl {
 				cell.setCellValue(c.getClaveAcceso());
 				
 				
-				XmlGuiaRemision g = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlGuiaRemision());
+				XmlGuiaRemision g = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlGuiaRemision(),"UTF-8");
 				filaDestinatario = fila;
 				
 				
@@ -417,7 +417,7 @@ public class CompRecGuiaRemCtrl extends BaseCtrl {
 			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/guiaRem/"));
 			
 			
-			XmlGuiaRemision f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlGuiaRemision());
+			XmlGuiaRemision f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlGuiaRemision(),"UTF-8");
 			f.setFechaAutorizacion(cr.getFechaAutorizacion());
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			comprobanteUtilServicio.populateGuiaRemision(f);

@@ -195,7 +195,7 @@ public class RideServicio {
 	 * @throws DaoException
 	 */
 	private byte[] getRideFactura(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
-		XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlFactura());
+		XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlFactura(),"UTF-8");
 		
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
@@ -229,7 +229,7 @@ public class RideServicio {
 	 */
 	private byte[] getRideRetencion(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
 		
-		XmlComprobanteRetencion f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlComprobanteRetencion());
+		XmlComprobanteRetencion f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlComprobanteRetencion(),"UTF-8");
 		
 		for (XmlImpuestoRetencion c : f.getImpuestoretencionList()) {
 			comprobanteUtilServicio.populateImpuestoRetencion(c);
@@ -257,7 +257,7 @@ public class RideServicio {
 	 * @throws DaoException
 	 */
 	private byte[] getRideNotaCredito(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
-		XmlNotaCredito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaCredito());
+		XmlNotaCredito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaCredito(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		
@@ -294,7 +294,7 @@ public class RideServicio {
 	 */
 	private byte[] getRideNotaDebito(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
 		
-		XmlNotaDebito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaDebito());
+		XmlNotaDebito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaDebito(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		
@@ -336,7 +336,7 @@ public class RideServicio {
 	 */
 	private byte[] getRideGuiaRemision(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
 		
-		XmlGuiaRemision f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlGuiaRemision());
+		XmlGuiaRemision f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlGuiaRemision(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		comprobanteUtilServicio.populateGuiaRemision(f);
@@ -362,7 +362,7 @@ public class RideServicio {
 	 * @throws DaoException
 	 */
 	private byte[] getRideLiqCompra(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
-		XmlLiquidacionCompra f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlLiquidacionCompra());
+		XmlLiquidacionCompra f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlLiquidacionCompra(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		

@@ -342,7 +342,7 @@ public class CompRecNotaDebitoCtrl extends BaseCtrl {
 			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/notaDebito/"));
 			
 			
-			XmlNotaDebito f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlNotaDebito());
+			XmlNotaDebito f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlNotaDebito(),"UTF-8");
 			f.setFechaAutorizacion(cr.getFechaAutorizacion());
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			

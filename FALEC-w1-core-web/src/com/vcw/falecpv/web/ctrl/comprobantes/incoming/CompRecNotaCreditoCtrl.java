@@ -313,7 +313,7 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(c.getTotalconimpuestos().doubleValue());
 				
-				XmlNotaCredito nc = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlNotaCredito());
+				XmlNotaCredito nc = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlNotaCredito(),"UTF-8");
 				filaDetalle = fila;
 				if(nc.getNotaCreditoDetalleList()==null) {
 					nc.setNotaCreditoDetalleList(new ArrayList<>());
@@ -424,7 +424,7 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/notaCredito/"));
 			
 			
-			XmlNotaCredito f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlNotaCredito());
+			XmlNotaCredito f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlNotaCredito(),"UTF-8");
 			f.setFechaAutorizacion(cr.getFechaAutorizacion());
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			

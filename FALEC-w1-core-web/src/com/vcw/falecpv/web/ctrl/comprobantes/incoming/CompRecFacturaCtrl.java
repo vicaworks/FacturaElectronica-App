@@ -314,7 +314,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 				// detalle
 				filaDetalle = fila;
 				filaPago = fila;
-				XmlFactura f = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlFactura());
+				XmlFactura f = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlFactura(),"UTF-8");
 				for (XmlDetalle d : f.getDetalleList()) {
 					
 					col = 11;
@@ -463,7 +463,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 			fileUtilApp.setReportDir(AppConfiguracion.getString("dir.base.reporte").concat("compRecibidos/factura/"));
 			
 			
-			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlFactura());
+			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlFactura(),"UTF-8");
 			f.setFechaAutorizacion(cr.getFechaAutorizacion());
 			f.setNumeroAutorizacion(cr.getNumeroAutorizacion());
 			
