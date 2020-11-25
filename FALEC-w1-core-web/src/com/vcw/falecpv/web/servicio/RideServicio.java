@@ -10,9 +10,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
+import javax.resource.ResourceException;
 import javax.xml.bind.JAXBException;
-
-import org.apache.velocity.exception.ResourceNotFoundException;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.XmlCommonsUtil;
@@ -84,12 +83,12 @@ public class RideServicio {
 	 * @throws DaoException
 	 * @throws NoResultException
 	 * @throws JAXBException
-	 * @throws ResourceNotFoundException
+	 * @throws ResourceException
 	 * @throws NumberFormatException
 	 * @throws ParametroRequeridoException
 	 * @throws UnsupportedEncodingException
 	 */
-	public byte[] generarRideFacade(String idEstablecimiento,String idCabecera, String tipoDocumentoIdentificador)throws RideException,DaoException,NoResultException, JAXBException, ResourceNotFoundException, NumberFormatException, ParametroRequeridoException, UnsupportedEncodingException{
+	public byte[] generarRideFacade(String idCabecera)throws RideException,DaoException,NoResultException, JAXBException, ResourceException, NumberFormatException, ParametroRequeridoException, UnsupportedEncodingException{
 		
 		String pathPlantilla = null;
 		byte[] ride = null;
@@ -104,43 +103,43 @@ public class RideServicio {
 		
 		// transformar ROM to XML SRI
 		String xmlDocElectronico = docElectronicoProxy.getDocElectronicoFacade(idCabecera,
-				idEstablecimiento,
-				GenTipoDocumentoEnum.getEnumByIdentificador(tipoDocumentoIdentificador));
+				c.getEstablecimiento().getIdestablecimiento(),
+				GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador()));
 		
 		// verifica si existe comprobante electronico
 		if(xmlDocElectronico==null) {
 			throw new NoResultException("No existe Comprobante " + msg.getString("label.electronico"));
 		}
 		
-		pathPlantilla = getPathPlantilla(tipoDocumentoIdentificador,idEstablecimiento);
+		pathPlantilla = getPathPlantilla(c.getTipocomprobante().getIdentificador(),c.getEstablecimiento().getIdestablecimiento());
 		
-		switch (tipoDocumentoIdentificador) {
-		case "01":
+		switch (GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador())) {
+		case FACTURA:
 			// Factura		
 			ride = getRideFactura(xmlDocElectronico, c, pathPlantilla);
 			break;
-		case "07":
+		case RETENCION:
 			// Retencion
 			ride = getRideRetencion(xmlDocElectronico, c, pathPlantilla);
 			break;
-		case "04":
+		case NOTA_CREDITO:
 			// Nota Credito
 			ride = getRideNotaCredito(xmlDocElectronico, c, pathPlantilla);
 			break;
-		case "05":
+		case NOTA_DEBITO:
 			// Nota Debito
 			ride = getRideNotaDebito(xmlDocElectronico, c, pathPlantilla);
 			break;
-		case "08":
+		case GUIA_REMISION:
 			// Guia Remision
 			ride = getRideGuiaRemision(xmlDocElectronico, c, pathPlantilla);
 			break;
-		case "03":
+		case LIQUIDACION_COMPRA:
 			// Liquidacion de compra
 			ride = getRideLiqCompra(xmlDocElectronico, c, pathPlantilla);
 			break;
 		default:
-			break;
+			throw new NoResultException("No existe tipo de cmprobante : " + c.getTipocomprobante().getIdentificador());
 		}
 		
 		return ride;
@@ -152,18 +151,18 @@ public class RideServicio {
 	 * @param tipoDocumentoIdentificador
 	 * @param idEstablecimiento
 	 * @return
-	 * @throws ResourceNotFoundException
+	 * @throws ResourceException
 	 * @throws NumberFormatException
 	 * @throws ParametroRequeridoException
 	 */
-	private String getPathPlantilla(String tipoDocumentoIdentificador,String idEstablecimiento) throws ResourceNotFoundException, NumberFormatException, ParametroRequeridoException{
+	private String getPathPlantilla(String tipoDocumentoIdentificador,String idEstablecimiento) throws  ResourceException, NumberFormatException, ParametroRequeridoException{
 		
 		String pathPlantilla = null;
 		
 		// consulta la plantilla del establecimiento
 		try {
 			pathPlantilla = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.getEnumPlantillaByIdentificador(tipoDocumentoIdentificador), TipoRetornoParametroGenerico.STRING, idEstablecimiento);
-		} catch (DaoException e) {
+		} catch (DaoException | NullPointerException e) {
 			pathPlantilla = null;
 		} 
 		
@@ -171,14 +170,14 @@ public class RideServicio {
 		if(pathPlantilla==null) {
 			try {
 				pathPlantilla = parametroGenericoServicio.consultarParametro(PGPlantillasEnum.getEnumPlantillaByIdentificador(tipoDocumentoIdentificador), com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING);
-			} catch (DaoException e) {
+			} catch (DaoException | NullPointerException e) {
 				pathPlantilla = null;
 			}
 		}
 		
 		// valida si existe la plantilla
 		if(pathPlantilla==null) {
-			throw new ResourceNotFoundException("No existe el path de la plantilla del RIDE : " + GenTipoDocumentoEnum.getByIdentificador(tipoDocumentoIdentificador).toString());
+			throw new ResourceException("No existe el path de la plantilla del RIDE : " + GenTipoDocumentoEnum.getByIdentificador(tipoDocumentoIdentificador).toString());
 		}
 		
 		return pathPlantilla;
@@ -198,7 +197,7 @@ public class RideServicio {
 	private byte[] getRideFactura(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
 		XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlFactura());
 		
-		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
+		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		
 		if(f.getInfoFactura().getPagoList()!=null) {

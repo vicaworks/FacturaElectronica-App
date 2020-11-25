@@ -136,7 +136,7 @@ public class ParametroGenericoEmpresaServicio extends AppGenericService<Parametr
 	@SuppressWarnings("unchecked")
 	public <T> T consultarParametroEstablecimiento(ParametroGenericoBaseEnum parametroId,
 			TipoRetornoParametroGenerico tipoRetornoParametroGenerico,String idEstablecimiento)
-			throws DaoException,NumberFormatException, ParametroRequeridoException {
+			throws DaoException,NumberFormatException, ParametroRequeridoException, NullPointerException {
 
 		ValidarParametro.validar(tipoRetornoParametroGenerico,
 				"tipoRetornoParametroGenerico");
@@ -146,11 +146,12 @@ public class ParametroGenericoEmpresaServicio extends AppGenericService<Parametr
 
 		try {
 			parametrosGenericos = parametroGenericoEmpresaDao.getByEstablecimiento(idEstablecimiento, parametroId);
-		} catch (NoResultException e) {
-			throw new DaoException("No existe el parametro generico : " + parametroId.toString() + " id: "
-					+ parametroId.getId() + " del establecimiento id: " + idEstablecimiento);
 		} catch (Exception e) {
 			throw new DaoException(e);
+		}
+		
+		if(parametrosGenericos==null) {
+			return null;
 		}
 
 		switch (tipoRetornoParametroGenerico) {

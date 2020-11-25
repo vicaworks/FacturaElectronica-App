@@ -226,6 +226,7 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 			setExportOption(exportOption);
 			setTipoDataSorce(TipoDataSorce.COLLECTION);
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			setReportDir("");
 			parametros.put("BASE_DIR", direccionReporte + getReportDir());
 			generarReporteExterno(parametros, null, os, lista,direccionReporte);
 			parametros = new HashMap<String, Object>();
@@ -514,8 +515,6 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 	 */
 	public static void moveFile(File srcFile,String dirDestFile) throws IOException {
 		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-		System.out.println(servletContext.getRealPath(dirDestFile));
-		
 		FileUtils.moveFile(srcFile, new File(servletContext.getRealPath(dirDestFile).concat("/").concat(srcFile.getName())));
 		FileUtils.deleteDirectory(srcFile);
 		
