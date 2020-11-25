@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.web.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -208,6 +209,34 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 
 		return null;
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param <T>
+	 * @param nombreReporte
+	 * @param lista
+	 * @param exportOption
+	 * @param direccionReporte
+	 * @return
+	 */
+	public <T> byte[] getReportByReportPath(String nombreReporte, List<T> lista, ExportarFileEnum exportOption, String direccionReporte) {
+		try {
+			setReportName(nombreReporte.concat(".jasper"));
+			setExportOption(exportOption);
+			setTipoDataSorce(TipoDataSorce.COLLECTION);
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			parametros.put("BASE_DIR", direccionReporte + getReportDir());
+			generarReporteExterno(parametros, null, os, lista,direccionReporte);
+			parametros = new HashMap<String, Object>();
+			return os.toByteArray();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	public <T> String getFileResources(String nombreReporte, List<T> lista, ExportarFileEnum exportOption, String nombreMostrar, String pathResources) {
 		try {
@@ -277,11 +306,7 @@ public class FileUtilApp extends ReportBaseController implements Serializable {
 
 			parametros = new HashMap<String, Object>();
 
-			// List<StreamedContent> list = new ArrayList<>();
-			// list.add(new DefaultStreamedContent(is,
-			// FileUtil.getMimeType(nameReport), nameReport));
 			return DefaultStreamedContent.builder().contentType(FileUtil.getMimeType(nameReport)).name(nameReport).stream(() -> is).build();
-//			return new DefaultStreamedContent(is, FileUtil.getMimeType(nameReport), nameReport);
 
 		} catch (Exception e) {
 			e.printStackTrace();

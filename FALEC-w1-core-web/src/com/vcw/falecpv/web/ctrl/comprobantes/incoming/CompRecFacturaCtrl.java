@@ -520,37 +520,6 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 		return null;
 	}
 	
-	
-//	public void descargarSeleccion2() {
-//		try {
-//			
-//			if(comprobanteRecibidoSeleccionList==null || comprobanteRecibidoSeleccionList.isEmpty()) {
-//				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN REGISTROS SELECCIONADOS.");
-//				return;
-//			}
-//			
-//			Map<File, String> map = new HashMap<>();
-//			
-//			for (Comprobanterecibido comprobanterecibido : comprobanteRecibidoSeleccionList) {
-//				map.putAll(getAdjuntos(comprobanterecibido));
-//			}
-//			
-//			if (comprobanteRecibidoSeleccionList.size() == 1) {
-//				for (Map.Entry<File, String> map2 : map.entrySet()) {
-//					Faces.sendFile(map2.getKey(), true);
-//				}
-//			}else {
-//				FileUtilApp.setFileMap(map);
-//				Faces.sendFile(new File(FileUtilApp.zipDirectory("Facturas")), true);
-//			}
-//			
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-//		}
-//	}
-	
 	/**
 	 * @return the desde
 	 */

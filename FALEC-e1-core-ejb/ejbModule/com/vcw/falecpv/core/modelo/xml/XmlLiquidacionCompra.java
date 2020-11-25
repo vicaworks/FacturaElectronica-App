@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.modelo.xml;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author cristianvillarreal
@@ -55,6 +57,12 @@ public class XmlLiquidacionCompra implements Serializable {
 	@XmlElementWrapper(name = "infoAdicional")
 	private List<XmlCampoAdicional> campoAdicionalList;
 	
+	// Valores transient
+	@XmlTransient
+	private Date fechaAutorizacion;
+	
+	@XmlTransient
+	private String numeroAutorizacion;
 	
 	/**
 	 * 
@@ -204,6 +212,42 @@ public class XmlLiquidacionCompra implements Serializable {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+
+
+	/**
+	 * @return the fechaAutorizacion
+	 */
+	public Date getFechaAutorizacion() {
+		return fechaAutorizacion;
+	}
+
+
+
+	/**
+	 * @param fechaAutorizacion the fechaAutorizacion to set
+	 */
+	public void setFechaAutorizacion(Date fechaAutorizacion) {
+		this.fechaAutorizacion = fechaAutorizacion;
+	}
+
+
+
+	/**
+	 * @return the numeroAutorizacion
+	 */
+	public String getNumeroAutorizacion() {
+		return numeroAutorizacion;
+	}
+
+
+
+	/**
+	 * @param numeroAutorizacion the numeroAutorizacion to set
+	 */
+	public void setNumeroAutorizacion(String numeroAutorizacion) {
+		this.numeroAutorizacion = numeroAutorizacion;
 	}
 
 }
