@@ -35,11 +35,13 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGPlantillasEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -225,7 +227,19 @@ public class EstablecimientoCtrl extends BaseCtrl {
 						establecimientoSelected.getIdestablecimiento());}
 
 			}
-
+			
+			// registra la imagen
+			
+			if(establecimientoSelected.getLogo()!=null) {
+				String nombreLogo = establecimientoSelected.getEmpresa().getRuc() + establecimientoSelected.getCodigoestablecimiento() + establecimientoSelected.getNombreimagen().substring(establecimientoSelected.getNombreimagen().lastIndexOf("."),establecimientoSelected.getNombreimagen().length());
+				String pathLogo = parametroGenericoServicio.consultarParametro(PGPlantillasEnum.PATH_LOGO, TipoRetornoParametroGenerico.STRING);
+				FileOutputStream output = new FileOutputStream(new File(pathLogo + nombreLogo));
+				IOUtils.write(establecimientoSelected.getLogo(), output);
+				establecimientoSelected.setNombreimagen(nombreLogo);
+				establecimientoSelected = establecimientoServicio.actualizar(establecimientoSelected);
+			}
+			
+			
 			establecimientoAllList = null;
 			consultarEstablecimiento();
 			AppJsfUtil.addInfoMessage("frmEstable", "OK", "REGISTRO ALMACENADO CORRECTAMENTE.");

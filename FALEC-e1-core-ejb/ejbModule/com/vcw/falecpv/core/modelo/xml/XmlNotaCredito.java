@@ -58,6 +58,9 @@ public class XmlNotaCredito implements Serializable {
 	@XmlTransient
 	private List<XmlTotalComprobante> totalComprobanteList;
 	
+	@XmlTransient
+	private String pathLogo;
+	
 
 	/**
 	 * 
@@ -197,6 +200,20 @@ public class XmlNotaCredito implements Serializable {
 	 */
 	public void setTotalComprobanteList(List<XmlTotalComprobante> totalComprobanteList) {
 		this.totalComprobanteList = totalComprobanteList;
+	}
+
+	/**
+	 * @return the pathLogo
+	 */
+	public String getPathLogo() {
+		return pathLogo;
+	}
+
+	/**
+	 * @param pathLogo the pathLogo to set
+	 */
+	public void setPathLogo(String pathLogo) {
+		this.pathLogo = pathLogo;
 	}
 
 }

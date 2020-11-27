@@ -62,6 +62,9 @@ public class XmlComprobanteRetencion implements Serializable {
 	@XmlTransient
 	private String numeroAutorizacion;
 	
+	@XmlTransient
+	private String pathLogo;
+	
 	/**
 	 * 
 	 */
@@ -206,6 +209,20 @@ public class XmlComprobanteRetencion implements Serializable {
 	 */
 	public void setNumeroAutorizacion(String numeroAutorizacion) {
 		this.numeroAutorizacion = numeroAutorizacion;
+	}
+
+	/**
+	 * @return the pathLogo
+	 */
+	public String getPathLogo() {
+		return pathLogo;
+	}
+
+	/**
+	 * @param pathLogo the pathLogo to set
+	 */
+	public void setPathLogo(String pathLogo) {
+		this.pathLogo = pathLogo;
 	}
 
 }

@@ -3,6 +3,8 @@
  */
 package com.vcw.falecpv.web.servicio;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGPlantillasEnum;
 import com.vcw.falecpv.core.exception.RideException;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.xml.XmlComprobanteRetencion;
 import com.vcw.falecpv.core.modelo.xml.XmlFactura;
 import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
@@ -31,6 +34,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
 import com.vcw.falecpv.core.modelo.xml.XmlPago;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
@@ -70,6 +74,10 @@ public class RideServicio {
 	@Inject
 	private DocElectronicoProxy docElectronicoProxy;
 	
+	@Inject
+	private EstablecimientoServicio establecimientoServicio;
+	
+	
 	protected MessageWebUtil msg = new MessageWebUtil();
 
 	/**
@@ -86,9 +94,9 @@ public class RideServicio {
 	 * @throws ResourceException
 	 * @throws NumberFormatException
 	 * @throws ParametroRequeridoException
-	 * @throws UnsupportedEncodingException
+	 * @throws IOException 
 	 */
-	public byte[] generarRideFacade(String idCabecera)throws RideException,DaoException,NoResultException, JAXBException, ResourceException, NumberFormatException, ParametroRequeridoException, UnsupportedEncodingException{
+	public byte[] generarRideFacade(String idCabecera)throws RideException,DaoException,NoResultException, JAXBException, ResourceException, NumberFormatException, ParametroRequeridoException, IOException{
 		
 		String pathPlantilla = null;
 		byte[] ride = null;
@@ -111,32 +119,33 @@ public class RideServicio {
 			throw new NoResultException("No existe Comprobante " + msg.getString("label.electronico"));
 		}
 		
-		pathPlantilla = getPathPlantilla(c.getTipocomprobante().getIdentificador(),c.getEstablecimiento().getIdestablecimiento());
+		Establecimiento e = establecimientoServicio.consultarByPk(c.getEstablecimiento().getIdestablecimiento());
+		pathPlantilla = getPathPlantilla(c.getTipocomprobante().getIdentificador(),e);
 		
 		switch (GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador())) {
 		case FACTURA:
 			// Factura		
-			ride = getRideFactura(xmlDocElectronico, c, pathPlantilla);
+			ride = getRideFactura(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
 			break;
 		case RETENCION:
 			// Retencion
-			ride = getRideRetencion(xmlDocElectronico, c, pathPlantilla);
+			ride = getRideRetencion(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
 			break;
 		case NOTA_CREDITO:
 			// Nota Credito
-			ride = getRideNotaCredito(xmlDocElectronico, c, pathPlantilla);
+			ride = getRideNotaCredito(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
 			break;
 		case NOTA_DEBITO:
 			// Nota Debito
-			ride = getRideNotaDebito(xmlDocElectronico, c, pathPlantilla);
+			ride = getRideNotaDebito(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
 			break;
 		case GUIA_REMISION:
 			// Guia Remision
-			ride = getRideGuiaRemision(xmlDocElectronico, c, pathPlantilla);
+			ride = getRideGuiaRemision(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
 			break;
 		case LIQUIDACION_COMPRA:
 			// Liquidacion de compra
-			ride = getRideLiqCompra(xmlDocElectronico, c, pathPlantilla);
+			ride = getRideLiqCompra(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
 			break;
 		default:
 			throw new NoResultException("No existe tipo de cmprobante : " + c.getTipocomprobante().getIdentificador());
@@ -154,14 +163,15 @@ public class RideServicio {
 	 * @throws ResourceException
 	 * @throws NumberFormatException
 	 * @throws ParametroRequeridoException
+	 * @throws IOException 
 	 */
-	private String getPathPlantilla(String tipoDocumentoIdentificador,String idEstablecimiento) throws  ResourceException, NumberFormatException, ParametroRequeridoException{
+	private String getPathPlantilla(String tipoDocumentoIdentificador,Establecimiento establecimiento) throws  ResourceException, NumberFormatException, ParametroRequeridoException, IOException{
 		
 		String pathPlantilla = null;
 		
 		// consulta la plantilla del establecimiento
 		try {
-			pathPlantilla = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.getEnumPlantillaByIdentificador(tipoDocumentoIdentificador), TipoRetornoParametroGenerico.STRING, idEstablecimiento);
+			pathPlantilla = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.getEnumPlantillaByIdentificador(tipoDocumentoIdentificador), TipoRetornoParametroGenerico.STRING, establecimiento.getIdestablecimiento());
 		} catch (DaoException | NullPointerException e) {
 			pathPlantilla = null;
 		} 
@@ -186,6 +196,29 @@ public class RideServicio {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param establecimiento
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws DaoException
+	 * @throws ParametroRequeridoException
+	 */
+	private String getPathLogoEstablecimiento(Establecimiento establecimiento) throws NumberFormatException, DaoException, ParametroRequeridoException {
+		
+		if(establecimiento.getLogo()!=null) {
+			String pathLogo = parametroGenericoServicio.consultarParametro(PGPlantillasEnum.PATH_LOGO, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING);
+			File f = new File(pathLogo.concat(establecimiento.getNombreimagen()));
+			if(f.exists()) {
+				return pathLogo.concat(establecimiento.getNombreimagen());
+			}
+		}
+		
+		
+		return parametroGenericoServicio.consultarParametro(PGPlantillasEnum.PATH_LOGO_BLANCO, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING);
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param xmlRide
 	 * @param cabecera
 	 * @param pathPlantilla
@@ -194,11 +227,12 @@ public class RideServicio {
 	 * @throws JAXBException
 	 * @throws DaoException
 	 */
-	private byte[] getRideFactura(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
+	private byte[] getRideFactura(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlFactura(),"UTF-8");
 		
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
+		f.setPathLogo(pathLogo);
 		
 		if(f.getInfoFactura().getPagoList()!=null) {
 			for (XmlPago p : f.getInfoFactura().getPagoList()) {
@@ -227,7 +261,7 @@ public class RideServicio {
 	 * @throws JAXBException
 	 * @throws DaoException
 	 */
-	private byte[] getRideRetencion(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
+	private byte[] getRideRetencion(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		
 		XmlComprobanteRetencion f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlComprobanteRetencion(),"UTF-8");
 		
@@ -237,6 +271,7 @@ public class RideServicio {
 		
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
+		f.setPathLogo(pathLogo);
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();
@@ -256,10 +291,11 @@ public class RideServicio {
 	 * @throws JAXBException
 	 * @throws DaoException
 	 */
-	private byte[] getRideNotaCredito(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
+	private byte[] getRideNotaCredito(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		XmlNotaCredito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaCredito(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
+		f.setPathLogo(pathLogo);
 		
 		// tipo de comprobante
 		f.getInfoNotaCredito().setComprobanteModificado("");
@@ -292,11 +328,12 @@ public class RideServicio {
 	 * @throws JAXBException
 	 * @throws DaoException
 	 */
-	private byte[] getRideNotaDebito(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
+	private byte[] getRideNotaDebito(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		
 		XmlNotaDebito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaDebito(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
+		f.setPathLogo(pathLogo);
 		
 		// tipo de comprobante
 		f.getInfoNotaDebito().setComprobanteModificado("");
@@ -334,11 +371,13 @@ public class RideServicio {
 	 * @throws JAXBException
 	 * @throws DaoException
 	 */
-	private byte[] getRideGuiaRemision(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
+	private byte[] getRideGuiaRemision(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		
 		XmlGuiaRemision f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlGuiaRemision(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
+		f.setPathLogo(pathLogo);
+		
 		comprobanteUtilServicio.populateGuiaRemision(f);
 		
 		// genera el reporte
@@ -361,10 +400,11 @@ public class RideServicio {
 	 * @throws JAXBException
 	 * @throws DaoException
 	 */
-	private byte[] getRideLiqCompra(String xmlRide,Cabecera cabecera, String pathPlantilla) throws UnsupportedEncodingException, JAXBException, DaoException {
+	private byte[] getRideLiqCompra(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		XmlLiquidacionCompra f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlLiquidacionCompra(),"UTF-8");
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
+		f.setPathLogo(pathLogo);
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();

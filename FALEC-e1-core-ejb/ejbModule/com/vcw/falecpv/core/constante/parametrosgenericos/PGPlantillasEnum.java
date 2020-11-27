@@ -10,8 +10,7 @@ package com.vcw.falecpv.core.constante.parametrosgenericos;
 public enum PGPlantillasEnum implements ParametroGenericoBaseEnum {
 
 	PLANTILLA_FACTURA("16"), PLANTILLA_RETENCION("17"), PLANTILLA_NOTA_CREDITO("18"), PLANTILLA_NOTA_DEBITO("19"),
-	PLANTILLA_GUIA_REMISION("20"), PLANTILLA_LIQ_COMPRA("21");
-	;
+	PLANTILLA_GUIA_REMISION("20"), PLANTILLA_LIQ_COMPRA("21"),PATH_LOGO("22"),PATH_LOGO_BLANCO("23");
 
 	private String id;
 
