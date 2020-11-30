@@ -200,7 +200,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(!liqCompraSelected.isBorrador() && totalPago.doubleValue()!=liqCompraSelected.getValorapagar().doubleValue()) {
+			if(!liqCompraSelected.isBorrador() && totalPago.doubleValue()!=liqCompraSelected.getTotalpagar().doubleValue()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR DE LA LIQUIDACION DE COMPRA.");
 				return;
 			}

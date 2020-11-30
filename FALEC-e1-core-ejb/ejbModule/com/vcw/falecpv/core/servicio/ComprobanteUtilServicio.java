@@ -20,6 +20,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlFactura;
 import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuestoRetencion;
+import com.vcw.falecpv.core.modelo.xml.XmlLiquidacionCompra;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
 import com.vcw.falecpv.core.modelo.xml.XmlTotalComprobante;
@@ -305,6 +306,86 @@ public class ComprobanteUtilServicio {
 			}
 		}
 		
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param factura
+	 * @param idEmpresa
+	 * @param propina
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<XmlTotalComprobante> populateTotalesComprobanteLiqCompra(XmlLiquidacionCompra factura,String idEmpresa)throws DaoException{
+		List<XmlTotalComprobante> totales = new ArrayList<>();
+		
+		try {
+			XmlTotalComprobante total = new XmlTotalComprobante();
+			// consultar los valores del iva
+			
+			List<Iva> ivaList = ivaServicio.getIvaDao().getLabelComprobante(idEmpresa);
+			for (Iva iva : ivaList) {
+				total = new XmlTotalComprobante();
+				total.setCodigoSri("2");
+				total.setIva(iva);
+				total.setLabel(iva.getLabelfactura());
+				
+				XmlTotalImpuesto xmlTotalImpuesto =  factura.getInfoLiquidacionCompra().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals(iva.getCodigoIva()) && x.getCodigoPorcentaje().equals(iva.getCodigo())).findFirst().orElse(null);
+				if(xmlTotalImpuesto!=null) {
+					total.setValor(BigDecimal.valueOf(xmlTotalImpuesto.getBaseImponible()));
+				}
+				totales.add(total);
+			}
+			
+			// total sin dispuesto
+			total = new XmlTotalComprobante();
+			total.setLabel("TOTAL SIN IMPUESTOS");
+			total.setValor(BigDecimal.valueOf(factura.getInfoLiquidacionCompra().getTotalSinImpuestos()));
+			totales.add(total);
+			
+			// total descuento
+			total = new XmlTotalComprobante();
+			total.setLabel("TOTAL DESCUENTO");
+			total.setValor(BigDecimal.valueOf(factura.getInfoLiquidacionCompra().getTotalDescuento()));
+			totales.add(total);
+			
+			total = new XmlTotalComprobante();
+			total.setLabel("ICE");
+			total.setValor(BigDecimal.ZERO);
+			if(factura.getInfoLiquidacionCompra().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("3")).count()>0) {
+				total.setValor(BigDecimal.valueOf(factura.getInfoLiquidacionCompra().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("3")).mapToDouble(x->x.getValor()).sum()));
+			}
+			totales.add(total);
+			
+			// determinar el IVA
+			total = new XmlTotalComprobante();
+			if(factura.getInfoLiquidacionCompra().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2") && x.getValor()>0d).count()>0) {
+				// consultar el codigo
+				XmlTotalImpuesto xmlTotalImpuesto =  factura.getInfoLiquidacionCompra().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2") && x.getValor()>0d).findFirst().orElse(null);
+				Iva iva = ivaServicio.getIvaDao().getIva(idEmpresa, xmlTotalImpuesto.getCodigoPorcentaje());
+				
+				total.setLabel("IVA " + iva.getValor().intValue() + "%");
+				total.setValor(BigDecimal.valueOf(factura.getInfoLiquidacionCompra().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2")).mapToDouble(x->x.getValor()).sum()));
+				// el primer sibtotal
+				totales.get(0).setLabel(totales.get(0).getLabel().replace("%", "") + iva.getValor().intValue() + "%");
+			}else {
+				total.setLabel("IVA");
+				total.setValor(BigDecimal.ZERO);
+			}
+			totales.add(total);
+			
+			total = new XmlTotalComprobante();
+			total.setLabel("VALOR TOTAL");
+			total.setValor(BigDecimal.valueOf(factura.getInfoLiquidacionCompra().getImporteTotal()));
+			totales.add(total);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
+		return totales;
 	}
 	
 }

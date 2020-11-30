@@ -332,7 +332,7 @@ public class RideServicio {
 	private byte[] getRideNotaDebito(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		
 		XmlNotaDebito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaDebito(),"UTF-8");
-		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
+		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		f.setPathLogo(pathLogo);
 		
@@ -406,6 +406,15 @@ public class RideServicio {
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		f.setPathLogo(pathLogo);
+		
+		if(f.getInfoLiquidacionCompra().getPagoList()!=null) {
+			for (XmlPago p : f.getInfoLiquidacionCompra().getPagoList()) {
+				p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+			}
+		}
+		
+		// totalizar el comprobante
+		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteLiqCompra(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();

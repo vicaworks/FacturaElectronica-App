@@ -67,6 +67,10 @@ public class XmlLiquidacionCompra implements Serializable {
 	@XmlTransient
 	private String pathLogo;
 	
+	@XmlTransient
+	private List<XmlTotalComprobante> totalComprobanteList;
+		
+	
 	/**
 	 * 
 	 */
@@ -269,6 +273,24 @@ public class XmlLiquidacionCompra implements Serializable {
 	 */
 	public void setPathLogo(String pathLogo) {
 		this.pathLogo = pathLogo;
+	}
+
+
+
+	/**
+	 * @return the totalComprobanteList
+	 */
+	public List<XmlTotalComprobante> getTotalComprobanteList() {
+		return totalComprobanteList;
+	}
+
+
+
+	/**
+	 * @param totalComprobanteList the totalComprobanteList to set
+	 */
+	public void setTotalComprobanteList(List<XmlTotalComprobante> totalComprobanteList) {
+		this.totalComprobanteList = totalComprobanteList;
 	}
 
 }
