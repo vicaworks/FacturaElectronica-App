@@ -211,6 +211,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			liqCompraSelected.setUpdated(new Date());
 			liqCompraSelected.setPagoList(pagoList);			
 			liqCompraSelected = cabeceraServicio.guardarComprobanteFacade(liqCompraSelected);
+			infoadicionalList = liqCompraSelected.getInfoadicionalList();
 			noEditarSecuencial(liqCompraSelected);
 			
 			// main principal de la lista de liquidacion de compra 

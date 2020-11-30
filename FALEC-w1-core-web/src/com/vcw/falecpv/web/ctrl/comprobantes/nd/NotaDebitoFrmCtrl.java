@@ -544,6 +544,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			notDebitoSelected.setDetalleEliminarList(null);
 			notDebitoSelected.setDetalleList(null);
 			notDebitoSelected = cabeceraServicio.guardarComprobanteFacade(notDebitoSelected);
+			infoadicionalList = notDebitoSelected.getInfoadicionalList();
 			noEditarSecuencial(notDebitoSelected);
 			
 			NotaDebitoCtrl notaDebitoCtrl = (NotaDebitoCtrl) AppJsfUtil.getManagedBean("notaDebitoCtrl");

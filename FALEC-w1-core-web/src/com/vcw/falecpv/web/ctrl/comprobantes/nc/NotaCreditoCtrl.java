@@ -183,6 +183,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			notaCreditoSeleccion.setUpdated(new Date());
 			notaCreditoSeleccion = cabeceraServicio.guardarComprobanteFacade(notaCreditoSeleccion);
+			infoadicionalList = notaCreditoSeleccion.getInfoadicionalList();
 			noEditarSecuencial(notaCreditoSeleccion);
 			FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
 			if(facEmitidaCtrl!=null) {

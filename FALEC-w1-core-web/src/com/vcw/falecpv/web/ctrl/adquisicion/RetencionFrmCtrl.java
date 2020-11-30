@@ -336,6 +336,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			populateretencion();
 			// guarda los datos
 			retencionSeleccion = cabeceraServicio.guardarComprobanteFacade(retencionSeleccion);
+			infoadicionalList = retencionSeleccion.getInfoadicionalList();
 			noEditarSecuencial(retencionSeleccion);
 			
 			// Manage de session para actualizar las pantallas

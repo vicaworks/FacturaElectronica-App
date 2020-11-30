@@ -717,6 +717,7 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			infoadicionalList = cabecerSelected.getInfoadicionalList();
 			noEditarSecuencial(cabecerSelected);
 			
 			if(cabecerSelected.isBorrador()) {

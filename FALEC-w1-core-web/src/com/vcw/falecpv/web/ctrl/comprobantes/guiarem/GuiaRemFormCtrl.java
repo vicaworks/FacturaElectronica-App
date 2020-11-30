@@ -179,6 +179,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			guiaRemisionSelected.setUpdated(new Date());
 			guiaRemisionSelected = cabeceraServicio.guardarComprobanteFacade(guiaRemisionSelected);
+			infoadicionalList = guiaRemisionSelected.getInfoadicionalList();
 			noEditarSecuencial(guiaRemisionSelected);
 			switch (callModule) {
 			case "GUIA_REMISION":
