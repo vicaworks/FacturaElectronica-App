@@ -294,7 +294,7 @@ public class RideServicio {
 	 */
 	private byte[] getRideNotaCredito(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		XmlNotaCredito f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlNotaCredito(),"UTF-8");
-		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
+		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		f.setPathLogo(pathLogo);
 		
