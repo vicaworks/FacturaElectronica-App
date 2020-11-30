@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.modelo.xml;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +65,9 @@ public class XmlComprobanteRetencion implements Serializable {
 	
 	@XmlTransient
 	private String pathLogo;
+	
+	@XmlTransient
+	private BigDecimal totalretencion = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -223,6 +227,20 @@ public class XmlComprobanteRetencion implements Serializable {
 	 */
 	public void setPathLogo(String pathLogo) {
 		this.pathLogo = pathLogo;
+	}
+
+	/**
+	 * @return the totalretencion
+	 */
+	public BigDecimal getTotalretencion() {
+		return totalretencion;
+	}
+
+	/**
+	 * @param totalretencion the totalretencion to set
+	 */
+	public void setTotalretencion(BigDecimal totalretencion) {
+		this.totalretencion = totalretencion;
 	}
 
 }

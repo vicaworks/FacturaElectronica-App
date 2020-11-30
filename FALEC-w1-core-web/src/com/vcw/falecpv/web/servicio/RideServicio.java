@@ -269,9 +269,10 @@ public class RideServicio {
 			comprobanteUtilServicio.populateImpuestoRetencion(c);
 		}
 		
-		f.setFechaAutorizacion(cabecera.getFechaautorizacion());
+		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());
 		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
 		f.setPathLogo(pathLogo);
+		f.setTotalretencion(cabecera.getTotalretencion());
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();
