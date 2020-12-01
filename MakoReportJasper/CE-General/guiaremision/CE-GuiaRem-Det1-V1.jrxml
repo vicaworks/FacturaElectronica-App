@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CE-GuiaRem-Det1-V1" pageWidth="554" pageHeight="842" columnWidth="554" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="eda35d00-c4b0-4929-a4cf-dbbe2a1f191c">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="identificacionDestinatario" class="java.lang.String">
+		<fieldDescription><![CDATA[identificacionDestinatario]]></fieldDescription>
+	</field>
+	<field name="ruta" class="java.lang.String">
+		<fieldDescription><![CDATA[ruta]]></fieldDescription>
+	</field>
+	<field name="motivoTraslado" class="java.lang.String">
+		<fieldDescription><![CDATA[motivoTraslado]]></fieldDescription>
+	</field>
+	<field name="dirDestinatario" class="java.lang.String">
+		<fieldDescription><![CDATA[dirDestinatario]]></fieldDescription>
+	</field>
+	<field name="destinatarioDetallesList" class="java.util.List">
+		<fieldDescription><![CDATA[destinatarioDetallesList]]></fieldDescription>
+	</field>
+	<field name="numDocSustento" class="java.lang.String">
+		<fieldDescription><![CDATA[numDocSustento]]></fieldDescription>
+	</field>
+	<field name="docAduaneroUnico" class="java.lang.String">
+		<fieldDescription><![CDATA[docAduaneroUnico]]></fieldDescription>
+	</field>
+	<field name="codDocSustento" class="java.lang.String">
+		<fieldDescription><![CDATA[codDocSustento]]></fieldDescription>
+	</field>
+	<field name="razonSocialDestinatario" class="java.lang.String">
+		<fieldDescription><![CDATA[razonSocialDestinatario]]></fieldDescription>
+	</field>
+	<field name="numAutDocSustento" class="java.lang.String">
+		<fieldDescription><![CDATA[numAutDocSustento]]></fieldDescription>
+	</field>
+	<field name="codEstabDestino" class="java.lang.String">
+		<fieldDescription><![CDATA[codEstabDestino]]></fieldDescription>
+	</field>
+	<field name="fechaEmisionDocSustento" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaEmisionDocSustento]]></fieldDescription>
+	</field>
+	<field name="tipoDocSustento" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoDocSustento]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="151" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement x="0" y="121" width="554" height="30" uuid="82824ac9-0918-49c1-868a-a027ff0f3307">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{destinatarioDetallesList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/" + "CE-GuiaRem-Det2-V1.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="0" y="0" width="200" height="11" uuid="0910aa6d-387e-4b2d-a9e3-37b7fee07d47">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[COMPROBANTE DE VENTA : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="11" width="200" height="11" uuid="c94a9841-a99c-4d10-a3bb-c09fb6b3e9ba">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[NÚMERO DE AUTORIZACIÓN :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="33" width="200" height="11" uuid="c4eb82de-59c3-430d-8a87-3c4647eac798">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[MOTIVO TRASLADO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="44" width="200" height="22" uuid="5f4ebd6e-a0a4-4056-be84-33117331f603">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[DESTINO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="66" width="200" height="11" uuid="1878b9f3-6e73-42b0-be9d-8dde368160d8">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[RUC / C.I. :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="77" width="200" height="11" uuid="d2012363-9a10-4f84-9488-73067af00152">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[RAZON SOCIAL / NOMBRES APELLIDOS :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="88" width="200" height="11" uuid="0a708b98-9ee0-440f-bfed-1561df8f1dc7">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[DOCUMENTO ADUANERO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="99" width="200" height="11" uuid="177446a8-9a58-45a6-a0e8-93c989a384cd">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO ESTABLECIMIENTO DESTINO : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="200" height="11" uuid="23b92d80-873c-4c4e-9408-0d2dfa7da05e">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[RUTA :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="0" width="354" height="11" forecolor="#403E3E" uuid="3a4b7b30-2522-466c-a620-624a6bae17a5">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDocSustento} + " : " + $F{numDocSustento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="11" width="354" height="11" forecolor="#403E3E" uuid="642f009f-316e-4a35-843d-cf2b0c7658ee">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numAutDocSustento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="33" width="354" height="11" forecolor="#403E3E" uuid="e9a1565f-1367-41e0-ad59-77081e2a43fc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motivoTraslado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="44" width="354" height="22" forecolor="#403E3E" uuid="25d511c0-1cc8-4dc5-9ebb-0695cb3e31f9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dirDestinatario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="66" width="354" height="11" forecolor="#403E3E" uuid="75c89965-60c5-4357-b5a0-24f7dd78d346">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{identificacionDestinatario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="77" width="354" height="11" forecolor="#403E3E" uuid="d8b130d3-70ea-4acc-adda-265b0b133d43">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razonSocialDestinatario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="88" width="354" height="11" forecolor="#403E3E" uuid="f603c0bd-81e2-45cb-b18f-6f2d71bd9521">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docAduaneroUnico}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="99" width="354" height="11" forecolor="#403E3E" uuid="2ecb180f-362e-4866-a10f-3d94c6660d45">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codEstabDestino}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="110" width="354" height="11" forecolor="#403E3E" uuid="f537000d-0b60-4237-8168-ff1e6a8397ce">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="22" width="200" height="11" uuid="02f09d9c-989b-4973-a6f5-a77626962c50">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[FECHA EMISIÓN :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="200" y="22" width="354" height="11" forecolor="#403E3E" uuid="b5d4fa12-195a-4576-b60a-4f491ead186a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaEmisionDocSustento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
