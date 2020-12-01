@@ -197,7 +197,7 @@
 							
 							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}">
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
-								<f:setPropertyActionListener value="FAC-" target="#{rideCtrl.inicialComprobante}"/>
+								<f:setPropertyActionListener value="GUIAREM-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(r.numdocsustento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
