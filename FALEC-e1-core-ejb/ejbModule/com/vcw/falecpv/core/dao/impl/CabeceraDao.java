@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -414,6 +415,26 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 */
+	public boolean isImprimir(String idCabecera) {
+		try {
+			Query q = getEntityManager().createNativeQuery("SELECT c.idcabecera FROM Cabecera c WHERE c.idcabecera=:id AND c.estado not in :lista");
+			q.setParameter("id", idCabecera);
+			q.setParameter("lista", Arrays.asList(new String[] {"BORRADOR","ANULADO"}));
+			
+			return q.getResultList().size()>0;					
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

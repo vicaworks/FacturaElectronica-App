@@ -217,22 +217,54 @@
 	    	 <!-- Opciones principales -->
 			<div class="card card-w-title" >
 				
-				<div class="EmptyBox10"/>
+				<div class="EmptyBox5"/>
 	    		
 	    		<div class="p-grid p-justify-start">
 	    			
     				<p:commandButton id="cmdfacNuevo"
 							value="NUEVO" icon="fa fa-plus" 
-							action="#{compFacCtrl.nuevo()}" styleClass="secondary-button Fs12 m-button" update="@form" immediate="true">
+							action="#{compFacCtrl.nuevo()}" styleClass="secondary-button Fs10 m-button" update="@form" immediate="true">
 					</p:commandButton>
   					
-    				<p:commandButton id="cmdGenFactura"
-							value="FACTURA" icon="fa fa-floppy-o" 
-							action="#{compFacCtrl.generarFactura()}" styleClass="Fs12 m-button" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
-				
     				<p:commandButton id="cmdGenRecibo"
 							value="RECIBO" icon="fa fa-floppy-o" 
-							action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Fs12 m-button" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}"/>
+							action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Fs10 m-button" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}"/>
+							
+    				<p:commandButton id="cmdGenFactura"
+							value="FACTURA" icon="fa fa-floppy-o" 
+							action="#{compFacCtrl.generarFactura()}" styleClass="Fs10 m-button" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
+	    			
+	    			<p:commandButton id="cmdImprimir"
+							value="IMPRIMIR" icon="fa fa-print Fs11" title="Imprimir Factura"
+							action="#{compFacCtrl.imprimir()}" styleClass="secondary-button Fs10 m-button" update="@form">
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compFacCtrl.rideCtrl}"/>		
+					</p:commandButton>
+							
+					<p:commandButton id="cmdfacTools"
+							value="Acciones" icon="fa fa-sort-down Fs11"
+							styleClass="secondary-button Fs10 m-button"/>
+							
+					<p:menu overlay="true" trigger="cmdfacTools" my="left top" at="left bottom">
+					
+						<p:menuitem value=" Crear una Copia" action="#" icon="fa fa-copy" update="@form" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+							<!-- <f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/> -->
+						</p:menuitem>
+						
+						<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+							<!-- <f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/> -->
+						</p:menuitem>	
+						
+						<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+							<!-- <f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/> -->
+						</p:menuitem>
+						
+						<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+							<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
+						</p:menuitem>
+						
+					
+					
+					</p:menu>
 	    			
 	    		</div>
 			
@@ -287,6 +319,9 @@
 	    
 	    <!-- Form Cliente -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
 	    
         
     </ui:define>

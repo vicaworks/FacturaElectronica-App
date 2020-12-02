@@ -25,7 +25,7 @@
 		<p:panelGrid id="gridSecuencial" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			
 			<h:panelGroup>
-				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<h:outputText value="ESTADO BORRADOR" styleClass="cpoRequerido" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
 				<p:selectBooleanButton value="#{compFacCtrl.cabecerSelected.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}">
 					<p:ajax event="change" process="@this :formMain:gridSecuencial" update=":formMain:gridSecuencial" listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
 					</p:ajax>
@@ -274,7 +274,7 @@
 						
 				</p:selectOneMenu>
 				 					 
-				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100 Fs11" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" disabled="#{compFacCtrl.enableAccion}">
+				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100 Fs10" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" disabled="#{compFacCtrl.enableAccion}">
 				 </p:commandButton>
 				
 			</p:panelGrid>
@@ -383,7 +383,7 @@
 						<div class="p-col-12">
 							<p:commandLink  action="#{compFacCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT" disabled="#{compFacCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:commandLink>		
 						</div>
@@ -404,7 +404,7 @@
 				 styleClass="ui-panelgrid-blank Wid100" 
 				 columnClasses="ui-g-12">
 				 				
-				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{compFacCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs11"/>
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{compFacCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs10"/>
 				<h:panelGroup>
 				</h:panelGroup>				 
 				
@@ -431,7 +431,7 @@
 						<div class="p-col-1" style="text-align: center;">
 							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:commandLink>
 						</div>

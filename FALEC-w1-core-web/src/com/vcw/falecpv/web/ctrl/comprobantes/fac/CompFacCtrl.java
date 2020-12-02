@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
@@ -51,6 +52,7 @@ import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
@@ -107,6 +109,9 @@ public class CompFacCtrl extends BaseCtrl {
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
+	@EJB
+	private ConfiguracionServicio configuracionServicio;
+	
 	
 	private Cabecera cabecerSelected;
 	private String criterioCliente;
@@ -124,6 +129,7 @@ public class CompFacCtrl extends BaseCtrl {
 	private BigDecimal porcentajeRenta;
 	private BigDecimal porcentajeIva;
 	private String callModule;
+	private RideCtrl rideCtrl;
  	
 	/**
 	 * 
@@ -266,6 +272,11 @@ public class CompFacCtrl extends BaseCtrl {
 		consultarIce();
 		consultarIva();
 		populateTipoPago();
+		// infoadicional configuracion
+		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.FACTURA));
+		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		configuracionServicio.populateInformacionAdicional(cabecerSelected);
+		infoadicionalList = cabecerSelected.getInfoadicionalList();
 	}
 	
 	public void agregarProducto() {
@@ -689,7 +700,7 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "FACTURA SIN DETALLE DE FACTURACION.");
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "FACTURA SIN DETALLE DE PRODUCTOS O SERVICIOS.");
 				return;
 			}
 			
@@ -705,7 +716,8 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(!cabecerSelected.isBorrador() && totalPago.doubleValue()!=cabecerSelected.getTotalpagar().doubleValue()) {
+//			if(!cabecerSelected.isBorrador() && totalPago.doubleValue()!=cabecerSelected.getTotalpagar().doubleValue()) {
+			if(totalPago.doubleValue()!=cabecerSelected.getTotalpagar().doubleValue()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR A PAGAR.");
 				return;
 			}
@@ -749,6 +761,36 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected.setNumeroautorizacion(null);
 		}
 	}
+	
+	public void imprimir() {
+		// verifica si solo debe de imprimir
+		if(cabecerSelected.getIdcabecera()!=null) {
+			if(cabeceraServicio.getCabeceraDao().isImprimir(cabecerSelected.getIdcabecera())){
+				showRide();
+				return;
+			}
+		}
+		// pone el nuevo estado
+		boolean estadoTemp = cabecerSelected.isBorrador();
+		cabecerSelected.setBorrador(false);
+		generarFactura();
+		AppJsfUtil.ajaxUpdate("formMain");
+		if(AppJsfUtil.existErrors()) {
+			cabecerSelected.setBorrador(estadoTemp);
+			return;
+		}
+		showRide();
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(cabecerSelected.getIdcabecera());
+		rideCtrl.setInicialComprobante("FAC-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(cabecerSelected.getNumdocumento()));
+		rideCtrl.showRide();
+		
+	}
+	
 	
 	private void determinarPeriodoFiscal() {
 		SimpleDateFormat sf = new SimpleDateFormat("MM/yyyy");
@@ -1146,6 +1188,20 @@ public class CompFacCtrl extends BaseCtrl {
 	 */
 	public void setCallModule(String callModule) {
 		this.callModule = callModule;
+	}
+
+	/**
+	 * @return the rideCtrl
+	 */
+	public RideCtrl getRideCtrl() {
+		return rideCtrl;
+	}
+
+	/**
+	 * @param rideCtrl the rideCtrl to set
+	 */
+	public void setRideCtrl(RideCtrl rideCtrl) {
+		this.rideCtrl = rideCtrl;
 	}
 
 }

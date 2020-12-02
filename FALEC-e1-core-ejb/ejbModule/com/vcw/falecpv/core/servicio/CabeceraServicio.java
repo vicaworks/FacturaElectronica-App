@@ -328,9 +328,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		// 7. infoadicional
 		infoadicionalServicio.getInfoadicionalDao().eliminarByCabecera(cabecera.getIdcabecera());
 		// determina en la configuracion
-		if(!cabecera.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
-			configuracionServicio.populateInformacionAdicional(cabecera);
-		}
+		configuracionServicio.populateInformacionAdicional(cabecera);
 		
 		if(cabecera.getInfoadicionalList()!=null) {
 			

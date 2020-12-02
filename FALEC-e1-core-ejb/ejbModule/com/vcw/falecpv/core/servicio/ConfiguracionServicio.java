@@ -68,6 +68,8 @@ public class ConfiguracionServicio extends AppGenericService<Configuracion, Stri
 	public void populateInformacionAdicional(Cabecera cabecera)throws DaoException{
 		try {
 			
+			if(cabecera.getEstablecimiento()==null) return;
+			
 			List<Configuracion> confList = getByTipoConfiguracion(cabecera.getEstablecimiento().getIdestablecimiento(),
 					ConfiguracionEnum.INFORMACION_ADICIONAL,
 					GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador()));
@@ -83,23 +85,41 @@ public class ConfiguracionServicio extends AppGenericService<Configuracion, Stri
 					break;
 				case "DIRECCION":
 					if(cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.GUIA_REMISION.getIdentificador())) {
+						if(cabecera.getTransportista()==null) {
+							break;
+						}
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getTransportista().getDireccion()==null?"N/A":cabecera.getTransportista().getDireccion());
 					}else {
+						if(cabecera.getCliente()==null) {
+							break;
+						}
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getCliente().getDireccion()==null?"N/A":cabecera.getCliente().getDireccion());
 					}
 					break;
 				case "TELEFONO":
 					if(cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.GUIA_REMISION.getIdentificador())) {
+						if(cabecera.getTransportista()==null) {
+							break;
+						}
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getTransportista().getTelefono()==null?"N/A":cabecera.getTransportista().getTelefono());
 					}else {
+						if(cabecera.getCliente()==null) {
+							break;
+						}
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getCliente().getTelefono()==null?"N/A":cabecera.getCliente().getTelefono());
 					}
 					break;
 				case "CORREO":
 					
 					if(cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.GUIA_REMISION.getIdentificador())) {
+						if(cabecera.getTransportista()==null) {
+							break;
+						}
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getTransportista().getEmail()==null?"N/A":cabecera.getTransportista().getEmail());
 					}else {
+						if(cabecera.getCliente()==null) {
+							break;
+						}
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getCliente().getCorreoelectronico()==null?"N/A":cabecera.getCliente().getCorreoelectronico());
 					}
 					
