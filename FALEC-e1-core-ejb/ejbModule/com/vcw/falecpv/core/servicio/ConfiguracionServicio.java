@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.util.FechaUtil;
 import com.vcw.falecpv.core.constante.ConfiguracionEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.dao.impl.ConfiguracionDao;
@@ -28,6 +29,12 @@ public class ConfiguracionServicio extends AppGenericService<Configuracion, Stri
 	
 	@Inject
 	private ConfiguracionDao configuracionDao;
+	
+	@Inject
+	private CatAgenteretencionServicio catAgenteretencionServicio;
+	
+	@Inject
+	private CatMicroempresaServicio catMicroempresaServicio;
 
 	@Override
 	public List<Configuracion> consultarActivos() {
@@ -70,7 +77,7 @@ public class ConfiguracionServicio extends AppGenericService<Configuracion, Stri
 			}
 			
 			for (Configuracion conf : confList) {
-				switch (conf.getValor()) {
+				switch (conf.getConcepto()) {
 				case "TOTAL_RETENCION":
 					setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getTotalretencion().doubleValue()+"");
 					break;
@@ -89,13 +96,30 @@ public class ConfiguracionServicio extends AppGenericService<Configuracion, Stri
 					}
 					break;
 				case "CORREO":
+					
 					if(cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.GUIA_REMISION.getIdentificador())) {
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getTransportista().getEmail()==null?"N/A":cabecera.getTransportista().getEmail());
 					}else {
 						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getCliente().getCorreoelectronico()==null?"N/A":cabecera.getCliente().getCorreoelectronico());
 					}
+					
 					break;
-
+				case "CATASTRO_MICROEMPRESA":
+					
+					if(catMicroempresaServicio.esMicroEmpresa(cabecera.getEstablecimiento().getEmpresa().getRuc(), FechaUtil.getAnio(cabecera.getFechaemision()))) {
+						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),conf.getValor());
+					}
+					
+					break;
+				
+				case "AGENTE_RETENCION":
+					
+					if (catAgenteretencionServicio.esAgenteRetencion(cabecera.getEstablecimiento().getEmpresa().getRuc())) {
+						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),conf.getValor());
+					}
+					
+					break;
+					
 				default:
 					break;
 				}
