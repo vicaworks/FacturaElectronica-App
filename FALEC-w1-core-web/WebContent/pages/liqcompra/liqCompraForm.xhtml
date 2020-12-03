@@ -215,17 +215,23 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="card card-w-title" >
-	    		<div class="EmptyBox10"/>
+	    		<div class="EmptyBox5"/>
 	    	
 		    	<div class="p-grid p-justify-start">
 		    		
     				<p:commandButton id="cmdfacNuevo"
 							value="NUEVO" icon="fa fa-plus" 
-							action="#{liqCompraFormCtrl.nuevo()}" styleClass="secondary-button Fs11 m-button" update="@form" immediate="true">
+							action="#{liqCompraFormCtrl.nuevo()}" styleClass="secondary-button Fs10 m-button" update="@form" immediate="true">
 					</p:commandButton>
     				<p:commandButton id="cmdGenFactura"
 							value="GUARDAR" icon="fa fa-floppy-o" 
-							action="#{liqCompraFormCtrl.guardar()}" styleClass=" Fs11 m-button" update="@form" disabled="#{liqCompraFormCtrl.enableAccion}"/>
+							action="#{liqCompraFormCtrl.guardar()}" styleClass=" Fs10 m-button" update="@form" disabled="#{liqCompraFormCtrl.enableAccion}"/>
+							
+					<p:commandButton id="cmdImprimir"
+							value="IMPRIMIR" icon="fa fa-print Fs11" title="Imprimir Factura"
+							action="#{liqCompraFormCtrl.imprimir()}" styleClass="secondary-button Fs10 m-button" update="@form">
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{liqCompraFormCtrl.rideCtrl}"/>		
+					</p:commandButton>
 		    	
 		    	</div>
 		    	
@@ -264,6 +270,8 @@
 	    <ui:include src="../herramientas/incl_listaCliente.xhtml" />
 	    <!-- Form Proveedor -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    <!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
 	    
     </ui:define>
 

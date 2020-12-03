@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
@@ -50,6 +51,7 @@ import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
 
@@ -102,6 +104,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
+	@EJB
+	private ConfiguracionServicio configuracionServicio;
+	
 	private List<Cliente> proveedorList;
 	private List<Tipocomprobante> tipocomprobanteList;
 	private Cabecera liqCompraSelected;
@@ -115,6 +120,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	private String criterioProveedor;
 	private BigDecimal porcentajeRenta;
 	private BigDecimal porcentajeIva;
+	private RideCtrl rideCtrl;
 	
 	/**
 	 * 
@@ -168,6 +174,11 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		consultarIva();
 		populateTipoPago();
 		enableAccion = false;
+		// infoadicional configuracion
+		liqCompraSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.FACTURA));
+		liqCompraSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		configuracionServicio.populateInformacionAdicional(liqCompraSelected);
+		infoadicionalList = liqCompraSelected.getInfoadicionalList();
 		
 	}
 
@@ -187,6 +198,11 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 				return;
 			}
 			
+			if(liqCompraSelected.getTotalconimpuestos().doubleValue()<=0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "SIN DETALLE DE PRODUCTOS O SERVICIOS.");
+				return;
+			}
+			
 			// validar estado
 			if(liqCompraSelected.getIdcabecera()!=null) {
 				
@@ -200,7 +216,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(!liqCompraSelected.isBorrador() && totalPago.doubleValue()!=liqCompraSelected.getTotalpagar().doubleValue()) {
+			if(totalPago.doubleValue()!=liqCompraSelected.getTotalpagar().doubleValue()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR DE LA LIQUIDACION DE COMPRA.");
 				return;
 			}
@@ -699,6 +715,35 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			e.printStackTrace();
 		}
 	}
+	
+	public void imprimir() {
+		// verifica si solo debe de imprimir
+		if(liqCompraSelected.getIdcabecera()!=null) {
+			if(cabeceraServicio.getCabeceraDao().isImprimir(liqCompraSelected.getIdcabecera())){
+				showRide();
+				return;
+			}
+		}
+		// pone el nuevo estado
+		boolean estadoTemp = liqCompraSelected.isBorrador();
+		liqCompraSelected.setBorrador(false);
+		guardar();
+		AppJsfUtil.ajaxUpdate("formMain");
+		if(AppJsfUtil.existErrors()) {
+			liqCompraSelected.setBorrador(estadoTemp);
+			return;
+		}
+		showRide();
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(liqCompraSelected.getIdcabecera());
+		rideCtrl.setInicialComprobante("FAC-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(liqCompraSelected.getNumdocumento()));
+		rideCtrl.showRide();
+		
+	}
 
 	/**
 	 * @return the tipocomprobanteList
@@ -904,6 +949,22 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	 */
 	public void setProveedorList(List<Cliente> proveedorList) {
 		this.proveedorList = proveedorList;
+	}
+
+
+	/**
+	 * @return the rideCtrl
+	 */
+	public RideCtrl getRideCtrl() {
+		return rideCtrl;
+	}
+
+
+	/**
+	 * @param rideCtrl the rideCtrl to set
+	 */
+	public void setRideCtrl(RideCtrl rideCtrl) {
+		this.rideCtrl = rideCtrl;
 	}
 
 }

@@ -280,7 +280,7 @@
 							
 					</p:selectOneMenu>
 					 					 
-					 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{liqCompraFormCtrl.aplicarPago()}" styleClass="secondary-button Wid100 Fs11" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT">
+					 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{liqCompraFormCtrl.aplicarPago()}" styleClass="secondary-button Wid100 Fs10" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT">
 					 </p:commandButton>
 					
 				</p:panelGrid>
@@ -388,7 +388,7 @@
 							<div class="p-col-12">
 								<p:commandLink  action="#{liqCompraFormCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT" disabled="#{liqCompraFormCtrl.enableAccion}">
 									<f:setPropertyActionListener value="#{p}" target="#{liqCompraFormCtrl.pagoSelected}"/>
-									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+									<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								</p:commandLink>		
 							</div>
@@ -411,7 +411,7 @@
 						 styleClass="ui-panelgrid-blank Wid100" 
 						 columnClasses="ui-g-12">
 						 				
-					 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{liqCompraFormCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs11 m-button"/>
+					 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{liqCompraFormCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs10 m-button"/>
 					<h:panelGroup>
 					</h:panelGroup>				 
 					
@@ -437,7 +437,7 @@
 							<div class="p-col-1" style="text-align: center;">
 								<p:commandLink  action="#{liqCompraFormCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{liqCompraFormCtrl.enableAccion}">
 									<f:setPropertyActionListener value="#{info}" target="#{liqCompraFormCtrl.infoadicionalSelected}"/>
-									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+									<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								</p:commandLink>
 							</div>
