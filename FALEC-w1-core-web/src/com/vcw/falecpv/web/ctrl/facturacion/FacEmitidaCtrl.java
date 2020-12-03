@@ -517,13 +517,13 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		return null;
 	}
 	
-	public String generarNC() {
+	public String generarNC(String idcabeceraSelected) {
 		try {
 			
 			NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
 			notaCreditoCtrl.setCallModule("FACTURAS_EMITIDAS");
-			notaCreditoCtrl.nuevoByFacturaEmitida(ventasQuerySelected.getIdcabecera());
-			Cabecera c = cabeceraServicio.consultarByPk(ventasQuerySelected.getIdcabecera());
+			notaCreditoCtrl.nuevoByFacturaEmitida(idcabeceraSelected);
+			Cabecera c = cabeceraServicio.consultarByPk(idcabeceraSelected);
 			if(c.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FACTURA YA SE ENCUENTRA ANULADA");
 				return null;
@@ -538,13 +538,13 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		return null;
 	}
 	
-	public String generarND() {
+	public String generarND(String idcabeceraSelected) {
 		
 		try {
 			
 			NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
 			notaDebitoFrmCtrl.setCallModule("FACTURA");
-			notaDebitoFrmCtrl.nuevoByFacturaEmitida(ventasQuerySelected.getIdcabecera());
+			notaDebitoFrmCtrl.nuevoByFacturaEmitida(idcabeceraSelected);
 			
 			return "/pages/notdebito/notaDebitoForm.jsf?faces-redirect=true";
 			

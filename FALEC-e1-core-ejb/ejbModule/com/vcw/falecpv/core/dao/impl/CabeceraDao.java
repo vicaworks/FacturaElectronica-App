@@ -438,4 +438,23 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	public String getIdClienteComprobante(String idCabecera)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createNativeQuery("SELECT c.idcliente FROM cabecera c where c.idcabecera=:id");
+			q.setParameter("id", idCabecera);
+			return (String) q.getSingleResult();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 }

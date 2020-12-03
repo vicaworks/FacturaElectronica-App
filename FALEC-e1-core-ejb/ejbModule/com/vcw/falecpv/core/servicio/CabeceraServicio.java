@@ -14,6 +14,7 @@ import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.servitec.common.dao.DaoGenerico;
@@ -32,6 +33,7 @@ import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
@@ -50,6 +52,9 @@ import com.xpert.persistence.query.QueryBuilder;
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 
+	@Inject
+	private ClienteServicio clienteServicio;
+	
 	@Inject
 	private CabeceraDao cabeceraDao;
 	
@@ -829,6 +834,28 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	public Cliente getClienteComprobante(String idCabecera)throws DaoException{
+		try {
+			
+			String idCliente = cabeceraDao.getIdClienteComprobante(idCabecera);
+			return idCliente==null?null:clienteServicio.consultarByPk(idCliente);
+			
+		} catch (NoResultException e) {
+			return null;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
+		
 	}
 
 }

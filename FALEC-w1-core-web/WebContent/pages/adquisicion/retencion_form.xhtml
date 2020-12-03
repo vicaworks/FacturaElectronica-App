@@ -75,7 +75,7 @@
 			
 			.retencionDetDT .ui-datatable-scrollable-body{
 				/* min-height: 42vh !important; */
-				height: calc(100vh - 465px);
+				height: calc(100vh - 445px);
 				
 			}
 			
@@ -133,27 +133,33 @@
 	    	<!-- OPCIONES -->
 	    	<div class="card card-w-title" style="margin-top:5px;">
 	    		
-	    		<div class="EmptyBox10"/>
+	    		<div class="EmptyBox5"/>
 	    		
 	    		<div class="p-grid p-justify-start">
 	    			
     				<p:commandButton id="cmdRtnNuevo"
 							value="NUEVO" icon="fa fa-plus" 
-							action="#{retencionFrmCtrl.nuevo()}" styleClass="secondary-button Fs11 m-button" update="@form" immediate="true">
+							action="#{retencionFrmCtrl.nuevo()}" styleClass="secondary-button Fs10 m-button" update="@form" immediate="true">
 							
-					<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
-					<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
-					<f:setPropertyActionListener value="RETENCION" target="#{retencionFrmCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
-					<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
-					<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
+						<f:setPropertyActionListener value="RETENCION" target="#{retencionFrmCtrl.callModule}"/>
+						<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
+						<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
 						
 					</p:commandButton>
 					
-	    				<p:commandButton id="cmdrtnGuardar"
-								value="GUARDAR" icon="fa fa-floppy-o" 
-								action="#{retencionFrmCtrl.guardar()}" styleClass="Fs11 m-button" update="@form" disabled="#{retencionFrmCtrl.enableAccion}"/>
+    				<p:commandButton id="cmdrtnGuardar"
+							value="GUARDAR" icon="fa fa-floppy-o" 
+							action="#{retencionFrmCtrl.guardar()}" styleClass="Fs10 m-button" update="@form" disabled="#{retencionFrmCtrl.enableAccion}"/>
+							
+					<p:commandButton id="cmdImprimir"
+							value="IMPRIMIR" icon="fa fa-print Fs11" title="Imprimir Factura"
+							action="#{retencionFrmCtrl.imprimir()}" styleClass="secondary-button Fs10 m-button" update="@form">
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{retencionFrmCtrl.rideCtrl}"/>		
+					</p:commandButton>
 	    			
 	    		</div>
 	    		
@@ -182,7 +188,7 @@
 						<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 						
 							<h:panelGroup>
-								<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{retencionFrmCtrl.retencionSeleccion.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+								<h:outputText value="ESTADO BORRADOR" styleClass="cpoRequerido" rendered="#{retencionFrmCtrl.retencionSeleccion.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
 								<p:selectBooleanButton value="#{retencionFrmCtrl.retencionSeleccion.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{retencionFrmCtrl.retencionSeleccion.estadoBorrador}">
 									<p:ajax event="change" process="@this :formMain:grid" update=":formMain:grid" listener="#{retencionFrmCtrl.cambioEstadoBorrador(retencionFrmCtrl.retencionSeleccion)}">
 									</p:ajax>
@@ -410,7 +416,7 @@
 										<div class="p-col-1" style="text-align: center;">
 											<p:commandLink  action="#{retencionFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{retencionFrmCtrl.enableAccion}">
 												<f:setPropertyActionListener value="#{info}" target="#{retencionFrmCtrl.infoadicionalSelected}"/>
-												<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+												<i class="fa fa-trash-o  Fs16" style="color:#2f2f2f;"></i>
 												<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 											</p:commandLink>
 										</div>
@@ -607,6 +613,9 @@
 	        	
     	<!-- Form Proveedor -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
         
     </ui:define>
 

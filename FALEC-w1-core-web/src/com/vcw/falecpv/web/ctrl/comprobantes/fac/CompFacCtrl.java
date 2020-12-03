@@ -952,6 +952,24 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 	}
 	
+	public String crearUnaCopia(String idCabeceraSeleccion) {
+		try {
+			
+			nuevaFactura();
+			cabecerSelected.setCliente(cabeceraServicio.getClienteComprobante(idCabeceraSeleccion));
+			detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idCabeceraSeleccion);
+			totalizar();
+			
+			return "./factura.jsf?faces-redirect=true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+
+		return null;
+	}
+	
 	/**
 	 * @return the clienteServicio
 	 */

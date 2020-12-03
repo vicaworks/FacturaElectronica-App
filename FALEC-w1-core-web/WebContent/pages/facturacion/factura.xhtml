@@ -242,27 +242,23 @@
 							
 					<p:commandButton id="cmdfacTools"
 							value="Acciones" icon="fa fa-sort-down Fs11"
-							styleClass="secondary-button Fs10 m-button"/>
+							styleClass="secondary-button Fs10 m-button"
+							disabled="#{compFacCtrl.cabecerSelected.idcabecera==null}"/>
 							
 					<p:menu overlay="true" trigger="cmdfacTools" my="left top" at="left bottom">
 					
-						<p:menuitem value=" Crear una Copia" action="#" icon="fa fa-copy" update="@form" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
-							<!-- <f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/> -->
+						<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-copy" update="@form">
 						</p:menuitem>
 						
-						<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
-							<!-- <f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/> -->
+						<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
 						</p:menuitem>	
 						
-						<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
-							<!-- <f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/> -->
+						<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
 						</p:menuitem>
 						
-						<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+						<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-truck" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
 							<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 						</p:menuitem>
-						
-					
 					
 					</p:menu>
 	    			
@@ -301,8 +297,7 @@
 	    	
 	    </h:form>
 	    
-	    
-	    <!-- Busqueda Productos -->
+		    <!-- Busqueda Productos -->
 	    <ui:include src="../productos/incl_listaProducto.xhtml" />
 	    
 	    <!-- Form Producto -->
@@ -320,9 +315,11 @@
 	    <!-- Form Cliente -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
 	    
+	    <!-- GUIA REMISION DESTINATARIO FORMULARIO -->
+		<ui:include src="../guiarem/incl_gr_destinatarioForm.xhtml" />
+	    
 	    <!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />
-	    
         
     </ui:define>
 

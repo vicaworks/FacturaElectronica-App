@@ -81,7 +81,9 @@ public class ConfiguracionServicio extends AppGenericService<Configuracion, Stri
 			for (Configuracion conf : confList) {
 				switch (conf.getConcepto()) {
 				case "TOTAL_RETENCION":
-					setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getTotalretencion().doubleValue()+"");
+					if(cabecera.getTotalretencion().doubleValue()>0d) {
+						setValorInfoAdicional(cabecera.getInfoadicionalList(),conf.getEtiqueta(),cabecera.getTotalretencion().doubleValue()+"");
+					}
 					break;
 				case "DIRECCION":
 					if(cabecera.getTipocomprobante().getIdentificador().equals(GenTipoDocumentoEnum.GUIA_REMISION.getIdentificador())) {

@@ -25,6 +25,7 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
@@ -35,6 +36,7 @@ import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ImpuestoretencionServicio;
@@ -45,6 +47,7 @@ import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -96,6 +99,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
+	@EJB
+	private ConfiguracionServicio configuracionServicio;
+	
 	private String callModule;
 	private String viewUpdate;
 	private Adquisicion adquisicionSelected = new Adquisicion();
@@ -110,6 +116,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private AdquisicionMainCtrl adquisicionMainCtrl;
 	private String criterioProveedor;
+	private RideCtrl rideCtrl;
 	
 	
 	/**
@@ -204,6 +211,11 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		nuevaRetencionDetalle();
 		determinarPeriodoFiscal();
+		// infoadicional configuracion
+		retencionSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.RETENCION));
+		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		configuracionServicio.populateInformacionAdicional(retencionSeleccion);
+		infoadicionalList = retencionSeleccion.getInfoadicionalList();
 	}
 	
 	private void determinarPeriodoFiscal() {
@@ -271,6 +283,17 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
+			
+			// validar cliente
+			if(retencionSeleccion.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL PROVEEDOR");
+				return;
+			}
+			
+			if(retencionSeleccion.getTotalretencion().doubleValue()<=0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE DE RETENCIONES.");
+				return;
+			}
 			
 			// verifica numfactura proveedor establecimeinto
 			if (cabeceraRetencionServicio.existeRetencionProveedor(retencionSeleccion.getIdcabecera(),
@@ -590,6 +613,35 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
 	}
+	
+	public void imprimir() {
+		// verifica si solo debe de imprimir
+		if(retencionSeleccion.getIdcabecera()!=null) {
+			if(cabeceraServicio.getCabeceraDao().isImprimir(retencionSeleccion.getIdcabecera())){
+				showRide();
+				return;
+			}
+		}
+		// pone el nuevo estado
+		boolean estadoTemp = retencionSeleccion.isBorrador();
+		retencionSeleccion.setBorrador(false);
+		guardar();
+		AppJsfUtil.ajaxUpdate("formMain");
+		if(AppJsfUtil.existErrors()) {
+			retencionSeleccion.setBorrador(estadoTemp);
+			return;
+		}
+		showRide();
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(retencionSeleccion.getIdcabecera());
+		rideCtrl.setInicialComprobante("FAC-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(retencionSeleccion.getNumdocumento()));
+		rideCtrl.showRide();
+		
+	}
 
 	/**
 	 * @return the callModule
@@ -785,6 +837,20 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	 */
 	public void setCriterioProveedor(String criterioProveedor) {
 		this.criterioProveedor = criterioProveedor;
+	}
+
+	/**
+	 * @return the rideCtrl
+	 */
+	public RideCtrl getRideCtrl() {
+		return rideCtrl;
+	}
+
+	/**
+	 * @param rideCtrl the rideCtrl to set
+	 */
+	public void setRideCtrl(RideCtrl rideCtrl) {
+		this.rideCtrl = rideCtrl;
 	}
 
 }

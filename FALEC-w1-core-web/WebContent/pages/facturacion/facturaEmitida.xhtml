@@ -257,23 +257,26 @@
 							</p:menuitem>
 							
 							<p:submenu label="Comprobantes">
-							
-								<p:menuitem value="#{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
-									<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
-								</p:menuitem>
 								
-								<p:menuitem value="Ver #{msg['label.guiaremision']}" action="#{rideCtrl.showRide()}" icon="fa fa-eye" disabled="#{appSessionCtrl.isComprobantes(v.estado) or v.idguiaremision==null}">
-									<f:setPropertyActionListener value="#{v.idguiaremision}" target="#{rideCtrl.idCabecera}"/>
-									<f:setPropertyActionListener value="GUIAREM-" target="#{rideCtrl.inicialComprobante}"/>
-									<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
+								<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(v.idcabecera)}" icon="fa fa-copy" update="@form">
 								</p:menuitem>
-								
-								<p:menuitem value="#{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC()}" icon="fa fa-plus-circle" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
+															
+								<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(v.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
 									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								</p:menuitem>	
 								
-								<p:menuitem value="#{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND()}" icon="fa fa-minus-circle" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
+								<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND(v.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
 									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+								</p:menuitem>
+								
+								<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
+									<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
+								</p:menuitem>
+								
+								<p:menuitem value=" Ver #{msg['label.guiaremision']}" action="#{rideCtrl.showRide()}" icon="fa fa-print" disabled="#{appSessionCtrl.isComprobantes(v.estado) or v.idguiaremision==null}">
+									<f:setPropertyActionListener value="#{v.idguiaremision}" target="#{rideCtrl.idCabecera}"/>
+									<f:setPropertyActionListener value="GUIAREM-" target="#{rideCtrl.inicialComprobante}"/>
+									<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 								</p:menuitem>
 							</p:submenu>
 							
@@ -461,7 +464,7 @@
 	    	
 	    </h:form>
 	    
-	    <!-- DESTINATARIO FORMULARIO -->
+	    <!-- GUIA REMISION DESTINATARIO FORMULARIO -->
 		<ui:include src="../guiarem/incl_gr_destinatarioForm.xhtml" />
 		<ui:include src="../common/incl_comprobante_pagos.xhtml" />
 		<!-- RIDE -->

@@ -34,6 +34,7 @@ import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -65,7 +66,6 @@ public class RetencionMainCtrl extends BaseCtrl {
 	private List<Cabecera> retencionList;
 	private RetencionFrmCtrl retencionFormCtrl;
 	private Cabecera retencionSelected;
-	
 	
 	/**
 	 * 
@@ -419,6 +419,8 @@ public class RetencionMainCtrl extends BaseCtrl {
 		
 	}
 	
+	
+	
 	/**
 	 * @return the usuarioServicio
 	 */
@@ -515,6 +517,20 @@ public class RetencionMainCtrl extends BaseCtrl {
 	 */
 	public void setRetencionSelected(Cabecera retencionSelected) {
 		this.retencionSelected = retencionSelected;
+	}
+
+	/**
+	 * @return the rideCtrl
+	 */
+	public RideCtrl getRideCtrl() {
+		return rideCtrl;
+	}
+
+	/**
+	 * @param rideCtrl the rideCtrl to set
+	 */
+	public void setRideCtrl(RideCtrl rideCtrl) {
+		this.rideCtrl = rideCtrl;
 	}
 
 }
