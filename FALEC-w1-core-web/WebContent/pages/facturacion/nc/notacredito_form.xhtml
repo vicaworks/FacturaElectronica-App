@@ -82,7 +82,7 @@
 			
 			.pvDetalleDT .ui-datatable-scrollable-body{
 					min-height: 30vh !important;
-					height: calc(100vh - 375px);
+					height: calc(100vh - 365px);
 			}
 			
 			.pvDetalleDT .ui-selectonemenu .ui-selectonemenu-label {
@@ -132,13 +132,13 @@
 	    	<!-- OPCIONES -->
 	    	<div class="card card-w-title">
 	    		
-	    		<div class="EmptyBox10"/>
+	    		<div class="EmptyBox5"/>
 	    		
 	    		<div class="p-grid p-justify-start">
 	    			
 	    			<p:commandButton id="cmdRtnNuevo"
 								value="NUEVO" icon="fa fa-plus" 
-								action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button m-button Fs11" update="@form" immediate="true">
+								action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button m-button Fs10" update="@form" immediate="true">
 								
 						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facturaSeleccion}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facEmitidaCtrl}"/>
@@ -151,7 +151,13 @@
 					
     				<p:commandButton id="cmdrtnGuardar"
 							value="GUARDAR" icon="fa fa-floppy-o" 
-							action="#{notaCreditoCtrl.guardar()}" styleClass="m-button Fs11" update="@form" disabled="#{notaCreditoCtrl.enableAccion}"/>
+							action="#{notaCreditoCtrl.guardar()}" styleClass="m-button Fs10" update="@form" disabled="#{notaCreditoCtrl.enableAccion}"/>
+					
+					<p:commandButton id="cmdImprimir"
+							value="IMPRIMIR" icon="fa fa-print Fs11" title="Imprimir Factura"
+							action="#{notaCreditoCtrl.imprimir()}" styleClass="secondary-button Fs10 m-button" update="@form">
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{notaCreditoCtrl.rideCtrl}"/>		
+					</p:commandButton>
 	    			
 	    		</div>
 	    		
@@ -189,6 +195,9 @@
 	    
 	    <!-- Busqueda Productos -->
 	    <ui:include src="../../productos/incl_listaProducto.xhtml" />
+	    
+	    <!-- RIDE -->
+		<ui:include src="../../common/incl_ride.xhtml" />
         
     </ui:define>
 

@@ -18,7 +18,7 @@
 		<p:panelGrid id="gridNotaCreditoDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
 			
 			<h:panelGroup>
-				<h:outputText value="GUARDAR COMO BORRADOR" styleClass="cpoRequerido" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<h:outputText value="ESTADO BORRADOR" styleClass="cpoRequerido" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
 				<p:selectBooleanButton value="#{notaCreditoCtrl.notaCreditoSeleccion.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.estadoBorrador}">
 					<p:ajax event="change" process="@this :formMain:gridNotaCreditoDG" update=":formMain:gridNotaCreditoDG" listener="#{notaCreditoCtrl.cambioEstadoBorrador(notaCreditoCtrl.notaCreditoSeleccion)}">
 					</p:ajax>
@@ -82,7 +82,7 @@
 				</p:outputPanel>
 			</h:panelGroup>
 			
-			<h:outputText value="MOTIVO #{msg['label.anulacion']} *" styleClass="cpoRequerido"/>
+			<h:outputText value="MOTIVO MODIFICACIÓN *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<p:inputText id="intMotivoAnulacion" value="#{notaCreditoCtrl.notaCreditoSeleccion.motivo}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100"/>
 				<p:message for="intMotivoAnulacion" />
@@ -243,7 +243,7 @@
 				 styleClass="ui-panelgrid-blank Wid100" 
 				 columnClasses="ui-g-12">
 				 				
-			 	<p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaCreditoCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs11 m-button"/>
+			 	<p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaCreditoCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs10 m-button"/>
 				<h:panelGroup>
 				</h:panelGroup>				 
 				
@@ -270,7 +270,7 @@
 						<div class="p-col-1" style="text-align: center;">
 							<p:commandLink  action="#{notaCreditoCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
 								<f:setPropertyActionListener value="#{info}" target="#{notaCreditoCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:commandLink>
 						</div>

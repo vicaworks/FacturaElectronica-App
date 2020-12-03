@@ -28,8 +28,8 @@ import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
 import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
-import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
@@ -46,11 +47,12 @@ import com.vcw.falecpv.core.servicio.MotivoServicio;
 import com.vcw.falecpv.core.servicio.NotaDebitoServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.TotalimpuestoServicio;
-import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -105,6 +107,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
+	@EJB
+	private ConfiguracionServicio configuracionServicio;
+	
 	
 	private List<Iva> ivaList;
 	private BigDecimal totalPago = BigDecimal.ZERO;
@@ -118,6 +123,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	private Motivo motivoSelected;
 	private Totalimpuesto totalimpuesto;
 	private String callModule;
+	private RideCtrl rideCtrl;
 
 	/**
 	 * 
@@ -163,7 +169,6 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setDetalleList(new ArrayList<>());
 		notDebitoSelected.setFechaemision(new Date());
 		notDebitoSelected.setFechaemisiondocasociado(new Date());
-		notDebitoSelected.setCliente(new Cliente());
 		infoadicionalList = null;
 		// estado borrador
 		notDebitoSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
@@ -181,6 +186,11 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		totalPago = BigDecimal.ZERO;
 		totalSaldo = BigDecimal.ZERO;
 		enableAccion = false;
+		// infoadicional configuracion
+		notDebitoSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.NOTA_DEBITO));
+		notDebitoSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		configuracionServicio.populateInformacionAdicional(notDebitoSelected);
+		infoadicionalList = notDebitoSelected.getInfoadicionalList();
 	}
 	
 	public void buscarCliente() {
@@ -513,6 +523,12 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
+			// validar cliente
+			if(notDebitoSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				return;
+			}
+			
 			// validar estado
 			if(notDebitoSelected.getIdcabecera()!=null) {
 				
@@ -531,7 +547,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			}
 			
 			// validar el valor
-			if(!notDebitoSelected.isBorrador() && totalPago.doubleValue() != notDebitoSelected.getTotalpagar().doubleValue()) {
+			if(totalPago.doubleValue() != notDebitoSelected.getTotalpagar().doubleValue()) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR A PAGAR.");
 				return;
 			}
@@ -637,6 +653,35 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public void imprimir() {
+		// verifica si solo debe de imprimir
+		if(notDebitoSelected.getIdcabecera()!=null) {
+			if(cabeceraServicio.getCabeceraDao().isImprimir(notDebitoSelected.getIdcabecera())){
+				showRide();
+				return;
+			}
+		}
+		// pone el nuevo estado
+		boolean estadoTemp = notDebitoSelected.isBorrador();
+		notDebitoSelected.setBorrador(false);
+		guardar();
+		AppJsfUtil.ajaxUpdate("formMain");
+		if(AppJsfUtil.existErrors()) {
+			notDebitoSelected.setBorrador(estadoTemp);
+			return;
+		}
+		showRide();
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(notDebitoSelected.getIdcabecera());
+		rideCtrl.setInicialComprobante("FAC-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(notDebitoSelected.getNumdocumento()));
+		rideCtrl.showRide();
+		
 	}
 
 	/**
@@ -805,6 +850,20 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	 */
 	public void setCallModule(String callModule) {
 		this.callModule = callModule;
+	}
+
+	/**
+	 * @return the rideCtrl
+	 */
+	public RideCtrl getRideCtrl() {
+		return rideCtrl;
+	}
+
+	/**
+	 * @param rideCtrl the rideCtrl to set
+	 */
+	public void setRideCtrl(RideCtrl rideCtrl) {
+		this.rideCtrl = rideCtrl;
 	}
 
 }

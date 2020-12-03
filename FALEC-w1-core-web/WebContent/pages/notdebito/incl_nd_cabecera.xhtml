@@ -224,7 +224,7 @@
 				 styleClass="ui-panelgrid-blank Wid100" 
 				 columnClasses="ui-g-12">
 				 				
-				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs11"/>
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs10"/>
 				<h:panelGroup>
 				</h:panelGroup>				 
 				
@@ -251,7 +251,7 @@
 						<div class="p-col-1" style="text-align: center;">
 							<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{notaDebitoFrmCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{info}" target="#{notaDebitoFrmCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:commandLink>
 						</div>

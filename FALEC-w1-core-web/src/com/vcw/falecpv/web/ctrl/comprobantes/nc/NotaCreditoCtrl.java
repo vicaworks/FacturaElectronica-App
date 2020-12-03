@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
@@ -45,10 +46,11 @@ import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
-import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
@@ -99,6 +101,8 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
+	@EJB
+	private ConfiguracionServicio configuracionServicio;
 	
 	private String callModule;
 	private String viewUpdate;
@@ -114,6 +118,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	private List<Ice> iceList;
 	private String criterioBusqueda;
 	private String criterioCliente;
+	private RideCtrl rideCtrl;
 	
 	/**
 	 * 
@@ -159,6 +164,17 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	@Override
 	public void guardar() {
 		try {
+			
+			// validar cliente
+			if(notaCreditoSeleccion.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				return;
+			}
+			
+			if(notaCreditoSeleccion.getTotalconimpuestos().doubleValue()<=0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE DE PRODUCTOS O SERVICIOS.");
+				return;
+			}
 			
 			// validar estado
 			if(notaCreditoSeleccion.getIdcabecera()!=null) {
@@ -317,6 +333,11 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		determinarPeriodoFiscal();
 		enableAccion = false;
+		// infoadicional configuracion
+		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.NOTA_CREDITO));
+		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		configuracionServicio.populateInformacionAdicional(notaCreditoSeleccion);
+		infoadicionalList = notaCreditoSeleccion.getInfoadicionalList();
 	}
 	
 	private void formatoNumDoc(String numDoc) {
@@ -666,6 +687,35 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void imprimir() {
+		// verifica si solo debe de imprimir
+		if(notaCreditoSeleccion.getIdcabecera()!=null) {
+			if(cabeceraServicio.getCabeceraDao().isImprimir(notaCreditoSeleccion.getIdcabecera())){
+				showRide();
+				return;
+			}
+		}
+		// pone el nuevo estado
+		boolean estadoTemp = notaCreditoSeleccion.isBorrador();
+		notaCreditoSeleccion.setBorrador(false);
+		guardar();
+		AppJsfUtil.ajaxUpdate("formMain");
+		if(AppJsfUtil.existErrors()) {
+			notaCreditoSeleccion.setBorrador(estadoTemp);
+			return;
+		}
+		showRide();
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(notaCreditoSeleccion.getIdcabecera());
+		rideCtrl.setInicialComprobante("FAC-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(notaCreditoSeleccion.getNumdocumento()));
+		rideCtrl.showRide();
+		
+	}
+	
 	/**
 	 * @return the callModule
 	 */
@@ -867,6 +917,20 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 */
 	public void setCriterioCliente(String criterioCliente) {
 		this.criterioCliente = criterioCliente;
+	}
+
+	/**
+	 * @return the rideCtrl
+	 */
+	public RideCtrl getRideCtrl() {
+		return rideCtrl;
+	}
+
+	/**
+	 * @param rideCtrl the rideCtrl to set
+	 */
+	public void setRideCtrl(RideCtrl rideCtrl) {
+		this.rideCtrl = rideCtrl;
 	}
 
 }

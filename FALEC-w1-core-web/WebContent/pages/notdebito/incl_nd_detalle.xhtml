@@ -9,7 +9,7 @@
 	<style type="text/css">
 		.notMotivoDT .ui-datatable-scrollable-body{
 				min-height: 25vh !important;
-				/* height: calc(100vh - 381px); */
+				/* height: calc(100vh - 375px); */
 			}
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
 			/* min-height: 30vh !important;
@@ -29,7 +29,7 @@
 			<div class="p-grid p-justify-start">
 				<p:commandButton id="cmdfacNuevoItem"
 						value="MOTIVO" icon="fa fa-plus" 
-						action="#{notaDebitoFrmCtrl.agregarItem()}" styleClass="secondary-button Fs11 m-button" update="@form" process="@form">
+						action="#{notaDebitoFrmCtrl.agregarItem()}" styleClass="secondary-button Fs10 m-button" update="@form" process="@form">
 				</p:commandButton>
 			</div>
 			
@@ -174,7 +174,7 @@
 						
 				</p:selectOneMenu>
 				 					 
-				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.aplicarPago()}" process="@this :formMain:pvPagoDetalleDT" styleClass="secondary-button Wid100 Fs11" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:pvPagoDetalleDT">
+				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{notaDebitoFrmCtrl.aplicarPago()}" process="@this :formMain:pvPagoDetalleDT" styleClass="secondary-button Wid100 Fs10" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:pvPagoDetalleDT">
 				 </p:commandButton>
 				
 			</p:panelGrid>
@@ -282,7 +282,7 @@
 						<div class="p-col-12">
 							<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupMotivos" disabled="#{notaDebitoFrmCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{p}" target="#{notaDebitoFrmCtrl.pagoSelected}"/>
-								<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:commandLink>		
 						</div>
