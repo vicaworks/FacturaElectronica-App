@@ -86,6 +86,7 @@ public class DocElectronicoProxy {
 		
 		switch (tipoDocumento) {
 		case FACTURA:
+		case RECIBO:	
 			generarDocumentoElectronico = new DocElectronicoFactura();
 			break;
 		

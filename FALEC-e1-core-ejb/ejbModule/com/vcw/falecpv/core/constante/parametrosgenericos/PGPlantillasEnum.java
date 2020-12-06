@@ -10,7 +10,7 @@ package com.vcw.falecpv.core.constante.parametrosgenericos;
 public enum PGPlantillasEnum implements ParametroGenericoBaseEnum {
 
 	PLANTILLA_FACTURA("16"), PLANTILLA_RETENCION("17"), PLANTILLA_NOTA_CREDITO("18"), PLANTILLA_NOTA_DEBITO("19"),
-	PLANTILLA_GUIA_REMISION("20"), PLANTILLA_LIQ_COMPRA("21"),PATH_LOGO("22"),PATH_LOGO_BLANCO("23");
+	PLANTILLA_GUIA_REMISION("20"), PLANTILLA_LIQ_COMPRA("21"),PATH_LOGO("22"),PATH_LOGO_BLANCO("23"),PLANTILLA_RECIBO("24");
 
 	private String id;
 
@@ -50,6 +50,9 @@ public enum PGPlantillasEnum implements ParametroGenericoBaseEnum {
 		case "03":
 			// Liquidacion de compra
 			return PGPlantillasEnum.PLANTILLA_LIQ_COMPRA;
+		case "00":
+			// Recibo
+			return PGPlantillasEnum.PLANTILLA_RECIBO;	
 		}
 
 		return null;

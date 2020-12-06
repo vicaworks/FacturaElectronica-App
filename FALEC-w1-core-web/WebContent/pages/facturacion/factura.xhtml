@@ -228,7 +228,9 @@
   					
     				<p:commandButton id="cmdGenRecibo"
 							value="RECIBO" icon="fa fa-floppy-o" 
-							action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Fs10 m-button" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}"/>
+							action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Fs10 m-button" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}">
+						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compFacCtrl.rideCtrl}"/>
+					</p:commandButton>
 							
     				<p:commandButton id="cmdGenFactura"
 							value="FACTURA" icon="fa fa-floppy-o" 
@@ -250,13 +252,13 @@
 						<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-copy" update="@form">
 						</p:menuitem>
 						
-						<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+						<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}">
 						</p:menuitem>	
 						
-						<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+						<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}">
 						</p:menuitem>
 						
-						<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-truck" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado)}">
+						<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-truck" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}">
 							<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 						</p:menuitem>
 					

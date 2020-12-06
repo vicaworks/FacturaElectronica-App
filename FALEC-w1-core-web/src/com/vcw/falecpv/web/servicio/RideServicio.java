@@ -147,6 +147,9 @@ public class RideServicio {
 			// Liquidacion de compra
 			ride = getRideLiqCompra(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
 			break;
+		case RECIBO:
+			ride = getRideFactura(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
+			break;
 		default:
 			throw new NoResultException("No existe tipo de cmprobante : " + c.getTipocomprobante().getIdentificador());
 		}

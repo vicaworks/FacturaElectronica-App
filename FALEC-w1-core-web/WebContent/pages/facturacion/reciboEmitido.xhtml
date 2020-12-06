@@ -210,7 +210,7 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtRecEmitidas" my="left top" at="left bottom">
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye">
+							<p:menuitem value="Recibo" action="#{rideCtrl.showRide()}" icon="fa fa-print">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">

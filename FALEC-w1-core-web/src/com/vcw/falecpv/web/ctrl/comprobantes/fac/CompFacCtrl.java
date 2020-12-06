@@ -650,7 +650,7 @@ public class CompFacCtrl extends BaseCtrl {
 			}
 			
 			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "FACTURA SIN DETALLE DE FACTURACION.");
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE DE PRODUCTOS O SERVICIOS.");
 				return;
 			}
 			
@@ -668,7 +668,7 @@ public class CompFacCtrl extends BaseCtrl {
 			
 			// validar el valor
 			if(totalPago.doubleValue()!=cabecerSelected.getTotalconimpuestos().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR DE LA FACTURA.");
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO DIFERENTE AL VALOR DEL RECIBO.");
 				return;
 			}
 			
@@ -679,10 +679,11 @@ public class CompFacCtrl extends BaseCtrl {
 			populatefactura(GenTipoDocumentoEnum.RECIBO);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
+			cabecerSelected.setInfoadicionalList(new ArrayList<>());
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			noEditarSecuencial(cabecerSelected);
 			
-			messageCtrl.cargarMenssage("OK", "RECIBO GENERADO CORRECTAMENTE.", "OK");
+			showRide();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -785,7 +786,11 @@ public class CompFacCtrl extends BaseCtrl {
 	private void showRide() {
 		// despliega el comprobante
 		rideCtrl.setIdCabecera(cabecerSelected.getIdcabecera());
-		rideCtrl.setInicialComprobante("FAC-");
+		if(cabecerSelected.getTipocomprobante().getIdentificador().equals("00")) {
+			rideCtrl.setInicialComprobante("REC-");
+		}else {
+			rideCtrl.setInicialComprobante("FAC-");
+		}
 		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(cabecerSelected.getNumdocumento()));
 		rideCtrl.showRide();
 		
