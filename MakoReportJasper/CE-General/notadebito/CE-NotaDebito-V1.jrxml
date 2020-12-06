@@ -400,27 +400,28 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="60" splitType="Stretch">
+		<band height="64" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="7" width="333" height="23" uuid="16083405-a268-46ce-8ba5-4f11c4a1556d">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<reportElement x="0" y="4" width="361" height="23" uuid="16083405-a268-46ce-8ba5-4f11c4a1556d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{campoAdicionalList})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CE-NotaDebito-Inf-V1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="39" width="333" height="21" uuid="a4e2be8c-b799-4efd-af23-423dfb86e01d">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<reportElement positionType="Float" x="0" y="33" width="361" height="21" uuid="a4e2be8c-b799-4efd-af23-423dfb86e01d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{infoNotaDebito}.getPagoList())]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CE-NotaDebito-Pag-V1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="346" y="0" width="229" height="30" uuid="92e495cb-3119-462b-a218-d7b35ef7789e">
+				<reportElement positionType="Float" x="368" y="0" width="207" height="30" uuid="92e495cb-3119-462b-a218-d7b35ef7789e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{totalComprobanteList})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CE-NotaDebito-Tot-V1.jasper"]]></subreportExpression>

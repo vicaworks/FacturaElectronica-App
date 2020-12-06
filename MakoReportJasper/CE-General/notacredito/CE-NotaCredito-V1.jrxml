@@ -419,9 +419,9 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="54" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="24" width="300" height="30" uuid="f388c319-50b3-4657-acca-f07abe89f278">
+				<reportElement x="0" y="6" width="345" height="30" uuid="f388c319-50b3-4657-acca-f07abe89f278">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{campoAdicionalList})]]></dataSourceExpression>
