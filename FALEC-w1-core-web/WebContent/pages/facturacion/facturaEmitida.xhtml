@@ -259,6 +259,7 @@
 							<p:submenu label="Comprobantes">
 								
 								<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(v.idcabecera)}" icon="fa fa-copy" update="@form">
+									<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 								</p:menuitem>
 															
 								<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(v.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
