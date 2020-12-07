@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+	</style>
+	<script >
+		$('#frmPorPagar').submit(function() {
+		  return false;
+		});
+	</script>
+	<p:dialog header="Editar Valor a Pagar" widgetVar="dlgPorPagar" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo" >
+		
+		<h:form id="frmPorPagar">
+		
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">					
+					
+					<p:commandButton id="cmdCCRefrescar"
+						value="REFRESCAR" icon="fa fa-repeat" styleClass="secondary-button" 
+						action="#{porPagarCtrl.refrescar()}" process="@this" update="@form" 
+						/>
+					<p:spacer width="5"/>
+					<p:commandButton id="cmdCCGuardar"
+						value="GUARDAR" icon="fa fa-floppy-o" action="#{porPagarCtrl.guardar()}" update="@form #{porPagarCtrl.viewUpdate}"/>	
+					<p:spacer width="5"/>
+					<p:commandButton id="cmdCCCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgPorPagar').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<!-- Mensajes -->
+			<p:messages id="msgFrmPorPagar" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmPorPagar"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">			
+				
+				<h:outputText value="NUM COMPROBANTE * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(porPagarCtrl.cabeceraSelected.numdocumento)}" >
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="COMPROBANTE * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.tipocomprobante.comprobante}" >
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="FECHA EMISIÓN * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.fechaemision}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="CLIENTE * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.cliente.razonsocial}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				
+				<h:outputText value="TOTAL SIN IMPUESTOS * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.totalsinimpuestos}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="TOTAL DESCUENTO * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.totaldescuento}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="TOTAL I.C.E * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.totalice}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="TOTAL I.V.A * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.totaliva}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="VALOR RETENIDO RENTA : " styleClass="cpoRequerido"/>
+				<p:inputText id="intValRetRenta" value="#{porPagarCtrl.cabeceraSelected.valorretenidorenta}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converterMessage="SOLO NÚMEROS">
+					<p:ajax event="change" listener="#{porPagarCtrl.calcular()}" update="@form"/>
+				</p:inputText>
+				<p:message for="intValRetRenta"/>
+				
+				<h:outputText value="VALOR RETENIDO IVA : " styleClass="cpoRequerido"/>
+				<p:inputText id="intValRetIva" value="#{porPagarCtrl.cabeceraSelected.valorretenidoiva}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converterMessage="SOLO NÚMEROS">
+					<p:ajax event="change" listener="#{porPagarCtrl.calcular()}" update="@form"/>
+				</p:inputText>
+				<p:message for="intValRetIva"/>
+				
+				<h:outputText value=""/>
+				<h:panelGroup>
+					<div class="EmptyBox10"/>
+					<div class="p-grid p-justify-center ">
+			   			<div class="p-col-12">
+			   				<div class="EmptyBox5"/>
+			   				<div class="p-grid p-justify-even ">
+					   			<!-- Valor comprobante -->
+					   			<div class="p-col-12 p-md-6 boxMain box-gray">
+					   				<div class="DispBlock box-header">VALOR A PAGAR</div>
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{porPagarCtrl.cabeceraSelected.valorapagar}" styleClass="box-content Fs18">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+					   			</div>
+			   				</div>
+			   			</div>
+		   			</div>
+		   			<div class="EmptyBox10"/>
+				</h:panelGroup>
+				<h:outputText value=""/>
+				
+			</p:panelGrid>
+		</h:form>
+		
+   </p:dialog>  
+   
+</ui:composition>

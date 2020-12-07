@@ -94,9 +94,13 @@
 			
 			.pago-header{
 				border-radius: 4px;
-				text-align: right;
+				text-align: left;
 				padding: 5px 10px;
 				border-bottom: 1px solid #F0F3F4;
+			}
+			
+			.pago-header i{
+				margin-right: 10px;
 			}
 			
 			.pago-valor{
@@ -242,9 +246,22 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-							<p:menuitem value="Ver comprobante" action="#" icon="fa fa-eye" >
+							
+							<p:menuitem value=" RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
+								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="COMP-" target="#{rideCtrl.inicialComprobante}"/>
+								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
-							<p:menuitem value="Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-list">
+							
+							<p:menuitem value=" Valor a Pagar" action="#{porPagarCtrl.cargar()}" icon="fa fa-edit">
+								<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
+								<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{porPagarCtrl.cuentaCobrarCtrl}"/>
+								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idCabeceraSelected}"/>
+								<f:setPropertyActionListener value="formMain" target="#{porPagarCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{porPagarCtrl.viewUpdate}"/>
+							</p:menuitem>
+							
+							<p:menuitem value=" Detalle de Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-external-link">
 								<f:setPropertyActionListener value="CUENTAS_COBRAR" target="#{pagoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{v.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
@@ -349,6 +366,12 @@
 	    <ui:include src="incl_pagos_list_form.xhtml"></ui:include>
 	    
 	    <ui:include src="incl_pagos_form.xhtml"></ui:include>
+	    
+	    <!-- Formulario del valor a pagar del comprobante -->
+	    <ui:include src="../common/incl_porpagar_form.xhtml"></ui:include>
+	    
+	    <!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
 	    
     </ui:define>
 

@@ -124,13 +124,13 @@
 						
 						<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 							<p:commandLink action="#{pagoCtrl.eliminarCredito()}" process="@this :formPagos:pagosDT" update=":formPagos">
-								<i class="fa fa-trash-o Fs18" style="color:red;"></i>
+								<i class="fa fa-trash-o Fs12" style="color:#2f2f2f;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
 							</p:commandLink>
 							<p:spacer width="5px"/>
 							<p:commandLink process="@this" update=":formPagoRegistro" oncomplete="PF('dlgFormPago').show();">
-								<i class="fa fa-edit Fs18" style="color:#2f2f2f;"></i>
+								<i class="fa fa-edit Fs12" style="color:#2f2f2f;"></i>
 								<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
 							</p:commandLink>
 							
@@ -180,7 +180,20 @@
 			   	</div>
 			   	<div class="EmptyBox5"/>
 				<div class="card card-w-title">
-					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Valor pago</h3>
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Valor a pagar <span style="margin-left: 10px;">
+																								<p:commandLink value="editar" style="color:#DC7633;" action="#{porPagarCtrl.cargar()}">
+																									<i class="fa fa-edit Fs11" style="color:#DC7633;"></i>
+																									<f:setPropertyActionListener value="POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
+																									<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
+																									<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idCabeceraSelected}"/>
+																									<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.callForm}"/>
+																									<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
+																								</p:commandLink>
+																							  </span>
+					</h3>
+			   		
+			   		<!-- <p:commandButton id="cmdCCEditarValorPagar"
+						value="EDITAR VALOR A PAGAR" icon="fa fa-edit" action="#" styleClass="secondary-button Fs11"/> -->	
 			   		
 			   		<div class="p-grid p-align-center vertical-container">
 			   			
@@ -189,7 +202,7 @@
 			   				<div class="p-grid p-justify-even ">
 					   			<!-- Valor comprobante -->
 					   			<div class="p-col-12 p-md-4 boxMain box-gray">
-					   				<div class="DispBlock box-header">TOTAL COMPROBANTE</div>
+					   				<div class="DispBlock box-header">VALOR A PAGAR</div>
 									<div class="EmptyBox5"/>
 									<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="box-content Fs18">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
@@ -212,6 +225,7 @@
 			   			<div class="p-col-12 p-lg-4">
 			   				<div class="p-grid">
 			   					<div class="p-col-6 pago-header Fs14">
+			   						<i class="fa fa-caret-right fs14"></i>
 			   						<h:outputText value="Otros pagos " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">
@@ -221,6 +235,7 @@
 			   					</div>
 			   					<div class="EmptyBox5"/>
 			   					<div class="p-col-6 pago-header Fs14">
+			   						<i class="fa fa-caret-right fs14"></i>
 			   						<h:outputText value="Adeudado " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">
@@ -230,6 +245,7 @@
 			   					</div>
 			   					<div class="EmptyBox5"/>
 			   					<div class="p-col-6 pago-header Fs14">
+			   						<i class="fa fa-caret-right fs14"></i>
 			   						<h:outputText value="Abonado " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">
@@ -239,6 +255,7 @@
 			   					</div>
 			   					<div class="EmptyBox5"/>
 			   					<div class="p-col-6 pago-header Fs14">
+			   						<i class="fa fa-caret-right fs14"></i>
 			   						<h:outputText value="Total " />
 			   					</div>
 			   					<div class="p-col-6 pago-valor">

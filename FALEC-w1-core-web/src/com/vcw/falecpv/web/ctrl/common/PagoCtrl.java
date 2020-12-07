@@ -163,7 +163,7 @@ public class PagoCtrl extends BaseCtrl {
 		}
 	}
 	
-	private void consultarPagosCredito() throws DaoException {
+	public void consultarPagosCredito() throws DaoException {
 		pagoList = null;
 		pagoEliminarList = null;
 		pagoSelected = null;
