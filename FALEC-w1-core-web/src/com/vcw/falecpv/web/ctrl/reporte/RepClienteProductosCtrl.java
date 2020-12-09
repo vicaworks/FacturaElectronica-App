@@ -18,6 +18,7 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -174,19 +175,19 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCodigoprincipal());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getNombregenerico());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getCantidad().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getPreciototalsinimpuesto().doubleValue());
 				
 				fila++;

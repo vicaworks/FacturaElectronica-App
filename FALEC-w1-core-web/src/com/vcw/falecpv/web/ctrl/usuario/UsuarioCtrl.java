@@ -245,35 +245,35 @@ public class UsuarioCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(u.getIdusuario());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(1);
 				cell.setCellValue(u.getNombre());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(2);
 				cell.setCellValue(u.getEstablecimiento().getNombrecomercial());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(3);
 				cell.setCellValue(u.getPuntoemision());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(4);
 				cell.setCellValue(u.getTelefono());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(5);
 				cell.setCellValue(u.getNombrepantalla());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(6);
 				cell.setCellValue(u.getAdministrador());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(7);
 				cell.setCellValue(u.getEstado());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				fila++;
 			}

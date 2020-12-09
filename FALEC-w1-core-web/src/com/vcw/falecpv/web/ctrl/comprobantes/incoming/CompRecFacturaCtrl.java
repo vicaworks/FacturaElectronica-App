@@ -18,6 +18,7 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -141,56 +142,56 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
 				
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRucEmisor());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRazonSocialEmisor());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().add(c.getTotaldescuento()).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalice().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaliva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getNumeroAutorizacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getClaveAcceso());
 				
 				fila++;
@@ -258,56 +259,56 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
 				
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRucEmisor());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRazonSocialEmisor());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().add(c.getTotaldescuento()).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalice().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaliva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getNumeroAutorizacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getClaveAcceso());
 				
 				
@@ -324,28 +325,28 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getCodigoPrincipal());
 					
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getDescripcion());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getCantidad());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPrecioUnitario());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getDescuento());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPrecioTotalSinImpuesto());
 					
 					Double ice = 0d;
@@ -360,15 +361,15 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ice);
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(iva);
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPrecioTotalSinImpuesto() + ice + iva);
 					
 					filaDetalle++;
@@ -386,23 +387,23 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getFormaPago());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(tipopagoServicio.tipopagoSri(p.getFormaPago()));
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getTotal());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getPlazo()!=null?p.getPlazo():0);
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getUnidadTiempo()!=null?p.getUnidadTiempo():"");
 					
 					filaPago++;

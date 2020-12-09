@@ -19,6 +19,7 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -192,51 +193,51 @@ public class RecEmitidoCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getNombrepantalla());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getCantidad().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getSubtotal().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotal().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalpago().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getLicitado().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getCambio().doubleValue());
 				
 				fila++;
@@ -305,43 +306,43 @@ public class RecEmitidoCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getDetalleList().stream().mapToDouble(x->x.getCantidad().doubleValue()).sum());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotaliva().add(v.getTotalice()).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalconimpuestos().doubleValue());
 				
 				filaDetalle = fila;
@@ -355,40 +356,40 @@ public class RecEmitidoCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoprincipal():"");
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoauxiliar():"");
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getDescripcion());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getCantidad().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciounitario().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getDescuento().doubleValue());
 					
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciototalsinimpuesto().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getValoriva().add(d.getValorice()).doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciototal().doubleValue());
 					
 					filaDetalle++;
@@ -402,27 +403,27 @@ public class RecEmitidoCtrl extends BaseCtrl {
 						rowCliente = sheet.createRow(filaPago);
 					}
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getTipopago().getNombre());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getTotal().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getValorentrega().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getCambio().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNumerodocumento());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNombrebanco());
 					
 					filaPago++;

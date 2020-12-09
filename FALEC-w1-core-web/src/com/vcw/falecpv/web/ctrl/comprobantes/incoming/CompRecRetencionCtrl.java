@@ -19,6 +19,7 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -151,23 +152,23 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 				int col =0;
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRucEmisor());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRazonSocialEmisor());
 				
 				
@@ -189,40 +190,40 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 				
 				if(tipDocAsociado.size()==1) {
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(GenTipoDocumentoEnum.getByIdentificador(tipDocAsociado.get(0)));
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(ComprobanteHelper.formatNumDocumento(numDocAsociado.get(0)));
 				}else {
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue("");
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue("");
 				}
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalrenta().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaliva().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalretencion().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getNumeroAutorizacion());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getClaveAcceso());
 				
 				fila ++;
@@ -293,23 +294,23 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 				int col =0;
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRucEmisor());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRazonSocialEmisor());
 				
 				
@@ -331,40 +332,40 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 				
 				if(tipDocAsociado.size()==1) {
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(GenTipoDocumentoEnum.getByIdentificador(tipDocAsociado.get(0)));
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(ComprobanteHelper.formatNumDocumento(numDocAsociado.get(0)));
 				}else {
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue("");
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue("");
 				}
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalrenta().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaliva().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalretencion().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getNumeroAutorizacion());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getClaveAcceso());
 				
 				filaDt = fila;
@@ -382,46 +383,46 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 					}
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(i.getCodDocSustento()!=null?i.getCodDocSustento():"");
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(i.getNumDocSustento()!=null?ComprobanteHelper.formatNumDocumento(i.getNumDocSustento()):"");
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(i.getFechaEmisionDocSustento()!=null?FechaUtil.formatoFecha(i.getFechaEmisionDocSustento()):"");
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(i.getCodigo());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					Retencionimpuesto retencionimpuesto = retencionimpuestoServicio.getByCodSri(i.getCodigo());
 					cell.setCellValue(retencionimpuesto!=null?retencionimpuesto.getNombre():"");
 					
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(i.getCodigoRetencion());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					Retencionimpuestodet retencionimpuestodet = retencionimpuestodetServicio.getByCodSri(i.getCodigo(), i.getCodigoRetencion());
 					cell.setCellValue(retencionimpuestodet!=null?retencionimpuestodet.getNombre():"");
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(i.getBaseImponible());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(i.getPorcentajeRetener());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(i.getValorRetenido());
 					
 					filaDt++;

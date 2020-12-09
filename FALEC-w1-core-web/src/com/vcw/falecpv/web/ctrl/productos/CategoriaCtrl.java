@@ -249,31 +249,31 @@ public class CategoriaCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(c.getIdcategoria());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(1);
 				cell.setCellValue(c.getEstablecimiento().getNombrecomercial());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(2);
 				cell.setCellValue(c.getCategoria());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(3);
 				cell.setCellValue(c.getDescripcion());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(4);
 				cell.setCellValue(c.getEstado());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(5);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(c.getIdusuario()).getNombre());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(6);				
 				cell.setCellValue(c.getUpdated());
-				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
+//				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
 				
 				
 				fila++;

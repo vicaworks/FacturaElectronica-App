@@ -20,6 +20,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
@@ -369,7 +371,7 @@ public class ClienteCtrl extends BaseCtrl {
 				HSSFCell cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setIdTipoIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -384,7 +386,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -399,7 +401,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setRazonSocial(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -414,7 +416,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setDireccion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -429,7 +431,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						
 						c.setCorreoElectronico(cell.getStringCellValue());
 					} catch (Exception e) {
@@ -445,7 +447,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setTelefono(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -460,7 +462,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setNombreGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -475,7 +477,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setCedulaGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -490,7 +492,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setDireccionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -505,7 +507,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setTelefonoGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -520,7 +522,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setOcupacionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -535,7 +537,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setNombreGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -550,7 +552,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setCedulaGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -565,7 +567,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setDireccionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -580,7 +582,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setTelefonoGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -595,7 +597,7 @@ public class ClienteCtrl extends BaseCtrl {
 				cell = row.getCell(col++);
 				if(cell!=null) {
 					try {
-						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+						cell.setCellType(CellType.STRING);
 						c.setOcupacionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
@@ -625,8 +627,8 @@ public class ClienteCtrl extends BaseCtrl {
 					
 					// color
 					HSSFCellStyle myStyle = wb.createCellStyle();
-					myStyle.setFillForegroundColor(HSSFColor.ORANGE.index);
-					myStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+					myStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ORANGE.getIndex());
+					myStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 					
 					// coloca el error
 					HSSFRow row = sheet.getRow(c.getFila());
@@ -802,35 +804,27 @@ public class ClienteCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(c.getIdcliente());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(1);
 				cell.setCellValue(c.getIdentificacion());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(2);
 				cell.setCellValue(c.getRazonsocial());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(3);
 				cell.setCellValue(c.getDireccion());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(4);
 				cell.setCellValue(c.getCorreoelectronico());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(5);
 				cell.setCellValue(c.getTelefono());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(6);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(c.getIdusuario()).getNombre());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(7);
 				cell.setCellValue(c.getUpdated());
-				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
 				
 				cell = row.createCell(8);
 				if(c.getEstado().compareTo("A") == 0) {
@@ -839,47 +833,36 @@ public class ClienteCtrl extends BaseCtrl {
 				else {
 					cell.setCellValue("INACTIVO");
 				}
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(9);
 				cell.setCellValue(c.getNombregarante1());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(10);
 				cell.setCellValue(c.getCedulagarante1());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(11);
 				cell.setCellValue(c.getDirecciongarante1());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(12);
 				cell.setCellValue(c.getTelefonogarante1());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(13);
 				cell.setCellValue(c.getOcupaciongarante1());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(14);
 				cell.setCellValue(c.getNombregarante2());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(15);
 				cell.setCellValue(c.getCedulagarante2());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(16);
 				cell.setCellValue(c.getDirecciongarante2());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(17);
 				cell.setCellValue(c.getTelefonogarante2());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(18);
 				cell.setCellValue(c.getOcupaciongarante2());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				fila++;
 			}

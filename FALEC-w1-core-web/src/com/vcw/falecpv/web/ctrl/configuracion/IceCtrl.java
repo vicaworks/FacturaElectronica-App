@@ -24,6 +24,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
@@ -368,7 +370,7 @@ public class IceCtrl extends BaseCtrl {
 					HSSFCell cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							ice.setCodigo(cell.getStringCellValue());
 						} catch (Exception e) {
 							ice.setError(true);
@@ -383,7 +385,7 @@ public class IceCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							ice.setDescripcion(cell.getStringCellValue());
 						} catch (Exception e) {
 							ice.setError(true);
@@ -398,7 +400,7 @@ public class IceCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							ice.setTarifaadvalorem(cell.getStringCellValue());
 							
 						} catch (Exception e) {
@@ -414,7 +416,7 @@ public class IceCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+							cell.setCellType(CellType.NUMERIC);
 							ice.setValor(BigDecimal.valueOf(cell.getNumericCellValue()));
 							
 						} catch (Exception e) {
@@ -445,8 +447,8 @@ public class IceCtrl extends BaseCtrl {
 					
 					// color
 					HSSFCellStyle myStyle = wb.createCellStyle();
-					myStyle.setFillForegroundColor(HSSFColor.ORANGE.index);
-					myStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+					myStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ORANGE.getIndex());
+					myStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 					
 					// coloca el error
 					HSSFRow row = sheet.getRow(p.getFila());

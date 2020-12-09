@@ -18,6 +18,7 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -142,63 +143,63 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 				int col =0;
 				
 				Cell cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRucEmisor());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRazonSocialEmisor());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//codDocModificado")!=null?GenTipoDocumentoEnum.getByIdentificador(XmlCommonsUtil.valorXpath(c.getValorXml(), "//codDocModificado")):"");
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//numDocModificado"));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaldescuento().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().add(c.getTotaldescuento()).doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalice().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaliva().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalconimpuestos().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getNumeroAutorizacion());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getClaveAcceso());
 				
 				fila ++;
@@ -262,55 +263,55 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 				int col =0;
 				
 				Cell cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(c.getSerieComprobante()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaEmision()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(c.getFechaAutorizacion()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRucEmisor());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(c.getRazonSocialEmisor());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//codDocModificado")!=null?GenTipoDocumentoEnum.getByIdentificador(XmlCommonsUtil.valorXpath(c.getValorXml(), "//codDocModificado")):"");
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(XmlCommonsUtil.valorXpath(c.getValorXml(), "//numDocModificado"));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaldescuento().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalsinimpuestos().add(c.getTotaldescuento()).doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalice().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotaliva().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(c.getTotalconimpuestos().doubleValue());
 				
 				XmlNotaCredito nc = XmlCommonsUtil.jaxbunmarshall(c.getValorXml(), new XmlNotaCredito(),"UTF-8");
@@ -327,28 +328,28 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 					}
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getCodigoInterno());
 					
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getDescripcion());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getCantidad());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPrecioUnitario());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getDescuento());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPrecioTotalSinImpuesto());
 					
 					Double ice = 0d;
@@ -363,15 +364,15 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 					}
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ice);
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(iva);
 					
 					cell = row.createCell(col++);
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPrecioTotalSinImpuesto() + ice + iva);
 					
 					filaDetalle++;

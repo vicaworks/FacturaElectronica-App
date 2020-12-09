@@ -6,15 +6,15 @@ package com.vcw.falecpv.web.util;
 import java.awt.Color;
 import java.io.Serializable;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -27,8 +27,6 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import com.vcw.falecpv.core.constante.ExcelEnum;
-
-
 
 /**
  * @author cvillarreal
@@ -77,7 +75,7 @@ public class UtilExcel implements Serializable {
 	 */
 	public static void getCellFormula(String formula, Row row, int columna) {
 		Cell cell = row.createCell(columna);
-		cell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+		cell.setCellType(CellType.FORMULA);
 		cell.setCellFormula(formula);
 	}
 
@@ -134,7 +132,7 @@ public class UtilExcel implements Serializable {
 		}
 
 		if (row.getCell(cellReference.getCol()) == null) {
-			row.createCell(cellReference.getCol(), Cell.CELL_TYPE_BLANK);
+			row.createCell(cellReference.getCol(), CellType.BLANK);
 		}
 
 		return row.getCell(cellReference.getCol());
@@ -166,7 +164,7 @@ public class UtilExcel implements Serializable {
 		}
 
 		if (row.getCell(cellReference.getCol()) == null) {
-			row.createCell(cellReference.getCol(), Cell.CELL_TYPE_BLANK);
+			row.createCell(cellReference.getCol(), CellType.BLANK);
 		}
 
 		return row.getCell(cellReference.getCol());
@@ -188,7 +186,7 @@ public class UtilExcel implements Serializable {
 	 *            tipo de celda
 	 * @return {@link Cell}
 	 */
-	public static Cell getCellCreacion(String celda, Sheet sheet, int cellType) {
+	public static Cell getCellCreacion(String celda, Sheet sheet, CellType cellType) {
 		Cell cell = getCellCreacion(celda, sheet);
 		cell.setCellType(cellType);
 		return cell;
@@ -253,13 +251,13 @@ public class UtilExcel implements Serializable {
 
 		switch (alineacion) {
 		case ALINEACION_HORIZONTAL_IZQUIERDA:
-			styleCellFontBorderColor(cell, colorFuente, colorBorde, colorFondo, HSSFCellStyle.ALIGN_LEFT);
+			styleCellFontBorderColor(cell, colorFuente, colorBorde, colorFondo, HorizontalAlignment.LEFT);
 			break;
 		case ALINEACION_HORIZONTAL_DERECHA:
-			styleCellFontBorderColor(cell, colorFuente, colorBorde, colorFondo, HSSFCellStyle.ALIGN_RIGHT);
+			styleCellFontBorderColor(cell, colorFuente, colorBorde, colorFondo, HorizontalAlignment.RIGHT);
 			break;
 		case ALINEACION_HORIZONTAL_CENTRO:
-			styleCellFontBorderColor(cell, colorFuente, colorBorde, colorFondo, HSSFCellStyle.ALIGN_CENTER);
+			styleCellFontBorderColor(cell, colorFuente, colorBorde, colorFondo, HorizontalAlignment.CENTER);
 			break;
 		default:
 			throw new IllegalArgumentException("Alineacion incorrecta");
@@ -292,26 +290,26 @@ public class UtilExcel implements Serializable {
 	 *            alineaci&oacute;n
 	 */
 	public static void styleCellFontBorderColor(Cell cell, Color colorFuente, Color colorBorde, Color colorFondo,
-			Short alineacion) {
+			HorizontalAlignment alineacion) {
 
 		Sheet sheet = cell.getSheet();
 
 		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
 		XSSFFont font = (XSSFFont) sheet.getWorkbook().createFont();
 
-		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		font.setBold(true);
 		font.setColor(new XSSFColor(colorFuente));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
 		// style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
@@ -319,7 +317,36 @@ public class UtilExcel implements Serializable {
 		// java.awt.Color(128,0,128)));
 		style.setFillForegroundColor(new XSSFColor(colorFondo));
 
-		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		style.setAlignment(alineacion);
+		style.setFont(font);
+
+		cell.setCellStyle(style);
+
+	}
+	
+	
+	/**
+	 * @param cell
+	 * @param colorFondo
+	 * @param alineacion
+	 */
+	public static void styleCellFondoColor(Cell cell, Color colorFondo,HorizontalAlignment alineacion) {
+
+		Sheet sheet = cell.getSheet();
+
+		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
+		XSSFFont font = (XSSFFont) sheet.getWorkbook().createFont();
+
+
+		// style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
+		// style.setFillBackgroundColor(new XSSFColor(new
+		// java.awt.Color(128,0,128)));
+		if(colorFondo!=null) {
+			style.setFillForegroundColor(new XSSFColor(colorFondo));
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		}
+
 		style.setAlignment(alineacion);
 		style.setFont(font);
 
@@ -345,16 +372,16 @@ public class UtilExcel implements Serializable {
 
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
 		cell.setCellStyle(style);
@@ -376,16 +403,16 @@ public class UtilExcel implements Serializable {
 
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
 		cell.setCellStyle(style);
@@ -407,16 +434,16 @@ public class UtilExcel implements Serializable {
 
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(borde));
 
 		cell.setCellStyle(style);
@@ -438,97 +465,18 @@ public class UtilExcel implements Serializable {
 
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(borde));
 
-		cell.setCellStyle(style);
-	}
-	
-	/**
-	 * @author cristianvillarreal
-	 * 
-	 * @param cell
-	 */
-	public static void setXSSFBordeCell(Cell cell) {
-		Sheet sheet = cell.getSheet();
-		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
-
-		Color borde = new Color(255, 255, 255, 255);
-
-		style.setBorderBottom(CellStyle.BORDER_THIN);
-		style.setBottomBorderColor(new XSSFColor(borde));
-
-		style.setBorderTop(CellStyle.BORDER_THIN);
-		style.setTopBorderColor(new XSSFColor(borde));
-
-		style.setBorderRight(CellStyle.BORDER_THIN);
-		style.setRightBorderColor(new XSSFColor(borde));
-
-		style.setBorderLeft(CellStyle.BORDER_THIN);
-		style.setLeftBorderColor(new XSSFColor(borde));
-
-		cell.setCellStyle(style);
-	}
-	
-	
-	/**
-	 * @author cristianvillarreal
-	 * 
-	 * @param cell
-	 */
-	public static void setHSSBordeCell(Cell cell) {
-		Sheet sheet = cell.getSheet();
-		HSSFCellStyle style = (HSSFCellStyle) sheet.getWorkbook().createCellStyle();
-
-		style.setBorderBottom(CellStyle.BORDER_THIN);
-		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-
-		style.setBorderTop(CellStyle.BORDER_THIN);
-		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-		style.setBorderRight(CellStyle.BORDER_THIN);
-		style.setRightBorderColor(IndexedColors.BLACK.getIndex());
-
-		style.setBorderLeft(CellStyle.BORDER_THIN);
-		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-
-		cell.setCellStyle(style);
-	}
-	
-	/**
-	 * @author cristianvillarreal
-	 * 
-	 * @param cell
-	 * @param formatoFecha
-	 */
-	public static void setHSSBordeCell(Cell cell,String formatoFecha) {
-		Sheet sheet = cell.getSheet();
-		HSSFCellStyle style = (HSSFCellStyle) sheet.getWorkbook().createCellStyle();
-
-		style.setBorderBottom(CellStyle.BORDER_THIN);
-		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-
-		style.setBorderTop(CellStyle.BORDER_THIN);
-		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-		style.setBorderRight(CellStyle.BORDER_THIN);
-		style.setRightBorderColor(IndexedColors.BLACK.getIndex());
-
-		style.setBorderLeft(CellStyle.BORDER_THIN);
-		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-		
-		CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();  
-		style.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yyyy HH:mm"));
-		
 		cell.setCellStyle(style);
 	}
 
@@ -548,16 +496,16 @@ public class UtilExcel implements Serializable {
 
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(borde));
 
 		cell.setCellStyle(style);
@@ -579,16 +527,16 @@ public class UtilExcel implements Serializable {
 
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(borde));
 
 		cell.setCellStyle(style);
@@ -609,16 +557,16 @@ public class UtilExcel implements Serializable {
 		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 
 		cell.setCellStyle(style);
@@ -638,16 +586,16 @@ public class UtilExcel implements Serializable {
 		Sheet sheet = cell.getSheet();
 		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
 		Color borde = new Color(255, 255, 255, 255);
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(borde));
 
 		cell.setCellStyle(style);
@@ -666,16 +614,16 @@ public class UtilExcel implements Serializable {
 		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
 
 		Color borde = new Color(255, 255, 255, 255);
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(borde));
 
 		cell.setCellStyle(style);
@@ -696,7 +644,7 @@ public class UtilExcel implements Serializable {
 		XSSFFont font = (XSSFFont) sheet.getWorkbook().createFont();
 		XSSFFont fontOld = style.getFont();
 
-		font.setBoldweight(fontOld.getBoldweight());
+		font.setBold(true);;
 		XSSFColor color = fontOld.getXSSFColor();
 		font.setColor(color);
 		font.setFontHeightInPoints(fontOld.getFontHeightInPoints());
@@ -781,10 +729,7 @@ public class UtilExcel implements Serializable {
 		style.cloneStyleFrom(cell.getCellStyle());
 		XSSFFont font = (XSSFFont) sheet.getWorkbook().createFont();
 		font.setFontHeightInPoints(size);
-		font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
-		if (bold) {
-			font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		}
+		font.setBold(bold);
 		font.setColor(new XSSFColor(color));
 		style.setFont(font);
 		cell.setCellStyle(style);
@@ -808,13 +753,13 @@ public class UtilExcel implements Serializable {
 
 		switch (alineacion) {
 		case ALINEACION_HORIZONTAL_IZQUIERDA:
-			style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style.setAlignment(HorizontalAlignment.LEFT);
 			break;
 		case ALINEACION_HORIZONTAL_DERECHA:
-			style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+			style.setAlignment(HorizontalAlignment.RIGHT);
 			break;
 		case ALINEACION_HORIZONTAL_CENTRO:
-			style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style.setAlignment(HorizontalAlignment.CENTER);
 			break;
 		default:
 			throw new IllegalArgumentException("Alineacion incorrecta");
@@ -874,13 +819,13 @@ public class UtilExcel implements Serializable {
 			ExcelEnum alineacion) {
 		switch (alineacion) {
 		case ALINEACION_HORIZONTAL_IZQUIERDA:
-			styleCellFontBorderColor(cell, colorFuente, colorBorde, HSSFCellStyle.ALIGN_LEFT, false);
+			styleCellFontBorderColor(cell, colorFuente, colorBorde, HorizontalAlignment.LEFT, false);
 			break;
 		case ALINEACION_HORIZONTAL_DERECHA:
-			styleCellFontBorderColor(cell, colorFuente, colorBorde, HSSFCellStyle.ALIGN_RIGHT, false);
+			styleCellFontBorderColor(cell, colorFuente, colorBorde, HorizontalAlignment.RIGHT, false);
 			break;
 		case ALINEACION_HORIZONTAL_CENTRO:
-			styleCellFontBorderColor(cell, colorFuente, colorBorde, HSSFCellStyle.ALIGN_CENTER, false);
+			styleCellFontBorderColor(cell, colorFuente, colorBorde, HorizontalAlignment.CENTER, false);
 			break;
 		default:
 			throw new IllegalArgumentException("Alineacion incorrecta");
@@ -902,7 +847,7 @@ public class UtilExcel implements Serializable {
 	 * @param alineacion
 	 *            {@link java.awt.Color}
 	 */
-	public static void styleCellFontBorderColorAlig(Cell cell, Color colorFuente, Color colorBorde, Short alineacion,Short alinver, 
+	public static void styleCellFontBorderColorAlig(Cell cell, Color colorFuente, Color colorBorde, HorizontalAlignment alineacion,VerticalAlignment alinver, 
 			boolean bold) {
 
 		Sheet sheet = cell.getSheet();
@@ -912,20 +857,19 @@ public class UtilExcel implements Serializable {
 		font.setFontName("Arial");
 		font.setFontHeight(8);
 		
-		if (bold)
-			font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		font.setBold(bold);
 		font.setColor(new XSSFColor(colorFuente));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
 		style.setAlignment(alineacion);
@@ -937,7 +881,7 @@ public class UtilExcel implements Serializable {
 
 	}
 	
-	public static void styleCellFontBorderColor(Cell cell, Color colorFuente, Color colorBorde, Short alineacion,
+	public static void styleCellFontBorderColor(Cell cell, Color colorFuente, Color colorBorde, HorizontalAlignment alineacion,
 			boolean bold) {
 
 		Sheet sheet = cell.getSheet();
@@ -945,20 +889,21 @@ public class UtilExcel implements Serializable {
 		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
 		XSSFFont font = (XSSFFont) sheet.getWorkbook().createFont();
 
-		if (bold)
-			font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//		if (bold)
+//			font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		font.setBold(bold);
 		font.setColor(new XSSFColor(colorFuente));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN );
 		style.setBottomBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
 		style.setAlignment(alineacion);
@@ -969,7 +914,7 @@ public class UtilExcel implements Serializable {
 	}
 	
 	
-	public static void styleCellWraptext(Cell cell, short alineacion) {
+	public static void styleCellWraptext(Cell cell, VerticalAlignment alineacion) {
 
 		Sheet sheet = cell.getSheet();
 
@@ -988,7 +933,7 @@ public class UtilExcel implements Serializable {
 	 * @param sheet
 	 * @return
 	 */
-	public static XSSFCellStyle styleBold(Sheet sheet, Short alineacion) {
+	public static XSSFCellStyle styleBold(Sheet sheet, HorizontalAlignment alineacion) {
 		XSSFCellStyle style = (XSSFCellStyle) sheet.getWorkbook().createCellStyle();
 		XSSFFont font = (XSSFFont) sheet.getWorkbook().createFont();
 		font.setBold(true);
@@ -1005,7 +950,7 @@ public class UtilExcel implements Serializable {
 	 * @param colorBorde
 	 * @param alineacion
 	 */
-	public static void styleCellFontBorderColorRango(Row row, Color colorFuente, Color colorBorde, Short alineacion,
+	public static void styleCellFontBorderColorRango(Row row, Color colorFuente, Color colorBorde, HorizontalAlignment alineacion,
 			boolean bold) {
 		for (int i = 0; i < row.getLastCellNum(); i++) {
 			Cell cell = row.getCell(i);
@@ -1039,20 +984,20 @@ public class UtilExcel implements Serializable {
 				cellDest.setCellStyle(newCellStyle);
 
 				// Setea el tipo de celda y el valor correspondiente
-				cellDest.setCellType(cellSource.getCellType());
-				switch (cellSource.getCellType()) {
-				case Cell.CELL_TYPE_BLANK:
+				cellDest.setCellType(cellSource.getCellTypeEnum());
+				switch (cellSource.getCellTypeEnum()) {
+				case BLANK:
 					break;
-				case Cell.CELL_TYPE_BOOLEAN:
+				case BOOLEAN:
 					cellDest.setCellValue(cellSource.getBooleanCellValue());
 					break;
-				case Cell.CELL_TYPE_ERROR:
+				case ERROR:
 					cellDest.setCellErrorValue(cellSource.getErrorCellValue());
 					break;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					cellDest.setCellValue(cellSource.getNumericCellValue());
 					break;
-				case Cell.CELL_TYPE_STRING:
+				case STRING:
 					cellDest.setCellValue(cellSource.getRichStringCellValue());
 					break;
 				default:
@@ -1116,13 +1061,13 @@ public class UtilExcel implements Serializable {
 		XSSFFont font1 = (XSSFFont) worksheet.getWorkbook().createFont();
 		font1.setFontHeight(18);
 		font1.setBold(true);
-		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style.setAlignment(HorizontalAlignment.LEFT);
 		style.setFont(font1);
 
 		XSSFCellStyle style2 = (XSSFCellStyle) worksheet.getWorkbook().createCellStyle();
 		XSSFFont font = (XSSFFont) worksheet.getWorkbook().createFont();
 		font.setFontHeight(11);
-		style2.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style2.setAlignment(HorizontalAlignment.LEFT);
 		style2.setFont(font);
 
 		worksheet.createRow(iniRow - 1);
@@ -1157,13 +1102,13 @@ public class UtilExcel implements Serializable {
 		XSSFFont font1 = (XSSFFont) worksheet.getWorkbook().createFont();
 		font1.setFontHeight(18);
 		font1.setBold(true);
-		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style.setAlignment(HorizontalAlignment.LEFT);
 		style.setFont(font1);
 
 		XSSFCellStyle style2 = (XSSFCellStyle) worksheet.getWorkbook().createCellStyle();
 		XSSFFont font = (XSSFFont) worksheet.getWorkbook().createFont();
 		font.setFontHeight(11);
-		style2.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style2.setAlignment(HorizontalAlignment.LEFT);
 		style2.setFont(font);
 
 		worksheet.createRow(iniRow - 1);
@@ -1225,20 +1170,20 @@ public class UtilExcel implements Serializable {
 				cellDest.setCellStyle(newCellStyle);
 
 				// Setea el tipo de celda y el valor correspondiente
-				cellDest.setCellType(cellSource.getCellType());
-				switch (cellSource.getCellType()) {
-				case Cell.CELL_TYPE_BLANK:
+				cellDest.setCellType(cellSource.getCellTypeEnum());
+				switch (cellSource.getCellTypeEnum()) {
+				case  BLANK:
 					break;
-				case Cell.CELL_TYPE_BOOLEAN:
+				case BOOLEAN:
 					cellDest.setCellValue(cellSource.getBooleanCellValue());
 					break;
-				case Cell.CELL_TYPE_ERROR:
+				case ERROR:
 					cellDest.setCellErrorValue(cellSource.getErrorCellValue());
 					break;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					cellDest.setCellValue(cellSource.getNumericCellValue());
 					break;
-				case Cell.CELL_TYPE_STRING:
+				case STRING:
 					cellDest.setCellValue(cellSource.getRichStringCellValue());
 					break;
 				default:
@@ -1260,7 +1205,7 @@ public class UtilExcel implements Serializable {
 	 * @param tipoletra
 	 * @param tamanoletra
 	 */
-	public static void styleCellFontWrap(Cell cell, String tipoletra, Integer tamanoletra, short alineacion) {
+	public static void styleCellFontWrap(Cell cell, String tipoletra, Integer tamanoletra, VerticalAlignment alineacion) {
 
 		Sheet sheet = cell.getSheet();
 		
@@ -1274,7 +1219,7 @@ public class UtilExcel implements Serializable {
 		cell.setCellStyle(style);
 	}
 	
-	public static void styleCellFontWrapXls(Cell cell, String tipoletra, short alineacion, short alineaciontexto) {
+	public static void styleCellFontWrapXls(Cell cell, String tipoletra, VerticalAlignment alineacion, HorizontalAlignment alineaciontexto) {
 
 		Sheet sheet = cell.getSheet();
 		
@@ -1288,7 +1233,7 @@ public class UtilExcel implements Serializable {
 		cell.setCellStyle(style);
 	}
 	
-	public static void styleCellFontWrapTamXls(Cell cell, String tipoletra,short numero , short alineacion, short alineaciontexto) {
+	public static void styleCellFontWrapTamXls(Cell cell, String tipoletra,short numero , VerticalAlignment alineacion, HorizontalAlignment alineaciontexto) {
 
 		Sheet sheet = cell.getSheet();
 		
@@ -1314,7 +1259,7 @@ public class UtilExcel implements Serializable {
 	 * @param finCol
 	 * @param alineacion
 	 */
-	public static void styleCellFontWrapMerge(Cell cell, String tipoletra, Integer tamanoletra, int iniRow, int finRow, int iniCol, int finCol, short alineacion) {
+	public static void styleCellFontWrapMerge(Cell cell, String tipoletra, Integer tamanoletra, int iniRow, int finRow, int iniCol, int finCol, VerticalAlignment alineacion) {
 
 		Sheet sheet = cell.getSheet();
 		sheet.addMergedRegion(new CellRangeAddress(iniRow, finRow, iniCol, finCol));
@@ -1324,7 +1269,7 @@ public class UtilExcel implements Serializable {
 		font.setFontHeight(tamanoletra);
 		style.setFont(font);
 		style.setWrapText(true);
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		style.setAlignment(HorizontalAlignment.CENTER);
 		style.setVerticalAlignment(alineacion);
 		cell.setCellStyle(style);
 	}
@@ -1362,16 +1307,16 @@ public class UtilExcel implements Serializable {
 		font.setFontHeight(tamanoletra);
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 		
 		style.setFont(font);
@@ -1395,16 +1340,16 @@ public class UtilExcel implements Serializable {
 		font.setFontHeight(tamanoletra);
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(borde));
 		
 		style.setFont(font);
@@ -1419,7 +1364,7 @@ public class UtilExcel implements Serializable {
 	 * @param colorBorde
 	 * @param alineacion
 	 */
-	public static void styleCellFontSizeBorderRight(Cell cell, String tipoletra, Integer tamanoletra, Color colorBorde, short alineacion) {
+	public static void styleCellFontSizeBorderRight(Cell cell, String tipoletra, Integer tamanoletra, Color colorBorde, VerticalAlignment alineacion) {
 
 		Sheet sheet = cell.getSheet();
 
@@ -1429,16 +1374,16 @@ public class UtilExcel implements Serializable {
 		font.setFontHeight(tamanoletra);
 		Color borde = new Color(255, 255, 255, 255);
 
-		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		style.setLeftBorderColor(new XSSFColor(colorBorde));
 
-		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBottomBorderColor(new XSSFColor(borde));
 
-		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(new XSSFColor(borde));
 
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setRightBorderColor(new XSSFColor(colorBorde));
 		
 		style.setWrapText(true);

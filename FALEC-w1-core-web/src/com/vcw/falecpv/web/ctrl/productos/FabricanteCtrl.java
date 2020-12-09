@@ -251,27 +251,27 @@ public class FabricanteCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(f.getIdfabricante());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(f.getEstablecimiento().getNombrecomercial());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(f.getNombrecomercial());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(f.getEstado());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(f.getIdusuario()).getNombre());
-				UtilExcel.setHSSBordeCell(cell);
+				
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(f.getUpdated());
-				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
+//				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
 				
 				fila++;
 				

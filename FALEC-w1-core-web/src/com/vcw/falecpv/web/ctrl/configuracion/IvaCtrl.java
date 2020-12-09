@@ -261,43 +261,34 @@ public class IvaCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(e.getIdiva());
-				UtilExcel.setHSSBordeCell(cell);
+//				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(1);
 				cell.setCellValue(e.getCodigo());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(2);
 				cell.setCellValue(e.getEstado().equals("I")?"INACTIVO":"ACTIVO");
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(3);
 				cell.setCellValue(e.getPorcentaje());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(4);
 				cell.setCellValue(e.getValor().doubleValue());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(5);
 				cell.setCellValue(e.getDefecto()==1?"SI":"NO");
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(6);
 				cell.setCellValue(e.getLabelfactura());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(7);
 				cell.setCellValue(e.getOrdenfactura());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(8);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getNombre());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(9);
 				cell.setCellValue(e.getUpdated());
-				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
 				
 				fila++;
 			}

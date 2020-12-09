@@ -420,39 +420,30 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(e.getCodigoestablecimiento());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(1);
 				cell.setCellValue(e.getNombrecomercial());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(2);
 				cell.setCellValue(e.getPuntoemision());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(3);
 				cell.setCellValue(e.getDireccionestablecimiento());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(4);
 				cell.setCellValue(e.getTelefono());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(5);
 				cell.setCellValue(e.getCorreo());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(6);
 				cell.setCellValue(e.getMatriz());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(7);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(e.getIdusuario()).getIdusuario());
-				UtilExcel.setHSSBordeCell(cell);
 				
 				cell = row.createCell(8);
 				cell.setCellValue(e.getUpdated());
-				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
 				
 				
 				fila++;

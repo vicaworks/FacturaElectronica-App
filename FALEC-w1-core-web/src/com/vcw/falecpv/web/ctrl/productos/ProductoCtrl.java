@@ -26,6 +26,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -510,7 +512,7 @@ public class ProductoCtrl extends BaseCtrl {
 					HSSFCell cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setIdFabricante(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -525,7 +527,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setFabricante(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -540,7 +542,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setIdCategoria(cell.getStringCellValue());
 							
 						} catch (Exception e) {
@@ -556,7 +558,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setCategoria(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -572,7 +574,7 @@ public class ProductoCtrl extends BaseCtrl {
 					if(cell!=null) {
 						try {
 							
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setIdTipoProducto(cell.getStringCellValue());
 							
 						} catch (Exception e) {
@@ -588,7 +590,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setNombre(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -603,7 +605,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setNombreComercial(cell.getStringCellValue());
 							
 						} catch (Exception e) {
@@ -619,7 +621,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setCodigoPrincipal(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -634,7 +636,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setDescripcion(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -770,7 +772,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setMedida(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -809,7 +811,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setNombreImagen(cell.getStringCellValue());
 						} catch (Exception e) {
 							p.setError(true);
@@ -824,7 +826,7 @@ public class ProductoCtrl extends BaseCtrl {
 					cell = row.getCell(col++);
 					if(cell!=null) {
 						try {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							cell.setCellType(CellType.STRING);
 							p.setImagen(cell.getStringCellValue());
 //							Hex.decodeHex(p.getImagen().toCharArray());
 						} catch (Exception e) {
@@ -882,8 +884,8 @@ public class ProductoCtrl extends BaseCtrl {
 					
 					// color
 					HSSFCellStyle myStyle = wb.createCellStyle();
-					myStyle.setFillForegroundColor(HSSFColor.ORANGE.index);
-					myStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+					myStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ORANGE.getIndex());
+					myStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 					
 					// coloca el error
 					HSSFRow row = sheet.getRow(p.getFila());

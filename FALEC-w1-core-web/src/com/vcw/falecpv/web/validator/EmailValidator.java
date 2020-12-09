@@ -14,6 +14,7 @@ import org.primefaces.validate.ClientValidator;
 import com.servitec.common.util.ExpresionRegularValidador;
 import com.servitec.common.util.exceptions.ValidarExpresionException;
 
+@SuppressWarnings("rawtypes")
 @FacesValidator("custom.emailValidator")
 public class EmailValidator implements Validator, ClientValidator {
 
