@@ -53,6 +53,7 @@ import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -89,6 +90,9 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	
 	@EJB
 	private FacturaServicio facturaServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -598,6 +602,18 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		} catch (EstadoComprobanteException e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void enviarSri() {
+		try {
+			Cabecera c = cabeceraServicio.consultarByPk(ventasQuerySelected.getIdcabecera());
+			c.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(c);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

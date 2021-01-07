@@ -76,7 +76,7 @@ public class SriAccesoHelper {
 			return sriAccesoDto;
 		}
 		
-		if(!produccion && sriWs.equals("APROBACION")) {
+		if(!produccion && sriWs.equals("RECEPCION")) {
 			sriAccesoDto.setWsdl(parametroGenericoServicio.consultarParametro(PGSRIAccesoEnum.SRI_WSDL_RECEPCION_PRUEBAS, TipoRetornoParametroGenerico.STRING));
 			sriAccesoDto.setHost(parametroGenericoServicio.consultarParametro(PGSRIAccesoEnum.SRI_HOST_PRUEBAS, TipoRetornoParametroGenerico.STRING));
 			return sriAccesoDto;

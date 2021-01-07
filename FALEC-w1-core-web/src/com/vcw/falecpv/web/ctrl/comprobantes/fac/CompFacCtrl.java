@@ -54,6 +54,7 @@ import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
 
@@ -111,6 +112,9 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	@EJB
 	private ConfiguracionServicio configuracionServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	
 	private Cabecera cabecerSelected;
@@ -732,7 +736,7 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			infoadicionalList = cabecerSelected.getInfoadicionalList();
 			noEditarSecuencial(cabecerSelected);
-			
+			sriDispacher.queue_comprobanteSriDispacher(cabecerSelected);
 			if(cabecerSelected.isBorrador()) {
 				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE FACTURA GENERADA CORRECTAMENTE.", "WARNING");
 			}else {

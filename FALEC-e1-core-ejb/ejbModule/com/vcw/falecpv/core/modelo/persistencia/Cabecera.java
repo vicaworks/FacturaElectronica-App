@@ -293,6 +293,9 @@ public class Cabecera implements Serializable {
     @Transient
     private boolean borrador=false;
     
+    @Transient
+    private String idUsurioTransaccion;
+    
     /**
 	 * 
 	 */
@@ -1368,6 +1371,20 @@ public class Cabecera implements Serializable {
 		}
 		
 		return !tipocomprobante.getIdentificador().equals(GenTipoDocumentoEnum.RECIBO.getIdentificador());
+	}
+
+	/**
+	 * @return the idUsurioTransaccion
+	 */
+	public String getIdUsurioTransaccion() {
+		return idUsurioTransaccion;
+	}
+
+	/**
+	 * @param idUsurioTransaccion the idUsurioTransaccion to set
+	 */
+	public void setIdUsurioTransaccion(String idUsurioTransaccion) {
+		this.idUsurioTransaccion = idUsurioTransaccion;
 	}
 
 }

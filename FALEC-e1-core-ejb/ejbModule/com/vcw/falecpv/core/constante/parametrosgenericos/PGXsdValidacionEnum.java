@@ -14,7 +14,8 @@ public enum PGXsdValidacionEnum implements ParametroGenericoBaseEnum {
 	XSD_NOTA_DEBITO("7"),
 	XSD_NOTA_CREDITO("6"),
 	XSD_RETENCION("4"),
-	XSD_GUIA_REMISION("8");
+	XSD_GUIA_REMISION("8"),
+	XSD_PATH("25");
 	
 	private String id;
 	

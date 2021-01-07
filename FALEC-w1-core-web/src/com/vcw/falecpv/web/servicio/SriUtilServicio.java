@@ -128,8 +128,8 @@ public class SriUtilServicio {
 			
 			
 			String xsdname = parametroGenericoServicio.consultarParametro(pGXsdValidacionEnum, TipoRetornoParametroGenerico.STRING);
-			String path = FacesUtil.getServletContext().getRealPath(
-					AppConfiguracion.getString("dir.base.xsd") + xsdname);
+			
+			String path = parametroGenericoServicio.consultarParametro(PGXsdValidacionEnum.XSD_PATH, TipoRetornoParametroGenerico.STRING) + xsdname;
 			
 			validarXml(path, xmlNoSign, numDocumento);
 			return true;
