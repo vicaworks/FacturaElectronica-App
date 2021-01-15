@@ -736,6 +736,7 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			infoadicionalList = cabecerSelected.getInfoadicionalList();
 			noEditarSecuencial(cabecerSelected);
+			cabecerSelected.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
 			sriDispacher.queue_comprobanteSriDispacher(cabecerSelected);
 			if(cabecerSelected.isBorrador()) {
 				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE FACTURA GENERADA CORRECTAMENTE.", "WARNING");
@@ -967,6 +968,10 @@ public class CompFacCtrl extends BaseCtrl {
 			nuevaFactura();
 			cabecerSelected.setCliente(cabeceraServicio.getClienteComprobante(idCabeceraSeleccion));
 			detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idCabeceraSeleccion);
+			int cont=1;
+			for (Detalle d : detalleFacList) {
+				d.setIddetalle("M" + (cont++));
+			}
 			totalizar();
 			
 			return "./factura.jsf?faces-redirect=true";

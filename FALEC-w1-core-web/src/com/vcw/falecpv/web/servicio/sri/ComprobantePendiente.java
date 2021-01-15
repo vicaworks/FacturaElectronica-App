@@ -19,8 +19,6 @@ import org.xml.sax.SAXException;
 
 import com.mako.util.firma.FirmaElectronicaException;
 import com.servitec.common.dao.exception.DaoException;
-import com.servitec.common.jsf.FacesUtil;
-import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
@@ -31,18 +29,23 @@ import com.vcw.falecpv.core.exception.EnviarComprobanteSRIException;
 import com.vcw.falecpv.core.helper.SriAccesoHelper;
 import com.vcw.falecpv.core.modelo.dto.SriAccesoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Errorsri;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Estadosri;
 import com.vcw.falecpv.core.modelo.persistencia.Logtransferenciasri;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
+import com.vcw.falecpv.core.servicio.ErrorsriServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.EstadosriServicio;
 import com.vcw.falecpv.core.servicio.FirmaElectronicaServicio;
+import com.vcw.falecpv.core.servicio.LogtransferenciasriServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.sri.DocElectronicoProxy;
-import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.servicio.SriUtilServicio;
 import com.vcw.sri.ws.ClienteWsSriServicio;
+import com.vcw.sri.ws.recepcion.Mensaje;
 import com.vcw.sri.ws.recepcion.RespuestaSolicitud;
 
 /**
@@ -57,7 +60,10 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 	private FirmaElectronicaServicio firmaElectronicaServicio;
 	private SriAccesoHelper sriAccesoHelper;
 	private EstablecimientoServicio establecimientoServicio;
-	
+	private EstadosriServicio estadosriServicio;
+	@SuppressWarnings("unused")
+	private SriUtilServicio sriUtilServicio;
+	private ErrorsriServicio errorsriServicio;
 	
 	/**
 	 * @param enviarComprobanteSRI
@@ -79,11 +85,14 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 		sriAccesoHelper = (SriAccesoHelper)parametros.get("sriAccesoHelper");
 		establecimientoServicio = (EstablecimientoServicio)parametros.get("establecimientoServicio");
 		contadorPkServicio = (ContadorPkServicio)parametros.get("contadorPkServicio");
+		estadosriServicio = (EstadosriServicio)parametros.get("estadosriServicio");
+		sriUtilServicio = (SriUtilServicio)parametros.get("sriUtilServicio");
+		logtransferenciasriServicio = (LogtransferenciasriServicio)parametros.get("logtransferenciasriServicio");
+		errorsriServicio = (ErrorsriServicio)parametros.get("errorsriServicio");
 		
 		Cabecera c = (Cabecera) parametros.get("cabecera");
 		String idusuario = (String)parametros.get("idUsuario");
 		String xmlDocElectronico = null;
-		
 			
 		// 1. armar xml
 		
@@ -92,7 +101,6 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 					c.getEstablecimiento().getIdestablecimiento(),
 					GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador()));
 		} catch (Exception e) {
-			e.printStackTrace();
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
 				cabeceraServicio.actualizar(c);
@@ -117,7 +125,6 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 		try {
 			validar(xmlDocElectronico, c.getNumdocumento(), c.getTipocomprobante().getIdentificador());
 		} catch (Exception e) {
-			e.printStackTrace();
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
 				cabeceraServicio.actualizar(c);
@@ -143,7 +150,6 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 		try {
 			xmlDocElectronico = firmaElectronicaServicio.firmarXmlFacade(c.getEstablecimiento().getEmpresa().getIdempresa(), xmlDocElectronico);
 		} catch (FirmaElectronicaException e) {
-			e.printStackTrace();
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
 				cabeceraServicio.actualizar(c);
@@ -163,7 +169,6 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			}
 			return null;
 		} catch (Exception e) {
-			e.printStackTrace();
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
 				cabeceraServicio.actualizar(c);
@@ -184,21 +189,48 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			return null;
 		}
 		
-		// 3. consultar ride
-			
-		// 4. enviar email
-			
-		// 5. enviar sri
+		// 4. enviar sri
 		RespuestaSolicitud rs = null;
 		try {
 			
 			Establecimiento e = establecimientoServicio.consultarByPk(c.getEstablecimiento().getIdestablecimiento());
 			SriAccesoDto sriAccesoDto = sriAccesoHelper.consultarDatosAcceso("RECEPCION", e.getAmbiente().equals("2"));
 			ClienteWsSriServicio wsAutorizacion = new ClienteWsSriServicio(sriAccesoDto.getWsdl());
+			//FileUtils.writeStringToFile(new File("/app/docElectronicos/example1.xml"), xmlDocElectronico);
+			//xmlDocElectronico = FileUtils.readFileToString(new File("/app/docElectronicos/example1.xml"));
 			rs = wsAutorizacion.validarComprobanteFacade(xmlDocElectronico);
 			
+			if(rs.getEstado()!=null && rs.getEstado().equals("RECIBIDA")) {
+				c.setEstado(ComprobanteEstadoEnum.RECIBIDO_SRI.toString());
+				cabeceraServicio.actualizar(c);
+			}else {
+				if(rs.getComprobantes().getComprobante().get(0).getMensajes()!=null && !rs.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().isEmpty()) {
+					
+					c.setEstado(ComprobanteEstadoEnum.ERROR_SRI.toString());
+					cabeceraServicio.actualizar(c);
+					
+					Mensaje m = rs.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0);
+					Logtransferenciasri lt = new Logtransferenciasri();
+					lt.setCabecera(c);
+					Estadosri estadoSri = estadosriServicio.consultarByPk("6");
+					Errorsri errorsri = errorsriServicio.consultarByPk(m.getIdentificador());
+					if(estadoSri==null) {
+						estadoSri = new Estadosri();
+						estadoSri.setIdestadosri("0");
+					}
+					lt.setEstadosri(estadoSri);
+					lt.setEtiqueta("ERROR SRI");
+					lt.setFecha(new Date());
+					lt.setIdusuario(c.getIdusuario());
+					lt.setMotivo(errorsri!=null?errorsri.getMotivo() + ": ":m.getMensaje());
+					lt.setDescripcion((errorsri!=null?errorsri.getDescripcion()+" : ":"") + m.getMensaje());
+					super.registrarlog(lt, c.getEstablecimiento().getIdestablecimiento());
+					
+				}
+				
+			}
+			
 		} catch (Exception e) {
-			e.printStackTrace();
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
 				cabeceraServicio.actualizar(c);
@@ -219,8 +251,10 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			return null;
 		}
 		
-		// 6. cambiar de estado en respuesta al SRI
-			
+		// 3. consultar ride
+		
+		// 4. enviar email
+		
 		return super.enviarComprobante(parametros);
 			
 		
@@ -267,8 +301,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 		
 		
 		String xsdname = parametroGenericoServicio.consultarParametro(pGXsdValidacionEnum, TipoRetornoParametroGenerico.STRING);
-		String path = FacesUtil.getServletContext().getRealPath(
-				AppConfiguracion.getString("dir.base.xsd") + xsdname);
+		String path =  parametroGenericoServicio.consultarParametro(PGXsdValidacionEnum.XSD_PATH, TipoRetornoParametroGenerico.STRING) + xsdname;
 		
 		// 2. inicializamos el excel
 		validarXml(path, xmlDocElectronico, numDocumento);

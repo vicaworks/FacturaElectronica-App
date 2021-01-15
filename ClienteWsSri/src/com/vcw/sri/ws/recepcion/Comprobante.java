@@ -123,7 +123,7 @@ public class Comprobante {
     })
     public static class Mensajes {
 
-        @XmlElement(namespace = "http://ec.gob.sri.ws.recepcion")
+//        @XmlElement(namespace = "http://ec.gob.sri.ws.recepcion")
         protected List<Mensaje> mensaje;
 
         /**

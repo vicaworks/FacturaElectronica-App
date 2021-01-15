@@ -25,11 +25,13 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.EstadosriServicio;
 import com.vcw.falecpv.core.servicio.FirmaElectronicaServicio;
+import com.vcw.falecpv.core.servicio.LogtransferenciasriServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.sri.DocElectronicoProxy;
 import com.vcw.falecpv.web.servicio.sri.ComprobantePendiente;
-import com.vcw.falecpv.web.servicio.sri.ComprobanteRecibidoBase;
+import com.vcw.falecpv.web.servicio.sri.ComprobanteRecibido;
 import com.vcw.falecpv.web.servicio.sri.ComprobanteResultado;
 import com.vcw.falecpv.web.servicio.sri.EnviarComprobanteSRI;
 import com.vcw.falecpv.web.servicio.sri.ImplEnviarComprobanteSRI;
@@ -65,6 +67,12 @@ public class SriDispacher {
 	@Inject
 	private EstablecimientoServicio establecimientoServicio;
 	
+	@Inject
+	private EstadosriServicio estadosriServicio;
+	
+	@Inject
+	private LogtransferenciasriServicio logtransferenciasriServicio;
+	
 	
 	@Resource(mappedName = "java:/ConnectionFactory")
 	private ConnectionFactory connectionFactory;
@@ -74,7 +82,7 @@ public class SriDispacher {
 	
 	
 	// estados para enviar los documentos al SRI	
-	private static final List<ComprobanteEstadoEnum> estadosEnviosri = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.PENDIENTE,ComprobanteEstadoEnum.ERROR_SRI});
+	private static final List<ComprobanteEstadoEnum> estadosEnviosri = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.PENDIENTE,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.RECIBIDO_SRI});
 	
 	/**
 	 * @author cristianvillarreal
@@ -84,13 +92,6 @@ public class SriDispacher {
 	 * @throws DaoException 
 	 */
 	public void comprobanteSriDispacher(Cabecera cabecera)throws EnviarComprobanteSRIException, DaoException {
-		
-		// 1 validaciones iniciales del comprobante
-//		HashMap<String, Object> resultado = sriUtilServicio.validacionInicial(cabecera.getIdcabecera());
-//		if((boolean)resultado.get("valInicial")==false) {
-//			System.out.println(resultado.toString());
-//			return;
-//		}
 		
 		// 2. analizar los estados para enviar al SRI
 		if(ComprobanteEstadoEnum.getByEstado(cabecera.getEstado())!=null && estadosEnviosri.contains(ComprobanteEstadoEnum.getByEstado(cabecera.getEstado()))) {
@@ -108,15 +109,17 @@ public class SriDispacher {
 			parametros.put("establecimientoServicio", establecimientoServicio);
 			parametros.put("contadorPkServicio", contadorPkServicio);
 			parametros.put("idUsuario", cabecera.getIdUsurioTransaccion());
+			parametros.put("estadosriServicio", estadosriServicio);
+			parametros.put("sriUtilServicio", sriUtilServicio);
+			parametros.put("logtransferenciasriServicio", logtransferenciasriServicio);
 			
 			switch (ComprobanteEstadoEnum.getByEstado(cabecera.getEstado())) {
 			case PENDIENTE:
-				
 				EnviarComprobanteSRI comprobantePendiente = new ComprobantePendiente(enviarComprobanteSRI);
 				comprobantePendiente.enviarComprobante(parametros);
 				break;
 			case RECIBIDO_SRI:
-				EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibidoBase(enviarComprobanteSRI);
+				EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibido(enviarComprobanteSRI);
 				comprobanteRecibido.enviarComprobante(parametros);
 				break;
 			case ERROR_SRI:case ERROR:

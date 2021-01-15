@@ -3,9 +3,9 @@ package com.vcw.sri.ws.recepcion;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -123,7 +123,7 @@ public class RespuestaSolicitud {
     })
     public static class Comprobantes {
 
-        @XmlElement(namespace = "http://ec.gob.sri.ws.recepcion")
+//        @XmlElement(namespace = "http://ec.gob.sri.ws.recepcion")
         protected List<Comprobante> comprobante;
 
         /**

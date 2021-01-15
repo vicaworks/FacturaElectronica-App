@@ -246,8 +246,11 @@
 								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem> -->
-							<p:menuitem value="Firmar y enviar" action="#{facEmitidaCtrl.enviarSri()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
-								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
+								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
+								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
+								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>

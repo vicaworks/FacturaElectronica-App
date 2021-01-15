@@ -19,7 +19,8 @@ public enum ComprobanteEstadoEnum {
 	AUTORIZADO("markBlack"),
 	ANULADO("markVino"),
 	RETENCION("markOrange"),
-	REGISTRADO("markGreen");
+	REGISTRADO("markGreen"),
+	RECHAZADO_SRI("markRed");
 	
 	private String style;
 

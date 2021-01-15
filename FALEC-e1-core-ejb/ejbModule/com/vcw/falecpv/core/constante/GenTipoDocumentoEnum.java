@@ -35,7 +35,7 @@ public enum GenTipoDocumentoEnum {
 	 * @return
 	 */
 	public static String getByIdentificador(String identificador) {
-		GenTipoDocumentoEnum gt = Stream.of(GenTipoDocumentoEnum.values()).filter(x->x.getIdentificador().equals(identificador)).findFirst().get();
+		GenTipoDocumentoEnum gt = Stream.of(GenTipoDocumentoEnum.values()).filter(x->x.getIdentificador().equals(identificador)).findFirst().orElse(null);
 		if (gt!=null) {
 			return gt.toString();
 		}

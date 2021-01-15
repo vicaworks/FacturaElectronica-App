@@ -13,10 +13,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600" rel="stylesheet"/>
     <style>
     	
+    	.Fs12{
+			font-size: 12px;
+		}
+    	
+    	.Fs14{
+			font-size: 14px;
+		}
+    	
+    	.Fs16{
+			font-size: 16px;
+		}
+    	
+    	.Fs18{
+			font-size: 18px;
+		}
 		
 		.Fs20{
 			font-size: 20px;
 		}
+		
+		.Fs25{
+			font-size: 25px;
+		}
+		
+		.Fs27{
+			font-size: 27px;
+		}
+		
 		.Fs30{
 			font-size: 30px !important;
 		}
@@ -123,6 +147,8 @@
 			margin:0px!important;
 			margin-top: 30px!important;
 		}
+		
+		
 		/* -- login -- */
 		
 		.login{
@@ -141,7 +167,7 @@
 		
 		.login .welcome{
 			color: #303030;
-			font-size: 12px;
+			font-size: 13px;
 		}
 		
 		.username-container,
@@ -158,14 +184,31 @@
 			margin-bottom: 20px;
 		}
 		
+		.icon-detalle{
+			border-radius: 5px 20px 5px;
+			background-color: #F2F4F4;
+			color: #13496C;
+			text-align: center;
+		}
+		.detalle{
+			padding-left: 20px !important;
+			color:#424949;
+		}
+		
+		.resumen{
+			/* color:#004080; */
+			color:#212F3D;
+			margin: 15px 10px;
+		}
+		
 		/* -- footer -- */
 		.footer{
-			padding-top:10px;
+			padding:5px;
 			background-color: #3D3D3D;
 			position: fixed;
 			bottom: 0;
 			width: 100%;
-			height: 50px;
+			height: 30px;
 			color:#fff;
 			text-align: center;
 			text-decoration: none;
@@ -180,6 +223,7 @@
 			font-weight: 400;
 			font-size: 14px;
 		}
+		
 		.EmptyBox30{ display:block; width:100%; height:30px; overflow:hidden;}
     </style>
     
@@ -195,27 +239,28 @@
 				<div class="p-grid">
 	                <div class="p-col-12" >
 	                    
-	                    <h3 class="sistema Fs30" style="border-bottom: none;padding-bottom: 0px;">mako</h3>
-	                    <span style="color:red;">Nombre de usuario o clave de acceso incorrectos.</span>
+	                    <h3 class="sistema Fs30" style="border-bottom: none;padding-bottom: 0px;">mako<span style="font-size: 18px;">®</span></h3>
+	                    <!-- <span class="welcome">Bienvenido, al sistema de gestón de tu negocio.</span> -->
+	                    <span style="color:red;" class="Fs18">Usuario o contraseña incorrectos.</span>
 	                </div>
 	                <div class="p-col-12 username-container">
 	                    <h:panelGroup>
-	                        <label><i class="fa fa-user"></i> Nombre de Usuario</label>
+	                        <label class="Fs18"><i class="fa fa-user"></i> Usuario</label>
 	                        <div class="login-input">                            
 								<input id="j_username" name="j_username" type="text"
 									class="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all"
-									role="textbox" aria-disabled="false" aria-readonly="false" placeholder="Username" style="width: 100%;">
+									role="textbox" aria-disabled="false" aria-readonly="false" style="width: 100%;">
 								</input>
 	                        </div>
 	                    </h:panelGroup>
 	                </div>
 	                 <div class="p-col-12 password-container">
 	                    <h:panelGroup>
-	                        <label><i class="fa fa-key"></i> Clave de Acceso</label>
+	                        <label class="Fs18"><i class="fa fa-key"></i> Contraseña</label>
 	                        <div class="login-input">
 								<input id="j_password" name="j_password" type="password"
 									class="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all"
-									role="textbox" aria-disabled="false" aria-readonly="false" placeholder="Password" style="width: 100%;">
+									role="textbox" aria-disabled="false" aria-readonly="false" style="width: 100%;">
 									
 								</input>
 	                        </div>
@@ -228,11 +273,11 @@
 	                <div class="p-col-12">
 		                    
 						<button id="j_idt14" name="j_idt14" type="submit"
-							class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left sencondary-button"
+							class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left sencondary-button "
 							onclick="window.open('\/falecpv\/login.jsf','_self')"
 							role="button" aria-disabled="false" style="width: 100%;" >
-							<span class="ui-button-icon-left ui-icon ui-c fa fa-user"></span><span
-								class="ui-button-text ui-c">Sign In</span>
+							<span class="ui-button-icon-left ui-icon ui-c fa fa-user Fs16"></span><span
+								class="ui-button-text ui-c Fs16">Ingresar</span>
 						</button>
 							
 	                </div>
@@ -243,124 +288,137 @@
 		
 		<div class="p-col-12 p-lg-8">
 			
-			<div class="presentacionHeader pad-left-20">
+			<!-- <div class="presentacionHeader pad-left-20">
 				<h2 class="sistema Fs60">mako<span style="font-size: 18px;">®</span></h2>
-			</div>
-			<div class="presentacionContent">
+			</div> -->
 				
-				<div class="p-grid p-align-center p-justify-center">
+				<div class="p-grid p-justify-center p-align-center" style="height: 100vh !important;">
 					
 					
-					<img src="#{request.contextPath}/resources/img/home-left-1.png" width="50%" height="50%"/>
-					
-					
-					<div class="p-col-12">
+					<div class="p-col-12" style="margin-top: 20px;">
 						
-						<div class="p-grid p-justify-even">
-							
-							<div class="p-col-12 p-md-5">
-								<div class="caracteristica bg-blue">
-									
-									<div class="info-image">
+						<div class="p-grid p-nogutter p-justify-center p-align-end">
+							<div class="p-col-12" style="text-align: center;">
+								<img src="#{request.contextPath}/resources/img/vicaworks.png" width="250px"/>
+							</div>					
+							<div class="p-col-12 Fs20">
+								<div class="p-grid p-justify-center">
+									<div class="p-col-10 p-md-6 resumen">
+										Realiza todas las actividades relacionadas a la <span style="font-weight: bold;"> gestión de tu negocio.</span>   	
+									</div>
+								</div>
+							</div>
+							<div class="p-col-12 p-md-8">
+								
+								<div class="p-grid p-nogutter p-align-center">
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
 										<i class="fa fa-pencil-square-o"></i>
 									</div>
-					        		<div class="info-head">Proformas </div>
-					        		<div class="info-content">
-					        			<ul>
-					        				<li>Administración de proformas.</li>
-					        				<li>Envío de proformas por email.</li>
-					        				<li>Seguimiento.</li>
-					        			</ul>
-					        		</div>
-									
-								</div>
-							</div>
-							<div class="p-col-12 p-md-5">
-								<div class="caracteristica bg-yellow">
-									
-									<div class="info-image">
-										<i class="fa fa-slideshare"></i>
+									<div class="p-col-11 detalle Fs16">
+										Administra, envía por email, y da seguimiento a las proformas.
 									</div>
-					        		<div class="info-head">Punto de venta </div>
-					        		<div class="info-content">
-					        			<ul>
-					        				<li>Genarción de comprovante de ventas.</li>
-					        				<li>Se adapta a dispositivos móbiles.</li>
-					        			</ul>
-					        		</div>
 									
-								</div>
-							</div>
-							<div class="p-col-12 p-md-5">	
-								<div class="caracteristica bg-green">
+									<div class="p-col-12" style="height: 5px;"/>
 									
-									<div class="info-image">
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
 										<i class="fa fa-file-pdf-o"></i>
 									</div>
-					        		<div class="info-head">Comprobantes electrónicos </div>
-					        		<div class="info-content">
-					        			<ul>
-					        				<li>Facturas, Retenciones, Liquidación de compras, Notas de crédito, Notas de débito, Guías de remisión.</li>
-					        				<li>Carga de comprobantes del SRI.</li>
-					        			</ul>
-					        		</div>
+									<div class="p-col-11 detalle Fs16">
+										Emisión de Comprobantes (Facturas, Retenciones, Notas de Crédito, Notas de Débitos, Guía de Remisión, Liquidación de Compra)
+									</div>
 									
-								</div>
-								
-							</div>
-							<div class="p-col-12 p-md-5">
-									<div class="caracteristica bg-vino">
+									<div class="p-col-12" style="height: 5px;"/>
 									
-									<div class="info-image">
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
 										<i class="fa fa-list-ol"></i>
 									</div>
-					        		<div class="info-head">Inventario</div>
-					        		<div class="info-content">
-					        			<ul>
-					        				<li>Registro de entradas y salidas.</li>
-					        				<li>Consulta de Inventario.</li>
-					        				<li>Kardex por producto.</li>
-					        			</ul>
-					        		</div>
-									
-								</div>
-							</div>
-							<div class="p-col-12 p-md-5">
-								<div class="caracteristica bg-morado">
-								
-									<div class="info-image">
-										<i class="fa fa-sitemap"></i>
+									<div class="p-col-11 detalle Fs16">
+										Inventario, registro de entradas, salidas, control de mínimos.
 									</div>
-					        		<div class="info-head">Otros</div>
-					        		<div class="info-content">
-					        			<ul>
-					        				<li>Administración caja chica.</li>
-					        				<li>Cuentas por pagar.</li>
-					        				<li>Cuentas por cobrar.</li>
-					        			</ul>
-					        		</div>
+									
+									<div class="p-col-12" style="height: 5px;"/>
+									
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-paypal"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										Gestión de cuentas por cobrar y pagar.
+									</div>
+									<div class="p-col-12" style="height: 5px;"/>
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-money"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										Administración de caja chica.
+									</div>
+									
+									<div class="p-col-12" style="height: 5px;"/>
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-arrow-circle-down"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										Descarga los comprobantes electrónicos recibidos del SRI, para tus declaraciones de impuestos.
+									</div>
+									
+									<div class="p-col-12" style="height: 5px;"/>
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-area-chart"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										Reportes estadísticos de ventas, productos, inventarios.
+									</div>
+									
+									<div class="p-col-12" style="height: 5px;"/>
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-desktop"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										100% adaptable a todos los dispositivos.
+									</div>
+									
+									<div class="p-col-12" style="height: 5px;"/>
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-magic"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										Integración con sistemas contables, ERP, tiendas en línea, etc.
+									</div>
+									
+									<div class="p-col-12" style="height: 5px;"/>
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-cloud-upload"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										Almacenamiento en la nube, con actualizaciones automáticas.
+									</div>
+									
+									<div class="p-col-12" style="height: 5px;"/>
+									<div class="p-col-1 icon-detalle Fs18" style="padding: 10px !important">
+										<i class="fa fa-whatsapp"></i>
+									</div>
+									<div class="p-col-11 detalle Fs16">
+										Help desk, y soporte técnico.
+									</div>
 									
 								</div>
+								
+								   	
 							</div>
-						
-						</div>	 					
+						</div>
 					
 					</div>
 				
 				</div>
-				
-					
-			</div>
-				
+			
 		</div>
 		
 		<div class="EmptyBox30"/>
-				
+		
 	</div>
 	<div class="footer">
 		<span style="font-weight: bold;">Copyright 2020 vicaworks® | </span><span class="sistema">mako® | </span><i class="fa fa-facebook"><p:spacer width="5px"/></i><i class="fa fa-instagram"><p:spacer width="5px"/></i>
 		<div style="display:blok;height: 5px;"></div>
-		<a href="">soporte@vicaworks.com</a> | (+593) 09 8568 8861
+		<!-- <a href="">soporte@vicaworks.com</a> | (+593) 09 8568 8861 -->
 	</div>
 	
     

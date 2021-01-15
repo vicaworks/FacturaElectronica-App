@@ -17,6 +17,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -36,6 +37,9 @@ public class EnviarDocCtrl extends BaseCtrl {
 	private CabeceraServicio cabeceraServicio;
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	private String idCabecera;
 	private Cabecera cabeceraSelected;
@@ -127,9 +131,8 @@ public class EnviarDocCtrl extends BaseCtrl {
 	
 	public void firmarEnviarCorreo() {
 		try {
-//			if(correoList.size()==0) {
-//				AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "NO EXISTE EMAILS.");
-//			}
+			
+			sriDispacher.queue_comprobanteSriDispacher(cabeceraServicio.consultarByPk(idCabecera));
 			
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "DOCUMENTO FIRMADO Y ENVIADO CORRECTAMENTE.");
 			
