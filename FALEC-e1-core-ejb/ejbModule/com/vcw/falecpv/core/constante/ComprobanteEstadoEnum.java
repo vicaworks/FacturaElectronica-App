@@ -16,8 +16,10 @@ public enum ComprobanteEstadoEnum {
 	PENDIENTE("markOrange"),
 	RECIBIDO_SRI("markGreen"),
 	ERROR_SRI("markRed"),
-	AUTORIZADO("markBlack"),
-	ANULADO("markVino"),
+//	AUTORIZADO("markBlack"),
+//	AUTORIZADO("markBlueOcean"),
+	AUTORIZADO("markGreen"),
+	ANULADO("markGray"),
 	RETENCION("markOrange"),
 	REGISTRADO("markGreen"),
 	RECHAZADO_SRI("markRed");

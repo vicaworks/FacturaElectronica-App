@@ -295,9 +295,23 @@
 						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" rendered="#{v.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{v.estado}" filterMatchMode="contains">
-						<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} DispBlock Wid100">
-						</h:outputText>
+					<p:column headerText="ESTADO" style="width:85px;" filterBy="#{v.estado}" filterMatchMode="contains">
+						
+						<div class="p-grid p-nogutter p-align-center">
+							<div class="p-col-10">
+								<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} DispBlock Wid100">
+								</h:outputText>
+							</div>
+							<div class="p-col-fixed" style="width: 15px;">
+								<p:commandLink action="#{logTransferCtrl.cargarFormulario(v.idcabecera)}" process="@this" disabled="#{v.estado=='BORRADOR'}">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="FACTURA" target="#{logTransferCtrl.callModule}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.callForm}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.updateView}"/>
+								</p:commandLink>							
+							</div>
+						</div>
+					
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -411,19 +425,17 @@
 					
 					<p:column headerText="PAGO" style="width:60px;" styleClass="TexAlRight">
 						
-						<div class="p-grid" style="padding-top:2px;">
+						<div class="p-grid p-nogutter p-align-center p-justify-center" style="margin-top:-2px;">
 							<div class="p-col-9" style="text-align: right;">
 								<h:outputText value="#{v.totalpago}" styleClass="#{v.totalpago.doubleValue()!=v.valorapagar.doubleValue() and v.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-1" style="text-align: left;">
+							<div class="p-col-fixed" style="width: 15px;">
 								<p:commandLink action="#{pagoCtrl.cargarPagos()}" process="@this">
 									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
 									<f:setPropertyActionListener value="#{v}" target="#{pagoCtrl.ventasQuery}"/>
 								</p:commandLink>
-							</div>
-							<div class="p-col-1" style="text-align: left;">
 							</div>
 						</div>
 						
@@ -478,6 +490,8 @@
 		<ui:include src="../common/incl_ride.xhtml" />
 		<!-- FIRMAR ENVIAR EMAIL -->
 	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
+	    <!-- LOG DE TRANSFERENCIA -->
+	    <ui:include src="../common/incl_logtransferencia.xhtml" />
 	    
     </ui:define>
 

@@ -24,6 +24,7 @@ import com.vcw.falecpv.core.helper.SriAccesoHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
+import com.vcw.falecpv.core.servicio.ErrorsriServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.EstadosriServicio;
 import com.vcw.falecpv.core.servicio.FirmaElectronicaServicio;
@@ -73,6 +74,9 @@ public class SriDispacher {
 	@Inject
 	private LogtransferenciasriServicio logtransferenciasriServicio;
 	
+	@Inject
+	private ErrorsriServicio errorsriServicio;
+	
 	
 	@Resource(mappedName = "java:/ConnectionFactory")
 	private ConnectionFactory connectionFactory;
@@ -112,6 +116,8 @@ public class SriDispacher {
 			parametros.put("estadosriServicio", estadosriServicio);
 			parametros.put("sriUtilServicio", sriUtilServicio);
 			parametros.put("logtransferenciasriServicio", logtransferenciasriServicio);
+			parametros.put("errorsriServicio", errorsriServicio);
+			
 			
 			switch (ComprobanteEstadoEnum.getByEstado(cabecera.getEstado())) {
 			case PENDIENTE:

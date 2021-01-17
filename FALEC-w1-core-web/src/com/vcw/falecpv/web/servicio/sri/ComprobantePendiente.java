@@ -231,7 +231,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			}
 			
 		} catch (Exception e) {
-			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
+//			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
 				cabeceraServicio.actualizar(c);
 				Logtransferenciasri lt = new Logtransferenciasri();

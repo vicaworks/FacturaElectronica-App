@@ -73,7 +73,7 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 			Establecimiento e = establecimientoServicio.consultarByPk(c.getEstablecimiento().getIdestablecimiento());
 			SriAccesoDto sriAccesoDto = sriAccesoHelper.consultarDatosAcceso("APROBACION", e.getAmbiente().equals("2"));
 			ClienteWsSriServicio wsAutorizacion = new ClienteWsSriServicio(sriAccesoDto.getWsdl());
-			rs = wsAutorizacion.autorizacionComprobanteFacade(c.getClaveacceso()+"MM");
+			rs = wsAutorizacion.autorizacionComprobanteFacade(c.getClaveacceso());
 			// 1. revisiar que si exista la clave de acceso
 			if(rs.getNumeroComprobantes()!=null && Integer.parseInt(rs.getNumeroComprobantes())==1) {
 				
@@ -89,7 +89,7 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 					Logtransferenciasri lt = new Logtransferenciasri();
 					lt.setCabecera(c);
 					Estadosri estadoSri = estadosriServicio.consultarByPk("6");
-					Errorsri errorsri = errorsriServicio.consultarByPk(m.getIdentificador());
+					Errorsri errorsri = errorsriServicio.getErrorsriDao().getByCodErrorSri(m.getIdentificador());
 					if(estadoSri==null) {
 						estadoSri = new Estadosri();
 						estadoSri.setIdestadosri("0");
@@ -106,6 +106,22 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 				c.setFechaautorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
 				cabeceraServicio.actualizar(c);
 				
+			}else if(rs.getNumeroComprobantes()!=null && Integer.parseInt(rs.getNumeroComprobantes())==0) {
+				// NO existe la clave de aceso 
+				Logtransferenciasri lt = new Logtransferenciasri();
+				lt.setCabecera(c);
+				Estadosri estadoSri = estadosriServicio.consultarByPk("4");
+				if(estadoSri==null) {
+					estadoSri = new Estadosri();
+					estadoSri.setIdestadosri("0");
+				}
+				lt.setEstadosri(estadoSri);
+				lt.setEtiqueta("ERROR SRI");
+				lt.setFecha(new Date());
+				lt.setIdusuario(c.getIdusuario());
+				lt.setMotivo("No exste el comprobante");
+				lt.setDescripcion("La clave de acceso de comprobante no exste en el SRI.");
+				super.registrarlog(lt, c.getEstablecimiento().getIdestablecimiento());
 			}else {
 				
 				Autorizacion autorizacion = rs.getAutorizaciones().getAutorizacion().get(0);
@@ -113,7 +129,7 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 				Logtransferenciasri lt = new Logtransferenciasri();
 				lt.setCabecera(c);
 				Estadosri estadoSri = estadosriServicio.consultarByPk("6");
-				Errorsri errorsri = errorsriServicio.consultarByPk(m.getIdentificador());
+				Errorsri errorsri = errorsriServicio.getErrorsriDao().getByCodErrorSri(m.getIdentificador());
 				if(estadoSri==null) {
 					estadoSri = new Estadosri();
 					estadoSri.setIdestadosri("0");
@@ -133,9 +149,7 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-//			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
-//				cabeceraServicio.actualizar(c);
 				Logtransferenciasri lt = new Logtransferenciasri();
 				lt.setCabecera(c);
 				Estadosri estadoSri = new Estadosri();

@@ -9,8 +9,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
+import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.dao.impl.LogtransferenciasriDao;
 import com.vcw.falecpv.core.modelo.persistencia.Logtransferenciasri;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author cristianvillarreal
@@ -42,6 +44,29 @@ public class LogtransferenciasriServicio extends AppGenericService<Logtransferen
 	 */
 	public LogtransferenciasriDao getLogtransferenciasriDao() {
 		return logtransferenciasriDao;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Logtransferenciasri> getByIdCabecera(String idCabecera)throws DaoException{
+		try {
+			
+			QueryBuilder qb = new QueryBuilder(logtransferenciasriDao.getEntityManager());
+			
+			return qb.select("l")
+					.from(Logtransferenciasri.class, "l")
+					.equals("l.cabecera.idcabecera", idCabecera)
+					.orderBy("l.fecha DESC").getResultList();
+			
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

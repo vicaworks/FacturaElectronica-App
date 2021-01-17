@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.common;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -90,6 +91,16 @@ public class AppSessionCtrl implements Serializable {
 	
 	public String getFormatoNumberDecimalOpcional() {
 		return "#,##0.##";
+	}
+	
+	public String getLabelComprobante(String identificador) {
+		
+		if(Arrays.asList(new String[] {"07","03"}).contains(identificador)) {
+			return "PROVEEDOR";
+		}
+		
+		return "CLIENTE";
+		
 	}
 	
 	public boolean isAnularFactura(String estado) {

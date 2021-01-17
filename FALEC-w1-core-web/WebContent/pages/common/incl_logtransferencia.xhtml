@@ -1,0 +1,166 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		.heightLogTransf {
+				/* height: 550px; */
+				/* width: 98%!important; */
+		}
+		.pvLogTransferenciaDT .ui-datatable-scrollable-body{
+			min-height: 30vh !important;
+			max-height: 30vh !important;
+		}
+		
+	</style>
+	
+	
+	<p:dialog header="Transferencia SRI" widgetVar="dlLogTransferencia" modal="true" responsive="true" width="95%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="formLogTrans">
+			
+			<div class="p-grid toolBarPopUp p-align-end vertical-container">
+				
+				<div class="p-col-12 p-lg-2" style="text-align:left;">					
+					
+					<p:commandButton id="cmdEnviarEmail"
+						value="REFRESCAR" icon="fa fa-repeat" styleClass="secondary-button Wid100" process="@form" update="@form"
+						action="#{logTransferCtrl.buscar()}"
+						/>
+					
+				</div>
+				
+				<div class="p-col-12 p-lg-2" style="text-align:left;">					
+					
+					<p:commandButton id="cmdCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button Wid100" 
+						onclick="PF('dlLogTransferencia').hide()" immediate="true"  
+						/>
+					
+				</div>	
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formEnvioDoc" id="msgFormEnvioDoc"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="form-ui Wid100 OvYScroll heightLogTransf contenedorFormulario">
+				
+				<div class="p-grid p-align-top p-justify-center" style="width: 99.5%!important;">
+					
+					<!-- datos de cabecera -->
+					<div class="p-col-12 p-md-5">
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Documento #{msg['label.electronico']}</div>
+						
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+							<h:panelGroup>
+								<h:outputText value="ESTABLECIMIENTO *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{logTransferCtrl.cabeceraSelected.establecimiento.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{logTransferCtrl.cabeceraSelected.tipocomprobante.comprobante}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="CLAVE ACCESO *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{logTransferCtrl.cabeceraSelected.claveacceso}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{logTransferCtrl.cabeceraSelected.fechaemision}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+									<f:convertDateTime pattern="ddd dd/MM/yyyy"/>
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="R.U.C. / C.I. *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?logTransferCtrl.cabeceraSelected.transportista.identificacion:logTransferCtrl.cabeceraSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?'TRANSPORTISTA':appSessionCtrl.getLabelComprobante(logTransferCtrl.cabeceraSelected.tipocomprobante.identificador)} *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?logTransferCtrl.cabeceraSelected.transportista.razonsocial:logTransferCtrl.cabeceraSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText value="ESTADO *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<p:inputText value="#{logTransferCtrl.cabeceraSelected.estado}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:outputText value="NUM DOCUMENTO *" styleClass="cpoRequerido"/>
+								<div class="EmptyBox5"/>
+								<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(logTransferCtrl.cabeceraSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
+							</h:panelGroup>
+								
+						</p:panelGrid>
+						
+					</div>
+					
+					<!-- log -->
+					<div class="p-col-12 p-md-7">
+						
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Transferencias SRI</div>
+						<div class="EmptyBox5"/>
+						
+						<p:dataTable id="pvLogTransferenciaDT"
+		        			scrollable="true"
+		        			value="#{logTransferCtrl.logtransferenciasriList}"
+		        			var="l"
+		        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="pvLogTransferenciaDT Fs12"  
+							rowKey="#{l.idlogtransferenciasri}">
+							
+							<p:column headerText="FECHA" style="width:70px;">
+								<h:outputText value="#{l.fecha}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="ETIQUETA" style="width:70px;" styleClass="FontBold">
+								<h:outputText value="#{l.etiqueta}" >
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="#{msg['label.descripcion']}" style="width:150px;">
+								<h:outputText value="#{l.descripcion}" >
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="MOTIVO" style="width:150px;">
+								<h:outputText value="#{l.motivo}" >
+								</h:outputText>
+							</p:column>
+							
+						</p:dataTable>
+						
+					</div>
+					
+				</div>
+			
+			</div>			
+			
+		</h:form>
+	
+	</p:dialog>
+	
+
+</ui:composition>
