@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -31,9 +33,10 @@ import com.vcw.falecpv.core.servicio.FirmaElectronicaServicio;
 import com.vcw.falecpv.core.servicio.LogtransferenciasriServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.sri.DocElectronicoProxy;
+import com.vcw.falecpv.web.servicio.sri.ComprobanteError;
+import com.vcw.falecpv.web.servicio.sri.ComprobanteErrorSri;
 import com.vcw.falecpv.web.servicio.sri.ComprobantePendiente;
 import com.vcw.falecpv.web.servicio.sri.ComprobanteRecibido;
-import com.vcw.falecpv.web.servicio.sri.ComprobanteResultado;
 import com.vcw.falecpv.web.servicio.sri.EnviarComprobanteSRI;
 import com.vcw.falecpv.web.servicio.sri.ImplEnviarComprobanteSRI;
 
@@ -41,6 +44,9 @@ import com.vcw.falecpv.web.servicio.sri.ImplEnviarComprobanteSRI;
  * @author cristianvillarreal
  *
  */
+//@Singleton
+//@Startup
+//@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 @Stateless
 public class SriDispacher {
 
@@ -95,6 +101,7 @@ public class SriDispacher {
 	 * @throws EnviarComprobanteSRIException
 	 * @throws DaoException 
 	 */
+//	@Lock(LockType.WRITE)
 	public void comprobanteSriDispacher(Cabecera cabecera)throws EnviarComprobanteSRIException, DaoException {
 		
 		// 2. analizar los estados para enviar al SRI
@@ -118,6 +125,8 @@ public class SriDispacher {
 			parametros.put("logtransferenciasriServicio", logtransferenciasriServicio);
 			parametros.put("errorsriServicio", errorsriServicio);
 			
+			HashMap<String, Object> resultado = null;
+			cabecera = cabeceraServicio.consultarByPk(cabecera.getIdcabecera());
 			
 			switch (ComprobanteEstadoEnum.getByEstado(cabecera.getEstado())) {
 			case PENDIENTE:
@@ -128,10 +137,20 @@ public class SriDispacher {
 				EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibido(enviarComprobanteSRI);
 				comprobanteRecibido.enviarComprobante(parametros);
 				break;
-			case ERROR_SRI:case ERROR:
-				EnviarComprobanteSRI omprobanteDevuelto = new ComprobanteResultado(enviarComprobanteSRI);
-				omprobanteDevuelto.enviarComprobante(parametros);
+			case ERROR:
+				EnviarComprobanteSRI omprobanteError = new ComprobanteError(enviarComprobanteSRI);
+				resultado = omprobanteError.enviarComprobante(parametros);
+				if((boolean)resultado.get("ponerCola")) {
+					queue_comprobanteSriDispacher(cabecera);
+				}
 				break;	
+			case ERROR_SRI:
+				EnviarComprobanteSRI omprobanteErrorSri = new ComprobanteErrorSri(enviarComprobanteSRI);
+				resultado = omprobanteErrorSri.enviarComprobante(parametros);
+				if((boolean)resultado.get("ponerCola")) {
+					queue_comprobanteSriDispacher(cabecera);
+				}
+				break;
 			default:
 				break;
 			}
@@ -146,6 +165,7 @@ public class SriDispacher {
 	 * @param cabecera
 	 * @throws DaoException
 	 */
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void queue_comprobanteSriDispacher(Cabecera cabecera)throws DaoException{
 		Connection connection = null;
 		javax.jms.Session session = null;

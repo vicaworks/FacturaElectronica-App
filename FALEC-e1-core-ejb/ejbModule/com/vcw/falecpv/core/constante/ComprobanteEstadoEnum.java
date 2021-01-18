@@ -13,7 +13,7 @@ public enum ComprobanteEstadoEnum {
 	
 	BORRADOR("markBlue"),
 	ERROR("markRed"),
-	PENDIENTE("markOrange"),
+	PENDIENTE("markYellow"),
 	RECIBIDO_SRI("markGreen"),
 	ERROR_SRI("markRed"),
 //	AUTORIZADO("markBlack"),
