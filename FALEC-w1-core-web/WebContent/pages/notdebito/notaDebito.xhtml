@@ -14,7 +14,7 @@
 			
 			.notDebitoDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 360px);
+				height: calc(100vh - 420px);
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -32,7 +32,8 @@
 			}
 			
 			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
+				padding:0.5em 0px;
+				font-size: 18px !important;
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -97,7 +98,10 @@
 	    	<div class="EmptyBox5"/>
 	    	<!-- Opciones -->
 	    	<div class="card card-w-title">
-	    		
+	    		<h3 class="cardTitle">
+					<i class="fa fa-arrow-circle-right"/>
+					Nota de Débito emitidas
+				</h3>
 	    		<div class="p-grid p-align-center">
 	    			
 	    			<div class="p-col-12 p-md-9">
@@ -192,14 +196,33 @@
 	    	</div>
 	    	
 	    	<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			
 			<div class="EmptyBox5"/>
-			
 			<div class="card card-w-title">
+				
+				<div class="p-grid p-nogutter Fs12" style="color:#515A5A;">
+					<i class="fa fa-ellipsis-v Fs14"></i> 
+					<p:spacer width="5px;"/><span>Selección</span><p:spacer width="5px;"/>
+					<p:commandLink id="cmlDtNDEmitidasSeleccion" disabled="#{empty notaDebitoCtrl.notDebitoList}">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmlDtNDEmitidasSeleccion" my="left top" at="left bottom">
+								
+						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
+							
+						</p:menuitem>
+						
+						<p:menuitem value="Firmar y enviar" action="#{notaDebitoCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						</p:menuitem>
+						
+					</p:menu>
+					
+				</div>
+				<div class="EmptyBox5"/>
 				
 				<p:dataTable id="notDebitoDT" var="r"
 					value="#{notaDebitoCtrl.notDebitoList}" scrollable="true"
@@ -212,6 +235,17 @@
 	                paginatorPosition="bottom"  
 					rows="15"
 					rowsPerPageTemplate="10,15,20,25,30,35,40">
+					
+					<p:column style="width:10px;">
+						<f:facet name="header">
+							<p:selectBooleanCheckbox value="#{notaDebitoCtrl.seleccion}">
+								<p:ajax event="change" listener="#{notaDebitoCtrl.changeSeleccion()}" update="@form:msgFormMain @form:notDebitoDT"/>
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{r.seleccion}" style="margin-left:10px;" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
+							<p:ajax event="change" update="@parent"/>
+						</p:selectBooleanCheckbox>
+					</p:column>
 					
 					<p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
 					
@@ -227,7 +261,7 @@
 							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="NOTDEB-" target="#{rideCtrl.inicialComprobante}"/>
-								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
+								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(r.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
@@ -256,8 +290,21 @@
 						<h:outputText value="#{notaDebitoCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.estado}" filterMatchMode="contains">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle}  DispBlock Wid100"/>
+					<p:column headerText="ESTADO" style="width:85px;" filterBy="#{r.estado}" filterMatchMode="contains">
+						
+						<div class="p-grid p-nogutter p-align-center">
+							<div class="p-col-10">
+								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle}  DispBlock Wid100"/>
+							</div>
+							<div class="p-col-fixed" style="width: 15px;">
+								<p:commandLink action="#{logTransferCtrl.cargarFormulario(r.idcabecera)}" process="@this" disabled="#{r.estado=='BORRADOR'}">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="NOTA_DEBITO" target="#{logTransferCtrl.callModule}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.callForm}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.updateView}"/>
+								</p:commandLink>							
+							</div>
+						</div>
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:50px;">
@@ -354,13 +401,13 @@
 					
 					<p:column headerText="PAGO" style="width:50px;" styleClass="TexAlRight">
 						
-						<div class="p-grid" style="padding-top:2px;">
+						<div class="p-grid p-nogutter p-align-center p-justify-center" style="margin-top:-2px;">
 							<div class="p-col-9" style="text-align: right;">
 								<h:outputText value="#{r.totalPagadoSum}" styleClass="#{r.totalPagadoSum.doubleValue()!=r.valorapagar.doubleValue() and r.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-1">
+							<div class="p-col-fixed" style="width: 15px;">
 								<p:commandLink action="#{pagoCtrl.cargarPagosById()}" process="@this">
 									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
 									<f:setPropertyActionListener value="#{r.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
@@ -381,9 +428,10 @@
         <ui:include src="../common/incl_comprobante_pagos.xhtml" />
         <!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />
-				<!-- FIRMAR ENVIAR EMAIL -->
+		<!-- FIRMAR ENVIAR EMAIL -->
 	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
-		
+		<!-- LOG DE TRANSFERENCIA -->
+	    <ui:include src="../common/incl_logtransferencia.xhtml" />		
         
     </ui:define>
 

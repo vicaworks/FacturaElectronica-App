@@ -32,7 +32,8 @@
 			}
 			
 			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
+				padding:0.5em 0px;
+				font-size: 18px !important;
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -73,7 +74,10 @@
 	    	<div class="EmptyBox5"/>
 	    	<!-- Opciones -->
 	    	<div class="card card-w-title">
-	    		
+	    		<h3 class="cardTitle">
+					<i class="fa fa-arrow-circle-right"/>
+					Guías de Remisión emitidas
+				</h3>
 	    		<div class="p-grid p-align-center">
 	    			
 	    			<div class="p-col-12 p-md-8">
@@ -161,14 +165,34 @@
 	    	</div>
 	    	
 	    	<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
 			<div class="EmptyBox5"/>
-			
 			<div class="card card-w-title">
+				
+				<div class="p-grid p-nogutter Fs12" style="color:#515A5A;">
+					<i class="fa fa-ellipsis-v Fs14"></i> 
+					<p:spacer width="5px;"/><span>Selección</span><p:spacer width="5px;"/>
+					<p:commandLink id="cmlDtGREmitidasSeleccion" disabled="#{empty guiaRemCtrl.destinatarioList}">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmlDtGREmitidasSeleccion" my="left top" at="left bottom">
+								
+						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
+							
+						</p:menuitem>
+						
+						<p:menuitem value="Firmar y enviar" action="#{guiaRemCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						</p:menuitem>
+						
+					</p:menu>
+					
+				</div>
+				<div class="EmptyBox5"/>
 				
 				<p:dataTable id="guiaRemDT" var="r"
 					value="#{guiaRemCtrl.destinatarioList}" scrollable="true"
@@ -182,7 +206,18 @@
 					rows="5"
 					rowsPerPageTemplate="5,10,15,20,25,30,35,40">
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column style="width:10px;">
+						<f:facet name="header">
+							<p:selectBooleanCheckbox value="#{facEmitidaCtrl.seleccion}">
+								<p:ajax event="change" listener="#{guiaRemCtrl.changeSeleccion()}" update="@form:msgFormMain @form:guiaRemDT"/>
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{r.seleccion}" style="margin-left:10px;" rendered="#{r.cabecera.estado!='ANULADO' and r.cabecera.estado!='BORRADOR'}">
+							<p:ajax event="change" update="@parent"/>
+						</p:selectBooleanCheckbox>
+					</p:column>
+					
+					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtRetencion">
 							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
@@ -231,7 +266,20 @@
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains">
-						<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} DispBlock Wid100"/>
+						<div class="p-grid p-nogutter p-align-center">
+							<div class="p-col-10">
+								<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} DispBlock Wid100"/>
+							</div>
+							<div class="p-col-fixed" style="width: 15px;">
+								<p:commandLink action="#{logTransferCtrl.cargarFormulario(r.cabecera.idcabecera)}" process="@this" disabled="#{r.cabecera.estado=='BORRADOR'}">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="GUIA_REMISION" target="#{logTransferCtrl.callModule}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.callForm}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.updateView}"/>
+								</p:commandLink>							
+							</div>
+						</div>
+						
 					</p:column>
 					
 					<p:column headerText="DESTINATARIOS" style="width:150px;" filterBy="#{r.razonsocialdestinatario}" filterMatchMode="contains">
@@ -389,9 +437,10 @@
         <ui:include src="incl_gr_det_view.xhtml" />
         <!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />
-				<!-- FIRMAR ENVIAR EMAIL -->
+		<!-- FIRMAR ENVIAR EMAIL -->
 	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
-        
+		<!-- LOG DE TRANSFERENCIA -->
+	    <ui:include src="../common/incl_logtransferencia.xhtml" />        
     </ui:define>
 
 </ui:composition>

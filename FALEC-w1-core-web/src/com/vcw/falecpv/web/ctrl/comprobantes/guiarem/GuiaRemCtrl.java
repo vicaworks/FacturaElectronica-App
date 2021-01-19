@@ -8,10 +8,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -20,6 +22,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.StreamedContent;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -27,6 +30,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
@@ -35,6 +39,7 @@ import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.GuiaRemisionServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -60,6 +65,9 @@ public class GuiaRemCtrl extends BaseCtrl {
 	@EJB
 	private UsuarioServicio usuarioServicio;
 	
+	@EJB
+	private SriDispacher sriDispacher;
+	
 	
 	private Date desde;
 	private Date hasta;
@@ -70,6 +78,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 	private Destinatario destinatarioSelected;
 	private List<Detalledestinatario> detalledestinatarioList;
 	private GuiaRemFormCtrl guiaRemFormCtrl;
+	private boolean seleccion = false;
 	
 	/**
 	 * 
@@ -91,11 +100,11 @@ public class GuiaRemCtrl extends BaseCtrl {
 	}
 	
 	public void consultar()throws DaoException{
+		seleccion = false;
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:guiaRemDT");
 		guiaRemisionList = null;
 		destinatarioList = null;
 		destinatarioList = guiaRemisionServicio.getGRByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
-//		guiaRemisionList = guiaRemisionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 	}
 
 	@Override
@@ -336,6 +345,53 @@ public class GuiaRemCtrl extends BaseCtrl {
 		return null;
 	}
 	
+	public void changeSeleccion() {
+		try {
+			
+			if(destinatarioList!=null) {
+				for (Destinatario v : destinatarioList) {
+					if(!v.getCabecera().getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString()) && !v.getCabecera().getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+						v.setSeleccion(this.seleccion);
+					}
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void firmarEnviar() {
+		try {
+			
+			if(guiaRemisionList==null || guiaRemisionList.stream().filter(x->x.isSeleccion()).count()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				return;
+			}
+			
+			for(String id : destinatarioList.stream().filter(x->x.isSeleccion()).map(x->x.getCabecera().getIdcabecera()).distinct().collect(Collectors.toList())) {
+				Cabecera c = new Cabecera();
+				c.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+				c.setIdcabecera(id);
+				c.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+				sriDispacher.queue_comprobanteSriDispacher(c);
+				
+				
+			}
+			
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIRMAR Y ENVIAR COMPROBANTE SRI", msg.getString("mensaje.enviarComprobante"));
+	        PrimeFaces.current().dialog().showMessageDynamic(message,true);
+			
+	        consultar();
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 
 	/**
 	 * @return the desde
@@ -461,6 +517,20 @@ public class GuiaRemCtrl extends BaseCtrl {
 	 */
 	public void setDestinatarioList(List<Destinatario> destinatarioList) {
 		this.destinatarioList = destinatarioList;
+	}
+
+	/**
+	 * @return the seleccion
+	 */
+	public boolean isSeleccion() {
+		return seleccion;
+	}
+
+	/**
+	 * @param seleccion the seleccion to set
+	 */
+	public void setSeleccion(boolean seleccion) {
+		this.seleccion = seleccion;
 	}
 
 }

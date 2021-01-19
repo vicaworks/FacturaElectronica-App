@@ -14,7 +14,7 @@
 			
 			.retencionDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 400px);
+				height: calc(100vh - 430px);
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -32,7 +32,8 @@
 			}
 			
 			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
+				padding:0.5em 0px;
+				font-size: 18px !important;
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -68,8 +69,12 @@
 	    <h:form id="formMain">
 	    	
 	    	<!-- Opciones -->
-	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	<div class="card card-w-title" >
 	    		
+	    		<h3 class="cardTitle">
+					<i class="fa fa-arrow-circle-right"/>
+					Retenciones emitidas
+				</h3>
 	    		<div class="p-grid p-align-center">
 	    			
 	    			<div class="p-col-12 p-md-9">
@@ -169,14 +174,33 @@
    			</div>
    			
    			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 	    	
-	    	<div class="card card-w-title">
+			<div class="card card-w-title">
 				
-				<h1 class="cardTitle">Lista Retenciones</h1>
+				<div class="p-grid p-nogutter Fs12" style="color:#515A5A;">
+					<i class="fa fa-ellipsis-v Fs14"></i> 
+					<p:spacer width="5px;"/><span>Selección</span><p:spacer width="5px;"/>
+					<p:commandLink id="cmlDtRetEmitidasSeleccion" disabled="#{empty retencionMainCtrl.retencionList}">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmlDtRetEmitidasSeleccion" my="left top" at="left bottom">
+								
+						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
+							
+						</p:menuitem>
+						
+						<p:menuitem value="Firmar y enviar" action="#{retencionMainCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						</p:menuitem>
+						
+					</p:menu>
+					
+				</div>
+				<div class="EmptyBox5"/>
 				
 				<p:dataTable id="retencionDT" var="r"
 					value="#{retencionMainCtrl.retencionList}" scrollable="true"
@@ -190,7 +214,18 @@
 					rows="20"
 					rowsPerPageTemplate="15,20,25,30,35,40,45,50">
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column style="width:10px;">
+						<f:facet name="header">
+							<p:selectBooleanCheckbox value="#{retencionMainCtrl.seleccion}">
+								<p:ajax event="change" listener="#{retencionMainCtrl.changeSeleccion()}" update="@form:msgFormMain @form:retencionDT"/>
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{r.seleccion}" style="margin-left:10px;" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
+							<p:ajax event="change" update="@parent"/>
+						</p:selectBooleanCheckbox>
+					</p:column>
+					
+					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtRetencion">
 							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
@@ -249,8 +284,23 @@
 						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.estado}" filterMatchMode="contains">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} DispBlock Wid100"/>
+					<p:column headerText="ESTADO" style="width:85px;" filterBy="#{r.estado}" filterMatchMode="contains">
+						
+						<div class="p-grid p-nogutter p-align-center">
+							<div class="p-col-10">
+								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} DispBlock Wid100"/>
+							</div>
+							<div class="p-col-fixed" style="width: 15px;">
+								<p:commandLink action="#{logTransferCtrl.cargarFormulario(r.idcabecera)}" process="@this" disabled="#{r.estado=='BORRADOR'}">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="RETENCION" target="#{logTransferCtrl.callModule}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.callForm}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.updateView}"/>
+								</p:commandLink>							
+							</div>
+						</div>
+						
+						
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -265,7 +315,7 @@
 					</p:column>
 					
 					
-					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:150px;" filterBy="#{r.cliente.razonsocial}" filterMatchMode="contains">
+					<p:column headerText="SUJETO / #{msg['label.retencion']}" style="width:180px;" filterBy="#{r.cliente.razonsocial}" filterMatchMode="contains">
 						<h:outputText value="#{r.cliente.razonsocial}" />
 					</p:column>
 					
@@ -315,7 +365,8 @@
 		<ui:include src="../common/incl_ride.xhtml" />
 		<!-- FIRMAR ENVIAR EMAIL -->
 	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
-		
+		<!-- LOG DE TRANSFERENCIA -->
+	    <ui:include src="../common/incl_logtransferencia.xhtml" />
         
     </ui:define>
 

@@ -48,6 +48,7 @@ import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -95,6 +96,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	private String callModule;
 	private Cabecera guiaRemisionSelected;
@@ -181,6 +185,8 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			guiaRemisionSelected = cabeceraServicio.guardarComprobanteFacade(guiaRemisionSelected);
 			infoadicionalList = guiaRemisionSelected.getInfoadicionalList();
 			noEditarSecuencial(guiaRemisionSelected);
+			guiaRemisionSelected.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(guiaRemisionSelected);
 			switch (callModule) {
 			case "GUIA_REMISION":
 				GuiaRemCtrl guiaRemCtrl = (GuiaRemCtrl) AppJsfUtil.getManagedBean("guiaRemCtrl");

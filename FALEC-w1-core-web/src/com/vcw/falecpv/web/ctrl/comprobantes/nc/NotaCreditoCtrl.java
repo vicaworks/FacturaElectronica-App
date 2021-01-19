@@ -52,6 +52,7 @@ import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
 
@@ -103,6 +104,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	@EJB
 	private ConfiguracionServicio configuracionServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	private String callModule;
 	private String viewUpdate;
@@ -201,6 +205,9 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			notaCreditoSeleccion = cabeceraServicio.guardarComprobanteFacade(notaCreditoSeleccion);
 			infoadicionalList = notaCreditoSeleccion.getInfoadicionalList();
 			noEditarSecuencial(notaCreditoSeleccion);
+			notaCreditoSeleccion.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(notaCreditoSeleccion);
+			
 			FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
 			if(facEmitidaCtrl!=null) {
 				facEmitidaCtrl.consultar();

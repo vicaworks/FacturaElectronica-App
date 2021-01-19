@@ -106,6 +106,9 @@ public class Destinatario implements Serializable {
     
     @Transient
     private boolean consultarDetalleFactura = false;
+    
+    @Transient
+    private boolean seleccion = false;
 
 	/**
 	 * 
@@ -401,6 +404,20 @@ public class Destinatario implements Serializable {
 	 */
 	public void setConsultarDetalleFactura(boolean consultarDetalleFactura) {
 		this.consultarDetalleFactura = consultarDetalleFactura;
+	}
+
+	/**
+	 * @return the seleccion
+	 */
+	public boolean isSeleccion() {
+		return seleccion;
+	}
+
+	/**
+	 * @param seleccion the seleccion to set
+	 */
+	public void setSeleccion(boolean seleccion) {
+		this.seleccion = seleccion;
 	}
 
 }

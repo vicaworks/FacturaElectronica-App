@@ -3,9 +3,7 @@
  */
 package com.vcw.falecpv.web.common;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;

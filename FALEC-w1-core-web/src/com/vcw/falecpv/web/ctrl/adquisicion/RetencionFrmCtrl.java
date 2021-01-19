@@ -48,6 +48,7 @@ import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -101,6 +102,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	
 	@EJB
 	private ConfiguracionServicio configuracionServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	private String callModule;
 	private String viewUpdate;
@@ -361,7 +365,8 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			retencionSeleccion = cabeceraServicio.guardarComprobanteFacade(retencionSeleccion);
 			infoadicionalList = retencionSeleccion.getInfoadicionalList();
 			noEditarSecuencial(retencionSeleccion);
-			
+			retencionSeleccion.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(retencionSeleccion);
 			// Manage de session para actualizar las pantallas
 			adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
 			adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");

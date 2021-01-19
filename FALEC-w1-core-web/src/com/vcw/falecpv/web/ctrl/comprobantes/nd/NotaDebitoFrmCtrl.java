@@ -53,6 +53,7 @@ import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.TotalimpuestoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -109,6 +110,9 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	
 	@EJB
 	private ConfiguracionServicio configuracionServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	
 	private List<Iva> ivaList;
@@ -562,7 +566,8 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			notDebitoSelected = cabeceraServicio.guardarComprobanteFacade(notDebitoSelected);
 			infoadicionalList = notDebitoSelected.getInfoadicionalList();
 			noEditarSecuencial(notDebitoSelected);
-			
+			notDebitoSelected.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(notDebitoSelected);
 			NotaDebitoCtrl notaDebitoCtrl = (NotaDebitoCtrl) AppJsfUtil.getManagedBean("notaDebitoCtrl");
 			notaDebitoCtrl.consultar();
 			
