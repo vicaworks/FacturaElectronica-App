@@ -132,7 +132,9 @@ public class EnviarDocCtrl extends BaseCtrl {
 	public void firmarEnviarCorreo() {
 		try {
 			
-			sriDispacher.queue_comprobanteSriDispacher(cabeceraServicio.consultarByPk(idCabecera));
+			Cabecera c = cabeceraServicio.consultarByPk(idCabecera);
+			c.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(c);
 			
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "DOCUMENTO FIRMADO Y ENVIADO CORRECTAMENTE.");
 			

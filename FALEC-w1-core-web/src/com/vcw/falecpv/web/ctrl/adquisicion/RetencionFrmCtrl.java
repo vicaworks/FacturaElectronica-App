@@ -423,7 +423,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setMoneda("DOLAR");
 		retencionSeleccion.setPropina(BigDecimal.ZERO);
 		
-		if(retencionSeleccion.getIdcabecera()==null || (retencionSeleccion.getIdcabecera()!=null&&retencionSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+		if(retencionSeleccion.getIdcabecera()==null || ( retencionSeleccion.getIdcabecera()!=null && (
+															retencionSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()) || 
+															retencionSeleccion.getIdcabecera()!=null&&retencionSeleccion.getEstado().equals(ComprobanteEstadoEnum.RECHAZADO_SRI.toString())
+															)
+														)
+				) {
 			
 			if(retencionSeleccion.isBorrador()) {
 				retencionSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());

@@ -603,7 +603,12 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setContribuyenteespecial("5368");
 		notDebitoSelected.setMoneda("DOLAR");
 		notDebitoSelected.setPropina(BigDecimal.ZERO);
-		if(notDebitoSelected.getIdcabecera()==null || (notDebitoSelected.getIdcabecera()!=null && notDebitoSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+		if(notDebitoSelected.getIdcabecera()==null || (notDebitoSelected.getIdcabecera()!=null && 
+														(notDebitoSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()) ||
+														 notDebitoSelected.getEstado().equals(ComprobanteEstadoEnum.RECHAZADO_SRI.toString())
+														)
+													  )
+				){
 			if(notDebitoSelected.isBorrador()) {
 				notDebitoSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			}else {

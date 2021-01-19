@@ -257,8 +257,12 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setMoneda("DOLAR");
 		notaCreditoSeleccion.setPropina(BigDecimal.ZERO);
 		
-		if (notaCreditoSeleccion.getIdcabecera() == null || (notaCreditoSeleccion.getIdcabecera() != null
-				&& notaCreditoSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+		if (notaCreditoSeleccion.getIdcabecera() == null || (notaCreditoSeleccion.getIdcabecera() != null && 
+																(notaCreditoSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()) || 
+																 notaCreditoSeleccion.getEstado().equals(ComprobanteEstadoEnum.RECHAZADO_SRI.toString())
+																)
+															) 
+				){
 			
 			if(notaCreditoSeleccion.isBorrador()) {
 				notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());

@@ -93,6 +93,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 		Cabecera c = (Cabecera) parametros.get("cabecera");
 		String idusuario = (String)parametros.get("idUsuario");
 		String xmlDocElectronico = null;
+		
 			
 		// 1. armar xml
 		
@@ -222,7 +223,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 					lt.setEtiqueta("ERROR SRI");
 					lt.setFecha(new Date());
 					lt.setIdusuario(c.getIdusuario());
-					lt.setMotivo(errorsri!=null?errorsri.getMotivo() + ": ":m.getMensaje());
+					lt.setMotivo((errorsri!=null? errorsri.getMotivo() + ": " :"") + m.getMensaje() + " " + m.getInformacionAdicional());
 					lt.setDescripcion((errorsri!=null?errorsri.getDescripcion()+" : ":"") + m.getMensaje());
 					super.registrarlog(lt, c.getEstablecimiento().getIdestablecimiento());
 					
@@ -231,7 +232,6 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			}
 			
 		} catch (Exception e) {
-//			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
 				cabeceraServicio.actualizar(c);
 				Logtransferenciasri lt = new Logtransferenciasri();
@@ -250,10 +250,6 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			}
 			return null;
 		}
-		
-		// 3. consultar ride
-		
-		// 4. enviar email
 		
 		return super.enviarComprobante(parametros);
 			

@@ -818,7 +818,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		if(cabecerSelected.getIdcabecera()==null || (cabecerSelected.getIdcabecera()!=null&&cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+		if(cabecerSelected.getIdcabecera()==null || (cabecerSelected.getIdcabecera()!=null && (cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()) || cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.RECHAZADO_SRI.toString()) ))) {
 			
 			if(genTipoDocumentoEnum.equals(GenTipoDocumentoEnum.FACTURA)) {
 				

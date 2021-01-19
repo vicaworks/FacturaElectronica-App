@@ -14,7 +14,7 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 35vh !important;
-				height: calc(100vh - 440px)!important;				
+				height: calc(100vh - 455px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -201,8 +201,29 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="EmptyBox10"/>
+			<div class="EmptyBox5"/>
 			<div class="card card-w-title">
+				
+				<div class="p-grid p-nogutter Fs12" style="color:#515A5A;">
+					<i class="fa fa-ellipsis-v Fs14"></i> 
+					<p:spacer width="5px;"/><span>Selección</span><p:spacer width="5px;"/>
+					<p:commandLink id="cmlDtFacEmitidasSeleccion">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmlDtFacEmitidasSeleccion" my="left top" at="left bottom">
+								
+						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
+							
+						</p:menuitem>
+						
+						<p:menuitem value="Firmar y enviar" action="#{facEmitidaCtrl.firmarEnviar()}" icon="fa fa-envelope" disabled="#{empty facEmitidaCtrl.ventasQueryList}" update="@form">
+						</p:menuitem>
+						
+					</p:menu>
+					
+				</div>
+				<div class="EmptyBox5"/>
 		    	<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
 		       			value="#{facEmitidaCtrl.ventasQueryList}"
@@ -216,6 +237,17 @@
 						rowKey="#{v.idcabecera}"
 						rows="20"
 						rowsPerPageTemplate="10,15,20,25,30,35,40">
+					
+					<p:column style="width:10px;">
+						<f:facet name="header">
+							<p:selectBooleanCheckbox value="#{facEmitidaCtrl.seleccion}">
+								<p:ajax event="change" listener="#{facEmitidaCtrl.changeSeleccion()}" update="@form:msgFormMain @form:pvUnoDT"/>
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{v.seleccion}" style="margin-left:10px;" rendered="#{v.estado!='ANULADO' and v.estado!='BORRADOR'}">
+							<p:ajax event="change" update="@parent"/>
+						</p:selectBooleanCheckbox>
+					</p:column>
 					
 					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 					

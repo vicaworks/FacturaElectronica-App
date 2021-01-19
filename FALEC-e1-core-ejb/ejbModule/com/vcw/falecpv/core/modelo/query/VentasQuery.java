@@ -72,6 +72,7 @@ public class VentasQuery implements Serializable {
 	private String identificacion;
 	private Integer contador = 0;
 	private Date updated;
+	private boolean seleccion = false;
 	
 	/**
 	 * 
@@ -781,6 +782,20 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+
+	/**
+	 * @return the seleccion
+	 */
+	public boolean isSeleccion() {
+		return seleccion;
+	}
+
+	/**
+	 * @param seleccion the seleccion to set
+	 */
+	public void setSeleccion(boolean seleccion) {
+		this.seleccion = seleccion;
 	}
 
 }

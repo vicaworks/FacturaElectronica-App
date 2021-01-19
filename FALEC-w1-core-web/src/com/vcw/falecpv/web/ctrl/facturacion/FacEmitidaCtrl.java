@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -24,6 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.StreamedContent;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -102,6 +104,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	private List<VentasQuery> ventasQueryList;
 	private TotalesDto totalesDto = new TotalesDto();
 	private VentasQuery ventasQuerySelected;
+	private boolean seleccion = false;
 	
 	/**
 	 * 
@@ -129,6 +132,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	}
 	
 	public void consultar()throws DaoException {
+		seleccion = false;
 		ventasQueryList = null;
 		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),GenTipoDocumentoEnum.FACTURA);
 	}
@@ -619,6 +623,53 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	public void changeSeleccion() {
+		try {
+			
+			if(ventasQueryList!=null) {
+				for (VentasQuery v : ventasQueryList) {
+					if(!v.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString()) && !v.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
+						v.setSeleccion(this.seleccion);
+					}
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void firmarEnviar() {
+		try {
+			
+			if(ventasQueryList==null || ventasQueryList.stream().filter(x->x.isSeleccion()).count()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				return;
+			}
+			
+			for (VentasQuery ventasQuery : ventasQueryList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
+				
+				Cabecera c = new Cabecera();
+				c.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());
+				c.setIdcabecera(ventasQuery.getIdcabecera());
+				c.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+				sriDispacher.queue_comprobanteSriDispacher(c);
+				
+			}
+			
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIRMAR Y ENVIAR COMPROBANTE SRI", msg.getString("mensaje.enviarComprobante"));
+	        PrimeFaces.current().dialog().showMessageDynamic(message,true);
+			
+	        consultar();
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the usuarioList
@@ -730,6 +781,20 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	 */
 	public void setVentasQuerySelected(VentasQuery ventasQuerySelected) {
 		this.ventasQuerySelected = ventasQuerySelected;
+	}
+
+	/**
+	 * @return the seleccion
+	 */
+	public boolean isSeleccion() {
+		return seleccion;
+	}
+
+	/**
+	 * @param seleccion the seleccion to set
+	 */
+	public void setSeleccion(boolean seleccion) {
+		this.seleccion = seleccion;
 	}
 
 }

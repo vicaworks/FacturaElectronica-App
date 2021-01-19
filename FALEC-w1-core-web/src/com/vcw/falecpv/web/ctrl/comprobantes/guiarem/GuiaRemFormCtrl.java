@@ -245,7 +245,12 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
 		guiaRemisionSelected.setPropina(BigDecimal.ZERO);
 		
-		if(guiaRemisionSelected.getIdcabecera()==null || (guiaRemisionSelected.getIdcabecera()!=null && guiaRemisionSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+		if(guiaRemisionSelected.getIdcabecera()==null || (guiaRemisionSelected.getIdcabecera()!=null && 
+																(guiaRemisionSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()) ||
+																		guiaRemisionSelected.getEstado().equals(ComprobanteEstadoEnum.RECHAZADO_SRI.toString())
+																)
+														)
+				){
 			if(guiaRemisionSelected.isBorrador()) {
 				guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			}else {

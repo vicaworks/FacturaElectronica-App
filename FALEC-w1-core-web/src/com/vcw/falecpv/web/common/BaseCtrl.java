@@ -188,7 +188,7 @@ public abstract class BaseCtrl implements Serializable {
 	public void habilitarCrud(String estado) {
 		enableAccion = false;
 		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
-		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.REGISTRADO});
+		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.REGISTRADO,ComprobanteEstadoEnum.RECHAZADO_SRI});
 		enableAccion = !lista.contains(estadoEnum);
 	}
 	

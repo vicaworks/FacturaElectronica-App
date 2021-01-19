@@ -271,7 +271,12 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setMoneda("DOLAR");
 		liqCompraSelected.setPropina(BigDecimal.ZERO);
 		
-		if(liqCompraSelected.getIdcabecera()==null || (liqCompraSelected.getIdcabecera()!=null && liqCompraSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()))) {
+		if(liqCompraSelected.getIdcabecera()==null || (liqCompraSelected.getIdcabecera()!=null && 
+															(liqCompraSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()) || 
+																	liqCompraSelected.getEstado().equals(ComprobanteEstadoEnum.RECHAZADO_SRI.toString())
+															)
+														)
+				) {
 			if(liqCompraSelected.isBorrador()) {
 				liqCompraSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			}else {
@@ -286,7 +291,6 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		// tabla de total impuesto
 		List<Totalimpuesto> totalimpuestoList = new ArrayList<>();
 		totalimpuestoList.addAll(ComprobanteHelper.determinarIva(liqCompraSelected.getDetalleList()));
-//		totalimpuestoList.addAll(ComprobanteHelper.determinarIce(liqCompraSelected.getDetalleList()));
 		liqCompraSelected.setTotalimpuestoList(totalimpuestoList);
 		
 		// detalle impuesto

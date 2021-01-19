@@ -98,7 +98,7 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 					lt.setEtiqueta("ERROR SRI");
 					lt.setFecha(new Date());
 					lt.setIdusuario(c.getIdusuario());
-					lt.setMotivo(errorsri!=null?errorsri.getMotivo() + ": ":m.getMensaje());
+					lt.setMotivo((errorsri!=null? errorsri.getMotivo() + ": " :"") + m.getMensaje() + " " + m.getInformacionAdicional());
 					lt.setDescripcion((errorsri!=null?errorsri.getDescripcion()+" : ":"") + m.getMensaje());
 					super.registrarlog(lt, c.getEstablecimiento().getIdestablecimiento());
 					

@@ -111,7 +111,7 @@ public class SriDispacher {
 			
 			EnviarComprobanteSRI enviarComprobanteSRI = new ImplEnviarComprobanteSRI();
 			HashMap<String, Object> parametros = new HashMap<>();
-			parametros.put("cabecera", cabecera);
+			
 			parametros.put("docElectronicoProxy", docElectronicoProxy);
 			parametros.put("parametroGenericoServicio", parametroGenericoServicio);
 			parametros.put("cabeceraServicio", cabeceraServicio);
@@ -126,34 +126,48 @@ public class SriDispacher {
 			parametros.put("errorsriServicio", errorsriServicio);
 			
 			HashMap<String, Object> resultado = null;
-			cabecera = cabeceraServicio.consultarByPk(cabecera.getIdcabecera());
-			
-			switch (ComprobanteEstadoEnum.getByEstado(cabecera.getEstado())) {
-			case PENDIENTE:
-				EnviarComprobanteSRI comprobantePendiente = new ComprobantePendiente(enviarComprobanteSRI);
-				comprobantePendiente.enviarComprobante(parametros);
-				break;
-			case RECIBIDO_SRI:
-				EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibido(enviarComprobanteSRI);
-				comprobanteRecibido.enviarComprobante(parametros);
-				break;
-			case ERROR:
-				EnviarComprobanteSRI omprobanteError = new ComprobanteError(enviarComprobanteSRI);
-				resultado = omprobanteError.enviarComprobante(parametros);
-				if((boolean)resultado.get("ponerCola")) {
-					queue_comprobanteSriDispacher(cabecera);
+			boolean flag = true;
+			int intentos = 0;
+			while(flag) {
+				cabecera = cabeceraServicio.consultarByPk(cabecera.getIdcabecera());
+				parametros.remove("cabecera");
+				parametros.put("cabecera", cabecera);
+				switch (ComprobanteEstadoEnum.getByEstado(cabecera.getEstado())) {
+				case PENDIENTE:
+					EnviarComprobanteSRI comprobantePendiente = new ComprobantePendiente(enviarComprobanteSRI);
+					comprobantePendiente.enviarComprobante(parametros);
+					flag = false;
+					break;
+				case RECIBIDO_SRI:
+					EnviarComprobanteSRI comprobanteRecibido = new ComprobanteRecibido(enviarComprobanteSRI);
+					comprobanteRecibido.enviarComprobante(parametros);
+					flag = false;
+					break;
+				case ERROR:
+					EnviarComprobanteSRI omprobanteError = new ComprobanteError(enviarComprobanteSRI);
+					resultado = omprobanteError.enviarComprobante(parametros);
+					if((boolean)resultado.get("ponerCola") && intentos<2) {
+						intentos++;
+					}else {
+						flag = false;
+					}
+					break;	
+				case ERROR_SRI:
+					EnviarComprobanteSRI omprobanteErrorSri = new ComprobanteErrorSri(enviarComprobanteSRI);
+					resultado = omprobanteErrorSri.enviarComprobante(parametros);
+					if((boolean)resultado.get("ponerCola") && intentos<2) {
+						intentos++;
+					}else {
+						flag = false;
+					}
+					break;
+				default:
+					flag = false;
+					break;
 				}
-				break;	
-			case ERROR_SRI:
-				EnviarComprobanteSRI omprobanteErrorSri = new ComprobanteErrorSri(enviarComprobanteSRI);
-				resultado = omprobanteErrorSri.enviarComprobante(parametros);
-				if((boolean)resultado.get("ponerCola")) {
-					queue_comprobanteSriDispacher(cabecera);
-				}
-				break;
-			default:
-				break;
+				
 			}
+			
 			
 		}
 		
