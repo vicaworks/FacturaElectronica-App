@@ -52,6 +52,7 @@ import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
 
@@ -106,6 +107,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	
 	@EJB
 	private ConfiguracionServicio configuracionServicio;
+	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	private List<Cliente> proveedorList;
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -229,7 +233,8 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			liqCompraSelected = cabeceraServicio.guardarComprobanteFacade(liqCompraSelected);
 			infoadicionalList = liqCompraSelected.getInfoadicionalList();
 			noEditarSecuencial(liqCompraSelected);
-			
+			liqCompraSelected.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(liqCompraSelected);
 			// main principal de la lista de liquidacion de compra 
 			LiqCompraCtrl liqCompraCtrl = (LiqCompraCtrl) AppJsfUtil.getManagedBean("liqCompraCtrl");
 			liqCompraCtrl.consultar();

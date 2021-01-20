@@ -54,7 +54,7 @@ public enum PGEmpresaSucursal implements ParametroGenericoBaseEnum {
 		case "05":
 			// Nota Debito
 			return PGEmpresaSucursal.PLANTILLA_NOTA_DEBITO;
-		case "08":
+		case "06":
 			// Guia Remision
 			return PGEmpresaSucursal.PLANTILLA_GUIA_REMISION;
 		case "03":

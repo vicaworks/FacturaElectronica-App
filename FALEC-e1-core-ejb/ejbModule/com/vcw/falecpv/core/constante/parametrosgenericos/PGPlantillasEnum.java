@@ -44,7 +44,7 @@ public enum PGPlantillasEnum implements ParametroGenericoBaseEnum {
 		case "05":
 			// Nota Debito
 			return PGPlantillasEnum.PLANTILLA_NOTA_DEBITO;
-		case "08":
+		case "06":
 			// Guia Remision
 			return PGPlantillasEnum.PLANTILLA_GUIA_REMISION;
 		case "03":

@@ -669,6 +669,35 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		return null;
 	}
 	
+	public void imprimir() {
+		// verifica si solo debe de imprimir
+		if(guiaRemisionSelected.getIdcabecera()!=null) {
+			if(cabeceraServicio.getCabeceraDao().isImprimir(guiaRemisionSelected.getIdcabecera())){
+				showRide();
+				return;
+			}
+		}
+		// pone el nuevo estado
+		boolean estadoTemp = guiaRemisionSelected.isBorrador();
+		guiaRemisionSelected.setBorrador(false);
+		guardar();
+		AppJsfUtil.ajaxUpdate("formMain");
+		if(AppJsfUtil.existErrors()) {
+			guiaRemisionSelected.setBorrador(estadoTemp);
+			return;
+		}
+		showRide();
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(guiaRemisionSelected.getIdcabecera());
+		rideCtrl.setInicialComprobante("GUIAREM-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(guiaRemisionSelected.getNumdocumento()));
+		rideCtrl.showRide();
+		
+	}
+	
 	/**
 	 * @return the callModule
 	 */

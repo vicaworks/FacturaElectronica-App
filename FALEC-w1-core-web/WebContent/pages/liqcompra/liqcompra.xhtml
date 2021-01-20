@@ -14,7 +14,7 @@
 			
 			.liqCompraDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 360px);
+				height: calc(100vh - 425px);
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -32,7 +32,8 @@
 			}
 			
 			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
+				padding:0.5em 0px;
+				font-size: 18px !important;
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -100,6 +101,11 @@
 			<div class="EmptyBox5"/>
 			
 			<div class="card card-w-title">
+				
+				<h3 class="cardTitle">
+					<i class="fa fa-arrow-circle-right"/>
+					Liquidación de Compras emitidas
+				</h3>
 				
 				<div class="p-grid p-align-center">
 					
@@ -194,14 +200,34 @@
 			</div>
 			
 			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
 			<div class="EmptyBox5"/>
-			
 			<div class="card card-w-title">
+				
+				<div class="p-grid p-nogutter Fs12" style="color:#515A5A;">
+					<i class="fa fa-ellipsis-v Fs14"></i> 
+					<p:spacer width="5px;"/><span>Selección</span><p:spacer width="5px;"/>
+					<p:commandLink id="cmlDtLCEmitidasSeleccion" disabled="#{empty liqCompraCtrl.liqCompraList}">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmlDtLCEmitidasSeleccion" my="left top" at="left bottom">
+								
+						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
+							
+						</p:menuitem>
+						
+						<p:menuitem value="Firmar y enviar" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						</p:menuitem>
+						
+					</p:menu>
+					
+				</div>
+				<div class="EmptyBox5"/>
 				
 				<p:dataTable id="liqCompraDT" var="r"
 					value="#{liqCompraCtrl.liqCompraList}" scrollable="true"
@@ -215,8 +241,18 @@
 					rows="20"
 					rowsPerPageTemplate="15,20,25,30,35,40">
 					
+					<p:column style="width:10px;">
+						<f:facet name="header">
+							<p:selectBooleanCheckbox value="#{liqCompraCtrl.seleccion}">
+								<p:ajax event="change" listener="#{liqCompraCtrl.changeSeleccion()}" update="@form:msgFormMain @form:liqCompraDT"/>
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{r.seleccion}" style="margin-left:10px;" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
+							<p:ajax event="change" update="@parent"/>
+						</p:selectBooleanCheckbox>
+					</p:column>
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 					
 						<p:commandLink id="cmlDtLiqCompra">
 							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
@@ -261,8 +297,22 @@
 						<h:outputText value="#{liqCompraCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.estado}" filterMatchMode="contains">
-						<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} DispBlock Wid100"/>
+					<p:column headerText="ESTADO" style="width:85px;" filterBy="#{r.estado}" filterMatchMode="contains">
+						
+						<div class="p-grid p-nogutter p-align-center">
+							<div class="p-col-10">
+								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} DispBlock Wid100"/>
+							</div>
+							<div class="p-col-fixed" style="width: 15px;">
+								<p:commandLink action="#{logTransferCtrl.cargarFormulario(r.idcabecera)}" process="@this" disabled="#{r.estado=='BORRADOR'}">
+									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
+									<f:setPropertyActionListener value="LIQ_COMPRA" target="#{logTransferCtrl.callModule}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.callForm}"/>
+									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.updateView}"/>
+								</p:commandLink>							
+							</div>
+						</div>
+						
 					</p:column>
 					
 					<p:column headerText="FECHA" style="width:40px;">
@@ -338,13 +388,13 @@
 					
 					<p:column headerText="PAGO" style="width:60px;" styleClass="TexAlRight">
 						
-						<div class="p-grid" style="padding-top:2px;">
+						<div class="p-grid p-nogutter p-align-center p-justify-center" style="margin-top:-2px;">
 							<div class="p-col-9" style="text-align: right;">
 								<h:outputText value="#{r.totalPagadoSum}" styleClass="#{r.totalPagadoSum.doubleValue()!=r.valorapagar.doubleValue() and r.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-1">
+							<div class="p-col-fixed" style="width: 15px;">
 								<p:commandLink action="#{pagoCtrl.cargarPagosById()}" process="@this">
 									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
 									<f:setPropertyActionListener value="#{r.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
@@ -366,7 +416,8 @@
 		<ui:include src="../common/incl_ride.xhtml" />
 		<!-- FIRMAR ENVIAR EMAIL -->
 	    <ui:include src="../common/incl_firmarenviarmail.xhtml" />
-        
+        <!-- LOG DE TRANSFERENCIA -->
+	    <ui:include src="../common/incl_logtransferencia.xhtml" />
     </ui:define>
 
 </ui:composition>

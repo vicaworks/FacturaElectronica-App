@@ -113,7 +113,7 @@ public class SriUtilServicio {
 			case "05":
 				pGXsdValidacionEnum = PGXsdValidacionEnum.XSD_NOTA_DEBITO;
 				break;
-			case "08":
+			case "06":
 				pGXsdValidacionEnum = PGXsdValidacionEnum.XSD_GUIA_REMISION;
 				break;
 			case "03":

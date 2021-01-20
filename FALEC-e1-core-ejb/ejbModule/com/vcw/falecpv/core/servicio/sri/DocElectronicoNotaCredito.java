@@ -78,7 +78,7 @@ public class DocElectronicoNotaCredito extends GenerarDocumentoElectronico {
 		info.setCodDocModificado(cabecera.getTipodocasociado());
 		info.setNumDocModificado(ComprobanteHelper.formatNumDocumento(cabecera.getNumdocasociado()));
 		info.setFechaEmisionDocSustento(cabecera.getFechaemisiondocasociado());
-		info.setValorModificacion(cabecera.getValordocasociado().doubleValue());
+		info.setValorModificacion(cabecera.getTotalconimpuestos().doubleValue());
 		info.setTotalSinImpuestos(cabecera.getTotalsinimpuestos().doubleValue());
 		info.setTotalImpuestoList(getTotalImpuesto(totalimpuestoList,false));
 		info.setMotivo(cabecera.getMotivo());

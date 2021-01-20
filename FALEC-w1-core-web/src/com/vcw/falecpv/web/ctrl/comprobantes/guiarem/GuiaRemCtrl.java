@@ -366,7 +366,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 	public void firmarEnviar() {
 		try {
 			
-			if(guiaRemisionList==null || guiaRemisionList.stream().filter(x->x.isSeleccion()).count()==0) {
+			if(destinatarioList==null ||  destinatarioList.stream().filter(x->x.isSeleccion()).count()==0) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
 				return;
 			}

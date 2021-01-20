@@ -128,9 +128,16 @@
 								value="NUEVO" icon="fa fa-plus" 
 								action="#{guiaRemFormCtrl.nuevo()}" styleClass="secondary-button Fs11 m-button" update="@form" immediate="true">
 						</p:commandButton>
+						
 	    				<p:commandButton id="cmduardar"
 								value="GUARDAR" icon="fa fa-floppy-o"  
 								action="#{guiaRemFormCtrl.guardar()}" styleClass=" Fs11 m-button" update=":formMain" disabled="#{guiaRemFormCtrl.enableAccion}"/>
+								
+						<p:commandButton id="cmdImprimir"
+								value="IMPRIMIR" icon="fa fa-print Fs11" title="Imprimir"
+								action="#{guiaRemFormCtrl.imprimir()}" styleClass="secondary-button Fs10 m-button" update="@form">
+							<f:setPropertyActionListener value="#{rideCtrl}" target="#{guiaRemFormCtrl.rideCtrl}"/>		
+						</p:commandButton>
 	    			
 	    		</div>
 			
@@ -181,7 +188,9 @@
 	    
 	    <!-- Form lista productos -->
 	    <ui:include src="../productos/incl_listaProducto.xhtml" />
-		
+	    
+		<!-- RIDE -->
+		<ui:include src="../common/incl_ride.xhtml" />
         
     </ui:define>
 

@@ -599,7 +599,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
 		notaCreditoSeleccion.setSecuencial(null);
 		notaCreditoSeleccion.setTipocomprobante(null);
-		infoadicionalList = null;
 		inicializarSecuencia(notaCreditoSeleccion);
 		detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
 		for (Detalle de : detalleNcList) {
