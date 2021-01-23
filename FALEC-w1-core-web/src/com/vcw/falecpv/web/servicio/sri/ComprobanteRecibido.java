@@ -82,9 +82,13 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 				if(autorizacion.getEstado().equals("AUTORIZADO")) {
 					// AUTORIZADO
 					c.setEstado(ComprobanteEstadoEnum.AUTORIZADO.toString());
+					c.setFechaautorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+					c.setNumeroautorizacion(autorizacion.getNumeroAutorizacion());
+					c.setEstadoautorizacion("SI");
 				}else {
 					// RECHAZADO
 					c.setEstado(ComprobanteEstadoEnum.RECHAZADO_SRI.toString());
+					c.setEstadoautorizacion("NO");
 					Mensaje m = autorizacion.getMensajes().getMensaje().get(0);
 					Logtransferenciasri lt = new Logtransferenciasri();
 					lt.setCabecera(c);
@@ -103,7 +107,6 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 					super.registrarlog(lt, c.getEstablecimiento().getIdestablecimiento());
 					
 				}
-				c.setFechaautorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
 				cabeceraServicio.actualizar(c);
 				
 			}else if(rs.getNumeroComprobantes()!=null && Integer.parseInt(rs.getNumeroComprobantes())==0) {
