@@ -69,7 +69,7 @@ public class DocElectronicoRetencion extends GenerarDocumentoElectronico {
 		for (Impuestoretencion i : impuestoretencionList) {
 			XmlImpuestoRetencion imp = new XmlImpuestoRetencion();
 			imp.setCodigo(i.getCodigo());
-			imp.setCodigoRetencion(i.getCodigoretencion());
+			imp.setCodigoRetencion(i.getRetencionimpuestodet().getCodigo());
 			imp.setBaseImponible(i.getBaseimponible().doubleValue());
 			imp.setPorcentajeRetener(i.getPorcentajeretener().doubleValue());
 			imp.setValorRetenido(i.getValorretenido().doubleValue());

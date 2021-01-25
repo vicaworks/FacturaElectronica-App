@@ -518,7 +518,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			}
 			
 			retenciondetalleSelected.setCodigo(retencionimpuesto.getCodigo());
-			retenciondetalleSelected.setCodigoretencion(retenciondetalleSelected.getCodigo());
+			retenciondetalleSelected.setCodigoretencion(retenciondetalleSelected.getRetencionimpuestodet().getCodigo());
 			
 			retenciondetalleList.add(retenciondetalleSelected);
 			
