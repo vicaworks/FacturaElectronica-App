@@ -86,8 +86,8 @@ public class RepRecibAnuCtrl extends BaseCtrl {
 	public void initEvent(RepMainCtrl repMainCtrl) {
 		try {
 			this.repMainCtrl = repMainCtrl;
+			super.setEstablecimientoMain(repMainCtrl.getEstablecimientoMain());
 			consultarUsuario();
-			
 			consultar();
 			totalizar();
 		} catch (Exception e) {

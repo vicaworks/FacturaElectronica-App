@@ -88,6 +88,7 @@ public class RepFacCtrl extends BaseCtrl {
 		
 		try {
 			this.repMainCtrl = repMainCtrl;
+			super.setEstablecimientoMain(repMainCtrl.getEstablecimientoMain());
 			consultarUsuario();
 			hasta = new Date();
 			desde = FechaUtil.agregarMeses(hasta, -1);

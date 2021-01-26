@@ -13,9 +13,9 @@
         <style type="text/css">
         	
         	.pvUnoDT .ui-datatable-scrollable-body{
-				min-height: 40vh !important;
-				max-height: 40vh !important;
-				/* height: calc(100vh - 500px)!important; */				
+				/* min-height: 40vh !important;
+				max-height: 40vh !important; */
+				height: calc(100vh - 330px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -88,13 +88,36 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="card card-w-title">
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Reporte Cliente - Producto</h3>
+				<div class="p-grid p-align-center">
+	    			<div class="p-col-12 p-md-6">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Cliente - Producto</h3>
+	    			</div>
+	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+	                
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{repClienteProductosCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="cmb_establecimiento_wrapper"
+							disabled="#{not repClienteProductosCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
+							
+							<f:selectItems value="#{repClienteProductosCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{repClienteProductosCtrl.buscar()}" update="@form"/>
+								
+						</p:selectOneMenu>
+		                
+		                
+	        		</div>
+	    		</div>
 		   		<div class="EmptyBox5"/>
 		   		
 		   		<div class="p-grid p-align-end vertical-container">
 		    		
 		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="Desde *" styleClass="FontBold DispBlock"/>
+		    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
 		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calDesde" value="#{repClienteProductosCtrl.desde}"
 							pattern="dd/MM/yyyy"
@@ -105,7 +128,7 @@
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="Hasta *" styleClass="FontBold DispBlock"/>
+		    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
 		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calHasta" value="#{repClienteProductosCtrl.hasta}"
 							pattern="dd/MM/yyyy"
@@ -116,14 +139,15 @@
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-4">
-		    			<h:outputText value="Cliente *" styleClass="FontBold DispBlock"/>
+		    			<h:outputText value="CLIENTE *" styleClass="cpoRequerido Wid100"/>
 		    			<div class="EmptyBox5"/>
 		    			
 		    			<p:autoComplete id="intCriterioBusqueda" value="#{repClienteProductosCtrl.criterioBusqueda}" completeMethod="#{repClienteProductosCtrl.completeClienteCriterio}"
                         	forceSelection="true" 
                         	styleClass="Wid100" requiredMessage="REQUERIDO"
                         	placeholder="C.I., R.U.C., Nombre del cliente"
-                        	minQueryLength="2"/>
+                        	minQueryLength="2"
+                        	required="true"/>
 		    			
 			    		<p:message for="intCriterioBusqueda"/>
 		    		</div>
@@ -154,11 +178,12 @@
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			<div class="EmptyBox5"/>
+			 <div class="EmptyBox5"/>
+			 <!--
 			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repClienteProductosCtrl.ventasQuerieList}">
 				<p:chart type="bar" model="#{repClienteProductosCtrl.barChartModel}" style="height:400px" responsive="true"/>
 			</p:panelGrid>
-			<div class="EmptyBox5"/>
+			<div class="EmptyBox5"/> -->
 			<div class="card card-w-title">
 				
 				<p:dataTable id="pvUnoDT"

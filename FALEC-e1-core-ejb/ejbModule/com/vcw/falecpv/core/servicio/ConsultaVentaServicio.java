@@ -354,7 +354,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<VentasQuery> getVentasProductoByNombreCliente(String idEstablecimiento,Date desde,Date hasta,String razonSocial)throws DaoException{
+	public List<VentasQuery> getVentasProductoByNombreCliente(String idEstablecimiento,String idEmpresa,Date desde,Date hasta,String razonSocial)throws DaoException{
 		try {
 			String sql = "select " + 
 			"		d.idproducto, " +
@@ -363,12 +363,14 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		SUM(d.cantidad ) as cantidad, " +
 			"		SUM(d.preciototalsinimpuesto ) as preciototalsinimpuesto " +
 			"	from  " +
-			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
+			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " +
+			"		inner join establecimiento est on est.idestablecimiento = c.idestablecimiento " +
 			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
 			"		inner join detalle d on d.idcabecera = c.idcabecera " +
 			"		inner join producto p on d.idproducto = p.idproducto  " +
 			"	where  " +
-			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+			( idEstablecimiento!=null?"		c.idestablecimiento  = '" + idEstablecimiento + "' ":
+				"		est.idempresa  = '" + idEmpresa + "' ") +
 			"		and tc.identificador in ('00','01') " +
 			"		and upper(cl.razonsocial) like '%" + razonSocial.toUpperCase() + "%' " +
 			"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
@@ -412,6 +414,54 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 					"		inner join producto p on d.idproducto = p.idproducto  " +
 					"	where  " +
 					"		c.idestablecimiento = '" + idEstablecimiento + "' " +
+					"		and tc.identificador in ('00','01') " +
+					"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
+					"		and c.estado not in ('ANULADO','BORRADOR') " +
+					(producto!=null? "		and d.idproducto = '" + producto.getIdproducto() + "'":" ") +
+					"	group by " +
+					"		d.idproducto, " +
+					"		p.codigoprincipal, " +
+					"		p.nombregenerico " +
+					"	order by  " +
+					"		SUM(d.cantidad ) desc ";
+					
+					return resultList(sql, VentasQuery.class, false);
+					
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param desde
+	 * @param hasta
+	 * @param producto
+	 * @param idEstablecimiento
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<VentasQuery> getVentasProductos(Date desde,Date hasta,Producto producto,String idEstablecimiento,String idEmpresa)throws DaoException{
+		try {
+			
+			String sql = "select " + 
+					"		d.idproducto, " +
+					"		p.codigoprincipal, " +
+					"		p.nombregenerico, " +
+					"		SUM(d.cantidad ) as cantidad, " +
+					"		SUM(d.preciototalsinimpuesto ) as preciototalsinimpuesto " +
+					"	from  " +
+					"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " +
+					"		inner join establecimiento est on est.idestablecimiento = c.idestablecimiento " +
+					"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
+					"		inner join detalle d on d.idcabecera = c.idcabecera " +
+					"		inner join producto p on d.idproducto = p.idproducto  " +
+					"	where  " +
+					( idEstablecimiento!=null?"		c.idestablecimiento  = '" + idEstablecimiento + "' ":
+						"		est.idempresa  = '" + idEmpresa + "' ") +
 					"		and tc.identificador in ('00','01') " +
 					"		and c.fechaemision between '" + formatoFecha(desde) + "' and '" + formatoFecha(hasta) + "' " +
 					"		and c.estado not in ('ANULADO','BORRADOR') " +

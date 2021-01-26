@@ -84,6 +84,7 @@ public class RepRecibCtrl extends BaseCtrl {
 	public void initEvent(RepMainCtrl repMainCtrl) {
 		try {
 			this.repMainCtrl = repMainCtrl;
+			super.setEstablecimientoMain(repMainCtrl.getEstablecimientoMain());
 			consultarUsuario();
 			hasta = new Date();
 			desde = FechaUtil.agregarMeses(hasta, -1);

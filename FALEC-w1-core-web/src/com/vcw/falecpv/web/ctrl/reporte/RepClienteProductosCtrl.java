@@ -36,6 +36,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -58,6 +59,9 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 	
 	@EJB
 	private ConsultaVentaServicio consultaVentaServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	
 	private String criterioBusqueda;
@@ -75,6 +79,7 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -180);
 		} catch (Exception e) {
@@ -95,7 +100,11 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 	}
 	
 	private void consultar()throws DaoException{
-		ventasQuerieList = consultaVentaServicio.getVentasProductoByNombreCliente(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda);
+		ventasQuerieList = consultaVentaServicio.getVentasProductoByNombreCliente(establecimientoMain!=null?establecimientoMain.getIdestablecimiento():null,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), 
+				desde, 
+				hasta, 
+				criterioBusqueda);
 	}
 	
 	private void populateChart() {

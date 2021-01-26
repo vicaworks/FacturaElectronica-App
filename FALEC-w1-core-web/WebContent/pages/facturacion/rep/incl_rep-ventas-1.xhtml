@@ -50,7 +50,8 @@
     	<div class="p-grid p-align-center vertical-container">
     	
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Vendedor" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="VENDEDOR *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
     			<p:selectOneMenu id="somVendedor"
 							value="#{repVentaCtrl.usuarioSelected}"
 							converter="omnifaces.SelectItemsConverter"
@@ -66,7 +67,8 @@
     		</div>
     		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Tipo de pago" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="TIPO PAGO *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
     			<p:selectOneMenu id="somTipoPago"
 							value="#{repVentaCtrl.tipopagoSelected}"
 							converter="omnifaces.SelectItemsConverter"
@@ -82,7 +84,8 @@
     		</div>
     		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Fabricante" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="FABRICANTE *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
     			<p:selectOneMenu id="somFabricante"
 							value="#{repVentaCtrl.fabricanteSelected}"
 							converter="omnifaces.SelectItemsConverter"
@@ -98,7 +101,8 @@
     		</div>
     		 
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="#{msg['label.categoria2']}" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="#{msg['label.categoria']} *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
     			<p:selectOneMenu id="somCategoria"
 							value="#{repVentaCtrl.categoriaSelected}"
 							converter="omnifaces.SelectItemsConverter"
@@ -114,12 +118,14 @@
     		</div>
     		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="CRITERIO" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
     			<p:inputText value="#{repVentaCtrl.criterioBusqueda}" placeholder="#Factura, Cliente, Cod barra, producto" styleClass="Wid100"/>
     		</div>
     		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
 	    		<p:calendar id="calRep1" value="#{repVentaCtrl.desde}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -129,7 +135,8 @@
     		</div>
     		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
 	    		<p:calendar id="calRep2" value="#{repVentaCtrl.hasta}"
 					pattern="dd/MM/yyyy"
 					locale="es" 

@@ -13,8 +13,8 @@
         <style type="text/css">
         	
         	.pvUnoDT .ui-datatable-scrollable-body{
-				min-height: 40vh !important;
-				/* height: calc(100vh - 500px)!important; */				
+				
+				height: calc(100vh - 795px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
@@ -85,15 +85,40 @@
     	
     	<!-- Reporte global -->
 	    <h:form id="formMain">
-	    	
+	    	<p:remoteCommand name="limpiar" actionListener="#{repProductosCtrl.limpiarBefore}" update="@form"/>
 	    	<div class="card card-w-title">
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Reporte Productos más Vendidos</h3>
+	    		
+	    		<div class="p-grid p-align-center">
+	    			<div class="p-col-12 p-md-6">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Productos más Vendidos</h3>
+	    			</div>
+	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+	                
+	                <p:selectOneMenu id="somEstablecimientoMain"
+						value="#{repProductosCtrl.establecimientoMain}"
+						converter="omnifaces.SelectItemsConverter"
+						styleClass="cmb_establecimiento_wrapper"
+						disabled="#{not repProductosCtrl.habilitarEstablecimientoMain}">
+						
+						<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
+						
+						<f:selectItems value="#{repProductosCtrl.establecimientoMainList}" var="st"
+							itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+						
+						<p:ajax event="valueChange" listener="#{repProductosCtrl.limpiarFormulario(true)}" update="@form"/>
+							
+					</p:selectOneMenu>
+	                
+	                
+        		</div>
+	    		</div>
+				
 		   		<div class="EmptyBox5"/>
 		   		
 		   		<div class="p-grid p-align-end vertical-container">
 		   		
 		   			<div class="p-col-12">
-		    			<h:outputText value="Producto *" styleClass="FontBold DispBlock"/>
+		    			<h:outputText value="PRODUCTO *" styleClass="cpoRequerido Wid100"/>
 		    			<div class="EmptyBox5"/>
 		    			<p:selectOneMenu id="somInvListaProducto"
 								value="#{repProductosCtrl.productoSelected}"
@@ -106,37 +131,40 @@
 									itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 							<f:selectItems value="#{repProductosCtrl.productoList}" var="prof"
 								itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
+							<p:ajax event="valueChange" listener="#{repProductosCtrl.limpiarFormulario(false)}" update="@form"/>	
 						</p:selectOneMenu>
 						<p:message for="somInvListaProducto" />
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="Desde *" styleClass="FontBold DispBlock"/>
+		    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
 		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calDesde" value="#{repProductosCtrl.desde}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
 							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+							<p:ajax event="dateSelect" listener="#{repProductosCtrl.limpiarFormulario(false)}" update="@form"/>
 						</p:calendar>
 						<p:message for="calDesde"/>
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="Hasta *" styleClass="FontBold DispBlock"/>
+		    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
 		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calHasta" value="#{repProductosCtrl.hasta}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
 							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+							<p:ajax event="dateSelect" listener="#{repProductosCtrl.limpiarFormulario(false)}" update="@form"/>
 						</p:calendar>
 						<p:message for="calHasta"/>
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-2">
 			    		<p:commandButton id="cmdRefrecar"
-							value="CONSULTAR" icon="fa fa-search" 
-							action="#{repProductosCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
-							/>
+							value="CONSULTAR" icon="fa fa-search" onclick="limpiar()"
+							action="#{repProductosCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form">
+						</p:commandButton>
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-2">
@@ -162,7 +190,7 @@
 			
 			<div class="EmptyBox5"/>
 			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repProductosCtrl.ventasQuerieList}">
-				<p:chart type="bar" model="#{repProductosCtrl.barChartModel}" style="height:400px" responsive="true"/>
+				<p:chart type="bar" model="#{repProductosCtrl.barChartModel}" style="height:400px; width:100%" rendered="#{not empty repProductosCtrl.ventasQuerieList}"/>
 			</p:panelGrid>
 			<div class="EmptyBox5"/>
 			
@@ -179,8 +207,8 @@
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idproducto}"
-						rows="20"
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
+						rows="17"
+						rowsPerPageTemplate="17,20,25,30,35,40">
 					
 					<p:column headerText="CODIGO" style="width:40px;">
 						<h:outputText value="#{v.codigoprincipal}" >

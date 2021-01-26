@@ -24,7 +24,8 @@
     	<div class="p-grid p-align-center vertical-container">
     		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Vendedor" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="VENDEDOR *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
     			<p:selectOneMenu id="somVendedorRep2"
 							value="#{repFacCtrl.usuarioSelected}"
 							converter="omnifaces.SelectItemsConverter"
@@ -38,12 +39,14 @@
     		</div>
     		
     		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="CRITERIO" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
     			<p:inputText value="#{repFacCtrl.criterioBusqueda}" placeholder="#Factura, Cliente" styleClass="Wid100"/>
     		</div>
     		
     		<div class="p-col-12 p-md-2">
-    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
 	    		<p:calendar value="#{repFacCtrl.desde}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -53,7 +56,8 @@
     		</div>
     		
     		<div class="p-col-12 p-md-2">
-    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
+    			<div class="EmptyBox5"/>
 	    		<p:calendar value="#{repFacCtrl.hasta}"
 					pattern="dd/MM/yyyy"
 					locale="es" 

@@ -34,6 +34,7 @@ import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -58,6 +59,9 @@ public class RepProductosCtrl extends BaseCtrl {
 	@EJB
 	private ConsultaVentaServicio consultaVentaServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private List<Producto> productoList;
 	private Producto productoSelected;
 	private Date desde;
@@ -74,6 +78,7 @@ public class RepProductosCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -180);
 			consultarProducto();
@@ -98,12 +103,18 @@ public class RepProductosCtrl extends BaseCtrl {
 	}
 	
 	private void consultar()throws DaoException{
-		ventasQuerieList = consultaVentaServicio.getVentasProductos(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, productoSelected);
+		ventasQuerieList = consultaVentaServicio.getVentasProductos(desde, 
+				hasta, 
+				productoSelected,establecimientoMain!=null?establecimientoMain.getIdestablecimiento():null,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
+	
 	
 	public void consultarProducto()throws DaoException{
 		productoList = null;
-		productoList = productoServicio.getProductoDao().getByQuery("PRODUCTO",EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		productoList = productoServicio.getProductoDao().getByQuery(EstadoRegistroEnum.ACTIVO, 
+				establecimientoMain!=null?establecimientoMain.getIdestablecimiento():null,
+						AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	private void populateChart() {
@@ -285,6 +296,28 @@ public class RepProductosCtrl extends BaseCtrl {
 	 */
 	public void setBarChartModel(BarChartModel barChartModel) {
 		this.barChartModel = barChartModel;
+	}
+
+	public void limpiarFormulario(boolean consultarProductos) {
+		try {
+			
+			ventasQuerieList = null;
+			barChartModel = new BarChartModel();
+			if(consultarProductos) {
+				consultarProducto();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		 
+	}
+	
+	public void limpiarBefore() {
+		ventasQuerieList = null;
+		barChartModel = new BarChartModel();
+		AppJsfUtil.ajaxUpdate("formMain");
 	}
 
 }
