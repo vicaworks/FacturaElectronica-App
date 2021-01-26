@@ -102,6 +102,11 @@ public class Usuario implements Serializable {
     @Column(name = "nombrepantalla", nullable = false, length = 20)
     private String nombrepantalla;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "habilitarestablecimiento", nullable = false)
+    private int habilitarestablecimiento = 0;
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     private Establecimiento establecimiento;
@@ -437,6 +442,24 @@ public class Usuario implements Serializable {
 	 */
 	public void setCorreoelectronico(String correoelectronico) {
 		this.correoelectronico = correoelectronico;
+	}
+
+
+
+	/**
+	 * @return the habilitarestablecimiento
+	 */
+	public int getHabilitarestablecimiento() {
+		return habilitarestablecimiento;
+	}
+
+
+
+	/**
+	 * @param habilitarestablecimiento the habilitarestablecimiento to set
+	 */
+	public void setHabilitarestablecimiento(int habilitarestablecimiento) {
+		this.habilitarestablecimiento = habilitarestablecimiento;
 	}
 
 

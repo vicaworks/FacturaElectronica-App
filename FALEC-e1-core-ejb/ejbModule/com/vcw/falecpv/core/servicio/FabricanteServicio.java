@@ -58,14 +58,14 @@ public class FabricanteServicio extends AppGenericService<Fabricante, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean tieneDependencias(String idfabricante,String idEstablecimiento)throws DaoException{
+	public boolean tieneDependencias(String idfabricante,String idEmpresa)throws DaoException{
 		try {
 			
 			QueryBuilder q = new QueryBuilder(fabricanteDao.getEntityManager());
 			
 			if(q.select("p")
 				.from(Producto.class,"p")
-				.equals("p.establecimiento.idestablecimiento", idEstablecimiento)
+				.equals("p.establecimiento.empresa.idempresa", idEmpresa)
 				.equals("p.fabricante.idfabricante",idfabricante).count()>0) {
 				
 				return true;

@@ -19,6 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.model.StreamedContent;
 
@@ -97,7 +98,7 @@ public class CategoriaCtrl extends BaseCtrl {
 	private void consultar() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable(":formMain:categoiaDT");
 		categoriaList = null;
-		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	@Override
@@ -111,7 +112,7 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 			// si tiene dependencias
 			if (categoriaServicio.tieneDependencias(categoriaSelected.getIdcategoria(),
-					categoriaSelected.getEstablecimiento().getIdestablecimiento())) {
+					categoriaSelected.getEmpresa().getIdempresa())) {
 				
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR TIENE DEPENDENCIAS.");
 				return;
@@ -134,7 +135,7 @@ public class CategoriaCtrl extends BaseCtrl {
 		try {
 			
 			// validar si existe el nombre de la categoria
-			if(categoriaServicio.getCategoriaDao().existeCategoria(categoriaSelected.getCategoria(), categoriaSelected.getIdcategoria(),AppJsfUtil.getEstablecimiento().getIdestablecimiento())){
+			if(categoriaServicio.getCategoriaDao().existeCategoria(categoriaSelected.getCategoria(), categoriaSelected.getIdcategoria(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())){
 				AppJsfUtil.addErrorMessage("frmCategoria", "ERROR","EL NOMBRE DE LA CATEGORIA YA EXISTE.");
 				AppJsfUtil.addErrorMessage("frmCategoria:intCategoria","YA EXISTE.");
 				return;
@@ -194,7 +195,7 @@ public class CategoriaCtrl extends BaseCtrl {
 	private void nuevoCategoria() {
 		categoriaSelected = new Categoria();
 		categoriaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-		categoriaSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		categoriaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 	}
 	
 	public void nuevoForm() {
@@ -238,7 +239,7 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getRazonsocial());
 			
 			// lista de categoria
 			int fila = 8;
@@ -249,11 +250,6 @@ public class CategoriaCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(c.getIdcategoria());
-				
-				
-				cell = row.createCell(1);
-				cell.setCellValue(c.getEstablecimiento().getNombrecomercial());
-				
 				
 				cell = row.createCell(2);
 				cell.setCellValue(c.getCategoria());
@@ -271,12 +267,12 @@ public class CategoriaCtrl extends BaseCtrl {
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(c.getIdusuario()).getNombre());
 				
 				
-				cell = row.createCell(6);				
-				cell.setCellValue(c.getUpdated());
-//				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
-				
+				cell = row.createCell(6);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(FechaUtil.formatoFechaHora(c.getUpdated()));
 				
 				fila++;
+				
 			}
 			
 			wb.setActiveSheet(0);

@@ -35,18 +35,18 @@ public class FabricanteDao extends AppGenericDao<Fabricante, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Fabricante> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idEstablecimiento)throws DaoException{
+	public List<Fabricante> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idEmpresa)throws DaoException{
 		try {
 			
 			Query q = null;
 			if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
-				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.establecimiento.idestablecimiento=:idestablecimiento AND f.estado=:estado ORDER BY f.nombrecomercial");
+				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.empresa.idempresa=:idempresa AND f.estado=:estado ORDER BY f.nombrecomercial");
 				q.setParameter("estado", estadoRegistroEnum.getInicial());
 			}else {
-				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.establecimiento.idestablecimiento=:idestablecimiento ORDER BY f.nombrecomercial");
+				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.empresa.idempresa=:idempresa ORDER BY f.nombrecomercial");
 			}
 			
-			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("idempresa", idEmpresa	);
 			return q.getResultList();
 			
 		} catch (Exception e) {
@@ -62,20 +62,20 @@ public class FabricanteDao extends AppGenericDao<Fabricante, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean existeNombre(String fabricante,String idFabricante,String idEstablecimiento)throws DaoException{
+	public boolean existeNombre(String fabricante,String idFabricante,String idEmpresa)throws DaoException{
 		try {
 			
 			Query q = null;
 			
 			if(idFabricante!=null) {
-				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.establecimiento.idestablecimiento=:idestablecimiento AND upper(f.nombrecomercial)=:fabricante AND f.idfabricante<>:idFabricante");
+				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.empresa.idempresa=:idempresa AND upper(f.nombrecomercial)=:fabricante AND f.idfabricante<>:idFabricante");
 				q.setParameter("idFabricante", idFabricante);
 			}else {
-				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.establecimiento.idestablecimiento=:idestablecimiento AND upper(f.nombrecomercial)=:fabricante");
+				q = getEntityManager().createQuery("SELECT f FROM Fabricante f WHERE f.empresa.idempresa=:idempresa AND upper(f.nombrecomercial)=:fabricante");
 			}
 			
 			q.setParameter("fabricante", fabricante.toUpperCase());
-			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("idempresa", idEmpresa);
 			
 			if(q.getResultList().size()>0) {
 				return true;

@@ -68,6 +68,7 @@ public class RepRecibCtrl extends BaseCtrl {
 	private Date hasta;
 	private List<VentasQuery> ventasQueryList;
 	private TotalesDto totalesDto;
+	private RepMainCtrl repMainCtrl;
 	
 	/**
 	 * 
@@ -77,7 +78,12 @@ public class RepRecibCtrl extends BaseCtrl {
 	
 	@PostConstruct
 	public void init() {
+		// el init se paso a initEvent para inicialiuzar la sucursal
+	}
+	
+	public void initEvent(RepMainCtrl repMainCtrl) {
 		try {
+			this.repMainCtrl = repMainCtrl;
 			consultarUsuario();
 			hasta = new Date();
 			desde = FechaUtil.agregarMeses(hasta, -1);
@@ -91,12 +97,22 @@ public class RepRecibCtrl extends BaseCtrl {
 	
 	private void consultarUsuario()throws DaoException{
 		usuarioList = null;
-		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(
+					EstadoRegistroEnum.ACTIVO, 
+					establecimientoMain!=null?establecimientoMain.getIdestablecimiento():null,
+					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	private void consultar()throws DaoException {
 		ventasQueryList = null;
-		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected,ComprobanteEstadoEnum.REGISTRADO, criterioBusqueda, desde, hasta, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),GenTipoDocumentoEnum.RECIBO);
+		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected,
+				ComprobanteEstadoEnum.REGISTRADO, 
+				criterioBusqueda, 
+				desde, 
+				hasta, 
+				establecimientoMain!=null?establecimientoMain.getIdestablecimiento():null,
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
+				GenTipoDocumentoEnum.RECIBO);
 	}
 	
 	@Override
@@ -146,7 +162,10 @@ public class RepRecibCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getEmpresa().getRazonsocial());
+			
+			rowCliente = sheet.getRow(3);
+			rowCliente.createCell(6).setCellValue(establecimientoMain!=null?establecimientoMain.getNombrecomercial():"TODOS");
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -170,7 +189,13 @@ public class RepRecibCtrl extends BaseCtrl {
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
 				
+				
 				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(TextoUtil.leftPadTexto(v.getCodigoestablecimiento(), 3, "0"));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
@@ -330,6 +355,20 @@ public class RepRecibCtrl extends BaseCtrl {
 	 */
 	public void setUsuarioSelected(Usuario usuarioSelected) {
 		this.usuarioSelected = usuarioSelected;
+	}
+
+	/**
+	 * @return the repMainCtrl
+	 */
+	public RepMainCtrl getRepMainCtrl() {
+		return repMainCtrl;
+	}
+
+	/**
+	 * @param repMainCtrl the repMainCtrl to set
+	 */
+	public void setRepMainCtrl(RepMainCtrl repMainCtrl) {
+		this.repMainCtrl = repMainCtrl;
 	}
 
 }

@@ -24,13 +24,8 @@
 			}
 			
 			.cardTitle{
-				/* margin: 0px 0px 5px 0px !important; */
 				padding:0.5em 0px;
-				border-bottom: 1px solid #ccc;
 				font-size: 18px !important;
-				background-color: #F7F7F5;
-				border-radius: 4px;
-				/* background-color: #ccc; */
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -58,15 +53,21 @@
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	
-    	
-    	<p:breadCrumb>
+	  	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Reporte De Ventas" url="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf"/>
 		</p:breadCrumb>
-    	
+    	<div class="EmptyBox5"/>
     	<!-- Reporte global -->
 	    <h:form id="formMain">
-	    
+	    	
+	    	<f:metadata>
+			    <f:viewAction action="#{repVentaCtrl.initEvent(repMainCtrl)}" />
+			    <f:viewAction action="#{repFacCtrl.initEvent(repMainCtrl)}" />
+			    <f:viewAction action="#{repRecibCtrl.initEvent(repMainCtrl)}" />
+			    <f:viewAction action="#{repRecibAnuCtrl.initEvent(repMainCtrl)}" />
+			</f:metadata>
+	    	
 	    	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
@@ -78,7 +79,7 @@
 	    </h:form>
 	    
 	    <!-- Facturas emitidas -->
-	    <div class="EmptyBox20"/>
+	    <div class="EmptyBox10"/>
 	    <h:form id="formMain2">
 	    
 	    	<!-- Mensajes -->
@@ -92,7 +93,7 @@
 	    </h:form>
 	    
 	    <!-- Facturas anuladas -->
-	    <div class="EmptyBox20"/>
+	    <div class="EmptyBox10"/>
 	    <h:form id="formMain3">
 	    
 	    	<!-- Mensajes -->
@@ -106,7 +107,7 @@
 	    </h:form>
 	    
 	    <!-- Recibos -->
-	    <div class="EmptyBox20"/>
+	    <div class="EmptyBox10"/>
 	    <h:form id="formMain4">
 	    
 	    	<!-- Mensajes -->
@@ -120,7 +121,7 @@
 	    </h:form>
 	    
 	    <!-- Recibos anuladas -->
-	    <div class="EmptyBox20"/>
+	    <div class="EmptyBox10"/>
 	    <h:form id="formMain5">
 	    
 	    	<!-- Mensajes -->
@@ -134,7 +135,7 @@
 	    </h:form>
 	    
 	    <!-- Estadistico -->
-	    <div class="EmptyBox20"/>
+	    <div class="EmptyBox10"/>
 	    <h:form id="formMain6">
 	    
 	    	<!-- Mensajes -->

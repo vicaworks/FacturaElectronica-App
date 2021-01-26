@@ -223,7 +223,7 @@ public class ImportarProductoServicio {
 			
 			// crear la categoria 
 			Categoria categoria = new Categoria();
-			categoria.setEstablecimiento(establecimiento);
+			categoria.setEmpresa(establecimiento.getEmpresa());
 			categoria.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 			categoria.setIdusuario(idUsuario);
 			categoria.setUpdated(new Date());
@@ -268,7 +268,7 @@ public class ImportarProductoServicio {
 			// crear el fabricante
 			Fabricante fabricante = new Fabricante();
 			fabricante.setIdfabricante(contadorPkServicio.generarContadorTabla(TCFabricante.FABRICANTE, establecimiento.getIdestablecimiento()));
-			fabricante.setEstablecimiento(establecimiento);
+			fabricante.setEmpresa(establecimiento.getEmpresa());
 			fabricante.setIdusuario(idUsuario);
 			fabricante.setUpdated(new Date());
 			fabricante.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());

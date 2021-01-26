@@ -64,8 +64,8 @@ public class Categoria implements Serializable {
 	private String idusuario;
 	
 	@ManyToOne
-    @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
-    private Establecimiento establecimiento;
+    @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
+    private Empresa empresa;
 
 	/**
 	 * 
@@ -188,17 +188,17 @@ public class Categoria implements Serializable {
 	}
 
 	/**
-	 * @return the establecimiento
+	 * @return the empresa
 	 */
-	public Establecimiento getEstablecimiento() {
-		return establecimiento;
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 
 	/**
-	 * @param establecimiento the establecimiento to set
+	 * @param empresa the empresa to set
 	 */
-	public void setEstablecimiento(Establecimiento establecimiento) {
-		this.establecimiento = establecimiento;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 }

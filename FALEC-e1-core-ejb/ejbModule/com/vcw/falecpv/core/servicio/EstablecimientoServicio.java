@@ -210,5 +210,27 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 		}
 		
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Establecimiento> getByEmpresa(String idEmpresa)throws DaoException{
+		try {
+			
+			QueryBuilder qb = new QueryBuilder(establecimientoDao.getEntityManager());
+			
+			return qb.select("e")
+					.from(Establecimiento.class,"e")
+					.equals("e.empresa.idempresa", idEmpresa)
+					.orderBy("e.codigoestablecimiento").getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 }

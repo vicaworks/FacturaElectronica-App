@@ -128,9 +128,28 @@
 		</p:breadCrumb> -->
 		
         <h:form >
+        	<div class="p-grid p-nogutter">
+        		<div class="p-col-12 cmb_establecimiento" style="text-align: right;padding-right: 3px;margin-bottom: 3px;margin-top: 5px;">
+	                
+	                <p:selectOneMenu id="somEstablecimientoMain"
+						value="#{mainCtrl.establecimientoMain}"
+						converter="omnifaces.SelectItemsConverter"
+						styleClass="cmb_establecimiento_wrapper"
+						disabled="#{not mainCtrl.habilitarEstablecimientoMain}">
+						
+						<f:selectItems value="#{mainCtrl.establecimientoMainList}" var="st"
+							itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+						
+						<p:ajax event="valueChange" listener="#{mainCtrl.buscar()}" update="@form"/>
+							
+					</p:selectOneMenu>
+	                
+	                
+        		</div>
+        	</div>
 			<div class="p-grid">
 				<!-- Configuracion inicial -->
-				<div class="p-col-12 p-lg-6 padding20">
+				<div class="p-col-12 p-lg-6 padding10">
 					<div class="card card-w-title" style="height:100%;">
 						
 						<h3 class="cardTitle" style="color:#252529;">Empieza con Mako</h3>
@@ -151,7 +170,7 @@
 				</div>
 				
 				<!-- Reportes -->
-				<div class="p-col-12 p-lg-6 padding20">
+				<div class="p-col-12 p-lg-6 padding10">
 					<div class="card card-w-title">
 						
 						<h3 class="cardTitle">Reportes</h3>
@@ -180,7 +199,7 @@
 				</div>
 				
 				<!-- Total de ventas -->
-				<div class="p-col-12 p-lg-4 padding20">
+				<div class="p-col-12 p-lg-4 padding10">
 					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
 						<div class="EmptyBox20"/>
 						<h3 class="cardTitle" style="color:#535b65;">Total de ventas hoy</h3>
@@ -230,7 +249,7 @@
 				</div>
 				
 				<!-- Consumo promedio -->
-				<div class="p-col-12 p-lg-4 padding20">
+				<div class="p-col-12 p-lg-4 padding10">
 					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
 						<div class="EmptyBox20"/>
 						<h3 class="cardTitle" style="color:#535b65;">Consumo Promedio</h3>
@@ -268,7 +287,7 @@
 				</div>
 				
 				<!-- total clientes -->
-				<div class="p-col-12 p-lg-4 padding20">
+				<div class="p-col-12 p-lg-4 padding10">
 					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
 						<div class="EmptyBox20"/>
 						<h3 class="cardTitle" style="color:#535b65;">Total de Clientes</h3>
@@ -306,7 +325,7 @@
 				</div>
 				
 				<!-- Productos mas vendidos -->
-				<div class="p-col-12 p-lg-6 padding20">
+				<div class="p-col-12 p-lg-6 padding10">
 					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
 						<div class="EmptyBox20"/>
 						<h3 class="cardTitle" style="color:#535b65;">Ítems más vendidos</h3>
@@ -349,7 +368,7 @@
 				</div>
 				
 				<!-- Ventas del dia de hoy -->
-				<div class="p-col-12 p-lg-6 padding20">
+				<div class="p-col-12 p-lg-6 padding10">
 					<div class="card card-w-title" style="padding: 0.5em 0.5em !important;">
 						<div class="EmptyBox20"/>
 						<h3 class="cardTitle" style="color:#535b65;">Ventas</h3>

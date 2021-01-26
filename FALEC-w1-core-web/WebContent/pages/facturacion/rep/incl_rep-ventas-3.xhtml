@@ -32,7 +32,7 @@
 							requiredMessage="REQUERIDO"
 							styleClass="Wid100">
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-					<f:selectItems value="#{repFacCtrl.usuarioList}" var="u2"
+					<f:selectItems value="#{repFacAnuCtrl.usuarioList}" var="u2"
 									itemLabel="#{u2.nombre}" itemValue="#{u2}" />	
 				</p:selectOneMenu>
     		</div>
@@ -65,7 +65,9 @@
     		<div class="p-col-12 p-md-2">
   					<div class="EmptyBox5"/>
   					<p:commandButton icon="fa fa-search" 
-						action="#{repFacAnuCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;"/>
+						action="#{repFacAnuCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;">
+						<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repFacAnuCtrl.establecimientoMain}"/>
+					</p:commandButton>
 						
   					<p:commandButton icon="fa fa-file-excel-o" 
 						styleClass="success-btn Fs18" update="@form"

@@ -19,6 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.CellAddress;
 import org.primefaces.model.StreamedContent;
 
@@ -90,7 +91,7 @@ public class FabricanteCtrl extends BaseCtrl {
 	private void consultar() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable(":formMain:fabricanteDT");
 		fabricanteList = null;
-		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	@Override
@@ -114,7 +115,7 @@ public class FabricanteCtrl extends BaseCtrl {
 			}
 			
 			// si tiene dependencias
-			if(fabricanteServicio.tieneDependencias(fabricanteSelected.getIdfabricante(),fabricanteSelected.getEstablecimiento().getIdestablecimiento())) {
+			if(fabricanteServicio.tieneDependencias(fabricanteSelected.getIdfabricante(),fabricanteSelected.getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR TIENE DEPENDENCIAS.");
 				return;
 			}
@@ -136,7 +137,7 @@ public class FabricanteCtrl extends BaseCtrl {
 		try {
 			
 			// validar si existe el nombre
-			if(fabricanteServicio.getFabricanteDao().existeNombre(fabricanteSelected.getNombrecomercial(), fabricanteSelected.getIdfabricante(),AppJsfUtil.getEstablecimiento().getIdestablecimiento())) {
+			if(fabricanteServicio.getFabricanteDao().existeNombre(fabricanteSelected.getNombrecomercial(), fabricanteSelected.getIdfabricante(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmFabricante", "ERROR","EL NOMBRE DE LA CATEGORIA YA EXISTE.");
 				AppJsfUtil.addErrorMessage("frmFabricante:intNombre","YA EXISTE.");
 				return;
@@ -144,7 +145,7 @@ public class FabricanteCtrl extends BaseCtrl {
 			
 			fabricanteSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			fabricanteSelected.setUpdated(new Date());
-			fabricanteSelected = fabricanteServicio.guardar(fabricanteSelected, fabricanteSelected.getEstablecimiento().getIdestablecimiento());
+			fabricanteSelected = fabricanteServicio.guardar(fabricanteSelected, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
 			
 			switch (moduloCall) {
 			
@@ -194,7 +195,7 @@ public class FabricanteCtrl extends BaseCtrl {
 	private void nuevoFabricante() {
 		fabricanteSelected = new Fabricante();
 		fabricanteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-		fabricanteSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		fabricanteSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 	}
 	
 	public void nuevoForm() {
@@ -239,7 +240,7 @@ public class FabricanteCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getRazonsocial());
 			
 			// lista de categoria
 			int fila = 8;
@@ -251,11 +252,6 @@ public class FabricanteCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(f.getIdfabricante());
-				
-				
-				cell = row.createCell(col++);
-				cell.setCellValue(f.getEstablecimiento().getNombrecomercial());
-				
 				
 				cell = row.createCell(col++);
 				cell.setCellValue(f.getNombrecomercial());
@@ -270,8 +266,8 @@ public class FabricanteCtrl extends BaseCtrl {
 				
 				
 				cell = row.createCell(col++);
-				cell.setCellValue(f.getUpdated());
-//				UtilExcel.setHSSBordeCell(cell,"dd/mm/yyyy HH:mm");
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(FechaUtil.formatoFechaHora(f.getUpdated()));
 				
 				fila++;
 				

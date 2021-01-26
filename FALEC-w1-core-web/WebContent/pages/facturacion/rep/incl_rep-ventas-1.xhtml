@@ -16,10 +16,36 @@
 	</style>
 	
 	<div class="card card-w-title">
-		<h3 class="cardTitle">
-			<i class="fa fa-arrow-circle-right"/>
-			Opciones de #{msg['label.busqueda.lower']} globales
-		</h3>
+		<div class="p-grid p-justify-between p-align-center">
+			<div class="p-col-12 p-md-6">
+				<h3 class="cardTitle">
+					<i class="fa fa-arrow-circle-right"/>
+					Opciones de #{msg['label.busqueda.lower']} globales
+				</h3>
+			</div>
+			
+			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+				<h:outputText value="Establecimiento * : " style="margin-right:5px;"/>
+				<p:selectOneMenu id="somEstablecimientoMain"
+					value="#{repMainCtrl.establecimientoMain}"
+					converter="omnifaces.SelectItemsConverter"
+					styleClass="cmb_establecimiento_wrapper"
+					disabled="#{not repMainCtrl.habilitarEstablecimientoMain}">
+					
+					<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
+					
+					<f:selectItems value="#{repMainCtrl.establecimientoMainList}" var="st"
+						itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+					
+					<p:ajax event="valueChange" update=":formMain :formMain2 :formMain3 :formMain4 :formMain5" process=":formMain :formMain2 :formMain3 :formMain4 :formMain5"
+						listener="#{repMainCtrl.consultarMain(repVentaCtrl,repFacCtrl,repFacAnuCtrl,repRecibCtrl,repRecibAnuCtrl)}">
+					</p:ajax>
+							
+				</p:selectOneMenu>
+				
+			</div>
+			
+		</div>
    		<div class="EmptyBox5"/>
     	<div class="p-grid p-align-center vertical-container">
     	
@@ -30,7 +56,9 @@
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100">
+							styleClass="Wid100"
+							filter="true"
+							filterMatchMode="contains">
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 					<f:selectItems value="#{repVentaCtrl.usuarioList}" var="u"
 									itemLabel="#{u.nombre}" itemValue="#{u}" />	
@@ -44,7 +72,9 @@
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100">
+							styleClass="Wid100"
+							filter="true"
+							filterMatchMode="contains">
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 					<f:selectItems value="#{repVentaCtrl.tipopagoList}" var="tp"
 									itemLabel="#{tp.nombre}" itemValue="#{tp}" />	
@@ -58,7 +88,9 @@
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100">
+							styleClass="Wid100"
+							filter="true"
+							filterMatchMode="contains">
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 					<f:selectItems value="#{repVentaCtrl.fabricanteList}" var="fa"
 									itemLabel="#{fa.nombrecomercial}" itemValue="#{fa}" />	
@@ -72,7 +104,9 @@
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100">
+							styleClass="Wid100"
+							filter="true"
+							filterMatchMode="contains">
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 					<f:selectItems value="#{repVentaCtrl.categoriaList}" var="ca"
 									itemLabel="#{ca.categoria}" itemValue="#{ca}" />	
@@ -109,7 +143,9 @@
   					<div class="EmptyBox5"/>
   					<p:commandButton id="cmdGlobalBuscar"
 						icon="fa fa-search" 
-						action="#{repVentaCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;"/>
+						action="#{repVentaCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;">
+						<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repVentaCtrl.establecimientoMain}"/>
+					</p:commandButton>
 					
   					<p:commandButton id="cmdGlobalExcel"
 						icon="fa fa-file-excel-o" 

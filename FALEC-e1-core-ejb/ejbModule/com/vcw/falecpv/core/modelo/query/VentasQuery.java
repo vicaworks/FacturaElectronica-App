@@ -73,6 +73,7 @@ public class VentasQuery implements Serializable {
 	private Integer contador = 0;
 	private Date updated;
 	private boolean seleccion = false;
+	private String codigoestablecimiento;
 	
 	/**
 	 * 
@@ -796,6 +797,20 @@ public class VentasQuery implements Serializable {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the codigoestablecimiento
+	 */
+	public String getCodigoestablecimiento() {
+		return codigoestablecimiento;
+	}
+
+	/**
+	 * @param codigoestablecimiento the codigoestablecimiento to set
+	 */
+	public void setCodigoestablecimiento(String codigoestablecimiento) {
+		this.codigoestablecimiento = codigoestablecimiento;
 	}
 
 }

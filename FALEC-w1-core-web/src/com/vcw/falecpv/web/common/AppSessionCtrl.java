@@ -5,7 +5,6 @@ package com.vcw.falecpv.web.common;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -122,6 +121,10 @@ public class AppSessionCtrl implements Serializable {
 		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ANULADO});
 		
 		return lista.contains(estadoEnum);
+	}
+	
+	public String formatoCadena(String cadena,int longitud,String caracter) {
+		return TextoUtil.leftPadTexto(cadena, longitud, caracter);
 	}
 	
 	/**

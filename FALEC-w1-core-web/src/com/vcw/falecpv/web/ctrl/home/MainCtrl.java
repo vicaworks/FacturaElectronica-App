@@ -20,6 +20,7 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.web.common.AppSessionCtrl;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -40,6 +41,9 @@ public class MainCtrl extends BaseCtrl {
 	@EJB
 	private ConsultaVentaServicio consultaVentaServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private VentasQuery totalVentas;
 	private BigDecimal promedioConsumo;
 	private Date desde;
@@ -58,14 +62,30 @@ public class MainCtrl extends BaseCtrl {
 	@PostConstruct
     public void init() {
 		try {
+			// establecer establecimiento main
 			appSessionCtrl = (AppSessionCtrl) AppJsfUtil.getManagedBean("appSessionCtrl");
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
-			consultarTotalventas();
-			consultarPromedioConsumo();
-			consultarContadorCliente();
-			consultarProductosMasVendidos();
-			consultarResumenVentas();
+			consultarFacade();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void consultarFacade() throws DaoException {
+		consultarTotalventas();
+		consultarPromedioConsumo();
+		consultarContadorCliente();
+		consultarProductosMasVendidos();
+		consultarResumenVentas();
+	}
+	
+	@Override
+	public void buscar() {
+		try {
+			consultarFacade();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -73,7 +93,7 @@ public class MainCtrl extends BaseCtrl {
 	}
 	
 	private void consultarTotalventas()throws DaoException{
-		List<VentasQuery> totales = consultaVentaServicio.getTotalByFecha(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), FechaUtil.agregarDias(new Date(), 0));
+		List<VentasQuery> totales = consultaVentaServicio.getTotalByFecha(establecimientoMain.getIdestablecimiento(), FechaUtil.agregarDias(new Date(), 0));
 		totalVentas = null;
 		if(totales!=null && !totales.isEmpty()) {
 			VentasQuery vf = totales.stream().filter(x->x.getIdentificador().equals(GenTipoDocumentoEnum.FACTURA.getIdentificador())).findFirst().orElse(null);
@@ -95,7 +115,7 @@ public class MainCtrl extends BaseCtrl {
 	
 	private void consultarPromedioConsumo()throws DaoException{
 		promedioConsumo = null;
-		promedioConsumo = consultaVentaServicio.getConsumoPromedio(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta);
+		promedioConsumo = consultaVentaServicio.getConsumoPromedio(establecimientoMain.getIdestablecimiento(), desde, hasta);
 		if(promedioConsumo!=null && promedioConsumo.doubleValue()==0d) {
 			promedioConsumo = null;
 		}
@@ -103,7 +123,7 @@ public class MainCtrl extends BaseCtrl {
 	
 	private void consultarContadorCliente()throws DaoException{
 		contadorClientes = null;
-		contadorClientes = consultaVentaServicio.getClientesContador(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta);
+		contadorClientes = consultaVentaServicio.getClientesContador(establecimientoMain.getIdestablecimiento(), desde, hasta);
 		if(contadorClientes!=null && contadorClientes==0) {
 			contadorClientes = null;
 		}
@@ -111,7 +131,7 @@ public class MainCtrl extends BaseCtrl {
 	
 	private void consultarProductosMasVendidos()throws DaoException{
 		productosMasVendidos = null;
-		productosMasVendidos = consultaVentaServicio.getVentasProductos(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, null);
+		productosMasVendidos = consultaVentaServicio.getVentasProductos(establecimientoMain.getIdestablecimiento(), desde, hasta, null);
 		if(productosMasVendidos!=null && productosMasVendidos.size()>20) {
 			
 			for(int i=0;i<(productosMasVendidos.size()-20);i++) {
@@ -122,7 +142,7 @@ public class MainCtrl extends BaseCtrl {
 	
 	private void consultarResumenVentas()throws DaoException{
 		resumenVentas = null;
-		resumenVentas = consultaVentaServicio.getVentasResumenByFecha(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), new Date());
+		resumenVentas = consultaVentaServicio.getVentasResumenByFecha(establecimientoMain.getIdestablecimiento(), new Date());
 	}
 	
 	public String getFormatoNumDocumento(String numDoc) {
@@ -240,5 +260,5 @@ public class MainCtrl extends BaseCtrl {
 	public void setResumenVentas(List<VentasQuery> resumenVentas) {
 		this.resumenVentas = resumenVentas;
 	}
-	
+
 }

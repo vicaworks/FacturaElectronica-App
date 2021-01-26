@@ -475,6 +475,31 @@
 	font-size: 11px !important;
 }
 
+/* ====== COMBO ESTABLECIMIENTO =========== */
+
+.cmb_establecimiento .ui-selectonemenu {
+	margin: 0px !important;
+	min-width: 200px !important;
+	border-radius: 3px;
+}
+
+.cmb_establecimiento .ui-selectonemenu .ui-selectonemenu-label{
+	padding: 7px 5px !important;
+	font-size: 10px;
+}
+
+.cmb_establecimiento  .ui-selectonemenu.ui-state-focus:not(.ui-state-error) {
+  border: 1px solid #a9a9ae !important;
+  outline: 0 none!important;
+  -webkit-box-shadow: 0 0 0 0 #098bdc !important;
+  -moz-box-shadow: 0 0 0 0 #098bdc!important;
+  box-shadow: 0 0 0 0 #098bdc!important;
+}
+
+.ui-selectonemenu-items-wrapper ul li {
+	padding: 0.2em 0.40em !important;
+	font-size: 10px !important;
+}
 
 /* ===============  ROMA LAYOUT   ================ */
 

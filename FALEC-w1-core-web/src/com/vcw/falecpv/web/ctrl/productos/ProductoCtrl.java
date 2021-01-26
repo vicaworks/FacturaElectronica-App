@@ -237,12 +237,12 @@ public class ProductoCtrl extends BaseCtrl {
 	
 	public void consultarCategoria()throws DaoException{
 		categoriaList = null;
-		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	public void consultarFabrica()throws DaoException{
 		fabricanteList = null;
-		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	public void consultarIva()throws DaoException{

@@ -111,7 +111,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 	 * @throws DaoException
 	 */
 	public List<VentasQuery> getFacturasEmitidas(Usuario usuario, ComprobanteEstadoEnum comprobanteEstadoEnum, String criterio,
-			Date desde, Date hasta, String idEstablecimiento, GenTipoDocumentoEnum genTipoDocumentoEnum)
+			Date desde, Date hasta, String idEstablecimiento, String idEmpresa, GenTipoDocumentoEnum genTipoDocumentoEnum)
 			throws DaoException {
 		try {
 			
@@ -119,6 +119,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"	c.idcabecera, " +
 						"	c.secuencial, " +
 						"	c.fechaemision, " +
+						"	est.codigoestablecimiento, " +
 						"	cl.identificacion, " +
 						"	c.idcliente, " +
 						"	cl.razonsocial, " +
@@ -140,12 +141,14 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"	(select SUM(p.cambio ) from pago p where p.idcabecera = c.idcabecera ) as cambio, " +
 						"   (select SUM(p.total ) from pago p where p.idcabecera = c.idcabecera ) as totalpago " +
 					"	from " +
-					"		cabecera c inner join cliente cl on cl.idcliente =c.idcliente " + 
+					"		cabecera c inner join cliente cl on cl.idcliente =c.idcliente " +
+					"		inner join establecimiento est on est.idestablecimiento = c.idestablecimiento " +
 					"		inner join tipocomprobante  tc on tc.idtipocomprobante =c.idtipocomprobante " +
 					"		inner join usuario u on u.idusuario = c.idusuario  " +
 					"	where  " +
 					"		c.fechaemision between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' " +
-					"		and c.idestablecimiento = '" + idEstablecimiento + "' " +
+					( idEstablecimiento!=null?"		and c.idestablecimiento  = '" + idEstablecimiento + "' ":
+						"		and est.idempresa  = '" + idEmpresa + "' ") +
 					"		and tc.identificador = '" +  genTipoDocumentoEnum.getIdentificador() + "' " +
 				    (comprobanteEstadoEnum.equals(ComprobanteEstadoEnum.ANULADO)?" and c.estado = 'ANULADO' ":" and c.estado not in ('ANULADO','BORRADOR') ") + " ";
 			
@@ -183,7 +186,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 	 * @throws DaoException
 	 */
 	public List<VentasQuery> getVentasDetalleCriterio(Usuario usuario, Tipopago tipopago, Fabricante fabricante,
-			Categoria categoria, String idEstablecimiento, String criterio, Date desde, Date hasta)
+			Categoria categoria, String idEstablecimiento, String idEmpresa, String criterio, Date desde, Date hasta)
 			throws DaoException {
 		try {
 			
@@ -193,6 +196,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 							"	c.idcabecera, " +
 							"	c.idtipocomprobante, " +
 							"	c.estado, " +
+							"	est.codigoestablecimiento, " +
 							"	tc.identificador, " + 
 							"	c.secuencial, " +
 							"	c.fechaemision, " +
@@ -219,6 +223,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 							"   c.numdocumento " +
 						"	from  " +
 						"		cabecera c inner join cliente cl on cl.idcliente = c.idcliente " +
+						"		inner join establecimiento est on est.idestablecimiento = c.idestablecimiento " +
 						"		inner join tipocomprobante  tc on tc.idtipocomprobante =c.idtipocomprobante " +	 
 						"		inner join usuario u on u.idusuario = c.idusuario " +
 						"		inner join detalle d on d.idcabecera = c.idcabecera " +
@@ -229,7 +234,8 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"		inner join ice on ice.idice  = d.idice  " +
 						"	where " +
 						"		c.fechaemision between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' " +
-						"		and c.idestablecimiento  = '" + idEstablecimiento + "' " +
+						( idEstablecimiento!=null?"		and c.idestablecimiento  = '" + idEstablecimiento + "' ":
+							"		and est.idempresa  = '" + idEmpresa + "' ") +
 						"		and tc.identificador in ('00','01') " +
 						"		and c.estado not in ('ANULADO','BORRADOR') ";
 						

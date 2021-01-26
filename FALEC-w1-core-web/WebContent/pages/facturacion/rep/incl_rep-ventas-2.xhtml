@@ -65,7 +65,9 @@
     		<div class="p-col-12 p-md-2">
   					<div class="EmptyBox5"/>
   					<p:commandButton icon="fa fa-search" 
-						action="#{repFacCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;"/>
+						action="#{repFacCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;">
+						<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repFacCtrl.establecimientoMain}"/>
+					</p:commandButton>
 						
   					<p:commandButton icon="fa fa-file-excel-o" 
 						styleClass="success-btn Fs18" update="@form"

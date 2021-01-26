@@ -130,19 +130,19 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:20px;">
+					<p:column headerText="ID" style="width:50px;">
 						<h:outputText value="#{f.idfabricante}" />
 					</p:column>
 					
-					<p:column headerText="ESTABLECIMIENTO" style="width:60px;">
-						<h:outputText value="#{f.establecimiento.nombrecomercial}" />
-					</p:column>
+					<!-- <p:column headerText="EMPRESA" style="width:60px;">
+						<h:outputText value="#{f.empresa.razonsocial}" />
+					</p:column> -->
 					
-					<p:column headerText="EST" style="width:10px;">
+					<p:column headerText="EST" style="width:40px;">
 						<h:outputText value="#{f.estado}" />
 					</p:column>
 					
-					<p:column style="width:100px;" filterBy="#{f.nombrecomercial}" filterMatchMode="contains">
+					<p:column filterBy="#{f.nombrecomercial}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="NOMBRE" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>

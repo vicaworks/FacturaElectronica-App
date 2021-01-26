@@ -132,19 +132,15 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:20px;">
+					<p:column headerText="ID" style="width:50px;">
 						<h:outputText value="#{c.idcategoria}" />
 					</p:column>
 					
-					<p:column headerText="ESTABLECIMIENTO" style="width:60px;">
-						<h:outputText value="#{c.establecimiento.nombrecomercial}" />
-					</p:column>
-					
-					<p:column headerText="EST" style="width:10px;">
+					<p:column headerText="EST" style="width:40px;">
 						<h:outputText value="#{c.estado}" />
 					</p:column>
 					
-					<p:column style="width:100px;" filterBy="#{c.categoria}" filterMatchMode="contains">
+					<p:column style="width:200px;" filterBy="#{c.categoria}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="NOMBRE" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>
@@ -153,7 +149,7 @@
 						<h:outputText value="#{c.categoria}" />
 					</p:column>
 					
-					<p:column headerText="DESCRIPCION" style="width:100px;">
+					<p:column headerText="DESCRIPCION" style="width:200px;">
 						<h:outputText value="#{c.descripcion}" styleClass="Fs9" />
 					</p:column>
 					

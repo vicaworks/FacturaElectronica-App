@@ -26,6 +26,7 @@ import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.xml.XmlComprobanteRetencion;
@@ -34,6 +35,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
 import com.vcw.falecpv.core.servicio.ComprobanterecibidoServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.ctrl.common.MessageCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -72,7 +74,9 @@ public abstract class BaseCtrl implements Serializable {
 	protected String xml;
 	protected RideCtrl rideCtrl;
 	protected String descripcionIva;
-	
+	protected boolean habilitarEstablecimientoMain;
+	protected List<Establecimiento> establecimientoMainList;
+	protected Establecimiento establecimientoMain;
 	/**
 	 * 
 	 */
@@ -317,6 +321,22 @@ public abstract class BaseCtrl implements Serializable {
 	}
 	
 	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param establecimientoServicio
+	 * @param agregarTodos
+	 * @throws DaoException
+	 */
+	public void establecimientoFacade(EstablecimientoServicio establecimientoServicio,boolean agregarTodos) throws DaoException {
+		
+		// 1 lista de todos los establecimeintos
+		establecimientoMainList = establecimientoServicio.getByEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		habilitarEstablecimientoMain = AppJsfUtil.getUsuario().getHabilitarestablecimiento()==1;
+		establecimientoMain = AppJsfUtil.getEstablecimiento();
+	
+	}
+	
+	/**
 	 * @return the infoadicionalSelected
 	 */
 	public Infoadicional getInfoadicionalSelected() {
@@ -539,6 +559,48 @@ public abstract class BaseCtrl implements Serializable {
 	public void setDescripcionIva(String descripcionIva) {
 		this.descripcionIva = descripcionIva;
 	}
-	
+
+	/**
+	 * @return the habilitarEstablecimientoMain
+	 */
+	public boolean isHabilitarEstablecimientoMain() {
+		return habilitarEstablecimientoMain;
+	}
+
+	/**
+	 * @param habilitarEstablecimientoMain the habilitarEstablecimientoMain to set
+	 */
+	public void setHabilitarEstablecimientoMain(boolean habilitarEstablecimientoMain) {
+		this.habilitarEstablecimientoMain = habilitarEstablecimientoMain;
+	}
+
+	/**
+	 * @return the establecimientoMainList
+	 */
+	public List<Establecimiento> getEstablecimientoMainList() {
+		return establecimientoMainList;
+	}
+
+	/**
+	 * @param establecimientoMainList the establecimientoMainList to set
+	 */
+	public void setEstablecimientoMainList(List<Establecimiento> establecimientoMainList) {
+		this.establecimientoMainList = establecimientoMainList;
+	}
+
+	/**
+	 * @return the establecimientoMain
+	 */
+	public Establecimiento getEstablecimientoMain() {
+		return establecimientoMain;
+	}
+
+	/**
+	 * @param establecimientoMain the establecimientoMain to set
+	 */
+	public void setEstablecimientoMain(Establecimiento establecimientoMain) {
+		this.establecimientoMain = establecimientoMain;
+	}
+
 	
 }
