@@ -18,6 +18,7 @@ import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.RetencionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.cajachica.CajaChicaCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
@@ -44,6 +45,7 @@ public class ListaClienteCtrl extends BaseCtrl {
 	private List<Cliente> clienteList;
 	private Cliente clienteSelected;
 	private CompFacCtrl compFacCtrl;
+	private CajaChicaCtrl cajaChicaCtrl;
 	private RetencionFrmCtrl retencionFrmCtrl;
 	private NotaCreditoCtrl notaCreditoCtrl;
 	private NotaDebitoFrmCtrl notaDebitoFrmCtrl;
@@ -146,7 +148,11 @@ public class ListaClienteCtrl extends BaseCtrl {
 				adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
 				adquisicionFrmCtrl.getAdquisicionSelected().setCliente(clienteSelected);
 				break;
+			case "cajaChicaCtrl":
+				cajaChicaCtrl.getTransaccionSelected().setCliente(clienteSelected);
+				AppJsfUtil.executeJavaScript("PrimeFaces.focus('formCC:inptDocReferencia');");
 				
+				break;
 			default:
 				break;
 			}
@@ -352,6 +358,20 @@ public class ListaClienteCtrl extends BaseCtrl {
 	 */
 	public void setAdquisicionFrmCtrl(AdquisicionFrmCtrl adquisicionFrmCtrl) {
 		this.adquisicionFrmCtrl = adquisicionFrmCtrl;
+	}
+
+	/**
+	 * @return the cajaChicaCtrl
+	 */
+	public CajaChicaCtrl getCajaChicaCtrl() {
+		return cajaChicaCtrl;
+	}
+
+	/**
+	 * @param cajaChicaCtrl the cajaChicaCtrl to set
+	 */
+	public void setCajaChicaCtrl(CajaChicaCtrl cajaChicaCtrl) {
+		this.cajaChicaCtrl = cajaChicaCtrl;
 	}
 	
 	

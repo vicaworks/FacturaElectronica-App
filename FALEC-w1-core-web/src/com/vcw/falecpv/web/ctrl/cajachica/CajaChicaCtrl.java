@@ -37,6 +37,7 @@ import com.vcw.falecpv.core.constante.contadores.EstadoComprobanteEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Transaccion;
 import com.vcw.falecpv.core.modelo.persistencia.Transaccionconcepto;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TransaccionServicio;
 import com.vcw.falecpv.core.servicio.TransaccionconceptoServicio;
 import com.vcw.falecpv.core.servicio.TransacciontipoServicio;
@@ -69,6 +70,9 @@ public class CajaChicaCtrl extends BaseCtrl {
 	@EJB
 	private ClienteServicio clienteServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private Transaccionconcepto transaccionconcepto;
 	private List<Transaccionconcepto> transaccionconceptoList;
 	private List<Transaccion> transaccionList;
@@ -92,6 +96,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -7);
 			consultarTransaccionConcepto();
@@ -112,7 +117,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 	
 	public void consultar() throws DaoException{
 		transaccionList = null;
-		transaccionList = transaccionServicio.getTransaccionDao().getByfechas(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA.getId(), desde, hasta,transaccionconcepto);
+		transaccionList = transaccionServicio.getTransaccionDao().getByfechas(establecimientoMain.getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA.getId(), desde, hasta,transaccionconcepto);
 	}
 
 	@Override
@@ -144,7 +149,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 			} else {
 				if (transaccionSelected.getValoringreso().doubleValue() > 0d) {
 					saldoActual = transaccionServicio.getTransaccionDao().getSaldoActual(
-							AppJsfUtil.getEstablecimiento().getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
+							establecimientoMain.getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
 
 					if (transaccionSelected.getValoringreso().doubleValue() >= saldoActual.doubleValue()) {
 						transaccionSelected.setValoregreso(saldoActual);
@@ -178,7 +183,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 		try {
 			
 			transaccionSelected.setUpdated(new Date());
-			saldoActual = transaccionServicio.getTransaccionDao().getSaldoActual(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
+			saldoActual = transaccionServicio.getTransaccionDao().getSaldoActual(establecimientoMain.getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
 			if(transaccionSelected.getTipoTransaccion().equals("INGRESO")) {
 				transaccionSelected.setValoregreso(BigDecimal.ZERO);
 			}else {
@@ -250,7 +255,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 		transaccionSelected.setValoringreso(BigDecimal.ZERO);
 		transaccionSelected.setValoregreso(BigDecimal.ZERO);
 		transaccionSelected.setUsuario(AppJsfUtil.getUsuario());
-		transaccionSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		transaccionSelected.setEstablecimiento(establecimientoMain);
 		transaccionSelected.setFechaemision(new Date());
 		transaccionSelected.setEstado(EstadoComprobanteEnum.REGISTRADO.toString());
 	}
@@ -265,7 +270,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 		
 		totalEgreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())).mapToDouble(x->x.getValoregreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 		totalIngreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString()) && x.getAjuste()==0).mapToDouble(x->x.getValoringreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
-		saldoActual = transaccionServicio.getTransaccionDao().getSaldoActual(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
+		saldoActual = transaccionServicio.getTransaccionDao().getSaldoActual(establecimientoMain.getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
 	}
 	
 	public StreamedContent getFileResumen() {

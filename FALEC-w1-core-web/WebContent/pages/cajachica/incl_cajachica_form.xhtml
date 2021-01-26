@@ -214,13 +214,25 @@
 					            </div>
 					            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
 							</h:panelGroup>
-			
-							<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="secondary-button Wid100">
-								<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
-<!-- 								<f:setPropertyActionListener value="formCC" target="#{proveedorCtrl.formModule}"/> -->
-								<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{clienteCtrl.updateView}"/>
-								<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
-							</p:commandButton>
+							<h:panelGroup>
+								<div class="p-grid">
+									<div class="p-col-12 p-md-6">
+										<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100">
+											<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{listaClienteCtrl.cajaChicaCtrl}"/>
+											<f:setPropertyActionListener value="cajaChicaCtrl" target="#{listaClienteCtrl.callModule}"/>
+											<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridProveedor" target="#{listaClienteCtrl.viewUpdate}"/>
+											<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+										</p:commandButton>
+									</div>
+									<div class="p-col-12 p-md-6">
+										<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="Wid100">
+											<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
+											<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{clienteCtrl.updateView}"/>
+											<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
+										</p:commandButton>
+									</div>
+								</div>
+							</h:panelGroup>
 							
 						</p:panelGrid>
 						

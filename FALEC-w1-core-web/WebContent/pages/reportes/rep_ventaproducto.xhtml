@@ -94,23 +94,23 @@
 	    			</div>
 	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
 	                
-	                <p:selectOneMenu id="somEstablecimientoMain"
-						value="#{repProductosCtrl.establecimientoMain}"
-						converter="omnifaces.SelectItemsConverter"
-						styleClass="cmb_establecimiento_wrapper"
-						disabled="#{not repProductosCtrl.habilitarEstablecimientoMain}">
-						
-						<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
-						
-						<f:selectItems value="#{repProductosCtrl.establecimientoMainList}" var="st"
-							itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-						
-						<p:ajax event="valueChange" listener="#{repProductosCtrl.limpiarFormulario(true)}" update="@form"/>
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{repProductosCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="cmb_establecimiento_wrapper"
+							disabled="#{not repProductosCtrl.habilitarEstablecimientoMain}">
 							
-					</p:selectOneMenu>
-	                
-	                
-        		</div>
+							<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
+							
+							<f:selectItems value="#{repProductosCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{repProductosCtrl.limpiarFormulario(true)}" update="@form"/>
+								
+						</p:selectOneMenu>
+		                
+		                
+	        		</div>
 	    		</div>
 				
 		   		<div class="EmptyBox5"/>

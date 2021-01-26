@@ -139,13 +139,36 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="card card-w-title">
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Caja chica</h3>
+				<div class="p-grid p-align-center">
+	    			<div class="p-col-12 p-md-6">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Caja Chica</h3>
+	    			</div>
+	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+	                
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{cajaChicaCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="cmb_establecimiento_wrapper"
+							disabled="#{not cajaChicaCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItems value="#{cajaChicaCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{cajaChicaCtrl.buscar()}" update="@form"/>
+								
+						</p:selectOneMenu>
+		                
+		                
+	        		</div>
+	    		</div>
+	    		
 		   		<div class="EmptyBox5"/>
 		   		
 		   		<div class="p-grid p-align-end vertical-container p-justify-start">
 		   			
 		   			<div class="p-col-12 p-md-5">
-		    			<h:outputText value="Concepto" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+		    			<h:outputText value="CONCEPTO *" styleClass="cpoRequerido Wid100"/>
+		    			<div class="EmptyBox5"/>
 		    			<p:selectOneMenu id="somConcepto"
 									value="#{cajaChicaCtrl.transaccionconcepto}"
 									converter="omnifaces.SelectItemsConverter"
@@ -161,7 +184,8 @@
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+		    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
+		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calDesde" value="#{cajaChicaCtrl.desde}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
@@ -171,7 +195,8 @@
 		    		</div>
 		    		
 		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+		    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
+		    			<div class="EmptyBox5"/>
 			    		<p:calendar id="calHasta" value="#{cajaChicaCtrl.hasta}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
@@ -334,6 +359,8 @@
 	    <!-- TRANSACCION CONCEPTO FORM -->
         <ui:include src="../common/incl_transaccionconcepto_form.xhtml" />
         
+        <!-- Form Lista cliente -->
+	    <ui:include src="../herramientas/incl_listaCliente.xhtml" />
         
     </ui:define>
 
