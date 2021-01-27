@@ -50,6 +50,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.TipoProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.ImportarProductoServicio;
@@ -95,6 +96,8 @@ public class ProductoCtrl extends BaseCtrl {
 	private KardexProductoServicio kardexProductoServicio;
 	@EJB
 	private UsuarioServicio usuarioServicio;
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 	
 	
 	
@@ -129,6 +132,7 @@ public class ProductoCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultarProducto();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,7 +200,7 @@ public class ProductoCtrl extends BaseCtrl {
 	private void nuevoProducto() throws DaoException {
 		productoFormSelected = new Producto();
 		productoSelected = new Producto();
-		productoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		productoSelected.setEstablecimiento(establecimientoMain);
 		productoSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 		productoSelected.setStock(BigDecimal.ZERO);
 		productoSelected.setUnidadesporpaquete(Integer.valueOf(0));
@@ -205,7 +209,7 @@ public class ProductoCtrl extends BaseCtrl {
 		productoSelected.setPreciodos(BigDecimal.ZERO);
 		productoSelected.setPreciotres(BigDecimal.ZERO);
 		productoSelected.setPreciounitario(BigDecimal.ZERO);
-		productoSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		productoSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 		// valida
 		if(productoSelected.getIva()==null) {
 			AppJsfUtil.addErrorMessage("frmProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
@@ -237,33 +241,33 @@ public class ProductoCtrl extends BaseCtrl {
 	
 	public void consultarCategoria()throws DaoException{
 		categoriaList = null;
-		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO,establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarFabrica()throws DaoException{
 		fabricanteList = null;
-		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.ACTIVO,establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarIva()throws DaoException{
 		ivaList = null;
-		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO,establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarIce()throws DaoException{
 		iceList = null;
-		iceList = iceServicio.getIceDao().getByEstado(EstadoRegistroEnum.ACTIVO,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		iceList = iceServicio.getIceDao().getByEstado(EstadoRegistroEnum.ACTIVO,establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarProductoForm()throws DaoException{
 		productoFormList = null;
-		productoFormList = productoServicio.getProductoDao().getByQuery(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		productoFormList = productoServicio.getProductoDao().getByQuery(EstadoRegistroEnum.ACTIVO, establecimientoMain.getIdestablecimiento());
 	}
 	
 	public void consultarProducto()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:productoDT");
 		productoList = null;
-		productoList = productoServicio.getProductoDao().consultarAllImageEager(AppJsfUtil.getEstablecimiento().getIdestablecimiento(),criterioBusqueda);
+		productoList = productoServicio.getProductoDao().consultarAllImageEager(establecimientoMain.getIdestablecimiento(),criterioBusqueda);
 	}
 	
 	public void handleUpload(FileUploadEvent event) throws IOException {
@@ -325,13 +329,13 @@ public class ProductoCtrl extends BaseCtrl {
 			// validaciones 
 			
 			//1. nombre comercial
-			if(productoServicio.getProductoDao().existeNombreGenerico(productoSelected.getNombregenerico(), productoSelected.getIdproducto(), AppJsfUtil.getEstablecimiento().getIdestablecimiento())) {
+			if(productoServicio.getProductoDao().existeNombreGenerico(productoSelected.getNombregenerico(), productoSelected.getIdproducto(), establecimientoMain.getIdestablecimiento())) {
 				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","EL NOMBRE COMERCIAL YA EXISTE.");
 				AppJsfUtil.addErrorMessage("frmProducto:intNombreProductoComercial","YA EXISTE.");
 				return;
 			}
 			//2. nombre
-			if(productoServicio.getProductoDao().existeNombre(productoSelected.getNombre(), productoSelected.getIdproducto(), AppJsfUtil.getEstablecimiento().getIdestablecimiento())) {
+			if(productoServicio.getProductoDao().existeNombre(productoSelected.getNombre(), productoSelected.getIdproducto(), establecimientoMain.getIdestablecimiento())) {
 				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","EL NOMBRE YA EXISTE.");
 				AppJsfUtil.addErrorMessage("frmProducto:intNombreProducto","YA EXISTE.");
 				return;
@@ -339,7 +343,7 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			//3. codigo no se repita
 			if(productoSelected.getCodigoprincipal()!=null && productoSelected.getCodigoprincipal().trim().length()>0) {
-				if(productoServicio.getProductoDao().existeCodigoProducto(productoSelected.getCodigoprincipal(), productoSelected.getIdproducto(), AppJsfUtil.getEstablecimiento().getIdestablecimiento())) {
+				if(productoServicio.getProductoDao().existeCodigoProducto(productoSelected.getCodigoprincipal(), productoSelected.getIdproducto(), establecimientoMain.getIdestablecimiento())) {
 					AppJsfUtil.addErrorMessage("frmProducto", "ERROR",msg.getString("label.codigo") +   " DEL PRODUCTO YA EXISTE.");
 					AppJsfUtil.addErrorMessage("frmProducto:intCodigoProducto","YA EXISTE.");
 					return;
@@ -850,7 +854,7 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			// cargar los datos
 			importProductoDtoList = importarProductoServicio.importarProductoFacade(importProductoDtoList,
-					AppJsfUtil.getEstablecimiento().getIdestablecimiento(), AppJsfUtil.getUsuario().getIdusuario());
+					establecimientoMain.getIdestablecimiento(), AppJsfUtil.getUsuario().getIdusuario());
 			
 			// crear kardex
 			
@@ -960,7 +964,7 @@ public class ProductoCtrl extends BaseCtrl {
 			}
 			if(p.getCodigoPrincipal()!=null) {
 				
-				if(productoServicio.getProductoDao().existeCodigoProducto(p.getCodigoPrincipal(), null, AppJsfUtil.getEstablecimiento().getIdestablecimiento())) {
+				if(productoServicio.getProductoDao().existeCodigoProducto(p.getCodigoPrincipal(), null, establecimientoMain.getIdestablecimiento())) {
 					p.setError(true);
 					p.setNovedad(p.getNovedad()!=null?p.getNovedad().concat(", CAMPO CODIGO BARRA YA EXISTE"):"CAMPO CODIGO BARRA YA EXISTE");
 				}

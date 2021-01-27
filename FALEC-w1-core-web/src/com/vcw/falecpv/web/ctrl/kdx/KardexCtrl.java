@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.KardexProductoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
@@ -65,6 +66,9 @@ public class KardexCtrl extends BaseCtrl {
 	@EJB
 	private UsuarioServicio usuarioServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private List<KardexProducto> kardexProductoList;
 	private List<Producto> productoList;
 	private Producto productoSelected;
@@ -88,6 +92,7 @@ public class KardexCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultarProductoForm();
 			fechaFinal = new Date();
 			fechaInicial = FechaUtil.agregarDias(fechaFinal, -90);
@@ -131,7 +136,7 @@ public class KardexCtrl extends BaseCtrl {
 
 	public void consultarProductoForm()throws DaoException{
 		productoList = null;
-		productoList = productoServicio.getProductoDao().getByQuery("PRODUCTO",EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		productoList = productoServicio.getProductoDao().getByQuery("PRODUCTO",EstadoRegistroEnum.ACTIVO, establecimientoMain.getIdestablecimiento());
 	}
 	
 	public void cambioProducto() {
@@ -147,15 +152,15 @@ public class KardexCtrl extends BaseCtrl {
 	
 	private void consultarKardex() throws DaoException{
 		kardexProductoList = kardexProductoServicio.getKardexProductoDao().consultar(productoSelected.getIdproducto(),
-				AppJsfUtil.getEstablecimiento().getIdestablecimiento(), fechaInicial, fechaFinal);
+				establecimientoMain.getIdestablecimiento(), fechaInicial, fechaFinal);
 	}
 	
 	
 	private void consultarProductoByCodBarra() throws DaoException{
 		if(codProducto!=null) {
-			productoSelected = kardexProductoServicio.getProducto(null, AppJsfUtil.getEstablecimiento().getIdestablecimiento(), codProducto);
+			productoSelected = kardexProductoServicio.getProducto(null, establecimientoMain.getIdestablecimiento(), codProducto);
 		}else if(productoSelected!=null) {
-			productoSelected = kardexProductoServicio.getProducto(productoSelected.getIdproducto(), AppJsfUtil.getEstablecimiento().getIdestablecimiento(), null);
+			productoSelected = kardexProductoServicio.getProducto(productoSelected.getIdproducto(), establecimientoMain.getIdestablecimiento(), null);
 		}
 		if(productoSelected==null) {
 			AppJsfUtil.addErrorMessage("formMain:somFrmListaProducto", "REQUERIDO");
@@ -247,7 +252,7 @@ public class KardexCtrl extends BaseCtrl {
 			kardexProductoSelected.setCantidad(BigDecimal.ZERO);
 			kardexProductoSelected.setCostounitario(BigDecimal.ZERO);
 			kardexProductoSelected.setCostototal(BigDecimal.ZERO);
-			kardexProductoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+			kardexProductoSelected.setEstablecimiento(establecimientoMain);
 			kardexProductoSelected.setProducto(productoSelected);
 			kardexProductoSelected.setSaldo(BigDecimal.ZERO);
 			kardexProductoSelected.setCostounitario(productoSelected.getPreciounitario());
@@ -322,7 +327,7 @@ public class KardexCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.createCell(1);
-			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(6);
 			cell = row.createCell(1);
@@ -429,7 +434,7 @@ public class KardexCtrl extends BaseCtrl {
 		try {
 			
 			// consulta todos los productos en un rango de fechas
-			List<KardexProducto> kardexProductoTodosList = kardexProductoServicio.getKardexProductoDao().consultar(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), fechaInicial, fechaFinal);
+			List<KardexProducto> kardexProductoTodosList = kardexProductoServicio.getKardexProductoDao().consultar(establecimientoMain.getIdestablecimiento(), fechaInicial, fechaFinal);
 			List<Usuario> usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.TODOS);
 			
 			String path = FacesUtil.getServletContext().getRealPath(
@@ -455,7 +460,7 @@ public class KardexCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.createCell(1);
-			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(establecimientoMain.getNombrecomercial());
 			
 			int fila = 8;
 			

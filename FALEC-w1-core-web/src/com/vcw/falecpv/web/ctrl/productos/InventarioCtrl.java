@@ -35,6 +35,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.InventarioServicio;
 import com.vcw.falecpv.core.servicio.KardexProductoServicio;
@@ -71,6 +72,9 @@ public class InventarioCtrl extends BaseCtrl {
 	@EJB
 	private InventarioServicio inventarioServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	
 	private List<Categoria> categoriaList;
 	private Categoria categoriaSelected;
@@ -93,6 +97,7 @@ public class InventarioCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			stock = BigDecimal.ZERO;
 			fechaCaducidad = new Date();
 			opcionBusqueda = "INVENTARIO";
@@ -108,17 +113,17 @@ public class InventarioCtrl extends BaseCtrl {
 	
 	public void consultarCategoriasList()throws DaoException{
 		categoriaList = null;
-		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	public void consultarFabricanteList()throws DaoException{
 		fabricanteList = null;
-		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	public void consultarProductoList()throws DaoException{
 		productoFormList = null;
-		productoFormList = productoServicio.getProductoDao().getByEstado("PRODUCTO",EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		productoFormList = productoServicio.getProductoDao().getByEstado("PRODUCTO",EstadoRegistroEnum.ACTIVO, establecimientoMain.getIdestablecimiento());
 	}
 
 	@Override
@@ -141,28 +146,28 @@ public class InventarioCtrl extends BaseCtrl {
 		
 		switch (opcionBusqueda) {
 		case "INVENTARIO":
-			productoList = inventarioServicio.getInventario("PRODUCTO",AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getInventario("PRODUCTO",establecimientoMain.getIdestablecimiento());
 			break;
 		case "STOCKMAYORZERO":
-			productoList = inventarioServicio.getStokMayorZero(AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getStokMayorZero(establecimientoMain.getIdestablecimiento());
 			break;
 		case "STOCKMENORIGUAL":
-			productoList = inventarioServicio.getStokLessEqualsThan(stock, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getStokLessEqualsThan(stock, establecimientoMain.getIdestablecimiento());
 			break;
 		case "FECHACADUCIDAD":
-			productoList = inventarioServicio.getFechaCaducidadLessEqualsThan(fechaCaducidad, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getFechaCaducidadLessEqualsThan(fechaCaducidad, establecimientoMain.getIdestablecimiento());
 			break;
 		case "PRODUCTO":
-			productoList = inventarioServicio.getByIdProducto(productoFormSelected.getIdproducto(), AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getByIdProducto(productoFormSelected.getIdproducto(), establecimientoMain.getIdestablecimiento());
 			break;
 		case "CODPRODUCTO":
-			productoList = inventarioServicio.getByCodigoPrincipal(codProducto, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getByCodigoPrincipal(codProducto, establecimientoMain.getIdestablecimiento());
 			break;
 		case "CATEGORIA":
-			productoList = inventarioServicio.getByCategoria(categoriaSelected.getIdcategoria(), AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getByCategoria(categoriaSelected.getIdcategoria(), establecimientoMain.getIdestablecimiento());
 			break;
 		case "FABRICANTE":
-			productoList = inventarioServicio.getByFabricante(fabricanteSelected.getIdfabricante(), AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoList = inventarioServicio.getByFabricante(fabricanteSelected.getIdfabricante(), establecimientoMain.getIdestablecimiento());
 			break;
 		default:
 			return;
@@ -191,7 +196,7 @@ public class InventarioCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
