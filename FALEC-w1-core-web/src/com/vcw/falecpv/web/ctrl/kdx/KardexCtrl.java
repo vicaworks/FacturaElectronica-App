@@ -123,7 +123,7 @@ public class KardexCtrl extends BaseCtrl {
 				fechaInicial = FechaUtil.agregarDias(fechaFinal, -30);
 				
 			}
-			
+			establecimientoMain = p.getEstablecimiento();
 			codProducto = p.getCodigoprincipal();
 			consultarProductoByCodBarra();
 			consultarKardex();
@@ -177,12 +177,25 @@ public class KardexCtrl extends BaseCtrl {
 			consultarProductoByCodBarra();
 			if(AppJsfUtil.existErrors()) return;
 			consultarKardex();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-
+	
+	@Override
+	public void limpiar() {
+		try {
+			consultarProductoForm();
+			codProducto=null;
+			kardexProductoList = null;
+			productoSelected = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 
 
