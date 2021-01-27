@@ -46,7 +46,13 @@
 			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
 				padding: 0.2em 0.5em !important;
 			}
-			
+			.cmb_establecimiento .cmb_establecimientolabel{
+				font-size: 10px;
+				color: rgba(0,0,0,0.7);
+				display: block;
+				margin: 0px;
+				padding: 0px;
+			}
         </style>
     </ui:define>
 
@@ -72,7 +78,9 @@
 						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Kardex</h3>
 	    			</div>
 	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;padding-right: 24px!important;">
-	                
+	    				<!-- <div class="cmb_establecimientolabel">
+		                	<h:outputText value="Establecimiento"/>
+	    				</div> -->
 		                <p:selectOneMenu id="somEstablecimientoMain"
 							value="#{kardexCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
