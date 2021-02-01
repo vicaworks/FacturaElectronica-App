@@ -15,12 +15,15 @@ import javax.inject.Named;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
+import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.pagos.CuentaCobrarCtrl;
+import com.vcw.falecpv.web.ctrl.pagos.CuentaPagarCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -43,6 +46,9 @@ public class PorPagarCtrl extends BaseCtrl {
 	@EJB
 	private PagoServicio pagoServicio;
 	
+	@EJB
+	private AdquisicionServicio adquisicionServicio;
+	
 	private Cabecera cabeceraSelected;
 	private String idCabeceraSelected;
 	private String callModule;
@@ -50,6 +56,9 @@ public class PorPagarCtrl extends BaseCtrl {
 	private String viewUpdate;
 	private PagoCtrl pagoCtrl;
 	private CuentaCobrarCtrl cuentaCobrarCtrl;
+	private CuentaPagarCtrl cuentaPagarCtrl;
+	private Adquisicion adquisicionSelected;
+	private String idAdquisicionSelected;
 
 	/**
 	 * 
@@ -73,9 +82,26 @@ public class PorPagarCtrl extends BaseCtrl {
 	
 	public void cargar() {
 		try {
-			if(idCabeceraSelected!=null) {
-				consultar(idCabeceraSelected);
+			
+			switch (callModule) {
+			case "MAIN_POR_COBRAR":
+				
+				if(idCabeceraSelected!=null) {
+					consultar(idCabeceraSelected);
+				}
+					
+				break;
+			
+			case "MAIN_POR_PAGAR":
+				
+				adquisicionSelected = adquisicionServicio.consultarByPk(idAdquisicionSelected);
+				
+				break;	
+			default:
+				break;
 			}
+			
+			
 			AppJsfUtil.showModalRender("dlgPorPagar", "frmPorPagar");
 			
 		} catch (Exception e) {
@@ -107,6 +133,29 @@ public class PorPagarCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void calcularAdquisicion() {
+		try {
+			
+			if(adquisicionSelected.getValorretenidoiva().doubleValue()<0 || adquisicionSelected.getValorretenidoiva().doubleValue()>adquisicionSelected.getTotaliva().doubleValue()) {
+				adquisicionSelected.setValorretenidoiva(BigDecimal.ZERO);
+				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetIva", "ERROR", "NO PUEDE SER MAYOR AL VALOR DEL IVA, O MENOR A 0.");
+			}
+			
+			if(adquisicionSelected.getValorretenidorenta().doubleValue()<0 || adquisicionSelected.getValorretenidorenta().doubleValue()>adquisicionSelected.getSubtotal().doubleValue()) {
+				adquisicionSelected.setValorretenidorenta(BigDecimal.ZERO);
+				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetRenta", "ERROR", "NO PUEDE SER MAYOR MENOR AL VALOR TOTAl SIN IMPUESTOS, O MENOR A 0.");
+			}
+			
+			adquisicionSelected.setTotalpagar(
+					adquisicionSelected.getTotalfactura().add(adquisicionSelected.getValorretenidoiva().negate())
+							.add(adquisicionSelected.getValorretenidorenta().negate()).setScale(2, RoundingMode.HALF_UP));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmPorPagar", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	@Override
 	public void buscar() {
 		try {
@@ -122,23 +171,11 @@ public class PorPagarCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
-			cabeceraServicio.actualizar(cabeceraSelected);
-			
+			List<Pago> pagoList = null;
+			Pago p = null;
 			switch (callModule) {
-			case "POR_PAGAR":
-				List<Pago> pagoList = pagoServicio.getPagoDao().getByIdCabecera(cabeceraSelected.getIdcabecera());
-				// como es credito solo dejar un valor de pago
-				pagoServicio.getPagoDao().eliminarByCabecera(cabeceraSelected.getIdcabecera());
-				// todos los valores 
-				Pago p = pagoList.get(0);
-				p.setNotas("");
-				p.setTotal(cabeceraSelected.getValorapagar());
-				pagoServicio.crear(p);
-				pagoCtrl.setValorPagar(cabeceraSelected.getValorapagar());
-				pagoCtrl.consultarPagosCredito();
-				AppJsfUtil.hideModal("dlgPorPagar");
-				break;
-			case "MAIN_POR_PAGAR" :
+			case "MAIN_POR_COBRAR" :
+				cabeceraServicio.actualizar(cabeceraSelected);
 				pagoList = pagoServicio.getPagoDao().getByIdCabecera(cabeceraSelected.getIdcabecera());
 				// como es credito solo dejar un valor de pago
 				pagoServicio.getPagoDao().eliminarByCabecera(cabeceraSelected.getIdcabecera());
@@ -146,12 +183,45 @@ public class PorPagarCtrl extends BaseCtrl {
 				p = pagoList.get(0);
 				p.setNotas("");
 				p.setTotal(cabeceraSelected.getValorapagar());
-				pagoServicio.crear(p);
-				cuentaCobrarCtrl.consultar();
-				AppJsfUtil.hideModal("dlgPorPagar");
+				break;
+			case "MAIN_POR_PAGAR" :
+				adquisicionServicio.actualizar(adquisicionSelected);
+				pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(adquisicionSelected.getIdadquisicion());
+				// como es credito solo dejar un valor de pago
+				pagoServicio.getPagoDao().eliminarByAdquisicion(adquisicionSelected.getIdadquisicion());
+				// todos los valores 
+				p = pagoList.get(0);
+				p.setNotas("");
+				p.setTotal(adquisicionSelected.getTotalpagar());
+				break;
 			default:
 				break;
 			}
+			
+			
+			pagoServicio.crear(p);
+			if(cuentaCobrarCtrl!=null) {
+				cuentaCobrarCtrl.consultar();
+				AppJsfUtil.updateComponente("formMain");
+			}
+			
+			if(cuentaPagarCtrl!=null) {
+				cuentaPagarCtrl.consultar();
+				AppJsfUtil.updateComponente("formMain");
+			}
+			
+			if(pagoCtrl!=null) {
+				if(cabeceraSelected!=null) {
+					pagoCtrl.setValorPagar(cabeceraSelected.getValorapagar());
+				}
+				if(adquisicionSelected!=null) {
+					pagoCtrl.setValorPagar(adquisicionSelected.getTotalpagar());
+				}
+				pagoCtrl.consultarPagosCredito();
+			}
+			
+			AppJsfUtil.hideModal("dlgPorPagar");
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -269,6 +339,48 @@ public class PorPagarCtrl extends BaseCtrl {
 	 */
 	public void setCuentaCobrarCtrl(CuentaCobrarCtrl cuentaCobrarCtrl) {
 		this.cuentaCobrarCtrl = cuentaCobrarCtrl;
+	}
+
+	/**
+	 * @return the adquisicionSelected
+	 */
+	public Adquisicion getAdquisicionSelected() {
+		return adquisicionSelected;
+	}
+
+	/**
+	 * @param adquisicionSelected the adquisicionSelected to set
+	 */
+	public void setAdquisicionSelected(Adquisicion adquisicionSelected) {
+		this.adquisicionSelected = adquisicionSelected;
+	}
+
+	/**
+	 * @return the idAdquisicionSelected
+	 */
+	public String getIdAdquisicionSelected() {
+		return idAdquisicionSelected;
+	}
+
+	/**
+	 * @param idAdquisicionSelected the idAdquisicionSelected to set
+	 */
+	public void setIdAdquisicionSelected(String idAdquisicionSelected) {
+		this.idAdquisicionSelected = idAdquisicionSelected;
+	}
+
+	/**
+	 * @return the cuentaPagarCtrl
+	 */
+	public CuentaPagarCtrl getCuentaPagarCtrl() {
+		return cuentaPagarCtrl;
+	}
+
+	/**
+	 * @param cuentaPagarCtrl the cuentaPagarCtrl to set
+	 */
+	public void setCuentaPagarCtrl(CuentaPagarCtrl cuentaPagarCtrl) {
+		this.cuentaPagarCtrl = cuentaPagarCtrl;
 	}
 
 }

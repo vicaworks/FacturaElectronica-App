@@ -134,7 +134,29 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="card card-w-title">
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Cuentas x pagar</h3>
+				<div class="p-grid p-align-center">
+	    			<div class="p-col-12 p-md-6">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Cuentas x pagar</h3>
+	    			</div>
+	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+	                
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{cuentaPagarCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="cmb_establecimiento_wrapper"
+							disabled="#{not cuentaPagarCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItems value="#{cuentaPagarCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{cuentaPagarCtrl.buscar()}" update="@form"/>
+								
+						</p:selectOneMenu>
+		                
+		                
+	        		</div>
+	    		</div>
+				
 		   		<div class="EmptyBox5"/>
 		   		
 		   		<div class="p-grid p-align-end vertical-container p-justify-start">
@@ -244,13 +266,23 @@
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
 							<p:menuitem value="Ver comprobante" action="#" icon="fa fa-eye" >
 							</p:menuitem>
-							<p:menuitem value="Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-list">
-								<f:setPropertyActionListener value="CUENTAS_PAGAR" target="#{pagoCtrl.callModule}"/>
-								<f:setPropertyActionListener value="#{v.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
-								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
+							<!-- <p:menuitem value="Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-list">
+								<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{pagoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{cuentaPagarCtrl}" target="#{pagoCtrl.cuentaPagarCtrl}"/>
+								<f:setPropertyActionListener value="#{v.idtipocomprobante}" target="#{pagoCtrl.id}"/>
+								<f:setPropertyActionListener value="#{v.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
 								<f:setPropertyActionListener value="#{v.idtipocomprobante}" target="#{pagoCtrl.idTipoComprobante}"/>
+							</p:menuitem> -->
+							
+							<p:menuitem value=" Valor a Pagar" action="#{porPagarCtrl.cargar()}" icon="fa fa-edit">
+								<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
+								<f:setPropertyActionListener value="#{cuentaPagarCtrl}" target="#{porPagarCtrl.cuentaPagarCtrl}"/>
+								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idAdquisicionSelected}"/>
+								<f:setPropertyActionListener value="formMain" target="#{porPagarCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{porPagarCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{porPagarCtrl.pagoCtrl}"/>
 							</p:menuitem>
+							
 						</p:menu>
 						
 					</p:column>	
@@ -351,6 +383,9 @@
 	    <ui:include src="incl_pagos_list_form.xhtml"></ui:include>
 	    
 	    <ui:include src="incl_pagos_form.xhtml"></ui:include>
+	    
+	    <!-- Formulario del valor a pagar del comprobante -->
+	    <ui:include src="../common/incl_porpagar_form.xhtml"></ui:include>
 	    
     </ui:define>
 

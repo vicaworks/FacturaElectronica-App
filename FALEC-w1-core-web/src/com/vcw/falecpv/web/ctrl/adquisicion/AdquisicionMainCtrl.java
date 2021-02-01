@@ -34,6 +34,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Adquisiciondetalle;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.AdquisiciondetalleServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -61,6 +62,9 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 	@EJB
 	private AdquisiciondetalleServicio adquisiciondetalleServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
@@ -74,6 +78,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -90);
 			criterioBusqueda = null;
@@ -88,7 +93,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 	public void consultarAdquisiciones()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:adquisicionDT");
 		adquisicionList = null;
-		adquisicionList = adquisicionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
+		adquisicionList = adquisicionServicio.getByDateCriteria(establecimientoMain.getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 	}
 	
 	@Override
@@ -181,7 +186,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			// datos de la cabecera
 			Row row = sheet.getRow(3);
 			Cell cell = row.createCell(1);
-			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(4);
 			cell = row.createCell(1);
@@ -370,7 +375,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-CompraDet_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-CompraDet_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {
@@ -402,7 +407,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			// datos de la cabecera
 			Row row = sheet.getRow(3);
 			Cell cell = row.createCell(1);
-			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(4);
 			cell = row.createCell(1);
@@ -500,7 +505,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Compra_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Compra_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {

@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.vista.VComprobantescredito;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.VComprobantescreditoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -63,6 +64,9 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	@EJB
 	private VComprobantescreditoServicio vComprobantescreditoServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private List<VComprobantescredito> vComprobantescreditoList;
 	private VComprobantescredito vComprobantescreditoSelected;
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -78,6 +82,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultarTipoComprobante();
 			tipocomprobante = null;
 			totalCobrar = BigDecimal.ZERO;
@@ -94,7 +99,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	public void consultar()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		vComprobantescreditoList = null;
-		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), tipocomprobante,criterioBusqueda);
+		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(establecimientoMain.getIdestablecimiento(), tipocomprobante,criterioBusqueda);
 		totalizar();
 	}
 	
@@ -171,7 +176,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(tipocomprobante==null?"TODOS":tipocomprobante.getComprobante());
@@ -249,7 +254,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-CuentaCobrar-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-CuentaCobrar-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -280,7 +285,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(tipocomprobante==null?"TODOS":tipocomprobante.getComprobante());
@@ -438,7 +443,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-CuentaCobrarDet-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-CuentaCobrarDet-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

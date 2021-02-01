@@ -31,6 +31,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.query.PagosQuery;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -56,6 +57,9 @@ public class PagosMainCtrl extends BaseCtrl {
 	@EJB
 	private PagoServicio pagoServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private Date desde;
 	private Date hasta;
 	private Tipopago tipopagoSelected;
@@ -72,6 +76,7 @@ public class PagosMainCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			tipopagoSelected = null;
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -10);
@@ -97,9 +102,9 @@ public class PagosMainCtrl extends BaseCtrl {
 	
 	private void consultar() throws DaoException {
 		pagosQuerieList = null;
-		pagosQuerieList = pagoServicio.getPagos(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta,tipopagoSelected);
+		pagosQuerieList = pagoServicio.getPagos(establecimientoMain.getIdestablecimiento(), desde, hasta,tipopagoSelected);
 		pagosQueryTotal = null;
-		pagosQueryTotal = pagoServicio.getPagosTotal(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta,tipopagoSelected);
+		pagosQueryTotal = pagoServicio.getPagosTotal(establecimientoMain.getIdestablecimiento(), desde, hasta,tipopagoSelected);
 	}
 	
 	public StreamedContent getFileResumen() {
@@ -124,7 +129,7 @@ public class PagosMainCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(FechaUtil.formatoFecha(desde));
@@ -227,7 +232,7 @@ public class PagosMainCtrl extends BaseCtrl {
 			FileOutputStream out = new FileOutputStream(tempXls);
 			wb.write(out);
 			out.close();
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-PagosEmitidos-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-PagosEmitidos-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -138,7 +138,29 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="card card-w-title">
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Cuentas x cobrar</h3>
+				<div class="p-grid p-align-center">
+	    			<div class="p-col-12 p-md-6">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Cuentas x cobrar</h3>
+	    			</div>
+	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+	                
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{cuentaCobrarCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="cmb_establecimiento_wrapper"
+							disabled="#{not cuentaCobrarCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItems value="#{cuentaCobrarCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{cuentaCobrarCtrl.buscar()}" update="@form"/>
+								
+						</p:selectOneMenu>
+		                
+		                
+	        		</div>
+	    		</div>
+				
 		   		<div class="EmptyBox5"/>
 		   		
 		   		<div class="p-grid p-align-end vertical-container p-justify-start">
@@ -254,11 +276,12 @@
 							</p:menuitem>
 							
 							<p:menuitem value=" Valor a Pagar" action="#{porPagarCtrl.cargar()}" icon="fa fa-edit">
-								<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
+								<f:setPropertyActionListener value="MAIN_POR_COBRAR" target="#{porPagarCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{porPagarCtrl.cuentaCobrarCtrl}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idCabeceraSelected}"/>
 								<f:setPropertyActionListener value="formMain" target="#{porPagarCtrl.callForm}"/>
-								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{porPagarCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{porPagarCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{porPagarCtrl.pagoCtrl}"/>
 							</p:menuitem>
 							
 							<p:menuitem value=" Detalle de Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-external-link">

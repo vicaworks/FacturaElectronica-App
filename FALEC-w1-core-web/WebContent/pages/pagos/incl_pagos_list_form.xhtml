@@ -181,15 +181,26 @@
 			   	<div class="EmptyBox5"/>
 				<div class="card card-w-title">
 					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/>	Valor a pagar <span style="margin-left: 10px;">
-																								<p:commandLink value="editar" style="color:#DC7633;" action="#{porPagarCtrl.cargar()}">
-																									<i class="fa fa-edit Fs11" style="color:#DC7633;"></i>
-																									<f:setPropertyActionListener value="POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
-																									<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
-																									<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idCabeceraSelected}"/>
-																									<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.callForm}"/>
-																									<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
-																								</p:commandLink>
-																							  </span>
+							<p:commandLink value="editar" style="color:#DC7633;" action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_COBRAR'}">
+								<i class="fa fa-edit Fs11" style="color:#DC7633;"></i>
+								<f:setPropertyActionListener value="MAIN_POR_COBRAR" target="#{porPagarCtrl.callModule}"/>
+								<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
+								<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idCabeceraSelected}"/>
+								<f:setPropertyActionListener value="#{pagoCtrl.cuentaCobrarCtrl}" target="#{porPagarCtrl.cuentaCobrarCtrl}"/>
+								<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.callForm}"/>
+								<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
+							</p:commandLink>
+							
+							<p:commandLink value="editar" style="color:#DC7633;" action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_PAGAR'}">
+								<i class="fa fa-edit Fs11" style="color:#DC7633;"></i>
+								<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
+								<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
+								<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idAdquisicionSelected}"/>
+								<f:setPropertyActionListener value="#{pagoCtrl.cuentaPagarCtrl}" target="#{porPagarCtrl.cuentaPagarCtrl}"/>
+								<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.callForm}"/>
+								<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
+							</p:commandLink>
+						  </span>
 					</h3>
 			   		
 			   		<!-- <p:commandButton id="cmdCCEditarValorPagar"

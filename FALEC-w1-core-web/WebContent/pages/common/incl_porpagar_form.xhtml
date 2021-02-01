@@ -47,7 +47,9 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">			
+			<!-- Cabecera -->
+			
+			<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2" rendered="#{porPagarCtrl.callModule=='MAIN_POR_COBRAR'}">			
 				
 				<h:outputText value="NUM COMPROBANTE * :" styleClass="cpoRequerido"/>
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(porPagarCtrl.cabeceraSelected.numdocumento)}" >
@@ -66,10 +68,10 @@
 				<h:outputText value=""/>
 				
 				<h:outputText value="CLIENTE * :" styleClass="cpoRequerido"/>
-				<h:outputText value="#{porPagarCtrl.cabeceraSelected.cliente.razonsocial}" >
+				<h:outputText value="#{porPagarCtrl.cabeceraSelected.cliente.razonsocial}">
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
-				<h:outputText value=""/>
+				<h:outputText value="" />
 				
 				
 				<h:outputText value="TOTAL SIN IMPUESTOS * :" styleClass="cpoRequerido"/>
@@ -131,6 +133,94 @@
 				<h:outputText value=""/>
 				
 			</p:panelGrid>
+			
+			<!-- Adquisicion  -->
+			
+			<p:panelGrid id="grid2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2" rendered="#{porPagarCtrl.callModule=='MAIN_POR_PAGAR'}">			
+				
+				<h:outputText value="NUM COMPROBANTE * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.numfactura}" >
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="COMPROBANTE * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.tipocomprobante.comprobante}" >
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="FECHA EMISIÓN * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.fecha}" >
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="PROVEEDOR * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.cliente.razonsocial}">
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+				<h:outputText value="" />
+				
+				
+				<h:outputText value="TOTAL SIN IMPUESTOS * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.subtotal}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="TOTAL DESCUENTO * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.totaldescuento}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="TOTAL I.C.E * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.totalice}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="TOTAL I.V.A * :" styleClass="cpoRequerido"/>
+				<h:outputText value="#{porPagarCtrl.adquisicionSelected.totaliva}" >
+					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				</h:outputText>
+				<h:outputText value=""/>
+				
+				<h:outputText value="VALOR RETENIDO RENTA : " styleClass="cpoRequerido"/>
+				<p:inputText id="intValRetRenta2" value="#{porPagarCtrl.adquisicionSelected.valorretenidorenta}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converterMessage="SOLO NÚMEROS">
+					<p:ajax event="change" listener="#{porPagarCtrl.calcularAdquisicion()}" update="@form"/>
+				</p:inputText>
+				<p:message for="intValRetRenta"/>
+				
+				<h:outputText value="VALOR RETENIDO IVA : " styleClass="cpoRequerido"/>
+				<p:inputText id="intValRetIva2" value="#{porPagarCtrl.adquisicionSelected.valorretenidoiva}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converterMessage="SOLO NÚMEROS">
+					<p:ajax event="change" listener="#{porPagarCtrl.calcularAdquisicion()}" update="@form"/>
+				</p:inputText>
+				<p:message for="intValRetIva"/>
+				
+				<h:outputText value=""/>
+				<h:panelGroup>
+					<div class="EmptyBox10"/>
+					<div class="p-grid p-justify-center ">
+			   			<div class="p-col-12">
+			   				<div class="EmptyBox5"/>
+			   				<div class="p-grid p-justify-even ">
+					   			<!-- Valor comprobante -->
+					   			<div class="p-col-12 p-md-6 boxMain box-gray">
+					   				<div class="DispBlock box-header">VALOR A PAGAR</div>
+									<div class="EmptyBox5"/>
+									<h:outputText value="#{porPagarCtrl.adquisicionSelected.totalpagar}" styleClass="box-content Fs18">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+					   			</div>
+			   				</div>
+			   			</div>
+		   			</div>
+		   			<div class="EmptyBox10"/>
+				</h:panelGroup>
+				<h:outputText value=""/>
+				
+			</p:panelGrid>			
+			
 		</h:form>
 		
    </p:dialog>  

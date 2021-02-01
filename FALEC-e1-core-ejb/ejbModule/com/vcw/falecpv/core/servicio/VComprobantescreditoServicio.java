@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.core.servicio;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import com.vcw.falecpv.core.dao.impl.VComprobantescreditoDao;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.vista.VComprobantescredito;
+import com.vcw.falecpv.core.modelo.vista.VComprobantespagarcredito;
 
 /**
  * @author cristianvillarreal
@@ -89,6 +91,8 @@ public class VComprobantescreditoServicio extends AppGenericService<VComprobante
 				x.setPagoList(pagoList.stream().filter(p->(p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
 				x.setPagoOtrosList(pagoList.stream().filter(p->(!p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
 			});
+			
+			cabeceralist = cabeceralist.stream().sorted(Comparator.comparing(VComprobantescredito::getFechaemision).thenComparing(VComprobantescredito::getRazonsocial)).collect(Collectors.toList());
 			
 			return cabeceralist;
 			

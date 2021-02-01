@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.AdquisiciondetalleServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
@@ -68,6 +69,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	private PagoServicio pagoServicio;
 	@EJB
 	private ClienteServicio clienteServicio;
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 	
 	private Adquisicion adquisicionSelected = new Adquisicion();
 	private List<Tipocomprobante> tipocomprobanteList;
@@ -93,6 +96,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+//			establecimientoFacade(establecimientoServicio, false);
 			adquisicionSelected = new Adquisicion();
 			adquisicionSelected.setSubtotal(BigDecimal.ZERO);
 			adquisicionSelected.setTotaliva(BigDecimal.ZERO);
@@ -154,7 +158,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 			// si ya existe la factura del mismo proveedor
 			
-			if (adquisicionServicio.getAdquisicionDao().existeFacturaProveedor(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), adquisicionSelected.getCliente().getIdcliente(), adquisicionSelected.getIdadquisicion(), adquisicionSelected.getNumfactura())) {
+			if (adquisicionServicio.getAdquisicionDao().existeFacturaProveedor(establecimientoMain.getIdestablecimiento(), adquisicionSelected.getCliente().getIdcliente(), adquisicionSelected.getIdadquisicion(), adquisicionSelected.getNumfactura())) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "YA EXISTE LA FACTURA :" + adquisicionSelected.getNumfactura() + " DEL PROVEEDOR : " + adquisicionSelected.getCliente().getRazonsocial());
 				return;
 			}
@@ -209,7 +213,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisiciondetalleList = new ArrayList<>();
 		adquisicionSelected = new Adquisicion();
 		adquisicionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-		adquisicionSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		adquisicionSelected.setEstablecimiento(establecimientoMain);
 		adquisicionSelected.setFecha(new Date());
 		adquisicionSelected.setSubtotal(BigDecimal.ZERO);
 		adquisicionSelected.setTotaliva(BigDecimal.ZERO);
