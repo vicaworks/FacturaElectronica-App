@@ -264,8 +264,8 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-							<p:menuitem value="Ver comprobante" action="#" icon="fa fa-eye" >
-							</p:menuitem>
+							<!-- <p:menuitem value="Ver comprobante" action="#" icon="fa fa-eye" >
+							</p:menuitem> -->
 							<!-- <p:menuitem value="Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-list">
 								<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{pagoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{cuentaPagarCtrl}" target="#{pagoCtrl.cuentaPagarCtrl}"/>
@@ -282,6 +282,15 @@
 								<f:setPropertyActionListener value=":formMain" target="#{porPagarCtrl.viewUpdate}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{porPagarCtrl.pagoCtrl}"/>
 							</p:menuitem>
+							
+							<p:menuitem value=" Detalle de Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-external-link">
+								<f:setPropertyActionListener value="CUENTAS_PAGAR" target="#{pagoCtrl.callModule}"/>
+								<f:setPropertyActionListener value="#{v.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
+								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
+								<f:setPropertyActionListener value="#{cuentaPagarCtrl}" target="#{pagoCtrl.cuentaPagarCtrl}"/>
+								<f:setPropertyActionListener value="#{v.idtipocomprobante}" target="#{pagoCtrl.idTipoComprobante}"/>
+							</p:menuitem>
+							
 							
 						</p:menu>
 						
