@@ -27,6 +27,7 @@
 				value="PRODUCTO" icon="fa fa-search" 
 				action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100 Fs11" update="@form" process="@form @this :formMain:adquisicionDetDT">
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
+				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
 				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
 				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
@@ -49,6 +50,7 @@
 				update="@form" 
 				process="@this :formMain:adquisicionDetDT @form">
 				<f:setPropertyActionListener value="ADQUISICION" target="#{productoCtrl.callModule}"/>
+				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
 				<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{productoCtrl.viewUpdate}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{productoCtrl.adquisicionFrmCtrl}"/>

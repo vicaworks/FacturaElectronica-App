@@ -102,10 +102,29 @@
 	    <h:form id="formMain">
 	    
 	    	<div class="card card-w-title">
-				<h3 class="cardTitle">
-					<i class="fa fa-arrow-circle-right"/>
-					Recibos emitidos
-				</h3>
+				<div class="p-grid p-align-center">
+	    			<div class="p-col-12 p-md-6">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Recibos emitidos</h3>
+	    			</div>
+	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+	                
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{recEmitidoCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="cmb_establecimiento_wrapper"
+							disabled="#{not recEmitidoCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItems value="#{recEmitidoCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{recEmitidoCtrl.buscar()}" update="@form"/>
+								
+						</p:selectOneMenu>
+		                
+		                
+	        		</div>
+	    		</div>
+				
 		   		<div class="EmptyBox5"/>
 		   		
 		   		<div class="p-grid p-align-top vertical-container">
@@ -156,6 +175,7 @@
 						<p:commandButton id="cmdRtnNuevo"
 							value="NUEVO RECIBO" icon="fa fa-plus" 
 							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button" update="@form">
+							<f:setPropertyActionListener value="#{recEmitidoCtrl.establecimientoMain}" target="#{compFacCtrl.establecimientoMain}"/>
 							<f:setPropertyActionListener value="RECIBO" target="#{compFacCtrl.callModule}"/>
 	   					</p:commandButton>
 						<div class="EmptyBox5"/>
@@ -183,11 +203,11 @@
 	    
 	    	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
+				closable="true" style="margin:0px!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			
-			<div class="EmptyBox10"/>
+	    	
+	    	<div class="EmptyBox5"/>
 			<div class="card card-w-title">
 		    	<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
@@ -213,8 +233,8 @@
 							<p:menuitem value="Recibo" action="#{rideCtrl.showRide()}" icon="fa fa-print">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
-								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
+							<p:menuitem value="Editar" action="#{recEmitidoCtrl.editarRecibo(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
+								<f:setPropertyActionListener value="#{v}" target="#{recEmitidoCtrl.ventasQuerySelected}"/>
 								<f:setPropertyActionListener value="RECIBO" target="#{compFacCtrl.callModule}"/>
 							</p:menuitem>
 							<p:menuitem value="Anular" action="#{recEmitidoCtrl.eliminar()}" icon="fa fa-trash-o" disabled="#{v.estado=='ANULADO'}" update="@form">

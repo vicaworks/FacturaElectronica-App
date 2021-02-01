@@ -21,6 +21,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -46,6 +47,9 @@ public class FactMainCtrl extends BaseCtrl {
 	@EJB
 	private CabeceraServicio cabeceraServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private Cabecera cabeceraFac;
 	private List<Detalle> detalleFacList;
 	private Detalle detalleSelected;
@@ -66,6 +70,7 @@ public class FactMainCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultarProductos();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,12 +101,6 @@ public class FactMainCtrl extends BaseCtrl {
 		
 		try {
 			
-//			if(criterioBusqueda==null || criterioBusqueda.trim().length()==0) {
-//				AppJsfUtil.addErrorMessage("formMain:intCriterioBusqueda", "","REQUERIDO");
-//				return;
-//				
-//			}
-			
 			if(criterioBusqueda!=null && criterioBusqueda.trim().length()==0) {
 				criterioBusqueda = null;
 				
@@ -117,7 +116,7 @@ public class FactMainCtrl extends BaseCtrl {
 	
 	public void consultarProductos()throws DaoException{
 		productoList = null;
-		productoList = productoServicio.getProductoDao().consultarAllImageEager(AppJsfUtil.getEstablecimiento().getIdestablecimiento(),criterioBusqueda);
+		productoList = productoServicio.getProductoDao().consultarAllImageEager(establecimientoMain.getIdestablecimiento(),criterioBusqueda);
 	}
 	
 	
@@ -484,6 +483,7 @@ public class FactMainCtrl extends BaseCtrl {
 			
 			FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
 			cabeceraFac.setDetalleList(detalleFacList);
+			fp.setEstablecimientoMain(this.establecimientoMain);
 			fp.initPago(cabeceraFac);
 			
 			return "./puntoVentaPago.jsf?faces-redirect=true";

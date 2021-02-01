@@ -98,10 +98,30 @@
 	    	<div class="EmptyBox5"/>
 	    	<!-- Opciones -->
 	    	<div class="card card-w-title">
-	    		<h3 class="cardTitle">
-					<i class="fa fa-arrow-circle-right"/>
-					Nota de Débito emitidas
-				</h3>
+				<div class="p-grid p-align-center">
+	    			<div class="p-col-12 p-md-6">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Nota de Débito emitidas</h3>
+	    			</div>
+	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
+	                
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{notaDebitoCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="cmb_establecimiento_wrapper"
+							disabled="#{not notaDebitoCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItems value="#{notaDebitoCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{notaDebitoCtrl.buscar()}" update="@form"/>
+								
+						</p:selectOneMenu>
+		                
+		                
+	        		</div>
+	    		</div>
+				
+		   		<div class="EmptyBox5"/>
 	    		<div class="p-grid p-align-center">
 	    			
 	    			<div class="p-col-12 p-md-9">
@@ -197,10 +217,11 @@
 	    	
 	    	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
+				closable="true" style="margin:0px!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			<div class="EmptyBox5"/>
+	    	
+	    	<div class="EmptyBox5"/>
 			<div class="card card-w-title">
 				
 				<div class="p-grid p-nogutter Fs12" style="color:#515A5A;">

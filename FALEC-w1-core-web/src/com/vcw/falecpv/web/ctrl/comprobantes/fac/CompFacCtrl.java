@@ -54,6 +54,7 @@ import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
+import com.vcw.falecpv.web.ctrl.facturacion.RecEmitidoCtrl;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.xpert.faces.utils.FacesUtils;
@@ -183,15 +184,15 @@ public class CompFacCtrl extends BaseCtrl {
 	public void consultarCliente(String identificador) throws DaoException {
 		cabecerSelected.setCliente(null);
 		cabecerSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+				establecimientoMain.getEmpresa().getIdempresa()));
 	}
 	
 	public void consultarIce()throws DaoException{
-		iceList = iceServicio.getIceDao().getByEstado(EstadoRegistroEnum.ACTIVO	, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		iceList = iceServicio.getIceDao().getByEstado(EstadoRegistroEnum.ACTIVO	, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarIva()throws DaoException {
-		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void buscarCliente() {
@@ -251,7 +252,7 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	public void consultarProductos()throws DaoException{
 		productoList = null;
-		productoList = productoServicio.getProductoDao().consultarAllImageEager(AppJsfUtil.getEstablecimiento().getIdestablecimiento(),criterioBusqueda);
+		productoList = productoServicio.getProductoDao().consultarAllImageEager(establecimientoMain.getIdestablecimiento(),criterioBusqueda);
 	}
 	
 	public void nuevaFactura() throws DaoException, NumberFormatException, ParametroRequeridoException {
@@ -264,7 +265,7 @@ public class CompFacCtrl extends BaseCtrl {
 		enableAccion = false;
 		inicializarSecuencia(cabecerSelected);
 		// estado borrador
-		cabecerSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		cabecerSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		criterioCliente = null;
 		pagoList = null;
 		pagoSelected = null;
@@ -278,7 +279,7 @@ public class CompFacCtrl extends BaseCtrl {
 		populateTipoPago();
 		// infoadicional configuracion
 		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.FACTURA));
-		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		configuracionServicio.populateInformacionAdicional(cabecerSelected);
 		infoadicionalList = cabecerSelected.getInfoadicionalList();
 	}
@@ -441,7 +442,7 @@ public class CompFacCtrl extends BaseCtrl {
 			detalleSelected.setDescripcion("");
 			detalleSelected.setPreciounitario(BigDecimal.ZERO);
 			detalleSelected.setProducto(null);
-			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
 				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
@@ -627,7 +628,7 @@ public class CompFacCtrl extends BaseCtrl {
 				return;
 			}
 			
-			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, establecimientoMain.getIdestablecimiento());
 			
 			if(productoSelected==null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE : " + criterioBusqueda);
@@ -686,6 +687,11 @@ public class CompFacCtrl extends BaseCtrl {
 			cabecerSelected.setInfoadicionalList(new ArrayList<>());
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			noEditarSecuencial(cabecerSelected);
+			
+			RecEmitidoCtrl recEmitidoCtrl = (RecEmitidoCtrl) AppJsfUtil.getManagedBean("recEmitidoCtrl");
+			if(recEmitidoCtrl!=null) {
+				recEmitidoCtrl.buscar();
+			}
 			
 			showRide();
 			
@@ -812,7 +818,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setTipoemision("1");
 		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
-		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		cabecerSelected.setContribuyenteespecial("5368");

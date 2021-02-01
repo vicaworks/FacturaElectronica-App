@@ -23,6 +23,7 @@
 				<p:commandButton id="cmdGrNuevoFacturas"
 							value="FACTURAS" icon="fa fa-search" 
 							action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="Wid100 Fs12" update="@form">
+					<f:setPropertyActionListener value="#{guiaRemFormCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>		
 					<f:setPropertyActionListener value="GUIA_REMISION" target="#{ventasQueryCtrl.callModule}"/>
 					<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
 					<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>

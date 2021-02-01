@@ -126,7 +126,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	public void consultarCliente(String identificador) throws DaoException {
 		cabecerSelected.setCliente(null);
 		cabecerSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+				establecimientoMain.getEmpresa().getIdempresa()));
 	}
 	
 	public void initPago(Cabecera cabeceraFac) {
@@ -598,7 +598,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		cabecerSelected.setTipoemision("1");
 		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
-		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		cabecerSelected.setContribuyenteespecial("5368");

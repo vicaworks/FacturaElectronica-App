@@ -37,6 +37,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.NotaDebitoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -69,6 +70,9 @@ public class NotaDebitoCtrl extends BaseCtrl {
 	@EJB
 	private SriDispacher sriDispacher;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
@@ -85,6 +89,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -60);
 			criterioBusqueda = null;
@@ -99,7 +104,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		seleccion = false;
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:notDebitoDT");
 		notDebitoList = null;
-		notDebitoList =  notaDebitoServicio.getByCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(), estado);
+		notDebitoList =  notaDebitoServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estado);
 	}
 	
 	@Override
@@ -141,6 +146,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		try {
 			
 			NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
+			notaDebitoFrmCtrl.setEstablecimientoMain(this.establecimientoMain);
 			notaDebitoFrmCtrl.nuevaNotDebito();
 			
 			return "./notaDebitoForm.jsf?faces-redirect=true";
@@ -173,7 +179,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -310,7 +316,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-NotDebitoDet-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-NotDebitoDet-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 			
 		} catch (Exception e) {
@@ -342,7 +348,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -417,7 +423,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-NotDebito-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-NotDebito-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 			
 		} catch (Exception e) {
@@ -432,6 +438,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		try {
 			
 			NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
+			notaDebitoFrmCtrl.setEstablecimientoMain(this.establecimientoMain);
  			String editar =	notaDebitoFrmCtrl.editar(idNotaDebito);
  			
  			if(editar==null) {

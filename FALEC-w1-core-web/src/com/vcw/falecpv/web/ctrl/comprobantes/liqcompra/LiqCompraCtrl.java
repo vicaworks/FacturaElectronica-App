@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.LiqCompraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
@@ -76,6 +77,9 @@ public class LiqCompraCtrl extends BaseCtrl {
 	
 	@EJB
 	private SriDispacher sriDispacher;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -93,6 +97,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -60);
 			criterioBusqueda = null;
@@ -107,7 +112,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 		seleccion = false;
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:liqCompraDT");
 		liqCompraList = null;
-		liqCompraList = liqCompraServicio.getByLiqCompraCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(), estado);
+		liqCompraList = liqCompraServicio.getByLiqCompraCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estado);
 	}
 
 	@Override
@@ -159,6 +164,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 		try {
 			
 			LiqCompraFormCtrl liqCompraFormCtrl = (LiqCompraFormCtrl) AppJsfUtil.getManagedBean("liqCompraFormCtrl");
+			liqCompraFormCtrl.setEstablecimientoMain(this.establecimientoMain);
 			liqCompraFormCtrl.nuevaLiqCompra();
 			
 			return "./liqCompraForm.jsf?faces-redirect=true";
@@ -176,6 +182,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 		try {
 			
 			LiqCompraFormCtrl liqCompraFormCtrl = (LiqCompraFormCtrl) AppJsfUtil.getManagedBean("liqCompraFormCtrl");
+			liqCompraFormCtrl.setEstablecimientoMain(this.establecimientoMain);
 			String editar = liqCompraFormCtrl.editar(idLiqCompra);
 			
 			if(editar==null) {
@@ -213,7 +220,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -380,7 +387,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-LiqComprasDet-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-LiqComprasDet-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -410,7 +417,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -492,7 +499,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-LiqCompras-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-LiqCompras-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

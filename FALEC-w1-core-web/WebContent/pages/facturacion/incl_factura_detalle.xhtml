@@ -71,6 +71,7 @@
 							value="PRODUCTO" icon="fa fa-search" 
 							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
 							
+							<f:setPropertyActionListener value="#{compFacCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 							<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 							<f:setPropertyActionListener value="FACTURA_FORM2" target="#{listaProductoCtrl.callModule}"/>
 							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>

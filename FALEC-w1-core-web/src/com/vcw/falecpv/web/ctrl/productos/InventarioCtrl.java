@@ -140,6 +140,26 @@ public class InventarioCtrl extends BaseCtrl {
 		
 	}
 	
+	@Override
+	public void limpiar() {
+		
+		try {
+			
+			opcionBusqueda = "INVENTARIO";
+			consultarCategoriasList();
+			consultarProductoList();
+			consultarFabricanteList();
+			buscarDispacher();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+	}
+	
+	
+	
 	public void buscarDispacher() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:inventarioDT");
 		productoList = null;

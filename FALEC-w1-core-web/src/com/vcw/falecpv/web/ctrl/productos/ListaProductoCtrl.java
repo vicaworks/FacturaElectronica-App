@@ -73,7 +73,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	public void consultarProductos()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("frmListProducto:listaProductoDT");
 		productoList = null;
-		productoList = productoServicio.getProductoDao().getByCriteriaEstado(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), criterioBusqueda);
+		productoList = productoServicio.getProductoDao().getByCriteriaEstado(establecimientoMain.getIdestablecimiento(), criterioBusqueda);
 		for (Producto producto : productoList) {
 			producto.setCantidad(1);
 		}

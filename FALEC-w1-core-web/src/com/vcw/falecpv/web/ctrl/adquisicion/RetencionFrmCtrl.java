@@ -212,12 +212,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		}
 		retencionSeleccion.setFechaemisiondocasociado(retencionSeleccion.getFechaemision());
 		retenciondetalleList = null;
-		retencionSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		retencionSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		nuevaRetencionDetalle();
 		determinarPeriodoFiscal();
 		// infoadicional configuracion
 		retencionSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.RETENCION));
-		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		configuracionServicio.populateInformacionAdicional(retencionSeleccion);
 		infoadicionalList = retencionSeleccion.getInfoadicionalList();
 	}
@@ -421,7 +421,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		
 		retencionSeleccion.setTipoemision("1");
 		retencionSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.RETENCION));
-		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		retencionSeleccion.setContribuyenteespecial("5368");
@@ -621,7 +621,7 @@ public class RetencionFrmCtrl extends BaseCtrl {
 	public void consultarProveedor(String identificador) throws DaoException {
 		retencionSeleccion.setCliente(null);
 		retencionSeleccion.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+				establecimientoMain.getEmpresa().getIdempresa()));
 	}
 	
 	public void imprimir() {

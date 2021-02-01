@@ -114,7 +114,7 @@
 									styleClass="Wid100"
 									onchange="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 			
-									<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
+									<f:selectItems value="#{liqCompraFormCtrl.ivaList}" var="iva"
 										itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
 									
 									<p:ajax event="change" listener="#{liqCompraFormCtrl.calcularItemAction(d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>

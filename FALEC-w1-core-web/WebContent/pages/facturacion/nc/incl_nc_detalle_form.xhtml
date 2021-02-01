@@ -38,7 +38,7 @@
 		 				<p:commandButton id="cmdFacProducto"
 							value="PRODUCTO" icon="fa fa-search" 
 							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100" update="@form :frmListProducto" process="@this :formMain">
-							
+							<f:setPropertyActionListener value="#{notaCreditoCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 							<f:setPropertyActionListener value="#{notaCreditoCtrl}" target="#{listaProductoCtrl.notaCreditoCtrl}"/>
 							<f:setPropertyActionListener value="NOTA_CREDITO" target="#{listaProductoCtrl.callModule}"/>
 							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupNcTotal" target="#{listaProductoCtrl.viewUpdate}"/>

@@ -36,6 +36,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.GuiaRemisionServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -68,6 +69,9 @@ public class GuiaRemCtrl extends BaseCtrl {
 	@EJB
 	private SriDispacher sriDispacher;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	
 	private Date desde;
 	private Date hasta;
@@ -89,6 +93,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -60);
 			criterioBusqueda = null;
@@ -104,7 +109,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:guiaRemDT");
 		guiaRemisionList = null;
 		destinatarioList = null;
-		destinatarioList = guiaRemisionServicio.getGRByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
+		destinatarioList = guiaRemisionServicio.getGRByDateCriteria(establecimientoMain.getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 	}
 
 	@Override
@@ -146,6 +151,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 		try {
 			
 			guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
+			guiaRemFormCtrl.setEstablecimientoMain(this.establecimientoMain);
 			guiaRemFormCtrl.nuevaGuiaRemision();
 			
 			return "./guiaRemForm.jsf?faces-redirect=true";
@@ -161,6 +167,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 		try {
 			
 			GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
+			guiaRemFormCtrl.setEstablecimientoMain(this.establecimientoMain);
 			String editar = guiaRemFormCtrl.editar(idGuiaRem);
 			
 			if(editar==null) {
@@ -200,7 +207,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 			//datos de la cabecera
 			Row row = sheet.getRow(3);
 			Cell cell = row.createCell(1);
-			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(4);
 			cell = row.createCell(1);
@@ -219,7 +226,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 			int filaDestinatario = 10;
 			int filaDt = 10;
 			
-			guiaRemisionList = guiaRemisionServicio.getByDateCriteria(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
+			guiaRemisionList = guiaRemisionServicio.getByDateCriteria(establecimientoMain.getIdestablecimiento(), desde, hasta, criterioBusqueda,estado);
 			
 			for (Cabecera gr : guiaRemisionList) {
 				
@@ -335,7 +342,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-GuiaRemision_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-GuiaRemision_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

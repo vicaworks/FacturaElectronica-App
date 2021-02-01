@@ -47,6 +47,7 @@ import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.FacturaServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
@@ -95,6 +96,9 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	
 	@EJB
 	private SriDispacher sriDispacher;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -115,6 +119,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	@PostConstruct
 	public void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultarUsuario();
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
@@ -128,13 +133,13 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	
 	private void consultarUsuario()throws DaoException{
 		usuarioList = null;
-		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getIdestablecimiento());
 	}
 	
 	public void consultar()throws DaoException {
 		seleccion = false;
 		ventasQueryList = null;
-		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),GenTipoDocumentoEnum.FACTURA);
+		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, establecimientoMain.getIdestablecimiento(),GenTipoDocumentoEnum.FACTURA);
 	}
 	
 	@Override
@@ -187,7 +192,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -293,7 +298,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidas-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -324,7 +329,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -517,7 +522,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidasDetalle-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-FacEmitidasDetalle-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -530,6 +535,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		try {
 			
 			NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
+			notaCreditoCtrl.setEstablecimientoMain(this.establecimientoMain);
 			notaCreditoCtrl.setCallModule("FACTURAS_EMITIDAS");
 			notaCreditoCtrl.nuevoByFacturaEmitida(idcabeceraSelected);
 			Cabecera c = cabeceraServicio.consultarByPk(idcabeceraSelected);
@@ -552,6 +558,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		try {
 			
 			NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
+			notaDebitoFrmCtrl.setEstablecimientoMain(this.establecimientoMain);
 			notaDebitoFrmCtrl.setCallModule("FACTURA");
 			notaDebitoFrmCtrl.nuevoByFacturaEmitida(idcabeceraSelected);
 			
@@ -568,6 +575,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		try {
 			
 			CompFacCtrl compFacCtrl = (CompFacCtrl) AppJsfUtil.getManagedBean("compFacCtrl");
+			compFacCtrl.setEstablecimientoMain(this.establecimientoMain);
 			String editar = compFacCtrl.editar(ventasQuerySelected.getIdcabecera());
 			
 			if(editar==null) {

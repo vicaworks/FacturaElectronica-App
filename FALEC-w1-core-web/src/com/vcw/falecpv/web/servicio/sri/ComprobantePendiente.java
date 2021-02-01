@@ -197,7 +197,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			Establecimiento e = establecimientoServicio.consultarByPk(c.getEstablecimiento().getIdestablecimiento());
 			SriAccesoDto sriAccesoDto = sriAccesoHelper.consultarDatosAcceso("RECEPCION", e.getAmbiente().equals("2"));
 			ClienteWsSriServicio wsAutorizacion = new ClienteWsSriServicio(sriAccesoDto.getWsdl());
-			//FileUtils.writeStringToFile(new File("/app/docElectronicos/example1.xml"), xmlDocElectronico);
+			FileUtils.writeStringToFile(new File("/app/docElectronicos/example1.xml"), xmlDocElectronico);
 			//xmlDocElectronico = FileUtils.readFileToString(new File("/app/docElectronicos/example1.xml"));
 			rs = wsAutorizacion.validarComprobanteFacade(xmlDocElectronico);
 			
@@ -233,6 +233,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			
 		} catch (Exception e) {
 			try {
+				e.printStackTrace();
 				cabeceraServicio.actualizar(c);
 				Logtransferenciasri lt = new Logtransferenciasri();
 				lt.setCabecera(c);

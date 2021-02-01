@@ -179,6 +179,7 @@
 	    				<p:commandButton id="cmdNdDocumento"
 								value="COMPROBANTE" icon="fa fa-search" 
 								action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="secondary-button m-button Fs10" update="@form" process="@this">
+							<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>	
 							<f:setPropertyActionListener value="NOTA_DEBITO" target="#{ventasQueryCtrl.callModule}"/>
 							<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
 							<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -42,12 +42,14 @@ import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.FacturaServicio;
 import com.vcw.falecpv.core.servicio.ReciboServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -56,7 +58,7 @@ import com.vcw.falecpv.web.util.UtilExcel;
  *
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class RecEmitidoCtrl extends BaseCtrl {
 
 	/**
@@ -84,6 +86,9 @@ public class RecEmitidoCtrl extends BaseCtrl {
 	
 	@EJB
 	private FacturaServicio facturaServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -103,6 +108,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 	@PostConstruct
 	public void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultarUsuario();
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -30);
@@ -116,13 +122,13 @@ public class RecEmitidoCtrl extends BaseCtrl {
 	
 	private void consultarUsuario()throws DaoException{
 		usuarioList = null;
-		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+		usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getIdestablecimiento());
 	}
 	
 	private void consultar()throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		ventasQueryList = null;
-		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),GenTipoDocumentoEnum.RECIBO);
+		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, establecimientoMain.getIdestablecimiento(),GenTipoDocumentoEnum.RECIBO);
 	}
 	
 	@Override
@@ -172,7 +178,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -250,7 +256,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidas-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -281,7 +287,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -446,7 +452,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidasDet-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidasDet-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -464,7 +470,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 				return;
 			}
 			
-			String analizarEstado = reciboServicio.analizarEstado(ventasQuerySelected.getIdcabecera(), AppJsfUtil.getEstablecimiento().getIdestablecimiento(), "ANULAR");
+			String analizarEstado = reciboServicio.analizarEstado(ventasQuerySelected.getIdcabecera(), establecimientoMain.getIdestablecimiento(), "ANULAR");
 			if(analizarEstado!=null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", analizarEstado);
 				return;
@@ -479,6 +485,26 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public String editarRecibo(String idFactura) {
+		try {
+			
+			CompFacCtrl compFacCtrl = (CompFacCtrl) AppJsfUtil.getManagedBean("compFacCtrl");
+			compFacCtrl.setEstablecimientoMain(this.establecimientoMain);
+			String editar = compFacCtrl.editar(ventasQuerySelected.getIdcabecera());
+			
+			if(editar==null) {
+				return "./factura.jsf?faces-redirect=true";
+			}
+			
+			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
 	}
 
 	/**

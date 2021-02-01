@@ -95,7 +95,7 @@
 							<f:selectItems value="#{inventarioCtrl.establecimientoMainList}" var="st"
 								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
 							
-							<p:ajax event="valueChange" listener="#{inventarioCtrl.refrescar()}" update="@form"/> 
+							<p:ajax event="valueChange" listener="#{inventarioCtrl.limpiar()}" update="@form"/> 
 								
 						</p:selectOneMenu>
 		                

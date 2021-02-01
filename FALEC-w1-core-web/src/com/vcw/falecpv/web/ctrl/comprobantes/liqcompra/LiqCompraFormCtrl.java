@@ -147,13 +147,13 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	}
 	
 	public void consultarIva()throws DaoException {
-		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void nuevaLiqCompra() throws DaoException, NumberFormatException, ParametroRequeridoException{
 		
 		liqCompraSelected = new Cabecera();
-		liqCompraSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		liqCompraSelected.setEstablecimiento(establecimientoMain);
 		liqCompraSelected.setTotal(BigDecimal.ZERO);
 		liqCompraSelected.setTotaldescuento(BigDecimal.ZERO);
 		liqCompraSelected.setTotaliva(BigDecimal.ZERO);
@@ -163,7 +163,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		infoadicionalList = null;
 		descripcionIva = "(0%)";
 		// estado borrador
-		liqCompraSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));		inicializarSecuencia(liqCompraSelected);
+		liqCompraSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));		inicializarSecuencia(liqCompraSelected);
 		liqCompraDetalleList = null;
 		criterioProveedor = null;
 		detalleSelected = null;
@@ -180,7 +180,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		enableAccion = false;
 		// infoadicional configuracion
 		liqCompraSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.FACTURA));
-		liqCompraSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		liqCompraSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		configuracionServicio.populateInformacionAdicional(liqCompraSelected);
 		infoadicionalList = liqCompraSelected.getInfoadicionalList();
 		
@@ -189,7 +189,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	public void consultarProveedor()throws DaoException {
 		
 		setProveedorList(clienteServicio.getClienteDao().getByConsulta(
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), EstadoRegistroEnum.ACTIVO, null));
+				establecimientoMain.getEmpresa().getIdempresa(), EstadoRegistroEnum.ACTIVO, null));
 		
 	}
 	
@@ -269,7 +269,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTipoemision("1");
 		liqCompraSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
-		liqCompraSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		liqCompraSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		liqCompraSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		liqCompraSelected.setContribuyenteespecial("5368");
@@ -339,7 +339,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 			detalleSelected.setProducto(null);
 			detalleSelected.setValorice(BigDecimal.ZERO);
 			detalleSelected.setValoriva(BigDecimal.ZERO);
-			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
 				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
@@ -595,7 +595,7 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 	
 	public void consultarProveedor(String identificador) throws DaoException {
 		liqCompraSelected.setCliente(null);
-		liqCompraSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		liqCompraSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,establecimientoMain.getEmpresa().getIdempresa()));
 	}
 	
 	public String editar(String idLiqCompra) throws DaoException, NumberFormatException, ParametroRequeridoException {

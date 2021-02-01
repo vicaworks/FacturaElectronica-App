@@ -204,8 +204,8 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	protected void inicializarSecuencia(Cabecera cabecera) {
 		cabecera.setEditarSecuencial(false);
-		cabecera.setSecuencialEstablecimiento(TextoUtil.leftPadTexto(AppJsfUtil.getEstablecimiento().getCodigoestablecimiento(),3,"0"));
-		cabecera.setSecuencialCaja(TextoUtil.leftPadTexto(AppJsfUtil.getEstablecimiento().getPuntoemision(),3,"0"));
+		cabecera.setSecuencialEstablecimiento(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(),3,"0"));
+		cabecera.setSecuencialCaja(TextoUtil.leftPadTexto(establecimientoMain.getPuntoemision(),3,"0"));
 		cabecera.setSecuencialNumero(TextoUtil.leftPadTexto("0",9,"0"));
 	}
 	

@@ -37,6 +37,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
@@ -69,6 +70,9 @@ public class RetencionMainCtrl extends BaseCtrl {
 	@EJB
 	private SriDispacher sriDispacher;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
@@ -86,6 +90,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
 			criterioBusqueda = null;
@@ -101,7 +106,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 		seleccion = false;
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:retencionDT");
 		retencionList = null;
-		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(),estado);
+		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(),estado);
 	}
 	
 	@Override
@@ -147,7 +152,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	
 	public String editarRetencion(String idRetencion) {
 		try {
-			
+			retencionFormCtrl.setEstablecimientoMain(this.establecimientoMain);
 			retencionFormCtrl.editarRetencion(idRetencion);
 			
 			return "./retencion_form.jsf?faces-redirect=true";
@@ -162,6 +167,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	public String nuevaRetencion() {
 		try {
 			
+			retencionFormCtrl.setEstablecimientoMain(this.establecimientoMain);
 			retencionFormCtrl.nuevaRetencionDispacher();
 			
 			return "./retencion_form.jsf?faces-redirect=true";
@@ -197,7 +203,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			// datos de la cabecera
 			Row row = sheet.getRow(3);
 			Cell cell = row.createCell(1);
-			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(4);
 			cell = row.createCell(1);
@@ -305,7 +311,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-RetencionesDet_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-RetencionesDet_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {
@@ -340,7 +346,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			// datos de la cabecera
 			Row row = sheet.getRow(3);
 			Cell cell = row.createCell(1);
-			cell.setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			cell.setCellValue(establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(4);
 			cell = row.createCell(1);
@@ -418,7 +424,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Retenciones_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Retenciones_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {

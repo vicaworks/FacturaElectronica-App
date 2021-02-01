@@ -133,7 +133,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
-			
 			callModule = "NOTACREDITO";
 			notaCreditoSeleccion = new Cabecera();
 			consultarTipoComprobante();
@@ -147,17 +146,17 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	}
 	
 	public void consultarIce()throws DaoException{
-		iceList = iceServicio.getIceDao().getByEstado(EstadoRegistroEnum.ACTIVO	, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		iceList = iceServicio.getIceDao().getByEstado(EstadoRegistroEnum.ACTIVO	, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarIva()throws DaoException {
-		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarCliente(String identificador)throws DaoException{
 		notaCreditoSeleccion.setCliente(null);
 		notaCreditoSeleccion.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+				establecimientoMain.getEmpresa().getIdempresa()));
 	}
 	public void consultarTipoComprobante()throws DaoException{
 		
@@ -257,7 +256,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setTipoemision("1");
 		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
-		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		notaCreditoSeleccion.setContribuyenteespecial("5368");
 		determinarPeriodoFiscal();
@@ -321,7 +320,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		detalleSelected = null;
 		criterioCliente = null;
 		notaCreditoSeleccion = new Cabecera();
-		notaCreditoSeleccion.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		notaCreditoSeleccion.setEstablecimiento(establecimientoMain);
 		notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.REGISTRADO.toString());
 		notaCreditoSeleccion.setFechaemision(new Date());
 		notaCreditoSeleccion.setFechaemisiondocasociado(new Date());
@@ -341,12 +340,12 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			formatoNumDoc(facturaSeleccion.getNumdocumento());
 		}
 		// estado borrador
-		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		determinarPeriodoFiscal();
 		enableAccion = false;
 		// infoadicional configuracion
 		notaCreditoSeleccion.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.NOTA_CREDITO));
-		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		configuracionServicio.populateInformacionAdicional(notaCreditoSeleccion);
 		infoadicionalList = notaCreditoSeleccion.getInfoadicionalList();
 	}
@@ -471,7 +470,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 				return;
 			}
 			
-			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, establecimientoMain.getIdestablecimiento());
 			
 			if(productoSelected==null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE : " + criterioBusqueda);
@@ -554,7 +553,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			detalleSelected.setDescripcion("");
 			detalleSelected.setPreciounitario(BigDecimal.ZERO);
 			detalleSelected.setProducto(null);
-			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
 				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
@@ -596,7 +595,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion.setValordocasociado(notaCreditoSeleccion.getTotalconimpuestos());
 		notaCreditoSeleccion.setEstado(EstadoComprobanteEnum.REGISTRADO.toString());
 		// estado borrador
-		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notaCreditoSeleccion.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		notaCreditoSeleccion.setSecuencial(null);
 		notaCreditoSeleccion.setTipocomprobante(null);
 		inicializarSecuencia(notaCreditoSeleccion);
@@ -615,7 +614,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	public void buscarNumDocumento() {
 		try {
 			
-			Cabecera c = cabeceraServicio.getCabeceraDao().getByTipoComprobante(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), notaCreditoSeleccion.getTipocomprobanteretencion() ,notaCreditoSeleccion.getNumfactura());
+			Cabecera c = cabeceraServicio.getCabeceraDao().getByTipoComprobante(establecimientoMain.getIdestablecimiento(), notaCreditoSeleccion.getTipocomprobanteretencion() ,notaCreditoSeleccion.getNumfactura());
 			if(c!=null) {
 				nuevoByFacturaEmitida(c.getIdcabecera());
 			}else {

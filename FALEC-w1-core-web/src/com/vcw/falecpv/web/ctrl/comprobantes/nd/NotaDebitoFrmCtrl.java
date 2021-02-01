@@ -149,7 +149,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	}
 	
 	public void consultarIva()throws DaoException {
-		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		ivaList = ivaServicio.getIvaDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void consultarTipoComprobante() throws DaoException {
@@ -163,7 +163,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		consultarIva();
 		populateTipoPago();
 		notDebitoSelected = new Cabecera();
-		notDebitoSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
+		notDebitoSelected.setEstablecimiento(establecimientoMain);
 		notDebitoSelected.setTotal(BigDecimal.ZERO);
 		notDebitoSelected.setTotaldescuento(BigDecimal.ZERO);
 		notDebitoSelected.setTotaliva(BigDecimal.ZERO);
@@ -175,7 +175,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setFechaemisiondocasociado(new Date());
 		infoadicionalList = null;
 		// estado borrador
-		notDebitoSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notDebitoSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		inicializarSecuencia(notDebitoSelected);
 		totalimpuesto = new Totalimpuesto();
 		totalimpuesto.setBaseimponible(BigDecimal.ZERO);
@@ -192,7 +192,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		enableAccion = false;
 		// infoadicional configuracion
 		notDebitoSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.NOTA_DEBITO));
-		notDebitoSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notDebitoSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		configuracionServicio.populateInformacionAdicional(notDebitoSelected);
 		infoadicionalList = notDebitoSelected.getInfoadicionalList();
 	}
@@ -218,13 +218,13 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	public void consultarCliente(String identificador) throws DaoException {
 		notDebitoSelected.setCliente(null);
 		notDebitoSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+				establecimientoMain.getEmpresa().getIdempresa()));
 	}
 	
 	public void buscarNumDocumento() {
 		try {
 			
-			Cabecera c = cabeceraServicio.getCabeceraDao().getByTipoComprobante(AppJsfUtil.getEstablecimiento().getIdestablecimiento(), notDebitoSelected.getTipocomprobanteretencion() ,notDebitoSelected.getNumdocasociado());
+			Cabecera c = cabeceraServicio.getCabeceraDao().getByTipoComprobante(establecimientoMain.getIdestablecimiento(), notDebitoSelected.getTipocomprobanteretencion() ,notDebitoSelected.getNumdocasociado());
 			if(c!=null) {
 				nuevoByFacturaEmitida(c.getIdcabecera());
 			}else {
@@ -247,7 +247,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTipocomprobanteretencion(cabecera.getTipocomprobante());
 		notDebitoSelected.setFechaemisiondocasociado(cabecera.getFechaemision());
 		notDebitoSelected.setNumdocasociado(cabecera.getNumdocumento());
-		notDebitoSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notDebitoSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		inicializarSecuencia(notDebitoSelected);
 		totalizar();
 		
@@ -602,7 +602,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setTipoemision("1");
 		notDebitoSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
-		notDebitoSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		notDebitoSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		notDebitoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		notDebitoSelected.setContribuyenteespecial("5368");

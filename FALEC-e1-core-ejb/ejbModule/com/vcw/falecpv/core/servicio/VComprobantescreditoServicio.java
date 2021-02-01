@@ -17,7 +17,6 @@ import com.vcw.falecpv.core.dao.impl.VComprobantescreditoDao;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
 import com.vcw.falecpv.core.modelo.vista.VComprobantescredito;
-import com.vcw.falecpv.core.modelo.vista.VComprobantespagarcredito;
 
 /**
  * @author cristianvillarreal

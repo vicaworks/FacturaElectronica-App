@@ -133,7 +133,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	
 	public void consultarTransportista()throws DaoException{
 		transportistaList = null;
-		transportistaList = transportistaServicio.getTransportistaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		transportistaList = transportistaServicio.getTransportistaDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void nuevaGuiaRemision() throws DaoException, NumberFormatException, ParametroRequeridoException {
@@ -142,14 +142,14 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		consultarTransportista();
 		consultarTipoComprobante();
 		guiaRemisionSelected = new Cabecera();
-		guiaRemisionSelected.setDireccionpartida(AppJsfUtil.getEstablecimiento().getDireccionestablecimiento());
+		guiaRemisionSelected.setDireccionpartida(establecimientoMain.getDireccionestablecimiento());
 		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		guiaRemisionSelected.setFechainiciotransporte(new Date());
 		guiaRemisionSelected.setFechafintransporte(new Date());
 		guiaRemisionSelected.setDestinatarioList(new ArrayList<>());
 		infoadicionalList = null;
 		// estado borrador
-		guiaRemisionSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		guiaRemisionSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		inicializarSecuencia(guiaRemisionSelected);
 		enableAccion=false;
 	}
@@ -243,7 +243,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setTipoemision("1");
 		guiaRemisionSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
-		guiaRemisionSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		guiaRemisionSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		guiaRemisionSelected.setContribuyenteespecial("5368");
@@ -429,7 +429,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	public void consultarCliente(String identificador) throws DaoException {
 		destinatarioSelected.setCliente(null);
 		destinatarioSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
-				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+				establecimientoMain.getEmpresa().getIdempresa()));
 	}
 	
 	public String asignarFactura(ResumenCabeceraQuery resumenCabeceraQuery)throws DaoException {
