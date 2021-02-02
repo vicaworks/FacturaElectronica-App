@@ -312,11 +312,11 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:110px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{liqCompraCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:85px;" filterBy="#{r.estado}" filterMatchMode="contains">
+					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{r.estado}" filterMatchMode="contains">
 						
 						<div class="p-grid p-nogutter p-align-center">
 							<div class="p-col-10">

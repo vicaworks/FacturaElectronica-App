@@ -166,7 +166,7 @@
 		   		
 		   		<div class="p-grid p-align-end vertical-container p-justify-start">
 		   			
-		   			<div class="p-col-12 p-md-5">
+		   			<div class="p-col-12 p-md-4">
 		    			<h:outputText value="CONCEPTO *" styleClass="cpoRequerido Wid100"/>
 		    			<div class="EmptyBox5"/>
 		    			<p:selectOneMenu id="somConcepto"
@@ -205,31 +205,24 @@
 						<p:message for="calHasta"/>
 		    		</div>
 		   			
-		   			<div class="p-col-12 p-lg-1">
+		   			<div class="p-col-12 p-lg-4">
 		   				<p:commandButton id="cmdGlobalBuscar"
 							icon="fa fa-search"
-							action="#{cajaChicaCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
-					</div>
-					
-					<div class="p-col-12 p-lg-1">
+							action="#{cajaChicaCtrl.buscar()}" styleClass="secondary-button " update="@form" style="margin-right:5px;" value="BUSCAR"/>
 						<p:commandButton id="cmdRtnNuevo"
 							value="NUEVO" icon="fa fa-plus" 
-							action="#{cajaChicaCtrl.nuevoForm()}" styleClass="Wid100 secondary-button" update="@form">
+							action="#{cajaChicaCtrl.nuevoForm()}" styleClass=" secondary-button" update="@form" style="margin-right:5px;">
 	   					</p:commandButton>
-	   				</div>
-	   				
-	   				<div class="p-col-12 p-lg-1">
-						
 						<p:commandButton id="cmdGlobalExcel"
 	  						value="EXPORTAR"
 							icon="fa fa-sort-down" 
-							styleClass="secondary-button Wid100"
+							styleClass="secondary-button "
 							disabled="#{empty cajaChicaCtrl.transaccionList}"
 							ajax="false">
 							<p:fileDownload value="#{cajaChicaCtrl.fileResumen}" contentDisposition="inline"/>
 						</p:commandButton>
-		   				
-		   			</div>
+					</div>
+					
 		   		
 		   		</div>
 		   		

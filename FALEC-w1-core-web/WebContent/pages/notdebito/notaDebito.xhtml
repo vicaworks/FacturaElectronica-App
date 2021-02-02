@@ -307,11 +307,11 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:90px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:110px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{notaDebitoCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:85px;" filterBy="#{r.estado}" filterMatchMode="contains">
+					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{r.estado}" filterMatchMode="contains">
 						
 						<div class="p-grid p-nogutter p-align-center">
 							<div class="p-col-10">
@@ -355,7 +355,7 @@
 						</f:subview>
 					</p:column>
 					
-					<p:column headerText="DOC ASOCIADO" style="width:95px;">
+					<p:column headerText="DOC ASOCIADO" style="width:120px;">
 						<div class="p-grid p-align-top vertical-container">
 							<div class="p-col-12 p-md-5">
 								<h:outputText value="TIP. DOCU. " styleClass="DispBlock FontBold"/>
