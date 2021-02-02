@@ -25,6 +25,7 @@
 				<p:commandButton id="cmdGrNuevoDetalle"
 							value="PRODUCTO" icon="fa fa-search" 
 							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="Wid100 Fs12" update="@form">
+					<f:setPropertyActionListener value="#{guiaRemFormCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 					<f:setPropertyActionListener value="GUIA_REMISION" target="#{listaProductoCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain" target="#{listaProductoCtrl.viewUpdate}"/>
 					<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>

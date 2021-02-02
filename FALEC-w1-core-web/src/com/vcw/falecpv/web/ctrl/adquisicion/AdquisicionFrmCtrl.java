@@ -156,6 +156,12 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 				
 			}
 			
+			// sino existe proveedor
+			if(adquisicionSelected.getCliente()==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE PROVEEDOR.");
+				return;
+			}
+			
 			// si ya existe la factura del mismo proveedor
 			
 			if (adquisicionServicio.getAdquisicionDao().existeFacturaProveedor(establecimientoMain.getIdestablecimiento(), adquisicionSelected.getCliente().getIdcliente(), adquisicionSelected.getIdadquisicion(), adquisicionSelected.getNumfactura())) {

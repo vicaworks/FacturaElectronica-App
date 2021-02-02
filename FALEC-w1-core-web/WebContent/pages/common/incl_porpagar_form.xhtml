@@ -139,7 +139,7 @@
 			<p:panelGrid id="grid2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2" rendered="#{porPagarCtrl.callModule=='MAIN_POR_PAGAR'}">			
 				
 				<h:outputText value="NUM COMPROBANTE * :" styleClass="cpoRequerido"/>
-				<h:outputText value="#{porPagarCtrl.adquisicionSelected.numfactura}" >
+				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(porPagarCtrl.adquisicionSelected.numfactura)}" >
 				</h:outputText>
 				<h:outputText value=""/>
 				

@@ -24,7 +24,6 @@
 			body .ui-message {
 				padding: 0em !important;
 				margin: 0em !important;
-				display: block !important;
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -76,6 +75,22 @@
 			body .ui-inputgroup .ui-inputgroup-addon, 
 			body .ui-inputgroup .ui-inputgroup-addon-checkbox {
 			 padding: 0px !important;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
 			}
 			
 			/* =========================================================================================================================== */
@@ -198,6 +213,15 @@
 	    
 	    <!-- RIDE -->
 		<ui:include src="../../common/incl_ride.xhtml" />
+		
+		<!-- Form Producto -->
+	    <ui:include src="../../productos/incl_producto_form.xhtml" />
+	    
+	    <!-- Form Fabricante -->
+	    <ui:include src="../../productos/incl_fabricante_form.xhtml" />
+	    
+	    <!-- Form Categoria -->
+	    <ui:include src="../../productos/incl_categoria_form.xhtml" />
         
     </ui:define>
 

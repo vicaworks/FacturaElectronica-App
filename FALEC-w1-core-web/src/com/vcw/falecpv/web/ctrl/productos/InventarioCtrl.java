@@ -172,22 +172,34 @@ public class InventarioCtrl extends BaseCtrl {
 			productoList = inventarioServicio.getStokMayorZero(establecimientoMain.getIdestablecimiento());
 			break;
 		case "STOCKMENORIGUAL":
-			productoList = inventarioServicio.getStokLessEqualsThan(stock, establecimientoMain.getIdestablecimiento());
+			if(stock!=null) {
+				productoList = inventarioServicio.getStokLessEqualsThan(stock, establecimientoMain.getIdestablecimiento());
+			}
 			break;
 		case "FECHACADUCIDAD":
-			productoList = inventarioServicio.getFechaCaducidadLessEqualsThan(fechaCaducidad, establecimientoMain.getIdestablecimiento());
+			if(fechaCaducidad!=null) {
+				productoList = inventarioServicio.getFechaCaducidadLessEqualsThan(fechaCaducidad, establecimientoMain.getIdestablecimiento());
+			}
 			break;
 		case "PRODUCTO":
-			productoList = inventarioServicio.getByIdProducto(productoFormSelected.getIdproducto(), establecimientoMain.getIdestablecimiento());
+			if(productoFormSelected!=null) {
+				productoList = inventarioServicio.getByIdProducto(productoFormSelected.getIdproducto(), establecimientoMain.getIdestablecimiento());
+			}
 			break;
 		case "CODPRODUCTO":
-			productoList = inventarioServicio.getByCodigoPrincipal(codProducto, establecimientoMain.getIdestablecimiento());
+			if(codProducto!=null) {
+				productoList = inventarioServicio.getByCodigoPrincipal(codProducto, establecimientoMain.getIdestablecimiento());
+			}
 			break;
 		case "CATEGORIA":
-			productoList = inventarioServicio.getByCategoria(categoriaSelected.getIdcategoria(), establecimientoMain.getIdestablecimiento());
+			if(categoriaSelected!=null) {
+				productoList = inventarioServicio.getByCategoria(categoriaSelected.getIdcategoria(), establecimientoMain.getIdestablecimiento());
+			}
 			break;
 		case "FABRICANTE":
-			productoList = inventarioServicio.getByFabricante(fabricanteSelected.getIdfabricante(), establecimientoMain.getIdestablecimiento());
+			if(fabricanteSelected!=null) {
+				productoList = inventarioServicio.getByFabricante(fabricanteSelected.getIdfabricante(), establecimientoMain.getIdestablecimiento());
+			}
 			break;
 		default:
 			return;
@@ -216,7 +228,7 @@ public class InventarioCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());

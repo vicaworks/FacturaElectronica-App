@@ -340,7 +340,7 @@ public class KardexCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.createCell(1);
-			cell.setCellValue(establecimientoMain.getNombrecomercial());
+			cell.setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(6);
 			cell = row.createCell(1);
@@ -473,7 +473,7 @@ public class KardexCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.createCell(1);
-			cell.setCellValue(establecimientoMain.getNombrecomercial());
+			cell.setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			int fila = 8;
 			

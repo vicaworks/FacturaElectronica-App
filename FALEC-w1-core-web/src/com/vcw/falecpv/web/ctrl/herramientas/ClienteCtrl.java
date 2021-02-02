@@ -143,7 +143,7 @@ public class ClienteCtrl extends BaseCtrl {
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
 				
-			case "CAJACHICA":
+			case "CAJACHICA": case "cajaChicaCtrl" :
 				cajaChicaCtrl.getTransaccionSelected().setCliente(clienteSelected);
 				AppJsfUtil.hideModal("dlgCliente");
 				break;

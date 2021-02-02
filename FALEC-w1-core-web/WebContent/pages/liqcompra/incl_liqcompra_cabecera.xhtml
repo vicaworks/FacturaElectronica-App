@@ -20,7 +20,14 @@
 	
 	<div class="card card-w-title">
 		
-		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.liqcompra']}</h2>
+		<div class="p-grid">
+			<div class="p-col-4">
+				<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.liqcompra']}</h2>
+			</div>
+			<div class="p-col-8" style="text-align: right;">
+				<h:outputText value="Establecimiento - #{appSessionCtrl.formatoCadena(liqCompraFormCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="cpoRequerido Fs11" style="color:rgba(0,0,0,0.9);"/>
+			</div>
+		</div>
 		
 		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
 			

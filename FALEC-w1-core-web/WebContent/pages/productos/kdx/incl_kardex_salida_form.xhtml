@@ -50,6 +50,10 @@
 			
 				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
 					
+					<h:outputText value="ESTABLECIMIENTO : " styleClass="FontBold"/>
+					<h:outputText value="#{appSessionCtrl.formatoCadena(kardexCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="FontBold FS12"/>
+					<h:outputText value="" />
+					
 					<h:outputText value="ID PRODUCTO : " styleClass="FontBold"/>
 					<h:outputText value="#{kardexCtrl.productoSelected.idproducto}" styleClass="FontBold FS12"/>
 					<h:outputText value="" />

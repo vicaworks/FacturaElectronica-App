@@ -24,7 +24,7 @@
 			body .ui-message {
 				padding: 0em !important;
 				margin: 0em !important;
-				display: block !important;
+				/* display: block !important; */
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -212,6 +212,11 @@
 				background-color: #F4F6F7 !important;
 			}
 			
+			
+			.ui-fileupload-content .ui-messages .ui-messages-error {
+				/* display:  !important; */
+			}
+			
         </style>
     </ui:define>
 
@@ -232,7 +237,8 @@
 	    <h:form id="formMain">
 	    	
 	    	<!-- OPCIONES -->
-	    	<div class="card card-w-title" style="margin-top:12px;">
+	    	<div class="EmptyBox5"/>
+	    	<div class="card card-w-title">
 	    		
 	    		<div class="EmptyBox10"/>
 	    		
@@ -248,7 +254,7 @@
 							value="#{msg['label.retencion']}" icon="fa fa-plus" 
 							action="#{retencionMainCtrl.nuevaRetencion()}" 
 							styleClass="warning-btn m-button Fs11" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
-							
+							<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{retencionFrmCtrl.establecimientoMain}"/>
 							<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 							<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
 							<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
@@ -265,7 +271,7 @@
 			<!-- Mensajes -->
 			<div class="EmptyBox5"/>
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
+				closable="true" style="margin:0px!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			

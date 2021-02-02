@@ -82,7 +82,7 @@
 	    	
 	    		<div class="p-grid p-align-center">
 	    			<div class="p-col-12 p-md-6">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Productos más Vendidos</h3>
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Inventario</h3>
 	    			</div>
 	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
 	                
@@ -107,7 +107,7 @@
 	    		
 	    		<div class="p-grid p-justify-center p-align-top vertical-container">
 	    			
-	    			<div class="p-col-12 p-md-8">
+	    			<div class="p-col-12 p-md-9">
 	    				
 	    				<div class="p-grid">
 	    					
@@ -245,7 +245,7 @@
 	    				
 	    			</div>
 	    			
-	    			<div class="p-col-12 p-md-4">
+	    			<div class="p-col-12 p-md-3">
 	    				<div class="EmptyBox5"/>
 	    				<div class="EmptyBox5"/>
 	    				<p:commandButton id="cmdInvRefrecar"
@@ -255,7 +255,7 @@
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdInvNuevoProducto"
 							value="NUEVO PRODUCTO" icon="fa fa-plus" 
-							action="#{productoCtrl.nuevo()}" styleClass="secondary-button Wid100" update="@form">
+							action="#{productoCtrl.nuevo()}" styleClass="secondary-button Wid100" update="@form" process="@this">
 							<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
 							<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
 							<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
@@ -267,7 +267,7 @@
 										title="EXPORTAR"
 										icon="fa fa-file-excel-o"
 										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="REPORTE"
+										value="EXPORTAR"
 										styleClass="secondary-button Wid100"
 										disabled="#{empty inventarioCtrl.productoList}">
 							<p:fileDownload value="#{inventarioCtrl.fileInventario}"/>

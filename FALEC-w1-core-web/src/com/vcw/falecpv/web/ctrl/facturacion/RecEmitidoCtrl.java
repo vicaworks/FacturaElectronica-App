@@ -178,7 +178,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -287,7 +287,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());

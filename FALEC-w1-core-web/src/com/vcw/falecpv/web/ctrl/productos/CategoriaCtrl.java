@@ -239,7 +239,7 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 			row = sheet.getRow(5);
 			cell = row.getCell(1);
-			cell.setCellValue(AppJsfUtil.getUsuario().getEstablecimiento().getEmpresa().getRazonsocial());
+			cell.setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			// lista de categoria
 			int fila = 8;

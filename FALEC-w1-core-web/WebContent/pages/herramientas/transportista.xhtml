@@ -14,11 +14,12 @@
 			
 			.transportistaDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 390px)!important;
+				height: calc(100vh - 380px)!important;
 			}
 			
 			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
+				padding:0.5em 0px;
+				font-size: 18px !important;
 			}
 			
 			body .ui-datatable .ui-datatable-data > tr > td {
@@ -61,9 +62,9 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	
-	    	<div class="card card-w-title" style="margin-top:12px;">
-	    	
+	    	<div class="EmptyBox5"/>
+	    	<div class="card card-w-title">
+	    		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Transportista</h3>
 	    		<div class="p-grid p-align-start ">
 	    			
 	    			<div class="p-col-12 p-md-6">
@@ -112,7 +113,7 @@
 										title="EXPORTAR"
 										icon="fa fa-file-excel-o"
 										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="REPORTE"
+										value="EXPORTAR"
 										styleClass="secondary-button Wid90"
 										disabled="#{empty transportistaMainCtrl.transportistaList}">
 										<p:fileDownload value="#{transportistaMainCtrl.fileResumen}"/>
@@ -130,12 +131,11 @@
 	    	
 	    	<!-- Mensajes -->
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
+				closable="true" style="margin:0px!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			
+			<div class="EmptyBox5"/>
 			<div class="card card-w-title">
-				<h1 class="cardTitle">Cliente</h1>
 				<p:dataTable id="transportistaDT" var="c"
 					value="#{transportistaMainCtrl.transportistaList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"

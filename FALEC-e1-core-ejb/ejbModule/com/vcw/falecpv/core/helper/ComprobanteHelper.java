@@ -192,7 +192,7 @@ public class ComprobanteHelper {
 				df.getDetalleimpuestoList().add(di);
 			}
 			
-			if(df.getValoriva()!=null && df.getValoriva().doubleValue()>0) {
+			if(df.getValoriva()!=null && df.getValoriva().doubleValue()>=0) {
 				Detalleimpuesto di = new Detalleimpuesto();
 				di.setIva(df.getIva());
 				di.setTarifa(df.getIva().getValor());

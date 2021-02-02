@@ -50,8 +50,8 @@ public class Logtransferenciasri implements Serializable {
     @Size(max = 128)
     @Column(name = "descripcion", length = 128)
     private String descripcion;
-    @Size(max = 512)
-    @Column(name = "motivo", length = 512)
+    @Size(max = 3000)
+    @Column(name = "motivo", length = 3000)
     private String motivo;
     @Column(name = "idusuario", nullable = false)
     private String idusuario;

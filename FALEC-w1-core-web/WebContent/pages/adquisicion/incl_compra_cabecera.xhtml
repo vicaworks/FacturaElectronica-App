@@ -24,6 +24,11 @@
 		<!-- Formulario -->
 		<div class="EmptyBox5"/>
 		<p:panelGrid id="gridAdProveedor" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+			<h:panelGroup>
+				<h:outputText value="ESTABLECIMIENTO - #{appSessionCtrl.formatoCadena(adquisicionFrmCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="cpoRequerido"/>
+			</h:panelGroup>
+			<h:outputText value="" styleClass="cpoRequerido"/>
+			
 			<h:outputText value="PROVEEDOR *" styleClass="cpoRequerido"/>
 			<h:panelGroup>
 				<div class="ui-inputgroup">

@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -50,7 +50,7 @@ import com.vcw.falecpv.web.util.UtilExcel;
  *
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class CajaChicaCtrl extends BaseCtrl {
 
 	/**
@@ -264,7 +264,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 		totalEgreso = BigDecimal.ZERO;
 		totalIngreso = BigDecimal.ZERO;
 		saldoActual = BigDecimal.ZERO;
-		if(transaccionList==null) {
+		if(transaccionList==null || transaccionList.isEmpty()) {
 			return;
 		}
 		
@@ -295,7 +295,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());

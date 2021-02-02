@@ -186,7 +186,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			// datos de la cabecera
 			Row row = sheet.getRow(3);
 			Cell cell = row.createCell(1);
-			cell.setCellValue(establecimientoMain.getNombrecomercial());
+			cell.setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(4);
 			cell = row.createCell(1);
@@ -407,7 +407,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			// datos de la cabecera
 			Row row = sheet.getRow(3);
 			Cell cell = row.createCell(1);
-			cell.setCellValue(establecimientoMain.getNombrecomercial());
+			cell.setCellValue(TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(), 3, "0") + " " + establecimientoMain.getNombrecomercial());
 			
 			row = sheet.getRow(4);
 			cell = row.createCell(1);

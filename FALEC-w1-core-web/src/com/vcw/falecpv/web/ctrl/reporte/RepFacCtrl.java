@@ -173,7 +173,7 @@ public class RepFacCtrl extends BaseCtrl {
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getEmpresa().getRazonsocial());
 			
 			rowCliente = sheet.getRow(3);
-			rowCliente.createCell(7).setCellValue(establecimientoMain!=null?establecimientoMain.getNombrecomercial():"TODOS");
+			rowCliente.createCell(7).setCellValue(establecimientoMain==null?"TODOS":TextoUtil.leftPadTexto(establecimientoMain.getCodigoestablecimiento(),3,"0") + " " + establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
