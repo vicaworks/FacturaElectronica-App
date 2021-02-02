@@ -256,7 +256,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidas-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-RecEmitidas-" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -452,7 +452,7 @@ public class RecEmitidoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-RecEmitidasDet-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-RecEmitidasDet-" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

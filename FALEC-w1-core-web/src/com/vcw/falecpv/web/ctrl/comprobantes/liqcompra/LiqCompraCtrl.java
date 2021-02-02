@@ -387,7 +387,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-LiqComprasDet-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-LiqComprasDet-" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -499,7 +499,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-LiqCompras-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-LiqCompras-" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

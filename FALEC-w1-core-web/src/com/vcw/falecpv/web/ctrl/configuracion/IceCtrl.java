@@ -285,7 +285,7 @@ public class IceCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-iceList" +  AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOCPV-iceList" +  AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -302,7 +302,7 @@ public class IceCtrl extends BaseCtrl {
 			String path = FacesUtil.getServletContext().getRealPath(
 					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-importarIce.xls");
 			
-			return AppJsfUtil.downloadFile(new File(path), "FALECPV-importarIce.xls");
+			return AppJsfUtil.downloadFile(new File(path), "MAKOPV-importarIce.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -315,7 +315,7 @@ public class IceCtrl extends BaseCtrl {
 		try {
 			
 						
-			return AppJsfUtil.downloadFile(fileIces, "FALECPV-importarIce.xls");
+			return AppJsfUtil.downloadFile(fileIces, "MAKOPV-importarIce.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

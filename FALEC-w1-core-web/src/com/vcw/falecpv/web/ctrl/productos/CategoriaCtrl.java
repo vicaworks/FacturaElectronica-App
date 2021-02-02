@@ -285,7 +285,7 @@ public class CategoriaCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-listacategoria.xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-listacategoria.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

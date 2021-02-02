@@ -209,7 +209,7 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 			FileOutputStream out = new FileOutputStream(tempXls);
 			wb.write(out);
 			out.close();
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-VentaProductos-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-VentaProductos-" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 			
 		} catch (Exception e) {

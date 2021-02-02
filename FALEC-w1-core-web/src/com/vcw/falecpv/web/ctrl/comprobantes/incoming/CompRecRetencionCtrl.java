@@ -240,7 +240,7 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-RetencionesRecibidas_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-RetencionesRecibidas_" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -443,7 +443,7 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-RetencionesDetRecibidas_" + AppJsfUtil.getEstablecimiento().getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-RetencionesDetRecibidas_" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -282,7 +282,7 @@ public class FabricanteCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-listafabricante.xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-listafabricante.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

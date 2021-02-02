@@ -204,7 +204,7 @@ public class RepProductosCtrl extends BaseCtrl {
 			FileOutputStream out = new FileOutputStream(tempXls);
 			wb.write(out);
 			out.close();
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-ClienteProducto-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-ClienteProducto-" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

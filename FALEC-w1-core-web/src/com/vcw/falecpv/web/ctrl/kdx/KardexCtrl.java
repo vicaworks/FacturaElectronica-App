@@ -433,7 +433,7 @@ public class KardexCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-kardexProducto.xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-kardexProducto.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -563,7 +563,7 @@ public class KardexCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-kardexProductoTodos.xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-kardexProductoTodos.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

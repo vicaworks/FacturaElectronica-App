@@ -316,7 +316,7 @@ public class ClienteCtrl extends BaseCtrl {
 			String path = FacesUtil.getServletContext().getRealPath(
 					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-importarClientes.xls");
 			
-			return AppJsfUtil.downloadFile(new File(path), "FALECPV-importarClientes.xls");
+			return AppJsfUtil.downloadFile(new File(path), "MAKOCPV-importarClientes.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -876,7 +876,7 @@ public class ClienteCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-clienteList.xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-clienteList.xls");
 			
 		} catch (Exception e) {
 			
@@ -891,7 +891,7 @@ public class ClienteCtrl extends BaseCtrl {
 	public StreamedContent getPlantillaImportarClienteNovedades() {
 		try {
 				
-			return AppJsfUtil.downloadFile(fileClientes, "FALECPV-importarClientes.xls");
+			return AppJsfUtil.downloadFile(fileClientes, "MAKOPV-importarClientes.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

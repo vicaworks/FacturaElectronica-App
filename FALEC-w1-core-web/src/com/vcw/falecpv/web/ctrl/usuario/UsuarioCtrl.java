@@ -289,7 +289,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-listausuarios.xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-listausuarios.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

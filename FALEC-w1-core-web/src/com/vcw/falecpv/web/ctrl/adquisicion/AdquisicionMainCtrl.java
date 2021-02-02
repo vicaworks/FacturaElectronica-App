@@ -375,7 +375,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-CompraDet_" + establecimientoMain.getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-CompraDet_" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {
@@ -505,7 +505,7 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Compra_" + establecimientoMain.getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-Compra_" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {

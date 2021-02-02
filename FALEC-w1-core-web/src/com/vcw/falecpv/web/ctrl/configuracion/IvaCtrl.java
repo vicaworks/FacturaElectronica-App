@@ -303,7 +303,7 @@ public class IvaCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-ivaList" +  AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-ivaList" +  AppJsfUtil.getEstablecimiento().getEmpresa().getNombrecomercial() + ".xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

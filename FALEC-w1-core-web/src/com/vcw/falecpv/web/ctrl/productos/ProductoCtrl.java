@@ -461,7 +461,7 @@ public class ProductoCtrl extends BaseCtrl {
 			String path = FacesUtil.getServletContext().getRealPath(
 					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-importarProductos.xls");
 			
-			return AppJsfUtil.downloadFile(new File(path), "FALECPV-importarProductos.xls");
+			return AppJsfUtil.downloadFile(new File(path), "MAKOPV-importarProductos.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -978,7 +978,7 @@ public class ProductoCtrl extends BaseCtrl {
 		try {
 			
 						
-			return AppJsfUtil.downloadFile(fileProductos, "FALECPV-importarProductos.xls");
+			return AppJsfUtil.downloadFile(fileProductos, "MAKOPV-importarProductos.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1112,7 +1112,7 @@ public class ProductoCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-listaproducto.xls");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-listaproducto.xls");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

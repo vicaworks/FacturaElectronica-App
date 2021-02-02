@@ -311,7 +311,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-RetencionesDet_" + establecimientoMain.getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-RetencionesDet_" + establecimientoMain.getCodigoestablecimiento() + "_" + establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {
@@ -424,7 +424,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls,"FALECPV-Retenciones_" + establecimientoMain.getNombrecomercial()+".xlsx");
+			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-Retenciones_" + establecimientoMain.getCodigoestablecimiento() + "_" +  establecimientoMain.getNombrecomercial()+".xlsx");
 			
 			
 		} catch (Exception e) {

@@ -232,7 +232,7 @@ public class PagosMainCtrl extends BaseCtrl {
 			FileOutputStream out = new FileOutputStream(tempXls);
 			wb.write(out);
 			out.close();
-			return AppJsfUtil.downloadFile(tempXls, "FALECPV-PagosEmitidos-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-PagosEmitidos-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
