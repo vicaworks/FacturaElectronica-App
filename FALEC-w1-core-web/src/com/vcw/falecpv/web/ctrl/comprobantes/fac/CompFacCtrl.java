@@ -148,13 +148,16 @@ public class CompFacCtrl extends BaseCtrl {
 		try {
 			
 			productoSelected = null;
-			nuevaFactura();
 			detalleFacList = null;
 			detalleSelected = null;
 			criterioBusqueda = null;
-			consultarProductos();
-			consultarIce();
-			consultarIva();
+			
+			if(establecimientoMain!=null) {
+				nuevaFactura();
+				consultarProductos();
+				consultarIce();
+				consultarIva();
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

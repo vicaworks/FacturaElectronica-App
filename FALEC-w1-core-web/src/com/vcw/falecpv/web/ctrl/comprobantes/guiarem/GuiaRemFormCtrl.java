@@ -117,9 +117,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
-			
-			nuevaGuiaRemision();
-			consultarTipoComprobante();
+			if(establecimientoMain!=null) {
+				nuevaGuiaRemision();
+				consultarTipoComprobante();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -133,7 +134,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	
 	public void consultarTransportista()throws DaoException{
 		transportistaList = null;
-		transportistaList = transportistaServicio.getTransportistaDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
+		transportistaList = transportistaServicio.getTransportistaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
 	public void nuevaGuiaRemision() throws DaoException, NumberFormatException, ParametroRequeridoException {

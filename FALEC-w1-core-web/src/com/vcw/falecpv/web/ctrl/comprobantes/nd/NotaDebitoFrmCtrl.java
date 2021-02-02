@@ -139,7 +139,10 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			
-			nuevaNotDebito();
+			if(establecimientoMain!=null) {
+				nuevaNotDebito();
+			}
+			
 			
 			
 		} catch (Exception e) {
