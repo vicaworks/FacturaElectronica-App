@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlFactura;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlPago;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.constante.ExportarFileEnum;
@@ -63,6 +64,9 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	
 	@EJB
 	private ComprobanteUtilServicio comprobanteUtilServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -78,6 +82,7 @@ public class CompRecFacturaCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
 			aplicarFechas=true;

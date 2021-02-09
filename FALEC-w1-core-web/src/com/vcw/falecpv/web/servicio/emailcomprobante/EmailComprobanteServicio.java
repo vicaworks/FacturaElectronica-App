@@ -6,9 +6,11 @@ package com.vcw.falecpv.web.servicio.emailcomprobante;
 import java.io.File;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.ejb.Stateless;
@@ -209,7 +211,9 @@ public class EmailComprobanteServicio {
 		context.put("receptorNumComprobante", cabecera.getTipocomprobante().getComprobante() + " : " + ComprobanteHelper.formatNumDocumento(cabecera.getNumdocumento()));
 		context.put("compFecha",(new SimpleDateFormat("dd/MM/yyyy")).format(cabecera.getFechaemision()));
 		
-		DecimalFormat df = new DecimalFormat("#,##0.00");
+		NumberFormat df = DecimalFormat.getCurrencyInstance(new Locale("es", "EC"));
+		df.setMaximumFractionDigits(2);
+		df.setMinimumFractionDigits(2);
 		switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
 		case FACTURA:case LIQUIDACION_COMPRA:case NOTA_CREDITO:case NOTA_DEBITO:
 			context.put("receptorRazonSocial", cabecera.getCliente().getRazonsocial());
@@ -221,7 +225,7 @@ public class EmailComprobanteServicio {
 			break;
 		case GUIA_REMISION:
 			context.put("receptorRazonSocial", cabecera.getTransportista().getRazonsocial());
-			context.put("compValor","0.00");
+			context.put("compValor","$ 0.00");
 			break;
 		default:
 			break;

@@ -36,6 +36,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlDestinatario;
 import com.vcw.falecpv.core.modelo.xml.XmlDestinatarioDetalle;
 import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.constante.ExportarFileEnum;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -57,6 +58,9 @@ public class CompRecGuiaRemCtrl extends BaseCtrl {
 	
 	@EJB
 	private ComprobanteUtilServicio comprobanteUtilServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -72,6 +76,7 @@ public class CompRecGuiaRemCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
 			aplicarFechas=true;

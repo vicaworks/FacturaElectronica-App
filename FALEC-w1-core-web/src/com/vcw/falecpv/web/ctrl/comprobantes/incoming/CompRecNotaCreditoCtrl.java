@@ -37,6 +37,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlImpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCreditoDetalle;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -66,6 +67,9 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 	
 	@EJB
 	private TipocomprobanteServicio tipocomprobanteServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -81,6 +85,7 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
 			aplicarFechas=true;

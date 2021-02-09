@@ -41,6 +41,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuestodet;
 import com.vcw.falecpv.core.modelo.xml.XmlComprobanteRetencion;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuestoRetencion;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
@@ -71,6 +72,8 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 	private TipopagoServicio tipopagoServicio;
 	@EJB
 	private ComprobanteUtilServicio comprobanteUtilServicio;
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -85,6 +88,7 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -21);
 			comprobanteRecibidoList = null;
