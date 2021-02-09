@@ -19,7 +19,7 @@
 	</style>
 	
 	
-	<p:dialog header="Enviar Documento #{msg['label.electronico']}" widgetVar="dlEnvioDoc" modal="true" responsive="true" width="70%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Enviar Documento #{msg['label.electronico']}" widgetVar="dlEnvioDoc" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="formEnvioDoc">
 			
@@ -28,7 +28,7 @@
 				<div class="p-col-12 p-lg-3" style="text-align:left;">					
 					
 					<p:commandButton id="cmdEnviarEmail"
-						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" process="@form" update="@form"
+						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" update="@form"
 						action="#{enviarDocCtrl.enviarCorreo()}"
 						/>
 					
@@ -65,7 +65,7 @@
 				<div class="p-grid p-align-top vertical-container">
 					
 					<!-- datos de cabecera -->
-					<div class="p-col-12 p-md-6">
+					<div class="p-col-12 p-md-5">
 						
 						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Documento #{msg['label.electronico']}</div>
 						
@@ -125,18 +125,26 @@
 					</div>
 					
 					<!-- emails -->
-					<div class="p-col-12 p-md-6">
+					<div class="p-col-12 p-md-7">
 						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Emails de #{msg['label.envio']}</div>
-						<div class="EmptyBox5"/>
-						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-lg-3">
-							<p:commandButton process="@this" value="AGREGAR"
-								update=":formEnvioDoc:pvEnvioCorreosDT" 
-								action="#{enviarDocCtrl.nuevo()}" icon="fa fa-plus" styleClass="secondary-button Wid100 Fs10">
-		                	</p:commandButton>
+						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos email</div>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+							
+							<h:outputText value="ASUNTO : " styleClass="cpoRequerido"/>
+							<p:inputText id="intAsunto" value="#{enviarDocCtrl.subject}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="ASUNTO DEL EMAIL, EN CASO DE PERSONALIZAR">
+							</p:inputText>
 						</p:panelGrid>
 						<div class="EmptyBox5"/>
-						
+						<div class="p-grid p-nogutter Fs12" style="color:#515A5A;">
+							<i class="fa fa-ellipsis-v Fs14"></i>
+							<p:spacer width="5px;"/>
+							<p:commandLink id="cmlDtFacEmitidasSeleccion" process="@this" update=":formEnvioDoc:pvEnvioCorreosDT" 
+								action="#{enviarDocCtrl.nuevo()}" icon="fa fa-plus" style="color:#252529;">
+								<!-- <i class="fa fa-plus Fs14" style="color:#252529;"/> -->
+								<p:spacer width="5px;"/><span>Agregar</span><p:spacer width="5px;"/>
+							</p:commandLink>
+						</div>
+						<div class="EmptyBox5"/>												
 						<p:dataTable id="pvEnvioCorreosDT"
 		        			scrollable="true"
 		        			value="#{enviarDocCtrl.correoList}"

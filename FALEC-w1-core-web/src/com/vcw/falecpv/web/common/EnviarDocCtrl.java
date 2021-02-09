@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
@@ -18,6 +19,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.web.servicio.SriDispacher;
+import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -41,6 +43,9 @@ public class EnviarDocCtrl extends BaseCtrl {
 	@EJB
 	private SriDispacher sriDispacher;
 	
+	@EJB
+	private EmailComprobanteServicio emailComprobanteServicio;
+	
 	private String idCabecera;
 	private Cabecera cabeceraSelected;
 	private String callModule;
@@ -49,6 +54,8 @@ public class EnviarDocCtrl extends BaseCtrl {
 	private List<String> correoList;
 	private List<Infoadicional> infoadicionalList;
 	private String correoSelected;
+	private Map<String, byte[]> adjuntosMap;
+	private String subject;
 	
 
 	/**
@@ -73,11 +80,11 @@ public class EnviarDocCtrl extends BaseCtrl {
 		cabeceraSelected = cabeceraServicio.consultarByPk(idCabecera);
 		infoadicionalList = null;
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idCabecera);
-		infoadicionalList.stream().forEach(i->{
-			if(i.getValor().contains("@")) {
-				agregarCorreoList(i.getValor());
-			}
-		});
+//		infoadicionalList.stream().forEach(i->{
+//			if(i.getValor().contains("@")) {
+//				agregarCorreoList(i.getValor());
+//			}
+//		});
 		// cliente
 		if(cabeceraSelected.getCliente()!=null && cabeceraSelected.getCliente().getCorreoelectronico()!=null) {
 			agregarCorreoList(cabeceraSelected.getCliente().getCorreoelectronico());
@@ -119,7 +126,10 @@ public class EnviarDocCtrl extends BaseCtrl {
 		try {
 			if(correoList.size()==0) {
 				AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "NO EXISTE EMAILS.");
+				return;
 			}
+			
+			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, null, correoList);
 			
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "ENVIADO CORRECTAMENTE.");
 			
@@ -254,6 +264,34 @@ public class EnviarDocCtrl extends BaseCtrl {
 	 */
 	public void setCorreoSelected(String correoSelected) {
 		this.correoSelected = correoSelected;
+	}
+
+	/**
+	 * @return the adjuntosMap
+	 */
+	public Map<String, byte[]> getAdjuntosMap() {
+		return adjuntosMap;
+	}
+
+	/**
+	 * @param adjuntosMap the adjuntosMap to set
+	 */
+	public void setAdjuntosMap(Map<String, byte[]> adjuntosMap) {
+		this.adjuntosMap = adjuntosMap;
+	}
+
+	/**
+	 * @return the subject
+	 */
+	public String getSubject() {
+		return subject;
+	}
+
+	/**
+	 * @param subject the subject to set
+	 */
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
 }

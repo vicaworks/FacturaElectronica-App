@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.servicio.FirmaElectronicaServicio;
 import com.vcw.falecpv.core.servicio.LogtransferenciasriServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.sri.DocElectronicoProxy;
+import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.falecpv.web.servicio.sri.ComprobanteError;
 import com.vcw.falecpv.web.servicio.sri.ComprobanteErrorSri;
 import com.vcw.falecpv.web.servicio.sri.ComprobantePendiente;
@@ -83,6 +84,9 @@ public class SriDispacher {
 	@Inject
 	private ErrorsriServicio errorsriServicio;
 	
+	@Inject
+	private EmailComprobanteServicio emailComprobanteServicio;
+	
 	
 	@Resource(mappedName = "java:/ConnectionFactory")
 	private ConnectionFactory connectionFactory;
@@ -124,6 +128,7 @@ public class SriDispacher {
 			parametros.put("sriUtilServicio", sriUtilServicio);
 			parametros.put("logtransferenciasriServicio", logtransferenciasriServicio);
 			parametros.put("errorsriServicio", errorsriServicio);
+			parametros.put("emailComprobanteServicio", emailComprobanteServicio);
 			
 			HashMap<String, Object> resultado = null;
 			boolean flag = true;

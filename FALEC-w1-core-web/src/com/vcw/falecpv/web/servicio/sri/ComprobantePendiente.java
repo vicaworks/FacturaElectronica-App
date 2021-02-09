@@ -65,6 +65,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 	private SriUtilServicio sriUtilServicio;
 	private ErrorsriServicio errorsriServicio;
 	
+	
 	/**
 	 * @param enviarComprobanteSRI
 	 */

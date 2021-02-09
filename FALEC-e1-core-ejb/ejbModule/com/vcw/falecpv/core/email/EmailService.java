@@ -142,10 +142,6 @@ public class EmailService {
 			Usuario usuario = usuarioServicio.consultarByPk(idusuario);
 			Empresa empresa = empresaServicio.consultarByPk(idEmpresa);
 			
-//			Pattern pattern = Pattern
-//					.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-//							+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-			
 			EmailDto emailDto = new EmailDto();
 			
 			emailDto.setCorreosTo(new ArrayList<>());
@@ -170,12 +166,12 @@ public class EmailService {
 				
 			}else {
 				conexionDto.setAuth(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_AUTH, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
-				conexionDto.setAuth(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_SERVER, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
-				conexionDto.setAuth(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_USER, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
-				conexionDto.setAuth(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_PASSWORD, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
-				conexionDto.setAuth(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_PORT, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
-				conexionDto.setAuth(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_SSL, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
-				conexionDto.setAuth(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_START_TLS, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
+				conexionDto.setHost(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_SERVER, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
+				conexionDto.setMailOwner(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_USER, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
+				conexionDto.setMailOwnerPasw(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_PASSWORD, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
+				conexionDto.setPort(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_PORT, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
+				conexionDto.setSsl(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_SSL, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
+				conexionDto.setStarttls(parametroGenericoServicio.consultarParametro(PGEmailEnum.SMTP_START_TLS, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING));
 			}
 			// mail from
 			conexionDto.setMailFrom(conexionDto.getMailOwner());
@@ -205,16 +201,15 @@ public class EmailService {
 	 * @param idusuario
 	 * @throws DaoException
 	 */
-	public void congigurarCorreotest(EmailDto emailDto, String idEmpresa,String idEstablecimiento)throws DaoException{
+	public void congigurarCorreoTest(EmailDto emailDto, String idEmpresa,String idEstablecimiento)throws DaoException{
 		try {
-			
-			// vaciar todos los correos to, CC, Cco
-			emailDto.setCorreosTo(new ArrayList<>());
-			emailDto.setCorreosCC(new ArrayList<>());
-			emailDto.setCorreosCCo(new ArrayList<>());
 			
 			// verifica si el correo es test
 			if((boolean)parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.SERVER_SMTP_TEST, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento)) {
+				// vaciar todos los correos to, CC, Cco
+				emailDto.setCorreosTo(new ArrayList<>());
+				emailDto.setCorreosCC(new ArrayList<>());
+				emailDto.setCorreosCCo(new ArrayList<>());
 				// consular el corrreo test
 				String emails[] = ((String) parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.SERVER_SMTP_TEST_EMAIL, TipoRetornoParametroGenerico.STRING, idEstablecimiento)).split(",");
 				Pattern pattern = Pattern

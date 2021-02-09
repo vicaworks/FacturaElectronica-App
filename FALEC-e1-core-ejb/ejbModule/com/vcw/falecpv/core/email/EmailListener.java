@@ -14,7 +14,7 @@ import com.vcw.falecpv.core.email.dto.EmailDto;
  * @author cristianvillarreal
  *
  */
-@MessageDriven(activationConfig = { @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"), @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/VCWQueue") })
+@MessageDriven(activationConfig = { @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"), @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/EmailQueue") })
 public class EmailListener implements MessageListener {
 
 	@EJB

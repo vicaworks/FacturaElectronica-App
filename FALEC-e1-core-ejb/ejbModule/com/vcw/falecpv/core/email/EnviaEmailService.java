@@ -42,7 +42,7 @@ public class EnviaEmailService {
 	@Resource(mappedName = "java:/ConnectionFactory")
 	private ConnectionFactory connectionFactory;
 
-	@Resource(mappedName = "java:/jms/queue/VCWQueue")
+	@Resource(mappedName = "java:/jms/queue/EmailQueue")
 	private Queue queue;
 
 	/**

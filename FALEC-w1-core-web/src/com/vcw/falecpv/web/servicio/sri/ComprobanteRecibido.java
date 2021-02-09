@@ -23,6 +23,7 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.EstadosriServicio;
 import com.vcw.falecpv.core.servicio.LogtransferenciasriServicio;
 import com.vcw.falecpv.web.servicio.SriUtilServicio;
+import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.sri.ws.ClienteWsSriServicio;
 import com.vcw.sri.ws.autorizacion.Autorizacion;
 import com.vcw.sri.ws.autorizacion.Mensaje;
@@ -41,6 +42,8 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 	private SriAccesoHelper sriAccesoHelper;
 	private EstablecimientoServicio establecimientoServicio;
 	private ErrorsriServicio errorsriServicio;
+	private EmailComprobanteServicio emailComprobanteServicio;
+	
 	
 	/**
 	 * @param enviarComprobanteSRI
@@ -63,6 +66,7 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 		sriAccesoHelper = (SriAccesoHelper)parametros.get("sriAccesoHelper");
 		establecimientoServicio = (EstablecimientoServicio)parametros.get("establecimientoServicio");
 		errorsriServicio = (ErrorsriServicio)parametros.get("errorsriServicio");
+		emailComprobanteServicio = (EmailComprobanteServicio)parametros.get("emailComprobanteServicio");
 		
 		Cabecera c = (Cabecera) parametros.get("cabecera");
 		
@@ -85,6 +89,8 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 					c.setFechaautorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
 					c.setNumeroautorizacion(autorizacion.getNumeroAutorizacion());
 					c.setEstadoautorizacion("SI");
+					// envar email
+					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, c.getIdcabecera(), c, null, null, null);
 				}else {
 					// RECHAZADO
 					c.setEstado(ComprobanteEstadoEnum.RECHAZADO_SRI.toString());
