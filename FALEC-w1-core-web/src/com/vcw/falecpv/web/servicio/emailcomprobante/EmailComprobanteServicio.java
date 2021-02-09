@@ -22,14 +22,17 @@ import org.apache.velocity.VelocityContext;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.FechaUtil;
+import com.vcw.falecpv.core.constante.EstadoEnvioEmailEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmailEnum;
 import com.vcw.falecpv.core.email.EmailService;
 import com.vcw.falecpv.core.email.EnviaEmailService;
+import com.vcw.falecpv.core.email.EstadoEmailComprobante;
 import com.vcw.falecpv.core.email.dto.EmailDto;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.FirmaElectronicaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
@@ -66,6 +69,12 @@ public class EmailComprobanteServicio {
 	@Inject
 	private ParametroGenericoServicio parametroGenericoServicio;
 	
+	@Inject
+	private EstadoEmailComprobante estadoEmailComprobante;
+	
+	@Inject
+	private FirmaElectronicaServicio firmaElectronicaServicio;
+	
 	protected MessageWebUtil msg = new MessageWebUtil();
 
 	public void enviarComprobanteFacade(byte[] xmlDocElectronico,byte[] ride, Map<String, byte[]> otrosAdjuntos,String idCabecera,Cabecera cabecera,String subject,String content,List<String> toList)throws DaoException{
@@ -78,9 +87,13 @@ public class EmailComprobanteServicio {
 			
 			if(xmlDocElectronico==null) {
 				// consultar documento xml
-				xmlDocElectronico = docElectronicoProxy.getDocElectronicoFacade(cabecera.getIdcabecera(),
-						cabecera.getEstablecimiento().getIdestablecimiento(),
-						GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())).getBytes();
+				xmlDocElectronico = firmaElectronicaServicio.firmarXmlFacade(
+						cabecera.getEstablecimiento().getEmpresa().getIdempresa(),
+						docElectronicoProxy.getDocElectronicoFacade(cabecera.getIdcabecera(),
+																cabecera.getEstablecimiento().getIdestablecimiento(),
+																GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())
+																)
+						).getBytes();
 			}
 			
 			if(ride==null) {
@@ -95,7 +108,7 @@ public class EmailComprobanteServicio {
 			}
 			
 			// email del cliente
-			if(cabecera.getCliente().getCorreoelectronico()!=null && cabecera.getCliente().getCorreoelectronico().trim().length()>0) {
+			if(cabecera.getCliente()!=null && cabecera.getCliente().getCorreoelectronico()!=null && cabecera.getCliente().getCorreoelectronico().trim().length()>0) {
 				String em[] = cabecera.getCliente().getCorreoelectronico().split(",");
 				for (String email : em) {
 					emailDto.getCorreosTo().add(email);
@@ -143,6 +156,11 @@ public class EmailComprobanteServicio {
 			
 			// verificar si tiene correo test
 			emailService.congigurarCorreoTest(emailDto, cabecera.getEstablecimiento().getEmpresa().getIdempresa(), cabecera.getEstablecimiento().getIdestablecimiento());
+			
+			
+			estadoEmailComprobante.setIdCabecera(idCabecera);
+			emailDto.setActualizaNegocio(estadoEmailComprobante);
+			emailDto.getActualizaNegocio().cambiarEstado(EstadoEnvioEmailEnum.PROCESO);
 			
 			// verifica si existo TO elemet 
 			if(emailDto.getCorreosTo()!=null && !emailDto.getCorreosTo().isEmpty()) {
@@ -221,7 +239,7 @@ public class EmailComprobanteServicio {
 			break;
 		case RETENCION:
 			context.put("receptorRazonSocial", cabecera.getCliente().getRazonsocial());
-			context.put("compValor",df.format(cabecera.getValorretenido().doubleValue()));
+			context.put("compValor",df.format(cabecera.getTotalretencion().doubleValue()));
 			break;
 		case GUIA_REMISION:
 			context.put("receptorRazonSocial", cabecera.getTransportista().getRazonsocial());

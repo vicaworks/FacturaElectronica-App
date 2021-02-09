@@ -238,8 +238,7 @@
 					
 					<p:menu overlay="true" trigger="cmlDtFacEmitidasSeleccion" my="left top" at="left bottom">
 								
-						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
-							
+						<p:menuitem value="Enviar Email" action="#{facEmitidaCtrl.enviarEmail}" icon="fa fa-envelope-o">
 						</p:menuitem>
 						
 						<p:menuitem value="Firmar y enviar" action="#{facEmitidaCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
@@ -292,20 +291,16 @@
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(v.estado)}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
-								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<!-- <p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
-								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
-								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
-								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
-							</p:menuitem> -->
+							
 							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
-								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>

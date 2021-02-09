@@ -42,7 +42,6 @@ import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.sri.DocElectronicoProxy;
 import com.vcw.falecpv.web.constante.ExportarFileEnum;
-import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.FileUtilApp;
 import com.vcw.falecpv.web.util.MessageWebUtil;
 
@@ -244,7 +243,7 @@ public class RideServicio {
 		}
 		
 		// totalizar el comprobante
-		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteFactura(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), true));
+		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteFactura(f, cabecera.getEstablecimiento().getEmpresa().getIdempresa(), true));
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();
@@ -311,7 +310,7 @@ public class RideServicio {
 		}
 		
 		// totalizar el comprobante
-		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobantenotaCredito(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobantenotaCredito(f, cabecera.getEstablecimiento().getEmpresa().getIdempresa()));
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();
@@ -354,7 +353,7 @@ public class RideServicio {
 		}
 		
 		// totalizar el comprobante
-		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteNotaDebito(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteNotaDebito(f, cabecera.getEstablecimiento().getEmpresa().getIdempresa()));
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();
@@ -417,7 +416,7 @@ public class RideServicio {
 		}
 		
 		// totalizar el comprobante
-		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteLiqCompra(f, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteLiqCompra(f, cabecera.getEstablecimiento().getEmpresa().getIdempresa()));
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();

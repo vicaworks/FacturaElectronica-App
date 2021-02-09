@@ -57,6 +57,7 @@ import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.servicio.SriDispacher;
+import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -99,6 +100,9 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
+	
+	@EJB
+	private EmailComprobanteServicio emailComprobanteServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;	
@@ -137,6 +141,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 	}
 	
 	public void consultar()throws DaoException {
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		seleccion = false;
 		ventasQueryList = null;
 		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, establecimientoMain.getIdestablecimiento(),GenTipoDocumentoEnum.FACTURA);
@@ -671,6 +676,33 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIRMAR Y ENVIAR COMPROBANTE SRI", msg.getString("mensaje.enviarComprobante"));
 	        PrimeFaces.current().dialog().showMessageDynamic(message,true);
 			
+	        consultar();
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void enviarEmail() {
+		try {
+			
+			if(ventasQueryList==null || ventasQueryList.stream().filter(x->x.isSeleccion()).count()==0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				return;
+			}
+			
+			for (VentasQuery ventasQuery : ventasQueryList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
+				
+				if(ventasQuery.getEstado().equals(ComprobanteEstadoEnum.AUTORIZADO.toString())) {
+					
+					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, ventasQuery.getIdcabecera(), null, null, null, null);
+					
+				}
+				
+			}
+			
+			AppJsfUtil.addInfoMessage("formMain", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE, SOLO LOS COMPROBANTES QUE ESTAN EN ESTADO AUTORIZADO.");
 	        consultar();
 	        
 		} catch (Exception e) {

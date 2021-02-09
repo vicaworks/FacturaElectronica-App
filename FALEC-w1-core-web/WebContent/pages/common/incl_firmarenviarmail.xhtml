@@ -28,7 +28,7 @@
 				<div class="p-col-12 p-lg-3" style="text-align:left;">					
 					
 					<p:commandButton id="cmdEnviarEmail"
-						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" update="@form"
+						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" update="@form #{enviarDocCtrl.updateView}"
 						action="#{enviarDocCtrl.enviarCorreo()}"
 						/>
 					
@@ -37,7 +37,7 @@
 				<div class="p-col-12 p-lg-4" style="text-align:left;">					
 					
 					<p:commandButton id="cmdEnviarFirmarEmail"
-						value="FIRMAR Y ENVIAR EMAIL" icon="fa fa-envelope" styleClass="secondary-button Wid100" process="@form" update="@form"
+						value="FIRMAR Y ENVIAR EMAIL" icon="fa fa-envelope" styleClass="secondary-button Wid100" process="@form" update="@form #{enviarDocCtrl.updateView}"
 						action="#{enviarDocCtrl.firmarEnviarCorreo()}"
 						/>
 					

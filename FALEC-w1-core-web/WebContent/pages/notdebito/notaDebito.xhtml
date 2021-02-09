@@ -233,7 +233,7 @@
 					
 					<p:menu overlay="true" trigger="cmlDtNDEmitidasSeleccion" my="left top" at="left bottom">
 								
-						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
+						<p:menuitem value="Enviar Email" action="#{notaDebitoCtrl.enviarEmail}" icon="fa fa-envelope-o">
 							
 						</p:menuitem>
 						
@@ -284,15 +284,15 @@
 								<f:setPropertyActionListener value="NOTDEB-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(r.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
-								<f:setPropertyActionListener value="NOTA_DEBITO" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value="NOTA_DEBITO" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:notDebitoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
-								<f:setPropertyActionListener value="NOTA_DEBITO" target="#{enviarDocCtrl.callForm}"/>
+								<f:setPropertyActionListener value="NOTA_DEBITO" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:notDebitoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>

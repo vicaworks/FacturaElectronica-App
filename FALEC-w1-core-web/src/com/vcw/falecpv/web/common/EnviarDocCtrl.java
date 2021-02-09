@@ -18,6 +18,12 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
+import com.vcw.falecpv.web.ctrl.adquisicion.RetencionMainCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nc.CompNcCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoCtrl;
+import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -56,6 +62,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 	private String correoSelected;
 	private Map<String, byte[]> adjuntosMap;
 	private String subject;
+	
 	
 
 	/**
@@ -130,7 +137,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 			}
 			
 			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, null, correoList);
-			
+			actualizarPantalla();
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "ENVIADO CORRECTAMENTE.");
 			
 		} catch (Exception e) {
@@ -145,12 +152,48 @@ public class EnviarDocCtrl extends BaseCtrl {
 			Cabecera c = cabeceraServicio.consultarByPk(idCabecera);
 			c.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
 			sriDispacher.queue_comprobanteSriDispacher(c);
-			
+			actualizarPantalla();
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "DOCUMENTO FIRMADO Y ENVIADO CORRECTAMENTE.");
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void actualizarPantalla() throws DaoException {
+		switch (callForm) {
+		case "FACTURA":
+			FacEmitidaCtrl facEmitidaCtrl = (FacEmitidaCtrl)AppJsfUtil.getManagedBean("facEmitidaCtrl");
+			facEmitidaCtrl.consultar();
+			break;
+			
+		case "RETENCION":
+			RetencionMainCtrl retencionMainCtrl = (RetencionMainCtrl)AppJsfUtil.getManagedBean("retencionMainCtrl");
+			retencionMainCtrl.consultarRetenciones();
+			break;
+		
+		case "NOTA_CREDITO":
+			CompNcCtrl compNcCtrl = (CompNcCtrl)AppJsfUtil.getManagedBean("compNcCtrl");
+			compNcCtrl.consultar();
+			break;
+			
+		case "NOTA_DEBITO":
+			NotaDebitoCtrl notaDebitoCtrl = (NotaDebitoCtrl)AppJsfUtil.getManagedBean("notaDebitoCtrl");
+			notaDebitoCtrl.consultar();
+			break;	
+		
+		case "GUIA_REMISION":
+			GuiaRemCtrl guiaRemCtrl = (GuiaRemCtrl)AppJsfUtil.getManagedBean("guiaRemCtrl");
+			guiaRemCtrl.consultar();
+			break;
+		
+		case "LIQ_COMPRA":
+			LiqCompraCtrl liqCompraCtrl = (LiqCompraCtrl)AppJsfUtil.getManagedBean("liqCompraCtrl");
+			liqCompraCtrl.consultar();
+			break;
+			
+		default:
+			break;
 		}
 	}
 

@@ -17,7 +17,8 @@ public class VelocityTemplateUtil {
 		Properties p = new Properties();
 		p.setProperty("resource.loader", "file");
 		p.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
-		p.setProperty("file.resource.loader.path", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/").concat("/WEB-INF/plantillasCorreo"));
+//		p.setProperty("file.resource.loader.path", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/").concat("/WEB-INF/plantillasCorreo"));
+		p.setProperty("file.resource.loader.path", "/app/mako/plantillas/plantillasCorreo");
 		p.setProperty("file.resource.loader.cache", "false");
 		p.setProperty("file.resource.loader.modificationCheckInterval", "0");
 

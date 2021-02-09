@@ -457,4 +457,24 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @param estado
+	 * @throws DaoException
+	 */
+	public void setEstadoEmailComprobante(String idCabecera,int estado)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createNativeQuery("UPDATE cabecera set envioemail=:estado where idcabecera=:idcabecera");
+			q.setParameter("idcabecera", idCabecera);
+			q.setParameter("estado", estado);
+			q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 }

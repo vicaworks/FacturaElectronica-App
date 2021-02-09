@@ -123,6 +123,13 @@ public class AppSessionCtrl implements Serializable {
 		return lista.contains(estadoEnum);
 	}
 	
+	public boolean isEnviarEmail(String estado) {
+		ComprobanteEstadoEnum estadoEnum = ComprobanteEstadoEnum.getByEstado(estado);
+		List<ComprobanteEstadoEnum> lista = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.BORRADOR,ComprobanteEstadoEnum.ANULADO,ComprobanteEstadoEnum.ERROR,ComprobanteEstadoEnum.ERROR_SRI,ComprobanteEstadoEnum.PENDIENTE,ComprobanteEstadoEnum.RECHAZADO_SRI,ComprobanteEstadoEnum.RECIBIDO_SRI});
+		
+		return lista.contains(estadoEnum);
+	}
+	
 	public String formatoCadena(String cadena,int longitud,String caracter) {
 		return TextoUtil.leftPadTexto(cadena, longitud, caracter);
 	}
