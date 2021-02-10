@@ -22,6 +22,7 @@ import org.apache.velocity.VelocityContext;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.FechaUtil;
+import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoEnvioEmailEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmailEnum;
@@ -222,10 +223,10 @@ public class EmailComprobanteServicio {
 		template= VelocityTemplateUtil.obtenerContext(nombrePLantilla);
 		VelocityContext context = new VelocityContext();
 		// todos los datos a la plantilla
-		context.put("emisorRazonSocial", cabecera.getEstablecimiento().getEmpresa().getRazonsocial());
-		context.put("emisorNombreComercial", cabecera.getEstablecimiento().getNombrecomercial());
+		context.put("emisorRazonSocial", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getEmpresa().getRazonsocial()));
+		context.put("emisorNombreComercial", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getNombrecomercial()));
 		context.put("emisorRuc", cabecera.getEstablecimiento().getEmpresa().getRuc());
-		context.put("emisorDireccion", cabecera.getEstablecimiento().getDireccionestablecimiento());
+		context.put("emisorDireccion", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getDireccionestablecimiento()));
 		context.put("receptorNumComprobante", cabecera.getTipocomprobante().getComprobante() + " : " + ComprobanteHelper.formatNumDocumento(cabecera.getNumdocumento()));
 		context.put("compFecha",(new SimpleDateFormat("dd/MM/yyyy")).format(cabecera.getFechaemision()));
 		
