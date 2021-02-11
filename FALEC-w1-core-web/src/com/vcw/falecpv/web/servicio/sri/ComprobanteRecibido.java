@@ -90,7 +90,7 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 					c.setNumeroautorizacion(autorizacion.getNumeroAutorizacion());
 					c.setEstadoautorizacion("SI");
 					// envar email
-					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, c.getIdcabecera(), c, null, null, null);
+					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, c.getIdcabecera(), c, null, null, null,true);
 				}else {
 					// RECHAZADO
 					c.setEstado(ComprobanteEstadoEnum.RECHAZADO_SRI.toString());

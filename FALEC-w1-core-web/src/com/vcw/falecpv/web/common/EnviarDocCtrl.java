@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -62,6 +63,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 	private String correoSelected;
 	private Map<String, byte[]> adjuntosMap;
 	private String subject;
+	private List<SelectItem> emailList;
 	
 	
 
@@ -74,6 +76,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 	public void cargarFormulario() {
 		try {
 			correoList = new ArrayList<>();
+			emailList = new ArrayList<>();
 			consultar();
 			AppJsfUtil.showModalRender("dlEnvioDoc", "formEnvioDoc");
 		} catch (Exception e) {
@@ -122,6 +125,12 @@ public class EnviarDocCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			correoList.add("");
+			
+			int cont = 0; 
+			for (SelectItem i : emailList) {
+				i.setValue("M" + (cont++));
+			}
+			emailList.add(new SelectItem("M" + (emailList.size()+1), null));
 			AppJsfUtil.executeJavaScript("PrimeFaces.focus('formEnvioDoc:pvEnvioCorreosDT:" + (correoList.size()-1) + ":intEnCorreo');");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,12 +140,24 @@ public class EnviarDocCtrl extends BaseCtrl {
 
 	public void enviarCorreo() {
 		try {
-			if(correoList.size()==0) {
+			if(emailList.size()==0) {
 				AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "NO EXISTE EMAILS.");
 				return;
 			}
-			
-			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, null, correoList);
+			System.out.println(emailList);
+			correoList = new ArrayList<>();
+			for (SelectItem i : emailList) {
+				String[] emails = i.getLabel().split(",");
+				for (String e : emails) {
+					if(!correoList.contains(e)) {
+						correoList.add(e);
+					}
+					
+				}
+				
+			}
+//			System.out.println(correoList);
+			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, null, correoList,false);
 			actualizarPantalla();
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "ENVIADO CORRECTAMENTE.");
 			
@@ -335,6 +356,20 @@ public class EnviarDocCtrl extends BaseCtrl {
 	 */
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	/**
+	 * @return the emailList
+	 */
+	public List<SelectItem> getEmailList() {
+		return emailList;
+	}
+
+	/**
+	 * @param emailList the emailList to set
+	 */
+	public void setEmailList(List<SelectItem> emailList) {
+		this.emailList = emailList;
 	}
 
 }

@@ -78,7 +78,7 @@ public class EmailComprobanteServicio {
 	
 	protected MessageWebUtil msg = new MessageWebUtil();
 
-	public void enviarComprobanteFacade(byte[] xmlDocElectronico,byte[] ride, Map<String, byte[]> otrosAdjuntos,String idCabecera,Cabecera cabecera,String subject,String content,List<String> toList)throws DaoException{
+	public void enviarComprobanteFacade(byte[] xmlDocElectronico,byte[] ride, Map<String, byte[]> otrosAdjuntos,String idCabecera,Cabecera cabecera,String subject,String content,List<String> toList,boolean mailReceptor)throws DaoException{
 		try {
 			
 			if(cabecera==null) {
@@ -109,7 +109,7 @@ public class EmailComprobanteServicio {
 			}
 			
 			// email del cliente
-			if(cabecera.getCliente()!=null && cabecera.getCliente().getCorreoelectronico()!=null && cabecera.getCliente().getCorreoelectronico().trim().length()>0) {
+			if(cabecera.getCliente()!=null && cabecera.getCliente().getCorreoelectronico()!=null && cabecera.getCliente().getCorreoelectronico().trim().length()>0 && mailReceptor) {
 				String em[] = cabecera.getCliente().getCorreoelectronico().split(",");
 				for (String email : em) {
 					emailDto.getCorreosTo().add(email);
@@ -117,7 +117,7 @@ public class EmailComprobanteServicio {
 			}
 			
 			// email del transportista
-			if(cabecera.getTransportista()!=null && cabecera.getTransportista().getEmail()!=null && cabecera.getTransportista().getEmail().trim().length()>0) {
+			if(cabecera.getTransportista()!=null && cabecera.getTransportista().getEmail()!=null && cabecera.getTransportista().getEmail().trim().length()>0 && mailReceptor) {
 				String em[] = cabecera.getTransportista().getEmail().split(",");
 				for (String email : em) {
 					emailDto.getCorreosTo().add(email);
@@ -235,15 +235,15 @@ public class EmailComprobanteServicio {
 		df.setMinimumFractionDigits(2);
 		switch (GenTipoDocumentoEnum.getEnumByIdentificador(cabecera.getTipocomprobante().getIdentificador())) {
 		case FACTURA:case LIQUIDACION_COMPRA:case NOTA_CREDITO:case NOTA_DEBITO:
-			context.put("receptorRazonSocial", cabecera.getCliente().getRazonsocial());
+			context.put("receptorRazonSocial", TextoUtil.stringToHTMLString(cabecera.getCliente().getRazonsocial()));
 			context.put("compValor",df.format(cabecera.getTotalconimpuestos().doubleValue()));
 			break;
 		case RETENCION:
-			context.put("receptorRazonSocial", cabecera.getCliente().getRazonsocial());
+			context.put("receptorRazonSocial", TextoUtil.stringToHTMLString(cabecera.getCliente().getRazonsocial()));
 			context.put("compValor",df.format(cabecera.getTotalretencion().doubleValue()));
 			break;
 		case GUIA_REMISION:
-			context.put("receptorRazonSocial", cabecera.getTransportista().getRazonsocial());
+			context.put("receptorRazonSocial", TextoUtil.stringToHTMLString(cabecera.getTransportista().getRazonsocial()));
 			context.put("compValor","$ 0.00");
 			break;
 		default:

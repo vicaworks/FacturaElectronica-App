@@ -696,7 +696,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 				
 				if(ventasQuery.getEstado().equals(ComprobanteEstadoEnum.AUTORIZADO.toString())) {
 					
-					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, ventasQuery.getIdcabecera(), null, null, null, null);
+					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, ventasQuery.getIdcabecera(), null, null, null, null,true);
 					
 				}
 				

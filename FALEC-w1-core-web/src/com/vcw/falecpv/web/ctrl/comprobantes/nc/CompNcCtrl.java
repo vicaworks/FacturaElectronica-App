@@ -571,7 +571,7 @@ public class CompNcCtrl extends BaseCtrl {
 			for (Cabecera cabecera : notaCreditoList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
 				
 				if(cabecera.getEstado().equals(ComprobanteEstadoEnum.AUTORIZADO.toString())) {
-					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, cabecera.getIdcabecera(), null, null, null, null);
+					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, cabecera.getIdcabecera(), null, null, null, null,true);
 				}
 			}
 			AppJsfUtil.addInfoMessage("formMain", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE, SOLO LOS COMPROBANTES QUE ESTAN EN ESTADO AUTORIZADO.");

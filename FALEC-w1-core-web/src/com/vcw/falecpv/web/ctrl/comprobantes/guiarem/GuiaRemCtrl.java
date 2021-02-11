@@ -413,7 +413,7 @@ public class GuiaRemCtrl extends BaseCtrl {
 			for (Destinatario destinatario : destinatarioList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
 				
 				if(destinatario.getCabecera().getEstado().equals(ComprobanteEstadoEnum.AUTORIZADO.toString())) {
-					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, destinatario.getCabecera().getIdcabecera(), null, null, null, null);
+					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, destinatario.getCabecera().getIdcabecera(), null, null, null, null,true);
 				}
 			}
 			AppJsfUtil.addInfoMessage("formMain", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE, SOLO LOS COMPROBANTES QUE ESTAN EN ESTADO AUTORIZADO.");

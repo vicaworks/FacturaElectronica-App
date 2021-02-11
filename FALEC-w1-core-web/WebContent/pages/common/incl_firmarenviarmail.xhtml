@@ -30,7 +30,7 @@
 					<p:commandButton id="cmdEnviarEmail"
 						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" update="@form #{enviarDocCtrl.updateView}"
 						action="#{enviarDocCtrl.enviarCorreo()}"
-						/>
+						process="@form"/>
 					
 				</div>
 				
@@ -147,14 +147,15 @@
 						<div class="EmptyBox5"/>												
 						<p:dataTable id="pvEnvioCorreosDT"
 		        			scrollable="true"
-		        			value="#{enviarDocCtrl.correoList}"
+		        			value="#{enviarDocCtrl.emailList}"
 		        			var="c"
 		        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-							styleClass="pvEnvioCorreosDT Fs12"  
-							rowKey="#{p}">
+							styleClass="pvEnvioCorreosDT Fs12"
+							rowKey="#{c.value}">
 							<p:column headerText="EMAIL" style="width:90%;">
-								<p:inputText id="intEnCorreo" maxlength="200" value="#{c}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO">
-									<f:validator validatorId="emailValidator"/>									
+								<p:inputText id="intEnCorreo" maxlength="200" value="#{c.label}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO">
+									<f:validator validatorId="emailSelectItemValidator"/>	
+									<p:ajax event="valueChange" update="@parent:@parent"/>								
 								</p:inputText>
 								<p:message for="intEnCorreo"/>
 							</p:column>
