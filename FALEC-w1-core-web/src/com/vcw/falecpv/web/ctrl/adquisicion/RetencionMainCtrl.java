@@ -6,6 +6,7 @@ package com.vcw.falecpv.web.ctrl.adquisicion;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -221,6 +222,8 @@ public class RetencionMainCtrl extends BaseCtrl {
 			cell = row.createCell(1);
 			cell.setCellValue(AppJsfUtil.getUsuario().getNombre());
 			
+			List<Impuestoretencion> impuestoretencionAllList = new ArrayList<>();
+			
 			int fila = 10;
 			int filaDt = 10;
 			
@@ -271,7 +274,10 @@ public class RetencionMainCtrl extends BaseCtrl {
 				cell.setCellValue(r.getTotalretencion().doubleValue());
 				
 				filaDt = fila;
-				for (Impuestoretencion rd : cabeceraRetencionServicio.getDetalleById(r.getIdcabecera())) {
+				
+				List<Impuestoretencion> impuestoretencionList = cabeceraRetencionServicio.getDetalleById(r.getIdcabecera()); 
+				impuestoretencionAllList.addAll(impuestoretencionList);
+				for (Impuestoretencion rd : impuestoretencionList) {
 					
 					col = 10;
 					
@@ -281,7 +287,12 @@ public class RetencionMainCtrl extends BaseCtrl {
 					}
 					
 					cell = row.createCell(col++);
+					cell.setCellType(CellType.STRING);
 					cell.setCellValue(rd.getCodigo());
+					
+					cell = row.createCell(col++);
+					cell.setCellType(CellType.STRING);
+					cell.setCellValue(rd.getRetencionimpuestodet().getRetencionimpuesto().getNombre());
 					
 					cell = row.createCell(col++);
 					cell.setCellValue(rd.getRetencionimpuestodet().getNombre());
@@ -302,6 +313,33 @@ public class RetencionMainCtrl extends BaseCtrl {
 				fila += (filaDt - fila);
 				
 			}
+			
+			// totales por tipo de impuesto
+			
+			if(!impuestoretencionAllList.isEmpty()) {
+				List<String> codImpuestoList = impuestoretencionAllList.stream().map(x->x.getCodigo()).distinct().collect(Collectors.toList()); 
+				for (String imp : codImpuestoList) {
+					
+					row = sheet.getRow(++fila);
+					row = sheet.createRow(fila);
+					// codigo
+					cell = row.createCell(10);
+					cell.setCellType(CellType.STRING);
+					cell.setCellValue(imp);
+					
+					// descripcion
+					cell = row.createCell(11);
+					cell.setCellType(CellType.STRING);
+					cell.setCellValue(impuestoretencionAllList.stream().filter(x->x.getCodigo().equals(imp)).findFirst().orElse(null).getRetencionimpuestodet().getRetencionimpuesto().getNombre());
+					
+					// total
+					cell = row.createCell(12);
+					cell.setCellType(CellType.STRING);
+					cell.setCellValue(impuestoretencionAllList.stream().filter(x->x.getCodigo().equals(imp)).mapToDouble(x->x.getValorretenido().doubleValue()).sum());
+					
+				}
+			}
+			
 			
 			
 			
@@ -407,6 +445,19 @@ public class RetencionMainCtrl extends BaseCtrl {
 				cell = row.createCell(col++);
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(r.getPeriodofiscal());
+				
+				// detalles de cada impuesto los totales
+				r.setImpuestoretencionList(cabeceraRetencionServicio.getDetalleById(r.getIdcabecera()));
+				// renta
+				cell = row.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(r.getImpuestoretencionList().stream().filter(x->x.getCodigo().equals("1")).mapToDouble(x->x.getValorretenido().doubleValue()).sum());
+				
+				// iva
+				cell = row.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(r.getImpuestoretencionList().stream().filter(x->x.getCodigo().equals("2")).mapToDouble(x->x.getValorretenido().doubleValue()).sum());
+				
 				
 				cell = row.createCell(col++);
 				cell.setCellType(CellType.NUMERIC);
