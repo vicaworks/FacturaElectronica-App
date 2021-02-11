@@ -30,7 +30,7 @@
 					<p:commandButton id="cmdEnviarEmail"
 						value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="secondary-button Wid100" update="@form #{enviarDocCtrl.updateView}"
 						action="#{enviarDocCtrl.enviarCorreo()}"
-						process="@form"/>
+						process="@form" disabled="#{appSessionCtrl.isEnviarEmail(enviarDocCtrl.estadoComprobante)}"/>
 					
 				</div>
 				

@@ -264,6 +264,7 @@
 							</p:menuitem>
 							
 							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}">
+								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:retencionDT" target="#{enviarDocCtrl.updateView}"/>
@@ -271,6 +272,7 @@
 							</p:menuitem>
 							
 							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
+								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:retencionDT" target="#{enviarDocCtrl.updateView}"/>

@@ -260,12 +260,14 @@
 							</p:menuitem>
 							
 							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(n.estado)}">
+								<f:setPropertyActionListener value="#{n.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:notaCreditoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(n.estado)}">
+								<f:setPropertyActionListener value="#{n.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:notaCreditoDT" target="#{enviarDocCtrl.updateView}"/>

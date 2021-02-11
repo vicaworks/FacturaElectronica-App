@@ -64,6 +64,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 	private Map<String, byte[]> adjuntosMap;
 	private String subject;
 	private List<SelectItem> emailList;
+	private String estadoComprobante;
 	
 	
 
@@ -144,6 +145,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 				AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "NO EXISTE EMAILS.");
 				return;
 			}
+			
 			System.out.println(emailList);
 			correoList = new ArrayList<>();
 			for (SelectItem i : emailList) {
@@ -370,6 +372,20 @@ public class EnviarDocCtrl extends BaseCtrl {
 	 */
 	public void setEmailList(List<SelectItem> emailList) {
 		this.emailList = emailList;
+	}
+
+	/**
+	 * @return the estadoComprobante
+	 */
+	public String getEstadoComprobante() {
+		return estadoComprobante;
+	}
+
+	/**
+	 * @param estadoComprobante the estadoComprobante to set
+	 */
+	public void setEstadoComprobante(String estadoComprobante) {
+		this.estadoComprobante = estadoComprobante;
 	}
 
 }

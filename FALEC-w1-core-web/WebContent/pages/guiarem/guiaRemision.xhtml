@@ -256,12 +256,14 @@
 							</p:menuitem>
 							
 							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.cabecera.estado)}">
+								<f:setPropertyActionListener value="#{r.cabecera.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>							
 							</p:menuitem>
 							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}">
+								<f:setPropertyActionListener value="#{r.cabecera.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
