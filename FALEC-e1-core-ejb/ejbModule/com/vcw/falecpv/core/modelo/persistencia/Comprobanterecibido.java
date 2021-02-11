@@ -99,43 +99,43 @@ public class Comprobanterecibido implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "importe_total", nullable = false, precision = 12, scale = 2)
-    private BigDecimal importeTotal;
+    private BigDecimal importeTotal = BigDecimal.ZERO;
     @Size(max = 2147483647)
     @Column(name = "valor_xml", length = 2147483647)
     private String valorXml;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalsinimpuestos", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totalsinimpuestos;
+    private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalconimpuestos", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totalconimpuestos;
+    private BigDecimal totalconimpuestos = BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totaldescuento", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totaldescuento;
+    private BigDecimal totaldescuento = BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totaliva", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totaliva;
+    private BigDecimal totaliva = BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalice", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totalice;
+    private BigDecimal totalice = BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalbaseimponible", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totalbaseimponible;
+    private BigDecimal totalbaseimponible = BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalretencion", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totalretencion;
+    private BigDecimal totalretencion = BigDecimal.ZERO;
     
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalrenta", nullable = false, precision = 12, scale = 2)
-    private BigDecimal totalrenta;
+    private BigDecimal totalrenta = BigDecimal.ZERO;
     
     @Basic(optional = true)
     @Size(min = 1, max = 400)
@@ -160,6 +160,26 @@ public class Comprobanterecibido implements Serializable {
     @JoinColumn(name = "idtipocomprobante", referencedColumnName = "idtipocomprobante", nullable = false)
     @ManyToOne(optional = false)
     private Tipocomprobante tipocomprobante;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "subtotaliva", nullable = false, precision = 12, scale = 2)
+    private BigDecimal  subtotaliva = BigDecimal.ZERO;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "subtotalivacero", nullable = false, precision = 12, scale = 2)
+    private BigDecimal  subtotalivacero = BigDecimal.ZERO;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "subtotalexcentoiva", nullable = false, precision = 12, scale = 2)
+    private BigDecimal  subtotalexcentoiva = BigDecimal.ZERO;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "subtotalnoobjiva", nullable = false, precision = 12, scale = 2)
+    private BigDecimal subtotalnoobjiva = BigDecimal.ZERO;
 
 	/**
 	 * 
@@ -587,6 +607,62 @@ public class Comprobanterecibido implements Serializable {
 	 */
 	public void setIdusuario(String idusuario) {
 		this.idusuario = idusuario;
+	}
+
+	/**
+	 * @return the subtotaliva
+	 */
+	public BigDecimal getSubtotaliva() {
+		return subtotaliva;
+	}
+
+	/**
+	 * @param subtotaliva the subtotaliva to set
+	 */
+	public void setSubtotaliva(BigDecimal subtotaliva) {
+		this.subtotaliva = subtotaliva;
+	}
+
+	/**
+	 * @return the subtotalivacero
+	 */
+	public BigDecimal getSubtotalivacero() {
+		return subtotalivacero;
+	}
+
+	/**
+	 * @param subtotalivacero the subtotalivacero to set
+	 */
+	public void setSubtotalivacero(BigDecimal subtotalivacero) {
+		this.subtotalivacero = subtotalivacero;
+	}
+
+	/**
+	 * @return the subtotalexcentoiva
+	 */
+	public BigDecimal getSubtotalexcentoiva() {
+		return subtotalexcentoiva;
+	}
+
+	/**
+	 * @param subtotalexcentoiva the subtotalexcentoiva to set
+	 */
+	public void setSubtotalexcentoiva(BigDecimal subtotalexcentoiva) {
+		this.subtotalexcentoiva = subtotalexcentoiva;
+	}
+
+	/**
+	 * @return the subtotalnoobjiva
+	 */
+	public BigDecimal getSubtotalnoobjiva() {
+		return subtotalnoobjiva;
+	}
+
+	/**
+	 * @param subtotalnoobjiva the subtotalnoobjiva to set
+	 */
+	public void setSubtotalnoobjiva(BigDecimal subtotalnoobjiva) {
+		this.subtotalnoobjiva = subtotalnoobjiva;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,8 +87,16 @@ public class CompRecNotaCreditoCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
-			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -21);
+			
+			Calendar cl = Calendar.getInstance();
+			cl.setTime(new Date());
+			cl.add(Calendar.MONTH, -1);
+			cl.set(Calendar.DATE, 1);
+			desde = cl.getTime();
+			cl.add(Calendar.MONTH, 1);
+			cl.add(Calendar.DATE, -1);
+			hasta = cl.getTime();
+			
 			aplicarFechas=true;
 			super.totalizarComprobantesRecibidos();
 		} catch (Exception e) {

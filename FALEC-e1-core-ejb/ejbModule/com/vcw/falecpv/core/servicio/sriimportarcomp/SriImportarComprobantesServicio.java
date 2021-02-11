@@ -37,6 +37,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlLiquidacionCompra;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaCredito;
 import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
 import com.vcw.falecpv.core.modelo.xml.XmlTotalImpuesto;
+import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
 import com.vcw.falecpv.core.servicio.ComprobanterecibidoServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.EmpresaServicio;
@@ -63,6 +64,8 @@ public class SriImportarComprobantesServicio {
 	private ComprobanterecibidoServicio comprobanterecibidoServicio;
 	@Inject
 	private ContadorPkServicio contadorPkServicio;
+	@Inject
+	private ComprobanteUtilServicio comprobanteUtilServicio;
 	
 	/**
 	 * @author cristianvillarreal
@@ -98,14 +101,6 @@ public class SriImportarComprobantesServicio {
 		c.setSerieComprobante(fileSriDto.getSerieComprobante().replace("-", ""));
 		c.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.getEnumByIdentificador(codDoc)));
 		c.setTipoEmision(fileSriDto.getTipoEmision());
-		c.setTotalbaseimponible(BigDecimal.ZERO);
-		c.setTotalconimpuestos(BigDecimal.ZERO);
-		c.setTotaldescuento(BigDecimal.ZERO);
-		c.setTotalice(BigDecimal.ZERO);
-		c.setTotaliva(BigDecimal.ZERO);
-		c.setTotalretencion(BigDecimal.ZERO);
-		c.setTotalsinimpuestos(BigDecimal.ZERO);
-		c.setTotalrenta(BigDecimal.ZERO);
 		c.setValorXml(xmlComprobante);
 		c.setIdusuario(idusuario);
 		c.setUpdated(new Date());
@@ -115,20 +110,20 @@ public class SriImportarComprobantesServicio {
 		switch (td) {
 		case FACTURA:
 			XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xmlComprobante, new XmlFactura());
+			f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteFactura(f, idEmpresa, true));
+			
 			c.setTotalsinimpuestos(BigDecimal.valueOf(f.getInfoFactura().getTotalSinImpuestos()));
 			c.setTotaldescuento(BigDecimal.valueOf(f.getInfoFactura().getTotalDescuento()));
-			if(f.getInfoFactura().getTotalImpuestoList()!=null) {
-				
-				for (XmlTotalImpuesto i : f.getInfoFactura().getTotalImpuestoList()) {
-					if(i.getCodigo().equals("2")) {
-						c.setTotaliva(BigDecimal.valueOf(i.getValor()));
-					}else if(i.getCodigo().equals("3")) {
-						c.setTotalice(BigDecimal.valueOf(i.getValor()));
-					}
-				}
-				
-			}
-			c.setTotalconimpuestos(BigDecimal.valueOf(f.getInfoFactura().getImporteTotal()));
+			c.setTotalconimpuestos(f.getTotalComprobanteList().get(9).getValor());
+//			c.setTotaliva(f.getTotalComprobanteList().stream().filter(x->x.getLabel().contains("IVA")).findFirst().orElse(null).getValor());
+//			c.setTotalice(f.getTotalComprobanteList().stream().filter(x->x.getLabel().contains("ICE")).findFirst().orElse(null).getValor());
+			c.setTotaliva(f.getTotalComprobanteList().get(7).getValor());
+			c.setTotalice(f.getTotalComprobanteList().get(6).getValor());
+			c.setSubtotaliva(f.getTotalComprobanteList().get(0).getValor());
+			c.setSubtotalivacero(f.getTotalComprobanteList().get(1).getValor());
+			c.setSubtotalexcentoiva(f.getTotalComprobanteList().get(2).getValor());
+			c.setSubtotalnoobjiva(f.getTotalComprobanteList().get(3).getValor());
+			
 			break;
 		case LIQUIDACION_COMPRA:
 			XmlLiquidacionCompra lc = XmlCommonsUtil.jaxbunmarshall(xmlComprobante, new XmlLiquidacionCompra());
