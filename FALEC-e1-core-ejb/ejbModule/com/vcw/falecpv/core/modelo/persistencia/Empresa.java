@@ -72,6 +72,20 @@ public class Empresa implements Serializable {
     @Column(name = "obligadocontablidad", length = 2)
     private String obligadocontablidad;
     
+    @Size(max = 2)
+    @Column(name = "exportador", length = 2)
+    private String exportador;
+    
+    @Basic(optional = true)
+    @Size(min = 1, max = 200)
+    @Column(name = "email", nullable = true, length = 200)
+    private String email;
+    
+    @Basic(optional = true)
+    @Size(min = 1, max = 200)
+    @Column(name = "paginaweb", nullable = true, length = 200)
+    private String paginaweb;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
@@ -335,6 +349,48 @@ public class Empresa implements Serializable {
 	 */
 	public void setNombrearchivo(String nombrearchivo) {
 		this.nombrearchivo = nombrearchivo;
+	}
+
+	/**
+	 * @return the exportador
+	 */
+	public String getExportador() {
+		return exportador;
+	}
+
+	/**
+	 * @param exportador the exportador to set
+	 */
+	public void setExportador(String exportador) {
+		this.exportador = exportador;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the paginaweb
+	 */
+	public String getPaginaweb() {
+		return paginaweb;
+	}
+
+	/**
+	 * @param paginaweb the paginaweb to set
+	 */
+	public void setPaginaweb(String paginaweb) {
+		this.paginaweb = paginaweb;
 	}
 
 	

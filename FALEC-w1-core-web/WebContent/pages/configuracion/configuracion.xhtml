@@ -1,0 +1,256 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">#{msg['title.configuracion']}</ui:define>
+    
+    <ui:define name="head">
+    
+    	<style type="text/css">
+        
+			.ui-calendar .ui-inputfield{
+				width: 100% !important;text-align:
+			}
+			
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+				/* display: block !important; */
+			}
+			
+			.cardTitle{
+				/* margin: 0px 0px 5px 0px !important; */
+				padding:0.5em 0px;
+				/* border-bottom: 1px solid #ccc; */
+				font-size: 18px !important;
+				/* background-color: #F7F7F5; */
+				/* border-radius: 4px; */
+				/* background-color: #ccc; */
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
+			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #ccc;
+				color: black;
+				cursor: default;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
+				padding: 0.2em !important;
+			}
+			
+			.tabComprobante{
+ 				padding: 0px 2em !important; 
+ 				border-bottom: solid 5px #F0F3F4;
+			}
+			
+			.tabComprobanteSeleccion{
+ 				border-bottom: solid 5px #34495E;
+			}
+			
+			.tabComprobante:hover > h3,
+			.tabComprobante:hover {
+ 				/* background-color:#424949 !important;
+ 				border-bottom: solid 1px #424949 !important; */ 
+ 				color:#FBFCFC;
+ 				cursor: pointer !important;
+ 				
+ 				background-color:#34495E !important;
+ 				border-bottom: solid 1px #34495E !important;
+ 				
+ 				
+			}
+			
+			.tabComprobante h4{
+ 				margin-top: 10px !important;
+ 				margin-bottom: 0px !important;
+			}
+			
+			.tabComprobante h3{
+ 				margin: 10px 0px !important;
+ 				color:#1B2631;
+			}
+			
+			.tabComprobanteBg{
+				background-color: #fff !important;
+			}
+			
+			/* -- card contador -- */
+			
+			.cardContador{
+				border-radius:4px;
+				margin:5px;
+				display: grid;
+				grid-gap: 3px;
+			    grid-template-columns: 1fr;
+			    grid-template-rows: 20px auto;
+			    grid-template-areas: "cardContador-header  cardContador-header"
+			    					 "cardContador-content cardContador-content";
+			}
+			
+			.cardContador .cardContador-header{
+				grid-area: cardContador-header;
+				padding: 3px;
+				justify-self: center;
+				align-self:center;
+				font-size: 10px;
+				
+			}
+			
+			.cardContador .cardContador-content{
+				grid-area: cardContador-content;
+				padding: 3px;
+				justify-self: center;
+				align-self:center;
+				font-size: 16px;
+				font-weight: 900;
+			}
+			
+			.cardContador-bgBlack{
+				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
+				background-color: #2f2f2f;
+				color: #fff;
+			}
+			
+			.cardContador-borderBlack{
+				border: 1px solid #2f2f2f;
+				border-top: 5px solid #2f2f2f;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderGreen{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #1E8449;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderOrange{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #BA4A00;
+				color: #2f2f2f;
+			}
+			
+			.cardContador-borderYellow{
+				border: 1px solid #797D7F;
+				border-top: 5px solid #F1C40F;
+				color: #2f2f2f;
+			}
+			
+			/* ============================================= */
+			
+			
+        </style>
+    
+    </ui:define>
+
+    <ui:define name="content">
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    	
+    	<h:form id="formMain">
+    		
+	    	<pe:remoteCommand name="switchOpcion" process="@this" update="@form" actionListener="#{configuracionCtrl.switchOpcion}">
+	    		<pe:methodSignature parameters="java.lang.String"/>  
+			    <pe:methodParam name="opcion"/>
+	    	</pe:remoteCommand>
+	    	
+	    	<div class="p-grid">
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='PERFIL'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('PERFIL');">
+					
+					<h4>
+						<h:outputText value="01."/>
+					</h4>
+					<h3>
+						<h:outputText value="Perfil"/>
+					</h3>
+					
+				</div>
+				
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('ESTABLECIMIENTO');">
+					
+					<h4>
+						<h:outputText value="02."/>
+					</h4>
+					<h3>
+						<h:outputText value="Establecimientos"/>
+					</h3>
+					
+				</div>
+				
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='USUARIOS'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('USUARIOS');">
+					
+					<h4>
+						<h:outputText value="03."/>
+					</h4>
+					<h3>
+						<h:outputText value="Usuarios"/>
+					</h3>
+					
+				</div>
+				
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='CONFIGURACION'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('CONFIGURACION');">
+					
+					<h4>
+						<h:outputText value="04."/>
+					</h4>
+					<h3>
+						<h:outputText value="Configuración"/>
+					</h3>
+					
+				</div>
+				
+			</div>
+			
+			<!-- Mensajes -->
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<f:subview id="fsvPerfil" rendered="#{configuracionCtrl.opcionRender=='PERFIL'}">
+				<ui:include src="./incl_perfil.xhtml" />
+			</f:subview>
+			
+			<f:subview id="fsvEstablecimiento" rendered="#{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'}">
+				<ui:include src="./incl_establecimiento.xhtml" />
+			</f:subview>
+			
+			<f:subview id="fsvUsuario" rendered="#{configuracionCtrl.opcionRender=='USUARIOS'}">
+				<ui:include src="./incl_usuario.xhtml"/>
+			</f:subview>
+			
+			<f:subview id="fsvConfiguracion" rendered="#{configuracionCtrl.opcionRender=='CONFIGURACION'}">
+				
+			</f:subview>
+	    	
+	    	
+	    </h:form>
+    	
+		<!-- formulario establecimiento -->
+	    <ui:include src="incl_establecimiento_form.xhtml" />
+    	
+    	<!-- formulario usuario -->
+	   <ui:include src="incl_usuario_form.xhtml" />
+    	
+    </ui:define>
+	
+</ui:composition>

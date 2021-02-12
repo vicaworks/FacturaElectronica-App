@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		
+	</style>
+	
+	<div class="EmptyBox10"/>
+	<div class="p-grid p-justify-center">
+		<!-- Datos de la empresa -->
+		<div class="p-col-12 p-md-10 p-xl-7">
+			
+			<div class="card card-w-title">
+				
+				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Datos del Negocio</h3>
+				
+				<div class="p-grid">
+					
+					<div class="p-col-12">
+						<h:outputText value="RUC * " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" validatorMessage="SOLO NÚMEROS">
+							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+						</p:inputText>
+						<p:message for="intRuc" />
+					</div>
+					
+					<div class="p-col-12">
+						<h:outputText value="RAZÓN SOCIAL * " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" />
+						<p:message for="intRazonSocial" />
+					</div>
+					
+					<div class="p-col-12">
+						<h:outputText value="NOMBRE COMERCIAL * " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intNombreComercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intNombreComercial" />
+					</div>
+					
+					<div class="p-col-12">
+						<h:outputText value="DIRECCIÓN MATRÍZ * " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intDireccionMatriz" />
+					</div>
+					
+					<div class="p-col-12">
+						<h:outputText value="OBLIGADO CONTABILIDAD * " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:selectOneMenu id="somObligadoContabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}" >
+							<f:selectItem itemLabel="SI" itemValue="SI"/>
+							<f:selectItem itemLabel="NO" itemValue="NO" />
+						</p:selectOneMenu>
+						<p:message for="somObligadoContabilidad"/>
+					</div>
+					
+					<div class="p-col-12">
+						<h:outputText value="EXPORTADOR * " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:selectOneMenu id="somExportador" value="#{empresaCtrl.empresaSelected.exportador}" >
+							<f:selectItem itemLabel="SI" itemValue="SI"/>
+							<f:selectItem itemLabel="NO" itemValue="NO" />
+						</p:selectOneMenu>
+						<p:message for="somExportador"/>
+					</div>
+					
+					<div class="p-col-12">
+						<h:outputText value="EMAIL " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intEmail" value="#{empresaCtrl.empresaSelected.email}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="200" converter="omnifaces.ToUpperCaseConverter">
+							<f:validator validatorId="emailSelectItemValidator"/>
+						</p:inputText>
+						<p:message for="intEmail" />
+						
+					</div>
+					
+					<div class="p-col-12">
+						<h:outputText value="PÁGINA WEB " styleClass="cpoRequerido"/>
+						<div class="EmptyBox5"/>
+						<p:inputText id="intPaginaWeb" value="#{empresaCtrl.empresaSelected.paginaweb}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="200" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intPaginaWeb" />
+						
+					</div>
+					
+					<div class="EmptyBox20"/>
+					
+					<div class="p-col-12">
+						<p:commandButton id="cmdGuardarEmp"
+						value="GUARDAR" icon="fa fa-floppy-o"
+						action="#{empresaCtrl.guardar()}" styleClass="secondary-button" update="@form"
+						/>
+					</div>
+					
+				</div>
+				
+				
+			</div>
+		
+		</div>
+		
+	</div>	
+    
+
+</ui:composition>

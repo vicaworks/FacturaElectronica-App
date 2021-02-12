@@ -65,7 +65,7 @@ public class EstablecimientoDao extends AppGenericDao<Establecimiento, String> {
 		try {
 			
 			Query q = null;
-			q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.empresa.idempresa=:id ORDER BY e.nombrecomercial");
+			q = getEntityManager().createQuery("SELECT e FROM Establecimiento e WHERE e.empresa.idempresa=:id ORDER BY e.codigoestablecimiento");
 			q.setParameter("id", idEmpresa);
 			
 			return q.getResultList();

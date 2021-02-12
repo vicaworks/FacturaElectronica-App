@@ -14,9 +14,7 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
-import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
-import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.xpert.persistence.query.QueryBuilder;
 
@@ -31,8 +29,6 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 	@Inject
 	private EstablecimientoDao establecimientoDao;
 	
-	@Inject
-	private CategoriaDao categoriaDao;
 
     public final static String formato="%09d";
     
@@ -106,12 +102,12 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 	 */
 	public boolean tieneDependenciasEst(String idestablecimiento)throws DaoException{
 		try {
-			QueryBuilder q = new QueryBuilder(categoriaDao.getEntityManager());
+//			QueryBuilder q = new QueryBuilder(categoriaDao.getEntityManager());
 
-			if (q.select("e").from(Categoria.class, "e")
-					.equals("e.establecimiento.idestablecimiento", idestablecimiento).count() > 0) {
-				return true;
-			}
+//			if (q.select("e").from(Categoria.class, "e")
+//					.equals("e.establecimiento.idestablecimiento", idestablecimiento).count() > 0) {
+//				return true;
+//			}
 			return false;
 
 		} catch (Exception e) {

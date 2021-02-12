@@ -8,8 +8,6 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -88,16 +86,17 @@ public class EmpresaCtrl extends BaseCtrl {
 	
 	private void consultarEmpresa() throws DaoException {
 		empresa = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		empresaSelected = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()); 
 		bandera = empresa!=null;
 	}
 	
 	public void editar() {
 		try {
 			empresaSelected = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
-			AppJsfUtil.showModalRender("dlgEmpresa", "frmEmpresa");
+			AppJsfUtil.showModalRender("dlgEmpresa", "formMain");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMainEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -111,12 +110,12 @@ public class EmpresaCtrl extends BaseCtrl {
 		try {
 			
 			if(empresaSelected.getArchivofirmaelectronica()!=null && empresaSelected.getFechavigencia()==null) {
-				AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", "NO EXISTE FECHA DE VIGENCIA");
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE FECHA DE VIGENCIA");
 				return;
 			}
 			
 			if(empresaSelected.getArchivofirmaelectronica()!=null && (empresaSelected.getClavefirmaelectronica()==null || empresaSelected.getClavefirmaelectronica().length()==0)) {
-				AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", "NO EXISTE CLAVE DE FIRMA " + msg.getString("label.electronica"));
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE CLAVE DE FIRMA " + msg.getString("label.electronica"));
 				return;
 			}
 			
@@ -126,7 +125,7 @@ public class EmpresaCtrl extends BaseCtrl {
 			}
 			
 			if(empresaSelected.getFechavigencia()!=null && FechaUtil.comparaFechas(empresaSelected.getFechavigencia(),new Date())<0) {
-				AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", "LA FECHA DE VIGENCIA NO PUEDE SER MENOR QUE LA FECHA ACTUAL.");
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FECHA DE VIGENCIA NO PUEDE SER MENOR QUE LA FECHA ACTUAL.");
 				return;
 			}
 			
@@ -135,12 +134,10 @@ public class EmpresaCtrl extends BaseCtrl {
 			empresaSelected.setIdusuario(usuarioactual.getIdusuario());
 			empresaSelected = empresaServicio.guardar(empresaSelected);
 			consultarEmpresa();
-			AppJsfUtil.addInfoMessage("frmEmpresa","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
-			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-			context.redirect("/falecpv/pages/configuracion/empresa.jsf");
+			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 		} catch (Exception e) {
 			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -154,12 +151,12 @@ public class EmpresaCtrl extends BaseCtrl {
 		        bytes = IOUtils.toByteArray(file.getInputStream());
 		        empresaSelected.setNombrearchivo(file.getFileName());
 		        empresaSelected.setArchivofirmaelectronica(bytes);
-		        AppJsfUtil.ajaxUpdate("frmEmpresa:gridFE");
-//		        AppJsfUtil.addInfoMessage("frmEmpresa", "OK", msg.getString("mensaje.archivofirmaelectronica"));
+		        AppJsfUtil.ajaxUpdate("formMain:gridFE");
+//		        AppJsfUtil.addInfoMessage("formMain", "OK", msg.getString("mensaje.archivofirmaelectronica"));
             }
 		} catch (IOException e) {
 			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("formMainEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -168,7 +165,7 @@ public class EmpresaCtrl extends BaseCtrl {
 			empresaSelected.setArchivofirmaelectronica(null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEmpresa", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

@@ -45,15 +45,7 @@
                     <po:menu widgetVar="RomaMenuWidget">
                         <p:menuitem id="om_inicio" value="Panel" icon="fa fa-2x fa-dashboard" url="#{request.contextPath}/pages/main.jsf" />
                         
-                        <p:submenu id="om_cconfiguracion" label="#{msg['menu.configuracion']}" icon="fa fa-2x fa-cog" rendered="#{appSessionCtrl.administrador}">
-                            <p:menuitem id="om_empresa" value="Empresa" icon="fa fa-2x fa-institution"  url="#{request.contextPath}/pages/configuracion/empresa.jsf"/>
-                            <p:menuitem id="om_establecimiento" value="Establecimiento" icon="fa fa-2x fa-users"  url="#{request.contextPath}/pages/configuracion/establecimiento.jsf" />
-                            <p:menuitem id="om_iva" value="Iva" icon="fa fa-2x fa-money"  url="#{request.contextPath}/pages/configuracion/iva.jsf" />
-                            <p:menuitem id="om_ice" value="Ice" icon="fa fa-2x fa-building-o"  url="#{request.contextPath}/pages/configuracion/ice.jsf" />
-                            <p:menuitem id="om_usuario" value="Usuario" icon="fa fa-2x fa-user"  url="#{request.contextPath}/pages/configuracion/usuario.jsf" />                            
-                            <p:menuitem id="om_docelectronico" value="Documento #{msg['label.electronico']}" icon="fa fa-2x fa-file-code-o"  url="#{request.contextPath}/pages/configuracion/docElectronico.jsf" />
-                        </p:submenu>
-                        
+                        <p:menuitem id="om_cconfiguracion" value="Configuración" icon="fa fa-2x fa-cog" url="#{request.contextPath}/pages/configuracion/configuracion.jsf" />
                         
                         <p:menuitem id="om_caja" value="Punto Venta" icon="fa fa-2x fa-tty" url="#{request.contextPath}/pages/puntoventa/puntoVenta.jsf" />
                         
@@ -94,6 +86,10 @@
                             <p:menuitem id="om_fabricante" value="Fabricante" icon="fa fa-2x fa-building-o" url="#{request.contextPath}/pages/productos/fabricante.jsf" />
                             <p:menuitem id="om_categoria" value="#{msg['menu.categoria']}" icon="fa fa-2x fa-sitemap" url="#{request.contextPath}/pages/productos/categoria.jsf" />
                             <p:menuitem id="om_producto" value="Producto" icon="fa fa-2x fa-puzzle-piece" url="#{request.contextPath}/pages/productos/producto.jsf" />
+                            <p:menuitem id="om_iva" value="Iva" icon="fa fa-2x fa-money"  url="#{request.contextPath}/pages/configuracion/iva.jsf" />
+                            <p:menuitem id="om_ice" value="Ice" icon="fa fa-2x fa-building-o"  url="#{request.contextPath}/pages/configuracion/ice.jsf" />
+                            <p:menuitem id="om_usuario" value="Usuario" icon="fa fa-2x fa-user"  url="#{request.contextPath}/pages/configuracion/usuario.jsf" />                            
+                            <p:menuitem id="om_docelectronico" value="Documento #{msg['label.electronico']}" icon="fa fa-2x fa-file-code-o"  url="#{request.contextPath}/pages/configuracion/docElectronico.jsf" />
                         </p:submenu>
                         
                        	<p:menuitem id="om_tollsclientes" value="Clientes" icon="fa fa-2x fa-user" url="#{request.contextPath}/pages/herramientas/cliente.jsf" />

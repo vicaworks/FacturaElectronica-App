@@ -133,11 +133,8 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			establecimientoServicio.eliminar(establecimientoSelected);
 			
 			//Eliminar parametros genericos
-			if(eliminaParametros(establecimientoSelected)) {
-				AppJsfUtil.addInfoMessage("formMain","OK", "PARAMETROS ELIMINADOS CORRECTAMENTE.");	
-			}
+			eliminaParametros(establecimientoSelected);
 			
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
 			establecimientoSelected = null;
 			establecimientoAllList = null;
 			consultarEstablecimiento();
@@ -258,6 +255,8 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 			flagEstablecimiento=true;
 			establecimientoSelected = new Establecimiento();
+			establecimientoSelected.setAmbiente("1");
+			establecimientoSelected.setMatriz("N");
 			establecimientoSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
 			AppJsfUtil.showModalRender("dlgEstable", "frmEstable");
 			

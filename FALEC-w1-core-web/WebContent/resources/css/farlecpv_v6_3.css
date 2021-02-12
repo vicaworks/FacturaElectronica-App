@@ -189,7 +189,7 @@
 
 .titulo {
 			font-size: 18px;
-			border-bottom: 1px solid rgba(0,0,0,0.3);
+			/* border-bottom: 1px solid rgba(0,0,0,0.3); */
 			padding: 2px 0px;
 			margin: 0px 0px 10px 0px;
 			font-weight: 800;

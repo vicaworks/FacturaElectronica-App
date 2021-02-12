@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		.establecimientoDT .ui-datatable-scrollable-body {
+			min-height: 30vh !important;
+			height: calc(100vh - 240px)!important;
+		}
+		@media screen and (max-width: 40em){
+			.ui-fileupload-buttonbar .ui-button .ui-button-text {
+ 				display: block !important;
+ 				padding: 0px !important;
+			}
+		}
+	</style>
+	
+	<div class="card card-w-title">
+		
+		<!-- <h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Establecimientos</h3> -->
+		<div class="EmptyBox10"/>
+		<div class="p-grid">
+			
+			<div class="p-col-6 p-md-2">
+				<p:commandButton value="CONSULTAR"
+										icon="fa fa-search"
+										action="#{establecimientoCtrl.refrescar()}"
+										styleClass="secondary-button Wid100 Fs10" update="@form" />
+			</div>
+			<div class="p-col-6 p-md-2">			
+				<p:commandButton value="NUEVO"
+				 icon="fa fa-plus" 
+				 styleClass="secondary-button Wid100 Fs10"
+				 action="#{establecimientoCtrl.nuevo()}" inline="true"
+				 />
+			</div>
+
+			<!-- <p:commandButton id="cmdExcelEstab" title="EXPORTAR"
+				icon="fa fa-file-excel-o" ajax="false"
+				onclick="PrimeFaces.monitorDownload(start,stop)"
+				value="REPORTE" styleClass="secondary-button Wid100">
+				<p:fileDownload value="#{establecimientoCtrl.fileEstablecimientos}" />
+			</p:commandButton> -->
+			
+		</div>
+		
+	</div>	
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">
+		
+		<p:dataTable var="estab"
+					value="#{establecimientoCtrl.establecimientoAllList}"
+					scrollable="true" styleClass="establecimientoDT Fs11"
+					rowKey="#{estab.codigoestablecimiento}">
+
+			<p:column headerText="OPC" style="width:10px;" styleClass="TexAlCenter">
+				
+				<p:commandLink id="cmlDtEstablecimiento">
+					<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+				</p:commandLink>
+				
+				<p:menu overlay="true" trigger="cmlDtEstablecimiento" my="left top" at="left bottom">
+					<p:menuitem value="Editar" action="#{establecimientoCtrl.editar()}" icon="fa fa-edit">
+						<f:setPropertyActionListener value="#{estab}" target="#{establecimientoCtrl.establecimientoSelected}" />
+					</p:menuitem>
+					<p:menuitem value="Eliminar" action="#{establecimientoCtrl.eliminar()}" update="@form" icon="fa fa-trash-o" >
+						<f:setPropertyActionListener value="#{estab}"
+						target="#{establecimientoCtrl.establecimientoSelected}" />
+						<p:confirm header="#{msg['label.confirmacion']}"
+							message="#{msg['mensaje.confimacion']}"
+							icon="fa fw-3x fa-exclamation-triangle" />
+					</p:menuitem>
+				</p:menu>
+			</p:column>
+			
+			<p:column headerText="#{msg['label.codigo']}"
+				style="width:10px; text-align: center;">
+				<h:outputText value="#{appSessionCtrl.formatoCadena(estab.codigoestablecimiento,3,'0')}" />
+			</p:column>
+
+			<p:column headerText="MATRIZ"
+				style="width:20px; text-align: center;">
+				<h:outputText value="#{estab.matriz}" />
+			</p:column>
+			
+			<p:column headerText="NOMBRE COMERCIAL" priority="1"
+				style="width:100px; ">
+				<h:outputText value="#{estab.nombrecomercial}" />
+			</p:column>
+			
+			<p:column headerText="#{msg['label.direccion']}" style="width:80px;">
+				<h:outputText value="#{estab.direccionestablecimiento}" />
+			</p:column>
+
+			<p:column headerText="#{msg['label.telefono']}" style="width:70px;">
+				<h:outputText value="#{estab.telefono}" />
+			</p:column>
+
+			<p:column headerText="CORREO" style="width:80px;">
+				<h:outputText value="#{estab.correo}" />
+			</p:column>
+			
+			<p:column headerText="AMBIENTE"
+				style="width:20px; text-align: center;">
+				<h:outputText value="#{estab.ambiente==1? 'Pruebas':'Produccion'}" />
+			</p:column>
+
+		</p:dataTable>
+		
+	</div>
+    <div class="EmptyBox30"/>
+
+</ui:composition>
