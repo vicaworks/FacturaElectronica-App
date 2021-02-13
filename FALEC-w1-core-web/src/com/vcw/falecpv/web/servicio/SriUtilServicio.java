@@ -23,7 +23,6 @@ import org.xml.sax.SAXException;
 
 import com.mako.util.firma.FirmaElectronicaException;
 import com.servitec.common.dao.exception.DaoException;
-import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.exceptions.ParametroRequeridoException;

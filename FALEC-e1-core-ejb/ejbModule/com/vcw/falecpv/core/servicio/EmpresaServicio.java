@@ -88,7 +88,7 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 	 * @param idEmpresa
 	 * @throws DaoException
 	 */
-	public void parametrosGenericosFacade(String idEmpresa)throws DaoException{
+	public void parametrosGenericos(String idEmpresa)throws DaoException{
 		try {
 			
 			List<ParametroGenericoEmpresa> parametroList = new ArrayList<>();
@@ -114,19 +114,19 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 			
 			// de cada establecimiento
 			parametroList = new ArrayList<>();
-			parametroList.add(new ParametroGenericoEmpresa("1", null, "idestablecimiento", "GENERAR CON SUCURSAL", "S", "SI GENERA LOS CONTADORES CON SUCURSAL"));
-			parametroList.add(new ParametroGenericoEmpresa("2", null, "idestablecimiento", "CODIGO SUCURSAL", "A", "CODIGO DE LA SUCURSAL PARA LOS CONTADORES"));
-			parametroList.add(new ParametroGenericoEmpresa("3", null, "idestablecimiento", "DEFAULT BORRADOR COMPROBANTES", "S", "BANDERA DE DEFAULT ESTADO BORRADOR EN LOS COMPROBANTES"));
-			parametroList.add(new ParametroGenericoEmpresa("4", null, "idestablecimiento", "PLANTILLA FACTURA", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
-			parametroList.add(new ParametroGenericoEmpresa("5", null, "idestablecimiento", "PLANTILLA RETENCION", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
-			parametroList.add(new ParametroGenericoEmpresa("6", null, "idestablecimiento", "PLANTILLA NOTA CREDITO", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
-			parametroList.add(new ParametroGenericoEmpresa("7", null, "idestablecimiento", "PLANTILLA NOTA DEBITO", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
-			parametroList.add(new ParametroGenericoEmpresa("8", null, "idestablecimiento", "PLANTILLA GUIA REMISION", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
-			parametroList.add(new ParametroGenericoEmpresa("9", null, "idestablecimiento", "PLANTILLA LIQ COMPRA", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
-			parametroList.add(new ParametroGenericoEmpresa("11", null, "idestablecimiento", "SMTP ENVIO TEST", "N", "SI EL EMAIL ES TEST"));
-			parametroList.add(new ParametroGenericoEmpresa("12", null, "idestablecimiento", "EMAIL TEST", "info@empresa.com", "EL EMAIL TO CUANDO ESTA EN TEST"));
-			parametroList.add(new ParametroGenericoEmpresa("20", null, "idestablecimiento", "EMAIL PLANTILLA ESTABLECIMIENTO", "N", "SI LA EMPRESA TIENE UNA PLANTILLA ESPECIFICA"));
-			parametroList.add(new ParametroGenericoEmpresa("21", null, "idestablecimiento", "EMAIL PLANTILLA COMPROBANTE ELECTRONICO", "-", "NOMBRE DE LA PLATILLA DE CONTENIDO EMAIL COMPROBANTE"));
+			parametroList.add(new ParametroGenericoEmpresa("1", idEmpresa, "idestablecimiento", "GENERAR CON SUCURSAL", "S", "SI GENERA LOS CONTADORES CON SUCURSAL"));
+			parametroList.add(new ParametroGenericoEmpresa("2", idEmpresa, "idestablecimiento", "CODIGO SUCURSAL", "A", "CODIGO DE LA SUCURSAL PARA LOS CONTADORES"));
+			parametroList.add(new ParametroGenericoEmpresa("3", idEmpresa, "idestablecimiento", "DEFAULT BORRADOR COMPROBANTES", "S", "BANDERA DE DEFAULT ESTADO BORRADOR EN LOS COMPROBANTES"));
+			parametroList.add(new ParametroGenericoEmpresa("4", idEmpresa, "idestablecimiento", "PLANTILLA FACTURA", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
+			parametroList.add(new ParametroGenericoEmpresa("5", idEmpresa, "idestablecimiento", "PLANTILLA RETENCION", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
+			parametroList.add(new ParametroGenericoEmpresa("6", idEmpresa, "idestablecimiento", "PLANTILLA NOTA CREDITO", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
+			parametroList.add(new ParametroGenericoEmpresa("7", idEmpresa, "idestablecimiento", "PLANTILLA NOTA DEBITO", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
+			parametroList.add(new ParametroGenericoEmpresa("8", idEmpresa, "idestablecimiento", "PLANTILLA GUIA REMISION", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
+			parametroList.add(new ParametroGenericoEmpresa("9", idEmpresa, "idestablecimiento", "PLANTILLA LIQ COMPRA", "-", "PLANTILLA COMPROBANTE ELECTRONICO"));
+			parametroList.add(new ParametroGenericoEmpresa("11", idEmpresa, "idestablecimiento", "SMTP ENVIO TEST", "N", "SI EL EMAIL ES TEST"));
+			parametroList.add(new ParametroGenericoEmpresa("12", idEmpresa, "idestablecimiento", "EMAIL TEST", "info@empresa.com", "EL EMAIL TO CUANDO ESTA EN TEST"));
+			parametroList.add(new ParametroGenericoEmpresa("20", idEmpresa, "idestablecimiento", "EMAIL PLANTILLA ESTABLECIMIENTO", "N", "SI LA EMPRESA TIENE UNA PLANTILLA ESPECIFICA"));
+			parametroList.add(new ParametroGenericoEmpresa("21", idEmpresa, "idestablecimiento", "EMAIL PLANTILLA COMPROBANTE ELECTRONICO", "-", "NOMBRE DE LA PLATILLA DE CONTENIDO EMAIL COMPROBANTE"));
 			
 			for (Establecimiento e : establecimientoServicio.getByEmpresa(idEmpresa)) {
 				

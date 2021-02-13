@@ -119,6 +119,12 @@ public class Empresa implements Serializable {
     @Column(name = "nombrearchivo", nullable = true, length = 300)
     private String nombrearchivo;
     
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
+    @Column(name = "actualizardatos", nullable = false, length = 1)
+    private String actualizardatos;
+    
     @Basic(optional = true)
     @Temporal(TemporalType.DATE)
     @Column(name = "fechavigencia")
@@ -391,6 +397,20 @@ public class Empresa implements Serializable {
 	 */
 	public void setPaginaweb(String paginaweb) {
 		this.paginaweb = paginaweb;
+	}
+
+	/**
+	 * @return the actualizardatos
+	 */
+	public String getActualizardatos() {
+		return actualizardatos;
+	}
+
+	/**
+	 * @param actualizardatos the actualizardatos to set
+	 */
+	public void setActualizardatos(String actualizardatos) {
+		this.actualizardatos = actualizardatos;
 	}
 
 	

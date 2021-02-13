@@ -25,6 +25,7 @@ import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.servicio.DatosEmpresaServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -49,6 +50,9 @@ public class EmpresaCtrl extends BaseCtrl {
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
 	
+	@EJB
+	private DatosEmpresaServicio datosEmpresaServicio;
+	
 	private Empresa empresa;
 	private Empresa empresaSelected;
 	private boolean bandera;
@@ -65,8 +69,8 @@ public class EmpresaCtrl extends BaseCtrl {
 	public void init() {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
-			// verificar los parametros genericos iniciales
-			empresaServicio.parametrosGenericosFacade(establecimientoMain.getEmpresa().getIdempresa());
+			// carga los datos iniciales si la empresa tine en S campo actualizardatos
+			datosEmpresaServicio.cargarDatosEmpresaFacade(establecimientoMain.getEmpresa().getIdempresa());
 			empresaSelected = new Empresa();
 			refrescar();
 		} catch (Exception e) {

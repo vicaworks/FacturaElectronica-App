@@ -190,5 +190,22 @@ public class IceDao extends AppGenericDao<Ice, String> {
 				
 	}
 	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @param codigoImpuesto
+	 * @return
+	 */
+	public Ice getIce(String idEmpresa,String codigoImpuesto) {
+		
+		Query q = getEntityManager().createQuery("SELECT i FROM Ice i WHERE i.codigoIce='3' AND i.empresa.idempresa=:idEmpresa AND i.codigo=:codigo");
+		q.setParameter("idEmpresa", idEmpresa);
+		q.setParameter("codigo", codigoImpuesto);
+		
+		return (Ice) q.getResultList().get(0);
+		
+	}
 
 }

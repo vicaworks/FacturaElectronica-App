@@ -227,7 +227,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			}
 			
 			// parametros genericos
-			empresaServicio.parametrosGenericosFacade(establecimientoMain.getEmpresa().getIdempresa());
+			empresaServicio.parametrosGenericos(establecimientoMain.getEmpresa().getIdempresa());
 			
 			establecimientoAllList = null;
 			consultarEstablecimiento();
