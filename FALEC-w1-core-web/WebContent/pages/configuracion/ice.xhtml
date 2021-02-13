@@ -15,14 +15,19 @@
         	.iceDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
 				height: calc(100vh - 260px)!important;
-			}	
+			}
 			
-			/* body .ui-messages, 
+			body .ui-messages, 
 			body .ui-message {
 				padding: 0em !important;
 				margin: 0em !important;
-				display: block !important;
-			} */
+				/* display: block !important; */
+			}	
+			
+			.cardTitle{
+				padding:0.5em 0px;
+				font-size: 18px !important;
+			}
 			
 			@media screen and (max-width: 40em){
 					.ui-fileupload-buttonbar .ui-button .ui-button-text {
@@ -54,17 +59,12 @@
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	
-    	<p:breadCrumb>
-		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="#{msg['menu.configuracion']}" url="#" />
-		    <p:menuitem value="ICE" url="#{request.contextPath}/pages/configuracion/ice.jsf" />
-		</p:breadCrumb>
-	    
 	    <!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	<div class="EmptyBox5"/>
-	    	<div class="card card-w-title">
 	    	
+	    	<div class="card card-w-title">
+	    		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> I.C.E.</h3>
+	    		<div class="EmptyBox5"/>
 	    		<div class="p-grid p-align-center">
 	    			
 	    			<!-- opciones -->
@@ -126,6 +126,7 @@
 			closable="true" >
 			<p:autoUpdate></p:autoUpdate>
 		</p:messages>
+		<div class="EmptyBox5"/>
 		<div class="card card-w-title">
 			<p:dataTable id="iceDT" 
 						var="ice" 
@@ -136,7 +137,7 @@
 						rowKey="#{ice.idice}"
 		                 emptyMessage="No existen concidencias">
 		  
-		  		<p:column headerText="OPC" style="width:80px;" styleClass="TexAlCenter">
+		  		<p:column headerText="OPC" style="width:10px;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtIce">
 							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
@@ -160,11 +161,11 @@
 						
 					</p:column>
 		  		
-		        <p:column headerText="Id"  filterMatchMode="contains" style="width:80px;">
+		        <p:column headerText="Id"  filterMatchMode="contains" style="width:20px;">
 		            <h:outputText value="#{ice.idice}" />
 		        </p:column>
 		        
-		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:80px;">
+		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:20px;">
 						<f:facet name="header">
 							<h:outputText value="#{msg['label.codigo']}" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>
@@ -180,7 +181,7 @@
 		             <h:outputText value="#{ice.tarifaadvalorem}" />
 		        </p:column>
 		        
-		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:420px;">
+		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:120px;">
 		                <f:facet name="header">
 							<h:outputText value="#{msg['label.descripcion']}" />
 							<h:outputText value=" [filtro]"  style="color:gray;"/>
@@ -197,7 +198,7 @@
 		        
            </p:dataTable>
 	    </div>
-	    	<div class="EmptyBox20"/>
+	    	<div class="EmptyBox30"/>
 	    </h:form>
 	     <!-- formulario iva -->
 	    <ui:include src="incl_ice_form.xhtml" />

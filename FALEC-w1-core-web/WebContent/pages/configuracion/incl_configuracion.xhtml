@@ -1,0 +1,178 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		
+		.panel-configuracion .ui-accordion .ui-accordion-header.ui-state-hover, body .ui-accordion .ui-accordion-header.ui-tabs-outline {
+		  outline: 0 none;
+		  /* border: 1px solid #d8d8dc;
+		  background-color: #eaeaea; */
+		  border: 1px solid #5D6D7E;
+		  background-color: #fff;
+		  color: #252529;
+		}
+		
+		.panel-configuracion .ui-accordion .ui-accordion-header.ui-state-active {
+			border: 1px solid #d8d8dc !important;
+			background-color: #ffffff!important;
+			color: #1B2631 !important;
+		}
+		
+		.panel-configuracion .ui-accordion .ui-accordion-header.ui-state-active .ui-icon {
+			color: #1B2631 !important;
+		}
+
+		.panel-configuracion .ui-accordion .ui-accordion-header {
+			margin-top: 5px;
+		}
+		
+	</style>
+	
+	<div class="EmptyBox10"/>
+	
+	<div class="p-grid p-justify-center panel-configuracion">
+		
+		<div class="p-col-12">
+		
+			 <p:accordionPanel widgetVar="basic" activeIndex="0" style="margin:0px 10px !important;">
+		            <p:tab title="Certificado de firma electrónica">
+		                <p class="p-m-0">
+		                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+		                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+		                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		                </p>
+		            </p:tab>
+		            
+		            <p:tab title="Servidor de correo SMTP" >
+		                <p class="p-m-0">
+		                	<h:form id="frmSMTP">
+			                    Configura tu propio servidor de correo electrónico SMTP, por el cual se enviará todos los correso del sistema.
+			                    <div class="EmptyBox10"/>
+			                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
+	                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" />
+			                    <p:spacer width="20px"/>
+			                    Utilizar mi propio servidor de correos
+			                    <div class="EmptyBox10"/>
+			                    <p:outputPanel>
+				                    <div class="p-grid">
+				                    	<div class="p-col-12 p-md-7">
+											<h:outputText value="SERVIDOR SMTP * " styleClass="cpoRequerido"/>
+											<div class="EmptyBox5"/>
+											<p:inputText id="intServidopSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											</p:inputText>
+											<p:message for="intServidopSmtp" />
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="PUERTO * " styleClass="cpoRequerido"/>
+											<div class="EmptyBox5"/>
+											<p:inputText id="intPuertoSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="3" validatorMessage="SOLO NÚMEROS">
+												<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+											</p:inputText>
+											<p:message for="intPuertoSmtp" />
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="USUARIO * " styleClass="cpoRequerido"/>
+											<div class="EmptyBox5"/>
+											<p:inputText id="intUsuarioSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											</p:inputText>
+											<p:message for="intUsuarioSmtp" />
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="CONTRASEÑA * " styleClass="cpoRequerido"/>
+											<div class="EmptyBox5"/>
+											<p:inputText id="intClaveSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											</p:inputText>
+											<p:message for="intClaveSmtp" />
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="NOMBRE DEL REMITENTE * " styleClass="cpoRequerido"/>
+											<div class="EmptyBox5"/>
+											<p:inputText id="intNomRemitenteSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											</p:inputText>
+											<p:message for="intNomRemitenteSmtp"/>
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="EMAIL DEL REMITENTE * " styleClass="cpoRequerido"/>
+											<div class="EmptyBox5"/>
+											<p:inputText id="intEmaRemitenteSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											</p:inputText>
+											<p:message for="intEmaRemitenteSmtp"/>
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="USAR SSL" styleClass="cpoRequerido" style="width:120px;display:inline-block;"/>
+											<p:spacer width="20px"/>
+											<p:selectBooleanCheckbox value="#{false}" style="width:6rem"/>
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="USAR AUTH" styleClass="cpoRequerido"  style="width:120px;display:inline-block;"/>
+											<p:spacer width="20px"/>
+											<p:selectBooleanCheckbox value="#{false}" style="width:6rem"/>
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<h:outputText value="USAR START TLS" styleClass="cpoRequerido"  style="width:120px;display:inline-block;"/>
+											<p:spacer width="20px"/>
+											<p:selectBooleanCheckbox value="#{false}" style="width:6rem"/>
+										</div>
+										
+										<div class="p-col-12 p-md-7">
+											<div class="EmptyBox20"/>
+											<p:commandButton id="cmdGuardar"
+													value="GUARDAR" icon="fa fa-floppy-o" 
+													action="#" styleClass="secondary-button" update="@form"
+											/>
+										</div>
+										
+				                    </div>
+			                    </p:outputPanel>
+		                	</h:form>
+		                </p>
+		            </p:tab>
+		            
+		            <p:tab title="Publicidad correo electrónico de facturas" >
+		                <p class="p-m-0">
+		                    Agrega una publicidad de tu negocio, en las Facturas, la imágen puede ser en formato JPG, PNG, con una resolución de 940x120 px y tamaño máximo de 1MB.
+		                    <div class="EmptyBox10"/>
+		                    <p:linkButton value="Seleccionar" style="margin-right:20px;" href="#" icon="fa fa-image" styleClass="secondary-button"/>
+		                </p>
+		            </p:tab>
+		            
+		            <p:tab title="Validación de XML" >
+		                <p class="p-m-0">
+		                    Mediante esta aplicación se puede validar el XML de los comprobantes electrónicos, aplicando los archivos XSD de validación del SRI.
+		                    <div class="EmptyBox10"/>
+		                    <p:linkButton value="Validar XML" style="margin-right:20px;" href="./docElectronico.jsf" target="_blank" icon="fa fa-check" styleClass="secondary-button"/>
+		                </p>
+		            </p:tab>
+		            
+		            <p:tab title="Catálogos de impuestos" >
+		                <p class="p-m-0">
+		                    El sistema cuenta con un catálogo de impuestos tanto del I.C.E. como el I.V.A., se puede personalizar los nombres, valores, y actualización de los mismos.
+		                    <div class="EmptyBox10"/>
+		                    <p:linkButton value="I.C.E." style="margin-right:15px;width:80px;" href="./ice.jsf" target="_blank" icon="fa fa-star-o" styleClass="secondary-button"/>
+		                    
+		                    <p:linkButton value="I.V.A." style="margin-right:15px;width:80px;" href="./iva.jsf" target="_blank" icon="fa fa-star-o" styleClass="secondary-button"/>
+		                </p>
+		            </p:tab>
+		     </p:accordionPanel>
+	     
+		</div>
+		
+	</div>
+	
+    
+
+</ui:composition>
