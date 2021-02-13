@@ -56,6 +56,29 @@ public class ParametroGenericoEmpresa implements Serializable {
 		
 	}
 	
+	
+	
+	/**
+	 * @param idparametroempresa
+	 * @param idempresa
+	 * @param idestablecimiento
+	 * @param concepto
+	 * @param valor
+	 * @param descripcion
+	 */
+	public ParametroGenericoEmpresa(String idparametroempresa, String idempresa, String idestablecimiento,
+			String concepto, String valor, String descripcion) {
+		super();
+		this.idparametroempresa = idparametroempresa;
+		this.idempresa = idempresa;
+		this.idestablecimiento = idestablecimiento;
+		this.concepto = concepto;
+		this.valor = valor;
+		this.descripcion = descripcion;
+	}
+
+
+
 	@Override
     public int hashCode() {
         int hash = 0;

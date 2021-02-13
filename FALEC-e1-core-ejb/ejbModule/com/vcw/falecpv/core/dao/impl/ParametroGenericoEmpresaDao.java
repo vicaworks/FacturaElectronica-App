@@ -92,6 +92,52 @@ public class ParametroGenericoEmpresaDao extends AppGenericDao<ParametroGenerico
 		}
 		
 	}
+	
+	/**
+	 * @param idEmpresa
+	 * @param idParametro
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean getByIdAndEmpresa(String idEmpresa,String idParametro)throws DaoException{
+		try {
 			
+			Query q = getEntityManager().createQuery("SELECT p FROM  ParametroGenericoEmpresa p WHERE p.idempresa=:idEmpresa and p.idparametroempresa=:idparametroempresa");
+			q.setParameter("idEmpresa", idEmpresa);
+			q.setParameter("idparametroempresa", idParametro);
+			
+			return (ParametroGenericoEmpresa) q.getSingleResult()!=null;
+			
+		} catch (NoResultException e) {
+			return false;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param idParametro
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean getByIdAndEstablecimiento(String idEstablecimiento,String idParametro)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM  ParametroGenericoEmpresa p WHERE p.idestablecimiento=:idEstablecimiento and p.idparametroempresa=:idparametroempresa");
+			q.setParameter("idEstablecimiento", idEstablecimiento);
+			q.setParameter("idparametroempresa", idParametro);
+			
+			return (ParametroGenericoEmpresa) q.getSingleResult()!=null;
+			
+		} catch (NoResultException e) {
+			return false;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 		
 }

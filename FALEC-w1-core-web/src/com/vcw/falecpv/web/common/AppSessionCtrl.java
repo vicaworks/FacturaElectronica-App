@@ -61,6 +61,7 @@ public class AppSessionCtrl implements Serializable {
 				// 2. guardar en session los datos de empresa y establecimeinto
 				FacesUtil.getHttpSession(false).setAttribute("establecimiento", usuario.getEstablecimiento());
 				FacesUtil.getHttpSession(false).setAttribute("usuario", usuario);
+				
 			}
 			
 			

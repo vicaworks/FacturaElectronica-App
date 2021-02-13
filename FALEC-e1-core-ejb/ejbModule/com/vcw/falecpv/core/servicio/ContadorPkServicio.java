@@ -140,7 +140,6 @@ public class ContadorPkServicio extends DBUtilGenericoApp {
 		if (sucursal!=null){
 			return  sucursal.concat(valor+"");
 		}
-		System.out.println("valor"+valor);
 		return valor + "";
 	}
 	

@@ -22,6 +22,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.EmpresaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -45,6 +46,9 @@ public class EmpresaCtrl extends BaseCtrl {
 	@EJB
 	private UsuarioServicio usuarioServicio;
 	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
+	
 	private Empresa empresa;
 	private Empresa empresaSelected;
 	private boolean bandera;
@@ -59,8 +63,16 @@ public class EmpresaCtrl extends BaseCtrl {
 	
 	@PostConstruct
 	public void init() {
-		empresaSelected = new Empresa();
-		refrescar();
+		try {
+			establecimientoFacade(establecimientoServicio, false);
+			// verificar los parametros genericos iniciales
+			empresaServicio.parametrosGenericosFacade(establecimientoMain.getEmpresa().getIdempresa());
+			empresaSelected = new Empresa();
+			refrescar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 
 	@Override

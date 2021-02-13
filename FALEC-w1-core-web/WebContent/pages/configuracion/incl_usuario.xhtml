@@ -11,7 +11,7 @@
 		
 		.usuariosDT .ui-datatable-scrollable-body{
 			min-height: 30vh !important;
-			height: calc(100vh - 280px)!important;
+			height: calc(100vh - 270px)!important;
 		}
 				
 	</style>
@@ -62,7 +62,7 @@
 		<p:dataTable id="usuariosDT" var="u"
 			value="#{usuarioCtrl.usuarioList}" scrollable="true"
 			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-			styleClass="usuariosDT"  
+			styleClass="usuariosDT Fs11"  
 			rowKey="#{u.idusuario}">
 			
 			

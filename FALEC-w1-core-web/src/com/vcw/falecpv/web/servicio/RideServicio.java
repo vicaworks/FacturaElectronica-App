@@ -179,7 +179,7 @@ public class RideServicio {
 		} 
 		
 		// consulta la plantilla general
-		if(pathPlantilla==null) {
+		if(pathPlantilla==null || pathPlantilla.trim().length()==0 || pathPlantilla.trim().equals("-")) {
 			try {
 				pathPlantilla = parametroGenericoServicio.consultarParametro(PGPlantillasEnum.getEnumPlantillaByIdentificador(tipoDocumentoIdentificador), com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING);
 			} catch (DaoException | NullPointerException e) {

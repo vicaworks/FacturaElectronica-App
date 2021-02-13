@@ -38,6 +38,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGPlantillasEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
+import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
@@ -60,6 +61,8 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	 */
 	private static final long serialVersionUID = -8788719067123516137L;
 	
+	@EJB
+	private EmpresaServicio empresaServicio;
 	
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
@@ -89,6 +92,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultarEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -190,11 +194,6 @@ public class EstablecimientoCtrl extends BaseCtrl {
 					
 					
 					establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
-					// guarda parametros genericos
-					if(flagEstablecimiento) {
-					insertParamEmpresa(establecimientoUpdate.getIdestablecimiento(),
-							establecimientoSelected.getIdestablecimiento());
-					}
 
 				} else {
 					// consulto el id de la matriz
@@ -204,11 +203,6 @@ public class EstablecimientoCtrl extends BaseCtrl {
 					establecimientoSelected.setUpdated(new Date());
 					establecimientoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 					establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
-					// guarda parametros genericos
-					if(flagEstablecimiento) {
-					insertParamEmpresa(establecimientoUpdate.getIdestablecimiento(),
-							establecimientoSelected.getIdestablecimiento());
-					}
 				}
 
 			} else {
@@ -218,10 +212,6 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				establecimientoSelected.setUpdated(new Date());
 				establecimientoSelected.setIdusuario(AppJsfUtil.getRemoteUser());
 				establecimientoSelected = establecimientoServicio.guardar(establecimientoSelected);
-				// guarda parametros genericos
-			if(flagEstablecimiento) {
-				insertParamEmpresa(establecimientoUpdate.getIdestablecimiento(),
-						establecimientoSelected.getIdestablecimiento());}
 
 			}
 			
@@ -236,6 +226,8 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				establecimientoSelected = establecimientoServicio.actualizar(establecimientoSelected);
 			}
 			
+			// parametros genericos
+			empresaServicio.parametrosGenericosFacade(establecimientoMain.getEmpresa().getIdempresa());
 			
 			establecimientoAllList = null;
 			consultarEstablecimiento();
@@ -467,48 +459,6 @@ public class EstablecimientoCtrl extends BaseCtrl {
 		}
 		
 		return null;
-	}
-
-	
-	
-	/**
-	 * Metodo que inserta los parametros genericos al crear unn establecimiento
-	 * @param idEmpresa
-	 * @return
-	 * @throws DaoException
-	 */
-	public void insertParamEmpresa(String idEstablecimientoMatriz, String idEstablecimiento) throws DaoException {
-		
-		List<ParametroGenericoEmpresa> listaParamEmpresa = new ArrayList<>();
-		ParametroGenericoEmpresa paramGeneric= new  ParametroGenericoEmpresa();
-		List<ParametroGenericoEmpresa> paramGenericoList=new ArrayList<>();
-		listaParamEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao()
-				.getParamEmpresa(idEstablecimientoMatriz);
-		
-		// seteo parametros
-		for (ParametroGenericoEmpresa x : listaParamEmpresa) {
-			paramGeneric= new ParametroGenericoEmpresa();
-			paramGeneric.setConcepto(x.getConcepto());
-			paramGeneric.setDescripcion(x.getDescripcion());
-			paramGeneric.setValor(x.getValor());
-			paramGeneric.setIdestablecimiento(idEstablecimiento);
-			paramGeneric.setIdparametroempresa(x.getIdparametroempresa());
-			paramGenericoList.add(paramGeneric);
-		}
-		
-		// inserta la lista de los parametros
-		paramGenericoList.forEach((y) ->{
-			 try {
-				 parametroGenericoEmpresaServicio.insertListParamEstableciemto(y);
-			} catch (DaoException e) {
-				e.printStackTrace();
-				AppJsfUtil.addErrorMessage("frmEstable", "ERROR AL INSERTAR PARAMETROS GENERICOS",
-						TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-			}
-			});
-	
-		AppJsfUtil.addInfoMessage("frmEstable", "OK", "REGISTRO,PARAMETROS ALMACENADOS CORRECTAMENTE.");
-
 	}
 	
 

@@ -89,7 +89,7 @@ public class UsuarioDao extends AppGenericDao<Usuario, String> {
 				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE u.establecimiento.empresa.idempresa=:id and u.estado=:estado ORDER BY u.nombre");
 				q.setParameter("estado", estadoRegistroEnum.getInicial());
 			}else {
-				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE  u.establecimiento.empresa.idempresa=:id and  ORDER BY u.nombre");
+				q = getEntityManager().createQuery("SELECT u FROM Usuario u WHERE u.establecimiento.empresa.idempresa=:id ORDER BY u.nombre");
 			}
 			q.setParameter("id", idEmpresa);
 			
