@@ -15,9 +15,11 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.commons.io.IOUtils;
 
+import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.modelo.dto.SmtpDto;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
@@ -52,6 +54,7 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	private Establecimiento establecimientoSelected;
 	private Empresa empresaSelected;
 	private UploadedFile file;
+	private SmtpDto smtpDto;
 	
 	
 
@@ -66,11 +69,11 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
 			empresaSelected = empresaServicio.consultarByPk(establecimientoMain.getEmpresa().getIdempresa());
+			consultarSmtp();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	public void upload(FileUploadEvent event)
 	{
@@ -127,6 +130,38 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("frmCertificado", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	private void consultarSmtp()throws DaoException{
+		smtpDto = empresaServicio.getSmtpByEmpresa(empresaSelected.getIdempresa());
+	}
+	
+	public void cambiarSmtp() {
+		try {
+			
+			if(!smtpDto.isSmtpPropio()) {
+				empresaServicio.guardarSmtp(smtpDto, empresaSelected.getIdempresa());
+				consultarSmtp();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmSMTP", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void guardarSmtp() {
+		try {
+			
+			empresaServicio.guardarSmtp(smtpDto, empresaSelected.getIdempresa());
+			consultarSmtp();
+			
+			AppJsfUtil.addInfoMessage("frmSMTP","OK", "SERVIDOR SMTP ALMACENADO CORRECTAMENTE.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmSMTP", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the empresaSelected
@@ -168,6 +203,20 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	 */
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	/**
+	 * @return the smtpDto
+	 */
+	public SmtpDto getSmtpDto() {
+		return smtpDto;
+	}
+
+	/**
+	 * @param smtpDto the smtpDto to set
+	 */
+	public void setSmtpDto(SmtpDto smtpDto) {
+		this.smtpDto = smtpDto;
 	}
 
 }

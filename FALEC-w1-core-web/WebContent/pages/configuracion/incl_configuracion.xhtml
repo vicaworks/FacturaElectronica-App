@@ -44,7 +44,7 @@
 		
 		<div class="p-col-12">
 		
-			 <p:accordionPanel id="TabConfEmpresa" widgetVar="basic" activeIndex="0" style="margin:0px 10px !important;">
+			 <p:accordionPanel id="TabConfEmpresa" widgetVar="basic" activeIndex="-1" style="margin:0px 10px !important;" >
 		            <p:tab title="Certificado de firma electrónica" id="tabFirma">
 		                <p class="p-m-0">
 		                    Registrar el certificado de firma electrónica, Certificado formato P12
@@ -151,16 +151,19 @@
 			                    Configura tu propio servidor de correo electrónico SMTP, por el cual se enviará todos los correso del sistema.
 			                    <div class="EmptyBox10"/>
 			                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
-	                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" />
+	                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.smtpDto.smtpPropio}">
+	                                <p:ajax listener="#{confEmpresaCtrl.cambiarSmtp}" process="@parent" update="@form"/>
+	                            </p:selectBooleanButton>
+	                                
 			                    <p:spacer width="20px"/>
 			                    Utilizar mi propio servidor de correos
 			                    <div class="EmptyBox10"/>
-			                    <p:outputPanel>
+			                    <p:outputPanel rendered="#{confEmpresaCtrl.smtpDto.smtpPropio}">
 				                    <div class="p-grid">
 				                    	<div class="p-col-12 p-md-7">
 											<h:outputText value="SERVIDOR SMTP * " styleClass="cpoRequerido"/>
 											<div class="EmptyBox5"/>
-											<p:inputText id="intServidopSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											<p:inputText id="intServidopSmtp" value="#{confEmpresaCtrl.smtpDto.servidor}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
 											</p:inputText>
 											<p:message for="intServidopSmtp" />
 										</div>
@@ -168,16 +171,16 @@
 										<div class="p-col-12 p-md-7">
 											<h:outputText value="PUERTO * " styleClass="cpoRequerido"/>
 											<div class="EmptyBox5"/>
-											<p:inputText id="intPuertoSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="3" validatorMessage="SOLO NÚMEROS">
+											<p:inputText id="intPuertoSmtp" value="#{confEmpresaCtrl.smtpDto.puerto}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="3" validatorMessage="SOLO NÚMEROS">
 												<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 											</p:inputText>
 											<p:message for="intPuertoSmtp" />
 										</div>
 										
 										<div class="p-col-12 p-md-7">
-											<h:outputText value="USUARIO * " styleClass="cpoRequerido"/>
+											<h:outputText value="USUARIO / EMAIl * " styleClass="cpoRequerido"/>
 											<div class="EmptyBox5"/>
-											<p:inputText id="intUsuarioSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											<p:inputText id="intUsuarioSmtp" value="#{confEmpresaCtrl.smtpDto.usuario}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
 											</p:inputText>
 											<p:message for="intUsuarioSmtp" />
 										</div>
@@ -185,50 +188,50 @@
 										<div class="p-col-12 p-md-7">
 											<h:outputText value="CONTRASEÑA * " styleClass="cpoRequerido"/>
 											<div class="EmptyBox5"/>
-											<p:inputText id="intClaveSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											<p:inputText id="intClaveSmtp" value="#{confEmpresaCtrl.smtpDto.clave}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
 											</p:inputText>
 											<p:message for="intClaveSmtp" />
 										</div>
 										
 										<div class="p-col-12 p-md-7">
-											<h:outputText value="NOMBRE DEL REMITENTE * " styleClass="cpoRequerido"/>
+											<h:outputText value="NOMBRE DEL REMITENTE " styleClass="cpoRequerido"/>
 											<div class="EmptyBox5"/>
-											<p:inputText id="intNomRemitenteSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+											<p:inputText id="intNomRemitenteSmtp" value="#{confEmpresaCtrl.smtpDto.nombreRemitente}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
 											</p:inputText>
 											<p:message for="intNomRemitenteSmtp"/>
 										</div>
 										
-										<div class="p-col-12 p-md-7">
+										<!-- <div class="p-col-12 p-md-7">
 											<h:outputText value="EMAIL DEL REMITENTE * " styleClass="cpoRequerido"/>
 											<div class="EmptyBox5"/>
 											<p:inputText id="intEmaRemitenteSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
 											</p:inputText>
 											<p:message for="intEmaRemitenteSmtp"/>
-										</div>
+										</div> -->
 										
 										<div class="p-col-12 p-md-7">
 											<h:outputText value="USAR SSL" styleClass="cpoRequerido" style="width:120px;display:inline-block;"/>
 											<p:spacer width="20px"/>
-											<p:selectBooleanCheckbox value="#{false}" style="width:6rem"/>
+											<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.ssl}" style="width:6rem"/>
 										</div>
 										
 										<div class="p-col-12 p-md-7">
 											<h:outputText value="USAR AUTH" styleClass="cpoRequerido"  style="width:120px;display:inline-block;"/>
 											<p:spacer width="20px"/>
-											<p:selectBooleanCheckbox value="#{false}" style="width:6rem"/>
+											<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.auth}" style="width:6rem"/>
 										</div>
 										
 										<div class="p-col-12 p-md-7">
 											<h:outputText value="USAR START TLS" styleClass="cpoRequerido"  style="width:120px;display:inline-block;"/>
 											<p:spacer width="20px"/>
-											<p:selectBooleanCheckbox value="#{false}" style="width:6rem"/>
+											<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.tls}" style="width:6rem"/>
 										</div>
 										
 										<div class="p-col-12 p-md-7">
 											<div class="EmptyBox20"/>
 											<p:commandButton id="cmdGuardar"
 													value="GUARDAR" icon="fa fa-floppy-o" 
-													action="#" styleClass="secondary-button" update="@form"
+													action="#{confEmpresaCtrl.guardarSmtp}" styleClass="secondary-button" update="@form"
 											/>
 										</div>
 										
@@ -240,7 +243,10 @@
 		            
 		            <p:tab title="Publicidad correo electrónico de facturas" >
 		                <p class="p-m-0">
-		                    Agrega una publicidad de tu negocio, en las Facturas, la imágen puede ser en formato JPG, PNG, con una resolución de 940x120 px y tamaño máximo de 1MB.
+		                    Agrega una publicidad de tu negocio, en las Facturas, la imágen puede ser en formato JPG, PNG, 
+		                    con una resolución de 940x120 pixceles y tamaño máximo de 1MB, 
+		                    con esta opción la publicidad sale en todas las facturas de las sucursales, 
+		                    para configurar a una sucursal específica debe seleccionar el establecimiento, y configurar la publicidad.
 		                    <div class="EmptyBox10"/>
 		                    <p:linkButton value="Seleccionar" style="margin-right:20px;" href="#" icon="fa fa-image" styleClass="secondary-button"/>
 		                </p>
@@ -264,6 +270,186 @@
 		                </p>
 		            </p:tab>
 		     </p:accordionPanel>
+		     
+		     <div class="EmptyBox5"/>
+		     
+		     <div class="card card-w-title" style="margin:0px 10px !important;">
+		     	<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Configuración por Establecimiento</h3>
+		     	<div class="p-grid">
+		     		
+		     		<div class="p-col-12 p-md-6">
+		     			<p:selectOneMenu id="somEstablecimientoConf"
+							value="#{confEmpresaCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="Wid100">
+							
+							<f:selectItems value="#{confEmpresaCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+							
+							<!-- <p:ajax event="valueChange" listener="#{mainCtrl.buscar()}" update="@form"/> -->
+								
+						</p:selectOneMenu>	
+		     		</div>
+		     		
+		     		<div class="p-col-12 p-md-6">
+		     			Puede configurar opciones para cada uno de los diferentes estableciemintos, para lo cual debe seleccionar el establecimiento, y la opción a configurar.
+		     		</div>
+		     	</div>
+		     </div>
+		     <div class="EmptyBox5"/>
+		     <p:accordionPanel id="TabConfEstablecimiento" widgetVar="basic2" activeIndex="-1" style="margin:0px 10px !important;">
+	            <p:tab title="Correco Electrónico Pruebas" id="tabEmailTest">
+	                <p class="p-m-0">
+	                	Configurar el correo electrónico para pruebas, con esta opción todos los correos se enviarán a los emails configurados para pruebas.
+	                	<h:form id="frmEstEmailTest">
+	                		
+	                		<div class="EmptyBox10"/>
+		                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
+	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{false}">
+	                               <!-- <p:ajax listener="#{confEmpresaCtrl.cambiarSmtp}" process="@parent" update="@form"/> -->
+	                        </p:selectBooleanButton>
+	                               
+		                    <p:spacer width="20px"/>
+		                    Utilizar correo electrónico de pruebas.
+		                    <p:outputPanel rendered="#{true}">
+		                    	<div class="EmptyBox10"/>
+			                    <div class="p-grid">
+			                    	<div class="p-col-12 p-md-7">
+										<h:outputText value="CORREO ELECTRÓNICOS [varios correos separar por comas] * " styleClass="cpoRequerido"/>
+										<div class="EmptyBox5"/>
+										<p:inputText id="intEmailTest" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
+										</p:inputText>
+										<p:message for="intEmailTest" />
+									</div>
+									<div class="p-col-12">
+										<div class="EmptyBox10"/>
+										
+										<p:commandButton 
+												value="GUARDAR" icon="fa fa-floppy-o" 
+												action="#" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
+											/>
+									
+									</div>
+								</div>
+		                		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstEmailTest"
+									closable="true" >
+									<p:autoUpdate></p:autoUpdate>
+								</p:messages>	
+							</p:outputPanel>
+	                	</h:form>
+	                </p>
+	            </p:tab>
+	            
+	            <p:tab title="Plantillas Comprobantes Electrónicos" id="tabPlantilla">
+	                <p class="p-m-0">
+	                	Configurar una plantilla para cada unos de los comprobantes electrónicos, en caso de que no se requiera sustitur la plantilla se debe colocar el [-], y el sistema utiliza la plantilla por defecto para ese comprobante electrónico.
+	                	<h:form id="frmPlantilla">
+		                	<div class="EmptyBox10"/>
+		                    <div class="p-grid">
+		                    	<div class="p-col-12 p-md-7">
+		                    		<h:outputText value="FACTURA * " styleClass="cpoRequerido"/>
+									<div class="EmptyBox5"/>
+									<p:inputText id="intplFactura" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									</p:inputText>
+									<p:message for="intplFactura" />
+		                    	</div>
+		                    	<div class="p-col-12 p-md-7">
+		                    		<h:outputText value="RETENCIÓN * " styleClass="cpoRequerido"/>
+									<div class="EmptyBox5"/>
+									<p:inputText id="intplRetencion" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									</p:inputText>
+									<p:message for="intplRetencion" />
+		                    	</div>
+		                    	<div class="p-col-12 p-md-7">
+		                    		<h:outputText value="NOTA DE CRÉDITO * " styleClass="cpoRequerido"/>
+									<div class="EmptyBox5"/>
+									<p:inputText id="intplNcredito" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									</p:inputText>
+									<p:message for="intplNcredito" />
+		                    	</div>
+		                    	<div class="p-col-12 p-md-7">
+		                    		<h:outputText value="NOTA DE DÉBITO * " styleClass="cpoRequerido"/>
+									<div class="EmptyBox5"/>
+									<p:inputText id="intplNdebito" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									</p:inputText>
+									<p:message for="intplNdebito" />
+		                    	</div>
+		                    	<div class="p-col-12 p-md-7">
+		                    		<h:outputText value="GUÍA DE REMISIÓN * " styleClass="cpoRequerido"/>
+									<div class="EmptyBox5"/>
+									<p:inputText id="intplGuiaRem" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									</p:inputText>
+									<p:message for="intplGuiaRem" />
+		                    	</div>
+		                    	
+		                    	<div class="p-col-12 p-md-7">
+		                    		<h:outputText value="LIQUIDACIÓN DE COMPRA * " styleClass="cpoRequerido"/>
+									<div class="EmptyBox5"/>
+									<p:inputText id="intplliqCompra" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									</p:inputText>
+									<p:message for="intplliqCompra" />
+		                    	</div>
+		                    	<div class="p-col-12">
+									<div class="EmptyBox10"/>
+									
+									<p:commandButton 
+											value="GUARDAR" icon="fa fa-floppy-o" 
+											action="#" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
+										/>
+								
+								</div>
+		                    </div>
+		                    <p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmPlantilla"
+								closable="true" >
+								<p:autoUpdate></p:autoUpdate>
+							</p:messages>
+	                	</h:form>
+	                </p>
+                </p:tab>
+                
+                 <p:tab title="Plantilla Correco Electrónico" id="tabEmailPl">
+	                <p class="p-m-0">
+	                	Configurar la plantilla del contedido del Email de los comprobantes electrónicos.
+	                	<h:form id="frmEstEmailpl">
+	                		
+	                		<div class="EmptyBox10"/>
+		                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
+	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{false}">
+	                               <!-- <p:ajax listener="#{confEmpresaCtrl.cambiarSmtp}" process="@parent" update="@form"/> -->
+	                        </p:selectBooleanButton>
+	                               
+		                    <p:spacer width="20px"/>
+		                    Establecer una plantilla personalizada.
+		                    <p:outputPanel rendered="#{true}">
+		                    	<div class="EmptyBox10"/>
+			                    <div class="p-grid">
+			                    	<div class="p-col-12 p-md-7">
+										<h:outputText value="PLANTILLA CONTENIDO EMAIL COMPROBANTE ELECTRÓNICO * " styleClass="cpoRequerido"/>
+										<div class="EmptyBox5"/>
+										<p:inputText id="intEmailPl" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
+										</p:inputText>
+										<p:message for="intEmailPl" />
+									</div>
+									<div class="p-col-12">
+										<div class="EmptyBox10"/>
+										
+										<p:commandButton 
+												value="GUARDAR" icon="fa fa-floppy-o" 
+												action="#" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
+											/>
+									
+									</div>
+								</div>
+		                		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstEmailpl"
+									closable="true" >
+									<p:autoUpdate></p:autoUpdate>
+								</p:messages>	
+							</p:outputPanel>
+	                	</h:form>
+	                </p>
+	            </p:tab>
+	            
+            </p:accordionPanel>
 	     
 		</div>
 		

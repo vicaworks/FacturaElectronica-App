@@ -89,8 +89,8 @@ public class FirmaElectronicaServicio {
 			throw new FirmaElectronicaException("NO EXISTE ARCHI p12 PARA LA FIRMA");
 		}
 		
-		if(FechaUtil.comparaFechas(emp.getFechavigencia(),new Date())<0) {
-			throw new FirmaElectronicaException("LA FECHA DE VIGENCIA CADUCO : " + FechaUtil.formatoFecha(emp.getFechavigencia()));
+		if(FechaUtil.comparaFechas(emp.getFechaexpiracion(),new Date())<0) {
+			throw new FirmaElectronicaException("LA FECHA DE VIGENCIA CADUCO : " + FechaUtil.formatoFecha(emp.getFechaexpiracion()));
 		}
 		
 		return firmarXml(xmlToSignIS, emp.getArchivofirmaelectronica(), emp.getClavefirmaelectronica());
