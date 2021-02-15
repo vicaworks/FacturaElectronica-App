@@ -250,7 +250,7 @@ public class SriUtilServicio {
 			
 			// 2. valida la fecha de vigencia de la firma electronica
 			Empresa e = empresaServicio.consultarByPk(c.getEstablecimiento().getEmpresa().getIdempresa());
-			if(FechaUtil.comparaFechas(new Date(), e.getFechavigencia())<0) {
+			if(FechaUtil.comparaFechas(new Date(), e.getFechaexpiracion())<0) {
 				// cambiar el estado del comprobante
 				c = cambiarEstado(c.getIdcabecera(), ComprobanteEstadoEnum.ERROR, AppConfiguracion.getString("error.fechafirmaelectronica"));
 				resultado.put("valInicial", false);

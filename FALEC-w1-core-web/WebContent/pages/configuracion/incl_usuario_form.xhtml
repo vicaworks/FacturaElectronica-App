@@ -28,7 +28,7 @@
 					
 					<p:commandButton id="cmdGuardar"
 						value="GUARDAR" icon="fa fa-check" 
-						action="#{usuarioCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
+						action="#{usuarioCtrl.guardar()}" styleClass="MRight10" update="@form :fsvUsuario:frmMainUsuario"
 						/>
 						
 					<p:commandButton id="cmdCerrar"
@@ -101,6 +101,16 @@
 						</p:inputText>
 					</h:panelGroup>
 					<p:message for="intTelefono"/>
+					
+					
+					<h:outputText value="CORREO ELECTRÓNICO * : " styleClass="cpoRequerido"/>
+					<p:inputText id="intEmailUsuario" value="#{usuarioCtrl.usuarioSelected.correoelectronico}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
+						<f:validator validatorId="emailSelectItemValidator"/>
+					</p:inputText>
+					<p:message for="intEmailUsuario" />
+					
+					
+					
 					
 					<h:outputText value="PUNTO EMISIÓN * : " styleClass="cpoRequerido"/>
 					<h:panelGroup>

@@ -124,8 +124,8 @@ public class DocElectrinocCtrl extends BaseCtrl {
 				return;
 			}
 			
-			if(FechaUtil.comparaFechas(emp.getFechavigencia(),new Date())<0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FECHA DE VIGENCIA CADUCO : " + FechaUtil.formatoFecha(emp.getFechavigencia()));
+			if(FechaUtil.comparaFechas(emp.getFechaexpiracion(),new Date())<0) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FECHA DE VIGENCIA CADUCO : " + FechaUtil.formatoFecha(emp.getFechaexpiracion()));
 				return;
 			}
 			

@@ -32,6 +32,10 @@
 			margin-top: 5px;
 		}
 		
+		.f-upload .ui-fileupload {
+			border: 1px solid #d8d8dc !important;
+		}
+		
 	</style>
 	
 	<div class="EmptyBox10"/>
@@ -40,12 +44,104 @@
 		
 		<div class="p-col-12">
 		
-			 <p:accordionPanel widgetVar="basic" activeIndex="0" style="margin:0px 10px !important;">
-		            <p:tab title="Certificado de firma electrónica">
+			 <p:accordionPanel id="TabConfEmpresa" widgetVar="basic" activeIndex="0" style="margin:0px 10px !important;">
+		            <p:tab title="Certificado de firma electrónica" id="tabFirma">
 		                <p class="p-m-0">
-		                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-		                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
-		                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		                    Registrar el certificado de firma electrónica, Certificado formato P12
+		                    <div class="EmptyBox10"/>
+		                    <h:form id="frmCertificado">
+		                    	
+		                    	<div class="p-grid">
+									
+									<div class="p-col-7 f-upload">
+										
+										
+						           		<p:fileUpload id="fulArchivoFirma"
+						           					  label="Seleccionar Archivo..." 
+						           					  mode="advanced" 
+						           					  skinSimple="true" 
+						           					  listener="#{confEmpresaCtrl.upload}" 
+						           					  auto="true" 
+						           					  sizeLimit="25242880"
+													  invalidSizeMessage="#{msg['file.size']} 1MB" 
+						           					  uploadLabel="Cargar" 
+						           					  styleClass="Wid100"
+						           					  allowTypes="/(\.|\/)(p12)$/"
+													  invalidFileMessage="SOLO FORMATOS [.p12]"
+													  required="true"
+													  requiredMessage="REQUERIDO">
+								  		</p:fileUpload>
+									</div>
+									
+									<div class="p-col-12 p-md-7">
+										<h:outputText value="ARCHIVO FIRMA ELECTRÓNICA * " styleClass="cpoRequerido"/>
+										<div class="EmptyBox5"/>
+										<p:inputText value="#{confEmpresaCtrl.empresaSelected.nombrearchivo}" required="true" requiredMessage="REQUERIDO" readonly="true" id="intNameFileFirmaDigital" styleClass="Wid100"/>
+										<h:outputText  />
+										<p:message for="intNameFileFirmaDigital" />											
+									</div>
+									
+									<div class="p-col-12 p-md-7">
+										<h:outputText value="FECHA DE EMISIÓN * " styleClass="cpoRequerido"/>
+										<div class="EmptyBox5"/>
+										<p:calendar id="calFechaEmision" value="#{confEmpresaCtrl.empresaSelected.fechaemision}"
+											pattern="dd/MM/yyyy"
+											locale="es" 
+											requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+										</p:calendar>
+										<p:message for="calFechaEmision" />
+									</div>
+									
+									<div class="p-col-12 p-md-7">
+										<h:outputText value="FECHA DE EXPIRACIÓN * " styleClass="cpoRequerido"/>
+										<div class="EmptyBox5"/>
+										<p:calendar id="calFechaCaducidad" value="#{confEmpresaCtrl.empresaSelected.fechaexpiracion}"
+											pattern="dd/MM/yyyy"
+											locale="es" 
+											requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+										</p:calendar>
+										<p:message for="calFechaCaducidad" />
+									</div>
+									
+									<div class="p-col-12 p-md-7">
+									
+										<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA *" styleClass="cpoRequerido"/>
+										<div class="EmptyBox5"/>
+					                    <p:inputText id="intclavefirma" value="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO">
+					                    </p:inputText> 					                    
+					                    <p:message for="intclavefirma" />
+										
+									</div>
+									
+									<div class="p-col-12">
+										<div class="EmptyBox10"/>
+										<p:commandButton id="cmdLimpiarFirma"
+											value="Limpiar" icon="fa fa-eraser" styleClass="secondary-button" update="@form" process="@this" style="margin-right:15px;width:100px;">
+											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.nombrearchivo}"/>
+											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.archivofirmaelectronica}"/>
+											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.fechaemision}"/>
+											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.fechaexpiracion}"/>
+											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}"/>
+										</p:commandButton>				  		
+
+										
+										
+										<p:commandButton 
+												value="GUARDAR" icon="fa fa-floppy-o" 
+												action="#{confEmpresaCtrl.guardarArchivoFirma}" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
+											/>
+									
+									</div>
+									
+		                    	
+		                    	</div>
+		                    	
+								<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCertificado"
+									closable="true" >
+									<p:autoUpdate></p:autoUpdate>
+								</p:messages>			                    	
+		                    	
+		                    </h:form>
 		                </p>
 		            </p:tab>
 		            

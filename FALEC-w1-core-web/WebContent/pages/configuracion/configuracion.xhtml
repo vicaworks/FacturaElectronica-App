@@ -168,7 +168,7 @@
     	
     	<h:form id="formMain">
     		
-	    	<pe:remoteCommand name="switchOpcion" process="@this" update="@form" actionListener="#{configuracionCtrl.switchOpcion}">
+	    	<pe:remoteCommand name="switchOpcion" process="@this" update="@form :opMain" actionListener="#{configuracionCtrl.switchOpcion}">
 	    		<pe:methodSignature parameters="java.lang.String"/>  
 			    <pe:methodParam name="opcion"/>
 	    	</pe:remoteCommand>
@@ -219,31 +219,33 @@
 				</div>
 				
 			</div>
-			
-			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
+	    </h:form>	
+		
+		<p:outputPanel id="opMain">
 			<f:subview id="fsvPerfil" rendered="#{configuracionCtrl.opcionRender=='PERFIL'}">
-				<ui:include src="./incl_perfil.xhtml" />
+				<h:form id="frmPerfil">
+					<ui:include src="./incl_perfil.xhtml" />
+				</h:form>
 			</f:subview>
 			
 			<f:subview id="fsvEstablecimiento" rendered="#{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'}">
-				<ui:include src="./incl_establecimiento.xhtml" />
+				<h:form id="frmEstablecimiento">
+					<ui:include src="./incl_establecimiento.xhtml" />
+				</h:form>
 			</f:subview>
 			
 			<f:subview id="fsvUsuario" rendered="#{configuracionCtrl.opcionRender=='USUARIOS'}">
-				<ui:include src="./incl_usuario.xhtml"/>
+				<h:form id="frmMainUsuario">
+					<ui:include src="./incl_usuario.xhtml"/>
+				</h:form>
 			</f:subview>
 			
 			<f:subview id="fsvConfiguracion" rendered="#{configuracionCtrl.opcionRender=='CONFIGURACION'}">
 				<ui:include src="./incl_configuracion.xhtml"/>
 			</f:subview>
+		</p:outputPanel>
 	    	
 	    	
-	    </h:form>
     	
 		<!-- formulario establecimiento -->
 	    <ui:include src="incl_establecimiento_form.xhtml" />

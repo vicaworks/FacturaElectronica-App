@@ -40,16 +40,14 @@
 				 />
 			</div>
 
-			<!-- <p:commandButton id="cmdExcelEstab" title="EXPORTAR"
-				icon="fa fa-file-excel-o" ajax="false"
-				onclick="PrimeFaces.monitorDownload(start,stop)"
-				value="REPORTE" styleClass="secondary-button Wid100">
-				<p:fileDownload value="#{establecimientoCtrl.fileEstablecimientos}" />
-			</p:commandButton> -->
-			
 		</div>
 		
 	</div>	
+	<!-- Mensajes -->
+	<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstablecimiento"
+		closable="true" >
+		<p:autoUpdate></p:autoUpdate>
+	</p:messages>
 	<div class="EmptyBox5"/>
 	<div class="card card-w-title">
 		

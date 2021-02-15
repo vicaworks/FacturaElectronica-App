@@ -127,8 +127,13 @@ public class Empresa implements Serializable {
     
     @Basic(optional = true)
     @Temporal(TemporalType.DATE)
-    @Column(name = "fechavigencia")
-    private Date  fechavigencia;
+    @Column(name = "fechaexpiracion")
+    private Date  fechaexpiracion;
+    
+    @Basic(optional = true)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fechaemision")
+    private Date  fechaemision;
     
     @OneToMany(mappedBy = "empresa",fetch = FetchType.LAZY)
     private List<Establecimiento> establecimientoList;
@@ -330,20 +335,6 @@ public class Empresa implements Serializable {
 	}
 
 	/**
-	 * @return the fechavigencia
-	 */
-	public Date getFechavigencia() {
-		return fechavigencia;
-	}
-
-	/**
-	 * @param fechavigencia the fechavigencia to set
-	 */
-	public void setFechavigencia(Date fechavigencia) {
-		this.fechavigencia = fechavigencia;
-	}
-
-	/**
 	 * @return the nombrearchivo
 	 */
 	public String getNombrearchivo() {
@@ -411,6 +402,34 @@ public class Empresa implements Serializable {
 	 */
 	public void setActualizardatos(String actualizardatos) {
 		this.actualizardatos = actualizardatos;
+	}
+
+	/**
+	 * @return the fechaexpiracion
+	 */
+	public Date getFechaexpiracion() {
+		return fechaexpiracion;
+	}
+
+	/**
+	 * @param fechaexpiracion the fechaexpiracion to set
+	 */
+	public void setFechaexpiracion(Date fechaexpiracion) {
+		this.fechaexpiracion = fechaexpiracion;
+	}
+
+	/**
+	 * @return the fechaemision
+	 */
+	public Date getFechaemision() {
+		return fechaemision;
+	}
+
+	/**
+	 * @param fechaemision the fechaemision to set
+	 */
+	public void setFechaemision(Date fechaemision) {
+		this.fechaemision = fechaemision;
 	}
 
 	

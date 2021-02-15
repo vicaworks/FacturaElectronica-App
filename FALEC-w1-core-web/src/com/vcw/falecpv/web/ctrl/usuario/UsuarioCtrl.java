@@ -74,7 +74,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			consultarUsuario();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
@@ -89,16 +89,17 @@ public class UsuarioCtrl extends BaseCtrl {
 	@Override
 	public void refrescar() {
 		try {
+			
 			usuarioList = null;
 			consultarUsuario();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
 	private void consultarUsuario() throws DaoException {
-		AppJsfUtil.limpiarFiltrosDataTable("formMain:usuariosDT");
+		AppJsfUtil.limpiarFiltrosDataTable("fsvUsuario:frmMainUsuario:usuariosDT");
 		usuarioList = usuarioServicio.getUsuarioDao().getByEmpresaEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
@@ -111,19 +112,19 @@ public class UsuarioCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			if(usuarioSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
 				return;
 			}
 			
 			// si el usuario es el mismo del de sesion
 			if (usuarioSelected.getIdusuario().equals(AppJsfUtil.getUsuario().getIdusuario())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR EL USUARIO DE SESSION.");
+				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO SE PUEDE ELIMINNAR EL USUARIO DE SESSION.");
 				return;
 			}
 			
 			// si tiene dependencias
 			if(usuarioServicio.dependencias(AppJsfUtil.getUsuario().getIdusuario())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR EL USUARIO TIENE REGISTROS EN EL SISTEMA REALIZADOS.");
+				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO SE PUEDE ELIMINNAR EL USUARIO TIENE REGISTROS EN EL SISTEMA REALIZADOS.");
 				return;
 			}
 			
@@ -131,11 +132,11 @@ public class UsuarioCtrl extends BaseCtrl {
 			usuarioSelected = null;
 			usuarioList = null;
 			consultarUsuario();
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage("frmMainUsuario","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
@@ -171,6 +172,7 @@ public class UsuarioCtrl extends BaseCtrl {
 
 	public void nuevo() {
 		try {
+			
 			usuarioSelected = new Usuario();
 			usuarioSelected.setEstablecimiento(AppJsfUtil.getEstablecimiento());
 			usuarioSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
@@ -181,7 +183,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgUsuario", "frmUsuario");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -193,7 +195,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgUsuario", "frmUsuario");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -203,7 +205,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			
 			
 			if(usuarioList==null || usuarioList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO EXISTEN DATOS");
 				return null;
 			}
 			
@@ -293,7 +295,7 @@ public class UsuarioCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
 		return null;

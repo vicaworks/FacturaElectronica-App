@@ -17,7 +17,6 @@ import org.primefaces.shaded.commons.io.IOUtils;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
-import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
@@ -108,6 +107,7 @@ public class EmpresaCtrl extends BaseCtrl {
 	
 	public void editar() {
 		try {
+			
 			empresaSelected = empresaServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 			AppJsfUtil.showModalRender("dlgEmpresa", "formMain");
 		} catch (Exception e) {
@@ -125,35 +125,15 @@ public class EmpresaCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
-			if(empresaSelected.getArchivofirmaelectronica()!=null && empresaSelected.getFechavigencia()==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE FECHA DE VIGENCIA");
-				return;
-			}
-			
-			if(empresaSelected.getArchivofirmaelectronica()!=null && (empresaSelected.getClavefirmaelectronica()==null || empresaSelected.getClavefirmaelectronica().length()==0)) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE CLAVE DE FIRMA " + msg.getString("label.electronica"));
-				return;
-			}
-			
-			if(empresaSelected.getArchivofirmaelectronica()==null) {
-				empresaSelected.setFechavigencia(null);
-				empresaSelected.setClavefirmaelectronica(null);
-			}
-			
-			if(empresaSelected.getFechavigencia()!=null && FechaUtil.comparaFechas(empresaSelected.getFechavigencia(),new Date())<0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "LA FECHA DE VIGENCIA NO PUEDE SER MENOR QUE LA FECHA ACTUAL.");
-				return;
-			}
-			
 			empresaSelected.setUpdated(new Date());
 			Usuario usuarioactual = usuarioServicio.getUsuarioDao().getByLogin(AppJsfUtil.getRemoteUser()); // Obtiene el usuario que inici� sesi�n
 			empresaSelected.setIdusuario(usuarioactual.getIdusuario());
 			empresaSelected = empresaServicio.guardar(empresaSelected);
 			consultarEmpresa();
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage("frmPerfil","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 		} catch (Exception e) {
 			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmPerfil", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

@@ -96,7 +96,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			consultarEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -117,7 +117,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			consultarEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
@@ -125,12 +125,12 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			if(establecimientoSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
 				return;
 			}			
 			//tiene referencias
 			if(establecimientoServicio.tieneDependenciasEst(establecimientoSelected.getIdestablecimiento())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR EXISTE REFERENCIAS");
+				AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", "NO SE PUEDE ELIMINAR EXISTE REFERENCIAS");
 				return;
 			}
 			//elimina establecimiento
@@ -146,7 +146,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -216,7 +216,6 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			}
 			
 			// registra la imagen
-			
 			if(establecimientoSelected.getLogo()!=null) {
 				String nombreLogo = establecimientoSelected.getEmpresa().getRuc() + establecimientoSelected.getCodigoestablecimiento() + establecimientoSelected.getNombreimagen().substring(establecimientoSelected.getNombreimagen().lastIndexOf("."),establecimientoSelected.getNombreimagen().length());
 				String pathLogo = parametroGenericoServicio.consultarParametro(PGPlantillasEnum.PATH_LOGO, TipoRetornoParametroGenerico.STRING);
@@ -254,7 +253,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -275,7 +274,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgEstable", "frmEstable");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -372,7 +371,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 			
 			if(establecimientoAllList==null || establecimientoAllList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", "NO EXISTEN DATOS");
 				return null;
 			}
 			
@@ -455,7 +454,7 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
 		return null;
