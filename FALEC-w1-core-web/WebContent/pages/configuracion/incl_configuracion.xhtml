@@ -278,17 +278,19 @@
 		     	<div class="p-grid">
 		     		
 		     		<div class="p-col-12 p-md-6">
-		     			<p:selectOneMenu id="somEstablecimientoConf"
-							value="#{confEmpresaCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100">
-							
-							<f:selectItems value="#{confEmpresaCtrl.establecimientoMainList}" var="st"
-								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-							
-							<!-- <p:ajax event="valueChange" listener="#{mainCtrl.buscar()}" update="@form"/> -->
+		     			<h:form>
+			     			<p:selectOneMenu id="somEstablecimientoConf"
+								value="#{confEmpresaCtrl.establecimientoMain}"
+								converter="omnifaces.SelectItemsConverter"
+								styleClass="Wid100">
 								
-						</p:selectOneMenu>	
+								<f:selectItems value="#{confEmpresaCtrl.establecimientoMainList}" var="st"
+									itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+								
+								<p:ajax event="valueChange" listener="#{confEmpresaCtrl.cambioEstablecimiento}" update=":fsvConfiguracion:TabConfEstablecimiento"/>
+									
+							</p:selectOneMenu>	
+		     			</h:form>
 		     		</div>
 		     		
 		     		<div class="p-col-12 p-md-6">
@@ -305,19 +307,20 @@
 	                		
 	                		<div class="EmptyBox10"/>
 		                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
-	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{false}">
-	                               <!-- <p:ajax listener="#{confEmpresaCtrl.cambiarSmtp}" process="@parent" update="@form"/> -->
+	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.confEstablecimientoDto.emailTesting}">
+	                               <p:ajax listener="#{confEmpresaCtrl.cambiarEmailTesting}" process="@parent" update="@form"/>
 	                        </p:selectBooleanButton>
 	                               
 		                    <p:spacer width="20px"/>
 		                    Utilizar correo electrónico de pruebas.
-		                    <p:outputPanel rendered="#{true}">
+		                    <p:outputPanel rendered="#{confEmpresaCtrl.confEstablecimientoDto.emailTesting}">
 		                    	<div class="EmptyBox10"/>
 			                    <div class="p-grid">
 			                    	<div class="p-col-12 p-md-7">
 										<h:outputText value="CORREO ELECTRÓNICOS [varios correos separar por comas] * " styleClass="cpoRequerido"/>
 										<div class="EmptyBox5"/>
-										<p:inputText id="intEmailTest" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
+										<p:inputText id="intEmailTest" value="#{confEmpresaCtrl.confEstablecimientoDto.emailsEnvioTest}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
+											<f:validator validatorId="emailSelectItemValidator"/>
 										</p:inputText>
 										<p:message for="intEmailTest" />
 									</div>
@@ -326,7 +329,7 @@
 										
 										<p:commandButton 
 												value="GUARDAR" icon="fa fa-floppy-o" 
-												action="#" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
+												action="#{confEmpresaCtrl.guardarEmailTesting}" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
 											/>
 									
 									</div>
@@ -349,35 +352,35 @@
 		                    	<div class="p-col-12 p-md-7">
 		                    		<h:outputText value="FACTURA * " styleClass="cpoRequerido"/>
 									<div class="EmptyBox5"/>
-									<p:inputText id="intplFactura" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									<p:inputText id="intplFactura" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaFactura}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
 									</p:inputText>
 									<p:message for="intplFactura" />
 		                    	</div>
 		                    	<div class="p-col-12 p-md-7">
 		                    		<h:outputText value="RETENCIÓN * " styleClass="cpoRequerido"/>
 									<div class="EmptyBox5"/>
-									<p:inputText id="intplRetencion" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									<p:inputText id="intplRetencion" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaRetencion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
 									</p:inputText>
 									<p:message for="intplRetencion" />
 		                    	</div>
 		                    	<div class="p-col-12 p-md-7">
 		                    		<h:outputText value="NOTA DE CRÉDITO * " styleClass="cpoRequerido"/>
 									<div class="EmptyBox5"/>
-									<p:inputText id="intplNcredito" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									<p:inputText id="intplNcredito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaCredito}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
 									</p:inputText>
 									<p:message for="intplNcredito" />
 		                    	</div>
 		                    	<div class="p-col-12 p-md-7">
 		                    		<h:outputText value="NOTA DE DÉBITO * " styleClass="cpoRequerido"/>
 									<div class="EmptyBox5"/>
-									<p:inputText id="intplNdebito" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									<p:inputText id="intplNdebito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaDebito}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
 									</p:inputText>
 									<p:message for="intplNdebito" />
 		                    	</div>
 		                    	<div class="p-col-12 p-md-7">
 		                    		<h:outputText value="GUÍA DE REMISIÓN * " styleClass="cpoRequerido"/>
 									<div class="EmptyBox5"/>
-									<p:inputText id="intplGuiaRem" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									<p:inputText id="intplGuiaRem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaGuiaRemision}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
 									</p:inputText>
 									<p:message for="intplGuiaRem" />
 		                    	</div>
@@ -385,7 +388,7 @@
 		                    	<div class="p-col-12 p-md-7">
 		                    		<h:outputText value="LIQUIDACIÓN DE COMPRA * " styleClass="cpoRequerido"/>
 									<div class="EmptyBox5"/>
-									<p:inputText id="intplliqCompra" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
+									<p:inputText id="intplliqCompra" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaLiqCompra}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
 									</p:inputText>
 									<p:message for="intplliqCompra" />
 		                    	</div>
@@ -394,7 +397,8 @@
 									
 									<p:commandButton 
 											value="GUARDAR" icon="fa fa-floppy-o" 
-											action="#" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
+											disabled="#{not confEmpresaCtrl.confEstablecimientoDto.permisoModificacion}"
+											action="#{confEmpresaCtrl.guardarPlantillaComprobanteElectronico()}" styleClass="secondary-button" update="@form" style="margin-right:15px;width:100px;"
 										/>
 								
 								</div>
@@ -414,19 +418,19 @@
 	                		
 	                		<div class="EmptyBox10"/>
 		                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
-	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{false}">
-	                               <!-- <p:ajax listener="#{confEmpresaCtrl.cambiarSmtp}" process="@parent" update="@form"/> -->
+	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmailEstablecimiento}">
+	                               <p:ajax listener="#{confEmpresaCtrl.cambiarPlantillaEmail}" process="@parent" update="@form"/>
 	                        </p:selectBooleanButton>
 	                               
 		                    <p:spacer width="20px"/>
 		                    Establecer una plantilla personalizada.
-		                    <p:outputPanel rendered="#{true}">
+		                    <p:outputPanel rendered="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmailEstablecimiento}">
 		                    	<div class="EmptyBox10"/>
 			                    <div class="p-grid">
 			                    	<div class="p-col-12 p-md-7">
 										<h:outputText value="PLANTILLA CONTENIDO EMAIL COMPROBANTE ELECTRÓNICO * " styleClass="cpoRequerido"/>
 										<div class="EmptyBox5"/>
-										<p:inputText id="intEmailPl" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
+										<p:inputText id="intEmailPl" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmail}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
 										</p:inputText>
 										<p:message for="intEmailPl" />
 									</div>
@@ -434,8 +438,9 @@
 										<div class="EmptyBox10"/>
 										
 										<p:commandButton 
-												value="GUARDAR" icon="fa fa-floppy-o" 
-												action="#" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
+												value="GUARDAR" icon="fa fa-floppy-o"
+												disabled="#{not confEmpresaCtrl.confEstablecimientoDto.permisoModificacion}" 
+												action="#{confEmpresaCtrl.guardarEmailPlantilla()}" styleClass="secondary-button" update="@form" style="margin-right:15px;width:100px;"
 											/>
 									
 									</div>

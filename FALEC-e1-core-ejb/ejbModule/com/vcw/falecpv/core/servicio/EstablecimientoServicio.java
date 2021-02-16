@@ -14,8 +14,14 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmailEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGPlantillasEnum;
 import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
+import com.vcw.falecpv.core.modelo.dto.ConfEstablecimientoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
+import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.xpert.persistence.query.QueryBuilder;
 
 
@@ -28,6 +34,9 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 	
 	@Inject
 	private EstablecimientoDao establecimientoDao;
+	
+	@Inject
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
 
     public final static String formato="%09d";
@@ -228,5 +237,132 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public ConfEstablecimientoDto getConfiguracion(String idEstablecimiento)throws DaoException{
+		try {
+			
+			ConfEstablecimientoDto conf = new ConfEstablecimientoDto();
+			
+			// autorizacion modificacion de configuracion
+			conf.setPermisoModificacion(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PERMISO_MODIFICACION, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
+			
+			// email testing
+			conf.setEmailTesting(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.SERVER_SMTP_TEST, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
+			conf.setEmailsEnvioTest(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.SERVER_SMTP_TEST_EMAIL, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			
+			// plantilla email comprobantes electronicos
+			conf.setPlantillaEmailEstablecimiento(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
+			conf.setPlantillaEmail(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			
+			// plantilla comprobantes electronicos
+			conf.setPlantillaFactura(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_FACTURA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setPlantillaRetencion(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_RETENCION, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setPlantillaNotaCredito(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_NOTA_CREDITO, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setPlantillaNotaDebito(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_NOTA_DEBITO, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setPlantillaGuiaRemision(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_GUIA_REMISION, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setPlantillaLiqCompra(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_LIQ_COMPRA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			
+			return conf;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param confEstablecimientoDto
+	 * @throws DaoException
+	 */
+	public void guardarTestCorreos(String idEstablecimiento,ConfEstablecimientoDto confEstablecimientoDto)throws DaoException{
+		try {
+			
+			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.SERVER_SMTP_TEST);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.isEmailTesting()?"S":"N");
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.SERVER_SMTP_TEST_EMAIL);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getEmailsEnvioTest());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param confEstablecimientoDto
+	 * @throws DaoException
+	 */
+	public void guardarPlantillaEmail(String idEstablecimiento,ConfEstablecimientoDto confEstablecimientoDto)throws DaoException{
+		try {
+			
+			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.isPlantillaEmailEstablecimiento()?"S":"N");
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaEmail());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param confEstablecimientoDto
+	 * @throws DaoException
+	 */
+	public void guardarPlantillaComprobanteElectronico(String idEstablecimiento,ConfEstablecimientoDto confEstablecimientoDto)throws DaoException{
+		try {
+			
+			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_FACTURA);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaFactura());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_RETENCION);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaRetencion());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_NOTA_CREDITO);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaNotaCredito());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_NOTA_DEBITO);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaNotaDebito());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_GUIA_REMISION);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaGuiaRemision());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_LIQ_COMPRA);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaLiqCompra());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 
 }

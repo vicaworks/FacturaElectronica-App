@@ -19,12 +19,16 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
+import com.vcw.falecpv.core.modelo.dto.ConfEstablecimientoDto;
 import com.vcw.falecpv.core.modelo.dto.SmtpDto;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -45,6 +49,9 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	
 	@EJB
 	private UsuarioServicio usuarioServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 
 	/**
 	 * 
@@ -55,6 +62,7 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	private Empresa empresaSelected;
 	private UploadedFile file;
 	private SmtpDto smtpDto;
+	private ConfEstablecimientoDto confEstablecimientoDto;
 	
 	
 
@@ -70,6 +78,7 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			establecimientoFacade(establecimientoServicio, false);
 			empresaSelected = empresaServicio.consultarByPk(establecimientoMain.getEmpresa().getIdempresa());
 			consultarSmtp();
+			consultarConfiguracionEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -162,6 +171,93 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("frmSMTP", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	private void consultarConfiguracionEstablecimiento() throws DaoException{
+		confEstablecimientoDto = establecimientoServicio.getConfiguracion(establecimientoMain.getIdestablecimiento());
+	}
+	
+	public void cambioEstablecimiento() {
+		try {
+			consultarConfiguracionEstablecimiento();
+		} catch (Exception e) {
+			e.printStackTrace();			
+//			AppJsfUtil.addErrorMessage("frmSMTP", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void guardarEmailTesting() {
+		try {
+			establecimientoServicio.guardarTestCorreos(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
+			AppJsfUtil.addInfoMessage("frmEstEmailTest","OK", "PRUEBAS EMAIL ALMACENADO CORRECTAMENTE.");
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmEstEmailTest", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void guardarEmailPlantilla() {
+		try {
+			
+			if(!(boolean)parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PERMISO_MODIFICACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento())) {
+				AppJsfUtil.addErrorMessage("frmEstEmailpl", "ERROR", msg.getString("error.permiso"));
+				consultarConfiguracionEstablecimiento();
+				AppJsfUtil.updateComponente("fsvConfiguracion:TabConfEstablecimiento:frmEstEmailpl");
+				return;
+			}
+			
+			establecimientoServicio.guardarPlantillaEmail(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
+			AppJsfUtil.addInfoMessage("frmEstEmailpl","OK", "PLANTILLA EMAIL ALMACENADO CORRECTAMENTE.");
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmEstEmailpl", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void guardarPlantillaComprobanteElectronico() {
+		try {
+			if(!(boolean)parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PERMISO_MODIFICACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento())) {
+				AppJsfUtil.addErrorMessage("frmPlantilla", "ERROR", msg.getString("error.permiso"));
+				consultarConfiguracionEstablecimiento();
+				AppJsfUtil.updateComponente("fsvConfiguracion:TabConfEstablecimiento:frmPlantilla");
+				return;
+			}
+			establecimientoServicio.guardarPlantillaComprobanteElectronico(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
+			AppJsfUtil.addInfoMessage("frmPlantilla","OK", "PLANTILLAS COMPROBANTES ALMACENADO CORRECTAMENTE.");
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmPlantilla", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void cambiarEmailTesting() {
+		try {
+			
+			if(!confEstablecimientoDto.isEmailTesting()) {
+				establecimientoServicio.guardarTestCorreos(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
+				consultarConfiguracionEstablecimiento();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmEstEmailTest", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void cambiarPlantillaEmail() {
+		try {
+			
+			
+			
+			if(!confEstablecimientoDto.isPlantillaEmailEstablecimiento()) {
+				establecimientoServicio.guardarPlantillaEmail(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
+				consultarConfiguracionEstablecimiento();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmEstEmailTest", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
 
 	/**
 	 * @return the empresaSelected
@@ -217,6 +313,20 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	 */
 	public void setSmtpDto(SmtpDto smtpDto) {
 		this.smtpDto = smtpDto;
+	}
+
+	/**
+	 * @return the confEstablecimientoDto
+	 */
+	public ConfEstablecimientoDto getConfEstablecimientoDto() {
+		return confEstablecimientoDto;
+	}
+
+	/**
+	 * @param confEstablecimientoDto the confEstablecimientoDto to set
+	 */
+	public void setConfEstablecimientoDto(ConfEstablecimientoDto confEstablecimientoDto) {
+		this.confEstablecimientoDto = confEstablecimientoDto;
 	}
 
 }

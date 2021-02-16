@@ -18,7 +18,8 @@ public enum PGEmpresaSucursal implements ParametroGenericoBaseEnum {
 	PLANTILLA_NOTA_DEBITO("7"),
 	PLANTILLA_GUIA_REMISION("8"),
 	PLANTILLA_LIQ_COMPRA("9"),
-	PLANTILLA_RECIBO("10");
+	PLANTILLA_RECIBO("10"),
+	PERMISO_MODIFICACION("22");
 	
 	private String id;
 	
