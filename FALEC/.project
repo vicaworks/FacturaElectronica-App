@@ -3,9 +3,8 @@
 	<name>FALEC</name>
 	<comment></comment>
 	<projects>
-		<project>FALEC-w1-core-web</project>
 		<project>FALEC-e1-core-ejb</project>
-		<project>SRI-ws-cliente</project>
+		<project>FALEC-w1-core-web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

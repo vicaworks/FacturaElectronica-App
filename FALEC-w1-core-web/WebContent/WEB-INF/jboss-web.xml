@@ -1,7 +1,7 @@
 <jboss-web>
 
 	<!-- contexto -->
-	<context-root>falecpv</context-root>
+	<context-root>mako</context-root>
 	
 	<security-domain>DBAutenticacionFalecpv</security-domain>
 	

@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/application_8.xsd" id="Application_ID" version="8">
-  <display-name>FALEC</display-name>
+  <display-name>MAKO</display-name>
   <module>
     <web>
       <web-uri>FALEC-w1-core-web.war</web-uri>
-      <context-root>falecpv</context-root>
+      <context-root>mako</context-root>
     </web>
   </module>
   <module>
     <ejb>FALEC-e1-core-ejb.jar</ejb>
-  </module>
-  <module>
-    <web>
-      <web-uri>SRI-ws-cliente.war</web-uri>
-      <context-root>SRI-ws-cliente</context-root>
-    </web>
   </module>
   <library-directory>lib</library-directory>
 </application>
