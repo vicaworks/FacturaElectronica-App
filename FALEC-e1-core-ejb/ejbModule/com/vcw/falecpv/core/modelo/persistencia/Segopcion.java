@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -88,6 +89,12 @@ public class Segopcion implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "idsegtipoopcion", referencedColumnName = "idsegtipoopcion", nullable = false)
     private Segtipoopcion segtipoopcion;
+
+    @Transient
+    private String iniciales;
+    
+    @Transient
+    private String opcion;
     
 	/**
 	 * 
@@ -300,6 +307,34 @@ public class Segopcion implements Serializable {
 	 */
 	public void setSegopcionpadre(Segopcion segopcionpadre) {
 		this.segopcionpadre = segopcionpadre;
+	}
+
+	/**
+	 * @return the iniciales
+	 */
+	public String getIniciales() {
+		return iniciales;
+	}
+
+	/**
+	 * @param iniciales the iniciales to set
+	 */
+	public void setIniciales(String iniciales) {
+		this.iniciales = iniciales;
+	}
+
+	/**
+	 * @return the opcion
+	 */
+	public String getOpcion() {
+		return opcion;
+	}
+
+	/**
+	 * @param opcion the opcion to set
+	 */
+	public void setOpcion(String opcion) {
+		this.opcion = opcion;
 	}
 
 }

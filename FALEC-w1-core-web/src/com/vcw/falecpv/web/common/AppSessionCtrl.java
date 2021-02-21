@@ -15,8 +15,10 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.modelo.persistencia.Segopcion;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
+import com.vcw.falecpv.core.servicio.seg.SegperfilServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -31,10 +33,14 @@ public class AppSessionCtrl implements Serializable {
 	@EJB
 	private UsuarioServicio usuarioServicio;
 	
+	@EJB
+	private SegperfilServicio segperfilServicio;
+	
 	private String nombreEstablecimiento;
 	private String nombreEmpresa;
 	private String nombreDisplay;
 	private Boolean administrador;
+	private List<Segopcion> segopcionList;
 	
 	/**
 	 * 
@@ -62,6 +68,10 @@ public class AppSessionCtrl implements Serializable {
 				FacesUtil.getHttpSession(false).setAttribute("establecimiento", usuario.getEstablecimiento());
 				FacesUtil.getHttpSession(false).setAttribute("usuario", usuario);
 				
+				// 3. perfiles de acceso
+				segopcionList = segperfilServicio.getPerfilOpcionAcceso(usuario.getIdusuario());
+				FacesUtil.getHttpSession(false).setAttribute("segopcionList", segopcionList);
+				
 			}
 			
 			
@@ -71,6 +81,19 @@ public class AppSessionCtrl implements Serializable {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage(null,TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	/**
+	 * @param identificador
+	 * @return
+	 */
+	public boolean accesoDisable(String identificador) {
+		if(segopcionList!=null) {
+			Segopcion op = segopcionList.stream().filter(x->x.getIdentificador().equals(identificador)).findFirst().orElse(null);
+			if(op!=null)
+				return false;
+		}
+		return true;
 	}
 	
 	public String getFormatoMoneda() {
@@ -217,6 +240,20 @@ public class AppSessionCtrl implements Serializable {
 	 */
 	public void setNombreEmpresa(String nombreEmpresa) {
 		this.nombreEmpresa = nombreEmpresa;
+	}
+
+	/**
+	 * @return the segopcionList
+	 */
+	public List<Segopcion> getSegopcionList() {
+		return segopcionList;
+	}
+
+	/**
+	 * @param segopcionList the segopcionList to set
+	 */
+	public void setSegopcionList(List<Segopcion> segopcionList) {
+		this.segopcionList = segopcionList;
 	}	
 
 }
