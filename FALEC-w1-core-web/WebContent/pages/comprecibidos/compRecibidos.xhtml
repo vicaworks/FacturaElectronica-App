@@ -173,7 +173,7 @@
 	    	</pe:remoteCommand>
 	    	
 			<div class="p-grid">
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobanteBg tabComprobante #{compRecibidosCtrl.comprobanteRender=='IMPORTAR'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('IMPORTAR');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobanteBg tabComprobante #{compRecibidosCtrl.comprobanteRender=='IMPORTAR'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" onclick="switchComprobante('IMPORTAR');">
 					
 					<h4>
 						<h:outputText value="01."/>
@@ -183,7 +183,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='FACTURA'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('FACTURA');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='FACTURA'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_factura')?'ui-state-disabled':''}" onclick="switchComprobante('FACTURA');">
 					
 					<h4>
 						<h:outputText value="02."/>
@@ -193,7 +193,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='RETENCION'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('RETENCION');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='RETENCION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_retencion')?'ui-state-disabled':''}" onclick="switchComprobante('RETENCION');">
 					
 					<h4>
 						<h:outputText value="03."/>
@@ -203,7 +203,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_CREDITO'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('NOTA_CREDITO');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_CREDITO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_notacredito')?'ui-state-disabled':''}" onclick="switchComprobante('NOTA_CREDITO');">
 					
 					<h4>
 						<h:outputText value="04."/>
@@ -213,7 +213,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_DEBITO'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('NOTA_DEBITO');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_DEBITO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_notadebito')?'ui-state-disabled':''}" onclick="switchComprobante('NOTA_DEBITO');">
 					
 					<h4>
 						<h:outputText value="05."/>
@@ -223,7 +223,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='GUIA_REMISION'?'tabComprobanteSeleccion':''}" onclick="switchComprobante('GUIA_REMISION');">
+				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='GUIA_REMISION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_guiaremision')?'ui-state-disabled':''}" onclick="switchComprobante('GUIA_REMISION');">
 					
 					<h4>
 						<h:outputText value="06."/>

@@ -174,7 +174,7 @@
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdRtnNuevo"
 							value="NUEVO RECIBO" icon="fa fa-plus" 
-							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button" update="@form">
+							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button #{appSessionCtrl.accesoDisable('mn_compelec_recibo_nuevo')?'ui-state-disabled':''}" update="@form">
 							<f:setPropertyActionListener value="#{recEmitidoCtrl.establecimientoMain}" target="#{compFacCtrl.establecimientoMain}"/>
 							<f:setPropertyActionListener value="RECIBO" target="#{compFacCtrl.callModule}"/>
 	   					</p:commandButton>
@@ -230,14 +230,14 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtRecEmitidas" my="left top" at="left bottom">
-							<p:menuitem value="Recibo" action="#{rideCtrl.showRide()}" icon="fa fa-print">
+							<p:menuitem value="Recibo" action="#{rideCtrl.showRide()}" icon="fa fa-print" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_recibo_ride')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
-							<p:menuitem value="Editar" action="#{recEmitidoCtrl.editarRecibo(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{recEmitidoCtrl.editarRecibo(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_recibo_editar')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v}" target="#{recEmitidoCtrl.ventasQuerySelected}"/>
 								<f:setPropertyActionListener value="RECIBO" target="#{compFacCtrl.callModule}"/>
 							</p:menuitem>
-							<p:menuitem value="Anular" action="#{recEmitidoCtrl.eliminar()}" icon="fa fa-trash-o" disabled="#{v.estado=='ANULADO'}" update="@form">
+							<p:menuitem value="Anular" action="#{recEmitidoCtrl.eliminar()}" icon="fa fa-trash-o" disabled="#{v.estado=='ANULADO'}" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_recibo_anular')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v}" target="#{recEmitidoCtrl.ventasQuerySelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>

@@ -228,13 +228,13 @@
   					
     				<p:commandButton id="cmdGenRecibo"
 							value="RECIBO" icon="fa fa-floppy-o" 
-							action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Fs10 m-button" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}">
+							action="#{compFacCtrl.generarRecibo()}" styleClass="secondary-button Fs10 m-button #{appSessionCtrl.accesoDisable('mn_compelec_recibo_nuevo')?'ui-state-disabled':''}" update="@form :formMain:msgFormMain" disabled="#{compFacCtrl.cabecerSelected.comprobanteRecibo}">
 						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compFacCtrl.rideCtrl}"/>
 					</p:commandButton>
 							
     				<p:commandButton id="cmdGenFactura"
 							value="FACTURA" icon="fa fa-floppy-o" 
-							action="#{compFacCtrl.generarFactura()}" styleClass="Fs10 m-button" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
+							action="#{compFacCtrl.generarFactura()}" styleClass="Fs10 m-button #{appSessionCtrl.accesoDisable('mn_compelec_factura_nuevo')?'ui-state-disabled':''}" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
 	    			
 	    			<p:commandButton id="cmdImprimir"
 							value="IMPRIMIR" icon="fa fa-print Fs11" title="Imprimir Factura"

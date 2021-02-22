@@ -80,7 +80,7 @@
 									</h:panelGroup>
 										
 									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}" 
 										action="#{categoriaCtrl.nuevo()}" inline="true">
 										<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
 									</p:commandButton>
@@ -126,11 +126,11 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtCategoria" my="left top" at="left bottom">
-							<p:menuitem value="Editar #{msg['label.categoria2']}" action="#{categoriaCtrl.editar()}" icon="fa fa-edit" >
+							<p:menuitem value="Editar #{msg['label.categoria2']}" action="#{categoriaCtrl.editar()}" icon="fa fa-edit" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
 							<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
 							</p:menuitem>
-							<p:menuitem value="Eliminar #{msg['label.categoria2']}" action="#{categoriaCtrl.eliminar()}" icon="fa fa-close" >
+							<p:menuitem value="Eliminar #{msg['label.categoria2']}" action="#{categoriaCtrl.eliminar()}" icon="fa fa-close" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
 							</p:menuitem>

@@ -104,7 +104,7 @@
 										title="CARGAR ARCHIVO EXCEL CLIENTES"
 										icon="fa fa-file-excel-o"
 										value="IMPORTAR CLIENTES"
-										styleClass="secondary-button Wid90"
+										styleClass="secondary-button Wid90 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}"
 										onclick="PF('dlgImportCliente').show()"
 										update=":frmImportCliente"
 										immediate="true">
@@ -115,7 +115,7 @@
 									</p:commandButton>
 									
 									<p:commandButton id="cmdNuevoCli"
-										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}" 
 										action="#{clienteCtrl.nuevo()}" inline="true">
 										<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
 										<f:setPropertyActionListener value=":formMain:clienteDT" target="#{clienteCtrl.updateView}"/>
@@ -167,10 +167,10 @@
 						<p:menu overlay="true" trigger="cmlDtCliente" my="left top" at="left bottom">
 							<p:menuitem value="Ver Cliente" action="#{clienteCtrl.verCliente(c.idcliente)}" icon="fa fa-edit" >
 							</p:menuitem>
-							<p:menuitem value="Editar Cliente" action="#{clienteCtrl.editarCliente(c.idcliente)}" icon="fa fa-edit" rendered="#{c.identificacion ne '9999999999999'}">
+							<p:menuitem value="Editar Cliente" action="#{clienteCtrl.editarCliente(c.idcliente)}" icon="fa fa-edit" rendered="#{c.identificacion ne '9999999999999'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
 							</p:menuitem>
-				            <p:menuitem value="Eliminar Cliente" action="#{clienteCtrl.eliminar()}" icon="fa fa-close" process="clienteDT" update="@parent" rendered="#{c.identificacion ne '9999999999999'}">
+				            <p:menuitem value="Eliminar Cliente" action="#{clienteCtrl.eliminar()}" icon="fa fa-close" process="clienteDT" update="@parent" rendered="#{c.identificacion ne '9999999999999'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}">
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 				            	<f:setPropertyActionListener value="#{c}" target="#{clienteCtrl.clienteSelected}"/>
 				            </p:menuitem>

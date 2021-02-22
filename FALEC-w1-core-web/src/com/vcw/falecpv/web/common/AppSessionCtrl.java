@@ -96,6 +96,19 @@ public class AppSessionCtrl implements Serializable {
 		return true;
 	}
 	
+	/**
+	 * @param identificador
+	 * @return
+	 */
+	public boolean accesoRender(String identificador) {
+		if(segopcionList!=null) {
+			Segopcion op = segopcionList.stream().filter(x->x.getIdentificador().equals(identificador)).findFirst().orElse(null);
+			if(op!=null)
+				return true;
+		}
+		return false;
+	}
+	
 	public String getFormatoMoneda() {
 		return "$ #,##0.00";
 	}

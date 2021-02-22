@@ -174,7 +174,7 @@
 	    	</pe:remoteCommand>
 	    	
 	    	<div class="p-grid">
-				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='PERFIL'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('PERFIL');">
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='PERFIL'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_perfil')?'ui-state-disabled':''}" onclick="switchOpcion('PERFIL');">
 					
 					<h4>
 						<h:outputText value="01."/>
@@ -185,7 +185,7 @@
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('ESTABLECIMIENTO');">
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_establecimiento')?'ui-state-disabled':''}" onclick="switchOpcion('ESTABLECIMIENTO');">
 					
 					<h4>
 						<h:outputText value="02."/>
@@ -196,7 +196,7 @@
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='USUARIOS'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('USUARIOS');">
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='USUARIOS'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_configuracion')?'ui-state-disabled':''}" onclick="switchOpcion('USUARIOS');">
 					
 					<h4>
 						<h:outputText value="03."/>
@@ -207,7 +207,7 @@
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='CONFIGURACION'?'tabComprobanteSeleccion':''}" onclick="switchOpcion('CONFIGURACION');">
+				<div class="p-col-12 p-md-6 p-lg-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='CONFIGURACION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_usuario')?'ui-state-disabled':''}" onclick="switchOpcion('CONFIGURACION');">
 					
 					<h4>
 						<h:outputText value="04."/>

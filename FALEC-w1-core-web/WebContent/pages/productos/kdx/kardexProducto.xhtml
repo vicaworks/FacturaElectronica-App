@@ -183,7 +183,7 @@
 										title="REG. ENTRADA KARDEX"
 										icon="fa fa-sign-in"
 										value="ENTRADA KARDEX"
-										styleClass="Wid90 secondary-button"
+										styleClass="Wid90 secondary-button #{appSessionCtrl.accesoDisable('mn_inventario_kardex_entrada')?'ui-state-disabled':''}"
 										action="#{kardexCtrl.nuevo()}"
 										disabled="#{kardexCtrl.productoSelected==null}">
 										<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
@@ -205,7 +205,7 @@
 										title="SALIDA KARDEX"
 										icon="fa fa-sign-out"
 										value="REGISTRAR SALIDA"
-										styleClass="Wid90 secondary-button"
+										styleClass="Wid90 secondary-button #{appSessionCtrl.accesoDisable('mn_inventario_kardex_salida')?'ui-state-disabled':''}"
 										action="#{kardexCtrl.nuevo()}"
 										disabled="#{kardexCtrl.productoSelected==null}">
 										<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>

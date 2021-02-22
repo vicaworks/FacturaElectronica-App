@@ -255,7 +255,7 @@
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdInvNuevoProducto"
 							value="NUEVO PRODUCTO" icon="fa fa-plus" 
-							action="#{productoCtrl.nuevo()}" styleClass="secondary-button Wid100" update="@form" process="@this">
+							action="#{productoCtrl.nuevo()}" styleClass="secondary-button Wid100 #{appSessionCtrl.accesoDisable('mn_inventario_nuevo_producto')?'ui-state-disabled':''}" update="@form" process="@this">
 							<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
 							<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
 							<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
@@ -310,14 +310,14 @@
 						
 						<p:menu overlay="true" trigger="cmlDtInventario" my="left top" at="left bottom">
 							
-							<p:menuitem value="Editar Producto" action="#{productoCtrl.editarProducto(i.idproducto)}" icon="fa fa-edit" >
+							<p:menuitem value="Editar Producto" action="#{productoCtrl.editarProducto(i.idproducto)}" icon="fa fa-edit" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_editar')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 								<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
 								<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{productoCtrl.inventarioCtrl}"/>
 							</p:menuitem>
-							<p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" >
+							<p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_entrada')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
 				            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
@@ -327,7 +327,7 @@
 								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
 								<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
 							</p:menuitem>
-							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" >
+							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_salida')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
 				            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>

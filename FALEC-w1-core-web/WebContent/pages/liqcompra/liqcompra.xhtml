@@ -191,7 +191,7 @@
 	   				
 	   					<p:commandButton id="cmdLqCNuevo"
 							value="NUEVA #{msg['label.liqcompra.upper']}" icon="fa fa-plus" 
-							action="#{liqCompraCtrl.nuevaLiqCompra()}" styleClass="Wid100 secondary-button" update="@form" process="@this">
+							action="#{liqCompraCtrl.nuevaLiqCompra()}" styleClass="Wid100 secondary-button #{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_nuevo')?'ui-state-disabled':''}" update="@form" process="@this">
 	   					</p:commandButton>
 	   					
 	   					<div class="EmptyBox5"/>
@@ -236,11 +236,11 @@
 					
 					<p:menu overlay="true" trigger="cmlDtLCEmitidasSeleccion" my="left top" at="left bottom">
 								
-						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
+						<p:menuitem value="Enviar Email" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa fa-envelope-o" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_email')?'ui-state-disabled':''}">
 							
 						</p:menuitem>
 						
-						<p:menuitem value="Firmar y enviar" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						<p:menuitem value="Firmar y enviar" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_emailfirma')?'ui-state-disabled':''}">
 						</p:menuitem>
 						
 					</p:menu>
@@ -279,33 +279,34 @@
 						
 						<p:menu overlay="true" trigger="cmlDtLiqCompra" my="left top" at="left bottom">
 							
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_ver')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_ride')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="LIQC-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(r.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_email')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="LIQ_COMPRA" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:liqCompraDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_emailfirma')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="LIQ_COMPRA" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:liqCompraDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Editar" action="#{liqCompraCtrl.editarLiqCompra(r.idcabecera)}" icon="fa fa-edit" process="liqCompraDT" update="@form" disabled="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{liqCompraCtrl.editarLiqCompra(r.idcabecera)}" icon="fa fa-edit" process="liqCompraDT" update="@form" disabled="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_editar')?'ui-state-disabled':''}">
 							</p:menuitem>
-							<p:menuitem value="Anular" action="#{liqCompraCtrl.eliminar()}" icon="fa fa-trash-o" process="liqCompraDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(r.estado)}">
+							
+							<p:menuitem value="Anular" action="#{liqCompraCtrl.eliminar()}" icon="fa fa-trash-o" process="liqCompraDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_anular')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r}" target="#{liqCompraCtrl.liqCompraSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>

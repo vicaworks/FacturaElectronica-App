@@ -160,7 +160,7 @@
 	   				
 	   					<p:commandButton id="cmdRtnNuevo"
 							value="NUEVA #{msg['label.retencion']}" icon="fa fa-plus" 
-							action="#{retencionMainCtrl.nuevaRetencion()}" styleClass="Wid100 secondary-button" update="@form">
+							action="#{retencionMainCtrl.nuevaRetencion()}" styleClass="Wid100 secondary-button #{appSessionCtrl.accesoDisable('mn_compelec_retencion_nuevo')?'ui-state-disabled':''}" update="@form">
 							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
 							<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
@@ -212,9 +212,10 @@
 					
 					<p:menu overlay="true" trigger="cmlDtRetEmitidasSeleccion" my="left top" at="left bottom">
 								
-						<p:menuitem value="Enviar Email" action="#{retencionMainCtrl.enviarEmail}" icon="fa fa-envelope-o">
+						<p:menuitem value="Enviar Email" action="#{retencionMainCtrl.enviarEmail}" icon="fa fa-envelope-o" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_email')?'ui-state-disabled':''}">
 						</p:menuitem>
-						<p:menuitem value="Firmar y enviar" action="#{retencionMainCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						
+						<p:menuitem value="Firmar y enviar" action="#{retencionMainCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_firmaremail')?'ui-state-disabled':''}">
 						</p:menuitem>
 						
 					</p:menu>
@@ -253,17 +254,17 @@
 						
 						<p:menu overlay="true" trigger="cmlDtRetencion" my="left top" at="left bottom" style="width:200px;">
 							
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_ver')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_ride')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="RET-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(r.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_email')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callModule}"/>
@@ -271,7 +272,7 @@
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_firmaremail')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="RETENCION" target="#{enviarDocCtrl.callModule}"/>
@@ -279,7 +280,7 @@
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Editar" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{retencionMainCtrl.editarRetencion(r.idcabecera)}" icon="fa fa-edit" process="retencionDT" update="@form"  disabled="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_editar')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
 								<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionMainCtrl}"/>
@@ -289,13 +290,13 @@
 								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Anular" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form"  disabled="#{appSessionCtrl.isAnularFactura(r.estado)}">
+							<p:menuitem value="Anular" action="#{retencionMainCtrl.eliminar()}" icon="fa fa-trash-o" process="retencionDT" update="@form"  disabled="#{appSessionCtrl.isAnularFactura(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_anular')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r}" target="#{retencionMainCtrl.retencionSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
 							<p:submenu label="Comprobantes">
-								<p:menuitem value="Ver documento asociado" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null or appSessionCtrl.isComprobantes(r.estado)}">
+								<p:menuitem value="Ver documento asociado" action="#{adquisicionMainCtrl.editarCompra(r.adquisicion.idadquisicion)}" icon="fa fa-shopping-cart" process="retencionDT" update="@form" disabled="#{r.adquisicion==null or appSessionCtrl.isComprobantes(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion_docasociado')?'ui-state-disabled':''}">
 								</p:menuitem>
 							</p:submenu>
 							

@@ -139,7 +139,7 @@
 	    			
     				<p:commandButton id="cmdRtnNuevo"
 							value="NUEVO" icon="fa fa-plus" 
-							action="#{retencionFrmCtrl.nuevo()}" styleClass="secondary-button Fs10 m-button" update="@form" immediate="true">
+							action="#{retencionFrmCtrl.nuevo()}" styleClass="secondary-button Fs10 m-button #{appSessionCtrl.accesoDisable('mn_compelec_retencion_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
 							
 						<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>

@@ -141,7 +141,7 @@
 	    			
 	    				<p:commandButton id="cmdfacNuevo"
 								value="NUEVO" icon="fa fa-plus" 
-								action="#{guiaRemFormCtrl.nuevo()}" styleClass="secondary-button Fs11 m-button" update="@form" immediate="true">
+								action="#{guiaRemFormCtrl.nuevo()}" styleClass="secondary-button Fs11 m-button #{appSessionCtrl.accesoDisable('mn_compelec_guiarem_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
 						</p:commandButton>
 						
 	    				<p:commandButton id="cmduardar"

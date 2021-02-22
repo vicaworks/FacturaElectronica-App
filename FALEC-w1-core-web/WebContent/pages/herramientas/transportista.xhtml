@@ -101,7 +101,7 @@
 											/>
 									
 									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90" 
+										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90 #{appSessionCtrl.accesoDisable('mn_catalogo_transportista_admin')?'ui-state-disabled':''}" 
 										action="#{transportistaCtrl.nuevoAction()}" inline="true">
 										<f:setPropertyActionListener value="#{null}" target="#{transportistaCtrl.transportistaSelected}"/>		
 										<f:setPropertyActionListener value="TRANSPORTISTA" target="#{transportistaCtrl.callModule}"/>
@@ -154,12 +154,12 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtCliente" my="left top" at="left bottom">
-							<p:menuitem value="Editar" action="#{transportistaCtrl.nuevoEditar(c.idtransportista)}" icon="fa fa-edit" update="@form">
+							<p:menuitem value="Editar" action="#{transportistaCtrl.nuevoEditar(c.idtransportista)}" icon="fa fa-edit" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_transportista_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="TRANSPORTISTA" target="#{transportistaCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain" target="#{transportistaCtrl.viewUpdate}"/>
 								<f:setPropertyActionListener value="#{transportistaMainCtrl}" target="#{transportistaCtrl.transportistaMainCtrl}"/>
 							</p:menuitem>
-				            <p:menuitem value="Eliminar" action="#{transportistaMainCtrl.eliminar()}" icon="fa fa-close" process="transportistaDT" update="@form">
+				            <p:menuitem value="Eliminar" action="#{transportistaMainCtrl.eliminar()}" icon="fa fa-close" process="transportistaDT" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_transportista_admin')?'ui-state-disabled':''}">
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 				            	<f:setPropertyActionListener value="#{c}" target="#{transportistaMainCtrl.transportistaSelected}"/>
 				            </p:menuitem>

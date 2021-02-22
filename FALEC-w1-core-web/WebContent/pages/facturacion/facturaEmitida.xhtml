@@ -191,7 +191,7 @@
 						<div class="EmptyBox5"/>
 						<p:commandButton id="cmdRtnNuevo"
 							value="NUEVA FACTURA" icon="fa fa-plus" 
-							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button" update="@form">
+							action="#{compFacCtrl.nuevoFromMain()}" styleClass="Wid100 secondary-button #{appSessionCtrl.accesoDisable('mn_compelec_factura_nuevo')?'ui-state-disabled':''}" update="@form">
 							<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 							<f:setPropertyActionListener value="#{facEmitidaCtrl.establecimientoMain}" target="#{compFacCtrl.establecimientoMain}"/>
 	   					</p:commandButton>
@@ -238,10 +238,10 @@
 					
 					<p:menu overlay="true" trigger="cmlDtFacEmitidasSeleccion" my="left top" at="left bottom">
 								
-						<p:menuitem value="Enviar Email" action="#{facEmitidaCtrl.enviarEmail}" icon="fa fa-envelope-o">
+						<p:menuitem value="Enviar Email" action="#{facEmitidaCtrl.enviarEmail}" icon="fa fa-envelope-o" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_email')?'ui-state-disabled':''}">
 						</p:menuitem>
 						
-						<p:menuitem value="Firmar y enviar" action="#{facEmitidaCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						<p:menuitem value="Firmar y enviar" action="#{facEmitidaCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_firmemail')?'ui-state-disabled':''}">
 						</p:menuitem>
 						
 					</p:menu>
@@ -281,17 +281,17 @@
 						
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
 								
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{v.estado=='ANULADO' or v.estado=='BORRADOR'}">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{v.estado=='ANULADO' or v.estado=='BORRADOR'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_ver')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_ride')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="FAC-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(v.estado)}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_email')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callModule}"/>
@@ -299,48 +299,49 @@
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_firmemail')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="FACTURA" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:pvUnoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{facEmitidaCtrl.editarFactura(v.idcabecera)}" icon="fa fa-edit" process="pvUnoDT" update="@form" disabled="#{v.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_editar')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Anular" action="#{facEmitidaCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(v.estado)}">
+							<p:menuitem value="Anular" action="#{facEmitidaCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_anular')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 							
 							<p:submenu label="Comprobantes">
 								
-								<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(v.idcabecera)}" icon="fa fa-copy" update="@form">
+								<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(v.idcabecera)}" icon="fa fa-copy" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_copia')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{facEmitidaCtrl.establecimientoMain}" target="#{compFacCtrl.establecimientoMain}"/>
 									<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 								</p:menuitem>
 															
-								<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(v.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
+								<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(v.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_notcredito')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								</p:menuitem>	
 								
-								<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND(v.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
+								<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND(v.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{appSessionCtrl.isComprobantes(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_notdebito')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{v}" target="#{facEmitidaCtrl.ventasQuerySelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{appSessionCtrl.isComprobantes(v.estado)}">
+								<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck" disabled="#{appSessionCtrl.isComprobantes(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_guiarem')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{facEmitidaCtrl.establecimientoMain}" target="#{guiaRemFormCtrl.establecimientoMain}"/>
 									<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Ver #{msg['label.guiaremision']}" action="#{rideCtrl.showRide()}" icon="fa fa-print" disabled="#{appSessionCtrl.isComprobantes(v.estado) or v.idguiaremision==null}">
+								<p:menuitem value=" Ver #{msg['label.guiaremision']}" action="#{rideCtrl.showRide()}" icon="fa fa-print" disabled="#{appSessionCtrl.isComprobantes(v.estado) or v.idguiaremision==null}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_verguiarem')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{v.idguiaremision}" target="#{rideCtrl.idCabecera}"/>
 									<f:setPropertyActionListener value="GUIAREM-" target="#{rideCtrl.inicialComprobante}"/>
 									<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 								</p:menuitem>
+								
 							</p:submenu>
 							
 						</p:menu>

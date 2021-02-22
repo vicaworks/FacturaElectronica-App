@@ -153,7 +153,7 @@
 	    			
 	    			<p:commandButton id="cmdRtnNuevo"
 								value="NUEVO" icon="fa fa-plus" 
-								action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button m-button Fs10" update="@form" immediate="true">
+								action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button m-button Fs10 #{appSessionCtrl.accesoDisable('mn_compelec_notcredito_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
 								
 						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facturaSeleccion}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facEmitidaCtrl}"/>

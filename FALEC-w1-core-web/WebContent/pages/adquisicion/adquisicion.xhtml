@@ -184,7 +184,7 @@
 	   				
 	   					<p:commandButton id="cmdAdqNuevo"
 							value="NUEVO" icon="fa fa-plus" 
-							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100 secondary-button" update="@form">
+							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100 secondary-button #{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}" update="@form">
 							<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{adquisicionFrmCtrl.establecimientoMain}"/>
 	   					</p:commandButton>
 	   					
@@ -244,10 +244,10 @@
 						<p:menu overlay="true" trigger="cmlDtCompra" my="left top" at="left bottom">
 							<!-- <p:menuitem value="Ver" action="#" icon="fa fa-eye" >
 							</p:menuitem> -->
-							<p:menuitem value="Editar" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" disabled="#{a.estado=='ANULADO'}">
+							<p:menuitem value="Editar" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{adquisicionFrmCtrl.establecimientoMain}"/>
 							</p:menuitem>
-							<p:menuitem value="Agregar #{msg['label.retencion2']}" action="#{retencionMainCtrl.nuevaRetencion()}" icon="fa fa-sign-in" disabled="#{a.estado=='ANULADO'}">
+							<p:menuitem value="Agregar #{msg['label.retencion2']}" action="#{retencionMainCtrl.nuevaRetencion()}" icon="fa fa-sign-in" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{retencionFrmCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{a}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
@@ -257,7 +257,7 @@
 							</p:menuitem>
 							<!-- <p:menuitem value="#{msg['label.retencion2']}" action="#" icon="fa fa-print" disabled="#{a.estado=='ANULADO'}">
 							</p:menuitem> -->
-							<p:menuitem value="Anular" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}">
+							<p:menuitem value="Anular" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 						</p:menu>

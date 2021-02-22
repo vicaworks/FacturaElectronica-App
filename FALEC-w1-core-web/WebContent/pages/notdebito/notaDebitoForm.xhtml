@@ -173,7 +173,7 @@
 	    			
 	    				<p:commandButton id="cmdfacNuevo"
 								value="NUEVO" icon="fa fa-plus" 
-								action="#{notaDebitoFrmCtrl.nuevo()}" styleClass="secondary-button m-button Fs10" update="@form" immediate="true">
+								action="#{notaDebitoFrmCtrl.nuevo()}" styleClass="secondary-button m-button Fs10 #{appSessionCtrl.accesoDisable('mn_compelec_notdebito_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
 						</p:commandButton>
 						
 	    				<p:commandButton id="cmdNdDocumento"

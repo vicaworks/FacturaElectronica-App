@@ -221,7 +221,7 @@
 		    		
     				<p:commandButton id="cmdfacNuevo"
 							value="NUEVO" icon="fa fa-plus" 
-							action="#{liqCompraFormCtrl.nuevo()}" styleClass="secondary-button Fs10 m-button" update="@form" immediate="true">
+							action="#{liqCompraFormCtrl.nuevo()}" styleClass="secondary-button Fs10 m-button #{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true" >
 					</p:commandButton>
     				<p:commandButton id="cmdGenFactura"
 							value="GUARDAR" icon="fa fa-floppy-o" 

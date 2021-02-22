@@ -177,19 +177,19 @@
 						<p style="margin-top:0px;">Toda la información de tu negocio, en reportes consolidados.</p>
 						<div class="EmptyBox5"/>
 						<div class="p-grid Fs18" style="margin:0px 0px;">
-							<div class="p-col-12 boxLink" onclick="goToURL('facturacion/rep/repVentas.jsf');">
+							<div class="p-col-12 boxLink #{appSessionCtrl.accesoDisable('mn_panel_repventas')?'ui-state-disabled':''}" onclick="goToURL('facturacion/rep/repVentas.jsf');" >
 								<i class="fa fa-external-link" style="color:green;"></i>
 								Reporte de ventas.
 							</div>
-							<div class="p-col-12 boxLink MtopNone"  onclick="goToURL('reportes/rep_clienteproducto.jsf');">
+							<div class="p-col-12 boxLink MtopNone #{appSessionCtrl.accesoDisable('mn_panel_repprodcliente')?'ui-state-disabled':''}"  onclick="goToURL('reportes/rep_clienteproducto.jsf');">
 								<i class="fa fa-external-link"></i>
 								Productos vendidos a un cliente.
 							</div>
-							<div class="p-col-12 boxLink MtopNone"  onclick="goToURL('reportes/rep_ventaproducto.jsf');">
+							<div class="p-col-12 boxLink MtopNone #{appSessionCtrl.accesoDisable('mn_panel_repprodvendidos')?'ui-state-disabled':''}"  onclick="goToURL('reportes/rep_ventaproducto.jsf');">
 								<i class="fa fa-external-link" style="color:blue;"></i>
 								Productos mas vendidos.
 							</div>
-							<div class="p-col-12 boxLink MtopNone"  onclick="goToURL('productos/inventario.jsf');">
+							<div class="p-col-12 boxLink MtopNone #{appSessionCtrl.accesoDisable('mn_panel_repinventario')?'ui-state-disabled':''}"  onclick="goToURL('productos/inventario.jsf');">
 								<i class="fa fa-external-link"  style="color:orange;"></i>
 								Inventario.
 							</div>

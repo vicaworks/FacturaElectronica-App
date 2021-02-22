@@ -81,10 +81,12 @@ public class SegperfilServicio extends AppGenericService<Segperfil, String> {
 						"		segopcion op inner join segtipoopcion opt on op.idsegtipoopcion = opt.idsegtipoopcion " + 
 						"		inner join segsistema sis on sis.idsegsistema = op.idsegsistema  " +
 						"		inner join segperfilopcion po on po.idsegopcion = op.idsegopcion  " +
+						"		inner join segperfil pf on pf.idsegperfil = po.idsegperfil  " +
 						"	where  " +
 						"		po.idsegperfil in (select distinct pf.idsegperfil from segperfil pf inner join segperfilusuario pu on pu.idsegperfil=pf.idsegperfil where pu.idusuario='" + idUsuario + "' and pf.estado='A' and pu.estado='A') " +
 						"		and op.estado = 'A' " +
 						"		and po.estado = 'A' " +
+						"		and pf.estado = 'A' " +
 						"	order by  " +
 						"		op.idsegopcion ";
 			

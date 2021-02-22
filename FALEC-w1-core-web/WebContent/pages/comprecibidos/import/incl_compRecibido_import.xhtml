@@ -52,13 +52,13 @@
 				<p:commandButton id="cmdCRSeleccionarFile" widgetVar="w_cmdCRSeleccionarFile"
 							icon="fa fa-search"
 							process="@this"
-							action="#{compRecibidosCtrl.showUploadFile()}" styleClass="secondary-button Fs11 m-button" update="@form" style="margin-right:5px;" value="SELECCIONAR ARCHIVO"/>
+							action="#{compRecibidosCtrl.showUploadFile()}" styleClass="secondary-button Fs11 m-button #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" update="@form" style="margin-right:5px;" value="SELECCIONAR ARCHIVO"/>
 				    			
     			<p:commandButton id="cmdCRGuardar" widgetVar="w_cmdCRGuardar"
 							icon="fa fa-floppy-o"
 							process="@this"
 							onclick="PF('w_cmdCRlimpiar').disable();PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
-							action="#{compRecibidosCtrl.cargarComprobantes()}" styleClass="Fs11 m-button" update="@form" style="margin-right:5px;" value="GUARDAR" disabled="#{compRecibidosCtrl.fileComprobantes==null}"/>
+							action="#{compRecibidosCtrl.cargarComprobantes()}" styleClass="Fs11 m-button #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" update="@form" style="margin-right:5px;" value="GUARDAR" disabled="#{compRecibidosCtrl.fileComprobantes==null}"/>
     		</div>
     		
     		<div class="p-col-12 p-md-6">

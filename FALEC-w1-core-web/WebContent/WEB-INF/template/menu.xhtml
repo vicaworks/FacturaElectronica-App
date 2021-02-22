@@ -47,49 +47,50 @@
 							icon="fa fa-2x fa-dashboard"
 							url="#{request.contextPath}/pages/main.jsf" />
 
-						<p:menuitem id="om_cconfiguracion" value="Configuración" icon="fa fa-2x fa-cog" url="#{request.contextPath}/pages/configuracion/configuracion.jsf" />
+						<p:menuitem id="om_cconfiguracion" value="Configuración" icon="fa fa-2x fa-cog" url="#{request.contextPath}/pages/configuracion/configuracion.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_conf')}" styleClass="#{appSessionCtrl.accesoDisable('mn_conf')?'ui-state-disabled':''}"/>
                         
-                        <p:menuitem id="om_caja" value="Punto Venta" icon="fa fa-2x fa-tty" url="#{request.contextPath}/pages/puntoventa/puntoVenta.jsf" />
+                        <p:menuitem id="om_caja" value="Punto Venta" icon="fa fa-2x fa-tty" url="#{request.contextPath}/pages/puntoventa/puntoVenta.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_puntoventa')}" styleClass="#{appSessionCtrl.accesoDisable('mn_puntoventa')?'ui-state-disabled':''}"/>
                         
-                        <p:menuitem id="om_proforma" value="Cotizaciones" icon="fa fa-2x fa-paste" url="#{request.contextPath}/pages/proforma/proforma.jsf" />
+                        <p:menuitem id="om_proforma" value="Cotizaciones" icon="fa fa-2x fa-paste" url="#{request.contextPath}/pages/proforma/proforma.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_cotizacion')}" styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion')?'ui-state-disabled':''}"/>
                         
-                        <p:submenu id="om_comprobantes" label="Comprobantes" icon="fa fa-2x fa-th">
-                            <p:menuitem id="om_facturaemitidas" value="Facturas" icon="fa fa-2x fa-check-circle" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
-                            <p:menuitem id="om_nuevaretencion" value="Retenciones" icon="fa fa-2x fa-sign-in" url="#{request.contextPath}/pages/adquisicion/retenciones.jsf" />
-                            <p:menuitem id="om_notacredito" value="Nota de #{msg['label.credito2']}" icon="fa fa-2x fa-plus-circle" url="#{request.contextPath}/pages/facturacion/nc/notaCredito.jsf"/>
-	                        <p:menuitem id="om_notadebito" value="#{msg['menu.notadebito']}" icon="fa fa-2x fa-minus-circle" url="#{request.contextPath}/pages/notdebito/notaDebito.jsf" />
-	                        <p:menuitem id="om_guiaremisionad" value="#{msg['menu.guiaremision']}" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf" />
-	                        <p:menuitem id="om_liquidacioncompra" value="#{msg['menu.liquidacioncompra']}" icon="fa fa-2x fa-slideshare" url="#{request.contextPath}/pages/liqcompra/liqcompra.jsf" />
-                            <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-2x fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf" />
-                            <p:menuitem id="om_comprecibidos" value="Comprobantes Recibidos" icon="fa fa-2x fa-files-o" url="#{request.contextPath}/pages/comprecibidos/compRecibidos.jsf"/>
+                        <p:submenu id="om_comprobantes" label="Comprobantes" icon="fa fa-2x fa-th" disabled="#{appSessionCtrl.accesoDisable('mn_compelec')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec')?'ui-state-disabled':''}">
+                            <p:menuitem id="om_facturaemitidas" value="Facturas" icon="fa fa-2x fa-check-circle" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compelec_factura')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_nuevaretencion" value="Retenciones" icon="fa fa-2x fa-sign-in" url="#{request.contextPath}/pages/adquisicion/retenciones.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compelec_retencion')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_retencion')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_notacredito" value="Nota de #{msg['label.credito2']}" icon="fa fa-2x fa-plus-circle" url="#{request.contextPath}/pages/facturacion/nc/notaCredito.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito')?'ui-state-disabled':''}"/>
+	                        <p:menuitem id="om_notadebito" value="#{msg['menu.notadebito']}" icon="fa fa-2x fa-minus-circle" url="#{request.contextPath}/pages/notdebito/notaDebito.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compelec_notdebito')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notdebito')?'ui-state-disabled':''}"/>
+	                        <p:menuitem id="om_guiaremisionad" value="#{msg['menu.guiaremision']}" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem')?'ui-state-disabled':''}"/>
+	                        <p:menuitem id="om_liquidacioncompra" value="#{msg['menu.liquidacioncompra']}" icon="fa fa-2x fa-slideshare" url="#{request.contextPath}/pages/liqcompra/liqcompra.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_recibosemitidos" value="Recibos Emitidos" icon="fa fa-2x fa-check-circle-o" url="#{request.contextPath}/pages/facturacion/reciboEmitido.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compelec_recibo')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_recibo')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_comprecibidos" value="Comprobantes Recibidos" icon="fa fa-2x fa-files-o" url="#{request.contextPath}/pages/comprecibidos/compRecibidos.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_comprecib')}" styleClass="#{appSessionCtrl.accesoDisable('mn_comprecib')?'ui-state-disabled':''}"/>
                         </p:submenu>
                         
-                        <p:submenu id="om_pagosMain" label="Pagos" icon="fa fa-2x fa-money">
-                        	<p:menuitem id="om_pagos" value="Pagos" icon="fa fa-2x fa-money" url="#{request.contextPath}/pages/pagos/pagoEmitido.jsf" />
-                        	<p:menuitem id="om_pagoscobrar" value="Por Cobrar" icon="fa fa-2x fa-paypal" url="#{request.contextPath}/pages/pagos/cuentaCobrar.jsf" />
-                        	<p:menuitem id="om_pagospagar" value="Por Pagar" icon="fa fa-2x fa-dollar" url="#{request.contextPath}/pages/pagos/cuentaPagar.jsf" />
+                        <p:submenu id="om_pagosMain" label="Pagos" icon="fa fa-2x fa-money" disabled="#{appSessionCtrl.accesoDisable('mn_pagos')}" styleClass="#{appSessionCtrl.accesoDisable('mn_pagos')?'ui-state-disabled':''}">
+                        	<p:menuitem id="om_pagos" value="Pagos" icon="fa fa-2x fa-money" url="#{request.contextPath}/pages/pagos/pagoEmitido.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_pagos_pagos')}" styleClass="#{appSessionCtrl.accesoDisable('mn_pagos_pagos')?'ui-state-disabled':''}"/>
+                        	<p:menuitem id="om_pagoscobrar" value="Por Cobrar" icon="fa fa-2x fa-paypal" url="#{request.contextPath}/pages/pagos/cuentaCobrar.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_pagos_porcobrar')}" styleClass="#{appSessionCtrl.accesoDisable('mn_pagos_porcobrar')?'ui-state-disabled':''}"/>
+                        	<p:menuitem id="om_pagospagar" value="Por Pagar" icon="fa fa-2x fa-dollar" url="#{request.contextPath}/pages/pagos/cuentaPagar.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_pagos_porpagar')}" styleClass="#{appSessionCtrl.accesoDisable('mn_pagos_porpagar')?'ui-state-disabled':''}"/>
                         </p:submenu>
-	                    <p:menuitem id="om_nuevaadquisicion" value="Compras" icon="fa fa-2x fa-cart-arrow-down" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf" />
+                        
+	                    <p:menuitem id="om_nuevaadquisicion" value="Compras" icon="fa fa-2x fa-cart-arrow-down" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_compras')}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras')?'ui-state-disabled':''}"/>
 	                    
-                        <p:submenu id="om_inventario" label="Inventario" icon="fa fa-2x fa-stack-overflow">
-                            <p:menuitem id="om_kardex" value="Kardex" icon="fa fa-2x fa-tags" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf" />
-                            <p:menuitem id="om_inventario2" value="Inventario" icon="fa fa-2x fa-th-list" url="#{request.contextPath}/pages/productos/inventario.jsf" />
+                        <p:submenu id="om_inventario" label="Inventario" icon="fa fa-2x fa-stack-overflow" disabled="#{appSessionCtrl.accesoDisable('mn_inventario')}" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario')?'ui-state-disabled':''}">
+                            <p:menuitem id="om_kardex" value="Kardex" icon="fa fa-2x fa-tags" url="#{request.contextPath}/pages/productos/kdx/kardexProducto.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_inventario_kardex')}" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_kardex')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_inventario2" value="Inventario" icon="fa fa-2x fa-th-list" url="#{request.contextPath}/pages/productos/inventario.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_inventario_inventario')}" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_inventario')?'ui-state-disabled':''}"/>
                         </p:submenu>
                         
-                        <p:menuitem id="om_cajachica" value="Caja chica" icon="fa fa-2x fa-usd" url="#{request.contextPath}/pages/cajachica/cajachica.jsf" />
+                        <p:menuitem id="om_cajachica" value="Caja chica" icon="fa fa-2x fa-usd" url="#{request.contextPath}/pages/cajachica/cajachica.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_cajachica')}" styleClass="#{appSessionCtrl.accesoDisable('mn_cajachica')?'ui-state-disabled':''}"/>
                         
-                        <p:submenu id="om_reportes" label="Reportes" icon="fa fa-2x fa-sellsy">
-                            <p:menuitem id="om_reportefacturacion" value="Ventas" icon="fa fa-line-chart" url="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf" />
-                            <p:menuitem id="om_reporteventasproducto" value="Productos más Vendidos" icon="fa fa-line-chart" url="#{request.contextPath}/pages/reportes/rep_ventaproducto.jsf" />
-                            <p:menuitem id="om_reporteventascliente" value="Cliente - Producto" icon="fa fa-line-chart" url="#{request.contextPath}/pages/reportes/rep_clienteproducto.jsf" />
+                        <p:submenu id="om_reportes" label="Reportes" icon="fa fa-2x fa-sellsy" disabled="#{appSessionCtrl.accesoDisable('mn_reportes')}" styleClass="#{appSessionCtrl.accesoDisable('mn_reportes')?'ui-state-disabled':''}">
+                            <p:menuitem id="om_reportefacturacion" value="Ventas" icon="fa fa-line-chart" url="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_reportes_ventas')}" styleClass="#{appSessionCtrl.accesoDisable('mn_reportes_ventas')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_reporteventasproducto" value="Productos más Vendidos" icon="fa fa-line-chart" url="#{request.contextPath}/pages/reportes/rep_ventaproducto.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_reportes_masvendidos')}" styleClass="#{appSessionCtrl.accesoDisable('mn_reportes_masvendidos')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_reporteventascliente" value="Cliente - Producto" icon="fa fa-line-chart" url="#{request.contextPath}/pages/reportes/rep_clienteproducto.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_reportes_clienteproducto')}" styleClass="#{appSessionCtrl.accesoDisable('mn_reportes_clienteproducto')?'ui-state-disabled':''}"/>
                         </p:submenu>
                         
-                        <p:submenu id="om_catalogo" label="#{msg['menu.catalogo']}" icon="fa fa-2x fa-qrcode">
-                            <p:menuitem id="om_fabricante" value="Fabricante" icon="fa fa-2x fa-building-o" url="#{request.contextPath}/pages/productos/fabricante.jsf" />
-                            <p:menuitem id="om_categoria" value="#{msg['menu.categoria']}" icon="fa fa-2x fa-sitemap" url="#{request.contextPath}/pages/productos/categoria.jsf" />
-                            <p:menuitem id="om_producto" value="Producto" icon="fa fa-2x fa-puzzle-piece" url="#{request.contextPath}/pages/productos/producto.jsf" />
-	                       	<p:menuitem id="om_tollsclientes" value="Clientes" icon="fa fa-2x fa-user" url="#{request.contextPath}/pages/herramientas/cliente.jsf" />
-	                        <p:menuitem id="om_transportista" value="Transportista" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/herramientas/transportista.jsf" />
+                        <p:submenu id="om_catalogo" label="#{msg['menu.catalogo']}" icon="fa fa-2x fa-qrcode" disabled="#{appSessionCtrl.accesoDisable('mn_catalogo')}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo')?'ui-state-disabled':''}">
+                            <p:menuitem id="om_fabricante" value="Fabricante" icon="fa fa-2x fa-building-o" url="#{request.contextPath}/pages/productos/fabricante.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_catalogo_fabricante')}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_fabricante')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_categoria" value="#{msg['menu.categoria']}" icon="fa fa-2x fa-sitemap" url="#{request.contextPath}/pages/productos/categoria.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria')}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria')?'ui-state-disabled':''}"/>
+                            <p:menuitem id="om_producto" value="Producto" icon="fa fa-2x fa-puzzle-piece" url="#{request.contextPath}/pages/productos/producto.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_catalogo_producto')}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto')?'ui-state-disabled':''}"/>
+	                       	<p:menuitem id="om_tollsclientes" value="Clientes" icon="fa fa-2x fa-user" url="#{request.contextPath}/pages/herramientas/cliente.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente')}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente')?'ui-state-disabled':''}"/>
+	                        <p:menuitem id="om_transportista" value="Transportista" icon="fa fa-2x fa-truck" url="#{request.contextPath}/pages/herramientas/transportista.jsf" disabled="#{appSessionCtrl.accesoDisable('mn_catalogo_transportista')}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_transportista')?'ui-state-disabled':''}"/>
                         </p:submenu>
                         
                     </po:menu>

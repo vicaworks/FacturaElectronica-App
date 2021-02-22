@@ -162,7 +162,7 @@
 	   				
 	   					<p:commandButton id="cmdNCNuevo"
 							value="NUEVA N.C." icon="fa fa-plus" 
-							action="#{compNcCtrl.nuevaNotaCredito()}" styleClass="Wid100 secondary-button" update="@form">
+							action="#{compNcCtrl.nuevaNotaCredito()}" styleClass="Wid100 secondary-button #{appSessionCtrl.accesoDisable('mn_compelec_notcredito_nuevo')?'ui-state-disabled':''}" update="@form">
 	   					</p:commandButton>
 	   					
 	   					<div class="EmptyBox5"/>
@@ -207,11 +207,10 @@
 					
 					<p:menu overlay="true" trigger="cmlDtNCEmitidasSeleccion" my="left top" at="left bottom">
 								
-						<p:menuitem value="Enviar Email" action="#" icon="fa fa-envelope-o">
-							
+						<p:menuitem value="Enviar Email" action="#{compNcCtrl.firmarEnviar()}" icon="fa fa-envelope-o" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_email')?'ui-state-disabled':''}">
 						</p:menuitem>
 						
-						<p:menuitem value="Firmar y enviar" action="#{compNcCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form">
+						<p:menuitem value="Firmar y enviar" action="#{compNcCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_emailfirmar')?'ui-state-disabled':''}">
 						</p:menuitem>
 						
 					</p:menu>
@@ -249,24 +248,24 @@
 						
 						<p:menu overlay="true" trigger="cmlDtNotaCredito" my="left top" at="left bottom" style="width:200px;">
 							
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{n.estado=='ANULADO'}">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{n.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_ver')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(n.estado)}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(n.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_ride')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="NOTCR-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(n.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(n.estado)}">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(n.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_email')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{n.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:notaCreditoDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(n.estado)}">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(n.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_emailfirmar')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{n.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{n.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{enviarDocCtrl.callModule}"/>
@@ -274,17 +273,17 @@
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Editar " action="#{compNcCtrl.editarLiqCompra(n.idcabecera)}" icon="fa fa-edit" process="notaCreditoDT" update="@form" disabled="#{n.estado=='ANULADO'}">
+							<p:menuitem value="Editar " action="#{compNcCtrl.editarLiqCompra(n.idcabecera)}" icon="fa fa-edit" process="notaCreditoDT" update="@form" disabled="#{n.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_editar')?'ui-state-disabled':''}">
 							</p:menuitem>
 							
 							
-							<p:menuitem value="Anular " action="#{compNcCtrl.eliminar()}" icon="fa fa-trash-o" process="notaCreditoDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(n.estado)}">
+							<p:menuitem value="Anular " action="#{compNcCtrl.eliminar()}" icon="fa fa-trash-o" process="notaCreditoDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(n.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_anular')?'ui-state-disabled':''}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{n}" target="#{compNcCtrl.notaCreditoSelected}"/>
 							</p:menuitem>
 							
 							<p:submenu label="Comprobantes">
-								<p:menuitem value="Ver documento asociado" action="#{rideCtrl.showRide()}" icon="fa fa-eye" process="notaCreditoDT" update="@form" disabled="#{appSessionCtrl.isComprobantes(n.estado) or n.idcabecerapadre==null}">
+								<p:menuitem value="Ver documento asociado" action="#{rideCtrl.showRide()}" icon="fa fa-eye" process="notaCreditoDT" update="@form" disabled="#{appSessionCtrl.isComprobantes(n.estado) or n.idcabecerapadre==null}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_notcredito_docasociado')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{n.idcabecerapadre}" target="#{rideCtrl.idCabecera}"/>
 								</p:menuitem>
 							</p:submenu>
