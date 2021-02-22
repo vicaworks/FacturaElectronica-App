@@ -156,13 +156,17 @@
 						<p style="margin-top:0px;">Configura el sistema para emitir comprobantes electrónicos.</p>
 						<div class="EmptyBox5"/>
 						<div class="p-grid Fs18" style="margin:0px 0px;">
-							<div class="p-col-12 boxLink" onclick="alert('Link AAAAAA');">
+							<div class="p-col-12 boxLink #{appSessionCtrl.accesoDisable('mn_conf')?'ui-state-disabled':''}" onclick="goToURL('configuracion/configuracion.jsf');">
 								<i class="fa fa-check "></i>
 								Configurar certificado de firma electrónica.
 							</div>
-							<div class="p-col-12 boxLink MtopNone"  onclick="alert('Link BBBBBBB');">
-								<i class="fa fa-check"></i>
-								Seleccionar la forma de pago.
+							<div class="p-col-12 boxLink #{appSessionCtrl.accesoDisable('mn_conf')?'ui-state-disabled':''}" onclick="goToURL('configuracion/configuracion.jsf');">
+								<i class="fa fa-check "></i>
+								Establecimiento
+							</div>
+							<div class="p-col-12 boxLink #{appSessionCtrl.accesoDisable('mn_conf')?'ui-state-disabled':''}" onclick="goToURL('configuracion/configuracion.jsf');">
+								<i class="fa fa-check "></i>
+								Usuarios - Perfiles
 							</div>
 						</div>
 						<div class="EmptyBox20"/>
