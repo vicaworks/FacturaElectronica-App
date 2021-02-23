@@ -40,33 +40,7 @@
 		    border-bottom: 1px solid rgba(0,0,0,0.2);
 		}
 		
-		@media screen and (max-width: 1024px) {
-			.box_grid_header{
-			    grid-template-rows: 30px 90px;
-			}
-			.box_grid_header .header > h3{
-			    font-size: 13px !important;
-			}
-			
-			.box_grid_header .descripcion{
-			    font-size: 10px;
-			}	
-		}
 		
-		@media screen and (max-width: 375px) {
-			.box_grid_header{
-			    grid-template-rows: 60px 120px; 
-			}
-			.box_grid_header .header > h3{
-			    font-size: 13px !important;
-			}
-			
-			.box_grid_header .descripcion{
-			
-			    display: none;
-			    
-			}	
-		}
 		
 		.box_grid_header .sidebar{
 		    grid-area: sidebar;
@@ -111,6 +85,38 @@
 			color: rgba(211, 84, 0, 1);
 		}
 		
+		@media screen and (max-width: 1024px) {
+			.box_grid_header{
+			    grid-template-rows: 30px 90px;
+			}
+			.box_grid_header .header > h3{
+			    font-size: 13px !important;
+			}
+			
+			.box_grid_header .descripcion{
+			    font-size: 10px;
+			}	
+		}
+		
+		@media screen and (max-width: 375px) {
+			.box_grid_header{
+			    grid-template-rows: 60px 120px; 
+			}
+			.box_grid_header .header > h3{
+			    font-size: 13px !important;
+			}
+			
+			.box_grid_header .descripcion{
+			
+			    display: none;
+			    
+			}	
+		}
+		
+		.defecto .ui-datascroller .ui-datascroller-header{
+			background-color: #34495E !important;
+			color: #fff;
+		}
 		
 	</style>
 	
@@ -155,7 +161,7 @@
 				
 				<div class="p-grid p-align-top p-justify-center" style="width: 99.5%!important;">
 					
-					<div class="p-col-12 p-lg-6">
+					<div class="p-col-12 p-lg-6 defecto">
 						
 						<div class="titulo">
 							1. PERFILES PREDEFINIDOS.
@@ -168,7 +174,7 @@
 						<div class="EmptyBox10"/>
 						
 						<p:dataScroller id="segPerfilPredefinidoScroll" value="#{perfilUsuarioCtrl.segperfilpredefinidoList}" var="pfd" chunkSize="10" mode="inline"
-                        	scrollHeight="485">
+                        	scrollHeight="485" >
                         	<f:facet name="header">
 				                PERFILES PREDEFINIDOS
 				            </f:facet>
