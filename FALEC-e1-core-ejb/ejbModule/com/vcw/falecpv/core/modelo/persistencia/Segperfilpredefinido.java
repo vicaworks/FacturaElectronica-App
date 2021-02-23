@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -45,6 +46,10 @@ public class Segperfilpredefinido implements Serializable {
     @Column(name = "descripcion", length = 500)
     private String descripcion;
     
+    @Size(max = 100)
+    @Column(name = "icono", length = 100)
+    private String icono;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
@@ -55,6 +60,9 @@ public class Segperfilpredefinido implements Serializable {
     @NotNull
     @Column(name = "orden", nullable = false)
     private int orden;
+    
+    @Transient
+    private boolean seleccion;
 
 	/**
 	 * 
@@ -155,6 +163,34 @@ public class Segperfilpredefinido implements Serializable {
 	 */
 	public void setOrden(int orden) {
 		this.orden = orden;
+	}
+
+	/**
+	 * @return the icono
+	 */
+	public String getIcono() {
+		return icono;
+	}
+
+	/**
+	 * @param icono the icono to set
+	 */
+	public void setIcono(String icono) {
+		this.icono = icono;
+	}
+
+	/**
+	 * @return the seleccion
+	 */
+	public boolean isSeleccion() {
+		return seleccion;
+	}
+
+	/**
+	 * @param seleccion the seleccion to set
+	 */
+	public void setSeleccion(boolean seleccion) {
+		this.seleccion = seleccion;
 	}
 
 }

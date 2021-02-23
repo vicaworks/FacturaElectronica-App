@@ -77,13 +77,20 @@
 				</p:commandLink>
 				
 				<p:menu overlay="true" trigger="cmlDtUsuario" my="left top" at="left bottom">
+				
+					<p:menuitem value="Perfil Acceso" action="#{perfilUsuarioCtrl.cargarFormulario}" icon="fa fa-key">
+						<f:setPropertyActionListener value="frmMainUsuario" target="#{perfilUsuarioCtrl.callForm}"/>
+					</p:menuitem>
+					
 					<p:menuitem value="Editar" action="#{usuarioCtrl.editar()}" icon="fa fa-edit">
 						<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
 					</p:menuitem>
+					
 					<p:menuitem value="Eliminar" action="#{usuarioCtrl.eliminar()}" update="@form" icon="fa fa-trash-o" >
 						<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
 						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 					</p:menuitem>
+					
 				</p:menu>
 				
 			</p:column>

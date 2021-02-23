@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -59,8 +60,10 @@ public class Segperfil implements Serializable {
     private String estado;
     
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "segperfil")
-//    @JoinColumn(name = "idsegperfil", referencedColumnName = "idsegperfil", nullable = true,insertable = false)
     private List<Segperfilopcion> segperfilopcionList;
+    
+    @Transient
+    private boolean seleccion;
 
 	/**
 	 * 
@@ -175,6 +178,20 @@ public class Segperfil implements Serializable {
 	 */
 	public void setSegperfilopcionList(List<Segperfilopcion> segperfilopcionList) {
 		this.segperfilopcionList = segperfilopcionList;
+	}
+
+	/**
+	 * @return the seleccion
+	 */
+	public boolean isSeleccion() {
+		return seleccion;
+	}
+
+	/**
+	 * @param seleccion the seleccion to set
+	 */
+	public void setSeleccion(boolean seleccion) {
+		this.seleccion = seleccion;
 	}
 	
 }

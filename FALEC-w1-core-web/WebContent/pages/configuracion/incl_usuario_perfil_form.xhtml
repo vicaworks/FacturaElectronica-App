@@ -1,0 +1,268 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmPerfilUsuario {
+				/* height: 560px; */
+		}
+		
+		.titulo{
+			margin:0px;
+			width: 100%;
+			padding: 0px;
+			font-size: 18px;
+			font-weight: 600px;
+		}
+		
+		.descripcion{
+			margin:0px;
+			width: 100%;
+			padding: 0px;
+			font-size: 14px;
+			color: rgba(0,0,0,0.7);
+			padding-left: 23px !important;
+			height: 35px;
+		}
+		
+		.box_grid_header{
+		    display: grid;
+		    gap: 5px 5px;
+		    grid-template-columns: 80px 1fr 1fr;
+		    grid-template-rows: 30px 55px;
+		    grid-template-areas: "sidebar   header      header"
+		                         "sidebar   descripcion descripcion";
+		    border-bottom: 1px solid rgba(0,0,0,0.2);
+		}
+		
+		@media screen and (max-width: 1024px) {
+			.box_grid_header{
+			    grid-template-rows: 30px 90px;
+			}
+			.box_grid_header .header > h3{
+			    font-size: 13px !important;
+			}
+			
+			.box_grid_header .descripcion{
+			    font-size: 10px;
+			}	
+		}
+		
+		@media screen and (max-width: 375px) {
+			.box_grid_header{
+			    grid-template-rows: 60px 120px; 
+			}
+			.box_grid_header .header > h3{
+			    font-size: 13px !important;
+			}
+			
+			.box_grid_header .descripcion{
+			
+			    display: none;
+			    
+			}	
+		}
+		
+		.box_grid_header .sidebar{
+		    grid-area: sidebar;
+		    align-self: center;
+		    justify-self: center;
+		    font-size: 40px;
+		    color: rgba(22, 82, 118, 0.5);
+		}
+		
+		
+		.box_grid_header .header{
+		    grid-area: header;
+		    align-self: center;
+		    padding-top: 15px;
+		}
+		
+		.box_grid_header .header > h3{
+		    font-size: 15px !important;
+		}
+		
+		.box_grid_header .descripcion{
+		    grid-area: descripcion;
+		    padding: 0px;
+		    margin: 0px;
+		    align-self: start;
+		    padding-bottom: 10px !important;
+		    font-size: 14px;
+		}
+		
+		.box_grid_header .descripcion p{
+		    margin: 10px 5px;
+		    font-size: 14px;
+		    color: rgba(0, 0, 0, 0.8);
+		}
+		
+		.seleccion .ui-chkbox .ui-chkbox-box{
+			width: 30px !important;
+			height: 30px !important;
+		}
+		
+		.box_grid_header .item-selected{
+			color: rgba(211, 84, 0, 1);
+		}
+		
+		
+	</style>
+	
+	<p:dialog header="Perfil Usuario" widgetVar="dlgPerfilUsuario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmPerfilUsuario">
+			
+			<!-- OPCIONES -->
+			
+			
+			<div class="p-grid toolBarPopUp" >
+				
+				<div class="p-col-12" style="text-align:left;">					
+					
+					<p:commandButton 
+						value="REFRESCAR" icon="fa fa-repeat" 
+						action="#{perfilUsuarioCtrl.refrescar}" styleClass="MRight10 secondary-button" update="@form" process="@this"
+						/>
+					
+					<p:commandButton 
+						value="GUARDAR" icon="fa fa-floppy-o" 
+						action="#" styleClass="MRight10" update="@form"
+						/>
+						
+					<p:commandButton 
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgPerfilUsuario').hide()" immediate="true"  
+						/>
+					
+				</div>
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmPerfilUsuario"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmPerfilUsuario contenedorFormulario">
+				
+				<div class="p-grid p-align-top p-justify-center" style="width: 99.5%!important;">
+					
+					<div class="p-col-12 p-lg-6">
+						
+						<div class="titulo">
+							1. PERFILES PREDEFINIDOS.
+						</div>
+						
+						<div class="descripcion">
+							Puede seleccionar perfiles con opciones de acceso predefinidos.
+						</div>
+						
+						<div class="EmptyBox10"/>
+						
+						<p:dataScroller id="segPerfilPredefinidoScroll" value="#{perfilUsuarioCtrl.segperfilpredefinidoList}" var="pfd" chunkSize="10" mode="inline"
+                        	scrollHeight="485">
+                        	<f:facet name="header">
+				                PERFILES PREDEFINIDOS
+				            </f:facet>
+				            
+				            <div class="p-grid p-align-center">
+				            	<div class="p-col-1 seleccion">
+				            		<p:selectBooleanCheckbox style="width:20rem;" value="#{pfd.seleccion}">
+				            			<p:ajax update=":frmPerfilUsuario:segPerfilPredefinidoScroll"/>
+				            		</p:selectBooleanCheckbox>
+				            	</div>
+				            	<div class="p-col-11">
+				            		
+				            		<div class="box_grid_header">
+
+							            <div class="sidebar #{pfd.seleccion?'item-selected':''}">
+							                <i class="fa fa-angle-double-right"></i>
+							            </div>
+							            <div class="header">
+							                <h3>#{pfd.nombre}</h3>
+							            </div>
+							            <div class="descripcion">
+							                <p>
+							                	#{pfd.descripcion}
+							                </p>
+							            </div>
+							
+							        </div>
+				            		
+				            	</div>
+				            </div>
+				            
+                       </p:dataScroller>
+						
+						
+					</div>
+					
+					<div class="p-col-12 p-lg-6">
+						
+						<div class="titulo">
+							2. OPCIONES DE ACCESO SELECCIONADAS.
+						</div>
+						
+						<div class="descripcion">
+							Puede personalizar el acceso a las opciones del sistema, seleccionando las opciones de acceso.
+						</div>
+						
+						<div class="EmptyBox10"/>
+						
+						<p:dataScroller id="segPerfilScroll" value="#{perfilUsuarioCtrl.segperfilList}" var="p" chunkSize="10" mode="inline"
+                        	scrollHeight="485">
+                        	<f:facet name="header">
+				                OPCIONES DE ACCESO
+				            </f:facet>
+				            
+				            <div class="p-grid p-align-center">
+				            	<div class="p-col-1 seleccion">
+				            		<p:selectBooleanCheckbox style="width:20rem;" value="#{p.seleccion}">
+				            			<p:ajax update="optOpcionesSeleccion"/>
+				            		</p:selectBooleanCheckbox>
+				            	</div>
+				            	<div class="p-col-11">
+				            		<p:outputPanel id="optOpcionesSeleccion">
+					            		<div class="box_grid_header">
+	
+								            <div class="sidebar #{p.seleccion?'item-selected':''}">
+								                <i class="fa fa-angle-double-right"></i>
+								            </div>
+								            <div class="header">
+								                <h3>#{p.nombre}</h3>
+								            </div>
+								            <div class="descripcion">
+								                <p>
+								                	#{p.descripcion}
+								                </p>
+								            </div>
+								
+								        </div>
+									</p:outputPanel>
+													            		
+				            	</div>
+				            </div>
+				            
+                       </p:dataScroller>
+						
+					</div>
+					
+					
+				</div>
+				
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>
