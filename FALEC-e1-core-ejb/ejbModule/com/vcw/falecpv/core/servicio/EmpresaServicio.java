@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
-import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmailEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.dao.impl.EmpresaDao;
 import com.vcw.falecpv.core.modelo.dto.SmtpDto;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
@@ -105,6 +105,7 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 			parametroList.add(new ParametroGenericoEmpresa("17", idEmpresa, null, "SMTP_AUTH", "true", ""));
 			parametroList.add(new ParametroGenericoEmpresa("18", idEmpresa, null, "SMTP_SSL", "false", ""));
 			parametroList.add(new ParametroGenericoEmpresa("19", idEmpresa, null, "SMTP_START_TLS", "true", ""));
+			parametroList.add(new ParametroGenericoEmpresa("23", idEmpresa, null, "PERFILES ACCESO MODIFICACION", "N", "HABILITA EL PODER CAMBIAR LAS OPCIONES DE ACCESO AL SISTEMA"));
 			
 			for (ParametroGenericoEmpresa p : parametroList) {
 				if(!parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByIdAndEmpresa(idEmpresa, p.getIdparametroempresa())) {
@@ -161,14 +162,14 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 		try {
 			SmtpDto smtpDto = new SmtpDto();
 			
-			smtpDto.setSmtpPropio(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_PROPIO, TipoRetornoParametroGenerico.BOOLEAN, idEmpresa));
-			smtpDto.setServidor(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_SERVER, TipoRetornoParametroGenerico.STRING, idEmpresa));
-			smtpDto.setPuerto(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_PORT, TipoRetornoParametroGenerico.STRING, idEmpresa));
-			smtpDto.setUsuario(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_USER, TipoRetornoParametroGenerico.STRING, idEmpresa));
-			smtpDto.setClave(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_PASSWORD, TipoRetornoParametroGenerico.STRING, idEmpresa));
-			smtpDto.setAuth(Boolean.parseBoolean(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_AUTH, TipoRetornoParametroGenerico.STRING, idEmpresa)));
-			smtpDto.setSsl(Boolean.parseBoolean(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_SSL, TipoRetornoParametroGenerico.STRING, idEmpresa)));
-			smtpDto.setTls(Boolean.parseBoolean(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmailEnum.SERVER_SMTP_START_TLS, TipoRetornoParametroGenerico.STRING, idEmpresa)));
+			smtpDto.setSmtpPropio(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_PROPIO, TipoRetornoParametroGenerico.BOOLEAN, idEmpresa));
+			smtpDto.setServidor(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_SERVER, TipoRetornoParametroGenerico.STRING, idEmpresa));
+			smtpDto.setPuerto(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_PORT, TipoRetornoParametroGenerico.STRING, idEmpresa));
+			smtpDto.setUsuario(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_USER, TipoRetornoParametroGenerico.STRING, idEmpresa));
+			smtpDto.setClave(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_PASSWORD, TipoRetornoParametroGenerico.STRING, idEmpresa));
+			smtpDto.setAuth(Boolean.parseBoolean(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_AUTH, TipoRetornoParametroGenerico.STRING, idEmpresa)));
+			smtpDto.setSsl(Boolean.parseBoolean(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_SSL, TipoRetornoParametroGenerico.STRING, idEmpresa)));
+			smtpDto.setTls(Boolean.parseBoolean(parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.SERVER_SMTP_START_TLS, TipoRetornoParametroGenerico.STRING, idEmpresa)));
 			return smtpDto;
 			
 		} catch (Exception e) {
@@ -187,35 +188,35 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 		
 		try {
 			
-				ParametroGenericoEmpresa parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_PROPIO);
+				ParametroGenericoEmpresa parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_PROPIO);
 				parametroGenericoEmpresa.setValor(smtpDto.isSmtpPropio()?"S":"N");
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				
-				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_SERVER);
+				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_SERVER);
 				parametroGenericoEmpresa.setValor(smtpDto.getServidor());
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				
-				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_PORT);
+				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_PORT);
 				parametroGenericoEmpresa.setValor(smtpDto.getPuerto());
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				
-				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_USER);
+				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_USER);
 				parametroGenericoEmpresa.setValor(smtpDto.getUsuario());
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				
-				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_PASSWORD);
+				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_PASSWORD);
 				parametroGenericoEmpresa.setValor(smtpDto.getClave());
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				
-				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_AUTH);
+				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_AUTH);
 				parametroGenericoEmpresa.setValor(smtpDto.isAuth()?"true":"false");
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				
-				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_SSL);
+				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_SSL);
 				parametroGenericoEmpresa.setValor(smtpDto.isSsl()?"true":"false");
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				
-				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmailEnum.SERVER_SMTP_START_TLS);
+				parametroGenericoEmpresa = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(idEmpresa, PGEmpresaEnum.SERVER_SMTP_START_TLS);
 				parametroGenericoEmpresa.setValor(smtpDto.isTls()?"true":"false");
 				parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().actualizar(parametroGenericoEmpresa);
 				

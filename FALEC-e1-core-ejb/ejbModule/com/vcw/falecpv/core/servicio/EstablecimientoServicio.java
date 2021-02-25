@@ -14,7 +14,7 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
-import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmailEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGPlantillasEnum;
 import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
@@ -254,12 +254,12 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			conf.setPermisoModificacion(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PERMISO_MODIFICACION, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
 			
 			// email testing
-			conf.setEmailTesting(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.SERVER_SMTP_TEST, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
-			conf.setEmailsEnvioTest(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.SERVER_SMTP_TEST_EMAIL, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setEmailTesting(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaEnum.SERVER_SMTP_TEST, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
+			conf.setEmailsEnvioTest(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaEnum.SERVER_SMTP_TEST_EMAIL, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
 			
 			// plantilla email comprobantes electronicos
-			conf.setPlantillaEmailEstablecimiento(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
-			conf.setPlantillaEmail(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setPlantillaEmailEstablecimiento(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO, TipoRetornoParametroGenerico.BOOLEAN, idEstablecimiento));
+			conf.setPlantillaEmail(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
 			
 			// plantilla comprobantes electronicos
 			conf.setPlantillaFactura(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_FACTURA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
@@ -286,11 +286,11 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 	public void guardarTestCorreos(String idEstablecimiento,ConfEstablecimientoDto confEstablecimientoDto)throws DaoException{
 		try {
 			
-			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.SERVER_SMTP_TEST);
+			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaEnum.SERVER_SMTP_TEST);
 			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.isEmailTesting()?"S":"N");
 			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
 			
-			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.SERVER_SMTP_TEST_EMAIL);
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaEnum.SERVER_SMTP_TEST_EMAIL);
 			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getEmailsEnvioTest());
 			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
 			
@@ -309,11 +309,11 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 	public void guardarPlantillaEmail(String idEstablecimiento,ConfEstablecimientoDto confEstablecimientoDto)throws DaoException{
 		try {
 			
-			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO);
+			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO);
 			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.isPlantillaEmailEstablecimiento()?"S":"N");
 			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
 			
-			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA);
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA);
 			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaEmail());
 			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
 			

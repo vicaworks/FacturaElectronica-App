@@ -25,7 +25,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoEnvioEmailEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
-import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmailEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.email.EmailService;
 import com.vcw.falecpv.core.email.EnviaEmailService;
 import com.vcw.falecpv.core.email.EstadoEmailComprobante;
@@ -187,10 +187,10 @@ public class EmailComprobanteServicio {
 			String contenido = null;
 			
 			// verificar si tiene plantilla personalizada
-			if((boolean)parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO, TipoRetornoParametroGenerico.BOOLEAN, cabecera.getEstablecimiento().getIdestablecimiento())) {
-				plantilla = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmailEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA, TipoRetornoParametroGenerico.STRING, cabecera.getEstablecimiento().getIdestablecimiento());
+			if((boolean)parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO, TipoRetornoParametroGenerico.BOOLEAN, cabecera.getEstablecimiento().getIdestablecimiento())) {
+				plantilla = parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaEnum.EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA, TipoRetornoParametroGenerico.STRING, cabecera.getEstablecimiento().getIdestablecimiento());
 			}else {
-				plantilla = parametroGenericoServicio.consultarParametro(PGEmailEnum.EMAIL_CONTENIDO_PLANTILLA, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING);
+				plantilla = parametroGenericoServicio.consultarParametro(PGEmpresaEnum.EMAIL_CONTENIDO_PLANTILLA, com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico.STRING);
 			}
 			
 			switch (plantilla) {

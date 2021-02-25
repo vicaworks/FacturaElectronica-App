@@ -1,7 +1,7 @@
 package com.vcw.falecpv.core.constante.parametrosgenericos;
 
 
-public enum PGEmailEnum implements ParametroGenericoBaseEnum{
+public enum PGEmpresaEnum implements ParametroGenericoBaseEnum{
 
 //	Datos de SMTP global
 	SMTP_SERVER("30"), 
@@ -27,11 +27,13 @@ public enum PGEmailEnum implements ParametroGenericoBaseEnum{
 	// contenido EMAIL
 	EMAIL_CONTENIDO_ESTABLECIMIENTO("20"),
 	EMAIL_CONTENIDO_ESTABLECIMIENTO_PLANTILLA("21"),
-	EMAIL_CONTENIDO_PLANTILLA("37");
+	EMAIL_CONTENIDO_PLANTILLA("37"),
+	
+	PERFIL_HABILITAR_SELECCION("23");
 
 	private String id;
 
-	private PGEmailEnum(String id) {
+	private PGEmpresaEnum(String id) {
 		this.id = id;
 	}
 

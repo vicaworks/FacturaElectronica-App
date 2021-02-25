@@ -111,6 +111,10 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     private Establecimiento establecimiento;
     
+    @ManyToOne
+    @JoinColumn(name = "idsegperfilpredefinido", referencedColumnName = "idsegperfilpredefinido")
+    private Segperfilpredefinido segperfilpredefinido;
+    
     @Transient
     private Empresa empresa;
 
@@ -119,6 +123,9 @@ public class Usuario implements Serializable {
     
     @Transient
     private boolean actualizarCredenciales = false;
+    
+    @Transient
+    private boolean habilitarestablecimientoBOL = false;
     
 	/**
 	 * 
@@ -460,6 +467,44 @@ public class Usuario implements Serializable {
 	 */
 	public void setHabilitarestablecimiento(int habilitarestablecimiento) {
 		this.habilitarestablecimiento = habilitarestablecimiento;
+	}
+
+
+
+	/**
+	 * @return the segperfilpredefinido
+	 */
+	public Segperfilpredefinido getSegperfilpredefinido() {
+		return segperfilpredefinido;
+	}
+
+
+
+	/**
+	 * @param segperfilpredefinido the segperfilpredefinido to set
+	 */
+	public void setSegperfilpredefinido(Segperfilpredefinido segperfilpredefinido) {
+		this.segperfilpredefinido = segperfilpredefinido;
+	}
+
+
+
+	/**
+	 * @return the habilitarestablecimientoBOL
+	 */
+	public boolean isHabilitarestablecimientoBOL() {
+		this.habilitarestablecimientoBOL = this.habilitarestablecimiento==1;
+		return habilitarestablecimientoBOL;
+	}
+
+
+
+	/**
+	 * @param habilitarestablecimientoBOL the habilitarestablecimientoBOL to set
+	 */
+	public void setHabilitarestablecimientoBOL(boolean habilitarestablecimientoBOL) {
+		this.habilitarestablecimiento = habilitarestablecimientoBOL?1:0;
+		this.habilitarestablecimientoBOL = habilitarestablecimientoBOL;
 	}
 
 

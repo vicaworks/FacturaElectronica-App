@@ -12,6 +12,12 @@
 				/* height: 560px; */
 		}
 		
+		.segPerfilScrollDT .ui-datatable-scrollable-body{
+			height: 470px !important;
+		}
+		
+		.tabla .ui-datatable-scrollable-header-box .ui-datatable-scrollable-header .ui-datatable thead {text-align: center!important;}
+		
 		.titulo{
 			margin:0px;
 			width: 100%;
@@ -118,6 +124,12 @@
 			color: #fff;
 		}
 		
+		.ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider,
+		.ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider:before {
+			background-color: #34495E !important;
+			border-color: #34495E !important;
+		}
+		
 	</style>
 	
 	<p:dialog header="Perfil Usuario" widgetVar="dlgPerfilUsuario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
@@ -138,7 +150,7 @@
 					
 					<p:commandButton 
 						value="GUARDAR" icon="fa fa-floppy-o" 
-						action="#" styleClass="MRight10" update="@form"
+						action="#" styleClass="MRight10 secondary-button" update="@form"
 						/>
 						
 					<p:commandButton 
@@ -159,8 +171,14 @@
 			
 			<div class="form-ui Wid100 OvYScroll heightFrmPerfilUsuario contenedorFormulario">
 				
+				<div class="EmptyBox10"/>
 				<div class="p-grid p-align-top p-justify-center" style="width: 99.5%!important;">
-					
+					<div class="p-col-12">
+						<p:toggleSwitch value="#{perfilUsuarioCtrl.usuarioSelected.habilitarestablecimientoBOL}"/>
+						<p:spacer width="10px"/>
+						<h:outputText value="ACCESO A TODOS LOS ESTABLECIMIENTOS." />
+					</div>
+					<div class="EmptyBox5"/>
 					<div class="p-col-12 p-lg-6 defecto">
 						
 						<div class="titulo">
@@ -173,16 +191,17 @@
 						
 						<div class="EmptyBox10"/>
 						
+						
 						<p:dataScroller id="segPerfilPredefinidoScroll" value="#{perfilUsuarioCtrl.segperfilpredefinidoList}" var="pfd" chunkSize="10" mode="inline"
-                        	scrollHeight="485" >
+                        	scrollHeight="470" virtualScroll="true">
                         	<f:facet name="header">
 				                PERFILES PREDEFINIDOS
 				            </f:facet>
 				            
 				            <div class="p-grid p-align-center">
-				            	<div class="p-col-1 seleccion">
+				            	<div class="p-col-1 seleccion"  style="padding-left: 15px !important;">
 				            		<p:selectBooleanCheckbox style="width:20rem;" value="#{pfd.seleccion}">
-				            			<p:ajax update=":frmPerfilUsuario:segPerfilPredefinidoScroll"/>
+				            			<p:ajax update=":frmPerfilUsuario:segPerfilPredefinidoScroll :frmPerfilUsuario:segPerfilScroll" listener="#{perfilUsuarioCtrl.cambioPerfilPredefinido(pfd)}"/>
 				            		</p:selectBooleanCheckbox>
 				            	</div>
 				            	<div class="p-col-11">
@@ -206,8 +225,7 @@
 				            	</div>
 				            </div>
 				            
-                       </p:dataScroller>
-						
+                       </p:dataScroller> 
 						
 					</div>
 					
@@ -223,41 +241,50 @@
 						
 						<div class="EmptyBox10"/>
 						
-						<p:dataScroller id="segPerfilScroll" value="#{perfilUsuarioCtrl.segperfilList}" var="p" chunkSize="10" mode="inline"
-                        	scrollHeight="485">
-                        	<f:facet name="header">
-				                OPCIONES DE ACCESO
-				            </f:facet>
-				            
-				            <div class="p-grid p-align-center">
-				            	<div class="p-col-1 seleccion">
-				            		<p:selectBooleanCheckbox style="width:20rem;" value="#{p.seleccion}">
-				            			<p:ajax update="optOpcionesSeleccion"/>
-				            		</p:selectBooleanCheckbox>
-				            	</div>
-				            	<div class="p-col-11">
-				            		<p:outputPanel id="optOpcionesSeleccion">
-					            		<div class="box_grid_header">
-	
-								            <div class="sidebar #{p.seleccion?'item-selected':''}">
-								                <i class="fa fa-angle-double-right"></i>
-								            </div>
-								            <div class="header">
-								                <h3>#{p.nombre}</h3>
-								            </div>
-								            <div class="descripcion">
-								                <p>
-								                	#{p.descripcion}
-								                </p>
-								            </div>
-								
-								        </div>
-									</p:outputPanel>
-													            		
-				            	</div>
-				            </div>
-				            
-                       </p:dataScroller>
+						<p:dataTable id="segPerfilScroll" 
+									value="#{perfilUsuarioCtrl.segperfilList}" 
+									var="p"  
+									scrollable="true" 
+									styleClass="segPerfilScrollDT tabla"  
+									rowKey="#{p.idsegperfil}">
+							
+							<p:column width="100%" style="background-color:#fff !important;border:none!important;" >
+								<f:facet name="header">
+									<div style="width:100%; text-align: center !important;">
+										OPCIONES DE ACCESO
+									</div>
+								</f:facet>
+					            <div class="p-grid p-align-center">
+					            	<div class="p-col-1 seleccion" style="padding-left: 15px !important;">
+					            		<p:selectBooleanCheckbox style="width:20rem;" value="#{p.seleccion}" disabled="#{not perfilUsuarioCtrl.disablePerfiles}">
+					            			<p:ajax update="optOpcionesSeleccion"/>
+					            		</p:selectBooleanCheckbox>
+					            	</div>
+					            	<div class="p-col-11">
+					            		<p:outputPanel id="optOpcionesSeleccion">
+						            		<div class="box_grid_header" style="border-bottom: none!important;">
+		
+									            <div class="sidebar #{p.seleccion?'item-selected':''}">
+									                <i class="fa fa-angle-double-right"></i>
+									            </div>
+									            <div class="header">
+									                <h3>#{p.nombre}</h3>
+									            </div>
+									            <div class="descripcion">
+									                <p>
+									                	#{p.descripcion}
+									                </p>
+									            </div>
+									
+									        </div>
+										</p:outputPanel>
+														            		
+					            	</div>
+					            </div>
+							</p:column>
+							
+						</p:dataTable>
+						
 						
 					</div>
 					

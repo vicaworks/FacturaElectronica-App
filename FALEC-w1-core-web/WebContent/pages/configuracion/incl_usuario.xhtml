@@ -80,6 +80,7 @@
 				
 					<p:menuitem value="Perfil Acceso" action="#{perfilUsuarioCtrl.cargarFormulario}" icon="fa fa-key">
 						<f:setPropertyActionListener value="frmMainUsuario" target="#{perfilUsuarioCtrl.callForm}"/>
+						<f:setPropertyActionListener value="#{u}" target="#{perfilUsuarioCtrl.usuarioSelected}"/>
 					</p:menuitem>
 					
 					<p:menuitem value="Editar" action="#{usuarioCtrl.editar()}" icon="fa fa-edit">

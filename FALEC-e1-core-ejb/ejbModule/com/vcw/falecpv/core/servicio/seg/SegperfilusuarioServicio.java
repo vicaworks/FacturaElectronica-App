@@ -9,9 +9,12 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
+import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.dao.impl.SegperfilusuarioDao;
+import com.vcw.falecpv.core.modelo.persistencia.Segperfil;
 import com.vcw.falecpv.core.modelo.persistencia.Segperfilusuario;
 import com.vcw.falecpv.core.servicio.AppGenericService;
+import com.xpert.persistence.query.QueryBuilder;
 
 /**
  * @author cristianvillarreal
@@ -50,6 +53,23 @@ public class SegperfilusuarioServicio extends AppGenericService<Segperfilusuario
 	 */
 	public SegperfilusuarioDao getSegperfilusuarioDao() {
 		return segperfilusuarioDao;
+	}
+	
+	public List<Segperfil> getPerfilByUsuario(String idUsuario)throws DaoException{
+		try {
+			
+			QueryBuilder qb = new QueryBuilder(segperfilusuarioDao.getEntityManager());
+			
+			return qb.select("p.segperfil")
+						.from(Segperfilusuario.class,"p")
+						.equals("p.usuario.idusuario", idUsuario)
+						.equals("p.estado","A")
+						.equals("p.segperfil.estado","A").getResultList();
+			
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 	}
 
 }

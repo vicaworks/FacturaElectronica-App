@@ -9,13 +9,19 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Segperfil;
 import com.vcw.falecpv.core.modelo.persistencia.Segperfilpredefinido;
+import com.vcw.falecpv.core.modelo.persistencia.Usuario;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.seg.SegperfilServicio;
 import com.vcw.falecpv.core.servicio.seg.SegperfilpredefinidoServicio;
+import com.vcw.falecpv.core.servicio.seg.SegperfilusuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -33,6 +39,12 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 	@EJB
 	private SegperfilServicio segperfilServicio;
 	
+	@EJB
+	private SegperfilusuarioServicio segperfilusuarioServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
+	
 	/**
 	 * 
 	 */
@@ -42,6 +54,8 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 	private List<Segperfil> segperfilList;
 	private Segperfilpredefinido segperfilpredefinidoSeleccion;
 	private String callForm;
+	private Usuario usuarioSelected;
+	private boolean disablePerfiles;
 
 	/**
 	 * 
@@ -59,14 +73,26 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 		segperfilList = null;
 		segperfilList = segperfilServicio.getSegperfilDao().getByEstado(EstadoRegistroEnum.ACTIVO);
 	}
+	
+	private List<Segperfil> consultarPerfilesUsuario() throws DaoException {
+		return segperfilusuarioServicio.getPerfilByUsuario(usuarioSelected.getIdusuario());
+	}
 
 	public void cargarFormulario() {
 		try {
-		
+			disablePerfiles = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.PERFIL_HABILITAR_SELECCION, TipoRetornoParametroGenerico.BOOLEAN, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()); 
 			consultarPerfilPredefinido();
 			consultarPerfiles();
-			AppJsfUtil.showModalRender("dlgPerfilUsuario", "frmPerfilUsuario");
+			segperfilpredefinidoSeleccion = usuarioSelected.getSegperfilpredefinido();
+			selecccionarPerfilPredefinido();
+			seleccionarPerfiles(consultarPerfilesUsuario());
+			segperfilpredefinidoSeleccion = null;
+			if(usuarioSelected.getSegperfilpredefinido()!=null) {
+				segperfilpredefinidoSeleccion = segperfilpredefinidoList.stream().filter(x->x.getIdsegperfilpredefinido().equals(usuarioSelected.getSegperfilpredefinido().getIdsegperfilpredefinido())).findFirst().orElse(null);
+				selecccionarPerfilPredefinido();
+			}
 			
+			AppJsfUtil.showModalRender("dlgPerfilUsuario", "frmPerfilUsuario");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,11 +105,69 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 			
 			consultarPerfilPredefinido();
 			consultarPerfiles();
+			selecccionarPerfilPredefinido();
+			seleccionarPerfiles(consultarPerfilesUsuario());
+			segperfilpredefinidoSeleccion = null;
+			if(usuarioSelected.getSegperfilpredefinido()!=null) {
+				segperfilpredefinidoSeleccion = segperfilpredefinidoList.stream().filter(x->x.getIdsegperfilpredefinido().equals(usuarioSelected.getSegperfilpredefinido().getIdsegperfilpredefinido())).findFirst().orElse(null);
+				selecccionarPerfilPredefinido();
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public void cambioPerfilPredefinido(Segperfilpredefinido segperfilpredefinido) {
+		try {
+			
+			segperfilpredefinidoSeleccion = segperfilpredefinido;
+			
+			// 1. desactivar los perfiles predefinidos no seleccionados
+			selecccionarPerfilPredefinido();
+			
+			// 2. consultar todos los perfiles
+			consultarPerfiles();
+			
+			// 3. consultar los perfiles del perfilpredefinido
+			List<Segperfil> pList = segperfilpredefinidoServicio.getByPerfilDefinido(segperfilpredefinidoSeleccion.getIdsegperfilpredefinido());
+			
+			
+			// 4. seleccionar los perfiles a partir 
+			seleccionarPerfiles(pList);
+			
+			for (Segperfil segperfil : segperfilList) {
+				System.out.println(segperfil);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void selecccionarPerfilPredefinido() {
+		if(segperfilpredefinidoSeleccion!=null) {
+			for (Segperfilpredefinido pp : segperfilpredefinidoList) {
+				if(pp.getIdsegperfilpredefinido().equals(segperfilpredefinidoSeleccion.getIdsegperfilpredefinido())) {
+					pp.setSeleccion(true);
+				}
+				if(!pp.getIdsegperfilpredefinido().equals(segperfilpredefinidoSeleccion.getIdsegperfilpredefinido())) {
+					pp.setSeleccion(false);
+				}
+			}
+		}
+	}
+	
+	private void seleccionarPerfiles(List<Segperfil> pList) {
+		
+		for (Segperfil pf : segperfilList) {
+			if(pList.stream().filter(x->x.getIdsegperfil().equals(pf.getIdsegperfil())).findFirst().orElse(null)!=null) {
+				pf.setSeleccion(true);
+			}
+		}		
 	}
 	
 	/**
@@ -154,6 +238,34 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 	 */
 	public void setSegperfilList(List<Segperfil> segperfilList) {
 		this.segperfilList = segperfilList;
+	}
+
+	/**
+	 * @return the usuarioSelected
+	 */
+	public Usuario getUsuarioSelected() {
+		return usuarioSelected;
+	}
+
+	/**
+	 * @param usuarioSelected the usuarioSelected to set
+	 */
+	public void setUsuarioSelected(Usuario usuarioSelected) {
+		this.usuarioSelected = usuarioSelected;
+	}
+
+	/**
+	 * @return the disablePerfiles
+	 */
+	public boolean isDisablePerfiles() {
+		return disablePerfiles;
+	}
+
+	/**
+	 * @param disablePerfiles the disablePerfiles to set
+	 */
+	public void setDisablePerfiles(boolean disablePerfiles) {
+		this.disablePerfiles = disablePerfiles;
 	}
 	
 	
