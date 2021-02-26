@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -58,6 +60,10 @@ public class Segperfil implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "estado", nullable = false, length = 1)
     private String estado;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idsegsistema", referencedColumnName = "idsegsistema", nullable = false)
+    private Segsistema segsistema;
     
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "segperfil")
     private List<Segperfilopcion> segperfilopcionList;
@@ -192,6 +198,20 @@ public class Segperfil implements Serializable {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the segsistema
+	 */
+	public Segsistema getSegsistema() {
+		return segsistema;
+	}
+
+	/**
+	 * @param segsistema the segsistema to set
+	 */
+	public void setSegsistema(Segsistema segsistema) {
+		this.segsistema = segsistema;
 	}
 	
 }

@@ -10,7 +10,8 @@ package com.vcw.falecpv.core.constante.contadores;
 public enum TCEmpresa implements TablaContadorBaseEnum {
 	
 	EMPRESA("EMPRESA"),
-	PARAMETRO_EMPRESA("PARAMETROEMPRESA");
+	PARAMETRO_EMPRESA("PARAMETROEMPRESA"),
+	PERFIL_USUARIO("SEGPERFILUSUARIO");
 	
 	private String nombreTabla;
 

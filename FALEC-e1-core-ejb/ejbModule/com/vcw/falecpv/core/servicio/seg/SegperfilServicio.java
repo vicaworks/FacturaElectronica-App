@@ -60,7 +60,7 @@ public class SegperfilServicio extends AppGenericService<Segperfil, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<Segopcion> getPerfilOpcionAcceso(String idUsuario)throws DaoException{
+	public List<Segopcion> getPerfilOpcionAcceso(String idUsuario,String idsegsistema)throws DaoException{
 		
 		try {
 			
@@ -87,6 +87,7 @@ public class SegperfilServicio extends AppGenericService<Segperfil, String> {
 						"		and op.estado = 'A' " +
 						"		and po.estado = 'A' " +
 						"		and pf.estado = 'A' " +
+						"		and sis.idsegsistema = '" + idsegsistema + "' " +
 						"	order by  " +
 						"		op.idsegopcion ";
 			

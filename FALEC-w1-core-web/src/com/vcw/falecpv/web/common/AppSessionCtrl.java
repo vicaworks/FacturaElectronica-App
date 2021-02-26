@@ -15,6 +15,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.ConfiguracionGeneralEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Segopcion;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
@@ -69,7 +70,7 @@ public class AppSessionCtrl implements Serializable {
 				FacesUtil.getHttpSession(false).setAttribute("usuario", usuario);
 				
 				// 3. perfiles de acceso
-				segopcionList = segperfilServicio.getPerfilOpcionAcceso(usuario.getIdusuario());
+				segopcionList = segperfilServicio.getPerfilOpcionAcceso(usuario.getIdusuario(),ConfiguracionGeneralEnum.SISTEMA_ID.getId());
 				FacesUtil.getHttpSession(false).setAttribute("segopcionList", segopcionList);
 				
 			}
@@ -170,6 +171,7 @@ public class AppSessionCtrl implements Serializable {
 	public String formatoCadena(String cadena,int longitud,String caracter) {
 		return TextoUtil.leftPadTexto(cadena, longitud, caracter);
 	}
+	
 	
 	/**
 	 * @return the nombreEstablecimiento

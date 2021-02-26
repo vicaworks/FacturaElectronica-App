@@ -3,7 +3,10 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import com.vcw.falecpv.core.dao.AppGenericDao;
 import com.vcw.falecpv.core.modelo.persistencia.Segperfilusuario;
@@ -20,6 +23,18 @@ public class SegperfilusuarioDao extends AppGenericDao<Segperfilusuario, String>
 	 */
 	public SegperfilusuarioDao() {
 		super(Segperfilusuario.class);
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idList
+	 * @return
+	 */
+	public int deleteByIds(List<String> idList) {
+		Query q = getEntityManager().createNativeQuery("DELETE FROM segperfilusuario WHERE idsegperfilusuario in :lista");
+		q.setParameter("lista", idList);
+		return q.executeUpdate();
 	}
 
 }

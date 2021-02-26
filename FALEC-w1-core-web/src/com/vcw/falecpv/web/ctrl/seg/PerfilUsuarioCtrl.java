@@ -12,6 +12,7 @@ import javax.inject.Named;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.ConfiguracionGeneralEnum;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Segperfil;
@@ -19,6 +20,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Segperfilpredefinido;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.core.servicio.seg.SegperfilServicio;
 import com.vcw.falecpv.core.servicio.seg.SegperfilpredefinidoServicio;
 import com.vcw.falecpv.core.servicio.seg.SegperfilusuarioServicio;
@@ -45,6 +47,9 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
+	@EJB
+	private UsuarioServicio usuarioServicio;
+	
 	/**
 	 * 
 	 */
@@ -66,16 +71,16 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 	
 	private void consultarPerfilPredefinido() {
 		segperfilpredefinidoList = null;
-		segperfilpredefinidoList = segperfilpredefinidoServicio.getSegperfilpredefinidoDao().getByEstado(EstadoRegistroEnum.ACTIVO);
+		segperfilpredefinidoList = segperfilpredefinidoServicio.getSegperfilpredefinidoDao().getByEstado(EstadoRegistroEnum.ACTIVO,ConfiguracionGeneralEnum.SISTEMA_ID.getId());
 	}
 	
 	private void consultarPerfiles() {
 		segperfilList = null;
-		segperfilList = segperfilServicio.getSegperfilDao().getByEstado(EstadoRegistroEnum.ACTIVO);
+		segperfilList = segperfilServicio.getSegperfilDao().getByEstado(EstadoRegistroEnum.ACTIVO,ConfiguracionGeneralEnum.SISTEMA_ID.getId());
 	}
 	
 	private List<Segperfil> consultarPerfilesUsuario() throws DaoException {
-		return segperfilusuarioServicio.getPerfilByUsuario(usuarioSelected.getIdusuario());
+		return segperfilusuarioServicio.getPerfilByUsuario(usuarioSelected.getIdusuario(),ConfiguracionGeneralEnum.SISTEMA_ID.getId());
 	}
 
 	public void cargarFormulario() {
@@ -103,19 +108,23 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 	public void refrescar() {
 		try {
 			
-			consultarPerfilPredefinido();
-			consultarPerfiles();
-			selecccionarPerfilPredefinido();
-			seleccionarPerfiles(consultarPerfilesUsuario());
-			segperfilpredefinidoSeleccion = null;
-			if(usuarioSelected.getSegperfilpredefinido()!=null) {
-				segperfilpredefinidoSeleccion = segperfilpredefinidoList.stream().filter(x->x.getIdsegperfilpredefinido().equals(usuarioSelected.getSegperfilpredefinido().getIdsegperfilpredefinido())).findFirst().orElse(null);
-				selecccionarPerfilPredefinido();
-			}
+			consultarFacade();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void consultarFacade() throws DaoException {
+		consultarPerfilPredefinido();
+		consultarPerfiles();
+		selecccionarPerfilPredefinido();
+		seleccionarPerfiles(consultarPerfilesUsuario());
+		segperfilpredefinidoSeleccion = null;
+		if(usuarioSelected.getSegperfilpredefinido()!=null) {
+			segperfilpredefinidoSeleccion = segperfilpredefinidoList.stream().filter(x->x.getIdsegperfilpredefinido().equals(usuarioSelected.getSegperfilpredefinido().getIdsegperfilpredefinido())).findFirst().orElse(null);
+			selecccionarPerfilPredefinido();
 		}
 	}
 	
@@ -133,14 +142,8 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 			// 3. consultar los perfiles del perfilpredefinido
 			List<Segperfil> pList = segperfilpredefinidoServicio.getByPerfilDefinido(segperfilpredefinidoSeleccion.getIdsegperfilpredefinido());
 			
-			
 			// 4. seleccionar los perfiles a partir 
 			seleccionarPerfiles(pList);
-			
-			for (Segperfil segperfil : segperfilList) {
-				System.out.println(segperfil);
-			}
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,6 +171,33 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 				pf.setSeleccion(true);
 			}
 		}		
+	}
+	
+	@Override
+	public void guardar() {
+		try {
+			
+			if(segperfilList.stream().filter(x->x.isSeleccion()).count()==0) {
+				AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", "NO EXISTE PERIL DE ACCESO SELECCIONADO.");
+				return;
+			}
+			
+			// asigna los perfiles
+			segperfilusuarioServicio.asignarPerfiles(ConfiguracionGeneralEnum.SISTEMA_ID.getId(), usuarioSelected, segperfilList, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			
+			// actualzia los datos del usuario
+			usuarioSelected.setSegperfilpredefinido(segperfilpredefinidoSeleccion);
+			usuarioServicio.actualizar(usuarioSelected);
+			
+			// refresca todo nuevamente
+			consultarFacade();
+			
+			AppJsfUtil.addInfoMessage("frmPerfilUsuario", "PERFILES DE ACCESO OK.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	/**

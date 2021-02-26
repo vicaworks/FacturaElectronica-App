@@ -33,9 +33,10 @@ public class SegperfilpredefinidoDao extends AppGenericDao<Segperfilpredefinido,
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Segperfilpredefinido> getByEstado(EstadoRegistroEnum estadoRegistroEnum){
+	public List<Segperfilpredefinido> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idsegsistema){
 		
-		Query q = getEntityManager().createQuery("SELECT p FROM Segperfilpredefinido p WHERE " + (estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)?" ":"p.estado=:estado ") + " ORDER BY p.orden");
+		Query q = getEntityManager().createQuery("SELECT p FROM Segperfilpredefinido p WHERE " + (estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)?" ":"p.estado=:estado and ") + " p.segsistema.idsegsistema=:idsegsistema ORDER BY p.orden");
+		q.setParameter("idsegsistema", idsegsistema);
 		if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
 			q.setParameter("estado", estadoRegistroEnum.getInicial());
 		}

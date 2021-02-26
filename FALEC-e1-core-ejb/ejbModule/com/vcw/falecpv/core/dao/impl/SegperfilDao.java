@@ -33,9 +33,10 @@ public class SegperfilDao extends AppGenericDao<Segperfil, String> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Segperfil> getByEstado(EstadoRegistroEnum estadoRegistroEnum){
+	public List<Segperfil> getByEstado(EstadoRegistroEnum estadoRegistroEnum,String idsegsistema){
 		
-		Query q = getEntityManager().createQuery("SELECT p FROM Segperfil p WHERE " + (estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)?" ":"p.estado=:estado ") + " ORDER BY p.nombre ");
+		Query q = getEntityManager().createQuery("SELECT p FROM Segperfil p WHERE " + (estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)?" ":"p.estado=:estado and ") + " p.segsistema.idsegsistema=:idsegsistema ORDER BY p.nombre ");
+		q.setParameter("idsegsistema", idsegsistema);
 		if(!estadoRegistroEnum.equals(EstadoRegistroEnum.TODOS)) {
 			q.setParameter("estado", estadoRegistroEnum.getInicial());
 		}
