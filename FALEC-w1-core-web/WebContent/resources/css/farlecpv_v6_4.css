@@ -503,6 +503,23 @@
 
 /* ===============  ROMA LAYOUT   ================ */
 
+/* FORMATO MESSAGE INFO */
+		
+.ui-messages .ui-messages-info {
+    background-color:rgba(52,73,94,0.05)!important;
+    border: 1px solid rgba(52,73,94,0.4) !important;
+    color: black !important;
+}
+
+.ui-messages .ui-messages-info .ui-messages-info-icon{
+	color: #34495E !important;
+}
+
+.ui-messages .ui-messages-info .ui-messages-close {
+    color: #34495E !important;
+}
+
+
 .layout-wrapper .layout-main .layout-content {
 	padding: 5px;
 }

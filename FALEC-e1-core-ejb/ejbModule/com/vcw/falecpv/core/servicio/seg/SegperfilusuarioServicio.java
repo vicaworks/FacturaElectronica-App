@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.servicio.seg;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -113,7 +114,7 @@ public class SegperfilusuarioServicio extends AppGenericService<Segperfilusuario
 			
 			// 2 insertar datos
 			
-			for (Segperfil p : segperfilList) {
+			for (Segperfil p : segperfilList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
 				
 				Segperfilusuario pu = new Segperfilusuario();
 				pu.setUsuario(usuario);

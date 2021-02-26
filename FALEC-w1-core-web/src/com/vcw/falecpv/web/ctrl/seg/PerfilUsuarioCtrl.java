@@ -192,7 +192,7 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 			// refresca todo nuevamente
 			consultarFacade();
 			
-			AppJsfUtil.addInfoMessage("frmPerfilUsuario", "PERFILES DE ACCESO OK.");
+			AppJsfUtil.addInfoMessage("frmPerfilUsuario", "OK","PERFILES DE ACCESO OK.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
