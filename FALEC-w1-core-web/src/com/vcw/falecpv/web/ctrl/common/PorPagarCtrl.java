@@ -122,7 +122,7 @@ public class PorPagarCtrl extends BaseCtrl {
 				cabeceraSelected.setValorretenidorenta(BigDecimal.ZERO);
 				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetRenta", "ERROR", "NO PUEDE SER MAYOR MENOR AL VALOR TOTAl SIN IMPUESTOS, O MENOR A 0.");
 			}
-			
+			cabeceraSelected.setValorretenido(cabeceraSelected.getValorretenidoiva().add(cabeceraSelected.getValorretenidorenta()));
 			cabeceraSelected.setValorapagar(
 					cabeceraSelected.getTotalconimpuestos().add(cabeceraSelected.getValorretenidoiva().negate())
 							.add(cabeceraSelected.getValorretenidorenta().negate()).setScale(2, RoundingMode.HALF_UP));
@@ -146,6 +146,7 @@ public class PorPagarCtrl extends BaseCtrl {
 				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetRenta", "ERROR", "NO PUEDE SER MAYOR MENOR AL VALOR TOTAl SIN IMPUESTOS, O MENOR A 0.");
 			}
 			
+			adquisicionSelected.setTotalretencion(adquisicionSelected.getValorretenidoiva().add(adquisicionSelected.getValorretenidorenta()));
 			adquisicionSelected.setTotalpagar(
 					adquisicionSelected.getTotalfactura().add(adquisicionSelected.getValorretenidoiva().negate())
 							.add(adquisicionSelected.getValorretenidorenta().negate()).setScale(2, RoundingMode.HALF_UP));
