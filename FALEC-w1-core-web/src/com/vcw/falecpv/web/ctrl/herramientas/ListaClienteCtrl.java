@@ -24,6 +24,7 @@ import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
+import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -52,6 +53,7 @@ public class ListaClienteCtrl extends BaseCtrl {
 	private GuiaRemFormCtrl guiaRemFormCtrl;
 	private LiqCompraFormCtrl liqCompraFormCtrl;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
+	private CotizacionFormCtrl cotizacionFormCtrl;
 	private String callModule;
 	private String formModule;
 	private String viewUpdate;
@@ -111,6 +113,10 @@ public class ListaClienteCtrl extends BaseCtrl {
 			}
 			
 			switch (callModule) {
+			
+			case "COTIZACION" :
+				cotizacionFormCtrl.getCabecerSelected().setCliente(clienteSelected);
+				break;
 			
 			case "CompFacCtrl":
 				compFacCtrl = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
@@ -372,6 +378,20 @@ public class ListaClienteCtrl extends BaseCtrl {
 	 */
 	public void setCajaChicaCtrl(CajaChicaCtrl cajaChicaCtrl) {
 		this.cajaChicaCtrl = cajaChicaCtrl;
+	}
+
+	/**
+	 * @return the cotizacionFormCtrl
+	 */
+	public CotizacionFormCtrl getCotizacionFormCtrl() {
+		return cotizacionFormCtrl;
+	}
+
+	/**
+	 * @param cotizacionFormCtrl the cotizacionFormCtrl to set
+	 */
+	public void setCotizacionFormCtrl(CotizacionFormCtrl cotizacionFormCtrl) {
+		this.cotizacionFormCtrl = cotizacionFormCtrl;
 	}
 	
 	

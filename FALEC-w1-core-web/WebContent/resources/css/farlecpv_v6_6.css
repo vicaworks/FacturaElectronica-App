@@ -298,11 +298,11 @@
 
 
 /* Display */
-.DispBlock{ display:block;}
-.DispTable{ display:table; vertical-align:middle;}
-.DispTableCell{ display:table-cell; vertical-align:middle;}
-.DispNone{ display:none;}
-.DispInlBlock{display:inline-block;}
+.DispBlock{ display:block !important;}
+.DispTable{ display:table !important; vertical-align:middle;}
+.DispTableCell{ display:table-cell !important; vertical-align:middle;}
+.DispNone{ display:none !important;}
+.DispInlBlock{display:inline-block !important;}
 
 .NoDisplay{display:none;}
 

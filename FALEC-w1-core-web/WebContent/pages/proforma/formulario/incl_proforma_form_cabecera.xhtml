@@ -65,14 +65,13 @@
 			<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.envioEmailBol}" offLabel="NO" onLabel="SI" showLabels="true"/>
 			
 			<h:outputText value="RESUMEN *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
 				<p:inputText id="inpResumen"
 					value="#{cotizacionFormCtrl.cabecerSelected.resumen}" required="true"
 					requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
 					maxlength="500" placeholder="RESUMEN DEL CONTENIDO DE LA #{msg['label.cotizacion']}">
 				</p:inputText>
-				<p:message for="inpResumen" />
-			<h:panelGroup>
-				
+				<p:message for="inpResumen" styleClass="DispBlock"/>
 			</h:panelGroup>
 			
 			<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>
@@ -97,17 +96,34 @@
 					</p:inputText>
 	                
 	            </div>
-	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100 DispBlock"/>
 			</h:panelGroup>
 		
 		</p:panelGrid>	
 		
-		<p:panelGrid id="grid2" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-md-6,ui-g-12 ui-md-6">
+		<!-- <p:panelGrid id="grid2" columns="2" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12 ui-md-6,ui-g-12 ui-md-6">
 			
 			<p:commandButton value="CONSUMIDOR FINAL" action="#{cotizacionFormCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:formulario:msgProformaForm :formMain:formulario:gridCliente" icon="fa fa-users" styleClass="secondary-button Wid100">
 			</p:commandButton>
 			
 			<p:commandButton value="NUEVO / EDITAR CLIENTE" action="#{clienteCtrl.nuevoEditar(cotizacionFormCtrl.cabecerSelected.cliente!=null?cotizacionFormCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-user" styleClass="Wid100">
+				<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
+				<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+			</p:commandButton>
+			
+		</p:panelGrid> -->
+		
+		<p:panelGrid id="grid2" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-6 ui-md-6,ui-g-6 ui-md-6">
+			
+			<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
+				<f:setPropertyActionListener value="#{cotizacionFormCtrl}" target="#{listaClienteCtrl.cotizacionFormCtrl}"/>
+				<f:setPropertyActionListener value="COTIZACION" target="#{listaClienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+			</p:commandButton>
+			
+			<p:commandButton value="CLIENTE / EDITAR" action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-plus" styleClass="Wid100 Fs10">
 				<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
 				<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
 				<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>

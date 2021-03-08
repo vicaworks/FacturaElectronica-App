@@ -29,6 +29,7 @@ import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -49,6 +50,7 @@ import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -127,6 +129,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	@PostConstruct
 	public void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			productoSelected = null;
 			nuevaCotizacion();
 			detalleFacList = null;
@@ -210,9 +213,9 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void nuevoFromMain() {
+	public void nuevoFromMain(Establecimiento establecimiento) {
 		try {
-			
+			this.establecimientoMain = establecimiento;
 			productoSelected = null;
 			nuevaCotizacion();
 			detalleFacList = null;
@@ -229,11 +232,11 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	
 	public void consultarProductos()throws DaoException{
 		productoList = null;
-		productoList = productoServicio.getProductoDao().consultarAllImageEager(AppJsfUtil.getEstablecimiento().getIdestablecimiento(),criterioBusqueda);
+		productoList = productoServicio.getProductoDao().consultarAllImageEager(establecimientoMain.getIdestablecimiento(),criterioBusqueda);
 	}
 	
 	public void nuevaCotizacion() throws DaoException {
-		
+		System.out.println(establecimientoMain);
 		criterioBusqueda = null;
 		criterioCliente = null;
 		cabecerSelected = new Cabecera();
@@ -480,7 +483,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 				return;
 			}
 			
-			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento());
+			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, establecimientoMain.getIdestablecimiento());
 			
 			if(productoSelected==null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE : " + criterioBusqueda);
@@ -559,7 +562,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		cabecerSelected.setTipoemision("1");
 		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
-		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(AppJsfUtil.getEstablecimiento().getIdestablecimiento()));
+		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		cabecerSelected.setContribuyenteespecial("5368");
@@ -671,6 +674,34 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		
 		return null;
 	}
+	
+	public void establecerFocoDetalle() {
+		try {
+			detalleSelected = detalleFacList.stream().filter(x->x.getIddetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void crearUnaCopia(String idCabeceraSeleccion) {
+		try {
+			
+			nuevaCotizacion();
+			cabecerSelected.setCliente(cabeceraServicio.getClienteComprobante(idCabeceraSeleccion));
+			detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idCabeceraSeleccion);
+			int cont=1;
+			for (Detalle d : detalleFacList) {
+				d.setIddetalle("M" + (cont++));
+			}
+			totalizar();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+
+	}
+
 
 	/**
 	 * @return the cabecerSelected

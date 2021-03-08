@@ -21,7 +21,6 @@
 			body .ui-message {
 				padding: 0em !important;
 				margin: 0em !important;
-				display: block !important;
 			}
 			
 			.cardTitle{
@@ -50,7 +49,8 @@
 				padding: 0.2em !important;
 			}
 			
-			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+			body .ui-inputgroup .ui-inputgroup-addon, 
+			body .ui-inputgroup .ui-inputgroup-addon-checkbox {
 				padding: 0em;
 			}
 			
@@ -119,10 +119,10 @@
 			}
 			
 			/* -- tab -- */
+			
 			.tabProforma{
- 				padding: 0px 2em !important; 
- 				border-bottom: solid 1px #ccc;
- 				color:#1B2631;
+				padding: 0px 2em !important; 
+ 				border-bottom: solid 5px #F0F3F4;
 			}
 			
 			.tabProforma:hover {
@@ -133,10 +133,15 @@
 			}
 			
 			.tabProformaSeleccion {
- 				/* background-color:#F8C471 !important; 
- 				border-bottom: solid 1px #F8C471 !important; */
- 				background-color:#F0F3F4;
- 				color: #024f9e;
+				border-bottom: solid 5px #34495E;
+			}
+			
+			.tabProforma:hover > h3,
+			.tabProforma:hover {
+ 				color:#FBFCFC;
+ 				cursor: pointer !important;
+ 				background-color:#34495E !important;
+ 				border-bottom: solid 1px #34495E !important;
 			}
 			
 			.tabProforma h4{
@@ -145,15 +150,17 @@
 			}
 			
 			.tabProforma h3{
- 				margin-top: 5px;
- 				margin-bottom: 10px;
+				margin: 5px 0px !important;
+ 				color:#1B2631;
 			}
 			
 			.tabProformaBg{
 				background-color: #fff !important;
 			}
 			
-			/* -- card contador -- */
+			
+			
+			/* -- card contador  SUBTOTALES -- */
 			
 			.cardContador{
 				border-radius:4px;
@@ -161,7 +168,7 @@
 				display: grid;
 				grid-gap: 3px;
 			    grid-template-columns: 1fr;
-			    grid-template-rows: 20px auto;
+			    grid-template-rows: 15px auto;
 			    grid-template-areas: "cardContador-header  cardContador-header"
 			    					 "cardContador-content cardContador-content";
 			}
@@ -180,7 +187,7 @@
 				padding: 3px;
 				justify-self: center;
 				align-self:center;
-				font-size: 20px;
+				font-size: 18px;
 				font-weight: 900;
 			}
 			
@@ -215,6 +222,14 @@
 				color: #2f2f2f;
 			}
 			
+			/* Tamanos  */
+			.W100px{width: 100px!important;}
+			.W120px{width: 120px!important;}
+			.W140px{width: 140px!important;}
+			.W160px{width: 160px!important;}
+			.W180px{width: 180px!important;}
+			.W200px{width: 200px!important;}
+			
         </style>
     </ui:define>
 
@@ -223,11 +238,6 @@
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     
-    	<!-- <p:breadCrumb>
-		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Cotización" url="#{request.contextPath}/pages/proforma/proforma.jsf"/>
-		</p:breadCrumb> -->
-		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
@@ -255,35 +265,34 @@
 						<h:outputText value="02."/>
 					</h4>
 					<h3>
-						<h:outputText value="Nuevo / Editar"/>
+						<h:outputText value="Nuevo - Editar"/>
 					</h3>
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='EMAIL'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('EMAIL');">
+				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='EMAIL'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('TAREA');">
 					
 					<h4>
 						<h:outputText value="03."/>
 					</h4>
 					<h3>
-						<h:outputText value="Email"/>
+						<h:outputText value="Seguimiento - Tareas"/>
 					</h3>
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREAS'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('TAREAS');">
+				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREAS'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('REPORTE');">
 					
 					<h4>
 						<h:outputText value="04."/>
 					</h4>
 					<h3>
-						<h:outputText value="Tareas"/>
+						<h:outputText value="Reportes"/>
 					</h3>
 					
 				</div>
 				
 			</div>
-			<div class="EmptyBox5"/>
 			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='INICIO'}" id="inicio">
 				<ui:include src="./inicio/incl_proforma_lista.xhtml"/>
 			</f:subview>
@@ -292,11 +301,11 @@
 				<ui:include src="./formulario/incl_proforma_form.xhtml"/>
 			</f:subview>
 			
-			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='EMAIL'}" id="email">
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='TAREA'}" id="email">
 				
 			</f:subview>
 			
-			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='TAREAS'}" id="tareas">
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='REPORTE'}" id="tareas">
 				
 			</f:subview>
 	    	
@@ -307,6 +316,9 @@
 	    
 	    <!-- Busqueda Productos -->
 	    <ui:include src="../productos/incl_listaProducto.xhtml" />
+	    
+	    <!-- Form Lista cliente -->
+	    <ui:include src="../herramientas/incl_listaCliente.xhtml" />
         
     </ui:define>
 

@@ -35,6 +35,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.servicio.CotizacionServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -54,6 +55,9 @@ public class CotizacionCtrl extends BaseCtrl {
 	
 	@EJB
 	private CotizacionServicio cotizacionServicio;
+	
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 	
 	private String criterioBusqueda;
 	private Date desde;
@@ -76,6 +80,7 @@ public class CotizacionCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			estado = "SEGUIMIENTO";
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -30);
@@ -89,7 +94,7 @@ public class CotizacionCtrl extends BaseCtrl {
 	
 	public void consultar()throws DaoException{
 		proformaList = null;
-		proformaList = cotizacionServicio.getByCriteria(desde, hasta, criterioBusqueda, AppJsfUtil.getEstablecimiento().getIdestablecimiento(), estado);
+		proformaList = cotizacionServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estado);
 		totalizar();
 	}
 	
@@ -118,7 +123,7 @@ public class CotizacionCtrl extends BaseCtrl {
 			cotizacionServicio.archivarCotizacion(proformaSelected.getIdcabecera());
 			proformaSelected = null;
 			CotizacionFormCtrl cotizacionFormCtrl = (CotizacionFormCtrl)AppJsfUtil.getManagedBean("cotizacionFormCtrl");
-			cotizacionFormCtrl.nuevoFromMain();
+			cotizacionFormCtrl.nuevoFromMain(establecimientoMain);
 			consultar();
 			
 		} catch (Exception e) {
@@ -166,7 +171,7 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -256,7 +261,7 @@ public class CotizacionCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-CotEmitidas-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-CotEmitidas-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -287,7 +292,7 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 			// datos cabecera
 			Row rowCliente = sheet.getRow(3);
-			rowCliente.createCell(1).setCellValue(AppJsfUtil.getEstablecimiento().getNombrecomercial());
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
 			
 			rowCliente = sheet.getRow(4);
 			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
@@ -477,7 +482,7 @@ public class CotizacionCtrl extends BaseCtrl {
 			wb.write(out);
 			out.close();
 			
-			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-CotEmitidasDetalle-" +  AppJsfUtil.getEstablecimiento().getNombrecomercial() + ".xlsx");
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-CotEmitidasDetalle-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
