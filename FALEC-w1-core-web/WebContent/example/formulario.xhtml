@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="title">Formularios</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+        	
+        	.p-field,
+        	.p-field > label,
+        	.p-field-checkbox, 
+        	.p-field-radiobutton {
+				margin-bottom: 0.25rem !important;
+			}
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+		
+		<div class="card p-mb-1">
+			<h4>Vertical</h4>
+			<div class="ui-fluid">
+		        <div class="p-field">
+		            <label for="firstname1">Firstname</label>
+		            <p:inputText id="firstname1" type="text" />
+		        </div>
+		        <div class="p-field">
+		            <label for="lastname1">Lastname</label>
+		            <p:inputText id="lastname1" type="text" />
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="card p-mb-1">
+			<h4>Vertical and Grid</h4>
+			<div class="p-grid p-formgrid ui-fluid">
+		        <div class="p-field p-col">
+		            <label for="firstname2">Firstname</label>
+		            <p:inputText id="firstname2" type="text" />
+		        </div>
+		        <div class="p-field p-col">
+		            <label for="lastname2">Lastname</label>
+		            <p:inputText id="lastname" type="text" />
+		        </div>
+		    </div>
+		</div>    
+		
+		<div class="card p-mb-1">
+			<h4>Horizantal and fixed grid</h4>
+			<div class="p-field p-grid p-nogutter">
+				<label for="firstname3" class="p-col-fixed" style="width: 150px;">Firstname</label>
+				<div class="p-col">
+					<p:inputText id="firstname3" type="text" />
+				</div>
+			</div>
+			<div class="p-field p-grid p-nogutter">
+				<label for="lastname3" class="p-col-fixed" style="width: 150px;">Lastname</label>
+				<div class="p-col">
+					<p:inputText id="lastname3" type="text" />
+				</div>
+			</div>
+		</div>
+		
+		<div class="card p-mb-1">
+			<h4>Horizantal and fluid</h4>
+			<div class="ui-fluid">
+				<div class="p-grid p-field">
+					<label for="firstname4" class="p-col-12 p-mb-0 p-md-2 p-mb-md-0">Firstname</label>
+					<div class="p-col-12 p-md-10  p-mb-0">
+		                <p:inputText id="firstname4" type="text" />
+		            </div>
+				</div>
+				<div class="p-grid p-field">
+					<label for="lastname4" class="p-col-12 p-mb-0 p-md-2 p-mb-md-0">Lastname</label>
+					<div class="p-col-12 p-md-10 p-mb-0">
+		                <p:inputText id="lastname4" type="text" />
+		            </div>
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		<div class="card p-mb-1">
+			<p:selectManyCheckbox id="customChkbox1" layout="custom">
+		        <f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+		        <f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+		    </p:selectManyCheckbox>
+		
+		    <p:selectManyCheckbox id="customChkbox2" layout="custom">
+		        <f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+		        <f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+		    </p:selectManyCheckbox>
+			<h4>Vertical Checkbox</h4>
+			<div class="p-field-checkbox">
+				<p:checkbox id="city1" for="customChkbox1" itemIndex="0"/>
+				<label for="city1">Chicago</label>
+			</div>
+			<div class="p-field-checkbox">
+				<p:checkbox id="city2" for="customChkbox1" itemIndex="1"/>
+				<label for="city2">Los Angeles</label>
+			</div>
+			
+			<h5>Horizontal Checkbox</h5>
+			<div class="p-formgroup-inline">
+				<div class="p-field-checkbox">
+					<p:checkbox id="city3" for="customChkbox2" itemIndex="0"/>
+					<label for="city3">Chicago</label>
+				</div>
+				<div class="p-field-checkbox">
+					<p:checkbox id="city4" for="customChkbox2" itemIndex="1"/>
+					<label for="city4">Los Angeles</label>
+				</div>
+			</div>
+			
+		</div>
+	    
+	    <div class="card p-mb-1">
+	    	<h5>In Line</h5>
+	    	<div class="p-formgroup-inline">
+	    		<div class="p-field">
+		            <label for="firstname5" class="p-sr-only">Firstname</label>
+		            <p:inputText id="firstname5" type="text" placeholder="Firstname" />
+		        </div>
+		        <div class="p-field">
+		            <label for="lastname5" class="p-sr-only">Lastname</label>
+		            <p:inputText id="lastname5" type="text" placeholder="Lastname" />
+		        </div>
+		        <p:commandButton type="button" value="Submit" />
+	    	</div>
+	    </div>
+	    
+	    <div class="card">
+		    <h5>Help Text</h5>
+		    <div class="p-field ui-fluid">
+		        <label for="username">Username</label>
+		        <p:inputText id="username" type="username" aria-describedby="username-help" />
+		        <small id="username-help">Enter your username to reset your password.</small>
+		    </div>
+		</div>
+	    
+	    
+    </ui:define>
+
+</ui:composition>
