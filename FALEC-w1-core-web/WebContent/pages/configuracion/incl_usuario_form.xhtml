@@ -8,8 +8,10 @@
 	
 	<style type="text/css">
 		
-		.heightFrmUsuario {
-				/* height: 560px; */
+		@media screen and (max-height: 1024px){
+			.heightFrmUsuario {
+				max-height: 800px;
+			}
 		}
 		
 	</style>
@@ -109,9 +111,6 @@
 					</p:inputText>
 					<p:message for="intEmailUsuario" />
 					
-					
-					
-					
 					<h:outputText value="PUNTO EMISIÓN * : " styleClass="cpoRequerido"/>
 					<h:panelGroup>
 						<p:inputText id="intPuntoEmision" value="#{usuarioCtrl.usuarioSelected.puntoemision}" required="true" requiredMessage="REQUERIDO" converterMessage="SOLO NÚMEROS" styleClass="Wid100" maxlength="3" validatorMessage="SOLO NÚMEROS">
@@ -120,12 +119,16 @@
 					</h:panelGroup>
 					<p:message for="intPuntoEmision"/>
 					
-					<h:outputText value="ADMINISTRADOR * : " styleClass="cpoRequerido"/>
+					<!-- <h:outputText value="ADMINISTRADOR * : " styleClass="cpoRequerido"/>
 					<p:selectOneMenu id="somAdministrador" value="#{usuarioCtrl.usuarioSelected.administrador}" styleClass="Wid100">
 						<f:selectItem itemLabel="SI" itemValue="S"/>
 						<f:selectItem itemLabel="NO" itemValue="N"/>
 					</p:selectOneMenu>
-					<p:message for="somAdministrador"/>
+					<p:message for="somAdministrador"/> -->
+					
+					<h:outputText value="FIRMA EMAIL  : " styleClass="cpoRequerido"/>
+					<p:textEditor secure="false" id="teefirmaemail" widgetVar="teefirmaemail" value="#{usuarioCtrl.usuarioSelected.firmaemail}" height="150"  />
+					<p:message for="teefirmaemail"/>
 					
 					<h:outputText value="ACTUALIZAR CREDENCIALES : " styleClass="cpoRequerido"/>
 					<p:selectBooleanCheckbox value="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" disabled="#{usuarioCtrl.usuarioSelected.idusuario == null}">

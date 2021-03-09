@@ -12,6 +12,10 @@
 			/* min-height: 20vh !important;
 			height: calc(100vh - 755px)!important; */
 		}   	
+		.cpoRequerido{
+			/* color:#566573!important; */
+			/* font-weight: 400; */
+		}
     </style>
     
     <!-- consulta cliente return keycode 13 -->
@@ -36,7 +40,7 @@
 					<p:inputText id="intSecCaja" value="#{cotizacionFormCtrl.cabecerSelected.secuencialCaja}" maxlength="3" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
 					<h:outputText value=" - " />
 					<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialNumero}" rendered="#{not cotizacionFormCtrl.cabecerSelected.editarSecuencial}"/>
-					<p:message styleClass="Wid100" for="intSecCaja"/>
+					<p:message styleClass="Wid100 DispBlock" for="intSecCaja"/>
 				</p:outputLabel>
 				
 			</h:panelGroup>
@@ -61,7 +65,7 @@
 				<p:message for="claFacFecha" />
 			</h:panelGroup>
 			
-			<h:outputText value="ENVIADO EMAIL *" styleClass="cpoRequerido"/>
+			<h:outputText value="EMAIL ENVIADO *" styleClass="cpoRequerido"/>
 			<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.envioEmailBol}" offLabel="NO" onLabel="SI" showLabels="true"/>
 			
 			<h:outputText value="RESUMEN *" styleClass="cpoRequerido"/>

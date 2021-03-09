@@ -230,6 +230,20 @@
 			.W180px{width: 180px!important;}
 			.W200px{width: 200px!important;}
 			
+			/* file upload */
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				/* display: none; */
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
         </style>
     </ui:define>
 
@@ -319,6 +333,9 @@
 	    
 	    <!-- Form Lista cliente -->
 	    <ui:include src="../herramientas/incl_listaCliente.xhtml" />
+	    
+	    <!-- Form Email -->
+	    <ui:include src="./incl_proforma_mail.xhtml" />
         
     </ui:define>
 

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.vcw.falecpv.core.email.ActualizaNegocio;
+import com.vcw.falecpv.core.modelo.dto.FileDto;
 
 
 /**
@@ -22,6 +23,7 @@ public class EmailDto implements Serializable {
 	protected boolean correoHtml;
 	protected String contenido;
 	protected List<File> adjuntos;
+	protected List<FileDto> fileDtos;
 
 	protected boolean cita;
 	protected boolean cancelacionCita;
@@ -34,6 +36,10 @@ public class EmailDto implements Serializable {
 	protected String nombreAdjunto;
 	
 	protected ActualizaNegocio actualizaNegocio;
+	protected String toString;
+	protected String ccString;
+	protected boolean seleccion = false;
+	
 
 	/**
 	 * @return the asunto
@@ -249,6 +255,62 @@ public class EmailDto implements Serializable {
 	 */
 	public void setNombreAdjunto(String nombreAdjunto) {
 		this.nombreAdjunto = nombreAdjunto;
+	}
+
+	/**
+	 * @return the toString
+	 */
+	public String getToString() {
+		return toString;
+	}
+
+	/**
+	 * @param toString the toString to set
+	 */
+	public void setToString(String toString) {
+		this.toString = toString;
+	}
+
+	/**
+	 * @return the ccString
+	 */
+	public String getCcString() {
+		return ccString;
+	}
+
+	/**
+	 * @param ccString the ccString to set
+	 */
+	public void setCcString(String ccString) {
+		this.ccString = ccString;
+	}
+
+	/**
+	 * @return the seleccion
+	 */
+	public boolean isSeleccion() {
+		return seleccion;
+	}
+
+	/**
+	 * @param seleccion the seleccion to set
+	 */
+	public void setSeleccion(boolean seleccion) {
+		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the fileDtos
+	 */
+	public List<FileDto> getFileDtos() {
+		return fileDtos;
+	}
+
+	/**
+	 * @param fileDtos the fileDtos to set
+	 */
+	public void setFileDtos(List<FileDto> fileDtos) {
+		this.fileDtos = fileDtos;
 	}
 
 	

@@ -6,8 +6,10 @@ package com.vcw.falecpv.web.ctrl.proforma;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -30,13 +33,19 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.email.EmailService;
+import com.vcw.falecpv.core.email.dto.EmailDto;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
+import com.vcw.falecpv.core.modelo.dto.FileDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
+import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.CotizacionServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.servicio.emailcomprobante.EmailCotizacionServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -59,6 +68,15 @@ public class CotizacionCtrl extends BaseCtrl {
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
 	
+	@EJB
+	private EmailService emailService;
+	
+	@EJB
+	private UsuarioServicio usuarioServicio;
+	
+	@EJB
+	private EmailCotizacionServicio emailCotizacionServicio;
+	
 	private String criterioBusqueda;
 	private Date desde;
 	private Date hasta;
@@ -70,6 +88,7 @@ public class CotizacionCtrl extends BaseCtrl {
 	private BigDecimal totalArchivados = BigDecimal.ZERO;
 	private BigDecimal totalfacturados = BigDecimal.ZERO;
 	private BigDecimal totalSeguimiento = BigDecimal.ZERO;
+	private EmailDto emailDto;
 	
 	/**
 	 * 
@@ -491,6 +510,51 @@ public class CotizacionCtrl extends BaseCtrl {
 		return null;
 	}
 	
+	public void cargarFormularioEmail() {
+		try {
+			
+			emailDto = emailService.configurarCorreo(establecimientoMain.getEmpresa().getIdempresa(), AppJsfUtil.getUsuario().getIdusuario());
+			Usuario usuario = usuarioServicio.consultarByPk(AppJsfUtil.getUsuario().getIdusuario());
+			
+			emailDto.setToString(proformaSelected.getCliente().getCorreoelectronico());
+			emailDto.setCcString(usuario.getCorreoelectronico());
+			
+			emailDto.setContenido(emailCotizacionServicio.getContenidoFacade(proformaSelected.getIdcabecera(), AppJsfUtil.getUsuario().getIdusuario(), establecimientoMain.getEmpresa().getIdempresa()));
+			emailDto.setAsunto(proformaSelected.getEstablecimiento().getNombrecomercial() + " " + msg.getString("label.cotizacion") + " " + ComprobanteHelper.formatNumDocumento(proformaSelected.getNumdocumento()));
+			
+			AppJsfUtil.showModalRender("dlgEmailCotizacion", "frmEmailCotizacion");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void handleUpload(FileUploadEvent event) throws IOException {
+		
+		if(emailDto.getFileDtos()==null) {
+			emailDto.setFileDtos(new ArrayList<>());
+		}
+		
+		// verifica si ya esxiste el archivo
+		for (FileDto f : emailDto.getFileDtos()) {
+			if(f.getNombre().equals(event.getFile().getFileName())) {
+				AppJsfUtil.addErrorMessage("frmEmailCotizacion", "ERROR", "YA EXISTE EL ARCHIVO : " + event.getFile().getFileName());
+				return;
+			}
+		}
+		// agrega el file a la lista
+		FileDto fileDto = new FileDto();
+		fileDto.setNombre(event.getFile().getFileName());
+		fileDto.setFileByte(event.getFile().getContent());
+		emailDto.getFileDtos().add(fileDto);
+		
+	}
+	
+	public void eliminarAdjuntos(String nombreFile) {
+		emailDto.getFileDtos().removeIf(x->x.getNombre().equals(nombreFile));
+	}
+	
 	/**
 	 * @return the criterioBusqueda
 	 */
@@ -643,6 +707,20 @@ public class CotizacionCtrl extends BaseCtrl {
 	 */
 	public void setProformaSelected(Cabecera proformaSelected) {
 		this.proformaSelected = proformaSelected;
+	}
+
+	/**
+	 * @return the emailDto
+	 */
+	public EmailDto getEmailDto() {
+		return emailDto;
+	}
+
+	/**
+	 * @param emailDto the emailDto to set
+	 */
+	public void setEmailDto(EmailDto emailDto) {
+		this.emailDto = emailDto;
 	}
 
 }

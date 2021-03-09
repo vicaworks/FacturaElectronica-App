@@ -107,6 +107,9 @@ public class Usuario implements Serializable {
     @Column(name = "habilitarestablecimiento", nullable = false)
     private int habilitarestablecimiento = 0;
     
+    @Column(name = "firmaemail")
+    private String firmaemail;
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     private Establecimiento establecimiento;
@@ -505,6 +508,24 @@ public class Usuario implements Serializable {
 	public void setHabilitarestablecimientoBOL(boolean habilitarestablecimientoBOL) {
 		this.habilitarestablecimiento = habilitarestablecimientoBOL?1:0;
 		this.habilitarestablecimientoBOL = habilitarestablecimientoBOL;
+	}
+
+
+
+	/**
+	 * @return the firmaemail
+	 */
+	public String getFirmaemail() {
+		return firmaemail;
+	}
+
+
+
+	/**
+	 * @param firmaemail the firmaemail to set
+	 */
+	public void setFirmaemail(String firmaemail) {
+		this.firmaemail = firmaemail;
 	}
 
 

@@ -225,6 +225,10 @@
 							</p:commandLink>
 							<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
 								
+								<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form">
+									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
+								</p:menuitem>
+								
 								<p:menuitem value=" Crear una Copia" action="#{cotizacionFormCtrl.crearUnaCopia(p.idcabecera)}" icon="fa fa-copy" update="@form">
 									<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{cotizacionFormCtrl.establecimientoMain}"/>
 									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
