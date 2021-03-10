@@ -39,7 +39,7 @@
 						
 					<p:commandButton 
 						value="ENVIAR" icon="fa fa-envelope" 
-						action="#" styleClass="MRight10" update="@form"
+						action="#{cotizacionCtrl.enviarEmail}" styleClass="MRight10" update="@form :formMain:inicio:pvUnoDT"
 						/>
 					
 					<p:commandButton id="cmdListCliCerrar"
@@ -93,7 +93,7 @@
 		            			<p:message for="subject" styleClass="DispBlock"/>
 							</div>
 							<div class="p-field">
-								<p:textEditor secure="false" widgetVar="editor1" value="#{cotizacionCtrl.emailDto.contenido}" height="200"  />
+								<p:textEditor secure="false" widgetVar="editor1" value="#{cotizacionCtrl.emailDto.contenido}" height="200"  allowFormatting="true" allowBlocks="true" allowImages="true" allowLinks="true" allowStyles="true" />
 							</div>
 						</div>
 					

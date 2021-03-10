@@ -1,5 +1,19 @@
-<p>Esimados $cliente,</p>
-<p>Adjuntamos la cotizaci&oacute;n Num. <strong>$numcotizacion</strong>, con un valor de <strong>$valor, </strong>si tiene alguna pregunta no dude en ponerce en contacto con nosotros.</p>
-<p>&nbsp;</p>
-<p>$firmaemail</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<style>
+        p{padding: 0px;margin: 0px;}
+    </style>
+    <p>Estimados $cliente,</p>
+    <p>&nbsp;</p>
+    <p>Adjuntamos la cotizaci&oacute;n NUM. <strong>$numcotizacion</strong>, con un valor de <strong>$valor, </strong>si tiene alguna pregunta no dude en ponerce en contacto con nosotros.</p>
+    <p>&nbsp;</p>
+    <p>$firmaemail</p>
+    <p>&nbsp;</p>
+</body>
+</html>

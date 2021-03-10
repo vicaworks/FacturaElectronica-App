@@ -551,6 +551,17 @@ public class CotizacionCtrl extends BaseCtrl {
 		
 	}
 	
+	public void enviarEmail() {
+		try {
+			emailCotizacionServicio.enviarCotizacionEmail(AppJsfUtil.getUsuario().getIdusuario(), emailDto, proformaSelected);
+			AppJsfUtil.addInfoMessage("frmEmailCotizacion", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE.");
+	        consultar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmEmailCotizacion", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	public void eliminarAdjuntos(String nombreFile) {
 		emailDto.getFileDtos().removeIf(x->x.getNombre().equals(nombreFile));
 	}
