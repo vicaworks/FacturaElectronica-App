@@ -9,6 +9,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
+import com.servitec.common.dao.exception.DaoException;
+import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
 import com.vcw.falecpv.core.dao.impl.TareacabeceraDao;
 import com.vcw.falecpv.core.modelo.persistencia.Tareacabecera;
 
@@ -21,6 +23,9 @@ public class TareacabeceraServicio extends AppGenericService<Tareacabecera, Stri
 	
 	@Inject
 	private TareacabeceraDao tareacabeceraDao;
+	
+	@Inject 
+	private ContadorPkServicio contadorPkServicio;
 	
 	/**
 	 * 
@@ -49,5 +54,21 @@ public class TareacabeceraServicio extends AppGenericService<Tareacabecera, Stri
 	public TareacabeceraDao getTareacabeceraDao() {
 		return tareacabeceraDao;
 	}
+
+	@Override
+	public Tareacabecera crear(Tareacabecera o) throws DaoException {
+		try {
+			
+			o.setIdtareacabecera(contadorPkServicio.generarContadorTabla(TCEmpresa.TAREA_CABECERA, o.getIdEstablecimiento(), true));
+			
+			return super.crear(o);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	
 
 }

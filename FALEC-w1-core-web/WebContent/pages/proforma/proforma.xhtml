@@ -262,7 +262,7 @@
 	    	
 	    	<div class="p-grid">
 	    	
-				<div class="p-col-12 p-md-6 p-lg-3  tabProforma #{cotizacionCtrl.comprobanteRender=='INICIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('INICIO');">
+				<div class="p-col-6 p-md-3  tabProforma #{cotizacionCtrl.comprobanteRender=='INICIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('INICIO');">
 					
 					<h4>
 						<h:outputText value="01."/>
@@ -273,7 +273,7 @@
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='FORMULARIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('FORMULARIO');">
+				<div class="p-col-6 p-md-3 tabProforma #{cotizacionCtrl.comprobanteRender=='FORMULARIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('FORMULARIO');">
 					
 					<h4>
 						<h:outputText value="02."/>
@@ -284,18 +284,18 @@
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='EMAIL'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('TAREA');">
+				<div class="p-col-6 p-md-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREA'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('TAREA');">
 					
 					<h4>
 						<h:outputText value="03."/>
 					</h4>
 					<h3>
-						<h:outputText value="Seguimiento - Tareas"/>
+						<h:outputText value="Seguimiento"/>
 					</h3>
 					
 				</div>
 				
-				<div class="p-col-12 p-md-6 p-lg-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREAS'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('REPORTE');">
+				<div class="p-col-6 p-md-3 tabProforma #{cotizacionCtrl.comprobanteRender=='REPORTE'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('REPORTE');">
 					
 					<h4>
 						<h:outputText value="04."/>
@@ -315,11 +315,11 @@
 				<ui:include src="./formulario/incl_proforma_form.xhtml"/>
 			</f:subview>
 			
-			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='TAREA'}" id="email">
-				
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='TAREA'}" id="tarea">
+				<ui:include src="./formulario/incl_tareas_main_form.xhtml"/>
 			</f:subview>
 			
-			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='REPORTE'}" id="tareas">
+			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='REPORTE'}" id="reporte">
 				
 			</f:subview>
 	    	
@@ -336,6 +336,12 @@
 	    
 	    <!-- Form Email -->
 	    <ui:include src="./incl_proforma_mail.xhtml" />
+	    
+	    <!-- Form tarea -->
+	    <ui:include src="./incl_proforma_tarea.xhtml" />
+	    
+	    <!-- Form etiqueta -->
+	    <ui:include src="../herramientas/incl_etiqueta_form.xhtml" />
         
     </ui:define>
 

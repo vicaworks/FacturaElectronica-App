@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		
+		
+		.p-field,
+        	.p-field > label,
+        	.p-field-checkbox, 
+        	.p-field-radiobutton {
+				margin-bottom: 0.15rem !important;
+		}
+		
+		.p-field > small{margin-top: 0px !important;}
+		
+		.calendario .ui-calendar input {padding: 0.3em!important;}
+		
+	</style>
+	
+	<p:dialog header="Etiqueta" widgetVar="dlgCotizacionTareaEtqueta" modal="true" responsive="true" width="400px" closeOnEscape="true" styleClass="modalResponsivo" resizable="true">
+		<h:form id="frmCotizacionTareaEtiqueta">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp">
+				
+				<div class="p-col-12" style="text-align:left;">	
+						
+					<p:commandButton 
+						value="GUARDAR" icon="fa fa-floppy-o" 
+						action="#{etiquetaCtrl.guardar}" styleClass="MRight10" update="@form #{etiquetaCtrl.updateView}"
+						/>
+					
+					<p:commandButton id="cmdListCliCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgCotizacionTareaEtqueta').hide()" immediate="true"  
+						/>
+					
+				</div>	
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCotizacionTareaEtiqueta"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmProformaTareaEtq contenedorFormulario">
+				
+				<div class="p-grid ui-fluid p-p-1" style="width: 99.5%!important;">
+					
+					<div class="p-field p-col-12">
+						<label for="t-descripcion">ETIQUETA * </label>
+						<p:inputText maxlength="100" value="#{etiquetaCtrl.tareaetiquetaSelected.etiqueta}" id="t-nuevaetiqueta" styleClass="Wid100 p-mb-1">
+						</p:inputText>
+						<p:message for="t-nuevaetiqueta" styleClass="DispBlock" id="msgt-nuevaetiqueta"/>
+					</div>	
+								
+				</div>
+				
+			</div>
+			
+		</h:form>
+		
+	
+	</p:dialog>
+
+</ui:composition>

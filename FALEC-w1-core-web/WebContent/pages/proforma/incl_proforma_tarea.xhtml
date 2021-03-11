@@ -1,0 +1,209 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		
+		
+		.p-field,
+        	.p-field > label,
+        	.p-field-checkbox, 
+        	.p-field-radiobutton {
+				margin-bottom: 0.15rem !important;
+		}
+		
+		.p-field > small{margin-top: 0px !important;}
+		
+		.calendario .ui-calendar input {padding: 0.3em!important;}
+		
+		.novisible{display:none;}
+		
+		.ui-radiobutton-icon{width: 6rem;}
+		
+		@media screen and (max-height: 1024px){
+			.heightFrmProformaTarea {
+				max-height: 800px;
+			}
+		}
+		
+	</style>
+	
+	<p:dialog header="Tarea seguimiento" widgetVar="dlgCotizacionTarea" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo" resizable="true">
+		<h:form id="frmCotizacionTarea">
+			
+			<!-- OPCIONES -->
+			
+			<div class="p-grid toolBarPopUp">
+				
+				<div class="p-col-12 p-md-6" style="text-align:left;">	
+						
+					<p:commandButton 
+						value="GUARDAR" icon="fa fa-floppy-o" 
+						action="#{tareaCotCtrl.guardar}" styleClass="MRight10" update="@form #{tareaCotCtrl.updateView}"
+						/>
+					
+					<p:commandButton id="cmdListCliCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgCotizacionTarea').hide()" immediate="true"  
+						/>
+					
+				</div>	
+				
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCotizacionTarea" id="msgFrmCotizacionTarea"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="form-ui Wid100 OvYScroll heightFrmProformaTarea contenedorFormulario">
+				
+				<div class="p-grid nested-grid p-p-1" style="width: 99.5%!important;">
+					
+					<div class="p-col-12 ">
+						
+						<div class="p-formgrid p-grid ui-fluid">
+							
+							<div class="p-field p-col-12">
+								<label class="p-mr-2" for="t-numproforma" style="font-weight: 500;">PROFORMA </label>
+								<h:outputText id="t-numproforma" value="#{facEmitidaCtrl.getFormatoNumDocumento(tareaCotCtrl.cotizacionSelected.numdocumento)}"/>
+							</div>
+							
+							<div class="p-field p-col-12">
+								<label class="p-mr-2" for="t-cliente" style="font-weight: 500;">CLIENTE </label>
+								<h:outputText id="t-cliente" value="#{tareaCotCtrl.cotizacionSelected.cliente.razonsocial}"/>
+							</div>
+							
+							<div class="p-field p-col-12">
+								<label class="p-mr-2" for="t-resumen" style="font-weight: 500;">RESUMEN </label>
+								<h:outputText id="t-resumen" value="#{tareaCotCtrl.cotizacionSelected.resumen}"/>
+							</div>
+							
+							<div class="p-field p-col-12 p-md-11">
+								<label class="p-mr-2" for="t-etiqueta">ETIQUETA TAREA * </label>
+								<p:selectOneMenu id="t-etiqueta"
+									value="#{tareaCotCtrl.tareacabeceraSelected.tareaetiqueta}"
+									converter="omnifaces.SelectItemsConverter"
+									required="false"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+			
+									<f:selectItems value="#{tareaCotCtrl.tareaetiquetaList}" var="et"
+										itemLabel="#{et.etiqueta}" itemValue="#{et}" />
+									<p:ajax event="valueChange" update="@this :frmCotizacionTarea:t-editartarea"/>	
+								</p:selectOneMenu>
+								<p:message for="t-etiqueta" styleClass="DispBlock"/>
+								
+							</div>
+							
+							<div class="p-field p-col-12 p-md-1 p-as-end TexAlCenter Fs16" >
+								<p:commandLink id="t-agregartarea" style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}" >
+									<i class="fa fa-plus p-ml-1 p-mr-2"></i>
+									<f:setPropertyActionListener value="PROFORMA" target="#{etiquetaCtrl.callModule}"/>
+									<f:setPropertyActionListener value="frmCotizacionTarea" target="#{etiquetaCtrl.callForm}"/>
+									<f:setPropertyActionListener value=":frmCotizacionTarea:t-etiqueta" target="#{etiquetaCtrl.updateView}"/>
+									<f:setPropertyActionListener value="#{tareaCotCtrl}" target="#{etiquetaCtrl.tareaCotCtrl}"/>
+									<f:setPropertyActionListener value="#{tareaCotCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
+								</p:commandLink>
+								<p:commandLink id="t-editartarea" style="color:#2f2f2f;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.tareaetiqueta}">
+									<i class="fa fa-edit"></i>
+									<f:setPropertyActionListener value="#{tareaCotCtrl.tareacabeceraSelected.tareaetiqueta}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
+									<f:setPropertyActionListener value="PROFORMA" target="#{etiquetaCtrl.callModule}"/>
+									<f:setPropertyActionListener value="frmCotizacionTarea" target="#{etiquetaCtrl.callForm}"/>
+									<f:setPropertyActionListener value=":frmCotizacionTarea:t-etiqueta" target="#{etiquetaCtrl.updateView}"/>
+									<f:setPropertyActionListener value="#{tareaCotCtrl}" target="#{etiquetaCtrl.tareaCotCtrl}"/>
+									<f:setPropertyActionListener value="#{tareaCotCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
+								</p:commandLink>
+							</div>
+							
+							<div class="p-field p-col-12">
+								<label for="t-descripcion">DESCRIPCIÓN </label>
+								<p:inputTextarea rows="3" id="t-descripcion" value="#{tareaCotCtrl.tareacabeceraSelected.descripcion}" maxlength="1000"></p:inputTextarea>
+							</div>
+							
+							<div class="p-field p-col-12 p-md-6 calendario">
+								<label for="t-fecha">FECHA CONTROL * </label>
+								<p:calendar id="t-fecha" value="#{tareaCotCtrl.tareacabeceraSelected.fechalimite}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								<p:message for="t-fecha" styleClass="DispBlock"/>
+							</div>
+							
+							<div class="p-field p-col-12 p-md-6">
+								<label for="t-prioridad">PRIORIDAD * </label>
+								<p:selectOneMenu id="t-prioridad"
+									value="#{tareaCotCtrl.tareacabeceraSelected.prioridad}"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100">
+									<f:selectItem itemLabel="IMPORTANTE" itemValue="IMPORTANTE"/>
+									<f:selectItem itemLabel="ALTA" itemValue="ALTA"/>
+									<f:selectItem itemLabel="MEDIA" itemValue="MEDIA"/>
+									<f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
+								</p:selectOneMenu>
+								<p:message for="t-prioridad" styleClass="DispBlock"/>
+							</div>
+							
+							
+							<div class="p-field p-col-12">
+								<div class="p-formgroup-inline p-jc-center p-mt-2">
+								
+									<p:selectOneRadio id="city2" value="#{tareaCotCtrl.tareacabeceraSelected.estado}" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.idtareacabecera}">
+							            <f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE"/>
+								        <f:selectItem itemLabel="CERRADO" itemValue="CERRADO"/>
+								        <f:selectItem itemLabel="VENCIDO" itemValue="VENCIDO"/>
+							        </p:selectOneRadio>
+								
+								
+									<!-- <p:selectOneRadio id="radio-estado" layout="custom" value="#{tareaCotCtrl.tareacabeceraSelected.estado}" unselectable="true">
+								        <f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE"/>
+								        <f:selectItem itemLabel="CERRADO" itemValue="CERRADO"/>
+								        <f:selectItem itemLabel="VENCIDO" itemValue="VENCIDO"/>
+								    </p:selectOneRadio>
+									 <div class="p-field-radiobutton">
+							            <label for="est-pendiente">PENDIENTE</label>
+							            <p:radioButton id="est-pendiente"  for="radio-estado" itemIndex="0"  disabled="#{empty tareaCotCtrl.tareacabeceraSelected.idtareacabecera}"/>
+							        </div>
+							        <div class="p-field-radiobutton">
+							            <label for="est-cerrado">CERRADO</label>
+							            <p:radioButton id="est-cerrado"  for="radio-estado" itemIndex="1" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.idtareacabecera}"/>
+							        </div>
+							        <div class="p-field-radiobutton">
+							            <label for="est-vencido">VENCIDO</label>
+							            <p:radioButton id="est-vencido"  for="radio-estado" itemIndex="2" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.idtareacabecera}"/>
+							        </div> -->
+								</div>								
+							</div>
+							
+						
+						</div>
+					
+					
+					
+					</div>					
+				
+				</div>
+				
+				
+			</div>
+			
+		</h:form>
+		
+		
+		
+	
+	</p:dialog>
+
+</ui:composition>

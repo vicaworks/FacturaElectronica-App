@@ -12,10 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.servitec.common.util.PojoUtil;
 
 /**
  * @author cristianvillarreal
@@ -52,6 +51,9 @@ public class Tareaetiqueta implements Serializable {
     @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
     @ManyToOne(optional = false)
     private Empresa empresa;
+    
+    @Transient
+    private String idEstablecimiento;
 
 	/**
 	 * 
@@ -81,7 +83,7 @@ public class Tareaetiqueta implements Serializable {
 
     @Override
     public String toString() {
-        return PojoUtil.toString(this);
+    	return String.format("[%s, %s]", idtareaetiqueta, etiqueta);
     }
 
 	/**
@@ -138,6 +140,20 @@ public class Tareaetiqueta implements Serializable {
 	 */
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the idEstablecimiento
+	 */
+	public String getIdEstablecimiento() {
+		return idEstablecimiento;
+	}
+
+	/**
+	 * @param idEstablecimiento the idEstablecimiento to set
+	 */
+	public void setIdEstablecimiento(String idEstablecimiento) {
+		this.idEstablecimiento = idEstablecimiento;
 	}
 
 }

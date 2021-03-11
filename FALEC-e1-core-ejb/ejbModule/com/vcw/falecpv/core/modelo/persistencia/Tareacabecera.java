@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -78,6 +79,9 @@ public class Tareacabecera implements Serializable {
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario", nullable = false)
     @ManyToOne(optional = false)
     private Usuario usuario;
+    
+    @Transient
+    private String idEstablecimiento;
 
 	/**
 	 * 
@@ -234,6 +238,20 @@ public class Tareacabecera implements Serializable {
 	 */
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the idEstablecimiento
+	 */
+	public String getIdEstablecimiento() {
+		return idEstablecimiento;
+	}
+
+	/**
+	 * @param idEstablecimiento the idEstablecimiento to set
+	 */
+	public void setIdEstablecimiento(String idEstablecimiento) {
+		this.idEstablecimiento = idEstablecimiento;
 	}
 
 }
