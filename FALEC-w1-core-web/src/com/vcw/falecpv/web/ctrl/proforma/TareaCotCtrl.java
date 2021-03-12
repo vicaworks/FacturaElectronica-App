@@ -54,6 +54,7 @@ public class TareaCotCtrl extends BaseCtrl {
 	private List<Tareaetiqueta> tareaetiquetaList;
 	private Tareacabecera tareacabeceraSelected = new Tareacabecera();
 	
+	
 
 	/**
 	 * 
@@ -74,6 +75,7 @@ public class TareaCotCtrl extends BaseCtrl {
 	
 	public void nuevaTarea() {
 		try {
+			
 			tareacabeceraSelected = new Tareacabecera();
 			tareacabeceraSelected.setUsuario(AppJsfUtil.getUsuario());
 			tareacabeceraSelected.setCabecera(cotizacionSelected);
@@ -132,11 +134,83 @@ public class TareaCotCtrl extends BaseCtrl {
 				tareacabeceraServicio.actualizar(tareacabeceraSelected);
 			}
 			
+			TareaCotMainCtrl tareaCotMainCtrl = (TareaCotMainCtrl)AppJsfUtil.getManagedBean("tareaCotMainCtrl");
+			switch (callModule) {
+			case "COTIZACION":
+				tareaCotMainCtrl.consultar();
+				break;
+			case "SEGUIMIENTO" :
+				tareaCotMainCtrl.consultar();
+				break;
+			default:
+				break;
+			}
+			
 			AppJsfUtil.addInfoMessage("frmCotizacionTarea", "OK", "REGISTRO GUARDADO CORRECTAMENTE.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmCotizacionTarea", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	@Override
+	public void eliminar() {
+		
+		try {
+			
+			tareacabeceraServicio.eliminar(tareacabeceraSelected);
+			
+			TareaCotMainCtrl tareaCotMainCtrl = (TareaCotMainCtrl)AppJsfUtil.getManagedBean("tareaCotMainCtrl");
+			switch (callModule) {
+			case "SEGUIMIENTO" :
+				tareaCotMainCtrl.consultar();
+				break;
+			default:
+				break;
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+	}
+	
+	public void cerrar() {
+		try {
+			
+			tareacabeceraSelected.setEstado("CERRADO");
+			tareacabeceraServicio.actualizar(tareacabeceraSelected);
+			
+			TareaCotMainCtrl tareaCotMainCtrl = (TareaCotMainCtrl)AppJsfUtil.getManagedBean("tareaCotMainCtrl");
+			switch (callModule) {
+			case "SEGUIMIENTO" :
+				tareaCotMainCtrl.consultar();
+				break;
+			default:
+				break;
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	
+	@Override
+	public void editar() {
+		try {
+			
+			consultarEtiquetas();
+			AppJsfUtil.showModalRender("dlgCotizacionTarea", "frmCotizacionTarea");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

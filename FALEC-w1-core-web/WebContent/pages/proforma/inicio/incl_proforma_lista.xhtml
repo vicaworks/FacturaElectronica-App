@@ -247,10 +247,11 @@
 									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Asignar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-list-alt" update="@form">
+								<p:menuitem value=" Agregar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" update="@form">
 									<f:setPropertyActionListener value="COTIZACION" target="#{tareaCotCtrl.callModule}"/>
+									<f:setPropertyActionListener value="#{null}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
 									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":formMain:inicio:pvUnoDT" target="#{tareaCotCtrl.updateView}"/>
+									<f:setPropertyActionListener value=":formMain:inicio:msgInicio :formMain:inicio:pvUnoDT :formMain:tarea:pvDosDT " target="#{tareaCotCtrl.updateView}"/>
 									<f:setPropertyActionListener value="#{p}" target="#{tareaCotCtrl.cotizacionSelected}"/>
 								</p:menuitem>
 								

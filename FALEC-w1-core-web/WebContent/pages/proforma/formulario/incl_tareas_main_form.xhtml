@@ -11,7 +11,13 @@
  		.pvDosDT .ui-datatable-scrollable-body{
 			min-height: 45vh !important;
 			height: calc(100vh - 415px)!important;				
-		}      	
+		}   
+		.dt-etiqueta{
+			border-left: 3px solid #34495E;
+			padding: 5px;
+			font-weight: 400;
+		}   	
+		.dt-descripcion{padding: 0px!important;padding-top:5px!important; ;color: rgba(0,0,0,0.7);}
     </style>
 	
 	<div class="card card-w-title" >
@@ -36,13 +42,13 @@
 			<div class="p-col-12 p-md-2">
 				<h:outputText value="ESTADO" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaEst"
-							value="#"
+							value="#{tareaCotMainCtrl.estadoSeleccion}"
 							styleClass="Wid100">
 					
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>								
 					<f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE"/>
 					<f:selectItem itemLabel="PENDIENTE-VENCIDO" itemValue="PENDIENTE-VENCIDO"/>
-					<f:selectItem itemLabel="CERRADO" itemValue="PENDIENTE"/>
+					<f:selectItem itemLabel="CERRADO" itemValue="CERRADO"/>
 						
 				</p:selectOneMenu>
 			</div>
@@ -50,7 +56,7 @@
 			<div class="p-col-12 p-md-2">
 				<h:outputText value="PRIORIDAD" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaPrioridad"
-							value="#"
+							value="#{tareaCotMainCtrl.prioridadSeleccion}"
 							styleClass="Wid100">
 					
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>								
@@ -66,30 +72,43 @@
 			<div class="p-col-12 p-md-6">
 				<h:outputText value="USUARIO" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaUsuario"
-							value="#"
+							value="#{tareaCotMainCtrl.usuarioSeleccion}"
+							converter="omnifaces.SelectItemsConverter"
 							styleClass="Wid100">
-					
+							
+					<f:selectItem itemLabel="TODOS"
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+					<f:selectItems value="#{tareaCotMainCtrl.usuarioList}" var="u"
+						itemLabel="#{u.nombre}" itemValue="#{u}" />
+						
 				</p:selectOneMenu>
 			</div>
 			
 			<div class="p-col-12 p-md-6">
 				<h:outputText value="CLIENTE" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaCliente"
-							value="#"
+							value="#{tareaCotMainCtrl.clienteSeleccion}"
+							converter="omnifaces.SelectItemsConverter"
 							styleClass="Wid100">
+				
+					<f:selectItem itemLabel="TODOS"
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+					<f:selectItems value="#{tareaCotMainCtrl.clienteList}" var="c"
+						itemLabel="#{c.razonsocial}" itemValue="#{c}" />
+							
 					
 				</p:selectOneMenu>
 			</div>
 			
 			<div class="p-col-12 p-md-2">
 				<h:outputText value="NUM COTIZACIÓN" styleClass="DispBlock p-mb-1"/>
-	    		<p:inputText ></p:inputText>
+	    		<p:inputText value="#{tareaCotMainCtrl.numCotizacion}"></p:inputText>
 			</div>
 			
 			<div class="p-col-6 p-md-2 p-as-end">
     			<p:commandButton 
 							icon="fa fa-search"
-							action="#" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+							action="#{tareaCotMainCtrl.buscar}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
 			</div>
 			
 			<div class="p-col-6 p-md-2 p-as-end">
@@ -200,16 +219,37 @@
 								<p:menuitem value=" Imprimir" action="#" icon="fa fa-print" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
 								</p:menuitem>
 								
-								<p:menuitem value=" Agregar tarea" action="#" icon="fa fa-plus" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+								<p:menuitem value=" Agregar tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Cerrar tarea" action="#" icon="fa fa-times-circle" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+								<p:menuitem value=" Cerrar tarea" action="#{tareaCotCtrl.cerrar}" icon="fa fa-times-circle" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Editar tarea" action="#" icon="fa fa-edit" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+								<p:menuitem value=" Editar tarea" action="#{tareaCotCtrl.editar}" icon="fa fa-edit" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Eliminar" action="#" icon="fa fa-close" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+								<p:menuitem value=" Eliminar" action="#{tareaCotCtrl.eliminar}" icon="fa fa-close" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								</p:menuitem>
 							
 							</p:menu>
@@ -222,7 +262,7 @@
 						</p:column>
 						
 						<p:column headerText="ESTADO" style="width:50px;">
-							<h:outputText value="#{t.estado}" >
+							<h:outputText value="#{t.estado}" style="#{t.estado=='VENCIDO'?'color:red;':''}">
 							</h:outputText>
 						</p:column>
 						
@@ -232,11 +272,11 @@
 						</p:column>
 						
 						<p:column headerText="TAREA" style="width:150px;">
-							<div class="p-grid p-m-1">
-								<div class="p-col-12">
+							<div class="p-grid p-nogutter">
+								<div class="p-col-12 dt-etiqueta">
 									<h:outputText value="#{t.tareaetiqueta.etiqueta}" />
 								</div>
-								<div class="p-col-12 p-p-1 p-pl-2">
+								<div class="p-col-12 dt-descripcion">
 									<h:outputText value="#{t.descripcion}" />
 								</div>
 							</div>
@@ -258,7 +298,7 @@
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="ESTADO" style="width:50px;">
+						<p:column headerText="ESTADO COT" style="width:50px;">
 							<h:outputText value="#{t.cabecera.estado}" >
 							</h:outputText>
 						</p:column>

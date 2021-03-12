@@ -854,7 +854,29 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
-		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @param genTipoDocumentoEnum
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Cliente> getClienteByTipoComprobante(String idEmpresa,GenTipoDocumentoEnum genTipoDocumentoEnum)throws DaoException{
+		try {
+			
+			QueryBuilder qb = new QueryBuilder(cabeceraDao.getEntityManager());
+			return qb.select("c.cliente")
+					.from(Cabecera.class,"c")
+					.equals("c.establecimiento.empresa.idempresa",idEmpresa)
+					.equals("c.tipocomprobante.identificador", genTipoDocumentoEnum.getIdentificador())
+					.orderBy("c.cliente.razonsocial").getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
 		
 	}
 
