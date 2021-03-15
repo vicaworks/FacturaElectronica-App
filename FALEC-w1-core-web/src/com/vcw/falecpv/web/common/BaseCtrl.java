@@ -21,6 +21,7 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.servitec.common.util.XmlCommonsUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -58,7 +59,7 @@ public abstract class BaseCtrl implements Serializable {
 	private ComprobanterecibidoServicio comprobanterecibidoServicio;
 	
 	protected MessageWebUtil msg = new MessageWebUtil();
-	protected String estado;
+	protected String estado = EstadoRegistroEnum.ACTIVO.getInicial();;
 	protected List<Infoadicional> infoadicionalList;
 	protected Infoadicional infoadicionalSelected;
 	private List<Tipopago> tipopagoList;

@@ -257,7 +257,7 @@
 							</p:menuitem>
 							<!-- <p:menuitem value="#{msg['label.retencion2']}" action="#" icon="fa fa-print" disabled="#{a.estado=='ANULADO'}">
 							</p:menuitem> -->
-							<p:menuitem value="Anular" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Anular" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}" update="@form">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
 						</p:menu>

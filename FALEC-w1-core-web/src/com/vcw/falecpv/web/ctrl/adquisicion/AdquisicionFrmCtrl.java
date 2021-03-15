@@ -275,7 +275,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	
 	private void calcularAdquicisioDetalleProducto(Adquisiciondetalle a,boolean calcDescuento) {
 		a.setPreciototalsinimpuesto(a.getCantidad().multiply(a.getPreciounitario()));
-		if(a.getPorcentajeDescuento().doubleValue()>0.0d && calcDescuento) {
+		if(a.getPorcentajeDescuento()!=null && a.getPorcentajeDescuento().doubleValue()>0.0d && calcDescuento) {
 			a.setDescuento(a.getPreciototalsinimpuesto().multiply(a.getPorcentajeDescuento()).setScale(2, RoundingMode.HALF_UP));
 		}else {
 			a.setPorcentajeDescuento(BigDecimal.ZERO);
