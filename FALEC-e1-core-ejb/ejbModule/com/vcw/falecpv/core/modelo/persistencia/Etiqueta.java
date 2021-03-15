@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "tareaetiqueta")
-public class Tareaetiqueta implements Serializable {
+public class Etiqueta implements Serializable {
 
 	/**
 	 * 
@@ -48,6 +48,12 @@ public class Tareaetiqueta implements Serializable {
     @Column(name = "estado", nullable = false, length = 1)
     private String estado;
     
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "modulo", nullable = false, length = 1)
+    private String modulo;
+    
     @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
     @ManyToOne(optional = false)
     private Empresa empresa;
@@ -58,7 +64,7 @@ public class Tareaetiqueta implements Serializable {
 	/**
 	 * 
 	 */
-	public Tareaetiqueta() {
+	public Etiqueta() {
 		
 	}
 	
@@ -71,10 +77,10 @@ public class Tareaetiqueta implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Tareaetiqueta)) {
+        if (!(object instanceof Etiqueta)) {
             return false;
         }
-        Tareaetiqueta other = (Tareaetiqueta) object;
+        Etiqueta other = (Etiqueta) object;
         if ((this.idtareaetiqueta == null && other.idtareaetiqueta != null) || (this.idtareaetiqueta != null && !this.idtareaetiqueta.equals(other.idtareaetiqueta))) {
             return false;
         }
@@ -154,6 +160,20 @@ public class Tareaetiqueta implements Serializable {
 	 */
 	public void setIdEstablecimiento(String idEstablecimiento) {
 		this.idEstablecimiento = idEstablecimiento;
+	}
+
+	/**
+	 * @return the modulo
+	 */
+	public String getModulo() {
+		return modulo;
+	}
+
+	/**
+	 * @param modulo the modulo to set
+	 */
+	public void setModulo(String modulo) {
+		this.modulo = modulo;
 	}
 
 }

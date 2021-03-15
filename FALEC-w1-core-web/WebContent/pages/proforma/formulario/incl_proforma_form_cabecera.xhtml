@@ -65,6 +65,9 @@
 				<p:message for="claFacFecha" />
 			</h:panelGroup>
 			
+			<h:outputText value="REQUIERE AUTORIZACIÓN *" styleClass="cpoRequerido"/>
+			<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.autorizacionBol}" offLabel="NO" onLabel="SI" showLabels="true"/>
+			
 			<h:outputText value="EMAIL ENVIADO *" styleClass="cpoRequerido"/>
 			<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.envioEmailBol}" offLabel="NO" onLabel="SI" showLabels="true"/>
 			

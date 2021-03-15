@@ -15,12 +15,13 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Tareacabecera;
-import com.vcw.falecpv.core.modelo.persistencia.Tareaetiqueta;
+import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TareacabeceraServicio;
-import com.vcw.falecpv.core.servicio.TareaetiquetaServicio;
+import com.vcw.falecpv.core.servicio.EtiquetaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -41,7 +42,7 @@ public class TareaCotCtrl extends BaseCtrl {
 	private EstablecimientoServicio establecimientoServicio;
 	
 	@EJB
-	private TareaetiquetaServicio tareaetiquetaServicio;
+	private EtiquetaServicio tareaetiquetaServicio;
 	
 	@EJB
 	private TareacabeceraServicio tareacabeceraServicio;
@@ -51,7 +52,7 @@ public class TareaCotCtrl extends BaseCtrl {
 	private String callForm;
 	private String updateView;
 	private Cabecera cotizacionSelected;
-	private List<Tareaetiqueta> tareaetiquetaList;
+	private List<Etiqueta> tareaetiquetaList;
 	private Tareacabecera tareacabeceraSelected = new Tareacabecera();
 	
 	
@@ -96,7 +97,7 @@ public class TareaCotCtrl extends BaseCtrl {
 
 	public void consultarEtiquetas() throws DaoException {
 		tareaetiquetaList = null;
-		tareaetiquetaList = tareaetiquetaServicio.getEtiquetas(establecimientoMain.getEmpresa().getIdempresa());
+		tareaetiquetaList = tareaetiquetaServicio.getEtiquetas(establecimientoMain.getEmpresa().getIdempresa(),EtiquetaModuloEnum.TAREA_COTIZACION.toString());
 	}
 	
 	@Override
@@ -273,14 +274,14 @@ public class TareaCotCtrl extends BaseCtrl {
 	/**
 	 * @return the tareaetiquetaList
 	 */
-	public List<Tareaetiqueta> getTareaetiquetaList() {
+	public List<Etiqueta> getTareaetiquetaList() {
 		return tareaetiquetaList;
 	}
 
 	/**
 	 * @param tareaetiquetaList the tareaetiquetaList to set
 	 */
-	public void setTareaetiquetaList(List<Tareaetiqueta> tareaetiquetaList) {
+	public void setTareaetiquetaList(List<Etiqueta> tareaetiquetaList) {
 		this.tareaetiquetaList = tareaetiquetaList;
 	}
 

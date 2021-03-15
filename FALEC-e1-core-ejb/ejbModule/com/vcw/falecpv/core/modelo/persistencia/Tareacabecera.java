@@ -74,7 +74,7 @@ public class Tareacabecera implements Serializable {
     
     @JoinColumn(name = "idtareaetiqueta", referencedColumnName = "idtareaetiqueta", nullable = false)
     @ManyToOne(optional = false)
-    private Tareaetiqueta tareaetiqueta;
+    private Etiqueta tareaetiqueta;
     
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario", nullable = false)
     @ManyToOne(optional = false)
@@ -215,14 +215,14 @@ public class Tareacabecera implements Serializable {
 	/**
 	 * @return the tareaetiqueta
 	 */
-	public Tareaetiqueta getTareaetiqueta() {
+	public Etiqueta getTareaetiqueta() {
 		return tareaetiqueta;
 	}
 
 	/**
 	 * @param tareaetiqueta the tareaetiqueta to set
 	 */
-	public void setTareaetiqueta(Tareaetiqueta tareaetiqueta) {
+	public void setTareaetiqueta(Etiqueta tareaetiqueta) {
 		this.tareaetiqueta = tareaetiqueta;
 	}
 

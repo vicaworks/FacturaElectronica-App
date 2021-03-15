@@ -10,8 +10,9 @@ import javax.inject.Named;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
-import com.vcw.falecpv.core.modelo.persistencia.Tareaetiqueta;
-import com.vcw.falecpv.core.servicio.TareaetiquetaServicio;
+import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
+import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
+import com.vcw.falecpv.core.servicio.EtiquetaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -29,9 +30,9 @@ public class EtiquetaCtrl extends BaseCtrl {
 	private static final long serialVersionUID = -1644243704111619373L;
 	
 	@EJB
-	private TareaetiquetaServicio tareaetiquetaServicio;
+	private EtiquetaServicio tareaetiquetaServicio;
 	
-	private Tareaetiqueta tareaetiquetaSelected;
+	private Etiqueta tareaetiquetaSelected;
 	private String callModule;
 	private String callForm;
 	private String updateView;
@@ -46,10 +47,11 @@ public class EtiquetaCtrl extends BaseCtrl {
 	public void agregarEtiqueta() {
 		try {
 			
-			tareaetiquetaSelected = new Tareaetiqueta();
+			tareaetiquetaSelected = new Etiqueta();
 			tareaetiquetaSelected.setIdEstablecimiento(establecimientoMain.getIdestablecimiento());
 			tareaetiquetaSelected.setEmpresa(establecimientoMain.getEmpresa());
 			tareaetiquetaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
+			tareaetiquetaSelected.setModulo(EtiquetaModuloEnum.TAREA_COTIZACION.toString());
 			
 			AppJsfUtil.showModalRender("dlgCotizacionTareaEtqueta", "frmCotizacionTareaEtiqueta");
 			
@@ -100,14 +102,14 @@ public class EtiquetaCtrl extends BaseCtrl {
 	/**
 	 * @return the tareaetiquetaSelected
 	 */
-	public Tareaetiqueta getTareaetiquetaSelected() {
+	public Etiqueta getTareaetiquetaSelected() {
 		return tareaetiquetaSelected;
 	}
 
 	/**
 	 * @param tareaetiquetaSelected the tareaetiquetaSelected to set
 	 */
-	public void setTareaetiquetaSelected(Tareaetiqueta tareaetiquetaSelected) {
+	public void setTareaetiquetaSelected(Etiqueta tareaetiquetaSelected) {
 		this.tareaetiquetaSelected = tareaetiquetaSelected;
 	}
 

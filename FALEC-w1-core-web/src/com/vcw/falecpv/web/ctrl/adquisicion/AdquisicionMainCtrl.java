@@ -6,6 +6,7 @@ package com.vcw.falecpv.web.ctrl.adquisicion;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,6 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
-import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisicion;
 import com.vcw.falecpv.core.modelo.persistencia.Adquisiciondetalle;
@@ -81,7 +81,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
 			hasta = new Date();
-			desde = FechaUtil.agregarDias(hasta, -90);
+			Calendar cl = Calendar.getInstance();
+			cl.setTime(hasta);
+			cl.set(Calendar.DATE, 1);
+			desde = cl.getTime();
 			criterioBusqueda = null;
 			adquisicionFrmCtrl = (AdquisicionFrmCtrl) AppJsfUtil.getManagedBean("adquisicionFrmCtrl");
 			consultarAdquisiciones();

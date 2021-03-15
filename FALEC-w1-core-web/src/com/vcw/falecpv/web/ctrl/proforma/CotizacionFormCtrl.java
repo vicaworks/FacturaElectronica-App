@@ -236,12 +236,12 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	}
 	
 	public void nuevaCotizacion() throws DaoException {
-		System.out.println(establecimientoMain);
 		criterioBusqueda = null;
 		criterioCliente = null;
 		cabecerSelected = new Cabecera();
 		cabecerSelected.setFechaemision(new Date());
 		cabecerSelected.setFechaVencimiento(FechaUtil.agregarDias(cabecerSelected.getFechaemision(), 15));
+		cabecerSelected.setAutorizacionBol(false);
 		infoadicionalList = null;
 		inicializarSecuencia(cabecerSelected);
 		cabecerSelected.setSecuencialCaja("PRF");
@@ -568,8 +568,12 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
-		cabecerSelected.setEstado("SEGUIMIENTO");
-//		cabecerSelected.setResumenpago(ComprobanteHelper.determinarResumenPago(pagoList));
+		if(cabecerSelected.isAutorizacionBol()) {
+			cabecerSelected.setEstado("AUTORIZACION");
+		}else {
+			cabecerSelected.setEstado("SEGUIMIENTO");
+			
+		}
 		cabecerSelected.setResumenpago("EFECTIVO");
 		cabecerSelected.setValorapagar(cabecerSelected.getTotalpagar());
 		
@@ -581,10 +585,6 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		
 		// detalle impuesto
 		ComprobanteHelper.determinarDetalleImpuesto(cabecerSelected.getDetalleList());
-		
-		// infromacion adicional 
-		
-//		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected,infoadicionalList));
 		
 		// verifica los contenidos
 		if(cabecerSelected.getContenido1()!=null) {

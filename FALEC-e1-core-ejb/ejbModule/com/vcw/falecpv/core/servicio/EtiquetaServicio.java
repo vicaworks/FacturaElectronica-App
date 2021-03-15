@@ -11,8 +11,8 @@ import javax.inject.Inject;
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
-import com.vcw.falecpv.core.dao.impl.TareaetiquetaDao;
-import com.vcw.falecpv.core.modelo.persistencia.Tareaetiqueta;
+import com.vcw.falecpv.core.dao.impl.EtiquetaDao;
+import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
 import com.xpert.persistence.query.QueryBuilder;
 
 /**
@@ -20,10 +20,10 @@ import com.xpert.persistence.query.QueryBuilder;
  *
  */
 @Stateless
-public class TareaetiquetaServicio extends AppGenericService<Tareaetiqueta, String> {
+public class EtiquetaServicio extends AppGenericService<Etiqueta, String> {
 
 	@Inject
-	private TareaetiquetaDao tareaetiquetaDao;
+	private EtiquetaDao tareaetiquetaDao;
 	
 	@Inject
 	private ContadorPkServicio contadorPkServicio;
@@ -31,33 +31,33 @@ public class TareaetiquetaServicio extends AppGenericService<Tareaetiqueta, Stri
 	/**
 	 * 
 	 */
-	public TareaetiquetaServicio() {
+	public EtiquetaServicio() {
 	}
 
 	@Override
-	public List<Tareaetiqueta> consultarActivos() {
+	public List<Etiqueta> consultarActivos() {
 		return null;
 	}
 
 	@Override
-	public List<Tareaetiqueta> consultarInactivos() {
+	public List<Etiqueta> consultarInactivos() {
 		return null;
 	}
 
 	@Override
-	public DaoGenerico<Tareaetiqueta, String> getDao() {
+	public DaoGenerico<Etiqueta, String> getDao() {
 		return tareaetiquetaDao;
 	}
 
 	/**
 	 * @return the tareaetiquetaDao
 	 */
-	public TareaetiquetaDao getTareaetiquetaDao() {
+	public EtiquetaDao getTareaetiquetaDao() {
 		return tareaetiquetaDao;
 	}
 
 	@Override
-	public Tareaetiqueta crear(Tareaetiqueta o) throws DaoException {
+	public Etiqueta crear(Etiqueta o) throws DaoException {
 		try {
 			
 			o.setIdtareaetiqueta(contadorPkServicio.generarContadorTabla(TCEmpresa.TAREA_ETIQUETA, o.getIdEstablecimiento(), true));
@@ -75,15 +75,16 @@ public class TareaetiquetaServicio extends AppGenericService<Tareaetiqueta, Stri
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<Tareaetiqueta> getEtiquetas(String idEmpresa)throws DaoException{
+	public List<Etiqueta> getEtiquetas(String idEmpresa,String modulo)throws DaoException{
 		try {
 			
 			QueryBuilder qb = new QueryBuilder(tareaetiquetaDao.getEntityManager());
 			
 			return	qb.select("e")
-					.from(Tareaetiqueta.class,"e")
+					.from(Etiqueta.class,"e")
 					.equals("e.estado","A")
 					.equals("e.empresa.idempresa",idEmpresa)
+					.equals("e.modulo",modulo)
 					.orderBy("e.etiqueta").getResultList();
 			
 		} catch (Exception e) {
@@ -105,7 +106,7 @@ public class TareaetiquetaServicio extends AppGenericService<Tareaetiqueta, Stri
 			QueryBuilder qb = new QueryBuilder(tareaetiquetaDao.getEntityManager());
 			
 			return	qb.select("e")
-					.from(Tareaetiqueta.class,"e")
+					.from(Etiqueta.class,"e")
 					.equals("e.estado","A")
 					.equals("e.empresa.idempresa",idEmpresa)
 					.equals("e.etiqueta",etiqueta.toUpperCase())

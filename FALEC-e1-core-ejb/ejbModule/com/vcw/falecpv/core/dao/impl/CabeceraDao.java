@@ -193,33 +193,31 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Cabecera> getByCotizacionCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento,String estado)throws DaoException{
+	public List<Cabecera> getByCotizacionCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento,List<String> estadoList)throws DaoException{
 		
 		try {
 			
 			Query q = null;
 			
 			if(criteria==null || criteria.trim().isEmpty()) {
-				
-				if(estado!=null) {
-					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.estado=:estado AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
-					q.setParameter("estado", estado);
-				}else {
-					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
-				}
-				q.setParameter("desde", desde);
-				q.setParameter("hasta", hasta);
+				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.estado in :estado AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
 			}else {
-				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante "
+				q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.tipocomprobante.identificador=:idtipocomprobante AND c.establecimiento.idestablecimiento=:idEstablecimiento AND c.fechaemision BETWEEN :desde AND :hasta "
+						+ (estadoList!=null?" AND c.estado in :estado ":"")
 						+ " AND (c.cliente.identificacion like :rucCliente "
 						+ " OR UPPER(c.cliente.razonsocial) like :nombrecliente "
-						+ " OR c.numdocumento like :numfactura) "
-						+ " AND c.establecimiento.idestablecimiento=:idEstablecimiento "
+						+ " OR c.numdocumento like :numfactura "
+						+ " OR UPPER(c.usuarioconsulta.nombre) like :usuario ) "
 						+ " ORDER BY c.fechaemision ASC,c.idcabecera DESC");
 				q.setParameter("rucCliente", criteria.concat("%"));
 				q.setParameter("nombrecliente", "%".concat(criteria.toUpperCase()).concat("%"));
 				q.setParameter("numfactura", "%".concat(criteria).concat("%"));
+				q.setParameter("usuario", "%".concat(criteria.toUpperCase()).concat("%"));
 			}
+			
+			q.setParameter("estado", estadoList);
+			q.setParameter("desde", desde);
+			q.setParameter("hasta", hasta);
 			q.setParameter("idEstablecimiento", idEstablecimiento);
 			q.setParameter("idtipocomprobante", GenTipoDocumentoEnum.COTIZACION.getIdentificador());
 			

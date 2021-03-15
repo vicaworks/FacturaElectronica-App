@@ -229,6 +229,12 @@ public class Cabecera implements Serializable {
     @Column(name = "fechavencimiento")
     private Date fechaVencimiento;
     
+    @Column(name = "autorizacion")
+    private Integer autorizacion;
+    
+    @Column(name = "idusuarioautorizacion")
+    private String idusuarioautorizacion;
+    
     @Size(max = 400)
     @Column(name = "resumen", length = 400)
     private String resumen;
@@ -244,6 +250,10 @@ public class Cabecera implements Serializable {
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtransportista", referencedColumnName = "idtransportista", nullable = true)
     private Transportista transportista;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idusuario", referencedColumnName = "idusuario",insertable = false,updatable = false,nullable = true)
+    private Usuario usuarioconsulta;
     
     @Transient
     private List<Motivo> motivoList;
@@ -289,6 +299,9 @@ public class Cabecera implements Serializable {
     
     @Transient
     private boolean envioEmailBol=false;
+    
+    @Transient
+    private boolean autorizacionBol=false;
     
     @Transient
     private boolean borrador=false;
@@ -1419,6 +1432,72 @@ public class Cabecera implements Serializable {
 	 */
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the usuarioconsulta
+	 */
+	public Usuario getUsuarioconsulta() {
+		return usuarioconsulta;
+	}
+
+	/**
+	 * @param usuarioconsulta the usuarioconsulta to set
+	 */
+	public void setUsuarioconsulta(Usuario usuarioconsulta) {
+		this.usuarioconsulta = usuarioconsulta;
+	}
+
+	/**
+	 * @return the idusuarioautorizacion
+	 */
+	public String getIdusuarioautorizacion() {
+		return idusuarioautorizacion;
+	}
+
+	/**
+	 * @param idusuarioautorizacion the idusuarioautorizacion to set
+	 */
+	public void setIdusuarioautorizacion(String idusuarioautorizacion) {
+		this.idusuarioautorizacion = idusuarioautorizacion;
+	}
+
+	/**
+	 * @return the autorizacionBol
+	 */
+	public boolean isAutorizacionBol() {
+		
+		if(autorizacion==null) {
+			autorizacionBol = false;
+		}else {
+			autorizacionBol = autorizacion==1;
+		}
+		
+		return autorizacionBol;
+	}
+
+	/**
+	 * @param autorizacionBol the autorizacionBol to set
+	 */
+	public void setAutorizacionBol(boolean autorizacionBol) {
+		
+		this.autorizacion = autorizacionBol?1:0;
+		this.autorizacionBol = autorizacionBol;
+		
+	}
+
+	/**
+	 * @return the autorizacion
+	 */
+	public Integer getAutorizacion() {
+		return autorizacion;
+	}
+
+	/**
+	 * @param autorizacion the autorizacion to set
+	 */
+	public void setAutorizacion(Integer autorizacion) {
+		this.autorizacion = autorizacion;
 	}
 
 }

@@ -103,10 +103,10 @@ public class CotizacionServicio {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<Cabecera> getByCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento,String estado)throws DaoException{
+	public List<Cabecera> getByCriteria(Date desde,Date hasta,String criteria,String idEstablecimiento,List<String> estadoList)throws DaoException{
 		try {
 			
-			List<Cabecera> ncList = cabeceraDao.getByCotizacionCriteria(desde, hasta, criteria, idEstablecimiento,estado);
+			List<Cabecera> ncList = cabeceraDao.getByCotizacionCriteria(desde, hasta, criteria, idEstablecimiento,estadoList);
 			
 			if(ncList.isEmpty()) return new ArrayList<>();
 			

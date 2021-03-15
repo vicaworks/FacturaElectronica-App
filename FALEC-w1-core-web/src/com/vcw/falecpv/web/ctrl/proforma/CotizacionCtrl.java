@@ -101,7 +101,7 @@ public class CotizacionCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
-			estado = "SEGUIMIENTO";
+			estado = "SEGUIMIENTO-AUTORIZACION";
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -30);
 			consultar();
@@ -115,7 +115,26 @@ public class CotizacionCtrl extends BaseCtrl {
 	public void consultar()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:inicio:pvUnoDT");
 		proformaList = null;
-		proformaList = cotizacionServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estado);
+		
+		List<String> estadoList = new ArrayList<>();
+		
+		switch (estado) {
+		case "TODOS":
+			estadoList.add("AUTORIZACION");
+			estadoList.add("FACTURADO");
+			estadoList.add("SEGUIMIENTO");
+			estadoList.add("ARCHIVADO");
+			break;
+		case "SEGUIMIENTO-AUTORIZACION":
+			estadoList.add("AUTORIZACION");
+			estadoList.add("SEGUIMIENTO");
+			break;
+		default:
+			estadoList.add(estado);
+			break;
+		}
+		
+		proformaList = cotizacionServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estadoList);
 		totalizar();
 		// nombre usuarios
 		List<Usuario> usuarioList = usuarioServicio.getUsuarioDao().getByEmpresaEstado(EstadoRegistroEnum.TODOS, establecimientoMain.getEmpresa().getIdempresa());
