@@ -297,6 +297,9 @@ public class Cabecera implements Serializable {
     private String idUsurioTransaccion;
     
     @Transient
+    private String usuario;
+    
+    @Transient
     private boolean seleccion=false;
     
     /**
@@ -1402,6 +1405,20 @@ public class Cabecera implements Serializable {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 }

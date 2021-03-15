@@ -61,6 +61,10 @@ public class TareaCotMainCtrl extends BaseCtrl {
 	private List<Cliente> clienteList;
 	private Cliente clienteSeleccion;
 	private String numCotizacion;
+	private Integer totalCerrado;
+	private Integer totalPendiente;
+	private Integer totalVencido;
+	
 
 	/**
 	 * 
@@ -75,7 +79,6 @@ public class TareaCotMainCtrl extends BaseCtrl {
 			consultarUsuario();
 			consultarCliente();
 			consultar();
-			tareacabeceraServicio.getTareacabeceraDao().actualizarEstadoVencido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -103,6 +106,8 @@ public class TareaCotMainCtrl extends BaseCtrl {
 	}
 	
 	public void consultar() throws DaoException {
+		
+		tareacabeceraServicio.getTareacabeceraDao().actualizarEstadoVencido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 		
 		AppJsfUtil.limpiarFiltrosDataTable("fomrMain:tarea:pvDosDT");
 		
@@ -166,7 +171,17 @@ public class TareaCotMainCtrl extends BaseCtrl {
 								usuarioSeleccion == null ? null : usuarioSeleccion.getIdusuario(), idClienteList, numCotizacion,
 								GenTipoDocumentoEnum.COTIZACION);
 		
-		
+		totalizar();
+	}
+	
+	private void totalizar() {
+		if(tareacabeceraList!=null) {
+			
+			totalCerrado = (int)tareacabeceraList.stream().filter(x->x.getEstado().equals("CERRADO")).count();
+			totalPendiente = (int)tareacabeceraList.stream().filter(x->x.getEstado().equals("PENDIENTE")).count();
+			totalVencido = (int)tareacabeceraList.stream().filter(x->x.getEstado().equals("VENCIDO")).count();
+			
+		}
 	}
 	
 	
@@ -294,6 +309,48 @@ public class TareaCotMainCtrl extends BaseCtrl {
 	 */
 	public void setNumCotizacion(String numCotizacion) {
 		this.numCotizacion = numCotizacion;
+	}
+
+	/**
+	 * @return the totalCerrado
+	 */
+	public Integer getTotalCerrado() {
+		return totalCerrado;
+	}
+
+	/**
+	 * @param totalCerrado the totalCerrado to set
+	 */
+	public void setTotalCerrado(Integer totalCerrado) {
+		this.totalCerrado = totalCerrado;
+	}
+
+	/**
+	 * @return the totalPendiente
+	 */
+	public Integer getTotalPendiente() {
+		return totalPendiente;
+	}
+
+	/**
+	 * @param totalPendiente the totalPendiente to set
+	 */
+	public void setTotalPendiente(Integer totalPendiente) {
+		this.totalPendiente = totalPendiente;
+	}
+
+	/**
+	 * @return the totalVencido
+	 */
+	public Integer getTotalVencido() {
+		return totalVencido;
+	}
+
+	/**
+	 * @param totalVencido the totalVencido to set
+	 */
+	public void setTotalVencido(Integer totalVencido) {
+		this.totalVencido = totalVencido;
 	}
 
 }

@@ -33,6 +33,7 @@ import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.email.EmailService;
 import com.vcw.falecpv.core.email.dto.EmailDto;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
@@ -112,9 +113,15 @@ public class CotizacionCtrl extends BaseCtrl {
 	}
 	
 	public void consultar()throws DaoException{
+		AppJsfUtil.limpiarFiltrosDataTable("formMain:inicio:pvUnoDT");
 		proformaList = null;
 		proformaList = cotizacionServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estado);
 		totalizar();
+		// nombre usuarios
+		List<Usuario> usuarioList = usuarioServicio.getUsuarioDao().getByEmpresaEstado(EstadoRegistroEnum.TODOS, establecimientoMain.getEmpresa().getIdempresa());
+		proformaList.stream().forEach(x->{
+			x.setUsuario(usuarioList.stream().filter(u->u.getIdusuario().equals(x.getIdusuario())).findFirst().orElse(null).getNombrepantalla());
+		});
 	}
 	
 	private void totalizar() {

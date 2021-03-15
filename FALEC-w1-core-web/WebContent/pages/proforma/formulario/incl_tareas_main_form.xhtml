@@ -150,7 +150,7 @@
 								<h:outputText value="CERRADO" />
 							</div>
 							<div class="cardContador-content">
-								<h:outputText value="#{100}" >
+								<h:outputText value="#{tareaCotMainCtrl.totalCerrado}" >
 									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
 								</h:outputText>
 							</div>
@@ -165,7 +165,7 @@
 								<h:outputText value="PENDIENTE" />
 							</div>
 							<div class="cardContador-content">
-								<h:outputText value="#{100}" >
+								<h:outputText value="#{tareaCotMainCtrl.totalPendiente}" >
 									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
 								</h:outputText>
 							</div>
@@ -180,7 +180,7 @@
 								<h:outputText value="VENCIDO" />
 							</div>
 							<div class="cardContador-content">
-								<h:outputText value="#{100}" >
+								<h:outputText value="#{tareaCotMainCtrl.totalVencido}" >
 									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
 								</h:outputText>
 							</div>
@@ -227,7 +227,7 @@
 									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Cerrar tarea" action="#{tareaCotCtrl.cerrar}" icon="fa fa-times-circle" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+								<p:menuitem value=" Cerrar tarea" action="#{tareaCotCtrl.cerrar}" icon="fa fa-times-circle" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" disabled="#{t.estado=='CERRADO'}">
 									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
 									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
 									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
@@ -271,7 +271,14 @@
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="TAREA" style="width:150px;">
+						<p:column headerText="USUARIO" style="width:60px;" filterBy="#{t.usuario.nombrepantalla}" filterMatchMode="contains">
+						
+							<h:outputText value="#{t.usuario.nombrepantalla}" >
+							</h:outputText>
+							
+						</p:column>
+						
+						<p:column headerText="TAREA" style="width:150px;" filterBy="#{t.tareaetiqueta.etiqueta}" filterMatchMode="contains">
 							<div class="p-grid p-nogutter">
 								<div class="p-col-12 dt-etiqueta">
 									<h:outputText value="#{t.tareaetiqueta.etiqueta}" />
@@ -287,26 +294,38 @@
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="COTIZACIÓN" style="width:50px;">
-							<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(t.cabecera.numdocumento)}" >
-							</h:outputText>
+						<p:column headerText="COTIZACIÓN" style="width:200px;" filterBy="#{t.cabecera.numdocumento}" filterMatchMode="contains">
+							<div class="p-grid p-nogutter">
+								<div class="p-col-12 dt-etiqueta">
+									<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(t.cabecera.numdocumento)}" >
+									</h:outputText>
+								</div>
+								<div class="p-col-12 dt-descripcion">
+									<h:outputText value="#{t.cabecera.fechaemision}" >
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</div>
+								<div class="p-col-12 dt-descripcion">
+									<h:outputText value="#{t.cabecera.estado}" >
+									</h:outputText>
+								</div>
+								<div class="p-col-12 dt-descripcion">
+									<h:outputText value="#{t.cabecera.cliente.razonsocial}" >
+									</h:outputText>
+								</div>
+							</div>
+							
+						
 						</p:column>
 						
-						<p:column headerText="FECHA" style="width:40px;">
-							<h:outputText value="#{t.cabecera.fechaemision}" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>
+						<!-- <p:column headerText="FECHA" style="width:40px;">
 						</p:column>
 						
 						<p:column headerText="ESTADO COT" style="width:50px;">
-							<h:outputText value="#{t.cabecera.estado}" >
-							</h:outputText>
 						</p:column>
 						
 						<p:column headerText="CLIENTE" style="width:150px;">
-							<h:outputText value="#{t.cabecera.cliente.razonsocial}" >
-							</h:outputText>
-						</p:column>
+						</p:column> -->
 						
 						
 				</p:dataTable>

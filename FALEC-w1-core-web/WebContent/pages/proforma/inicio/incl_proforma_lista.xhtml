@@ -11,7 +11,7 @@
        	
        	.pvUnoDT .ui-datatable-scrollable-body{
 			min-height: 45vh !important;
-			height: calc(100vh - 380px)!important;				
+			height: calc(100vh - 390px)!important;				
 		}
        	
     </style>
@@ -20,7 +20,7 @@
 		<div class="EmptyBox5"/>
 		<div class="p-grid p-align-top vertical-container">
 			<div class="p-col-12 p-md-2">
-    			<h:outputText value="Establecimiento" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="ESTABLECIMIENTO" styleClass="DispBlock" style="margin-bottom:5px;"/>
 	    		<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{cotizacionCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
@@ -35,7 +35,7 @@
 				</p:selectOneMenu>
     		</div>
 			<div class="p-col-12 p-md-2">
-    			<h:outputText value="Estado" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="ESTADO" styleClass="DispBlock" style="margin-bottom:5px;"/>
 	    		<p:selectOneMenu id="somCotEstado"
 									value="#{cotizacionCtrl.estado}"
 									required="false"
@@ -49,7 +49,7 @@
     		</div>
     		
 			<div class="p-col-12 p-md-2">
-    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="DESDE" styleClass="DispBlock" style="margin-bottom:5px;"/>
 	    		<p:calendar id="calDesde" value="#{cotizacionCtrl.desde}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -59,7 +59,7 @@
     		</div>
     		
     		<div class="p-col-12 p-md-2">
-    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
+    			<h:outputText value="HASTA" styleClass="DispBlock" style="margin-bottom:5px;"/>
 	    		<p:calendar id="calHasta" value="#{cotizacionCtrl.hasta}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -68,8 +68,8 @@
 				<p:message for="calHasta"/>
     		</div>
     		<div class="p-col-12 p-md-4">
-    			<h:outputText value="Criterio" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-    			<p:inputText value="#{cotizacionCtrl.criterioBusqueda}" placeholder="# Factura, #Cotización, R.U.C., Cliente" styleClass="Wid100"/>
+    			<h:outputText value="CRITERIO" styleClass="DispBlock" style="margin-bottom:5px;"/>
+    			<p:inputText value="#{cotizacionCtrl.criterioBusqueda}" placeholder="#Cotización, Usuario, R.U.C., Cliente" styleClass="Wid100"/>
     		</div>
     		<div class="p-col-12 p-lg-6">
     			<div class="p-grid p-pt-1">
@@ -219,7 +219,7 @@
 						rows="20"
 						rowsPerPageTemplate="10,15,20,25,30,35,40">
 				
-						<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+						<p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
 							<p:commandLink id="cmlDtProformas">
 								<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
 							</p:commandLink>
@@ -260,11 +260,15 @@
 								
 						</p:column>	
 						
-						<p:column headerText="NUM " style="width:100px;">
+						<p:column headerText="USUARIO" style="width:80px;" filterBy="#{p.usuario}" filterMatchMode="contains">
+							<h:outputText value="#{p.usuario}" />
+						</p:column>
+						
+						<p:column headerText="NUM " style="width:100px;" filterBy="#{p.numdocumento}" filterMatchMode="contains">
 							<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(p.numdocumento)}" />
 						</p:column>	
 						
-						<p:column headerText="ESTADO" style="width:50px;">
+						<p:column headerText="ESTADO" style="width:70px;" filterBy="#{p.estado}" filterMatchMode="contains">
 							<h:outputText value="#{p.estado}">
 							</h:outputText>
 						</p:column>
@@ -275,16 +279,16 @@
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="RUC / CI" style="width:80px;">
+						<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{p.cliente.identificacion}" filterMatchMode="contains">
 							<h:outputText value="#{p.cliente.identificacion}" />
 						</p:column>
 						
-						<p:column headerText="CLIENTE" style="width:125px;">
+						<p:column headerText="CLIENTE" style="width:180px;" filterBy="#{p.cliente.razonsocial}" filterMatchMode="contains">
 							<h:outputText value="#{p.cliente.razonsocial}" >
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="RESUMEN" style="width:125px;">
+						<p:column headerText="RESUMEN" style="width:100px;">
 							<h:outputText value="#{p.resumen}" >
 							</h:outputText>
 						</p:column>
