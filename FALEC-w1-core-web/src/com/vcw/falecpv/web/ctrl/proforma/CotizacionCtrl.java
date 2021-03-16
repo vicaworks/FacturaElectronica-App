@@ -592,6 +592,45 @@ public class CotizacionCtrl extends BaseCtrl {
 		emailDto.getFileDtos().removeIf(x->x.getNombre().equals(nombreFile));
 	}
 	
+	public boolean accesoOpciones(String opcion,String estado) {
+		List<String> estList = new ArrayList<>();
+		switch (opcion.toUpperCase()) {
+		case "IMPRIMIR":
+			estList.add("SEGUIMIENTO");
+			estList.add("FACTURADO");
+			estList.add("ARCHIVADO");
+			break;
+		case "ESTADO":
+			estList.add("SEGUIMIENTO");
+			estList.add("FACTURADO");
+			estList.add("ARCHIVADO");
+			break;
+		case "AUTORIZAR":
+			estList.add("AUTORIZACION");
+			break;	
+		case "EDITAR":
+			estList.add("SEGUIMIENTO");
+			break;
+		case "ARCHIVAR":
+			estList.add("SEGUIMIENTO");
+			break;
+		case "EMAIL":
+			estList.add("SEGUIMIENTO");
+			break;
+		case "COPIA":
+			estList.add("SEGUIMIENTO");
+			estList.add("FACTURADO");
+			estList.add("ARCHIVADO");
+			break;
+		case "TAREA":
+			estList.add("SEGUIMIENTO");
+			break;
+		default:
+			break;
+		}
+		return !estList.contains(estado);
+	}
+	
 	/**
 	 * @return the criterioBusqueda
 	 */

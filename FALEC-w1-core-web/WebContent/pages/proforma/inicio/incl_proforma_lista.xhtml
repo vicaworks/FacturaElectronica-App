@@ -227,36 +227,40 @@
 							</p:commandLink>
 							<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
 								
-								<p:menuitem value=" Imprimir" action="#" icon="fa fa-print" process="pvUnoDT" update="@form">
+								<p:menuitem value=" Imprimir" action="#" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}">
 								</p:menuitem>
 								
+								<p:menuitem value=" Estado" action="#" icon="fa fa-star-half-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}">
+								</p:menuitem>
 								
-								<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" disabled="#{p.estado=='ARCHIVADO'}" update="@form">
+								<p:menuitem value=" Autorizar" action="#" icon="fa fa-key" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}">
+								</p:menuitem>
+								
+								<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EDITAR',p.estado)}">
 									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Archivar" action="#{cotizacionCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{p.estado=='ARCHIVADO'}">
+								<p:menuitem value=" Archivar" action="#{cotizacionCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('ARCHIVAR',p.estado)}">
 									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								</p:menuitem>
 								
-								<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form">
+								<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EMAIL',p.estado)}">
 									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Crear una Copia" action="#{cotizacionFormCtrl.crearUnaCopia(p.idcabecera)}" icon="fa fa-copy" update="@form">
+								<p:menuitem value=" Crear una Copia" action="#{cotizacionFormCtrl.crearUnaCopia(p.idcabecera)}" icon="fa fa-copy" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('COPIA',p.estado)}">
 									<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{cotizacionFormCtrl.establecimientoMain}"/>
 									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Agregar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" update="@form">
+								<p:menuitem value=" Agregar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('TAREA',p.estado)}">
 									<f:setPropertyActionListener value="COTIZACION" target="#{tareaCotCtrl.callModule}"/>
 									<f:setPropertyActionListener value="#{null}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
 									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
 									<f:setPropertyActionListener value=":formMain:inicio:msgInicio :formMain:inicio:pvUnoDT :formMain:tarea:pvDosDT " target="#{tareaCotCtrl.updateView}"/>
 									<f:setPropertyActionListener value="#{p}" target="#{tareaCotCtrl.cotizacionSelected}"/>
 								</p:menuitem>
-								
 								
 							</p:menu>
 								

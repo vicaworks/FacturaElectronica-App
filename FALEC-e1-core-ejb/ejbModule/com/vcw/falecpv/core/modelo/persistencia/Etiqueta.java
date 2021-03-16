@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
  *
  */
 @Entity
-@Table(name = "tareaetiqueta")
+@Table(name = "etiqueta")
 public class Etiqueta implements Serializable {
 
 	/**

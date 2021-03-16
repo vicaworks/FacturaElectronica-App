@@ -10,7 +10,6 @@ import javax.inject.Named;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
-import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
 import com.vcw.falecpv.core.servicio.EtiquetaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -37,6 +36,7 @@ public class EtiquetaCtrl extends BaseCtrl {
 	private String callForm;
 	private String updateView;
 	private TareaCotCtrl tareaCotCtrl;
+	private String etiquetaModulo;
 
 	/**
 	 * 
@@ -51,7 +51,7 @@ public class EtiquetaCtrl extends BaseCtrl {
 			tareaetiquetaSelected.setIdEstablecimiento(establecimientoMain.getIdestablecimiento());
 			tareaetiquetaSelected.setEmpresa(establecimientoMain.getEmpresa());
 			tareaetiquetaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-			tareaetiquetaSelected.setModulo(EtiquetaModuloEnum.TAREA_COTIZACION.toString());
+			tareaetiquetaSelected.setModulo(etiquetaModulo);
 			
 			AppJsfUtil.showModalRender("dlgCotizacionTareaEtqueta", "frmCotizacionTareaEtiqueta");
 			
@@ -167,6 +167,20 @@ public class EtiquetaCtrl extends BaseCtrl {
 	 */
 	public void setTareaCotCtrl(TareaCotCtrl tareaCotCtrl) {
 		this.tareaCotCtrl = tareaCotCtrl;
+	}
+
+	/**
+	 * @return the etiquetaModulo
+	 */
+	public String getEtiquetaModulo() {
+		return etiquetaModulo;
+	}
+
+	/**
+	 * @param etiquetaModulo the etiquetaModulo to set
+	 */
+	public void setEtiquetaModulo(String etiquetaModulo) {
+		this.etiquetaModulo = etiquetaModulo;
 	}
 
 }
