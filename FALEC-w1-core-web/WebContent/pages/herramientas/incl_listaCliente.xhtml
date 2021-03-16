@@ -27,47 +27,38 @@
 			
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp">
+			<div class="p-grid p-align-end toolBarPopUp">
 				
-				<div class="p-col-12" style="text-align:left;">					
-					
-					<div class="p-grid">
-						
-						<div class="p-col-12 p-md-6">
-							<p:inputText id="intListCliCriterioBusqueda"
-								value="#{listaClienteCtrl.criterioBusqueda}" required="false"
-								requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
-								placeholder="BUSCAR POR : C.I., R.U.C., NOMBRE" 
-								onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
-							</p:inputText>
-						</div>
-						<div class="p-col-12 p-md-6">
-						
-							<p:commandButton id="cmdListClienteRefrescar"
-								value="BUSCAR" icon="fa fa-search" 
-								action="#{listaClienteCtrl.refrescar()}" styleClass="MRight10" update="@form"
-								/>
-							
-							<p:commandButton value="NUEVO" action="#{clienteCtrl.nuevoEditar(null)}" immediate="true" icon="fa fa-plus" styleClass="secondary-button MRight10" update="@form" oncomplete="PF('dlgListaCliente').hide();">
-								<f:setPropertyActionListener value="#{listaClienteCtrl.callModule}" target="#{clienteCtrl.callModule}"/>
-								<f:setPropertyActionListener value="#{listaClienteCtrl.viewUpdate}" target="#{clienteCtrl.updateView}"/>
-								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
-								<f:setPropertyActionListener value="#{listaClienteCtrl.cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
-								<f:setPropertyActionListener value="#{listaClienteCtrl.adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
-							</p:commandButton>
-								
-							<p:commandButton id="cmdListCliCerrar"
-								value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-								onclick="PF('dlgListaCliente').hide()" immediate="true"  
-								/>
-							
-						</div>	
-					
-					</div>
-					
-					
+				<div class="p-col-12 p-md-6">
+					<p:inputText id="intListCliCriterioBusqueda"
+						value="#{listaClienteCtrl.criterioBusqueda}" required="false"
+						requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
+						placeholder="BUSCAR POR : C.I., R.U.C., NOMBRE" 
+						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
+					</p:inputText>
 				</div>
+				<div class="p-col-12 p-md-6">
 				
+					<p:commandButton id="cmdListClienteRefrescar"
+						value="BUSCAR" icon="fa fa-search" 
+						action="#{listaClienteCtrl.refrescar()}" styleClass="MRight10" update="@form"
+						/>
+					
+					<p:commandButton value="NUEVO" action="#{clienteCtrl.nuevoEditar(null)}" immediate="true" icon="fa fa-plus" styleClass="secondary-button MRight10" update="@form" oncomplete="PF('dlgListaCliente').hide();">
+						<f:setPropertyActionListener value="#{listaClienteCtrl.callModule}" target="#{clienteCtrl.callModule}"/>
+						<f:setPropertyActionListener value="#{listaClienteCtrl.viewUpdate}" target="#{clienteCtrl.updateView}"/>
+						<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+						<f:setPropertyActionListener value="#{listaClienteCtrl.cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
+						<f:setPropertyActionListener value="#{listaClienteCtrl.adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
+					</p:commandButton>
+						
+					<p:commandButton id="cmdListCliCerrar"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgListaCliente').hide()" immediate="true"  
+						/>
+					
+				</div>	
+			
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmListCliente"

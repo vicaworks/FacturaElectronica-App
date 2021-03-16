@@ -540,6 +540,14 @@ body .ui-dialog .ui-dialog-titlebar {
 	padding: 2px;
 }
 
+body .ui-dialog .ui-dialog-titlebar {
+	padding: 0.5em 1em !important;
+}
+
+body .ui-dialog .ui-dialog-content {
+	padding: 0.5em 1em !important;
+}
+
 /* ================= MESSAGE =================== */
 
 body .ui-messages .ui-messages-info {

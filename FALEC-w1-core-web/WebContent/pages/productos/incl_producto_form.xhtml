@@ -8,35 +8,12 @@
 	
 	<style type="text/css">
 		
-/* 		.contenedorFormulario {
-				height: 75vh;
-				/* min-height: 560px; */
-		} */
+		/* .heightFrmProducto{max-height: 500px!important;} */
 		
-		@media screen and (max-width: 40em ) {
-		  .visualizar{display: none;}
-		  }
-		
-		@media screen and (max-height: 35.5em ) {
-		  .visualizar{display: none;}
-		  }
-		  
-		@media screen and (max-height: 26em ) {
-		  .visualizar{display: none;}
-		  }
-		
-		@media screen and (height: 46em ) {
-		  .visualizar{display: none;}
-		  }
-		
-		@media screen and (max-height: 42em ) {
-		  .visualizar{display: none;}
-		  }
-		  
-		 @media screen and (max-width: 896px) {  
-		  .visualizar{display: none;}
-		}
-		
+		@media screen and (max-height: 768px ) {
+			.heightFrmProducto{max-height: 450px!important;}
+			
+		}		  
 		
 	</style>
 	
@@ -46,53 +23,52 @@
 			
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp p-align-center" >
+			<div class="p-grid toolBarPopUp p-align-end p-mt-0" >
 				
-				<div class="p-grid p-col-12" style="text-align:left;" >					
 					
-					<div class="p-grid p-col-12 p-md-6 visualizar">						
-						<div class="p-col-12">
-							<p:selectOneMenu id="somFrmListaProducto"
-											value="#{productoCtrl.productoFormSelected}"
-											converter="omnifaces.SelectItemsConverter"
-											required="false"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-								<f:selectItem itemLabel="PRODUCTO [seleccionar] ..."
-										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-		
-								<f:selectItems value="#{productoCtrl.productoFormList}" var="prof"
-									itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
-									
-							</p:selectOneMenu>
-						</div>
-					</div>
-					
-					<div class="p-col-12 p-md-6">
-					
-						<p:commandButton id="cmdBuscarProductoForm"
-							icon="fa fa-search" 
-							action="#{productoCtrl.editarProductoForm()}" styleClass="secondary-button MRight10" process="@this :frmProducto:somFrmListaProducto" update="@form"/>
-					
-						<p:commandButton id="cmdGuardarProductoForm"
-							value="GUARDAR" icon="fa fa-check" 
-							action="#{productoCtrl.guardar()}" styleClass="MRight10" update="@form #{productoCtrl.viewUpdate}"
-							/>
+				<div class="p-col-11">						
+					<p:selectOneMenu id="somFrmListaProducto"
+									value="#{productoCtrl.productoFormSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="false"
+									requiredMessage="REQUERIDO"
+									styleClass="Wid100"
+									filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="PRODUCTO [seleccionar] ..."
+								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+
+						<f:selectItems value="#{productoCtrl.productoFormList}" var="prof"
+							itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
 							
-						<p:commandButton id="cmdNuevoProductoForm"
-							value="NUEVO" icon="fa fa-check" 
-							action="#{productoCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
-								
-						<p:commandButton id="cmdCerrarProductoForm"
-							value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-							onclick="PF('dlgProducto').hide()" immediate="true"  
-							/>
-					</div>
-					
+					</p:selectOneMenu>
 				</div>
 				
-			</div>
+				<div class="p-col-1">
+				
+					<p:commandButton id="cmdBuscarProductoForm"
+						icon="fa fa-search" 
+						action="#{productoCtrl.editarProductoForm()}" styleClass="secondary-button MRight10" process="@this :frmProducto:somFrmListaProducto" update="@form"/>
+				</div>
+				
+				<div class="p-col-12">
+				
+					<p:commandButton id="cmdGuardarProductoForm"
+						value="GUARDAR" icon="fa fa-floppy-o" 
+						action="#{productoCtrl.guardar()}" styleClass="MRight10" update="@form #{productoCtrl.viewUpdate}"
+						/>
+						
+					<p:commandButton id="cmdNuevoProductoForm"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{productoCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
+							
+					<p:commandButton id="cmdCerrarProductoForm"
+						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
+						onclick="PF('dlgProducto').hide()" immediate="true"  
+						/>
+				</div>
+					
+		</div>
+				
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmProducto"
 				closable="true" >
@@ -101,9 +77,9 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll contenedorFormulario form-p-grid">
+			<div class="form-ui Wid100 OvYScroll contenedorFormulario heightFrmProducto form-p-grid">
 				
-				<div class="p-grid">
+				<div class="p-grid" style="width: 99.5%!important;">
 					
 					<!-- Datos Generales -->	
 					<div class="p-col-12 p-md-6">
