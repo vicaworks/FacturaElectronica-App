@@ -86,7 +86,7 @@
 								<h:outputText id="t-resumen" value="#{tareaCotCtrl.cotizacionSelected.resumen}"/>
 							</div>
 							
-							<div class="p-field p-col-12 p-md-11">
+							<div class="p-field p-col-10 p-md-11">
 								<label class="p-mr-2" for="t-etiqueta">ETIQUETA TAREA * </label>
 								<p:selectOneMenu id="t-etiqueta"
 									value="#{tareaCotCtrl.tareacabeceraSelected.etiqueta}"
@@ -106,7 +106,7 @@
 								
 							</div>
 							
-							<div class="p-field p-col-12 p-md-1 p-as-end TexAlCenter Fs16" >
+							<div class="p-field p-col-2 p-md-1 p-as-end TexAlCenter Fs16" >
 								<p:commandLink id="t-agregartarea" style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}" >
 									<i class="fa fa-plus p-ml-1 p-mr-2"></i>
 									<f:setPropertyActionListener value="PROFORMA" target="#{etiquetaCtrl.callModule}"/>

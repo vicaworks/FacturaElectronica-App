@@ -90,7 +90,7 @@
 							</div>
 							
 							
-							<div class="p-field p-col-12 p-md-11">
+							<div class="p-field p-col-10 p-md-11">
 								
 									<label class="p-mr-2" for="t-etiqueta-estado" style="#{cotizacionCtrl.estadoProforma!='ARCHIVADO'?'display:none;':''}"  >ETIQUETA * </label>
 									<p:selectOneMenu id="t-etiqueta-estado"
@@ -113,7 +113,7 @@
 																		
 							</div>
 							
-							<div class="p-field p-col-12 p-md-1 p-as-end TexAlCenter Fs16" >
+							<div class="p-field p-col-2 p-md-1 p-as-end TexAlCenter Fs16" >
 									<p:commandLink style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}" rendered="#{cotizacionCtrl.estadoProforma=='ARCHIVADO'}">
 										<i class="fa fa-plus p-ml-1 p-mr-2"></i>
 										<f:setPropertyActionListener value="PROFORMA_LISTA" target="#{etiquetaCtrl.callModule}"/>
