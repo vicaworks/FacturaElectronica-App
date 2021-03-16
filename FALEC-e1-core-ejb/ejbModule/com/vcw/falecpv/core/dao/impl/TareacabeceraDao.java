@@ -93,6 +93,11 @@ public class TareacabeceraDao extends AppGenericDao<Tareacabecera, String> {
 						(prioridadList==null?" ":" AND t.prioridadvalor in (:prioridadList) ") + 
 						" ORDER BY t.prioridadvalor,t.fechalimite");
 				
+				if(idClienteList==null || idClienteList.isEmpty()) {
+					idClienteList = new ArrayList<>();
+					idClienteList.add("-1");
+				}
+				
 				q.setParameter("usuarioList", idUsuarioList);
 				q.setParameter("clienteList", idClienteList);
 				

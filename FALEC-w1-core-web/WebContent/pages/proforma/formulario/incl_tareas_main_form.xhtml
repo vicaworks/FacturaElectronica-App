@@ -48,6 +48,7 @@
 					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>								
 					<f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE"/>
 					<f:selectItem itemLabel="PENDIENTE-VENCIDO" itemValue="PENDIENTE-VENCIDO"/>
+					<f:selectItem itemLabel="VENCIDO" itemValue="VENCIDO"/>
 					<f:selectItem itemLabel="CERRADO" itemValue="CERRADO"/>
 						
 				</p:selectOneMenu>
@@ -278,10 +279,10 @@
 							
 						</p:column>
 						
-						<p:column headerText="TAREA" style="width:150px;" filterBy="#{t.tareaetiqueta.etiqueta}" filterMatchMode="contains">
+						<p:column headerText="TAREA" style="width:150px;" filterBy="#{t.etiqueta.etiqueta}" filterMatchMode="contains">
 							<div class="p-grid p-nogutter">
 								<div class="p-col-12 dt-etiqueta">
-									<h:outputText value="#{t.tareaetiqueta.etiqueta}" />
+									<h:outputText value="#{t.etiqueta.etiqueta}" />
 								</div>
 								<div class="p-col-12 dt-descripcion">
 									<h:outputText value="#{t.descripcion}" />

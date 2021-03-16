@@ -70,12 +70,12 @@ public class EtiquetaCtrl extends BaseCtrl {
 				return;
 			}
 			
-			if (tareaetiquetaServicio.existeEtiquetas(establecimientoMain.getEmpresa().getIdempresa(), tareaetiquetaSelected.getIdtareaetiqueta(),tareaetiquetaSelected.getEtiqueta())) {
+			if (tareaetiquetaServicio.existeEtiquetas(establecimientoMain.getEmpresa().getIdempresa(), tareaetiquetaSelected.getIdetiqueta(),tareaetiquetaSelected.getEtiqueta())) {
 				AppJsfUtil.addErrorMessage("frmCotizacionTareaEtiqueta:t-nuevaetiqueta", "", "YA EXISTE");
 				return;
 			}
 			
-			if(tareaetiquetaSelected.getIdtareaetiqueta()!=null) {
+			if(tareaetiquetaSelected.getIdetiqueta()!=null) {
 				tareaetiquetaServicio.actualizar(tareaetiquetaSelected);
 			}else {
 				tareaetiquetaServicio.crear(tareaetiquetaSelected);
@@ -83,10 +83,14 @@ public class EtiquetaCtrl extends BaseCtrl {
 			
 			switch (callModule) {
 			case "PROFORMA":
-				tareaCotCtrl.getTareacabeceraSelected().setTareaetiqueta(tareaetiquetaSelected);
+				tareaCotCtrl.getTareacabeceraSelected().setEtiqueta(tareaetiquetaSelected);
 				tareaCotCtrl.consultarEtiquetas();
 				break;
-
+			case "PROFORMA_LISTA":
+				CotizacionCtrl cotizacionCtrl = (CotizacionCtrl)AppJsfUtil.getManagedBean("cotizacionCtrl");
+				cotizacionCtrl.consultarEtiquetas();
+				cotizacionCtrl.getProformaSelected().setEtiqueta(tareaetiquetaSelected);
+				break;
 			default:
 				break;
 			}

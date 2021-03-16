@@ -33,8 +33,8 @@ public class Etiqueta implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "idtareaetiqueta", nullable = false, length = 40)
-    private String idtareaetiqueta;
+    @Column(name = "idetiqueta", nullable = false, length = 40)
+    private String idetiqueta;
     
 	@Basic(optional = false)
     @NotNull
@@ -71,7 +71,7 @@ public class Etiqueta implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (idtareaetiqueta != null ? idtareaetiqueta.hashCode() : 0);
+        hash += (idetiqueta != null ? idetiqueta.hashCode() : 0);
         return hash;
     }
 
@@ -81,7 +81,7 @@ public class Etiqueta implements Serializable {
             return false;
         }
         Etiqueta other = (Etiqueta) object;
-        if ((this.idtareaetiqueta == null && other.idtareaetiqueta != null) || (this.idtareaetiqueta != null && !this.idtareaetiqueta.equals(other.idtareaetiqueta))) {
+        if ((this.idetiqueta == null && other.idetiqueta != null) || (this.idetiqueta != null && !this.idetiqueta.equals(other.idetiqueta))) {
             return false;
         }
         return true;
@@ -89,22 +89,8 @@ public class Etiqueta implements Serializable {
 
     @Override
     public String toString() {
-    	return String.format("[%s, %s]", idtareaetiqueta, etiqueta);
+    	return String.format("[%s, %s]", idetiqueta, etiqueta);
     }
-
-	/**
-	 * @return the idtareaetiqueta
-	 */
-	public String getIdtareaetiqueta() {
-		return idtareaetiqueta;
-	}
-
-	/**
-	 * @param idtareaetiqueta the idtareaetiqueta to set
-	 */
-	public void setIdtareaetiqueta(String idtareaetiqueta) {
-		this.idtareaetiqueta = idtareaetiqueta;
-	}
 
 	/**
 	 * @return the etiqueta
@@ -174,6 +160,20 @@ public class Etiqueta implements Serializable {
 	 */
 	public void setModulo(String modulo) {
 		this.modulo = modulo;
+	}
+
+	/**
+	 * @return the idetiqueta
+	 */
+	public String getIdetiqueta() {
+		return idetiqueta;
+	}
+
+	/**
+	 * @param idetiqueta the idetiqueta to set
+	 */
+	public void setIdetiqueta(String idetiqueta) {
+		this.idetiqueta = idetiqueta;
 	}
 
 }

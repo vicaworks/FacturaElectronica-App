@@ -72,9 +72,9 @@ public class Tareacabecera implements Serializable {
     @ManyToOne(optional = false)
     private Cabecera cabecera;
     
-    @JoinColumn(name = "idtareaetiqueta", referencedColumnName = "idtareaetiqueta", nullable = false)
+    @JoinColumn(name = "idetiqueta", referencedColumnName = "idetiqueta", nullable = false)
     @ManyToOne(optional = false)
-    private Etiqueta tareaetiqueta;
+    private Etiqueta etiqueta;
     
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario", nullable = false)
     @ManyToOne(optional = false)
@@ -213,20 +213,6 @@ public class Tareacabecera implements Serializable {
 	}
 
 	/**
-	 * @return the tareaetiqueta
-	 */
-	public Etiqueta getTareaetiqueta() {
-		return tareaetiqueta;
-	}
-
-	/**
-	 * @param tareaetiqueta the tareaetiqueta to set
-	 */
-	public void setTareaetiqueta(Etiqueta tareaetiqueta) {
-		this.tareaetiqueta = tareaetiqueta;
-	}
-
-	/**
 	 * @return the usuario
 	 */
 	public Usuario getUsuario() {
@@ -252,6 +238,20 @@ public class Tareacabecera implements Serializable {
 	 */
 	public void setIdEstablecimiento(String idEstablecimiento) {
 		this.idEstablecimiento = idEstablecimiento;
+	}
+
+	/**
+	 * @return the etiqueta
+	 */
+	public Etiqueta getEtiqueta() {
+		return etiqueta;
+	}
+
+	/**
+	 * @param etiqueta the etiqueta to set
+	 */
+	public void setEtiqueta(Etiqueta etiqueta) {
+		this.etiqueta = etiqueta;
 	}
 
 }

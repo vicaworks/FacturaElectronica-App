@@ -60,7 +60,7 @@ public class EtiquetaServicio extends AppGenericService<Etiqueta, String> {
 	public Etiqueta crear(Etiqueta o) throws DaoException {
 		try {
 			
-			o.setIdtareaetiqueta(contadorPkServicio.generarContadorTabla(TCEmpresa.TAREA_ETIQUETA, o.getIdEstablecimiento(), true));
+			o.setIdetiqueta(contadorPkServicio.generarContadorTabla(TCEmpresa.TAREA_ETIQUETA, o.getIdEstablecimiento(), true));
 			return super.crear(o);
 			
 		} catch (Exception e) {
@@ -110,7 +110,7 @@ public class EtiquetaServicio extends AppGenericService<Etiqueta, String> {
 					.equals("e.estado","A")
 					.equals("e.empresa.idempresa",idEmpresa)
 					.equals("e.etiqueta",etiqueta.toUpperCase())
-					.notEquals("e.idtareaetiqueta", idtareaetiqueta==null?"-1":idtareaetiqueta)
+					.notEquals("e.idetiqueta", idtareaetiqueta==null?"-1":idtareaetiqueta)
 					.orderBy("e.etiqueta").getResultList().size()>0;
 			
 		} catch (Exception e) {

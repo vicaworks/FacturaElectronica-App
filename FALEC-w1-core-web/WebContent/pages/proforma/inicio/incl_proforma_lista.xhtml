@@ -230,10 +230,13 @@
 								<p:menuitem value=" Imprimir" action="#" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}">
 								</p:menuitem>
 								
-								<p:menuitem value=" Estado" action="#" icon="fa fa-star-half-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}">
+								<p:menuitem value=" Estado" action="#{cotizacionCtrl.estadoCotizacion}" icon="fa fa-star-half-o" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}">
+									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Autorizar" action="#" icon="fa fa-key" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}">
+								<p:menuitem value=" Autorizar" action="#{cotizacionCtrl.autorizar}" icon="fa fa-key" update=":formMain" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}">
+									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
+									<p:confirm header="#{msg['label.confirmacion']}" message="ESTÁ SEGURO DE AUTORIZAR ESTA COTIZACIÓN." icon="fa fw-3x fa-exclamation-triangle" />
 								</p:menuitem>
 								
 								<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EDITAR',p.estado)}">

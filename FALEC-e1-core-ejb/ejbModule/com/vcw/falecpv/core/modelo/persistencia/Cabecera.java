@@ -170,10 +170,6 @@ public class Cabecera implements Serializable {
     @JoinColumn(name = "idadquisicion", referencedColumnName = "idadquisicion", nullable = true)
     private Adquisicion adquisicion;
     
-//    @ManyToOne(optional = true)
-//    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = true)
-//    private Proveedor proveedor;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalbaseimponible", nullable = false, precision = 12, scale = 2)
@@ -254,6 +250,11 @@ public class Cabecera implements Serializable {
     @ManyToOne(optional = true)
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario",insertable = false,updatable = false,nullable = true)
     private Usuario usuarioconsulta;
+    
+//    @Transient
+    @JoinColumn(name = "idetiqueta", referencedColumnName = "idetiqueta", nullable = true)
+    @ManyToOne(optional = true)
+    private Etiqueta etiqueta;
     
     @Transient
     private List<Motivo> motivoList;
@@ -1498,6 +1499,20 @@ public class Cabecera implements Serializable {
 	 */
 	public void setAutorizacion(Integer autorizacion) {
 		this.autorizacion = autorizacion;
+	}
+
+	/**
+	 * @return the etiqueta
+	 */
+	public Etiqueta getEtiqueta() {
+		return etiqueta;
+	}
+
+	/**
+	 * @param etiqueta the etiqueta to set
+	 */
+	public void setEtiqueta(Etiqueta etiqueta) {
+		this.etiqueta = etiqueta;
 	}
 
 }

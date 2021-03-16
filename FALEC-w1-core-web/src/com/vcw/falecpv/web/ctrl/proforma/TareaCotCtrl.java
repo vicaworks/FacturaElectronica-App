@@ -104,7 +104,7 @@ public class TareaCotCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			
-			if(FechaUtil.comparaFechas(new Date(), tareacabeceraSelected.getFechalimite())>0) {
+			if(FechaUtil.comparaFechas(new Date(), tareacabeceraSelected.getFechalimite())>0 && !tareacabeceraSelected.getEstado().equals("VENCIDO")) {
 				AppJsfUtil.addErrorMessage("frmCotizacionTarea:t-fecha", "", "NO PUEDE SER MENOR A LA ACTUAL");
 				return;
 			}

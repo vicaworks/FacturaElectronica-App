@@ -34,16 +34,20 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
 import com.vcw.falecpv.core.email.EmailService;
 import com.vcw.falecpv.core.email.dto.EmailDto;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.dto.FileDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
+import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
+import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.CotizacionServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.EtiquetaServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.servicio.emailcomprobante.EmailCotizacionServicio;
@@ -78,6 +82,12 @@ public class CotizacionCtrl extends BaseCtrl {
 	@EJB
 	private EmailCotizacionServicio emailCotizacionServicio;
 	
+	@EJB
+	private EtiquetaServicio etiquetaServicio;
+	
+	@EJB
+	private CabeceraServicio cabeceraServicio;
+	
 	private String criterioBusqueda;
 	private Date desde;
 	private Date hasta;
@@ -90,6 +100,9 @@ public class CotizacionCtrl extends BaseCtrl {
 	private BigDecimal totalfacturados = BigDecimal.ZERO;
 	private BigDecimal totalSeguimiento = BigDecimal.ZERO;
 	private EmailDto emailDto;
+	private List<Etiqueta> etiquetaList;
+	private Etiqueta etiquetaSelected;
+	private String estadoProforma;
 	
 	/**
 	 * 
@@ -631,6 +644,54 @@ public class CotizacionCtrl extends BaseCtrl {
 		return !estList.contains(estado);
 	}
 	
+	public void consultarEtiquetas() throws DaoException {
+		etiquetaList = null;
+		etiquetaList = etiquetaServicio.getEtiquetas(establecimientoMain.getEmpresa().getIdempresa(),EtiquetaModuloEnum.ANULAR_COTIZACION.toString());
+	}
+	
+	public void estadoCotizacion() {
+		try {
+			estadoProforma = proformaSelected.getEstado();
+			consultarEtiquetas();
+			AppJsfUtil.showModalRender("dlgCotizacionEstado", "frmCotizacionEstado");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	@Override
+	public void guardar() {
+		try {
+			
+			proformaSelected.setEstado(estadoProforma);
+			if(!estadoProforma.equals("ARCHIVADO")) {
+				proformaSelected.setEtiqueta(null);
+			}
+			
+			cabeceraServicio.actualizar(proformaSelected);
+			consultar();
+			AppJsfUtil.addInfoMessage("frmCotizacionEstado","OK","REGISTRO ACTUALIZADO CORRECTAMENTE.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void autorizar() {
+		try {
+			proformaSelected.setEstado("SEGUIMIENTO");
+			proformaSelected.setEtiqueta(null);
+			cabeceraServicio.actualizar(proformaSelected);
+			consultar();			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	/**
 	 * @return the criterioBusqueda
 	 */
@@ -797,6 +858,48 @@ public class CotizacionCtrl extends BaseCtrl {
 	 */
 	public void setEmailDto(EmailDto emailDto) {
 		this.emailDto = emailDto;
+	}
+
+	/**
+	 * @return the etiquetaList
+	 */
+	public List<Etiqueta> getEtiquetaList() {
+		return etiquetaList;
+	}
+
+	/**
+	 * @param etiquetaList the etiquetaList to set
+	 */
+	public void setEtiquetaList(List<Etiqueta> etiquetaList) {
+		this.etiquetaList = etiquetaList;
+	}
+
+	/**
+	 * @return the etiquetaSelected
+	 */
+	public Etiqueta getEtiquetaSelected() {
+		return etiquetaSelected;
+	}
+
+	/**
+	 * @param etiquetaSelected the etiquetaSelected to set
+	 */
+	public void setEtiquetaSelected(Etiqueta etiquetaSelected) {
+		this.etiquetaSelected = etiquetaSelected;
+	}
+
+	/**
+	 * @return the estadoProforma
+	 */
+	public String getEstadoProforma() {
+		return estadoProforma;
+	}
+
+	/**
+	 * @param estadoProforma the estadoProforma to set
+	 */
+	public void setEstadoProforma(String estadoProforma) {
+		this.estadoProforma = estadoProforma;
 	}
 
 }
