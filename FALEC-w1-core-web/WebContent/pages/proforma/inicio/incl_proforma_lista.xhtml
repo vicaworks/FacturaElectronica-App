@@ -31,6 +31,7 @@
 						itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
 					
 					<p:ajax event="valueChange" listener="#{cotizacionCtrl.buscar()}" update="@form"/>
+					<p:ajax event="valueChange" listener="#{cotizacionFormCtrl.cambioEstablecimiento(cotizacionCtrl.establecimientoMain)}" update="@form"/>
 						
 				</p:selectOneMenu>
     		</div>
@@ -243,9 +244,9 @@
 									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Archivar" action="#{cotizacionCtrl.eliminar()}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('ARCHIVAR',p.estado)}">
+								<p:menuitem value=" Archivar" action="#{cotizacionCtrl.eliminar}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('ARCHIVAR',p.estado)}">
 									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
-									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+									<f:setPropertyActionListener value="ARCHIVADO" target="#{cotizacionCtrl.estadoProforma}"/>
 								</p:menuitem>
 								
 								<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EMAIL',p.estado)}">
@@ -269,7 +270,7 @@
 								
 						</p:column>	
 						
-						<p:column headerText="USUARIO" style="width:80px;" filterBy="#{p.usuario}" filterMatchMode="contains">
+						<p:column headerText="VENDEDOR" style="width:80px;" filterBy="#{p.usuario}" filterMatchMode="contains">
 							<h:outputText value="#{p.usuario}" />
 						</p:column>
 						

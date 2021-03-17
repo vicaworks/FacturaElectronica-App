@@ -701,6 +701,19 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		}
 
 	}
+	
+	public void cambioEstablecimiento(Establecimiento est) {
+		try {
+			super.setEstablecimientoMain(est);
+			productoSelected = null;
+			nuevaCotizacion();
+			detalleFacList = null;
+			detalleSelected = null;
+			criterioBusqueda = null;
+			consultarProductos();
+		} catch (Exception e) {
+		}
+	}
 
 
 	/**

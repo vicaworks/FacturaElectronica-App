@@ -173,16 +173,9 @@ public class CotizacionCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			
-			if(proformaSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
-				return;
-			}
-			
-			cotizacionServicio.archivarCotizacion(proformaSelected.getIdcabecera());
-			proformaSelected = null;
-			CotizacionFormCtrl cotizacionFormCtrl = (CotizacionFormCtrl)AppJsfUtil.getManagedBean("cotizacionFormCtrl");
-			cotizacionFormCtrl.nuevoFromMain(establecimientoMain);
-			consultar();
+			estadoProforma = "ARCHIVADO";
+			consultarEtiquetas();
+			AppJsfUtil.showModalRender("dlgCotizacionEstado", "frmCotizacionEstado");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
