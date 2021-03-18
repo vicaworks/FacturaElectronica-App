@@ -12,7 +12,9 @@ import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCEmpresa;
 import com.vcw.falecpv.core.dao.impl.EtiquetaDao;
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
+import com.vcw.falecpv.core.modelo.persistencia.Tareacabecera;
 import com.xpert.persistence.query.QueryBuilder;
 
 /**
@@ -112,6 +114,38 @@ public class EtiquetaServicio extends AppGenericService<Etiqueta, String> {
 					.equals("e.etiqueta",etiqueta.toUpperCase())
 					.notEquals("e.idetiqueta", idtareaetiqueta==null?"-1":idtareaetiqueta)
 					.orderBy("e.etiqueta").getResultList().size()>0;
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param etiquetaModulo
+	 * @param etiqueta
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean existeReferenciaEtiqueta(String etiquetaModulo,Etiqueta etiqueta)throws DaoException{
+		try {
+			QueryBuilder qb = new QueryBuilder(tareaetiquetaDao.getEntityManager());
+			
+			switch (etiquetaModulo) {
+			case "TAREA_COTIZACION":
+				return !qb.select("t.etiqueta")
+						.from(Tareacabecera.class,"t")
+						.equals("t.etiqueta.idetiqueta", etiqueta.getIdetiqueta()).getResultList().isEmpty();
+			case "ANULAR_COTIZACION":
+				return !qb.select("c.etiqueta")
+						.from(Cabecera.class,"c")
+						.equals("c.etiqueta.idetiqueta", etiqueta.getIdetiqueta()).getResultList().isEmpty();
+			default:
+				break;
+			}
+			
+			return false;
 			
 		} catch (Exception e) {
 			throw new DaoException(e);

@@ -156,6 +156,14 @@
 			
 			/* ============================================= */
 			
+			.p-field,
+        	.p-field > label,
+        	.p-field-checkbox, 
+        	.p-field-radiobutton {
+					margin-bottom: 0.15rem !important;
+			}
+			
+			.p-field > small{margin-top: 0px !important;}
 			
         </style>
     
@@ -256,6 +264,8 @@
 	   <!-- Perfil usuario -->
 	   <ui:include src="incl_usuario_perfil_form.xhtml" />
 	   
+	   <!-- Form etiqueta -->
+	    <ui:include src="../herramientas/incl_etiqueta_form.xhtml" />
     	
     </ui:define>
 	

@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.web.ctrl.proforma;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -11,8 +12,10 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.EtiquetaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.configuracion.ConfEmpresaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -30,6 +33,8 @@ public class EtiquetaCtrl extends BaseCtrl {
 	
 	@EJB
 	private EtiquetaServicio tareaetiquetaServicio;
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 	
 	private Etiqueta tareaetiquetaSelected;
 	private String callModule;
@@ -42,6 +47,15 @@ public class EtiquetaCtrl extends BaseCtrl {
 	 * 
 	 */
 	public EtiquetaCtrl() {
+	}
+	
+	@PostConstruct
+	public void init() {
+		try {
+			establecimientoFacade(establecimientoServicio, false);
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	public void agregarEtiqueta() {
@@ -91,6 +105,11 @@ public class EtiquetaCtrl extends BaseCtrl {
 				cotizacionCtrl.consultarEtiquetas();
 				cotizacionCtrl.getProformaSelected().setEtiqueta(tareaetiquetaSelected);
 				break;
+			case "CONFIGURACION":
+				ConfEmpresaCtrl confEmpresaCtrl = (ConfEmpresaCtrl)AppJsfUtil.getManagedBean("confEmpresaCtrl");
+				confEmpresaCtrl.consultarEtiquetaAnular();
+				confEmpresaCtrl.consultarEtiquetaTarea();
+				break;
 			default:
 				break;
 			}
@@ -100,6 +119,39 @@ public class EtiquetaCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmCotizacionTareaEtiqueta", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	@Override
+	public void eliminar() {
+		try {
+			
+			if(tareaetiquetaServicio.existeReferenciaEtiqueta(tareaetiquetaSelected.getModulo(), tareaetiquetaSelected)) {
+				AppJsfUtil.addErrorMessage(callForm, "ERROR", "NO SE PUEDE ELIMINAR EXISTE REFENCIA A LA ETIQUETA");
+				return;
+			}
+			
+			tareaetiquetaServicio.eliminar(tareaetiquetaSelected);
+			switch (callModule) {
+			case "PROFORMA":
+				tareaCotCtrl.consultarEtiquetas();
+				break;
+			case "PROFORMA_LISTA":
+				CotizacionCtrl cotizacionCtrl = (CotizacionCtrl)AppJsfUtil.getManagedBean("cotizacionCtrl");
+				cotizacionCtrl.getProformaSelected().setEtiqueta(tareaetiquetaSelected);
+				break;
+			case "CONFIGURACION":
+				ConfEmpresaCtrl confEmpresaCtrl = (ConfEmpresaCtrl)AppJsfUtil.getManagedBean("confEmpresaCtrl");
+				confEmpresaCtrl.consultarEtiquetaAnular();
+				confEmpresaCtrl.consultarEtiquetaTarea();
+				break;
+			default:
+				break;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 

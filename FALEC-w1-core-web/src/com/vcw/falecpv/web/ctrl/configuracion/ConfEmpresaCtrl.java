@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,14 +20,20 @@ import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
+import com.servitec.common.util.exceptions.ParametroRequeridoException;
+import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.modelo.dto.ConfEstablecimientoDto;
 import com.vcw.falecpv.core.modelo.dto.SmtpDto;
 import com.vcw.falecpv.core.modelo.persistencia.Empresa;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
+import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
+import com.vcw.falecpv.core.modelo.persistencia.ParametroGenericoEmpresa;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.EtiquetaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
@@ -52,6 +59,9 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	
 	@EJB
 	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
+	
+	@EJB
+	private EtiquetaServicio etiquetaServicio;
 
 	/**
 	 * 
@@ -63,6 +73,12 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	private UploadedFile file;
 	private SmtpDto smtpDto;
 	private ConfEstablecimientoDto confEstablecimientoDto;
+	private List<Etiqueta> etiqueta1List;
+	private List<Etiqueta> etiqueta2List;
+	private Etiqueta etiquetaSelected;
+	private boolean cotizacionAutorizacion = false;
+	private boolean cotizacionEtiquetas = false;
+	
 	
 	
 
@@ -79,6 +95,9 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			empresaSelected = empresaServicio.consultarByPk(establecimientoMain.getEmpresa().getIdempresa());
 			consultarSmtp();
 			consultarConfiguracionEstablecimiento();
+			consultarEtiquetaAnular();
+			consultarEtiquetaTarea();
+			consultarParametrosCotizacion();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -181,7 +200,6 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			consultarConfiguracionEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();			
-//			AppJsfUtil.addErrorMessage("frmSMTP", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -246,8 +264,6 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	public void cambiarPlantillaEmail() {
 		try {
 			
-			
-			
 			if(!confEstablecimientoDto.isPlantillaEmailEstablecimiento()) {
 				establecimientoServicio.guardarPlantillaEmail(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
 				consultarConfiguracionEstablecimiento();
@@ -256,6 +272,40 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();			
 			AppJsfUtil.addErrorMessage("frmEstEmailTest", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void consultarEtiquetaTarea() throws DaoException {
+		etiqueta1List = null;
+		etiqueta1List = etiquetaServicio.getEtiquetas(establecimientoMain.getEmpresa().getIdempresa(),EtiquetaModuloEnum.TAREA_COTIZACION.toString());
+	}
+	
+	public void consultarEtiquetaAnular() throws DaoException {
+		etiqueta2List = null;
+		etiqueta2List = etiquetaServicio.getEtiquetas(establecimientoMain.getEmpresa().getIdempresa(),EtiquetaModuloEnum.ANULAR_COTIZACION.toString());
+	}
+	
+	public void consultarParametrosCotizacion()throws DaoException, NumberFormatException, ParametroRequeridoException {
+		
+		cotizacionAutorizacion = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_AUTORIZACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
+		cotizacionEtiquetas = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_ETIQUETAS_PREDEFIN, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
+		
+	}
+	
+	public void guardarParametrosCotizacion() {
+		try {
+			
+			ParametroGenericoEmpresa pg = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(establecimientoMain.getEmpresa().getIdempresa(), PGEmpresaEnum.COTIZACION_AUTORIZACION);
+			pg.setValor(cotizacionAutorizacion?"S":"N");
+			parametroGenericoEmpresaServicio.actualizar(pg);
+			pg = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(establecimientoMain.getEmpresa().getIdempresa(), PGEmpresaEnum.COTIZACION_ETIQUETAS_PREDEFIN);
+			pg.setValor(cotizacionEtiquetas?"S":"N");
+			parametroGenericoEmpresaServicio.actualizar(pg);
+			consultarParametrosCotizacion();
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmConfCotizacion", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
@@ -327,6 +377,76 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	 */
 	public void setConfEstablecimientoDto(ConfEstablecimientoDto confEstablecimientoDto) {
 		this.confEstablecimientoDto = confEstablecimientoDto;
+	}
+
+	/**
+	 * @return the etiqueta1List
+	 */
+	public List<Etiqueta> getEtiqueta1List() {
+		return etiqueta1List;
+	}
+
+	/**
+	 * @param etiqueta1List the etiqueta1List to set
+	 */
+	public void setEtiqueta1List(List<Etiqueta> etiqueta1List) {
+		this.etiqueta1List = etiqueta1List;
+	}
+
+	/**
+	 * @return the etiqueta2List
+	 */
+	public List<Etiqueta> getEtiqueta2List() {
+		return etiqueta2List;
+	}
+
+	/**
+	 * @param etiqueta2List the etiqueta2List to set
+	 */
+	public void setEtiqueta2List(List<Etiqueta> etiqueta2List) {
+		this.etiqueta2List = etiqueta2List;
+	}
+
+	/**
+	 * @return the etiquetaSelected
+	 */
+	public Etiqueta getEtiquetaSelected() {
+		return etiquetaSelected;
+	}
+
+	/**
+	 * @param etiquetaSelected the etiquetaSelected to set
+	 */
+	public void setEtiquetaSelected(Etiqueta etiquetaSelected) {
+		this.etiquetaSelected = etiquetaSelected;
+	}
+
+	/**
+	 * @return the cotizacionAutorizacion
+	 */
+	public boolean isCotizacionAutorizacion() {
+		return cotizacionAutorizacion;
+	}
+
+	/**
+	 * @param cotizacionAutorizacion the cotizacionAutorizacion to set
+	 */
+	public void setCotizacionAutorizacion(boolean cotizacionAutorizacion) {
+		this.cotizacionAutorizacion = cotizacionAutorizacion;
+	}
+
+	/**
+	 * @return the cotizacionEtiquetas
+	 */
+	public boolean isCotizacionEtiquetas() {
+		return cotizacionEtiquetas;
+	}
+
+	/**
+	 * @param cotizacionEtiquetas the cotizacionEtiquetas to set
+	 */
+	public void setCotizacionEtiquetas(boolean cotizacionEtiquetas) {
+		this.cotizacionEtiquetas = cotizacionEtiquetas;
 	}
 
 }

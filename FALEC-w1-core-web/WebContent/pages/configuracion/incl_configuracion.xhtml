@@ -241,6 +241,142 @@
 		                </p>
 		            </p:tab>
 		            
+		            <p:tab title="Cotización">
+		            	
+		            	<p class="p-m-0">
+		                	<h:form id="frmConfCotizacion">
+		                		
+		                			
+	                			<div class="ui-fluid p-formgrid p-grid ">
+	                				
+	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
+	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionAutorizacion}">
+			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
+			                            </p:selectBooleanButton>
+	                				</div>
+	                				<div class="p-field  p-col-10">
+	                					<p><strong>Autorización: </strong> AL crear una cotización, por defecto se coloca en estado de AUTORIZACIÓN, 
+	                							y solo los usuarios con este perfil pueden accesar a la cotización y cambiar de estado, 
+	                							al estar en este estado no se puede imprimir, archivar, asignar tareas, y enviar email, hasta que la cotización esté autorizada. </p>
+	                				</div>
+	                			
+	                			
+	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
+	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionEtiquetas}">
+			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
+			                            </p:selectBooleanButton>
+	                				</div>
+	                				<div class="p-field  p-col-10">
+	                					<p><strong>Etiquetas predefinidas: </strong> Se puede establecer etiquetas predefinidas que el usuario vendedor no puede editar o crear, 
+	                					si no solamente utilizar las definidas en esta configuración para las opciones; Archivar cotización, Tarea Cotización. </p>
+	                				</div>
+	                				
+	                			</div>
+	                			
+	                			<!-- Mensajes -->
+								<p:messages id="msgFrmConfCotizacion" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmConfCotizacion"
+									closable="true" style="margin:0px!important;">
+									<p:autoUpdate></p:autoUpdate>
+								</p:messages>
+	                			
+	                			<div class="p-field p-grid">
+	                				
+	                				<div class="p-col-12 p-md-6">
+	                					
+	                					<p:panel header="ETIQUETAS TAREAS">
+	                						<i class="fa fa-ellipsis-v p-mr-2"></i>
+	                						<p:commandLink action="#{etiquetaCtrl.agregarEtiqueta}" style="color:#252529 !important;" value="Agregar">
+	                							<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
+												<f:setPropertyActionListener value="TAREA_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
+												<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
+												<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
+	                						</p:commandLink>
+	                						<div class="EmptyBox5"/>
+	                						<p:separator/>
+	                						<div class="EmptyBox5"/>
+	                						<div class="p-grid">
+		                						<p:repeat var="t1" value="#{confEmpresaCtrl.etiqueta1List}">
+													<div class="p-col-2 TexAlCenter">
+														<p:commandLink style="color:#252529 !important;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta">
+															<i class="fa fa-edit p-mr-1"></i>
+															<f:setPropertyActionListener value="#{t1}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
+															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
+															<f:setPropertyActionListener value="TAREA_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
+															<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
+															<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
+														</p:commandLink>
+														<p:commandLink style="color:#252529 !important;" action="#{etiquetaCtrl.eliminar}" update=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion">
+															<i class="fa fa-trash-o"></i>
+															<f:setPropertyActionListener value="#{t1}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
+															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
+															<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
+															<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+														</p:commandLink>
+													</div>
+													<div class="p-col-10">
+														<h:outputText value="#{t1.etiqueta}" />
+													</div>		                						
+		                						</p:repeat>
+	                							
+	                						</div>
+	                						
+	                					</p:panel>
+	                				
+	                				</div>
+	                				
+	                				<div class="p-col-12 p-md-6">
+	                					
+	                					<p:panel header="ETIQUETAS ARCHIVAR COTIZACIÓN">
+	                						<i class="fa fa-ellipsis-v p-mr-2"></i>
+	                						<p:commandLink action="#{etiquetaCtrl.agregarEtiqueta}" style="color:#252529 !important;" value="Agregar">
+	                							<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
+												<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
+												<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
+												<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
+	                						</p:commandLink>
+	                						<div class="EmptyBox5"/>
+	                						<p:separator/>
+	                						<div class="EmptyBox5"/>
+	                						<div class="p-grid">
+		                						<p:repeat var="t2" value="#{confEmpresaCtrl.etiqueta2List}">
+													<div class="p-col-2 TexAlCenter">
+														<p:commandLink style="color:#252529 !important;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta">
+															<i class="fa fa-edit p-mr-1"></i>
+															<f:setPropertyActionListener value="#{t2}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
+															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
+															<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
+															<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
+															<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
+														</p:commandLink>
+														<p:commandLink style="color:#252529 !important;" action="#{etiquetaCtrl.eliminar}" update=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion">
+															<i class="fa fa-trash-o"></i>
+															<f:setPropertyActionListener value="#{t2}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
+															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
+															<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
+															<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+														</p:commandLink>
+													</div>
+													<div class="p-col-10">
+														<h:outputText value="#{t2.etiqueta}" />
+													</div>		                						
+		                						</p:repeat>
+	                							
+	                						</div>
+	                					</p:panel>
+	                				
+	                				</div>
+	                				
+	                			</div>
+		                		
+		                		
+		                	</h:form>
+		                </p>	
+		            
+		            </p:tab>
+		            
+		            
 		            <p:tab title="Publicidad correo electrónico de facturas" >
 		                <p class="p-m-0">
 		                    Agrega una publicidad de tu negocio, en las Facturas, la imágen puede ser en formato JPG, PNG, 

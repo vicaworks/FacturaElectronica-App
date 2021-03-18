@@ -107,6 +107,8 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 			parametroList.add(new ParametroGenericoEmpresa("19", idEmpresa, null, "SMTP_START_TLS", "true", ""));
 			parametroList.add(new ParametroGenericoEmpresa("23", idEmpresa, null, "PERFILES ACCESO MODIFICACION", "N", "HABILITA EL PODER CAMBIAR LAS OPCIONES DE ACCESO AL SISTEMA"));
 			parametroList.add(new ParametroGenericoEmpresa("24", idEmpresa, null, "PLANTILLA_EMAIL_COTIZACION", "-", "PLANTILLA EMAIL COTIZACION"));
+			parametroList.add(new ParametroGenericoEmpresa("25", idEmpresa, null, "COTIZACION_ETIQUETAS_PREDEFIN", "N", "SI EN LAS COTIZACIONES UTILIZAN ETIQUETAS PREDEFINIDAS"));
+			parametroList.add(new ParametroGenericoEmpresa("26", idEmpresa, null, "COTIZACION_AUTORIZACION", "N", "AL CREAR LA COTIZACIÓN OBLIGAR AUTORIZACION"));
 			
 			for (ParametroGenericoEmpresa p : parametroList) {
 				if(!parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByIdAndEmpresa(idEmpresa, p.getIdparametroempresa())) {
