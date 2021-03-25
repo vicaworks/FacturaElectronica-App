@@ -25,6 +25,7 @@ import com.servitec.common.util.exceptions.ParametroRequeridoException;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.TipoPagoFormularioEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
@@ -45,6 +46,8 @@ import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
@@ -103,6 +106,9 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 
 	private Cabecera cabecerSelected;
 	private String criterioCliente;
@@ -235,7 +241,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		productoList = productoServicio.getProductoDao().consultarAllImageEager(establecimientoMain.getIdestablecimiento(),criterioBusqueda);
 	}
 	
-	public void nuevaCotizacion() throws DaoException {
+	public void nuevaCotizacion() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		criterioBusqueda = null;
 		criterioCliente = null;
 		cabecerSelected = new Cabecera();
@@ -255,6 +261,8 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		consultarIce();
 		consultarIva();
 		populateTipoPago();
+		// autorizacion en parametros
+		cabecerSelected.setAutorizacion(((boolean)parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_AUTORIZACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa()))?1:0);
 	}
 	
 	public void agregarProducto() {
@@ -326,7 +334,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		
 	}
 	
-	private void totalizar() throws DaoException {
+	private void totalizar() throws DaoException, NumberFormatException, ParametroRequeridoException {
 		if(cabecerSelected==null) nuevaCotizacion();
 		
 		
@@ -654,7 +662,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	}
 	
 	
-	public String editar(String idCotizacion) throws DaoException {
+	public String editar(String idCotizacion) throws DaoException, NumberFormatException, ParametroRequeridoException {
 		
 		nuevaCotizacion();
 		cabecerSelected = cabeceraServicio.consultarByPk(idCotizacion);
@@ -715,6 +723,20 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		}
 	}
 
+	public boolean habilitarAutorizar() {
+		try {
+			
+			return parametroGenericoEmpresaServicio.consultarParametroEmpresa(
+					PGEmpresaEnum.COTIZACION_AUTORIZACION, TipoRetornoParametroGenerico.BOOLEAN,
+					establecimientoMain.getEmpresa().getIdempresa());
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return false;
+	}
 
 	/**
 	 * @return the cabecerSelected
