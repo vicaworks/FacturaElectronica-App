@@ -16,12 +16,15 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Tareacabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TareacabeceraServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.EtiquetaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -47,6 +50,8 @@ public class TareaCotCtrl extends BaseCtrl {
 	@EJB
 	private TareacabeceraServicio tareacabeceraServicio;
 	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
 	private String callModule;
 	private String callForm;
@@ -213,6 +218,21 @@ public class TareaCotCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public boolean habilitarEtiqueta() {
+		try {
+			
+			return parametroGenericoEmpresaServicio.consultarParametroEmpresa(
+					PGEmpresaEnum.COTIZACION_ETIQUETAS_PREDEFIN, TipoRetornoParametroGenerico.BOOLEAN,
+					establecimientoMain.getEmpresa().getIdempresa());
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return false;
 	}
 	
 	/**

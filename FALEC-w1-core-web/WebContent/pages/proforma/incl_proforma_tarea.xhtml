@@ -107,7 +107,7 @@
 							</div>
 							
 							<div class="p-field p-col-2 p-md-1 p-as-end TexAlCenter Fs16" >
-								<p:commandLink id="t-agregartarea" style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}" >
+								<p:commandLink id="t-agregartarea" style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}"  disabled="#{tareaCotCtrl.habilitarEtiqueta()}">
 									<i class="fa fa-plus p-ml-1 p-mr-2"></i>
 									<f:setPropertyActionListener value="PROFORMA" target="#{etiquetaCtrl.callModule}"/>
 									<f:setPropertyActionListener value="TAREA_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
@@ -116,7 +116,7 @@
 									<f:setPropertyActionListener value="#{tareaCotCtrl}" target="#{etiquetaCtrl.tareaCotCtrl}"/>
 									<f:setPropertyActionListener value="#{tareaCotCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
 								</p:commandLink>
-								<p:commandLink id="t-editartarea" style="color:#2f2f2f;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.etiqueta}">
+								<p:commandLink id="t-editartarea" style="color:#2f2f2f;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.etiqueta or tareaCotCtrl.habilitarEtiqueta()}">
 									<i class="fa fa-edit"></i>
 									<f:setPropertyActionListener value="#{tareaCotCtrl.tareacabeceraSelected.etiqueta}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
 									<f:setPropertyActionListener value="PROFORMA" target="#{etiquetaCtrl.callModule}"/>

@@ -35,6 +35,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.email.EmailService;
 import com.vcw.falecpv.core.email.dto.EmailDto;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
@@ -48,6 +49,8 @@ import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.CotizacionServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.EtiquetaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.servicio.emailcomprobante.EmailCotizacionServicio;
@@ -87,6 +90,9 @@ public class CotizacionCtrl extends BaseCtrl {
 	
 	@EJB
 	private CabeceraServicio cabeceraServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio; 
 	
 	private String criterioBusqueda;
 	private Date desde;
@@ -172,9 +178,10 @@ public class CotizacionCtrl extends BaseCtrl {
 	@Override
 	public void eliminar() {
 		try {
-			
 			estadoProforma = "ARCHIVADO";
 			consultarEtiquetas();
+			etiquetaSelected = null;
+			proformaSelected.setEtiqueta(null);
 			AppJsfUtil.showModalRender("dlgCotizacionEstado", "frmCotizacionEstado");
 			
 		} catch (Exception e) {
@@ -683,6 +690,21 @@ public class CotizacionCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public boolean habilitarEtiqueta() {
+		try {
+			
+			return parametroGenericoEmpresaServicio.consultarParametroEmpresa(
+					PGEmpresaEnum.COTIZACION_ETIQUETAS_PREDEFIN, TipoRetornoParametroGenerico.BOOLEAN,
+					establecimientoMain.getEmpresa().getIdempresa());
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return false;
 	}
 	
 	/**
