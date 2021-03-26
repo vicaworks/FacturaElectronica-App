@@ -125,6 +125,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	private List<Iva> ivaList;
 	private BigDecimal porcentajeRenta;
 	private BigDecimal porcentajeIva;
+	private boolean cotizacionProductoDetalle = false;
 	
 	/**
 	 * 
@@ -263,6 +264,8 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		populateTipoPago();
 		// autorizacion en parametros
 		cabecerSelected.setAutorizacion(((boolean)parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_AUTORIZACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa()))?1:0);
+		// si despliega detalle
+		cotizacionProductoDetalle = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_PRODUCTO_DESCRIPCION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
 	public void agregarProducto() {
@@ -946,6 +949,20 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	 */
 	public void setPorcentajeIva(BigDecimal porcentajeIva) {
 		this.porcentajeIva = porcentajeIva;
+	}
+
+	/**
+	 * @return the cotizacionProductoDetalle
+	 */
+	public boolean isCotizacionProductoDetalle() {
+		return cotizacionProductoDetalle;
+	}
+
+	/**
+	 * @param cotizacionProductoDetalle the cotizacionProductoDetalle to set
+	 */
+	public void setCotizacionProductoDetalle(boolean cotizacionProductoDetalle) {
+		this.cotizacionProductoDetalle = cotizacionProductoDetalle;
 	}
 
 }

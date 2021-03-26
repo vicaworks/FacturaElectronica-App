@@ -119,26 +119,47 @@
 						
 						<div class="p-grid p-nogutter p-align-center" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 						
-							<div class="p-col-12 p-sm-9">
+							<div class="p-col-12 p-sm-8">
 								<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400"  onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
 										<p:ajax event="change"></p:ajax>
 									</p:inputText>
 								<p:message for="intDetNombreProducto"/>
+								<p:outputPanel rendered="#{cotizacionFormCtrl.cotizacionProductoDetalle and d.producto!=null and d.producto.observacion!=null}">
+									<div class="p-d-block p-mt-1 p-mb-1">
+										<p:repeat var="c" value="#{appSessionCtrl.saltoLinea(d.producto.observacion)}">
+											<h:outputText value="#{c}"/><br/>
+										</p:repeat>
+									</div>
+								</p:outputPanel>
 							</div>
 							
-							<div class="p-col-8 p-sm-2" style="text-align: right;">
+							<div class="p-col-8 p-sm-2 p-as-start" style="text-align: right;padding-top: 5px!important;">
 								<!-- Subtotal -->
 								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 							
-							<div class="p-col-4 p-sm-1" style="text-align: center;">
+							<div class="p-col-4 p-sm-2 p-as-start" style="text-align: center;padding-top: 5px!important;">
+							
+								<p:commandLink id="clkEditar" action="#{productoCtrl.editarDescripcionProducto(d.producto.idproducto)}" 
+											update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT"
+											process="@this :formMain:formulario:pvDetalleDT" 
+											disabled="#{cotizacionFormCtrl.enableAccion or d.producto==null}"
+											styleClass="p-mr-2">
+									<i class="fa fa-edit Fs16" style="color:#2f2f2f;"></i>
+									<f:setPropertyActionListener value="#{d}" target="#{cotizacionFormCtrl.detalleSelected}"/>
+									<f:setPropertyActionListener value="PROFORMA" target="#{productoCtrl.callModule}"/>
+									<f:setPropertyActionListener value=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT" target="#{productoCtrl.viewUpdate}"/>
+									<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
+								</p:commandLink>
+								
 								<p:commandLink id="clkEliminar" action="#{cotizacionFormCtrl.eliminarDetalle()}" update=":formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal :formMain:formulario:oupPagoDT" process="@this :formMain:formulario:pvDetalleDT" disabled="#{cotizacionFormCtrl.enableAccion}">
 									<f:setPropertyActionListener value="#{d}" target="#{cotizacionFormCtrl.detalleSelected}"/>
 									<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								</p:commandLink>
+								
 							</div>
 							
 						</div>

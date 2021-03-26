@@ -61,6 +61,7 @@ import com.vcw.falecpv.core.servicio.TipoProductoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 import com.xpert.faces.utils.FacesUtils;
@@ -369,7 +370,7 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			// lista del combo popup
 			consultarProductoForm();
-			
+			String form="frmProducto";
 			switch (callModule) {
 			case "PRODUCTO":
 				// lista principal
@@ -386,11 +387,16 @@ public class ProductoCtrl extends BaseCtrl {
 				listaProductoCtrl.setCriterioBusqueda(productoSelected.getNombregenerico());
 				listaProductoCtrl.refrescar();
 				break;
+			case "PROFORMA":
+				CotizacionFormCtrl cotizacionFormCtrl = (CotizacionFormCtrl)AppJsfUtil.getManagedBean("cotizacionFormCtrl");
+				cotizacionFormCtrl.getDetalleSelected().setProducto(productoSelected);
+				form="frmProductoDesc";
+				break;
 			default:
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("frmProducto","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage(form,"OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -409,6 +415,23 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			editarFacade(id);
 			AppJsfUtil.showModalRender("dlgProducto", "frmProducto");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void editarDescripcionProducto(String id) {
+		try {
+			
+			if(id==null) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				return;
+			}
+			
+			editarFacade(id);
+			AppJsfUtil.showModalRender("dlgProductoDes", "frmProductoDesc");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

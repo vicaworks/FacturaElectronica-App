@@ -11,6 +11,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -172,6 +174,14 @@ public class AppSessionCtrl implements Serializable {
 		return TextoUtil.leftPadTexto(cadena, longitud, caracter);
 	}
 	
+	public String escapeHtml4(String cadena) {
+		return StringEscapeUtils.escapeHtml4(cadena);
+	}
+	
+	@SuppressWarnings("unused")
+	public List<String> saltoLinea(String cadena){
+		return Arrays.asList(cadena.split("\n"));
+	}
 	
 	/**
 	 * @return the nombreEstablecimiento

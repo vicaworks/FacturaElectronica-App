@@ -251,6 +251,17 @@
 	                				
 	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
 	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionProductoDetalle}">
+			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
+			                            </p:selectBooleanButton>
+	                				</div>
+	                				<div class="p-field  p-col-10">
+	                					<p><strong>Descripción del Producto: </strong> En el detalle de la cotización, puede desplegar la descripción del producto, 
+	                					de esta manera tanto en la pantalla como en la impresión de la cotización se despliega el detalle del producto. </p>
+	                				</div>
+	                				
+	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
+	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
 			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionAutorizacion}">
 			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
 			                            </p:selectBooleanButton>
