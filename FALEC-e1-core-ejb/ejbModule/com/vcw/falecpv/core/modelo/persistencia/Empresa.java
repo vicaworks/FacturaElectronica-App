@@ -114,7 +114,6 @@ public class Empresa implements Serializable {
     private String idusuario;
     
     @Basic(optional = true)
-    @NotNull
     @Size(min = 1, max = 300)
     @Column(name = "nombrearchivo", nullable = true, length = 300)
     private String nombrearchivo;

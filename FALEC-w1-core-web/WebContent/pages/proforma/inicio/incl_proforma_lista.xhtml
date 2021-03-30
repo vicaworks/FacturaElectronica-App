@@ -228,7 +228,8 @@
 							</p:commandLink>
 							<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
 								
-								<p:menuitem value=" Imprimir" action="#" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}">
+								<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}">
+									<f:setPropertyActionListener value="#{p.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								</p:menuitem>
 								
 								<p:menuitem value=" Estado" action="#{cotizacionCtrl.estadoCotizacion}" icon="fa fa-star-half-o" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}">

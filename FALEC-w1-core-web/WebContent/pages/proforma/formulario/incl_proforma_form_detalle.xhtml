@@ -125,7 +125,7 @@
 									</p:inputText>
 								<p:message for="intDetNombreProducto"/>
 								<p:outputPanel rendered="#{cotizacionFormCtrl.cotizacionProductoDetalle and d.producto!=null and d.producto.observacion!=null}">
-									<div class="p-d-block p-mt-1 p-mb-1">
+									<div class="p-d-block p-mt-1 Fs10">
 										<p:repeat var="c" value="#{appSessionCtrl.saltoLinea(d.producto.observacion)}">
 											<h:outputText value="#{c}"/><br/>
 										</p:repeat>
@@ -167,7 +167,6 @@
 						<!-- cantidad, subdetalle -->
 				
 						<div class="p-grid p-nogutter p-align-center">
-							<div class="EmptyBox5"/>
 							
 							<div class="p-col-6 p-md-2 dt-spinner">
 								<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs10" style="margin-right:10px;">

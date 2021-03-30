@@ -73,6 +73,28 @@ public class RideCtrl extends BaseCtrl {
 		}
 			
 	}
+	
+	public void showCotizacion() {
+		
+		try {
+			
+			// crear el file en el directorio temp
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+			downloadFileName = inicialComprobante + numComprobante + ".pdf";
+			String pathFile = servletContext.getRealPath("temp").concat("/").concat(downloadFileName);
+			FileOutputStream output = new FileOutputStream(new File(pathFile));
+			IOUtils.write(rideServicio.generarCotizacionFacade("A448"), output);
+			setUrl("../../temp/" + downloadFileName);
+			AppJsfUtil.showModalRender("dlgRide", "formRide");
+			
+		} catch (NoResultException | ResourceException |  RideException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+			
+	}
 
 	/**
 	 * @return the rideFile

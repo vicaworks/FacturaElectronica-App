@@ -204,7 +204,11 @@ public class IceDao extends AppGenericDao<Ice, String> {
 		q.setParameter("idEmpresa", idEmpresa);
 		q.setParameter("codigo", codigoImpuesto);
 		
-		return (Ice) q.getResultList().get(0);
+		@SuppressWarnings("unchecked")
+		List<Ice> resp = q.getResultList();
+		if(resp.isEmpty()) return null;
+		
+		return resp.get(0);
 		
 	}
 

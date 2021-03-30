@@ -453,4 +453,22 @@ public class RideServicio {
 		
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws RideException
+	 * @throws DaoException
+	 * @throws NoResultException
+	 * @throws JAXBException
+	 * @throws ResourceException
+	 * @throws NumberFormatException
+	 * @throws ParametroRequeridoException
+	 * @throws IOException
+	 */
+	public byte[] generarCotizacionFacade(String idCabecera)throws RideException,DaoException,NoResultException, JAXBException, ResourceException, NumberFormatException, ParametroRequeridoException, IOException{
+		return generarRideFacade(idCabecera);
+	}
+	
 }

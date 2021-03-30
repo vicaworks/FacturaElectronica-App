@@ -249,13 +249,17 @@ public class IvaDao extends AppGenericDao<Iva, String> {
 	 * @param codigoImpuesto
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public Iva getIva(String idEmpresa,String codigoImpuesto) {
 		
 		Query q = getEntityManager().createQuery("SELECT i FROM Iva i WHERE i.codigoIva='2' AND i.empresa.idempresa=:idEmpresa AND i.codigo=:codigo ORDER BY i.ordenfactura");
 		q.setParameter("idEmpresa", idEmpresa);
 		q.setParameter("codigo", codigoImpuesto);
 		
-		return (Iva) q.getResultList().get(0);
+		List<Iva> resp = q.getResultList();
+		if(resp.isEmpty()) return null;
+		
+		return resp.get(0);
 		
 	}
 	

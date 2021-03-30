@@ -158,7 +158,9 @@ public class DatosEmpresaServicio {
 				
 				// consulta si existe 
 				Iva ivaTemp = ivaServicio.getIvaDao().getIva(idEmpresa, iva.getCodigo());
-				ivaServicio.getIvaDao().getEntityManager().detach(ivaTemp);
+				if(ivaTemp!=null) {
+					ivaServicio.getIvaDao().getEntityManager().detach(ivaTemp);
+				}
 				if(ivaTemp!=null) {
 					iva.setIdiva(ivaTemp.getIdiva());
 					iva.setIdusuario(ivaTemp.getIdusuario());
@@ -248,7 +250,9 @@ public class DatosEmpresaServicio {
 				
 				// consulta si existe 
 				Ice iceTemp = iceServicio.getIceDao().getIce(idEmpresa, ice.getCodigo());
-				iceServicio.getIceDao().getEntityManager().detach(iceTemp);
+				if(iceTemp!=null) {
+					iceServicio.getIceDao().getEntityManager().detach(iceTemp);
+				}
 				if(iceTemp!=null) {
 					ice.setIdice(iceTemp.getIdice());
 					ice.setIdusuario(iceTemp.getIdusuario());
