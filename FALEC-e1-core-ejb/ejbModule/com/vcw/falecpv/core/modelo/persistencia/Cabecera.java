@@ -225,8 +225,8 @@ public class Cabecera implements Serializable {
     @Column(name = "fechavencimiento")
     private Date fechaVencimiento;
     
-    @Column(name = "autorizacion")
-    private Integer autorizacion;
+    @Column(name = "autorizacion",nullable = true)
+    private Integer autorizacion=0;
     
     @Column(name = "idusuarioautorizacion")
     private String idusuarioautorizacion;
