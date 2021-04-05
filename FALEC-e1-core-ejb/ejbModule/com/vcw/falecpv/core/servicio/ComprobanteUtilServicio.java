@@ -12,9 +12,11 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuesto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
+import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.modelo.xml.XmlDestinatario;
 import com.vcw.falecpv.core.modelo.xml.XmlFactura;
 import com.vcw.falecpv.core.modelo.xml.XmlGuiaRemision;
@@ -41,6 +43,9 @@ public class ComprobanteUtilServicio {
 	
 	@Inject
 	private TipocomprobanteServicio tipocomprobanteServicio;
+	
+	@Inject
+	private TotalimpuestoServicio totalimpuestoServicio;
 	
 	/**
 	 * @author cristianvillarreal
@@ -379,6 +384,91 @@ public class ComprobanteUtilServicio {
 			total = new XmlTotalComprobante();
 			total.setLabel("VALOR TOTAL");
 			total.setValor(BigDecimal.valueOf(factura.getInfoLiquidacionCompra().getImporteTotal()));
+			totales.add(total);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+		
+		return totales;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param factura
+	 * @param idEmpresa
+	 * @param propina
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<XmlTotalComprobante> populateTotalesCotizacion(Cabecera factura,String idEmpresa,boolean propina)throws DaoException{
+		List<XmlTotalComprobante> totales = new ArrayList<>();
+		
+		try {
+			XmlTotalComprobante total = new XmlTotalComprobante();
+			// consultar los valores del iva
+			
+			List<Iva> ivaList = ivaServicio.getIvaDao().getLabelComprobante(idEmpresa);
+			for (Iva iva : ivaList) {
+				total = new XmlTotalComprobante();
+				total.setCodigoSri("2");
+				total.setIva(iva);
+				total.setLabel(iva.getLabelfactura());
+				
+				
+				List<Totalimpuesto> totalimpuestoList = totalimpuestoServicio.getTotalimpuestoDao().getByIdCabecera(factura.getIdcabecera());
+				Totalimpuesto totalimpuesto = totalimpuestoList.stream().filter(x->x.getIva()!=null && x.getIva().getCodigo().equals(iva.getCodigo())).findFirst().orElse(null);
+				
+				if(totalimpuesto!=null) {
+					total.setValor(totalimpuesto.getBaseimponible());
+				}
+				totales.add(total);
+			}
+			
+			// total sin dispuesto
+			total = new XmlTotalComprobante();
+			total.setLabel("TOTAL SIN IMPUESTOS");
+			total.setValor(factura.getTotalsinimpuestos());
+			totales.add(total);
+			
+			// total descuento
+			total = new XmlTotalComprobante();
+			total.setLabel("TOTAL DESCUENTO");
+			total.setValor(factura.getTotaldescuento());
+			totales.add(total);
+			
+			total = new XmlTotalComprobante();
+			total.setLabel("ICE");
+			total.setValor(BigDecimal.ZERO);
+			
+			List<Totalimpuesto> totalimpuestoList = totalimpuestoServicio.getTotalimpuestoDao().getByIdCabecera(factura.getIdcabecera());
+			
+			if(totalimpuestoList.stream().filter(x->x.getIce()!=null && x.getIce().getCodigoIce().equals("3")).count()>0) {
+				total.setValor(BigDecimal.valueOf(totalimpuestoList.stream().filter(x->x.getIce()!=null && x.getIce().getCodigoIce().equals("3")).mapToDouble(x->x.getValor().doubleValue()).sum()));
+			}
+			totales.add(total);
+			
+			// determinar el IVA
+			total = new XmlTotalComprobante();
+			if(totalimpuestoList.stream().filter(x->x.getIva().getCodigoIva().equals("2") && x.getValor().doubleValue()>0d).count()>0) {
+				// consultar el codigo
+				Totalimpuesto totalimpuesto =  totalimpuestoList.stream().filter(x->x.getIva()!=null && x.getIva().getCodigoIva().equals("2") && x.getValor().doubleValue()>0d).findFirst().orElse(null);
+				Iva iva = totalimpuesto.getIva();
+				
+				total.setLabel("IVA " + iva.getValor().intValue() + "%");
+				total.setValor(BigDecimal.valueOf(totalimpuestoList.stream().filter(x->x.getIva()!=null && x.getIva().getCodigoIva().equals("2")).mapToDouble(x->x.getValor().doubleValue()).sum()));
+				// el primer sibtotal
+				totales.get(0).setLabel(totales.get(0).getLabel().replace("%", "") + iva.getValor().intValue() + "%");
+			}else {
+				total.setLabel("IVA");
+				total.setValor(BigDecimal.ZERO);
+			}
+			totales.add(total);
+			
+			total = new XmlTotalComprobante();
+			total.setLabel("VALOR TOTAL");
+			total.setValor(factura.getTotalconimpuestos());
 			totales.add(total);
 			
 		} catch (Exception e) {

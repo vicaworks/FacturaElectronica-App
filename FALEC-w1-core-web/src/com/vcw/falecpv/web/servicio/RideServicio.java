@@ -34,6 +34,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
 import com.vcw.falecpv.core.modelo.xml.XmlPago;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.DetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
@@ -75,6 +76,9 @@ public class RideServicio {
 	
 	@Inject
 	private EstablecimientoServicio establecimientoServicio;
+	
+	@Inject
+	private DetalleServicio detalleServicio;
 	
 	
 	protected MessageWebUtil msg = new MessageWebUtil();
@@ -468,7 +472,40 @@ public class RideServicio {
 	 * @throws IOException
 	 */
 	public byte[] generarCotizacionFacade(String idCabecera)throws RideException,DaoException,NoResultException, JAXBException, ResourceException, NumberFormatException, ParametroRequeridoException, IOException{
-		return generarRideFacade(idCabecera);
+		
+		String pathPlantilla = null;
+		byte[] ride = null;
+		
+		Cabecera c = null;
+		
+		c = cabeceraServicio.consultarByPk(idCabecera);
+		
+		if(c==null) {
+			throw new NoResultException("No existe la " + msg.getString("label.cotizacion.title") + " ID. " + idCabecera);
+		}
+		
+		c.setDetalleList(detalleServicio.getDetalleDao().getByIdCabecera(c.getIdcabecera()));
+		
+		Establecimiento e = establecimientoServicio.consultarByPk(c.getEstablecimiento().getIdestablecimiento());
+		pathPlantilla = getPathPlantilla(GenTipoDocumentoEnum.COTIZACION.getIdentificador(),e);
+		String nombrePlatilla = pathPlantilla.substring(pathPlantilla.lastIndexOf("/")+1,pathPlantilla.lastIndexOf("."));
+		FileUtilApp fileUtilApp = new FileUtilApp();
+		c.setPathLogo(getPathLogoEstablecimiento(e));
+		c.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesCotizacion(c, c.getEstablecimiento().getEmpresa().getIdempresa(), true));
+		
+		switch (nombrePlatilla) {
+		case "CE-Cotizacion-V1":
+			List<Cabecera> lista = new ArrayList<>();
+			lista.add(c);
+			ride = fileUtilApp.getReportByReportPath(getNombreReporte(pathPlantilla), lista, ExportarFileEnum.PDF, getDirReporte(pathPlantilla));
+			break;
+
+		default:
+			throw new NoResultException("No existe plantilla  : " + msg.getString("label.cotizacion.title") + " " + c.getTipocomprobante().getIdentificador());
+		}
+		
+		
+		return ride;
 	}
 	
 }

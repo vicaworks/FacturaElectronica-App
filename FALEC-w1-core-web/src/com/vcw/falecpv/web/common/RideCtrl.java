@@ -83,7 +83,7 @@ public class RideCtrl extends BaseCtrl {
 			downloadFileName = inicialComprobante + numComprobante + ".pdf";
 			String pathFile = servletContext.getRealPath("temp").concat("/").concat(downloadFileName);
 			FileOutputStream output = new FileOutputStream(new File(pathFile));
-			IOUtils.write(rideServicio.generarCotizacionFacade("A448"), output);
+			IOUtils.write(rideServicio.generarCotizacionFacade(idCabecera), output);
 			setUrl("../../temp/" + downloadFileName);
 			AppJsfUtil.showModalRender("dlgRide", "formRide");
 			

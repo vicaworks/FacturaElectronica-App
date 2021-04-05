@@ -136,6 +136,7 @@ public class EmpresaServicio extends AppGenericService<Empresa, String> {
 			parametroList.add(new ParametroGenericoEmpresa("20", idEmpresa, null, "EMAIL PLANTILLA ESTABLECIMIENTO", "N", "SI LA EMPRESA TIENE UNA PLANTILLA ESPECIFICA"));
 			parametroList.add(new ParametroGenericoEmpresa("21", idEmpresa, null, "EMAIL PLANTILLA COMPROBANTE ELECTRONICO", "-", "NOMBRE DE LA PLATILLA DE CONTENIDO EMAIL COMPROBANTE"));
 			parametroList.add(new ParametroGenericoEmpresa("22", idEmpresa, null, "EDITAR PARAMETROS ESTABLECIMIENTO", "N", "FLAG PARA EDITAR LOS PARAMETROS DEL ESTABLECIMINETO COMO PLANTILLAS"));
+			parametroList.add(new ParametroGenericoEmpresa("28", idEmpresa, null, "PLANTILLA COTIZACION", "-", "PLANTILLA COTIZACION"));
 			
 			for (Establecimiento e : establecimientoServicio.getByEmpresa(idEmpresa)) {
 				

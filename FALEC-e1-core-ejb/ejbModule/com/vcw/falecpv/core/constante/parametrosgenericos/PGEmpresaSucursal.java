@@ -17,6 +17,7 @@ public enum PGEmpresaSucursal implements ParametroGenericoBaseEnum {
 	PLANTILLA_NOTA_CREDITO("6"),
 	PLANTILLA_NOTA_DEBITO("7"),
 	PLANTILLA_GUIA_REMISION("8"),
+	PLANTILLA_COTIZACION("28"),
 	PLANTILLA_LIQ_COMPRA("9"),
 	PLANTILLA_RECIBO("10"),
 	PERMISO_MODIFICACION("22");
@@ -64,6 +65,9 @@ public enum PGEmpresaSucursal implements ParametroGenericoBaseEnum {
 		case "00":
 			// Recibo			
 			return PGEmpresaSucursal.PLANTILLA_RECIBO;
+		case "99":
+			// Recibo			
+			return PGEmpresaSucursal.PLANTILLA_COTIZACION;
 		}
 		
 		return null;

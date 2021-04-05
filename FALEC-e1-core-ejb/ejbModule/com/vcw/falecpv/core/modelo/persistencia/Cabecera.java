@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 import com.servitec.common.util.PojoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.modelo.xml.XmlTotalComprobante;
 
 /**
  * @author cristianvillarreal
@@ -315,6 +316,12 @@ public class Cabecera implements Serializable {
     
     @Transient
     private boolean seleccion=false;
+    
+    @Transient
+	private String pathLogo;
+    
+    @Transient
+	private List<XmlTotalComprobante> totalComprobanteList;
     
     /**
 	 * 
@@ -1513,6 +1520,34 @@ public class Cabecera implements Serializable {
 	 */
 	public void setEtiqueta(Etiqueta etiqueta) {
 		this.etiqueta = etiqueta;
+	}
+
+	/**
+	 * @return the pathLogo
+	 */
+	public String getPathLogo() {
+		return pathLogo;
+	}
+
+	/**
+	 * @param pathLogo the pathLogo to set
+	 */
+	public void setPathLogo(String pathLogo) {
+		this.pathLogo = pathLogo;
+	}
+
+	/**
+	 * @return the totalComprobanteList
+	 */
+	public List<XmlTotalComprobante> getTotalComprobanteList() {
+		return totalComprobanteList;
+	}
+
+	/**
+	 * @param totalComprobanteList the totalComprobanteList to set
+	 */
+	public void setTotalComprobanteList(List<XmlTotalComprobante> totalComprobanteList) {
+		this.totalComprobanteList = totalComprobanteList;
 	}
 
 }
