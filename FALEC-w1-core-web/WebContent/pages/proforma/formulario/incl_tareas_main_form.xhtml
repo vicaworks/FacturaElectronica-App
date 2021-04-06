@@ -217,8 +217,10 @@
 							</p:commandLink>
 							<p:menu overlay="true" trigger="cmlDttareas" my="left top" at="left bottom">
 								
-								<p:menuitem value=" Imprimir" action="#" icon="fa fa-print" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
+								<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',t.cabecera.estado)}">
+									<f:setPropertyActionListener value="#{t.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								</p:menuitem>
+								
 								
 								<p:menuitem value=" Agregar tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea">
 									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
