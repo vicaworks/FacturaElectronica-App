@@ -553,6 +553,7 @@ public class CotizacionCtrl extends BaseCtrl {
 		try {
 			
 			emailDto = emailService.configurarCorreo(establecimientoMain.getEmpresa().getIdempresa(), AppJsfUtil.getUsuario().getIdusuario());
+			emailDto.setSeleccion(true);
 			Usuario usuario = usuarioServicio.consultarByPk(AppJsfUtil.getUsuario().getIdusuario());
 			
 			emailDto.setToString(proformaSelected.getCliente().getCorreoelectronico());
@@ -684,6 +685,7 @@ public class CotizacionCtrl extends BaseCtrl {
 		try {
 			proformaSelected.setEstado("SEGUIMIENTO");
 			proformaSelected.setEtiqueta(null);
+			proformaSelected.setAutorizacionBol(false);
 			cabeceraServicio.actualizar(proformaSelected);
 			consultar();			
 		} catch (Exception e) {

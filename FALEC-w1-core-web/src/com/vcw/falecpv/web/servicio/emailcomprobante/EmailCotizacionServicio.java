@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
+import com.vcw.falecpv.web.servicio.RideServicio;
 import com.vcw.falecpv.web.util.VelocityTemplateUtil;
 
 /**
@@ -63,6 +64,9 @@ public class EmailCotizacionServicio {
 	
 	@Inject
 	private EnviaEmailService enviaEmailService;
+	
+	@Inject
+	private RideServicio rideServicio;
 	
 	/**
 	 * @author cristianvillarreal
@@ -153,9 +157,10 @@ public class EmailCotizacionServicio {
 			
 			
 			if(emailDto.isSeleccion()) {
-				// generar proforma file
-				// TODO implementar ride cotizacion
-				System.out.println("TODO : GENERA LA PROFORMA");
+				File file = new File("/app/temp/" + cotizacion.getNumdocumento().concat(".pdf"));
+				FileUtils.deleteQuietly(file);
+				FileUtils.writeByteArrayToFile(file, rideServicio.generarCotizacionFacade(cotizacion.getIdcabecera()));
+				emailDto.getAdjuntos().add(file);
 			}
 			String temp = emailDto.getContenido();
 			emailDto.setContenido("<style>p{padding: 0px;margin: 0px;}</style>" + emailDto.getContenido());
