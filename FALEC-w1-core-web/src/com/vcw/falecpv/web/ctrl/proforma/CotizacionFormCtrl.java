@@ -698,7 +698,12 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		try {
 			
 			nuevaCotizacion();
-			cabecerSelected.setCliente(cabeceraServicio.getClienteComprobante(idCabeceraSeleccion));
+			Cabecera c= cabeceraServicio.consultarByPk(idCabeceraSeleccion);
+			cabecerSelected.setCliente(c.getCliente());
+			cabecerSelected.setResumen(c.getResumen());
+			cabecerSelected.setContenido1(c.getContenido1());
+			cabecerSelected.setContenido2(c.getContenido2());
+			cabecerSelected.setContenido3(c.getContenido3());
 			detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idCabeceraSeleccion);
 			int cont=1;
 			for (Detalle d : detalleFacList) {
