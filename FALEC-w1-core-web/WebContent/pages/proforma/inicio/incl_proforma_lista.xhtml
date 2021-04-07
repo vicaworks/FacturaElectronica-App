@@ -119,18 +119,24 @@
 				
 			</div>
 			
-			<div class="p-col-6 p-lg-2 p-as-end">
+			<div class="p-col-6 p-lg-4 p-as-end">
     			<p:commandButton 
 						icon="fa fa-search"
-						action="#{cotizacionCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
-			</div>
-			
-			<div class="p-col-6 p-lg-2 p-as-end">
+						action="#{cotizacionCtrl.buscar()}" styleClass="secondary-button p-mr-1" update="@form" title="Consultar"/>
+						
+				<p:commandButton 
+						icon="fa fa-plus"
+						action="#{cotizacionFormCtrl.nuevoFromMain(cotizacionCtrl.establecimientoMain)}" styleClass="secondary-button p-mr-1" update="@form" process="@this"  title="Nueva Cotización">
+					<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>			
+				</p:commandButton>
+				
 				<p:commandButton id="cmdGlobalExcel"
 	  						value="EXPORTAR"
 							icon="fa fa-sort-down" 
-							styleClass="secondary-button Wid100"
+							styleClass="secondary-button"
+							style="width:150px!important;"
 							disabled="#{empty cotizacionCtrl.proformaList}">
+							
 				</p:commandButton>				
 				<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
 					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
@@ -140,7 +146,6 @@
 						<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
 					</p:menuitem>
 				</p:menu>
-				
 			</div>
 			
 		</div>

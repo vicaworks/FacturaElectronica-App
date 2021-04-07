@@ -309,9 +309,9 @@ public class CotizacionServicio extends DBUtilGenericoApp {
 			
 			String sql = "select " +
 					"	us.nombrepantalla as label1, " +
-					"	cast(sum(c.totalsinimpuestos) filter (where c.estado='FACTURADO') as numeric(12,0)) as valor1, " +
-					"	cast(sum(c.totalsinimpuestos) filter (where c.estado='ARCHIVADO') as numeric(12,0)) as valor2, " +
-					"	cast(sum(c.totalsinimpuestos) filter (where c.estado='SEGUIMIENTO') as numeric(12,0)) as valor3 " +
+					"	coalesce(cast(sum(c.totalsinimpuestos) filter (where c.estado='FACTURADO') as numeric(12,0)),0) as valor1, " +
+					"	coalesce(cast(sum(c.totalsinimpuestos) filter (where c.estado='ARCHIVADO') as numeric(12,0)),0) as valor2, " +
+					"	coalesce(cast(sum(c.totalsinimpuestos) filter (where c.estado='SEGUIMIENTO') as numeric(12,0)),0) as valor3 " +
 					" from  " +
 					"	cabecera c inner join cliente cl on c.idcliente = cl.idcliente " +
 					"	inner join usuario us on us.idusuario = c.idusuario  " +
