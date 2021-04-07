@@ -11,20 +11,19 @@
        	
        	.pvUnoDT .ui-datatable-scrollable-body{
 			min-height: 45vh !important;
-			height: calc(100vh - 395px)!important;				
+			height: calc(100vh - 405px)!important;				
 		}
        	
     </style>
 
 	<div class="card card-w-title">
 		<div class="EmptyBox5"/>
-		<div class="p-grid p-align-top vertical-container">
-			<div class="p-col-12 p-md-2">
-    			<h:outputText value="ESTABLECIMIENTO" styleClass="DispBlock" style="margin-bottom:5px;"/>
+		<div class="p-grid p-align-top ui-fluid">
+			<div class="p-col-6 p-lg-2">
+				<h:outputText value="ESTABLECIMIENTO" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{cotizacionCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100"
 							disabled="#{not cotizacionCtrl.habilitarEstablecimientoMain}">
 							
 					<f:selectItems value="#{cotizacionCtrl.establecimientoMainList}" var="st"
@@ -34,106 +33,118 @@
 					<p:ajax event="valueChange" listener="#{cotizacionFormCtrl.cambioEstablecimiento(cotizacionCtrl.establecimientoMain)}" update="@form"/>
 						
 				</p:selectOneMenu>
-    		</div>
-			<div class="p-col-12 p-md-2">
-    			<h:outputText value="ESTADO" styleClass="DispBlock" style="margin-bottom:5px;"/>
+				
+			</div>
+			
+			<div class="p-col-6 p-lg-2">
+				
+				<h:outputText value="ESTADO" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somCotEstado"
 									value="#{cotizacionCtrl.estado}"
 									required="false"
-									requiredMessage="REQUERIDO"
-									styleClass="Wid100">
+									requiredMessage="REQUERIDO">
 					<f:selectItem itemLabel="TODOS" itemValue="TODOS"/>
-					<f:selectItem itemLabel="SEGUIMIENTO -  AUTORIZACIÓN" itemValue="SEGUIMIENTO-AUTORIZACION"/>
+					<f:selectItem itemLabel="SEGUIMI - AUTORIZA" itemValue="SEGUIMIENTO-AUTORIZACION"/>
 					<f:selectItem itemLabel="AUTORIZACIÓN" itemValue="AUTORIZACION"/>
 					<f:selectItem itemLabel="FACTURADO" itemValue="FACTURADO"/>	
 					<f:selectItem itemLabel="SEGUIMIENTO" itemValue="SEGUIMIENTO"/>
 					<f:selectItem itemLabel="ARCHIVADO" itemValue="ARCHIVADO"/>
 				</p:selectOneMenu>
-    		</div>
-    		
-			<div class="p-col-12 p-md-2">
-    			<h:outputText value="DESDE" styleClass="DispBlock" style="margin-bottom:5px;"/>
+				
+				
+			</div>
+			
+			<div class="p-col-6 p-lg-2">
+				
+				<h:outputText value="DESDE" styleClass="DispBlock p-mb-1"/>
 	    		<p:calendar id="calDesde" value="#{cotizacionCtrl.desde}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
 					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
 				</p:calendar>
 				<p:message for="calDesde"/>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-2">
-    			<h:outputText value="HASTA" styleClass="DispBlock" style="margin-bottom:5px;"/>
+			
+			</div>
+			
+			<div class="p-col-6 p-lg-2">
+				
+				<h:outputText value="HASTA" styleClass="DispBlock p-mb-1"/>
 	    		<p:calendar id="calHasta" value="#{cotizacionCtrl.hasta}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
 					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
 				</p:calendar>
 				<p:message for="calHasta"/>
-    		</div>
-    		<div class="p-col-12 p-md-4">
-    			<h:outputText value="CRITERIO" styleClass="DispBlock" style="margin-bottom:5px;"/>
-    			<p:inputText value="#{cotizacionCtrl.criterioBusqueda}" placeholder="#Cotización, Usuario, R.U.C., Cliente" styleClass="Wid100"/>
-    		</div>
-    		<div class="p-col-12 p-lg-6">
-    			<div class="p-grid p-pt-1">
-    				<div class="p-col-6 p-md-4">
-		    			<p:commandButton 
-									icon="fa fa-search"
-									action="#{cotizacionCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
-    				</div>
-    				<div class="p-col-6 p-md-4">
-		    			<p:commandButton 
-									icon="fa fa-plus"
-									action="#{cotizacionFormCtrl.nuevoFromMain(cotizacionCtrl.establecimientoMain)}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="NUEVO" process="@this" onclick="#{cotizacionCtrl.establecimientoMain.idestablecimiento}">
-							<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
-						</p:commandButton>
-    				</div>
-    				<div class="p-col-6 p-md-4">
-						<p:commandButton id="cmdGlobalExcel"
-			  						value="EXPORTAR"
-									icon="fa fa-sort-down" 
-									styleClass="secondary-button Wid100"
-									disabled="#{empty cotizacionCtrl.proformaList}">
-						</p:commandButton>				
-						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-								<p:fileDownload value="#{cotizacionCtrl.fileResumen}" contentDisposition="inline"/>
-							</p:menuitem>
-							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-								<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
-							</p:menuitem>
-						</p:menu>
-    				</div>
-    			</div>
-    		</div>
-		</div>
-		
-		<!-- <div class="p-formgroup-inline p-mt-1">
-			<p:commandButton 
-					icon="fa fa-search"
-					action="#{cotizacionCtrl.buscar()}" styleClass="secondary-button p-mr-1 W160px p-mb-1 p-mb-md-0" update="@form" style="margin-right:5px;" value="BUSCAR"/>
-			<p:commandButton 
-						icon="fa fa-plus"
-						action="#{cotizacionFormCtrl.nuevoFromMain()}" styleClass="secondary-button p-mr-1 W160px" update="@form" style="margin-right:5px;" value="NUEVO" process="@this">
-				<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>			
-			</p:commandButton>
 			
-			<p:commandButton id="cmdGlobalExcel"
-  						value="EXPORTAR"
-						icon="fa fa-sort-down" 
-						styleClass="secondary-button W160px"
-						disabled="#{empty cotizacionCtrl.proformaList}">
-			</p:commandButton>				
-			<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-				<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-					<p:fileDownload value="#{cotizacionCtrl.fileResumen}" contentDisposition="inline"/>
-				</p:menuitem>
-				<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-					<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
-				</p:menuitem>
-			</p:menu>
-		</div> -->
-	</div>
+			</div>
+			
+			<div class="p-col-12 p-lg-4">
+				
+				<h:outputText value="VENDEDOR" styleClass="DispBlock p-mb-1"/>
+	    		<p:selectOneMenu id="somtareaUsuario1"
+							value="#{cotizacionCtrl.usuarioSeleccion}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="Wid100">
+							
+					<f:selectItem itemLabel="TODOS"
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+					<f:selectItems value="#{cotizacionCtrl.usuarioList}" var="u2"
+						itemLabel="#{u2.nombre}" itemValue="#{u2}" />
+						
+				</p:selectOneMenu>
+				
+			</div>
+			
+			<div class="p-col-12 p-lg-6">
+				
+				<h:outputText value="CLIENTE" styleClass="DispBlock p-mb-1"/>
+	    		<p:selectOneMenu id="somtareaCliente1"
+							value="#{cotizacionCtrl.clienteSeleccion}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass="Wid100">
+				
+					<f:selectItem itemLabel="TODOS"
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+					<f:selectItems value="#{cotizacionCtrl.clienteList}" var="c1"
+						itemLabel="#{c1.razonsocial}" itemValue="#{c1}" />
+					
+				</p:selectOneMenu>
+				
+			</div>
+			
+			<div class="p-col-12 p-lg-2">
+				
+				<h:outputText value="NUM COTIZACIÓN" styleClass="DispBlock p-mb-1"/>
+	    		<p:inputText value="#{cotizacionCtrl.criterioBusqueda}"/>
+				
+			</div>
+			
+			<div class="p-col-6 p-lg-2 p-as-end">
+    			<p:commandButton 
+						icon="fa fa-search"
+						action="#{cotizacionCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
+			</div>
+			
+			<div class="p-col-6 p-lg-2 p-as-end">
+				<p:commandButton id="cmdGlobalExcel"
+	  						value="EXPORTAR"
+							icon="fa fa-sort-down" 
+							styleClass="secondary-button Wid100"
+							disabled="#{empty cotizacionCtrl.proformaList}">
+				</p:commandButton>				
+				<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+						<p:fileDownload value="#{cotizacionCtrl.fileResumen}" contentDisposition="inline"/>
+					</p:menuitem>
+					<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+						<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
+					</p:menuitem>
+				</p:menu>
+				
+			</div>
+			
+		</div>
+	</div>	
 	<!-- Mensajes -->
 	<p:messages id="msgInicio" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 		closable="true" >

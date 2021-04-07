@@ -868,7 +868,7 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 		try {
 			
 			QueryBuilder qb = new QueryBuilder(cabeceraDao.getEntityManager());
-			return qb.select("c.cliente")
+			return qb.select("DISTINCT c.cliente")
 					.from(Cabecera.class,"c")
 					.equals("c.establecimiento.empresa.idempresa",idEmpresa)
 					.equals("c.tipocomprobante.identificador", genTipoDocumentoEnum.getIdentificador())

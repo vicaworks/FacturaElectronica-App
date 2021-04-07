@@ -35,12 +35,14 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.EtiquetaModuloEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.email.EmailService;
 import com.vcw.falecpv.core.email.dto.EmailDto;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.dto.FileDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -110,6 +112,11 @@ public class CotizacionCtrl extends BaseCtrl {
 	private Etiqueta etiquetaSelected;
 	private String estadoProforma;
 	
+	private List<Cliente> clienteList;
+	private Cliente clienteSeleccion;
+	private List<Usuario> usuarioList;
+	private Usuario usuarioSeleccion;
+	
 	/**
 	 * 
 	 */
@@ -123,12 +130,23 @@ public class CotizacionCtrl extends BaseCtrl {
 			estado = "SEGUIMIENTO-AUTORIZACION";
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -30);
+			consultarUsuario();
+			usuarioSeleccion = AppJsfUtil.getUsuario();
+			consultarCliente();
 			consultar();
 			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	public void consultarUsuario() throws DaoException{
+		usuarioList = usuarioServicio.getUsuarioDao().getByEmpresaEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
+	}
+	
+	public void consultarCliente() throws DaoException{
+		clienteList = cabeceraServicio.getClienteByTipoComprobante(establecimientoMain.getEmpresa().getIdempresa(), GenTipoDocumentoEnum.COTIZACION);
 	}
 	
 	public void consultar()throws DaoException{
@@ -153,13 +171,21 @@ public class CotizacionCtrl extends BaseCtrl {
 			break;
 		}
 		
-		proformaList = cotizacionServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estadoList);
+		proformaList = cotizacionServicio.getByCriteria(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), 
+				usuarioSeleccion!=null?usuarioSeleccion.getIdusuario():null,
+				clienteSeleccion!=null?clienteSeleccion.getIdcliente():null,  
+				desde, 
+				hasta, 
+				criterioBusqueda, 
+				establecimientoMain!=null?establecimientoMain.getIdestablecimiento():null, 
+				estadoList);
 		totalizar();
 		// nombre usuarios
 		List<Usuario> usuarioList = usuarioServicio.getUsuarioDao().getByEmpresaEstado(EstadoRegistroEnum.TODOS, establecimientoMain.getEmpresa().getIdempresa());
 		proformaList.stream().forEach(x->{
 			x.setUsuario(usuarioList.stream().filter(u->u.getIdusuario().equals(x.getIdusuario())).findFirst().orElse(null).getNombrepantalla());
 		});
+		
 	}
 	
 	private void totalizar() {
@@ -193,7 +219,8 @@ public class CotizacionCtrl extends BaseCtrl {
 	@Override
 	public void buscar() {
 		try {
-			
+			consultarCliente();
+			consultarUsuario();
 			consultar();
 			
 		} catch (Exception e) {
@@ -917,6 +944,62 @@ public class CotizacionCtrl extends BaseCtrl {
 	 */
 	public void setEstadoProforma(String estadoProforma) {
 		this.estadoProforma = estadoProforma;
+	}
+
+	/**
+	 * @return the clienteList
+	 */
+	public List<Cliente> getClienteList() {
+		return clienteList;
+	}
+
+	/**
+	 * @param clienteList the clienteList to set
+	 */
+	public void setClienteList(List<Cliente> clienteList) {
+		this.clienteList = clienteList;
+	}
+
+	/**
+	 * @return the clienteSeleccion
+	 */
+	public Cliente getClienteSeleccion() {
+		return clienteSeleccion;
+	}
+
+	/**
+	 * @param clienteSeleccion the clienteSeleccion to set
+	 */
+	public void setClienteSeleccion(Cliente clienteSeleccion) {
+		this.clienteSeleccion = clienteSeleccion;
+	}
+
+	/**
+	 * @return the usuarioList
+	 */
+	public List<Usuario> getUsuarioList() {
+		return usuarioList;
+	}
+
+	/**
+	 * @param usuarioList the usuarioList to set
+	 */
+	public void setUsuarioList(List<Usuario> usuarioList) {
+		this.usuarioList = usuarioList;
+	}
+
+	/**
+	 * @return the usuarioSeleccion
+	 */
+	public Usuario getUsuarioSeleccion() {
+		return usuarioSeleccion;
+	}
+
+	/**
+	 * @param usuarioSeleccion the usuarioSeleccion to set
+	 */
+	public void setUsuarioSeleccion(Usuario usuarioSeleccion) {
+		this.usuarioSeleccion = usuarioSeleccion;
 	}
 
 }

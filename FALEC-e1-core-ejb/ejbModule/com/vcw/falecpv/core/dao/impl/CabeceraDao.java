@@ -182,6 +182,56 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 		}
 	}
 	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEmpresa
+	 * @param idusuario
+	 * @param desde
+	 * @param hasta
+	 * @param criteria
+	 * @param idEstablecimiento
+	 * @param estadoList
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Cabecera> getByCotizacionCriteria(String idEmpresa,String idusuario,String idCliente ,Date desde,Date hasta,String criteria,String idEstablecimiento,List<String> estadoList){
+		
+		String sql = "SELECT c FROM Cabecera c WHERE c.estado in :estado AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta " +
+				(idEstablecimiento!=null?" AND c.establecimiento.idestablecimiento=:idestablecimiento ":" AND c.establecimiento.empresa.idempresa=:idempresa ") +
+				(idusuario!=null?" AND c.idusuario=:idusuario ":" ") +
+				(criteria!=null && criteria.trim().length()>0?" AND c.numdocumento like :numfactura ":" ") +
+				(idCliente!=null?" AND c.cliente.idcliente=:idcliente ":" ") +
+				" ORDER BY c.fechaemision ASC,c.idcabecera DESC";
+		Query q = getEntityManager().createQuery(sql);
+		
+		q.setParameter("estado", estadoList);
+		q.setParameter("desde", desde);
+		q.setParameter("hasta", hasta);
+		q.setParameter("idtipocomprobante", GenTipoDocumentoEnum.COTIZACION.getIdentificador());
+		if(idEstablecimiento==null) {
+			q.setParameter("idempresa", idEmpresa);
+		}else {
+			q.setParameter("idestablecimiento", idEstablecimiento);
+		}
+		
+		if(idusuario!=null) {
+			q.setParameter("idusuario", idusuario);
+		}
+		
+		if(idCliente!=null) {
+			q.setParameter("idcliente", idCliente);
+		}
+		
+		if(criteria!=null && criteria.trim().length()>0) {
+			q.setParameter("numfactura", "%".concat(criteria).concat("%"));
+		}
+		
+		
+		return q.getResultList();
+	}
+	
 	/**
 	 * @author cristianvillarreal
 	 * @param desde
