@@ -245,20 +245,24 @@
 							</p:commandLink>
 							<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
 								
-								<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}">
+								<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}"
+									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_imprimir')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{p.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Estado" action="#{cotizacionCtrl.estadoCotizacion}" icon="fa fa-star-half-o" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}">
+								<p:menuitem value=" Estado" action="#{cotizacionCtrl.estadoCotizacion}" icon="fa fa-star-half-o" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}"
+									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_estado')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Autorizar" action="#{cotizacionCtrl.autorizar}" icon="fa fa-key" update=":formMain" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}">
+								<p:menuitem value=" Autorizar" action="#{cotizacionCtrl.autorizar}" icon="fa fa-key" update=":formMain" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}" 
+									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_autorizar')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
 									<p:confirm header="#{msg['label.confirmacion']}" message="ESTÁ SEGURO DE AUTORIZAR ESTA COTIZACIÓN." icon="fa fw-3x fa-exclamation-triangle" />
 								</p:menuitem>
 								
-								<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EDITAR',p.estado)}">
+								<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EDITAR',p.estado)}" 
+									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_editar')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
 								</p:menuitem>
 								
@@ -267,16 +271,19 @@
 									<f:setPropertyActionListener value="ARCHIVADO" target="#{cotizacionCtrl.estadoProforma}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EMAIL',p.estado)}">
+								<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EMAIL',p.estado)}" 
+									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_email')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Crear una Copia" action="#{cotizacionFormCtrl.crearUnaCopia(p.idcabecera)}" icon="fa fa-copy" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('COPIA',p.estado)}">
+								<p:menuitem value=" Crear una Copia" action="#{cotizacionFormCtrl.crearUnaCopia(p.idcabecera)}" icon="fa fa-copy" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('COPIA',p.estado)}" 
+									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{cotizacionFormCtrl.establecimientoMain}"/>
 									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
 								</p:menuitem>
 								
-								<p:menuitem value=" Agregar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('TAREA',p.estado)}">
+								<p:menuitem value=" Agregar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('TAREA',p.estado)}" 
+									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_agregartarea')?'ui-state-disabled':''}">
 									<f:setPropertyActionListener value="COTIZACION" target="#{tareaCotCtrl.callModule}"/>
 									<f:setPropertyActionListener value="#{null}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
 									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
