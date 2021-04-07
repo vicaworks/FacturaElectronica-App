@@ -262,6 +262,17 @@
 	                				
 	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
 	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionUsuarioVisualizacion}">
+			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
+			                            </p:selectBooleanButton>
+	                				</div>
+	                				<div class="p-field  p-col-10">
+	                					<p><strong>Visualizar Cotizaciones solo del vendedor : </strong> El Vendedor solo puede visualizar las cotizaciones creadas por su usuario, 
+	                					pero el usuario con perfil de Gerencia puede acceder a todas las cotizaciones. </p>
+	                				</div>
+	                				
+	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
+	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
 			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionAutorizacion}">
 			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
 			                            </p:selectBooleanButton>

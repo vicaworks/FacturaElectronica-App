@@ -18,6 +18,7 @@ import com.vcw.falecpv.core.dao.impl.DetalleDao;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.query.EstadisticoQuery;
+import com.vcw.falecpv.core.servicio.seg.SegperfilusuarioServicio;
 import com.xpert.persistence.query.QueryBuilder;
 
 /**
@@ -32,6 +33,9 @@ public class CotizacionServicio extends DBUtilGenericoApp {
 	
 	@Inject
 	private DetalleDao detalleDao;
+	
+	@Inject
+	private SegperfilusuarioServicio segperfilusuarioServicio;
 	
 	/**
 	 * @author cristianvillarreal
@@ -330,6 +334,21 @@ public class CotizacionServicio extends DBUtilGenericoApp {
 			
 			return resultList(sql, EstadisticoQuery.class, false);
 			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idUsuario
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean tienePerfilAdministrador(String idUsuario)throws DaoException{
+		try {
+			return segperfilusuarioServicio.getPerfilByUsuario(idUsuario, "1").stream().filter(x->x.getIdsegperfil().equals("4")).findFirst().orElse(null)!=null;
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}

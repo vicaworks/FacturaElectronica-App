@@ -31,14 +31,18 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Tareacabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.CotizacionServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.TareacabeceraServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -57,6 +61,9 @@ public class TareaCotMainCtrl extends BaseCtrl {
 	private static final long serialVersionUID = 8652749472314923747L;
 	
 	@EJB
+	private CotizacionServicio cotizacionServicio;
+	
+	@EJB
 	private EstablecimientoServicio establecimientoServicio;
 	
 	@EJB
@@ -67,6 +74,9 @@ public class TareaCotMainCtrl extends BaseCtrl {
 	
 	@EJB
 	private UsuarioServicio usuarioServicio;
+	
+	@EJB
+	private ParametroGenericoEmpresaServicio parametroGenericoEmpresaServicio;
 	
 	private List<Tareacabecera> tareacabeceraList;
 	private Tareacabecera tareacabeceraSelected;
@@ -80,6 +90,7 @@ public class TareaCotMainCtrl extends BaseCtrl {
 	private Integer totalCerrado;
 	private Integer totalPendiente;
 	private Integer totalVencido;
+	private boolean disableUsuario=false;
 	
 
 	/**
@@ -96,6 +107,12 @@ public class TareaCotMainCtrl extends BaseCtrl {
 			usuarioSeleccion = AppJsfUtil.getUsuario();
 			consultarCliente();
 			consultar();
+			disableUsuario = parametroGenericoEmpresaServicio.consultarParametroEmpresa(
+					PGEmpresaEnum.COTIZACION_VENDEDOR_VISUALIZACION, TipoRetornoParametroGenerico.BOOLEAN,
+					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+			if(cotizacionServicio.tienePerfilAdministrador(AppJsfUtil.getUsuario().getIdusuario())) {
+				disableUsuario = false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -476,6 +493,20 @@ public class TareaCotMainCtrl extends BaseCtrl {
 	 */
 	public void setTotalVencido(Integer totalVencido) {
 		this.totalVencido = totalVencido;
+	}
+
+	/**
+	 * @return the disableUsuario
+	 */
+	public boolean isDisableUsuario() {
+		return disableUsuario;
+	}
+
+	/**
+	 * @param disableUsuario the disableUsuario to set
+	 */
+	public void setDisableUsuario(boolean disableUsuario) {
+		this.disableUsuario = disableUsuario;
 	}
 
 }

@@ -84,7 +84,8 @@
 	    		<p:selectOneMenu id="somtareaUsuario1"
 							value="#{cotizacionCtrl.usuarioSeleccion}"
 							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100">
+							styleClass="Wid100"
+							disabled="#{cotizacionCtrl.disableUsuario}">
 							
 					<f:selectItem itemLabel="TODOS"
 											itemValue="#{null}" value="#{null}" noSelectionOption="true" />

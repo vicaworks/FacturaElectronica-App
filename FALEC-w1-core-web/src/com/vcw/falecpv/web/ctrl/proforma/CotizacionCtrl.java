@@ -117,6 +117,8 @@ public class CotizacionCtrl extends BaseCtrl {
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSeleccion;
 	
+	private boolean disableUsuario=false;
+	
 	/**
 	 * 
 	 */
@@ -135,6 +137,12 @@ public class CotizacionCtrl extends BaseCtrl {
 			consultarCliente();
 			consultar();
 			totalizar();
+			disableUsuario = parametroGenericoEmpresaServicio.consultarParametroEmpresa(
+					PGEmpresaEnum.COTIZACION_VENDEDOR_VISUALIZACION, TipoRetornoParametroGenerico.BOOLEAN,
+					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+			if(cotizacionServicio.tienePerfilAdministrador(AppJsfUtil.getUsuario().getIdusuario())) {
+				disableUsuario = false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -1000,6 +1008,20 @@ public class CotizacionCtrl extends BaseCtrl {
 	 */
 	public void setUsuarioSeleccion(Usuario usuarioSeleccion) {
 		this.usuarioSeleccion = usuarioSeleccion;
+	}
+
+	/**
+	 * @return the disableUsuario
+	 */
+	public boolean isDisableUsuario() {
+		return disableUsuario;
+	}
+
+	/**
+	 * @param disableUsuario the disableUsuario to set
+	 */
+	public void setDisableUsuario(boolean disableUsuario) {
+		this.disableUsuario = disableUsuario;
 	}
 
 }

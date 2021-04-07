@@ -79,6 +79,7 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	private boolean cotizacionAutorizacion = false;
 	private boolean cotizacionEtiquetas = false;
 	private boolean cotizacionProductoDetalle = false;
+	private boolean cotizacionUsuarioVisualizacion = false;
 	
 	
 	
@@ -291,6 +292,7 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 		cotizacionAutorizacion = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_AUTORIZACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
 		cotizacionEtiquetas = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_ETIQUETAS_PREDEFIN, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
 		cotizacionProductoDetalle = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_PRODUCTO_DESCRIPCION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
+		cotizacionUsuarioVisualizacion = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_VENDEDOR_VISUALIZACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
 		
 	}
 	
@@ -305,6 +307,10 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			parametroGenericoEmpresaServicio.actualizar(pg);
 			pg = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(establecimientoMain.getEmpresa().getIdempresa(), PGEmpresaEnum.COTIZACION_PRODUCTO_DESCRIPCION);
 			pg.setValor(cotizacionProductoDetalle?"S":"N");
+			parametroGenericoEmpresaServicio.actualizar(pg);
+			
+			pg = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEmpresa(establecimientoMain.getEmpresa().getIdempresa(), PGEmpresaEnum.COTIZACION_VENDEDOR_VISUALIZACION);
+			pg.setValor(cotizacionUsuarioVisualizacion?"S":"N");
 			parametroGenericoEmpresaServicio.actualizar(pg);
 			
 			consultarParametrosCotizacion();
@@ -467,6 +473,20 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 	 */
 	public void setCotizacionProductoDetalle(boolean cotizacionProductoDetalle) {
 		this.cotizacionProductoDetalle = cotizacionProductoDetalle;
+	}
+
+	/**
+	 * @return the cotizacionUsuarioVisualizacion
+	 */
+	public boolean isCotizacionUsuarioVisualizacion() {
+		return cotizacionUsuarioVisualizacion;
+	}
+
+	/**
+	 * @param cotizacionUsuarioVisualizacion the cotizacionUsuarioVisualizacion to set
+	 */
+	public void setCotizacionUsuarioVisualizacion(boolean cotizacionUsuarioVisualizacion) {
+		this.cotizacionUsuarioVisualizacion = cotizacionUsuarioVisualizacion;
 	}
 
 }
