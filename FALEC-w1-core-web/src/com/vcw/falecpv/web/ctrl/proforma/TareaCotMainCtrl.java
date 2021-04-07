@@ -3,6 +3,9 @@
  */
 package com.vcw.falecpv.web.ctrl.proforma;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,11 +15,23 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.model.StreamedContent;
+
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Tareacabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
@@ -26,6 +41,7 @@ import com.vcw.falecpv.core.servicio.TareacabeceraServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
+import com.vcw.falecpv.web.util.UtilExcel;
 
 /**
  * @author cristianvillarreal
@@ -173,6 +189,8 @@ public class TareaCotMainCtrl extends BaseCtrl {
 								GenTipoDocumentoEnum.COTIZACION);
 		
 		totalizar();
+		consultarCliente();
+		consultarUsuario();
 	}
 	
 	private void totalizar() {
@@ -185,6 +203,112 @@ public class TareaCotMainCtrl extends BaseCtrl {
 		}
 	}
 	
+	public StreamedContent getFileResumen() {
+		try {
+			
+			if(tareacabeceraList==null || tareacabeceraList.isEmpty()) {
+				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				return null;
+			}
+			
+			String path = FacesUtil.getServletContext().getRealPath(
+					AppConfiguracion.getString("dir.base.reporte") + "FALECPV-CotTarea.xlsx");
+			
+			// icialización
+			File tempXls = File.createTempFile("plantillaExcel", ".xlsx");
+			File template = new File(path);
+			FileUtils.copyFile(template, tempXls);
+			
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			// datos cabecera
+			Row rowCliente = sheet.getRow(3);
+			rowCliente.createCell(1).setCellValue(establecimientoMain.getNombrecomercial());
+			
+			rowCliente = sheet.getRow(4);
+			rowCliente.createCell(1).setCellValue(AppJsfUtil.getUsuario().getNombre());
+			
+			int fila = 7;
+			for (Tareacabecera v : tareacabeceraList) {
+				
+				int col = 0;
+				rowCliente = sheet.createRow(fila);
+				
+				Cell cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(v.getFechalimite()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getEstado());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getPrioridad());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getUsuario().getNombrepantalla());
+				
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getEtiqueta().getEtiqueta());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getDescripcion());
+				
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(TextoUtil.leftPadTexto(v.getCabecera().getEstablecimiento().getCodigoestablecimiento(),3,"0"));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getCabecera().getNumdocumento()));
+				
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(FechaUtil.formatoFecha(v.getCabecera().getFechaemision()));
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getCabecera().getEstado());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getCabecera().getCliente().getIdentificacion());
+				
+				cell = rowCliente.createCell(col++);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(v.getCabecera().getCliente().getRazonsocial());
+				
+				fila++;
+			}
+			fila++;
+			// totales
+			rowCliente = sheet.createRow(fila);
+			
+			wb.setActiveSheet(0);
+			sheet = wb.getSheetAt(0);
+			sheet.setActiveCell(new CellAddress(UtilExcel.getCellCreacion("A1", sheet)));
+			// cerrando recursos
+			FileOutputStream out = new FileOutputStream(tempXls);
+			wb.write(out);
+			out.close();
+			
+			return AppJsfUtil.downloadFile(tempXls, "MAKOPV-CotTarea-" +  establecimientoMain.getNombrecomercial() + ".xlsx");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		return null;
+	}
 	
 	/**
 	 * @return the tareacabeceraList

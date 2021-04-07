@@ -113,19 +113,15 @@
 			</div>
 			
 			<div class="p-col-6 p-lg-2 p-as-end">
+			
 				<p:commandButton id="cmdGlobalExcel2"
 	  						value="EXPORTAR"
 							icon="fa fa-file-excel-o" 
-							styleClass="secondary-button Wid100">
-				</p:commandButton>				
-				<!-- <p:menu overlay="true" trigger="cmdGlobalExcel2" my="left top" at="left bottom" style="width:250px !important;">
-					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-						<p:fileDownload value="#{cotizacionCtrl.fileResumen}" contentDisposition="inline"/>
-					</p:menuitem>
-					<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-						<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
-					</p:menuitem>
-				</p:menu> -->
+							styleClass="secondary-button Wid100" ajax="false"
+							disabled="#{empty tareaCotMainCtrl.tareacabeceraList}">
+						<p:fileDownload value="#{tareaCotMainCtrl.fileResumen}" contentDisposition="inline"/>
+				</p:commandButton>
+								
 			</div>
 			
 		</div>				
@@ -320,16 +316,6 @@
 							
 						
 						</p:column>
-						
-						<!-- <p:column headerText="FECHA" style="width:40px;">
-						</p:column>
-						
-						<p:column headerText="ESTADO COT" style="width:50px;">
-						</p:column>
-						
-						<p:column headerText="CLIENTE" style="width:150px;">
-						</p:column> -->
-						
 						
 				</p:dataTable>
 				

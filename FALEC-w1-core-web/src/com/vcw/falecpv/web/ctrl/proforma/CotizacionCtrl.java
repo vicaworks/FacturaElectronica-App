@@ -555,7 +555,7 @@ public class CotizacionCtrl extends BaseCtrl {
 				}else {
 					fila = filaPago;
 				}
-				fila++;
+				//fila++;
 				
 			}
 			

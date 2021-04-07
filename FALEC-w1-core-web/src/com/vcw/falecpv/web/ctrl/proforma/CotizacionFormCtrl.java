@@ -550,6 +550,8 @@ public class CotizacionFormCtrl extends BaseCtrl {
 			// actlualizar la consulta pantalla principal
 			CotizacionCtrl cotizacionCtrl = (CotizacionCtrl)AppJsfUtil.getManagedBean("cotizacionCtrl");
 			cotizacionCtrl.consultar();
+			TareaCotMainCtrl tareaCotMainCtrl = (TareaCotMainCtrl)AppJsfUtil.getManagedBean("tareaCotMainCtrl");
+			tareaCotMainCtrl.consultar();
 			
 			messageCtrl.cargarMenssage("OK", "COTIZACION GENERADA CORRECTAMENTE.", "OK");
 			
