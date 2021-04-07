@@ -24,7 +24,7 @@
 		
 		<div class="EmptyBox5"/>
 		<div class="p-grid p-align-top ui-fluid">
-			<div class="p-col-12 p-md-2">
+			<div class="p-col-6 p-lg-2">
 				<h:outputText value="ESTABLECIMIENTO" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaEstablecimeinto"
 							value="#{tareaCotMainCtrl.establecimientoMain}"
@@ -39,7 +39,7 @@
 						
 				</p:selectOneMenu>
 			</div>
-			<div class="p-col-12 p-md-2">
+			<div class="p-col-6 p-lg-2">
 				<h:outputText value="ESTADO" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaEst"
 							value="#{tareaCotMainCtrl.estadoSeleccion}"
@@ -54,7 +54,7 @@
 				</p:selectOneMenu>
 			</div>
 			
-			<div class="p-col-12 p-md-2">
+			<div class="p-col-12 p-lg-2">
 				<h:outputText value="PRIORIDAD" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaPrioridad"
 							value="#{tareaCotMainCtrl.prioridadSeleccion}"
@@ -70,7 +70,7 @@
 				</p:selectOneMenu>
 			</div>
 			
-			<div class="p-col-12 p-md-6">
+			<div class="p-col-12 p-lg-6">
 				<h:outputText value="VENDEDOR" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaUsuario"
 							value="#{tareaCotMainCtrl.usuarioSeleccion}"
@@ -85,7 +85,7 @@
 				</p:selectOneMenu>
 			</div>
 			
-			<div class="p-col-12 p-md-6">
+			<div class="p-col-12 p-lg-6">
 				<h:outputText value="CLIENTE" styleClass="DispBlock p-mb-1"/>
 	    		<p:selectOneMenu id="somtareaCliente"
 							value="#{tareaCotMainCtrl.clienteSeleccion}"
@@ -101,18 +101,18 @@
 				</p:selectOneMenu>
 			</div>
 			
-			<div class="p-col-12 p-md-2">
+			<div class="p-col-12 p-lg-2">
 				<h:outputText value="NUM COTIZACIÓN" styleClass="DispBlock p-mb-1"/>
 	    		<p:inputText value="#{tareaCotMainCtrl.numCotizacion}"></p:inputText>
 			</div>
 			
-			<div class="p-col-6 p-md-2 p-as-end">
+			<div class="p-col-6 p-lg-2 p-as-end">
     			<p:commandButton 
 							icon="fa fa-search"
 							action="#{tareaCotMainCtrl.buscar}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
 			</div>
 			
-			<div class="p-col-6 p-md-2 p-as-end">
+			<div class="p-col-6 p-lg-2 p-as-end">
 				<p:commandButton id="cmdGlobalExcel2"
 	  						value="EXPORTAR"
 							icon="fa fa-file-excel-o" 

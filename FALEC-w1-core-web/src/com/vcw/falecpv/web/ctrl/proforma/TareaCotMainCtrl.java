@@ -77,9 +77,9 @@ public class TareaCotMainCtrl extends BaseCtrl {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
 			consultarUsuario();
+			usuarioSeleccion = AppJsfUtil.getUsuario();
 			consultarCliente();
 			consultar();
-			usuarioSeleccion = AppJsfUtil.getUsuario();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
