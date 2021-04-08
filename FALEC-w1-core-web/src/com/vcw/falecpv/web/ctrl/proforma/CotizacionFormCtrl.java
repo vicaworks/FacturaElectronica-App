@@ -747,6 +747,25 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		}
 		return false;
 	}
+	
+	public void imprimir() {
+		try {
+			generarCotizacion();
+			showRide();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(cabecerSelected.getIdcabecera());
+		rideCtrl.setInicialComprobante("COT-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(cabecerSelected.getNumdocumento()));
+		rideCtrl.showCotizacion();
+		
+	}
 
 	/**
 	 * @return the cabecerSelected

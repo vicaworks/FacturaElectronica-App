@@ -16,34 +16,35 @@
 		<div class="EmptyBox10"/>
    		
    		<div class="p-grid p-align-left">
-   			
-   			<div class="p-col-12 p-md-5">
-   				
-   				<div class="p-grid">
-   					
-   					<div class="p-col-12 p-md-4">
-	    				<p:commandButton id="cmdCotNuevo"
-								value="NUEVO" icon="fa fa-plus" 
-								action="#{cotizacionFormCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
-						</p:commandButton>
-   					</div>
-   					
-   					<div class="p-col-12 p-md-4">
-	    				<p:commandButton id="cmdGenCotizacion"
-								value="GUARDAR" icon="fa fa-floppy-o" 
-								action="#{cotizacionFormCtrl.generarCotizacion()}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_guardar')?'ui-state-disabled':''}" update="@form"/>
-					</div>
-					
-					<div class="p-col-12 p-md-4">
-						<p:commandButton 
-								value="IMPRIMIR" icon="fa fa-floppy-o" 
-								action="#" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_imprimir')?'ui-state-disabled':''}" update="@form"/>
-					</div>
-					
-   					
-   				</div>
-   				
-   			</div>
+			
+			<div class="p-col-6 p-lg-2">
+   				<p:commandButton id="cmdCotNuevo"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{cotizacionFormCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
+				</p:commandButton>
+ 					</div>
+ 					
+ 					<div class="p-col-6 p-lg-2">
+   				<p:commandButton id="cmdGenCotizacion"
+						value="GUARDAR" icon="fa fa-floppy-o" 
+						action="#{cotizacionFormCtrl.generarCotizacion()}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_guardar')?'ui-state-disabled':''}" update="@form"/>
+			</div>
+			
+			<div class="p-col-6 p-lg-2">
+				<p:commandButton 
+						value="IMPRIMIR" icon="fa fa-floppy-o" 
+						action="#{cotizacionFormCtrl.imprimir}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_imprimir')?'ui-state-disabled':''}" update="@form">
+					<f:setPropertyActionListener value="#{rideCtrl}" target="#{cotizacionFormCtrl.rideCtrl}"/>
+				</p:commandButton>
+			</div>   			
+			
+			<div class="p-col-6 p-lg-2">
+				<p:commandButton 
+						value="CREAR COPIA" icon="fa fa-copy" 
+						action="#{cotizacionFormCtrl.crearUnaCopia(cotizacionFormCtrl.cabecerSelected.idcabecera)}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}" update="@form" disabled="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
+						<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
+				</p:commandButton>
+			</div>
    			
    		</div>
 	

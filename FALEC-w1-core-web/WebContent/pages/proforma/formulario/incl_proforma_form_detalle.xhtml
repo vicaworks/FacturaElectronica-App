@@ -59,7 +59,7 @@
 				
 				<div class="p-grid">
 					
-					<div class="p-col-12 p-md-6">
+					<div class="p-col-12 p-lg-6">
 						<div class="ui-inputgroup">
 		                    <span class="ui-inputgroup-addon">
 		                        <p:commandButton id="cmdConsultarProducto"
@@ -74,7 +74,7 @@
 		                </div>	
 					</div>
 					
-					<div class="p-col-12 p-md-3">
+					<div class="p-col-6 p-lg-3">
 		 				<p:commandButton id="cmdCotProducto"
 							value="PRODUCTO" icon="fa fa-search" 
 							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:formulario:pvDetalleDT">
@@ -88,7 +88,7 @@
 						</p:commandButton>
 					</div>
 					
-					<div class="p-col-12 p-md-3">
+					<div class="p-col-6 p-lg-3">
 		 				<p:commandButton id="cmdCotDetalle"
 							value="ITEM" icon="fa fa-plus" 
 							action="#{cotizacionFormCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:formulario:msgProformaForm :formMain:formulario:pvDetalleDT :formMain:formulario:oupFacTotal" process="@this :formMain:formulario:pvDetalleDT">

@@ -648,6 +648,7 @@ public class CotizacionCtrl extends BaseCtrl {
 			estList.add("SEGUIMIENTO");
 			estList.add("FACTURADO");
 			estList.add("ARCHIVADO");
+			estList.add("AUTORIZACION");
 			break;
 		case "ESTADO":
 			estList.add("SEGUIMIENTO");
