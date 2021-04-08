@@ -61,6 +61,7 @@ public class DatosEmpresaServicio {
 		Empresa empresa = empresaServicio.consultarByPk(idEmpresa);
 		
 		if(empresa.getActualizardatos().toUpperCase().contains("S")) {
+			
 			// parametros genericos
 			empresaServicio.parametrosGenericos(idEmpresa);
 			

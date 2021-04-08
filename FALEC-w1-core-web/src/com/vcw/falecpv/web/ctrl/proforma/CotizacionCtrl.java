@@ -705,6 +705,9 @@ public class CotizacionCtrl extends BaseCtrl {
 			if(!estadoProforma.equals("ARCHIVADO")) {
 				proformaSelected.setEtiqueta(null);
 			}
+			if(estadoProforma.equals("AUTORIZACION")) {
+				proformaSelected.setAutorizacionBol(true);
+			}
 			
 			cabeceraServicio.actualizar(proformaSelected);
 			consultar();

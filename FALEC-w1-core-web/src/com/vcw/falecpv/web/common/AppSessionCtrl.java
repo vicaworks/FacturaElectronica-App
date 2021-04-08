@@ -22,6 +22,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Segopcion;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.core.servicio.seg.SegperfilServicio;
+import com.vcw.falecpv.web.servicio.DatosEmpresaServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -38,6 +39,9 @@ public class AppSessionCtrl implements Serializable {
 	
 	@EJB
 	private SegperfilServicio segperfilServicio;
+	
+	@EJB
+	private DatosEmpresaServicio datosEmpresaServicio;
 	
 	private String nombreEstablecimiento;
 	private String nombreEmpresa;
@@ -60,6 +64,7 @@ public class AppSessionCtrl implements Serializable {
 		try {
 			
 			if (AppJsfUtil.getLoginUser()!=null) {
+				
 				// 1. datos del usuario
 				Usuario usuario = usuarioServicio.getUsuarioDao().getByLogin(AppJsfUtil.getRemoteUser());
 				nombreDisplay = usuario.getNombrepantalla();
@@ -67,18 +72,23 @@ public class AppSessionCtrl implements Serializable {
 				nombreEstablecimiento = usuario.getEstablecimiento().getNombrecomercial();
 				nombreEmpresa = usuario.getEstablecimiento().getEmpresa().getNombrecomercial();
 				
-				// 2. guardar en session los datos de empresa y establecimeinto
+				// 2 datos de la empresa
+				datosEmpresaServicio.cargarDatosEmpresaFacade(usuario.getEstablecimiento().getEmpresa().getIdempresa());
+				
+				// 3. guardar en session los datos de empresa y establecimeinto
 				FacesUtil.getHttpSession(false).setAttribute("establecimiento", usuario.getEstablecimiento());
 				FacesUtil.getHttpSession(false).setAttribute("usuario", usuario);
 				
-				// 3. perfiles de acceso
+				// 4. verificar e perfil inicial
+				if(usuario.getSegperfilpredefinido()==null) {
+					usuarioServicio.establecerPerfilInicial(usuario.getIdusuario());
+				}
+				
+				// 5. perfiles de acceso
 				segopcionList = segperfilServicio.getPerfilOpcionAcceso(usuario.getIdusuario(),ConfiguracionGeneralEnum.SISTEMA_ID.getId());
 				FacesUtil.getHttpSession(false).setAttribute("segopcionList", segopcionList);
 				
 			}
-			
-			
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

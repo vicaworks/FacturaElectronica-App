@@ -68,8 +68,6 @@ public class EmpresaCtrl extends BaseCtrl {
 	public void init() {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
-			// carga los datos iniciales si la empresa tine en S campo actualizardatos
-			datosEmpresaServicio.cargarDatosEmpresaFacade(establecimientoMain.getEmpresa().getIdempresa());
 			empresaSelected = new Empresa();
 			refrescar();
 		} catch (Exception e) {
