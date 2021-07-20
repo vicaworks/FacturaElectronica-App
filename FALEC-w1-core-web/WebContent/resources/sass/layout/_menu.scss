@@ -3,6 +3,7 @@
         position: fixed;
         height: 100%;
         top: 70px;
+        overflow: auto;
         z-index: 999;
 
         .layout-profile {
@@ -10,6 +11,8 @@
                 padding: 3em 0;
                 display: block;
                 text-align: center;
+                cursor: pointer;
+                user-select: none;
                 @include transition(background-color $transitionDuration);
 
                 img {
@@ -31,10 +34,10 @@
             }
 
             .layout-profile-menu {
+                display: none;
                 list-style: none;
                 padding: 0;
                 margin: 0;
-                display: none;
 
                 li {
                     border-left: 4px solid transparent;
@@ -85,24 +88,49 @@
             }
 
             li {
+
+                &.layout-root-menuitem {
+                    > .layout-menuitem-root-text {
+                        font-size: 1rem;
+                        text-transform: uppercase;
+                        font-weight: 700;
+                        padding: 1.5rem 0 0.5rem 1.5rem;
+                        color: #6c7276;
+                    }
+
+                    > a {
+                        display: none;
+                    }
+                }
+
                 a {
                     display: block;
                     padding: .75em 1em;
                     position: relative;
+                    cursor: pointer;
+                    outline: none;
                     @include border-radius($borderRadius);
                     @include transition(color $transitionDuration, background-color $transitionDuration, border-left-color $transitionDuration);
 
                     .layout-menuitem-text {
                         display: inline-block;
+                        vertical-align: middle;
                     }
 
                     .layout-menuitem-icon {
                         margin-right: .5em;
+                        vertical-align: middle;
+                    }
+
+                    &.rotated-icon {
+                        .layout-menuitem-icon {
+                            transform: rotate(90deg);
+                        }
                     }
 
                     .layout-submenu-toggler {
                         position: absolute;
-                        right: 16px;
+                        right: 5px;
                         top: 50%;
                         font-size: 16px;
                         margin-top: -8px;
@@ -167,28 +195,8 @@
             }
         }
 
-        .nano {
-            > .nano-content {
-                &.menu-scroll-content {
-                    display: block;
-                    height: 100%;
-                    position: relative;
-                    overflow: scroll;
-                    overflow-x: hidden;
-                    
-                    .layout-menu {
-                        padding-bottom: 120px;
-                    }
-                }
-            }
-            
-            > .nano-pane {
-                .nano-slider {
-                    background-color: #aaaaaa;
-                    opacity: 0.3;
-                    filter: alpha(opacity=30);
-                }
-            }
+        .menu-scroll-content {
+            padding-bottom: 120px;
         }
     }
 
@@ -250,6 +258,13 @@
                 }
 
                 li {
+
+                    &.layout-root-menuitem {
+                        > .layout-menuitem-root-text {
+                            color: $menuitemTextColor;
+                        }
+                    }
+
                     a {
                         .layout-menuitem-text {
                             color: $menuitemTextColor;
@@ -345,6 +360,13 @@
                 }
 
                 li {
+
+                    &.layout-root-menuitem {
+                        > .layout-menuitem-root-text {
+                            color: $darkMenuitemTextColor;
+                        }
+                    }
+
                     a {
                         .layout-menuitem-text {
                             color: $darkMenuitemTextColor;
@@ -385,14 +407,28 @@
 
     .layout-main {
         padding-top: 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100vh;
 
         .layout-content {
             padding: 16px;
+            flex: 1 1 0;
+        }
+    }
+
+    &.layout-static, &.layout-overlay {
+        .layout-menu-container .layout-menu li ul {
+            display: block;
+             li ul {
+                 display: none;
+             }
         }
     }
 }
 
-@media screen and (min-width: 897px) {
+@media screen and (min-width: $mobileBreakpoint + 1) {
     .layout-wrapper {
         &.layout-static {
             .layout-menu-container {
@@ -406,6 +442,10 @@
                 @include transition(margin-left $transitionDuration);
             }
     
+            .layout-footer {
+                @include transition(margin-left $transitionDuration);
+            }
+
             &.layout-static-inactive {
                 .layout-menu-container {
                     left: -288px;
@@ -446,6 +486,7 @@
             }
             .layout-menu-container {
                 width: 57px;
+                overflow: visible;
 
                 .layout-profile {
                     .layout-profile-button {
@@ -468,8 +509,6 @@
                         top: 0;
                         left: 57px;
                         min-width: 250px;
-                        max-height: 450px;
-                        display: none;
                         @include border-radius($borderRadius);
                         @include shadow(0 3px 6px 0 rgba(0, 0, 0, 0.16));
 
@@ -502,10 +541,20 @@
                     > li {
                         position: relative;
     
+                        &.layout-root-menuitem {
+                            > .layout-menuitem-root-text {
+                                display: none;
+                            }
+
+                            > a {
+                                display: block;
+                            }
+                        }
+
                         > a {
                             display: block;
                             text-align: center;
-                            padding: .75em 0;
+                            padding: 1em 0;
 
                             .layout-menuitem-icon {
                                 font-size: 18px;
@@ -527,6 +576,7 @@
     
                         > ul {
                             position: absolute;
+                            display: none;
                             top: 0;
                             left: 52px;
                             min-width: 200px;
@@ -540,6 +590,10 @@
                                     display: none;
                                 }
                             }
+
+                            > ul {
+                                display: block;
+                            }
                         }
                     }
 
@@ -548,7 +602,7 @@
                         padding: 0 5px;
                         position: absolute;
                         left: 57px;
-                        top: 5px;
+                        top: 10px;
                         line-height: 1;
                         
                         .layout-menu-tooltip-text {
@@ -584,6 +638,10 @@
         }
     
         &.layout-horizontal {
+            .layout-main {
+                padding-top: 0;
+            }
+
             .layout-topbar {
                 position: static;
 
@@ -594,9 +652,15 @@
 
             .layout-menu-container {
                 width: 100%;
+                overflow: visible;
                 min-height: 45px;
                 position: static;
                 padding: .5em 5em;
+
+
+                .menu-scroll-content {
+                    padding-bottom: 170px;
+                }
 
                 .layout-menu {
                     margin: 0;
@@ -610,6 +674,16 @@
                         border-left: 0 none;
                         border-right: 0 none;
   
+                        &.layout-root-menuitem {
+                            > .layout-menuitem-root-text {
+                                display: none;
+                            }
+
+                            > a {
+                                display: block;
+                            }
+                        }
+
                         > a {
                             height: 2.5em;
                             padding: .6em 1em;
@@ -621,19 +695,22 @@
         
                             .layout-submenu-toggler {
                                 position: static;
-                                margin-left: .5em;
+                                margin-left: .25em;
+                                vertical-align: middle;
+                                margin-top: 0;
                             }
                         }
     
                         > ul {
                             top: 2.5em;
                             left: 0;
+                            display: none;
                             min-width: 200px;
                             position: absolute;
                             margin: 0;
                             overflow: auto;
                             max-height: 450px;
-                            z-index: 99;
+                            z-index: 1;
                             @include shadow(0 3px 6px 0 rgba(0, 0, 0, 0.16));
                             @include border-radius($borderRadius);
                         }
@@ -644,15 +721,12 @@
                             }
 
                             > ul {
+                                display: block;
                                 border-top: 4px solid $primaryColor;
                             }
                         }
                     }
                 }
-            }
-    
-            .layout-main {
-                padding-top: 0;
             }
         }    
     
@@ -669,26 +743,9 @@
             }
             
             .layout-menu-container {
-                .nano {
-                    overflow: visible;
-    
-                    > .nano-content {
-                        &.menu-scroll-content {
-                            display: block;
-                            height: auto;
-                            position: static;
-                            overflow: visible;
-                            overflow-x: visible;
-                            
-                            .layout-menu {
-                                padding-bottom: 0;
-                            }
-                        }
-                    }
-                    
-                    > .nano-pane {
-                        display: none !important;
-                    }
+                .menu-scroll-content {
+                    width: 100%;
+                    padding: 0;
                 }
                 
                 .layout-menu {
@@ -737,39 +794,16 @@
     .layout-wrapper {
         &.layout-horizontal, &.layout-slim {
             .layout-menu-container {
-                .nano {
-                    > .nano-content {
-                        &.menu-scroll-content {
-                            display: block;
-                            height: auto;
-                            position: static;
-                            overflow: visible;
-                            overflow-x: visible;
-                            margin-right: 0px !important;
-                            padding-right: 0px !important;
-                            margin-left: 0px !important;
-                            padding-left: 0px !important;
-                        }
-
-                        .nano-scroll-footer {
-                            height: 0px;
-                        }
-
-                        .layout-menu {
-                            padding-bottom: 0;
-                        }
-                    }
-                    
-                    > .nano-pane {
-                        display: none !important;
-                    }
+                .menu-scroll-content {
+                    width: 100%;
+                    padding: 0;
                 }
             }
         }
     }
 }
 
-@media screen and (max-width: 896px) {
+@media screen and (max-width: $mobileBreakpoint) {
     .layout-wrapper {
         .layout-topbar {
             .layout-topbar-logo {
@@ -794,7 +828,7 @@
             @include transition(margin-left $transitionDuration);
         }
 
-        .layout-content-mask {
+        .layout-mask {
             display: none;
             background-color: #252529;
             position: fixed;
@@ -804,10 +838,7 @@
             width: 100%;
             height: 100%;
             opacity: 0.8;
-            animation-name: fadeinmask;
-            animation-duration: $transitionDuration;
             filter: alpha(opacity=80);
-            cursor: pointer;
         }
 
         &.layout-mobile-active {
@@ -815,16 +846,13 @@
                 left: 0;
             }
 
-            .layout-content-mask {
+            .layout-mask {
                 display: block;
-                animation-name: fadeinmask;
             }
         }
     }
 
     body.blocked-scroll {
         overflow: hidden;
-        height: 100%;
-        position: fixed;
     }
 }

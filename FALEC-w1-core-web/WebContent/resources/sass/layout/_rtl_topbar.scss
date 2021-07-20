@@ -6,6 +6,11 @@
             left: auto;
             right: 0;
 
+            .layout-topbar-logo {
+                margin-left: 0px;
+                margin-right: 1.5em;
+            }
+
             .layout-topbar-search {
                 margin-left: 0;
                 margin-right: 120px;
@@ -22,6 +27,12 @@
 
             .topbar-menu {
                 float: left;
+
+                .user-profile {
+                    .layout-profile-icon {
+                        margin: 14px 8px 0 0;
+                    }
+                }
 
                 > li {
                     float: left;
@@ -56,7 +67,7 @@
     }
 }
 
-@media screen and (max-width: 896px) {
+@media screen and (max-width: $mobileBreakpoint) {
     .layout-rtl {
         &.layout-wrapper {
             .layout-topbar {
@@ -67,7 +78,6 @@
                     
                     i {
                         left: auto;
-                        right: auto; 
                     }
                 }
 

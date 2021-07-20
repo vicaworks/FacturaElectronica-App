@@ -3,7 +3,7 @@
 
     .landing-wrapper {
         .landing-header {
-            background: url("\#{resource['roma-layout:images/landing/landing-header@2x.png']}");
+            background: url("\#{resource['roma-layout:images/landing/landing-header@2x.jpg']}");
             background-size: cover;
             height: 472px;
             position: relative;
@@ -20,7 +20,7 @@
 
                 span {
                     color: #303030;
-                    font-size: 31.3px;
+                    font-size: 32px;
                     font-weight: 600;
                     vertical-align: middle;
                 }
@@ -28,7 +28,8 @@
                 #landing-menu-button {
                     display: none;
                     color: #65656a;
-                    font-size: 24px;
+                    width: 32px;
+                    text-align: center;
                 }
 
                 ul {
@@ -43,6 +44,7 @@
                             color: #65656a;
                             padding: 7px 14px 6px 14px;
                             font-size: 14px;
+                            cursor: pointer;
                             @include transition(color $transitionDuration);
                             @include border-radius(2px);
 

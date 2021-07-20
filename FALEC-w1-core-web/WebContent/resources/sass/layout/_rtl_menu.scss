@@ -119,7 +119,7 @@
     }
 }
 
-@media screen and (min-width: 897px) {
+@media screen and (min-width: $mobileBreakpoint + 1) {
     .layout-rtl {
         &.layout-wrapper {
             &.layout-static {
@@ -337,7 +337,7 @@
     }
 }
 
-@media screen and (max-width: 896px) {
+@media screen and (max-width: $mobileBreakpoint) {
     .layout-rtl {    
         &.layout-wrapper {
             .layout-topbar {
@@ -359,7 +359,7 @@
                 @include transition(margin-right $transitionDuration);
             }
 
-            .layout-content-mask {
+            .layout-mask {
                 left: auto;
                 right: 0;
             }

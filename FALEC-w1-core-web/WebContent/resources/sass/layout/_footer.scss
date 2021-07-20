@@ -1,8 +1,11 @@
 .layout-footer {
-    padding: 1.5em 1.5em 1.5em 3em;
+    padding: 1.5em 1.5em 0.5em 1.5em;
     background-color: $footerBgColor;
     border-top: 1px solid $footerBorderColor;
     border-bottom: 1px solid $footerBorderColor;
+    @include flex();
+    @include flex-align-center();
+    @include flex-justify-between();
 
     img {
         height: 21px;
@@ -16,10 +19,14 @@
         text-align: right;
 
         a {
-            color: $textSecondaryColor; 
-            font-size: 24px;
+            color: $textSecondaryColor;
+            font-size: 20px;
             margin-right: 16px;
             @include transition(color $transitionDuration);
+
+            .pi {
+                font-size: 1.5rem;
+            }
 
             &:hover {
                 color: $textColor;
