@@ -11,453 +11,213 @@
     </f:facet>
     <title>Mako</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/> 
+	<link rel="preconnect" href="https://fonts.gstatic.com"/> 
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400" rel="stylesheet"/>
+    <!-- PrimeFlex Personalizado -->
+	<h:outputStylesheet name="css/primeflexV3.0-vicaworks-v1.0.css" library="roma-layout" />
+       <h:outputStylesheet name="css/primeicons.css" library="roma-layout" />
+       <h:outputStylesheet name="primeflex-saga.css" library="css" />
+       <h:outputStylesheet name="prism.css" library="css" />
+	<!-- Prime Flex Thems -->
+	<link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/themes/saga-blue.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/themes/arya-blue.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/themes/vela-blue.css"/>
+    <h:outputStylesheet name="css/demo.css" library="demo" />
+     <!-- Style mako -->
+     <h:outputStylesheet name="mako_v1_0.css" library="css" />
+     
+     <!-- Script -->
+     <script src="https://www.googletagmanager.com/gtag/js?id=UA-93461466-1"></script>
+	  <script>
+	      window.dataLayer = window.dataLayer || [];
+	      function gtag(){dataLayer.push(arguments);}
+	      gtag('js', new Date());
+	  </script>
     <style>
-    	
-    	.Fs12{
-			font-size: 12px;
-		}
-    	
-    	.Fs14{
-			font-size: 14px;
-		}
-    	
-    	.Fs16{
-			font-size: 16px;
-		}
-    	
-    	.Fs18{
-			font-size: 18px;
-		}
-		
-		.Fs20{
-			font-size: 20px;
-		}
-		
-		.Fs25{
-			font-size: 25px;
-		}
-		
-		.Fs27{
-			font-size: 27px;
-		}
-		
-		.Fs30{
-			font-size: 30px !important;
-		}
-		
-		.Fs60{
-			font-size: 60px;
-		}
-		
-		.Fs50{
-			font-size: 50px;
-		}
-		
-		.pad-left-20{
-			padding-left: 20px;
+    	*{
+		    margin: 0px;
+		    padding: 0px;
+		    box-sizing: border-box;
 		}
 		
 		.sistema{
 			font-family: 'Orbitron', sans-serif;
 			font-weight: 400;
-			/* border-bottom: 1px solid #ccc; */
-			padding-bottom: 10px;
 		}
 		
-		.contenedor{
-			padding: 0px 40px !important;
-		}
-		
-		/* -- Caracteristicas -- */
-		
-		.caracteristica{
-			width:100%;
-			border-radius:4px;
-			color:#fff;
-			display: grid;
-			grid-gap: 5px;
-			grid-template-columns: repeat(4,1fr);
-		    grid-template-rows: repeat(2,auto);
-		    grid-template-areas: "info-image info-head    info-head    info-head"
-		    					 "info-image info-content info-content info-content";
-		    margin-bottom: 10px !important;
-		    height: 100%;
-		}
-		
-		.caracteristica .info-image{
-			grid-area: info-image;
-			align-self: center;
-			justify-self: center;
-			font-size: 45px;
-			/* padding: 10px 10px 0px 10px; */
-			
-		}
-		
-		.caracteristica .info-head{
-			grid-area: info-head;
-			padding: 5px 5px 0px 5px;
-			font-size: 16px;
-			color: #fff;
-			font-weight: bold;
-		}
-		
-		.caracteristica .info-content{
-			grid-area: info-content;
-			/* padding-left:20px; */
-			margin-top: -15px!important;
-			color: #F2F3F4;
-			font-size: 12px;
-		}
-		
-		.caracteristica .info-content ul{
-			padding-left: 20px !important;
-		}
-		
-		.bg-blue{
-			background-color: #2e88ff;
-		}
-		
-		.bg-yellow{
-			background-color: #f3a841;
-		}
-		
-		.bg-green{
-			background-color: #00acad;
-		}
-		
-		.bg-vino{
-			background-color:#c03995;
-		}
-		
-		.bg-morado{
-			background-color:#636fc0;
-		}
-		
-		/* -- presentacion -- */
-		.presentacion{
-			display: grid;
-			grid-gap:5px;
-			grid-template-columns: 1fr;
-			grid-template-rows: auto minmax(400px,auto) auto;
-			align-items: flex-start; 
-			padding-left: 20px; 
-		}
-		
-		.presentacionHeader h2{
-			margin:0px!important;
-			margin-top: 30px!important;
-		}
-		
-		
-		/* -- login -- */
-		
-		.login{
-			/* padding: 100px 40px !important; */
-			/* -- por dentro -- */
-			/* -webkit-box-shadow: inset 7px 7px 5px 0px rgba(240,231,240,0.73);
-			-moz-box-shadow: inset 7px 7px 5px 0px rgba(240,231,240,0.73);
-			box-shadow: inset 7px 7px 5px 0px rgba(240,231,240,0.73); */
-			/*-- por fuera --  */
+		.fontWeight-200{font-weight: 200;}
+		.fontWeight-400{font-weight: 400;}
+		.fontFamily{font-family: 'Montserrat', sans-serif;} 
+		    	
+    	.bg-div{
 			-webkit-box-shadow: 7px 7px 5px 0px rgba(240,231,240,0.73);
 			-moz-box-shadow: 7px 7px 5px 0px rgba(240,231,240,0.73);
 			box-shadow: 7px 7px 5px 0px rgba(240,231,240,0.73);
 			height: 100vh;
 			background-color: #F4F6F7;
+			
 		}
 		
-		.login .welcome{
-			color: #303030;
-			font-size: 13px;
+		.box { 
+			background-color: #ffffff; 
+			/* text-align: center; */ 
+			padding: 1rem; 
+			border-radius: 4px; 
+			-webkit-box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12); 
+			box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12); 
 		}
 		
-		.username-container,
-		.password-container{
-			font-size: 14px;
-		}
+		.inputfield { font-size: 1rem; color: #495057; background: #ffffff; padding: 0.5rem 0.5rem; border: 1px solid #ced4da; appearance: none; border-radius: 3px; }
+
+		.inputfield:focus { outline: 0 none; outline-offset: 0; box-shadow: 0 0 0 0.2rem #a6d5fa; border-color: #2196F3; }
 		
-		.username-container .login-input,
-		.password-container .login-input{
-			margin-top: 10px;
-		}
-		
-		.rememberme-container{
-			margin-bottom: 20px;
-		}
-		
-		.icon-detalle{
-			border-radius: 5px 20px 5px;
-			background-color: #F2F4F4;
+		.icon-carcateristica{
 			color: #13496C;
 			text-align: center;
-			font-size:17px;
-			padding: 8px !important;
+			font-size: 17px;
+			padding: 13px 15px !important;			
+			border-radius: 50%;
+			background-color: #f4f6f9;
+			height: 46px;
+			width: 46px;
 		}
-		.detalle{
+		.carcateristica{
 			padding-left: 20px !important;
 			color:#424949;
 			font-size:14px;
 		}
 		
-		.resumen{
-			/* color:#004080; */
-			font-size:18px;
-			color:#212F3D;
-			margin: 15px 10px;
-		}
 		
-		/* -- footer -- */
-		.footer{
-			padding:5px;
-			background-color: #3D3D3D;
-			position: fixed;
-			bottom: 0;
-			width: 100%;
-			height: 30px;
-			color:#fff;
-			text-align: center;
-			text-decoration: none;
-			font-size: 12px;
-		}
-		.footer a{
-			text-decoration: none !important;
-			color:#fff;
-		}
-		.footer .sistema{
-			font-family: 'Orbitron', sans-serif;
-			font-weight: 400;
-			font-size: 14px;
-		}
-		
-		.EmptyBox30{ display:block; width:100%; height:30px; overflow:hidden;}
-		
-		.login{height: 100vh;}
-		
-		@media screen and (min-width: 320px) {
-		  .icon-detalle{
-				font-size:14px;
-			}
-			.detalle{
-				
-				font-size:12px;
-			}
-			
-			.resumen{
-				font-size:14px;
-			}
-			
-			.logo{margin-top: 60px;}
-			
-			/* .login{height: 420px!important;} */
-	    }
-		
-    </style>
+    </style>	
+    
     
 </h:head>
 
-<h:body style="background-color:#fff;">
+<h:body style="background-color:#fff;">	
+	<div class="grid">
 	
-	<div class="p-grid p-nogutter">
-		
-		<!-- login  -->
-		<div class="p-col-12 p-lg-5 login">
-           	<form name="form1" method="post" action="j_security_check" autocomplete="off">
-				<div class="p-grid p-justify-center p-align-center login" >
-					
-					<div class="p-col-11 p-md-10" style="padding: 0px 40px;">
-						
-						<div class="p-grid">
-						
-			                <div class="p-col-12" >
-			                    
-			                    <h3 class="sistema Fs30" style="border-bottom: none;padding-bottom: 0px;">mako<span style="font-size: 18px;">®</span></h3>
-			                    <span class="welcome">Bienvenido, al sistema de gestón de tu negocio.</span>
-			                </div>
-			                <div class="p-col-12 username-container">
-			                    <h:panelGroup>
-			                        <label class="Fs16"><i class="fa fa-user"></i> Usuario</label>
-			                        <div class="login-input">                            
-										<input id="j_username" name="j_username" type="text"
-											class="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all"
-											role="textbox" aria-disabled="false" aria-readonly="false" style="width: 100%;">
-										</input>
-			                        </div>
-			                    </h:panelGroup>
-			                </div>
-			                 <div class="p-col-12 password-container">
-			                    <h:panelGroup>
-			                        <label class="Fs16"><i class="fa fa-key"></i> Contraseña</label>
-			                        <div class="login-input">
-										<input id="j_password" name="j_password" type="password"
-											class="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all"
-											role="textbox" aria-disabled="false" aria-readonly="false" style="width: 100%;">
-											
-										</input>
-			                        </div>
-			                    </h:panelGroup>
-			                </div>
-		                    <div class="p-col-12 p-sm-6 p-md-6 rememberme-container">
-			                    <p:selectBooleanCheckbox />
-			                    <label>Recuérdame</label>
-			                </div>
-			                <div class="p-col-12">
-				                    
+		<div class="relative col-12 md:col-6 bg-div">
+			<div class="grid align-content-center h-full justify-content-center">
+				<div class="col-11 md:col-8 xl:col-8 box">
+					<form name="form1" method="post" action="j_security_check" autocomplete="off">
+						<div class="grid px-2 md:px-4 ">
+							<div class="col-12">
+								<div class="EmptyBox40"/>
+							</div>
+							<div class="col-12">
+								<span class="sistema Fs24">mako®</span>
+							</div>
+							<div class="col-12 mt-2">
+								<span class="fontFamily fontWeight-200 Fs14">Bienvenido, al sistema de gestón de tu <span class="text-blue-700 font-bold">negocio</span>.</span>
+							</div>
+							<div class="col-12 mt-2">
+								<div class="field">
+							        <label for="j_username" class="fontFamily Fs14 font-bold">Usuario</label>
+							        <input id="j_username" name="j_username" type="text" class="inputfield w-full"/>
+							    </div>
+							</div>
+							<div class="col-12 mt-1">
+								<div class="field">
+							        <label for="j_password" class="fontFamily Fs14 font-bold">Contraseña</label>
+							        <input id="j_password" name="j_password" type="password" class="inputfield w-full"/>
+							    </div>
+							</div>
+							
+							<div class="col-12 mt-1">
+								<p:selectBooleanCheckbox />
+			                    <label class="fontFamily font-bold Fs14 text-blue-700">Recuérdame</label>
+							</div>
+							
+							<div class="col-12 mt-2">
 								<button id="j_idt14" name="j_idt14" type="submit"
-									class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left sencondary-button "
-									role="button" aria-disabled="false" style="width: 100%;" >
-									<span class="ui-button-icon-left ui-icon ui-c fa fa-user Fs16"></span><span
-										class="ui-button-text ui-c Fs16">Ingresar</span>
+										class="ui-button ui-widget ui-state-default ui-corner-all py-1 md:py-2 bg-blue-600 transition-colors transition-duration-500 hover:bg-blue-400"
+										role="button" aria-disabled="false" style="width: 100%;" >
+									<span class="ui-button-text ui-c Fs16 fontFamily">Ingresar</span>
 								</button>
-									
-			                </div>
-						
+							</div>
+							<div class="col-12">
+								<div class="EmptyBox40"/>
+							</div>
 						</div>
-					
-					
-					</div>
-				
-				
-	             </div>
-             </form>
+					</form>
+				</div>				
+			</div>
+			<div class="absolute bottom-0 left-0 p-3 w-full fontFamily text-center text-gray-600 Fs12">
+				<span >®2021 </span><span class="text-blue-700 font-bold">vicaworks</span><span > Todos los derechos reservados</span>
+            </div>
 		</div>
 		
+		<div class="col-12 md:col-6 hidden md:block">
 		
-		<div class="p-col-12 p-lg-7">
-			
-			<!-- <div class="presentacionHeader pad-left-20">
-				<h2 class="sistema Fs60">mako<span style="font-size: 18px;">®</span></h2>
-			</div> -->
-				
-				<div class="p-grid p-justify-center p-align-center" style="height: 100vh !important;">
-					
-					
-					<div class="p-col-12">
-						
-						<div class="p-grid p-nogutter p-justify-center">
-							<div class="p-col-12 logo" style="text-align: center;">
-								<img src="#{request.contextPath}/resources/img/vicaworks.png" width="250px"/>
-							</div>					
-							<div class="p-col-11 p-md-8">
-								<div class="resumen">
-										Realiza todas las actividades relacionadas a la <span style="font-weight: bold;"> gestión de tu negocio.</span>   	
-									</div>
+			<div class="grid justify-content-center align-content-center fontFamily fontWeight-200 text-sm" style="height: 100vh !important;">
+				<div class="p-col-12">
+					<div class="grid grid-nogutter justify-content-center">
+						<div class="col-12">
+							<div class="EmptyBox30"/>
+						</div>
+						<div class="col-12" style="text-align: center;">
+							<img src="#{request.contextPath}/resources/img/vicaworks.png" width="280px"/>
+						</div>
+						<div class="col-12 md:col-10 xl:col-8 text-left mt-1 md:mt-2">
+							<div class="Fs16">
+									Realiza todas las actividades relacionadas a la <span style="font-weight: bold;"> gestión de tu negocio.</span>   	
 							</div>
-							<div class="p-col-11 p-md-8">
-								
-								<div class="p-grid p-nogutter p-align-center">
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-pencil-square-o"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Administra, envía por email, y da seguimiento a las proformas.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-file-pdf-o"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Emisión de Comprobantes (Facturas, Retenciones, Notas de Crédito, Notas de Débitos, Guía de Remisión, Liquidación de Compra)
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-list-ol"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Inventario, registro de entradas, salidas, control de mínimos.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-paypal"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Gestión de cuentas por cobrar y pagar.
-									</div>
-									<div class="p-col-12" style="height: 5px;"/>
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-money"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Administración de caja chica.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-arrow-circle-down"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Descarga los comprobantes electrónicos recibidos del SRI, para tus declaraciones de impuestos.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-area-chart"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Reportes estadísticos de ventas, productos, inventarios.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-desktop"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										100% adaptable a todos los dispositivos.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-magic"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Integración con sistemas contables, ERP, tiendas en línea, etc.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-cloud-upload"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Almacenamiento en la nube, con actualizaciones automáticas.
-									</div>
-									
-									<div class="p-col-12" style="height: 5px;"/>
-									<div class="p-col-1 icon-detalle" >
-										<i class="fa fa-whatsapp"></i>
-									</div>
-									<div class="p-col-11 detalle">
-										Help desk, y soporte técnico.
-									</div>
-									
+						</div>
+						<div class="col-12 md:col-11 xl:col-8 text-left mt-1 md:mt-2">
+							<div class="grid grid-nogutter align-content-center">
+								<div class="col-1 icon-carcateristica" >
+									<i class="fa fa-pencil-square-o"></i>
 								</div>
-								
-								   	
+								<div class="col-10 carcateristica align-self-center">
+									<span class="fontWeight-400">Proformas:</span><span> Seguimiento, envío por email, reportes.</span> 
+								</div>
+								<div class="col-1 icon-carcateristica mt-1" >
+									<i class="fa fa-file-pdf-o"></i>
+								</div>
+								<div class="col-10 carcateristica align-self-center">
+									<span class="fontWeight-400">Emisión de Comprobantes:</span><span> Facturas, Retenciones, Notas de Crédito, Notas de Débitos, Guía de Remisión, Liquidación de Compra.</span>
+								</div>
+								<div class="col-1 icon-carcateristica mt-1" >
+									<i class="fa fa-list-ol"></i>
+								</div>
+								<div class="col-10 carcateristica align-self-center">
+									<span class="fontWeight-400">Inventario:</span><span> entradas, salidas, control de mínimos.</span>
+								</div>
+								<div class="col-1 icon-carcateristica mt-1" >
+									<i class="fa fa-paypal"></i>
+								</div>
+								<div class="col-10 carcateristica align-self-center">
+									<span class="fontWeight-400">Gestión de cuentas:</span><span> por cobrar, pagar, y administración de caja chica.</span>
+								</div>
+								<div class="col-1 icon-carcateristica mt-1" >
+									<i class="fa fa-arrow-circle-down"></i>
+								</div>
+								<div class="col-10 carcateristica align-self-center">
+									<span class="fontWeight-400">Comprobantes electrónicos recibidos:</span><span> descarga los comprobantes electrónicos recibidos del SRI, para tus declaraciones de impuestos.</span>
+								</div>
+								<div class="col-1 icon-carcateristica mt-1" >
+									<i class="fa fa-area-chart"></i>
+								</div>
+								<div class="col-10 carcateristica align-self-center">
+									<span class="fontWeight-400">Reportes:</span><span> ventas, proformas, productos, inventarios, estadísticas.</span>
+								</div>
+								<div class="col-1 icon-carcateristica mt-1" >
+									<i class="fa fa-desktop"></i>
+								</div>
+								<div class="col-10 carcateristica align-self-center">
+									<span class="fontWeight-400">Tecnología:</span><span> 100% adaptable a todos los dispositivos, integración con sistemas contables, ERP, tiendas en línea, etc., almacenamiento en la nube, con actualizaciones automáticas, Help desk, y soporte técnico.</span>
+								</div>
 							</div>
 						</div>
-					
 					</div>
-				
 				</div>
+			</div>
 			
 		</div>
-		
-		<div class="EmptyBox30"/>
-		
 	</div>
-	<!-- <div class="footer">
-		<span style="font-weight: bold;">Copyright 2020 vicaworks® | </span><span class="sistema">mako® | </span><i class="fa fa-facebook"><p:spacer width="5px"/></i><i class="fa fa-instagram"><p:spacer width="5px"/></i>
-		<div style="display:blok;height: 5px;"></div>
-		<a href="">soporte@vicaworks.com</a> | (+593) 09 8568 8861
-	</div> -->
 	
-    
-
-    <h:outputStylesheet name="css/primeflex.css" library="roma-layout" />
-    <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="roma-layout" />
+	
 </h:body>
 
 </html>
