@@ -10,7 +10,7 @@
 	<style type="text/css">
 		.establecimientoDT .ui-datatable-scrollable-body {
 			min-height: 30vh !important;
-			height: calc(100vh - 240px)!important;
+			height: calc(100vh - 210px)!important;
 		}
 		@media screen and (max-width: 40em){
 			.ui-fileupload-buttonbar .ui-button .ui-button-text {
@@ -18,38 +18,26 @@
  				padding: 0px !important;
 			}
 		}
-	</style>
-	
-	<div class="card card-w-title">
-		
-		<!-- <h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Establecimientos</h3> -->
-		<div class="EmptyBox10"/>
-		<div class="p-grid">
-			
-			<div class="p-col-6 p-md-2">
-				<p:commandButton value="CONSULTAR"
-										icon="fa fa-search"
-										action="#{establecimientoCtrl.refrescar()}"
-										styleClass="secondary-button Wid100 Fs10" update="@form" />
-			</div>
-			<div class="p-col-6 p-md-2">			
-				<p:commandButton value="NUEVO"
-				 icon="fa fa-plus" 
-				 styleClass="secondary-button Wid100 Fs10"
-				 action="#{establecimientoCtrl.nuevo()}" inline="true"
-				 />
-			</div>
-
-		</div>
-		
-	</div>	
+	</style>	
 	<!-- Mensajes -->
 	<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstablecimiento"
 		closable="true" >
 		<p:autoUpdate></p:autoUpdate>
 	</p:messages>
-	<div class="EmptyBox5"/>
-	<div class="card card-w-title">
+	<div class="card card-w-title mt-0">
+		
+		<div class="formgroup-inline mb-2">
+			<p:commandButton value="CONSULTAR"
+					icon="fa fa-search"
+					action="#{establecimientoCtrl.refrescar()}"
+					styleClass="mr-1 min-width-110 ui-button-outlined" update="@form"/>
+			
+			<p:commandButton value="NUEVO"
+					 icon="fa fa-plus" 
+					 styleClass="min-width-110"
+					 action="#{establecimientoCtrl.nuevo()}"
+					 />
+		</div>
 		
 		<p:dataTable var="estab"
 					value="#{establecimientoCtrl.establecimientoAllList}"
@@ -111,6 +99,6 @@
 		</p:dataTable>
 		
 	</div>
-    <div class="EmptyBox30"/>
+    <div class="EmptyBox20"/>
 
 </ui:composition>

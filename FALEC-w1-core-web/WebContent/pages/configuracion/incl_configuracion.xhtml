@@ -9,10 +9,8 @@
 	
 	<style type="text/css">
 		
-		.panel-configuracion .ui-accordion .ui-accordion-header.ui-state-hover, body .ui-accordion .ui-accordion-header.ui-tabs-outline {
+		/* .panel-configuracion .ui-accordion .ui-accordion-header.ui-state-hover, body .ui-accordion .ui-accordion-header.ui-tabs-outline {
 		  outline: 0 none;
-		  /* border: 1px solid #d8d8dc;
-		  background-color: #eaeaea; */
 		  border: 1px solid #5D6D7E;
 		  background-color: #fff;
 		  color: #252529;
@@ -30,7 +28,7 @@
 
 		.panel-configuracion .ui-accordion .ui-accordion-header {
 			margin-top: 5px;
-		}
+		} */
 		
 		.f-upload .ui-fileupload {
 			border: 1px solid #d8d8dc !important;
@@ -46,14 +44,14 @@
 		
 			 <p:accordionPanel id="TabConfEmpresa" widgetVar="basic" activeIndex="-1" style="margin:0px 10px !important;" >
 		            <p:tab title="Certificado de firma electrónica" id="tabFirma">
-		                <p class="p-m-0">
-		                    Registrar el certificado de firma electrónica, Certificado formato P12
-		                    <div class="EmptyBox10"/>
+		                
+		                    
 		                    <h:form id="frmCertificado">
 		                    	
-		                    	<div class="p-grid">
+		                    	<div class="grid">
 									
-									<div class="p-col-7 f-upload">
+									<div class="col-7 f-upload">
+				                    <span class="requerido">Registrar el certificado de firma electrónica, Certificado formato P12</span>
 										
 										
 						           		<p:fileUpload id="fulArchivoFirma"
@@ -65,7 +63,7 @@
 						           					  sizeLimit="25242880"
 													  invalidSizeMessage="#{msg['file.size']} 1MB" 
 						           					  uploadLabel="Cargar" 
-						           					  styleClass="Wid100"
+						           					  styleClass="w-full mt-1"
 						           					  allowTypes="/(\.|\/)(p12)$/"
 													  invalidFileMessage="SOLO FORMATOS [.p12]"
 													  required="true"
@@ -73,172 +71,144 @@
 								  		</p:fileUpload>
 									</div>
 									
-									<div class="p-col-12 p-md-7">
-										<h:outputText value="ARCHIVO FIRMA ELECTRÓNICA * " styleClass="cpoRequerido"/>
-										<div class="EmptyBox5"/>
-										<p:inputText value="#{confEmpresaCtrl.empresaSelected.nombrearchivo}" required="true" requiredMessage="REQUERIDO" readonly="true" id="intNameFileFirmaDigital" styleClass="Wid100"/>
+									<div class="col-12 md:col-7">
+										<h:outputText value="ARCHIVO FIRMA ELECTRÓNICA" styleClass="requerido"/>
+										<p:inputText value="#{confEmpresaCtrl.empresaSelected.nombrearchivo}" required="true" requiredMessage="REQUERIDO" readonly="true" id="intNameFileFirmaDigital" styleClass="w-full mt-1"/>
 										<h:outputText  />
 										<p:message for="intNameFileFirmaDigital" />											
 									</div>
 									
-									<div class="p-col-12 p-md-7">
-										<h:outputText value="FECHA DE EMISIÓN * " styleClass="cpoRequerido"/>
-										<div class="EmptyBox5"/>
+									<div class="col-12 md:col-7">
+										<h:outputText value="FECHA DE EMISIÓN" styleClass="requerido block mb-1"/>
 										<p:calendar id="calFechaEmision" value="#{confEmpresaCtrl.empresaSelected.fechaemision}"
 											pattern="dd/MM/yyyy"
 											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
 										</p:calendar>
 										<p:message for="calFechaEmision" />
 									</div>
 									
-									<div class="p-col-12 p-md-7">
-										<h:outputText value="FECHA DE EXPIRACIÓN * " styleClass="cpoRequerido"/>
-										<div class="EmptyBox5"/>
+									<div class="col-12 md:col-7">
+										<h:outputText value="FECHA DE EXPIRACIÓN" styleClass="requerido block mb-1"/>
 										<p:calendar id="calFechaCaducidad" value="#{confEmpresaCtrl.empresaSelected.fechaexpiracion}"
 											pattern="dd/MM/yyyy"
 											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
 										</p:calendar>
 										<p:message for="calFechaCaducidad" />
 									</div>
 									
-									<div class="p-col-12 p-md-7">
+									<div class="col-12 md:col-7">
 									
-										<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA *" styleClass="cpoRequerido"/>
-										<div class="EmptyBox5"/>
-					                    <p:inputText id="intclavefirma" value="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO">
+										<p:outputLabel value="CLAVE FIRMA ELECTRÓNICA" styleClass="requerido"/>
+					                    <p:inputText id="intclavefirma" value="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="w-full mt-1" required="true" requiredMessage="REQUERIDO">
 					                    </p:inputText> 					                    
 					                    <p:message for="intclavefirma" />
 										
 									</div>
 									
-									<div class="p-col-12">
-										<div class="EmptyBox10"/>
-										<p:commandButton id="cmdLimpiarFirma"
-											value="Limpiar" icon="fa fa-eraser" styleClass="secondary-button" update="@form" process="@this" style="margin-right:15px;width:100px;">
-											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.nombrearchivo}"/>
-											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.archivofirmaelectronica}"/>
-											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.fechaemision}"/>
-											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.fechaexpiracion}"/>
-											<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}"/>
-										</p:commandButton>				  		
-
-										
-										
-										<p:commandButton 
-												value="GUARDAR" icon="fa fa-floppy-o" 
-												action="#{confEmpresaCtrl.guardarArchivoFirma}" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
-											/>
-									
+									<div class="col-12">										
+										<div class="formgroup-inline my-2">										
+											<p:commandButton id="cmdLimpiarFirma"
+												value="Limpiar" icon="fa fa-eraser" styleClass="ui-button-outlined ui-button-secondary min-width-110 mr-1" update="@form" process="@this">
+												<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.nombrearchivo}"/>
+												<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.archivofirmaelectronica}"/>
+												<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.fechaemision}"/>
+												<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.fechaexpiracion}"/>
+												<f:setPropertyActionListener value="#{null}" target="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}"/>
+											</p:commandButton>										
+											<p:commandButton 
+													value="GUARDAR" icon="fa fa-floppy-o" 
+													action="#{confEmpresaCtrl.guardarArchivoFirma}" styleClass="min-width-110" update="@form"
+												/>
+										</div>									
 									</div>
-									
-		                    	
 		                    	</div>
 		                    	
 								<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCertificado"
 									closable="true" >
 									<p:autoUpdate></p:autoUpdate>
-								</p:messages>			                    	
-		                    	
+								</p:messages>
 		                    </h:form>
-		                </p>
 		            </p:tab>
 		            
 		            <p:tab title="Servidor de correo SMTP" >
-		                <p class="p-m-0">
-		                	<h:form id="frmSMTP">
-			                    Configura tu propio servidor de correo electrónico SMTP, por el cual se enviará todos los correso del sistema.
-			                    <div class="EmptyBox10"/>
+	                	<h:form id="frmSMTP">
+	                	    <span class="py-1 flex align-items-center">Configura tu propio servidor de correo electrónico SMTP, por el cual se enviará todos los correso del sistema.</span>
+	                	    <div class="flex flex-row ">
 			                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
-	                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.smtpDto.smtpPropio}">
+	                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.smtpDto.smtpPropio}" styleClass="flex align-items-center mr-2">
 	                                <p:ajax listener="#{confEmpresaCtrl.cambiarSmtp}" process="@parent" update="@form"/>
 	                            </p:selectBooleanButton>
-	                                
-			                    <p:spacer width="20px"/>
-			                    Utilizar mi propio servidor de correos
-			                    <div class="EmptyBox10"/>
-			                    <p:outputPanel rendered="#{confEmpresaCtrl.smtpDto.smtpPropio}">
-				                    <div class="p-grid">
-				                    	<div class="p-col-12 p-md-7">
-											<h:outputText value="SERVIDOR SMTP * " styleClass="cpoRequerido"/>
-											<div class="EmptyBox5"/>
-											<p:inputText id="intServidopSmtp" value="#{confEmpresaCtrl.smtpDto.servidor}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
-											</p:inputText>
-											<p:message for="intServidopSmtp" />
-										</div>
-										
-										<div class="p-col-12 p-md-7">
-											<h:outputText value="PUERTO * " styleClass="cpoRequerido"/>
-											<div class="EmptyBox5"/>
-											<p:inputText id="intPuertoSmtp" value="#{confEmpresaCtrl.smtpDto.puerto}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="3" validatorMessage="SOLO NÚMEROS">
-												<f:validateRegex pattern="[0-9]+"></f:validateRegex>
-											</p:inputText>
-											<p:message for="intPuertoSmtp" />
-										</div>
-										
-										<div class="p-col-12 p-md-7">
-											<h:outputText value="USUARIO / EMAIl * " styleClass="cpoRequerido"/>
-											<div class="EmptyBox5"/>
-											<p:inputText id="intUsuarioSmtp" value="#{confEmpresaCtrl.smtpDto.usuario}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
-											</p:inputText>
-											<p:message for="intUsuarioSmtp" />
-										</div>
-										
-										<div class="p-col-12 p-md-7">
-											<h:outputText value="CONTRASEÑA * " styleClass="cpoRequerido"/>
-											<div class="EmptyBox5"/>
-											<p:inputText id="intClaveSmtp" value="#{confEmpresaCtrl.smtpDto.clave}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
-											</p:inputText>
-											<p:message for="intClaveSmtp" />
-										</div>
-										
-										<div class="p-col-12 p-md-7">
-											<h:outputText value="NOMBRE DEL REMITENTE " styleClass="cpoRequerido"/>
-											<div class="EmptyBox5"/>
-											<p:inputText id="intNomRemitenteSmtp" value="#{confEmpresaCtrl.smtpDto.nombreRemitente}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
-											</p:inputText>
-											<p:message for="intNomRemitenteSmtp"/>
-										</div>
-										
-										<!-- <div class="p-col-12 p-md-7">
-											<h:outputText value="EMAIL DEL REMITENTE * " styleClass="cpoRequerido"/>
-											<div class="EmptyBox5"/>
-											<p:inputText id="intEmaRemitenteSmtp" value="#{null}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100">
-											</p:inputText>
-											<p:message for="intEmaRemitenteSmtp"/>
-										</div> -->
-										
-										<div class="p-col-12 p-md-7">
-											<h:outputText value="USAR SSL" styleClass="cpoRequerido" style="width:120px;display:inline-block;"/>
-											<p:spacer width="20px"/>
-											<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.ssl}" style="width:6rem"/>
-										</div>
-										
-										<div class="p-col-12 p-md-7">
-											<h:outputText value="USAR AUTH" styleClass="cpoRequerido"  style="width:120px;display:inline-block;"/>
-											<p:spacer width="20px"/>
-											<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.auth}" style="width:6rem"/>
-										</div>
-										
-										<div class="p-col-12 p-md-7">
-											<h:outputText value="USAR START TLS" styleClass="cpoRequerido"  style="width:120px;display:inline-block;"/>
-											<p:spacer width="20px"/>
-											<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.tls}" style="width:6rem"/>
-										</div>
-										
-										<div class="p-col-12 p-md-7">
-											<div class="EmptyBox20"/>
+		                		<span class="py-1 flex align-items-center">Utilizar mi propio servidor de correos.</span>		                		
+								
+							</div>
+	                	    
+		                    <p:outputPanel rendered="#{confEmpresaCtrl.smtpDto.smtpPropio}">
+			                    <div class="grid mt-1">
+			                    	<div class="col-12 md:col-7">
+										<h:outputText value="SERVIDOR SMTP" styleClass="requerido"/>
+										<p:inputText id="intServidopSmtp" value="#{confEmpresaCtrl.smtpDto.servidor}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										</p:inputText>
+										<p:message for="intServidopSmtp" />
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<h:outputText value="PUERTO" styleClass="requerido"/>
+										<p:inputText id="intPuertoSmtp" value="#{confEmpresaCtrl.smtpDto.puerto}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="3" validatorMessage="SOLO NÚMEROS">
+											<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+										</p:inputText>
+										<p:message for="intPuertoSmtp" />
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<h:outputText value="USUARIO / EMAIl" styleClass="requerido"/>
+										<p:inputText id="intUsuarioSmtp" value="#{confEmpresaCtrl.smtpDto.usuario}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										</p:inputText>
+										<p:message for="intUsuarioSmtp" />
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<h:outputText value="CONTRASEÑA" styleClass="requerido"/>
+										<p:inputText id="intClaveSmtp" value="#{confEmpresaCtrl.smtpDto.clave}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										</p:inputText>
+										<p:message for="intClaveSmtp" />
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<h:outputText value="NOMBRE DEL REMITENTE " styleClass="requerido"/>
+										<p:inputText id="intNomRemitenteSmtp" value="#{confEmpresaCtrl.smtpDto.nombreRemitente}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										</p:inputText>
+										<p:message for="intNomRemitenteSmtp"/>
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<h:outputText value="USAR SSL" styleClass="requerido" style="width:120px;display:inline-block;"/>
+										<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.ssl}" style="width:6rem"/>
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<h:outputText value="USAR AUTH" styleClass="requerido"  style="width:120px;display:inline-block;"/>
+										<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.auth}" style="width:6rem"/>
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<h:outputText value="USAR START TLS" styleClass="requerido"  style="width:120px;display:inline-block;"/>
+										<p:selectBooleanCheckbox value="#{confEmpresaCtrl.smtpDto.tls}" style="width:6rem"/>
+									</div>
+									
+									<div class="col-12 md:col-7">
+										<div class="formgroup-inline my-2">
 											<p:commandButton id="cmdGuardar"
 													value="GUARDAR" icon="fa fa-floppy-o" 
-													action="#{confEmpresaCtrl.guardarSmtp}" styleClass="secondary-button" update="@form"
+													action="#{confEmpresaCtrl.guardarSmtp}" styleClass="min-width-110" update="@form"
 											/>
 										</div>
-										
-				                    </div>
-			                    </p:outputPanel>
-		                	</h:form>
-		                </p>
+									</div>
+									
+			                    </div>
+		                    </p:outputPanel>
+	                	</h:form>
 		            </p:tab>
 		            
 		            <p:tab title="Cotización">
@@ -247,52 +217,43 @@
 		                	<h:form id="frmConfCotizacion">
 		                		
 		                			
-	                			<div class="ui-fluid p-formgrid p-grid ">
+	                			<div class="formgrid grid px-1">
 	                				
-	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
-	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
-			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionProductoDetalle}">
-			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
-			                            </p:selectBooleanButton>
-	                				</div>
-	                				<div class="p-field  p-col-10">
-	                					<p><strong>Descripción del Producto: </strong> En el detalle de la cotización, puede desplegar la descripción del producto, 
+	                				<div class="field col-12">
+	                					<p class="m-0 text-justify"><strong class="text-blue-600">Descripción del Producto: </strong> En el detalle de la cotización, puede desplegar la descripción del producto, 
 	                					de esta manera tanto en la pantalla como en la impresión de la cotización se despliega el detalle del producto. </p>
-	                				</div>
-	                				
-	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
 	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
-			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionUsuarioVisualizacion}">
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionProductoDetalle}" styleClass="my-1">
 			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
 			                            </p:selectBooleanButton>
 	                				</div>
-	                				<div class="p-field  p-col-10">
-	                					<p><strong>Visualizar Cotizaciones solo del vendedor : </strong> El Vendedor solo puede visualizar las cotizaciones creadas por su usuario, 
+	                				
+	                				
+	                				<div class="field  col-12">
+	                					<p class="m-0 text-justify"><strong class="text-blue-600">Visualizar Cotizaciones solo del vendedor : </strong> El Vendedor solo puede visualizar las cotizaciones creadas por su usuario, 
 	                					pero el usuario con perfil de Gerencia puede acceder a todas las cotizaciones. </p>
-	                				</div>
-	                				
-	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
 	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
-			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionAutorizacion}">
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionUsuarioVisualizacion}" styleClass="my-1">
 			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
 			                            </p:selectBooleanButton>
 	                				</div>
-	                				<div class="p-field  p-col-10">
-	                					<p><strong>Autorización: </strong> AL crear una cotización, por defecto se coloca en estado de AUTORIZACIÓN, 
+	                				
+	                				<div class="field col-12">
+	                					<p class="m-0 text-justify"><strong class="text-blue-600">Autorización: </strong> AL crear una cotización, por defecto se coloca en estado de AUTORIZACIÓN, 
 	                							y solo los usuarios con este perfil pueden accesar a la cotización y cambiar de estado, 
 	                							al estar en este estado no se puede imprimir, archivar, asignar tareas, y enviar email, hasta que la cotización esté autorizada. </p>
-	                				</div>
-	                			
-	                			
-	                				<div class="p-field p-col-2 p-as-center" style="text-align: center;">
 	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
-			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionEtiquetas}">
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionAutorizacion}" styleClass="my-1">
 			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
 			                            </p:selectBooleanButton>
 	                				</div>
-	                				<div class="p-field  p-col-10">
-	                					<p><strong>Etiquetas predefinidas: </strong> Se puede establecer etiquetas predefinidas que el usuario vendedor no puede editar o crear, 
+	                				<div class="field col-12">
+	                					<p class="m-0 text-justify"><strong class="text-blue-600">Etiquetas predefinidas: </strong> Se puede establecer etiquetas predefinidas que el usuario vendedor no puede editar o crear, 
 	                					si no solamente utilizar las definidas en esta configuración para las opciones; Archivar cotización, Tarea Cotización. </p>
+	                					<p:selectBooleanButton onLabel="Sí" offLabel="No"
+			                                onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.cotizacionEtiquetas}" styleClass="my-1">
+			                                <p:ajax listener="#{confEmpresaCtrl.guardarParametrosCotizacion}" update="@form"/>
+			                            </p:selectBooleanButton>
 	                				</div>
 	                				
 	                			</div>
@@ -303,25 +264,25 @@
 									<p:autoUpdate></p:autoUpdate>
 								</p:messages>
 	                			
-	                			<div class="p-field p-grid">
+	                			<div class="field grid">
 	                				
-	                				<div class="p-col-12 p-md-6">
+	                				<div class="col-12 md:col-6">
 	                					
 	                					<p:panel header="ETIQUETAS TAREAS">
-	                						<i class="fa fa-ellipsis-v p-mr-2"></i>
-	                						<p:commandLink action="#{etiquetaCtrl.agregarEtiqueta}" style="color:#252529 !important;" value="Agregar">
+	                						<i class="fa fa-ellipsis-v mr-2"></i>
+	                						<p:commandLink action="#{etiquetaCtrl.agregarEtiqueta}" style="color:#252529 !important;" styleClass="Fs12">
+	                							<span>Agregar</span>
 	                							<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
 												<f:setPropertyActionListener value="TAREA_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
 												<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
 												<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
 	                						</p:commandLink>
-	                						<div class="EmptyBox5"/>
-	                						<p:separator/>
-	                						<div class="EmptyBox5"/>
-	                						<div class="p-grid">
+	                						
+	                						<p:separator styleClass="py-1"/>
+	                						<div class="grid">
 		                						<p:repeat var="t1" value="#{confEmpresaCtrl.etiqueta1List}">
-													<div class="p-col-2 TexAlCenter">
-														<p:commandLink style="color:#252529 !important;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta">
+													<div class="col-2 TexAlCenter">
+														<p:commandLink style="color:#252529 !important;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" styleClass="Fs14 mr-1">
 															<i class="fa fa-edit p-mr-1"></i>
 															<f:setPropertyActionListener value="#{t1}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
 															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
@@ -329,7 +290,7 @@
 															<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
 															<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
 														</p:commandLink>
-														<p:commandLink style="color:#252529 !important;" action="#{etiquetaCtrl.eliminar}" update=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion">
+														<p:commandLink style="color:#252529 !important;" action="#{etiquetaCtrl.eliminar}" update=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" styleClass="Fs14">
 															<i class="fa fa-trash-o"></i>
 															<f:setPropertyActionListener value="#{t1}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
 															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
@@ -337,7 +298,7 @@
 															<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 														</p:commandLink>
 													</div>
-													<div class="p-col-10">
+													<div class="col-10">
 														<h:outputText value="#{t1.etiqueta}" />
 													</div>		                						
 		                						</p:repeat>
@@ -348,31 +309,31 @@
 	                				
 	                				</div>
 	                				
-	                				<div class="p-col-12 p-md-6">
+	                				<div class="col-12 md:col-6">
 	                					
 	                					<p:panel header="ETIQUETAS ARCHIVAR COTIZACIÓN">
-	                						<i class="fa fa-ellipsis-v p-mr-2"></i>
-	                						<p:commandLink action="#{etiquetaCtrl.agregarEtiqueta}" style="color:#252529 !important;" value="Agregar">
+	                						<i class="fa fa-ellipsis-v mr-2"></i>
+	                						<p:commandLink action="#{etiquetaCtrl.agregarEtiqueta}" style="color:#252529 !important;" value="Agregar" styleClass="Fs12">
 	                							<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
 												<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
 												<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
 												<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
 	                						</p:commandLink>
-	                						<div class="EmptyBox5"/>
-	                						<p:separator/>
-	                						<div class="EmptyBox5"/>
-	                						<div class="p-grid">
+	                						
+	                						<p:separator styleClass="py-1"/>
+	                						
+	                						<div class="grid">
 		                						<p:repeat var="t2" value="#{confEmpresaCtrl.etiqueta2List}">
-													<div class="p-col-2 TexAlCenter">
-														<p:commandLink style="color:#252529 !important;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta">
-															<i class="fa fa-edit p-mr-1"></i>
+													<div class="col-2 TexAlCenter">
+														<p:commandLink style="color:#252529 !important;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" styleClass="Fs14">
+															<i class="fa fa-edit mr-1"></i>
 															<f:setPropertyActionListener value="#{t2}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
 															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
 															<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
 															<f:setPropertyActionListener value="frmConfCotizacion" target="#{etiquetaCtrl.callForm}"/>
 															<f:setPropertyActionListener value=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" target="#{etiquetaCtrl.updateView}"/>
 														</p:commandLink>
-														<p:commandLink style="color:#252529 !important;" action="#{etiquetaCtrl.eliminar}" update=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion">
+														<p:commandLink style="color:#252529 !important;" action="#{etiquetaCtrl.eliminar}" update=":fsvConfiguracion:TabConfEmpresa:frmConfCotizacion" styleClass="Fs14">
 															<i class="fa fa-trash-o"></i>
 															<f:setPropertyActionListener value="#{t2}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
 															<f:setPropertyActionListener value="CONFIGURACION" target="#{etiquetaCtrl.callModule}"/>
@@ -380,7 +341,7 @@
 															<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 														</p:commandLink>
 													</div>
-													<div class="p-col-10">
+													<div class="col-10">
 														<h:outputText value="#{t2.etiqueta}" />
 													</div>		                						
 		                						</p:repeat>
@@ -400,47 +361,45 @@
 		            
 		            
 		            <p:tab title="Publicidad correo electrónico de facturas" >
-		                <p class="p-m-0">
+		                <p class="my-2 text-justify">
 		                    Agrega una publicidad de tu negocio, en las Facturas, la imágen puede ser en formato JPG, PNG, 
 		                    con una resolución de 940x120 pixceles y tamaño máximo de 1MB, 
 		                    con esta opción la publicidad sale en todas las facturas de las sucursales, 
 		                    para configurar a una sucursal específica debe seleccionar el establecimiento, y configurar la publicidad.
-		                    <div class="EmptyBox10"/>
-		                    <p:linkButton value="Seleccionar" style="margin-right:20px;" href="#" icon="fa fa-image" styleClass="secondary-button"/>
 		                </p>
+	                    <p:linkButton value="Seleccionar" style="margin-right:20px;" href="#" icon="fa fa-image" styleClass="ui-button-outlined min-width-110 mb-1"/>
 		            </p:tab>
 		            
 		            <p:tab title="Validación de XML" >
-		                <p class="p-m-0">
+		                <p class="my-2 text-justify">
 		                    Mediante esta aplicación se puede validar el XML de los comprobantes electrónicos, aplicando los archivos XSD de validación del SRI.
-		                    <div class="EmptyBox10"/>
-		                    <p:linkButton value="Validar XML" style="margin-right:20px;" href="./docElectronico.jsf" target="_blank" icon="fa fa-check" styleClass="secondary-button"/>
 		                </p>
+		                <p:linkButton value="Validar XML" style="margin-right:20px;" href="./docElectronico.jsf" target="_blank" icon="fa fa-check" styleClass="ui-button-outlined min-width-110 mb-2"/>
 		            </p:tab>
 		            
 		            <p:tab title="Catálogos de impuestos" >
-		                <p class="p-m-0">
+		                <p class="my-2 text-justify">
 		                    El sistema cuenta con un catálogo de impuestos tanto del I.C.E. como el I.V.A., se puede personalizar los nombres, valores, y actualización de los mismos.
-		                    <div class="EmptyBox10"/>
-		                    <p:linkButton value="I.C.E." style="margin-right:15px;width:80px;" href="./ice.jsf" target="_blank" icon="fa fa-star-o" styleClass="secondary-button"/>
-		                    
-		                    <p:linkButton value="I.V.A." style="margin-right:15px;width:80px;" href="./iva.jsf" target="_blank" icon="fa fa-star-o" styleClass="secondary-button"/>
 		                </p>
+		                <div class="flex flex-row mb-2">
+		                    <p:linkButton value="I.C.E." style="margin-right:15px;width:80px;" href="./ice.jsf" target="_blank" icon="fa fa-star-o" styleClass="ui-button-outlined min-width-110 mr-1"/>		                    
+		                    <p:linkButton value="I.V.A." style="margin-right:15px;width:80px;" href="./iva.jsf" target="_blank" icon="fa fa-star-o" styleClass="ui-button-outlined min-width-110"/>
+		                </div>
 		            </p:tab>
 		     </p:accordionPanel>
 		     
-		     <div class="EmptyBox5"/>
-		     
-		     <div class="card card-w-title" style="margin:0px 10px !important;">
+		     <div class="card card-w-title my-1" style="margin-right:10px !important;margin-left:10px !important;">
 		     	<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Configuración por Establecimiento</h3>
-		     	<div class="p-grid">
-		     		
-		     		<div class="p-col-12 p-md-6">
+		     	<div class="grid">
+		     		<div class="col-12 text-justify">
+		     			Puede configurar opciones para cada uno de los diferentes estableciemintos, para lo cual debe seleccionar el establecimiento, y la opción a configurar.
+		     		</div>
+		     		<div class="col-12">
 		     			<h:form>
 			     			<p:selectOneMenu id="somEstablecimientoConf"
 								value="#{confEmpresaCtrl.establecimientoMain}"
 								converter="omnifaces.SelectItemsConverter"
-								styleClass="Wid100">
+								styleClass="w-full">
 								
 								<f:selectItems value="#{confEmpresaCtrl.establecimientoMainList}" var="st"
 									itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
@@ -451,157 +410,147 @@
 		     			</h:form>
 		     		</div>
 		     		
-		     		<div class="p-col-12 p-md-6">
-		     			Puede configurar opciones para cada uno de los diferentes estableciemintos, para lo cual debe seleccionar el establecimiento, y la opción a configurar.
-		     		</div>
 		     	</div>
 		     </div>
-		     <div class="EmptyBox5"/>
 		     <p:accordionPanel id="TabConfEstablecimiento" widgetVar="basic2" activeIndex="-1" style="margin:0px 10px !important;">
 	            <p:tab title="Correco Electrónico Pruebas" id="tabEmailTest">
-	                <p class="p-m-0">
+	                <p class="my-1 text-justify">
 	                	Configurar el correo electrónico para pruebas, con esta opción todos los correos se enviarán a los emails configurados para pruebas.
-	                	<h:form id="frmEstEmailTest">
-	                		
-	                		<div class="EmptyBox10"/>
+	                </p>
+                	<h:form id="frmEstEmailTest">
+                		
+                		<div class="flex flex-wrap my-1">
 		                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
 	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.confEstablecimientoDto.emailTesting}">
 	                               <p:ajax listener="#{confEmpresaCtrl.cambiarEmailTesting}" process="@parent" update="@form"/>
 	                        </p:selectBooleanButton>
-	                               
-		                    <p:spacer width="20px"/>
-		                    Utilizar correo electrónico de pruebas.
-		                    <p:outputPanel rendered="#{confEmpresaCtrl.confEstablecimientoDto.emailTesting}">
-		                    	<div class="EmptyBox10"/>
-			                    <div class="p-grid">
-			                    	<div class="p-col-12 p-md-7">
-										<h:outputText value="CORREO ELECTRÓNICOS [varios correos separar por comas] * " styleClass="cpoRequerido"/>
-										<div class="EmptyBox5"/>
-										<p:inputText id="intEmailTest" value="#{confEmpresaCtrl.confEstablecimientoDto.emailsEnvioTest}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
-											<f:validator validatorId="emailSelectItemValidator"/>
-										</p:inputText>
-										<p:message for="intEmailTest" />
-									</div>
-									<div class="p-col-12">
-										<div class="EmptyBox10"/>
-										
-										<p:commandButton 
-												value="GUARDAR" icon="fa fa-floppy-o" 
-												action="#{confEmpresaCtrl.guardarEmailTesting}" styleClass="secondary-button" update="@form" process="" style="margin-right:15px;width:100px;"
-											/>
-									
-									</div>
-								</div>
-		                		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstEmailTest"
-									closable="true" >
-									<p:autoUpdate></p:autoUpdate>
-								</p:messages>	
-							</p:outputPanel>
-	                	</h:form>
-	                </p>
-	            </p:tab>
-	            
-	            <p:tab title="Plantillas Comprobantes Electrónicos" id="tabPlantilla">
-	                <p class="p-m-0">
-	                	Configurar una plantilla para cada unos de los comprobantes electrónicos, en caso de que no se requiera sustitur la plantilla se debe colocar el [-], y el sistema utiliza la plantilla por defecto para ese comprobante electrónico.
-	                	<h:form id="frmPlantilla">
-		                	<div class="EmptyBox10"/>
-		                    <div class="p-grid">
-		                    	<div class="p-col-12 p-md-7">
-		                    		<h:outputText value="FACTURA * " styleClass="cpoRequerido"/>
-									<div class="EmptyBox5"/>
-									<p:inputText id="intplFactura" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaFactura}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
-									</p:inputText>
-									<p:message for="intplFactura" />
-		                    	</div>
-		                    	<div class="p-col-12 p-md-7">
-		                    		<h:outputText value="RETENCIÓN * " styleClass="cpoRequerido"/>
-									<div class="EmptyBox5"/>
-									<p:inputText id="intplRetencion" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaRetencion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
-									</p:inputText>
-									<p:message for="intplRetencion" />
-		                    	</div>
-		                    	<div class="p-col-12 p-md-7">
-		                    		<h:outputText value="NOTA DE CRÉDITO * " styleClass="cpoRequerido"/>
-									<div class="EmptyBox5"/>
-									<p:inputText id="intplNcredito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaCredito}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
-									</p:inputText>
-									<p:message for="intplNcredito" />
-		                    	</div>
-		                    	<div class="p-col-12 p-md-7">
-		                    		<h:outputText value="NOTA DE DÉBITO * " styleClass="cpoRequerido"/>
-									<div class="EmptyBox5"/>
-									<p:inputText id="intplNdebito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaDebito}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
-									</p:inputText>
-									<p:message for="intplNdebito" />
-		                    	</div>
-		                    	<div class="p-col-12 p-md-7">
-		                    		<h:outputText value="GUÍA DE REMISIÓN * " styleClass="cpoRequerido"/>
-									<div class="EmptyBox5"/>
-									<p:inputText id="intplGuiaRem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaGuiaRemision}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
-									</p:inputText>
-									<p:message for="intplGuiaRem" />
-		                    	</div>
-		                    	
-		                    	<div class="p-col-12 p-md-7">
-		                    		<h:outputText value="LIQUIDACIÓN DE COMPRA * " styleClass="cpoRequerido"/>
-									<div class="EmptyBox5"/>
-									<p:inputText id="intplliqCompra" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaLiqCompra}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500">
-									</p:inputText>
-									<p:message for="intplliqCompra" />
-		                    	</div>
-		                    	<div class="p-col-12">
-									<div class="EmptyBox10"/>
+	                        <span class="flex align-items-center pl-1">Utilizar correo electrónico de pruebas.</span>		                    
+                		</div>       
+	                    
+	                    <p:outputPanel rendered="#{confEmpresaCtrl.confEstablecimientoDto.emailTesting}">
+	                    	
+	                    	<div class="field">
+								<h:outputText value="CORREO ELECTRÓNICO" styleClass="requerido"/>
+								<p:inputText id="intEmailTest" value="#{confEmpresaCtrl.confEstablecimientoDto.emailsEnvioTest}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
+									<f:validator validatorId="emailSelectItemValidator"/>
+								</p:inputText>
+								<small>Varios correos separar por comas.</small>
+								<p:message for="intEmailTest" />
+	                    	</div>
+	                    	
+	                    	
+		                    <div class="grid py-2">		                    	
+								<div class="col-12">
 									
 									<p:commandButton 
 											value="GUARDAR" icon="fa fa-floppy-o" 
-											disabled="#{not confEmpresaCtrl.confEstablecimientoDto.permisoModificacion}"
-											action="#{confEmpresaCtrl.guardarPlantillaComprobanteElectronico()}" styleClass="secondary-button" update="@form" style="margin-right:15px;width:100px;"
+											action="#{confEmpresaCtrl.guardarEmailTesting}" styleClass="ui-button-outlined min-width-110" update="@form" process="" style="margin-right:15px;width:100px;"
 										/>
 								
 								</div>
+							</div>
+	                		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstEmailTest"
+								closable="true" >
+								<p:autoUpdate></p:autoUpdate>
+							</p:messages>	
+						</p:outputPanel>
+                	</h:form>
+	            </p:tab>
+	            
+	            <p:tab title="Plantillas Comprobantes Electrónicos" id="tabPlantilla">
+	                <p class="my-1 text-justify">
+	                	Configurar una plantilla para cada unos de los comprobantes electrónicos, en caso de que no se requiera sustitur la plantilla se debe colocar el [-], y el sistema utiliza la plantilla por defecto para ese comprobante electrónico.
+	                </p>
+	                	<h:form id="frmPlantilla">
+	                		
+	                		<div class="field">	                			
+	                    		<h:outputText value="FACTURA" styleClass="requerido"/>
+								<p:inputText id="intplFactura" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaFactura}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+								</p:inputText>
+								<p:message for="intplFactura" />
+	                		</div>
+	                		
+	                		<div class="field">	                		
+	                    		<h:outputText value="RETENCIÓN" styleClass="requerido"/>
+								<p:inputText id="intplRetencion" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaRetencion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+								</p:inputText>
+								<p:message for="intplRetencion" />
+	                		</div>
+	                	
+	                		<div class="field">
+	                			<h:outputText value="NOTA DE CRÉDITO" styleClass="requerido"/>
+								<p:inputText id="intplNcredito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaCredito}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+								</p:inputText>
+								<p:message for="intplNcredito" />
+	                		</div>
+	                		<div class="field">
+	                    		<h:outputText value="NOTA DE DÉBITO" styleClass="requerido"/>
+								<p:inputText id="intplNdebito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaDebito}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+								</p:inputText>
+								<p:message for="intplNdebito" />
+	                		</div>
+	                		<div class="field">
+	                    		<h:outputText value="GUÍA DE REMISIÓN" styleClass="requerido"/>
+								<p:inputText id="intplGuiaRem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaGuiaRemision}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+								</p:inputText>
+								<p:message for="intplGuiaRem" />
+	                			
+	                		</div>
+	                		<div class="field">
+	                    		<h:outputText value="LIQUIDACIÓN DE COMPRA" styleClass="requerido"/>
+								<p:inputText id="intplliqCompra" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaLiqCompra}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+								</p:inputText>
+								<p:message for="intplliqCompra" />
+	                		</div>
+	                		
+	                		<div class="flex my-3">									
+								<p:commandButton 
+										value="GUARDAR" icon="fa fa-floppy-o" 
+										disabled="#{not confEmpresaCtrl.confEstablecimientoDto.permisoModificacion}"
+										action="#{confEmpresaCtrl.guardarPlantillaComprobanteElectronico()}" styleClass="ui-button-outlined min-width-110" update="@form" style="margin-right:15px;width:100px;"
+									/>
 		                    </div>
 		                    <p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmPlantilla"
 								closable="true" >
 								<p:autoUpdate></p:autoUpdate>
 							</p:messages>
 	                	</h:form>
-	                </p>
                 </p:tab>
                 
                  <p:tab title="Plantilla Correco Electrónico" id="tabEmailPl">
-	                <p class="p-m-0">
+	                <p class="my-1 text-justify">
 	                	Configurar la plantilla del contedido del Email de los comprobantes electrónicos.
+	                </p>
 	                	<h:form id="frmEstEmailpl">
 	                		
-	                		<div class="EmptyBox10"/>
-		                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
-	                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmailEstablecimiento}">
-	                               <p:ajax listener="#{confEmpresaCtrl.cambiarPlantillaEmail}" process="@parent" update="@form"/>
-	                        </p:selectBooleanButton>
-	                               
-		                    <p:spacer width="20px"/>
-		                    Establecer una plantilla personalizada.
+	                		<div class="flex flex-wrap">
+			                    <p:selectBooleanButton onLabel="Sí" offLabel="No"
+		                               onIcon="fa fa-check" offIcon="fa fa-times" style="width:6rem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmailEstablecimiento}">
+		                               <p:ajax listener="#{confEmpresaCtrl.cambiarPlantillaEmail}" process="@parent" update="@form"/>
+		                        </p:selectBooleanButton>
+		                        <span class="ml-1 flex align-items-center">Establecer una plantilla personalizada.</span>
+			                    
+	                			
+	                		</div>
+	                		
+	                		
 		                    <p:outputPanel rendered="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmailEstablecimiento}">
-		                    	<div class="EmptyBox10"/>
-			                    <div class="p-grid">
-			                    	<div class="p-col-12 p-md-7">
-										<h:outputText value="PLANTILLA CONTENIDO EMAIL COMPROBANTE ELECTRÓNICO * " styleClass="cpoRequerido"/>
-										<div class="EmptyBox5"/>
-										<p:inputText id="intEmailPl" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmail}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
-										</p:inputText>
-										<p:message for="intEmailPl" />
-									</div>
-									<div class="p-col-12">
-										<div class="EmptyBox10"/>
+		                    	
+		                    	<div class="field my-1">
+									<h:outputText value="PLANTILLA CONTENIDO EMAIL COMPROBANTE ELECTRÓNICO" styleClass="requerido"/>
+									<p:inputText id="intEmailPl" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmail}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+									</p:inputText>
+									<small>Especificar únicamente el nombre de la plantilla.</small>
+									<p:message for="intEmailPl" />		                    		
+		                    	</div>
+		                    	
+			                    <div class="flex my-1">
 										
-										<p:commandButton 
-												value="GUARDAR" icon="fa fa-floppy-o"
-												disabled="#{not confEmpresaCtrl.confEstablecimientoDto.permisoModificacion}" 
-												action="#{confEmpresaCtrl.guardarEmailPlantilla()}" styleClass="secondary-button" update="@form" style="margin-right:15px;width:100px;"
-											/>
-									
-									</div>
+									<p:commandButton 
+											value="GUARDAR" icon="fa fa-floppy-o"
+											disabled="#{not confEmpresaCtrl.confEstablecimientoDto.permisoModificacion}" 
+											action="#{confEmpresaCtrl.guardarEmailPlantilla()}" styleClass="ui-button-outlined min-width-110" update="@form" 
+										/>
 								</div>
 		                		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstEmailpl"
 									closable="true" >
@@ -609,7 +558,6 @@
 								</p:messages>	
 							</p:outputPanel>
 	                	</h:form>
-	                </p>
 	            </p:tab>
 	            
             </p:accordionPanel>

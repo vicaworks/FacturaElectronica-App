@@ -11,7 +11,7 @@
 		
 		.usuariosDT .ui-datatable-scrollable-body{
 			min-height: 30vh !important;
-			height: calc(100vh - 270px)!important;
+			height: calc(100vh - 240px)!important;
 		}
 				
 	</style>
@@ -20,49 +20,43 @@
 		closable="true" >
 		<p:autoUpdate></p:autoUpdate>
 	</p:messages>
-	<div class="card card-w-title" >
+	
+	<div class="card card-w-title">
 		
-		<div class="EmptyBox10"/>
-		<div class="p-grid">
-			
-			<div class="p-col-6 p-md-2">
-				<p:selectOneMenu id="somUsuario" value="#{usuarioCtrl.estadoRegBusqueda}" style="width:100%">
-	    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
-	    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-	    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
-	    		</p:selectOneMenu>
-			</div>
-			
-			<div class="p-col-6 p-md-2">
-				<p:commandButton id="cmdRefrecar"
-						value="CONSULTAR" icon="fa fa-search" 
-						action="#{usuarioCtrl.refrescar()}" styleClass="secondary-button Wid100" update="@form"
+		<div class="my-1">
+			<div class="formgroup-inline">
+    			<div class="field">
+					<p:selectOneMenu id="somUsuario" value="#{usuarioCtrl.estadoRegBusqueda}" style="min-width:110px!important;">
+		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
+		    		</p:selectOneMenu>
+		    	</div>
+		    	<div class="field">
+					<p:commandButton id="cmdRefrecar"
+							value="CONSULTAR" icon="fa fa-search" 
+							action="#{usuarioCtrl.refrescar()}" styleClass="ui-button-outlined min-width-110" update="@form"
+							/>
+				</div>
+				<div class="field">
+					<p:commandButton id="cmdNuevo"
+						value="NUEVO" icon="fa fa-plus" styleClass="min-width-110" 
+						action="#{usuarioCtrl.nuevo()}" inline="true" 
 						/>
-			</div>
-			<div class="p-col-6 p-md-2">			
-				<p:commandButton id="cmdNuevo"
-					value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid100" 
-					action="#{usuarioCtrl.nuevo()}" inline="true" 
-					/>
-			</div>
-			
-			<div class="p-col-6 p-md-2">
-				<p:commandButton  id="cmdExcel" 
-					title="EXPORTAR"
-					icon="fa fa-file-excel-o"
-					ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-					value="REPORTE"
-					styleClass="secondary-button Wid100">
-					<p:fileDownload value="#{usuarioCtrl.fileUsuarios}"/>
-				</p:commandButton>
-			</div>
-
+				</div>
+				<div class="field">
+					<p:commandButton  id="cmdExcel" 
+						title="EXPORTAR"
+						icon="fa fa-download"
+						ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+						value="EXPORTAR"
+						styleClass="min-width-110 mr-1 ui-button-outlined">
+						<p:fileDownload value="#{usuarioCtrl.fileUsuarios}"/>
+					</p:commandButton>
+    			</div>
+    		</div>
 		</div>
 		
-	</div>	
-	<div class="EmptyBox5"/>
-	<div class="card card-w-title">
-	
 		<p:dataTable id="usuariosDT" var="u"
 			value="#{usuarioCtrl.usuarioList}" scrollable="true"
 			emptyMessage="#{msg['mensaje.noexistenDatos']}"
@@ -105,7 +99,7 @@
 			</p:column>
 
 			<p:column headerText="#{msg['label.identificacion']}"
-				style="width:40px;" filterBy="#{u.identificacion}" filterMatchMode="contains">
+				style="width:80px;" filterBy="#{u.identificacion}" filterMatchMode="contains">
 				<h:outputText value="#{u.identificacion}" />
 			</p:column>
 

@@ -17,7 +17,6 @@
 		}	
 		
 		body .ui-fileupload .ui-fileupload-content {
-			/* displaynone; */
 			borde:rnone;
 			padding:0px;
 			border-top:none;
@@ -32,36 +31,24 @@
 			border: none!important;
 		}
 		
-		.titulo{
-			margin-left: 5px !important;
-		}
 	</style>
 	
 	<p:dialog header="Establecimiento" widgetVar="dlgEstable" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmEstable">
 			
-			<!-- OPCIONES -->
-			
-			
-			<div class="p-grid toolBarPopUp" >
+			<div class="formgroup-inline mb-1">
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
+				<p:commandButton id="cmdGuardar"
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{establecimientoCtrl.guardar()}" styleClass="mr-1 min-width-110" update="@form :fsvEstablecimiento:frmEstablecimiento"
+					ajax="true"
+					/>
 					
-					
-					<p:commandButton id="cmdGuardar"
-						value="GUARDAR" icon="fa fa-check" 
-						action="#{establecimientoCtrl.guardar()}" styleClass="MRight10" update="@form :fsvEstablecimiento:frmEstablecimiento"
-						ajax="true"
-						/>
-						
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgEstable').hide()" immediate="true"  
-						/>
-					
-				</div>
-				
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
+					onclick="PF('dlgEstable').hide()" immediate="true"  
+					/>
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstable"
@@ -69,211 +56,178 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<!--  wraper del formulario para responsive -->
-
-			<div class="form-ui Wid100 OvYScroll heightFrmEstablecimiento contenedorFormulario">
+			<div class="form-ui w-full OvYScroll heightFrmEstablecimiento contenedorFormulario">
 				
-				<div class="p-grid p-align-top" style="width: 99.5%!important;">
-					<div class="p-col-12 p-md-8">
-						<div class="Wid100 titulo">
+				<div class="grid align-content-start" style="width: 99.5%!important;">
+					<div class="col-12 md:col-8">
+					
+						<div class="w-full titulo">
 							<i class="fa fa-check-circle Fs16"></i> Datos Generales 
 						</div>
-						
-						<p:panelGrid id="grid" columns="1"
-							styleClass="ui-panelgrid-blank Wid100"
-							columnClasses="ui-g-12">
-		
-							<h:outputText value="ID:" />
-							<h:outputText
-								value="#{establecimientoCtrl.establecimientoSelected.idestablecimiento}" />
-		
-							<h:outputText value="#{msg['label.codigo']} * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intCodigoEst"
-									value="#{establecimientoCtrl.establecimientoSelected.codigoestablecimiento}"
-									styleClass="Wid100" maxlength="3" validatorMessage="SOLO NÚMEROS">
-									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
-								</p:inputText>
-								<p:message for="intCodigoEst" />
-							</h:panelGroup>
-		
-							<h:outputText value="NOMBRE COMERCIAL * "	styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intNombreComerEst"
-									value="#{establecimientoCtrl.establecimientoSelected.nombrecomercial}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="300" converter="omnifaces.ToUpperCaseConverter" />
-								<p:message for="intNombreComerEst" />
-							</h:panelGroup>
-							
-							<h:outputText value="#{msg['label.direccion']} * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intDirreccionEst"
-									value="#{establecimientoCtrl.establecimientoSelected.direccionestablecimiento}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="300" converter="omnifaces.ToUpperCaseConverter" />
-								<p:message for="intDirreccionEst" />
-							</h:panelGroup>
-		
-		
-							<h:outputText value="PUNTO DE #{msg['label.emision']} * "	styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intPuntoEmisionEst"
-									value="#{establecimientoCtrl.establecimientoSelected.puntoemision}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="3" validatorMessage="SOLO NÚMEROS">
-									<f:validateRegex pattern="[0-9]+"></f:validateRegex>
-								</p:inputText>
-								<p:message for="intPuntoEmisionEst" />
-							</h:panelGroup>
-		
-							<h:outputText value="#{msg['label.telefono']}* " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intTelefonoEst"
-									value="#{establecimientoCtrl.establecimientoSelected.telefono}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="20" validatorMessage="SOLO NÚMEROS">
-									<f:validateRegex pattern="[0-9]+"></f:validateRegex>
-								</p:inputText>
-								<p:message for="intTelefonoEst" />
-							</h:panelGroup>
-		
-							<h:outputText value="CORREO * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intCorreoEst"
-									value="#{establecimientoCtrl.establecimientoSelected.correo}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="50" validatorMessage="CORREO INCORRECTO" >
-									<f:validateRegex
-										pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"></f:validateRegex>
-								</p:inputText>
-								<p:message for="intCorreoEst" />
-							</h:panelGroup>
-		
-							<h:outputText value="MATRIZ * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:selectOneMenu id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}" required="true" requiredMessage="REQUERIDO">
-							            <f:selectItem itemLabel="Seleccione" itemValue="" />
-							            <f:selectItem itemLabel="SI" itemValue="S" />
-							            <f:selectItem itemLabel="NO" itemValue="N" />
-					         	</p:selectOneMenu>
-								<p:message for="intMatrizEst" style="margin:0px!important;"/>
-							</h:panelGroup>
-							
-							<h:outputText value="AMBIENTE * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:selectOneMenu id="intAmbienteEst" value="#{establecimientoCtrl.establecimientoSelected.ambiente}" required="true" requiredMessage="REQUERIDO">
-							            <f:selectItem itemLabel="Seleccione" itemValue="" />
-							            <f:selectItem itemLabel="Pruebas" itemValue="1" />
-							            <f:selectItem itemLabel="Producción" itemValue="2" />
-					         	</p:selectOneMenu>
-								<p:message for="intMatrizEst" />
-							</h:panelGroup>
-		
-						</p:panelGrid>
-						 		
-						<div class="EmptyBox5"/>
-						<div class="Wid100 titulo" style="margin-bottom: none!important;">
+					    
+					    <div class="field">
+							<h:outputText value="#{msg['label.codigo']} " styleClass="requerido" />
+							<p:inputText id="intCodigoEst"
+								value="#{establecimientoCtrl.establecimientoSelected.codigoestablecimiento}"
+								styleClass="w-full mt-1" maxlength="3" validatorMessage="SOLO NÚMEROS">
+								<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+							</p:inputText>
+							<p:message for="intCodigoEst" />
+					    </div>
+					    
+					    <div class="field">
+							<h:outputText value="NOMBRE COMERCIAL"	styleClass="requerido" />
+							<p:inputText id="intNombreComerEst"
+								value="#{establecimientoCtrl.establecimientoSelected.nombrecomercial}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="300" converter="omnifaces.ToUpperCaseConverter" />
+							<p:message for="intNombreComerEst" />
+					    </div>
+					    <div class="field">
+							<h:outputText value="#{msg['label.direccion']}" styleClass="requerido" />
+							<p:inputText id="intDirreccionEst"
+								value="#{establecimientoCtrl.establecimientoSelected.direccionestablecimiento}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="300" converter="omnifaces.ToUpperCaseConverter" />
+							<p:message for="intDirreccionEst" />	
+					    </div>
+					    <div class="field">
+							<h:outputText value="PUNTO DE #{msg['label.emision']}"	styleClass="requerido" />
+							<p:inputText id="intPuntoEmisionEst"
+								value="#{establecimientoCtrl.establecimientoSelected.puntoemision}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="3" validatorMessage="SOLO NÚMEROS">
+								<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+							</p:inputText>
+							<p:message for="intPuntoEmisionEst" />	
+					    </div>
+					    <div class="field">
+							<h:outputText value="#{msg['label.telefono']}* " styleClass="requerido" />
+							<p:inputText id="intTelefonoEst"
+								value="#{establecimientoCtrl.establecimientoSelected.telefono}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="20" validatorMessage="SOLO NÚMEROS">
+								<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+							</p:inputText>
+							<p:message for="intTelefonoEst" />
+					    </div>
+					    <div class="field">
+							<h:outputText value="CORREO * " styleClass="requerido" />
+							<p:inputText id="intCorreoEst"
+								value="#{establecimientoCtrl.establecimientoSelected.correo}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="50" validatorMessage="CORREO INCORRECTO" >
+								<f:validateRegex
+									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"></f:validateRegex>
+							</p:inputText>
+							<p:message for="intCorreoEst" />    	
+					    </div>
+					    
+					    <div class="field">
+							<h:outputText value="MATRIZ * " styleClass="requerido block" />
+							<p:selectOneMenu id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}" required="true" requiredMessage="REQUERIDO" styleClass="mt-1">
+						            <f:selectItem itemLabel="Seleccione" itemValue="" />
+						            <f:selectItem itemLabel="SI" itemValue="S" />
+						            <f:selectItem itemLabel="NO" itemValue="N" />
+				         	</p:selectOneMenu>
+							<p:message for="intMatrizEst" style="margin:0px!important;"/>
+					    </div>
+					    <div class="field">
+							<h:outputText value="AMBIENTE * " styleClass="requerido block" />
+							<p:selectOneMenu id="intAmbienteEst" value="#{establecimientoCtrl.establecimientoSelected.ambiente}" required="true" requiredMessage="REQUERIDO" styleClass="mt-1">
+						            <f:selectItem itemLabel="Seleccione" itemValue="" />
+						            <f:selectItem itemLabel="Pruebas" itemValue="1" />
+						            <f:selectItem itemLabel="Producción" itemValue="2" />
+				         	</p:selectOneMenu>
+							<p:message for="intMatrizEst" />
+					    	
+					    </div>
+					    
+						<div class="w-full titulo" style="margin-bottom: none!important;">
 							<i class="fa fa-check-circle Fs16"></i> Secuencias de Comprobantes 
 						</div>
-						
-						<p:panelGrid id="grid2" columns="1"
-							styleClass="ui-panelgrid-blank Wid100"
-							columnClasses="ui-g-12">
-							
-							<h:outputText value="SECUENCIAL FACTURA * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intSecFact"
-									value="#{establecimientoCtrl.establecimientoSelected.secuencialfactura}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="10" converterMessage="SOLO NUMEROS">
-									<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
-								</p:inputText>
-								<p:message for="intSecFact" />
-							</h:panelGroup>
-		
-							<h:outputText value="SECUENCIAL NOTA DÉBITO * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intSecND"
-									value="#{establecimientoCtrl.establecimientoSelected.secuencialnotadebito}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="10"  converterMessage="SOLO NUMEROS">
-									<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
-								</p:inputText>
-								<p:message for="intSecND" />
-							</h:panelGroup>
-		
-							<h:outputText value="SECUENCIAL NOTA #{msg['label.credito']} * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intSecNC"
-									value="#{establecimientoCtrl.establecimientoSelected.secuencialNotaCredito}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="10"  converterMessage="SOLO NUMEROS" validatorMessage="MAYOR a 0">
-									<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
-								</p:inputText>
-								<p:message for="intSecNC" />
-							</h:panelGroup>
-		
-							<h:outputText value="SECUENCIAL #{msg['label.liquidacion']} COMPRA * " styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intSecliqComp"
-									value="#{establecimientoCtrl.establecimientoSelected.secuencialliquidacioncompra}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="10"  converterMessage="SOLO NUMEROS">
-									<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
-								</p:inputText>
-								<p:message for="intSecliqComp" />
-							</h:panelGroup>
-		
-							<h:outputText value="SECUENCIAL GUIA #{msg['label.remision']} * "	styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intSecGuiRem"
-									value="#{establecimientoCtrl.establecimientoSelected.secuencialguiaremision}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="10"  converterMessage="SOLO NUMEROS">
-									<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
-								</p:inputText>
-								<p:message for="intSecGuiRem" />
-							</h:panelGroup>
-		
-							<h:outputText value="SECUENCIAL #{msg['label.retencion']} * "	styleClass="cpoRequerido" />
-							<h:panelGroup>
-								<p:inputText id="intSecReten"
-									value="#{establecimientoCtrl.establecimientoSelected.secuencialretencion}"
-									required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-									maxlength="10"  converterMessage="SOLO NUMEROS">
-									<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
-								</p:inputText>
-								<p:message for="intSecReten" />
-							</h:panelGroup>							
-							
-						</p:panelGrid>				
+					    
+					    <div class="field">
+							<h:outputText value="SECUENCIAL FACTURA" styleClass="requerido" />
+							<p:inputText id="intSecFact"
+								value="#{establecimientoCtrl.establecimientoSelected.secuencialfactura}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="10" converterMessage="SOLO NUMEROS">
+								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+							</p:inputText>
+							<p:message for="intSecFact" />
+					    </div>
+					    <div class="field">
+							<h:outputText value="SECUENCIAL NOTA DÉBITO" styleClass="requerido" />
+							<p:inputText id="intSecND"
+								value="#{establecimientoCtrl.establecimientoSelected.secuencialnotadebito}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="10"  converterMessage="SOLO NUMEROS">
+								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+							</p:inputText>
+							<p:message for="intSecND" />
+					    </div>
+					    <div class="field">
+							<h:outputText value="SECUENCIAL NOTA #{msg['label.credito']}" styleClass="requerido" />
+							<p:inputText id="intSecNC"
+								value="#{establecimientoCtrl.establecimientoSelected.secuencialNotaCredito}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="10"  converterMessage="SOLO NUMEROS" validatorMessage="MAYOR a 0">
+								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+							</p:inputText>
+							<p:message for="intSecNC" />
+					    </div>
+					    <div class="field">
+							<h:outputText value="SECUENCIAL #{msg['label.liquidacion']} COMPRA" styleClass="requerido" />
+							<p:inputText id="intSecliqComp"
+								value="#{establecimientoCtrl.establecimientoSelected.secuencialliquidacioncompra}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="10"  converterMessage="SOLO NUMEROS">
+								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+							</p:inputText>
+							<p:message for="intSecliqComp" />   	
+					    </div>
+					    <div class="field">
+							<h:outputText value="SECUENCIAL GUIA #{msg['label.remision']}" styleClass="requerido" />
+							<p:inputText id="intSecGuiRem"
+								value="#{establecimientoCtrl.establecimientoSelected.secuencialguiaremision}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="10"  converterMessage="SOLO NUMEROS">
+								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+							</p:inputText>
+							<p:message for="intSecGuiRem" />
+					    </div>
+					    <div class="field">
+							<h:outputText value="SECUENCIAL #{msg['label.retencion']}"	styleClass="requerido" />
+							<p:inputText id="intSecReten"
+								value="#{establecimientoCtrl.establecimientoSelected.secuencialretencion}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="10"  converterMessage="SOLO NUMEROS">
+								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
+							</p:inputText>
+							<p:message for="intSecReten" />
+					    </div>
+					    			 	
 					</div>
 					
-					<div class="p-col-12 p-md-4">
-						
-						<div class="Wid100 titulo" style="margin-bottom: none!important;">
-							<i class="fa fa-check-circle Fs16"></i> Logotipo 
-							<span class="Fs12" style="color: #85929E;">
-								[#{msg['mensaje.imagenproducto']}] 
-							</span>
-						</div>
-						
-						<p:panelGrid id="gridEstabIMG" columns="1"
-							styleClass="ui-panelgrid-blank Wid100"
-							columnClasses="ui-g-12">
+					<div class="col-12 md:col-4">
+						<p:outputPanel id="gridEstabIMG">
+							<div class="w-full titulo" style="margin-bottom: none!important;">
+								<i class="fa fa-check-circle Fs16"></i> Logotipo
+							</div>
 							
-							<h:panelGroup>
+							<div class="field">
+								<h:outputText value="[#{msg['mensaje.imagenproducto']}]"/>
 								<p:commandButton id="cmdLimpiarImagenProductoForm"
-									value="Limpiar" icon="fa fa-eraser" styleClass="secondary-button Wid100"
+									value="Limpiar" icon="fa fa-eraser" styleClass="ui-button-outlined w-full mt-1"
 									action="#{establecimientoCtrl.limpiarImagen()}" 
 									immediate="true"  
 									update=":frmEstable:gridEstabIMG"
 									disabled="#{establecimientoCtrl.establecimientoSelected.logo==null}"
-								/>
-							</h:panelGroup>
+								/>							
+							</div>
 							
-							<h:panelGroup>								
+							<div class="field">
 								<p:fileUpload id="fileUploadComponent"
 									listener="#{establecimientoCtrl.handleUpload}"
 									allowTypes="/(\.|\/)(jpg|gif|jpe?g|png|tif)$/"
@@ -288,15 +242,20 @@
 									auto="true"
 									update=":frmEstable:gridEstabIMG"
 									previewWidth="0"
-									styleClass="Wid100">
+									styleClass="w-full">
 								</p:fileUpload>
-							</h:panelGroup>
+							</div>
 							
-							<h:outputText value="#{msg['label.imagen']} : #{establecimientoCtrl.establecimientoSelected.nombreimagen}"/>
-							<h:outputText value="" rendered="#{establecimientoCtrl.establecimientoSelected.logo==null}"/>
-							<p:graphicImage value="#{establecimientoCtrl.imageEstablecimiento}" stream="false" width="50%" rendered="#{establecimientoCtrl.establecimientoSelected.logo!=null}"/>
-							
-						</p:panelGrid>
+							<div class="field">
+								<h:outputText value="#{msg['label.imagen']} : #{establecimientoCtrl.establecimientoSelected.nombreimagen}"/>
+							</div>
+							<div class="field">
+								<h:outputText value="" rendered="#{establecimientoCtrl.establecimientoSelected.logo==null}"/>
+							</div>
+							<div class="field">
+								<p:graphicImage value="#{establecimientoCtrl.imageEstablecimiento}" stream="false" width="50%" rendered="#{establecimientoCtrl.establecimientoSelected.logo!=null}"/>
+							</div>						
+						</p:outputPanel>
 						<div class="EmptyBox30"/>
 					</div>
 				</div>

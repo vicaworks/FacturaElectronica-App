@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
-.cardTitle{
-	margin: 0px 0px 5px 0px !important;
-}
+.titulo{margin: 5px 0px 5px 0px !important;}
+
+.cardTitle{	margin: 0px 0px 5px 0px !important;}
 
 .m-button{
 	margin: 5px 5px !important;
@@ -55,6 +55,15 @@
 .Wid20{ width:20%;}
 .Wid10{ width:10%;}
 .MaxWid500{max-width:500px;}
+.min-width-100{min-width: 100px;}
+.min-width-110{min-width: 110px;}
+.min-width-120{min-width: 120px;}
+.min-width-130{min-width: 130px;}
+.min-width-140{min-width: 140px;}
+.min-width-150{min-width: 150px;}
+.min-width-160{min-width: 160px;}
+.min-width-170{min-width: 170px;}
+.min-width-180{min-width: 180px;}
 
 
 /* Height */
@@ -82,9 +91,12 @@
 
 .MLeft10{margin-left: 10px !important;}
 .MRight10{margin-right: 10px !important;}
-
-
-.cpoRequerido {color: black;}
+.requerido {color:black;font-weight:500;}
+body .ui-messages, 
+body .ui-message {
+	padding: 0em !important;
+	margin: 0em !important;
+}
 
 .titulo {
 	font-size: 18px;
@@ -316,14 +328,10 @@
 
 /* FORMATO MESSAGE INFO */
 
-.layout-wrapper .layout-main .layout-content {
-	padding: 5px;
-}
-
-.card{
-	padding: 0.5em 1em !important;
-}		
-
+body .ui-commandlink, body .ui-link {text-decoration: none!important;}
+body .ui-selectonemenu .ui-selectonemenu-label {min-height: 0px !important;}
+.layout-wrapper .layout-main .layout-content {padding: 5px;}
+.card{padding: 0.5em 1em !important;}
 
 /* ====== MEDIAQUERY == */
 

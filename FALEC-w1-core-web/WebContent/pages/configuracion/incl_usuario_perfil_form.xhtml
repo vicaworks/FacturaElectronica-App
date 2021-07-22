@@ -9,7 +9,6 @@
 	<style type="text/css">
 		
 		.heightFrmPerfilUsuario {
-				/* height: 560px; */
 		}
 		
 		.segPerfilScrollDT .ui-datatable-scrollable-body{
@@ -18,7 +17,7 @@
 		
 		.tabla .ui-datatable-scrollable-header-box .ui-datatable-scrollable-header .ui-datatable thead {text-align: center!important;}
 		
-		.titulo{
+		.titulo-dt{
 			margin:0px;
 			width: 100%;
 			padding: 0px;
@@ -124,12 +123,6 @@
 			color: #fff;
 		}
 		
-		.ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider,
-		.ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider:before {
-			background-color: #34495E !important;
-			border-color: #34495E !important;
-		}
-		
 	</style>
 	
 	<p:dialog header="Perfil Usuario" widgetVar="dlgPerfilUsuario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
@@ -137,29 +130,22 @@
 		<h:form id="frmPerfilUsuario">
 			
 			<!-- OPCIONES -->
+			<div class="formgroup-inline">
 			
-			
-			<div class="p-grid toolBarPopUp" >
+				<p:commandButton 
+					value="REFRESCAR" icon="fa fa-repeat" 
+					action="#{perfilUsuarioCtrl.refrescar}" styleClass="ui-button-outlined mr-1 min-width-110" update="@form" process="@this"
+					/>
 				
-				<div class="p-col-12" style="text-align:left;">					
+				<p:commandButton 
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{perfilUsuarioCtrl.guardar}" styleClass="mr-1 min-width-110" update="@form"
+					/>
 					
-					<p:commandButton 
-						value="REFRESCAR" icon="fa fa-repeat" 
-						action="#{perfilUsuarioCtrl.refrescar}" styleClass="MRight10 secondary-button" update="@form" process="@this"
-						/>
-					
-					<p:commandButton 
-						value="GUARDAR" icon="fa fa-floppy-o" 
-						action="#{perfilUsuarioCtrl.guardar}" styleClass="MRight10 secondary-button" update="@form"
-						/>
-						
-					<p:commandButton 
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgPerfilUsuario').hide()" immediate="true"  
-						/>
-					
-				</div>
-				
+				<p:commandButton 
+					value="CERRAR" icon="fa fa-close" styleClass="min-width-110 ui-button-flat" 
+					onclick="PF('dlgPerfilUsuario').hide()" immediate="true"  
+					/>
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmPerfilUsuario"
@@ -167,21 +153,20 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<!--  wraper del formulario para responsive -->
-			
-			<div class="form-ui Wid100 OvYScroll heightFrmPerfilUsuario contenedorFormulario">
-				
+			<!--  wraper del formulario para responsive -->			
+			<div class="form-ui Wid100 OvYScroll heightFrmPerfilUsuario contenedorFormulario mt-2">				
 				<div class="EmptyBox10"/>
-				<div class="p-grid p-align-top p-justify-center" style="width: 99.5%!important;">
-					<div class="p-col-12">
-						<p:toggleSwitch value="#{perfilUsuarioCtrl.usuarioSelected.habilitarestablecimientoBOL}"/>
-						<p:spacer width="10px"/>
-						<h:outputText value="ACCESO A TODOS LOS ESTABLECIMIENTOS." />
+				<div class="grid align-content-start justify-content-center" style="width: 99.5%!important;">
+					<div class="col-12 ">
+						<div class="flex flex-row ">
+							<p:toggleSwitch value="#{perfilUsuarioCtrl.usuarioSelected.habilitarestablecimientoBOL}" styleClass="mr-2 flex align-items-center"/>
+							<h:outputText value="ACCESO A TODOS LOS ESTABLECIMIENTOS." styleClass="flex align-items-center"/>
+						</div>
 					</div>
 					<div class="EmptyBox5"/>
-					<div class="p-col-12 p-lg-6 defecto">
+					<div class="col-12 lg:col-6 defecto">
 						
-						<div class="titulo">
+						<div class="titulo-dt">
 							1. PERFILES PREDEFINIDOS.
 						</div>
 						
@@ -189,22 +174,20 @@
 							Puede seleccionar perfiles con opciones de acceso predefinidos.
 						</div>
 						
-						<div class="EmptyBox10"/>
-						
-						
+						<div class="EmptyBox5"/>
 						<p:dataScroller id="segPerfilPredefinidoScroll" value="#{perfilUsuarioCtrl.segperfilpredefinidoList}" var="pfd" chunkSize="10" mode="inline"
                         	scrollHeight="470" virtualScroll="true">
                         	<f:facet name="header">
 				                PERFILES PREDEFINIDOS
 				            </f:facet>
 				            
-				            <div class="p-grid p-align-center">
-				            	<div class="p-col-1 seleccion"  style="padding-left: 15px !important;">
+				            <div class="grid align-content-center">
+				            	<div class="col-1 seleccion"  style="padding-left: 15px !important;">
 				            		<p:selectBooleanCheckbox style="width:20rem;" value="#{pfd.seleccion}">
 				            			<p:ajax update=":frmPerfilUsuario:segPerfilPredefinidoScroll :frmPerfilUsuario:segPerfilScroll" listener="#{perfilUsuarioCtrl.cambioPerfilPredefinido(pfd)}"/>
 				            		</p:selectBooleanCheckbox>
 				            	</div>
-				            	<div class="p-col-11">
+				            	<div class="col-11">
 				            		
 				            		<div class="box_grid_header">
 
@@ -229,9 +212,9 @@
 						
 					</div>
 					
-					<div class="p-col-12 p-lg-6">
+					<div class="col-12 lg:col-6 defecto">
 						
-						<div class="titulo">
+						<div class="titulo-dt">
 							2. OPCIONES DE ACCESO SELECCIONADAS.
 						</div>
 						
@@ -239,8 +222,7 @@
 							Puede personalizar el acceso a las opciones del sistema, seleccionando las opciones de acceso.
 						</div>
 						
-						<div class="EmptyBox10"/>
-						
+						<div class="EmptyBox5"/>						
 						<p:dataTable id="segPerfilScroll" 
 									value="#{perfilUsuarioCtrl.segperfilList}" 
 									var="p"  
@@ -249,18 +231,18 @@
 									rowKey="#{p.idsegperfil}">
 							
 							<p:column width="100%" style="background-color:#fff !important;border:none!important;" >
-								<f:facet name="header">
+								<f:facet name="header" >
 									<div style="width:100%; text-align: center !important;">
 										OPCIONES DE ACCESO
 									</div>
 								</f:facet>
-					            <div class="p-grid p-align-center">
-					            	<div class="p-col-1 seleccion" style="padding-left: 15px !important;">
+					            <div class="grid align-content-center">
+					            	<div class="col-1 seleccion" style="padding-left: 15px !important;">
 					            		<p:selectBooleanCheckbox style="width:20rem;" value="#{p.seleccion}" disabled="#{not perfilUsuarioCtrl.disablePerfiles}">
 					            			<p:ajax update="optOpcionesSeleccion"/>
 					            		</p:selectBooleanCheckbox>
 					            	</div>
-					            	<div class="p-col-11">
+					            	<div class="col-11">
 					            		<p:outputPanel id="optOpcionesSeleccion">
 						            		<div class="box_grid_header" style="border-bottom: none!important;">
 		
