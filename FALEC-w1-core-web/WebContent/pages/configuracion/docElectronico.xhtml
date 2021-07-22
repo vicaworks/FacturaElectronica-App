@@ -61,23 +61,21 @@
 				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Validar XML Comprobante Electrónico</h3>
 				
 				<div class="grid">
-					<div class="col-12 md:col-6 lg:col-5 p-0">						
-						<div class="grid grid-nogutter">
-							<div class="col-12 mb-1">
-								<h:outputText value="COMPROBANTE ELECTRÓNICO" styleClass="requerido"/>								
-							</div>
-							<div class="col-6">
+					<div class="col-12 md:col-6 lg:col-5">
+						<h:outputText value="COMPROBANTE ELECTRÓNICO" styleClass="requerido"/>						
+						<div class="flex mt-1">
+							<div class="flex-grow-1 flex  flex-column mr-1">
 								<p:selectOneMenu id="somTipoComprobante" value="#{docElectrinocCtrl.tipoDocumentoIdentificador}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
-									<f:selectItem itemLabel="Seleccionar ..." itemValue="#{null}" />
-					    			<f:selectItem itemLabel="FACTURA" itemValue="01" />
-					    			<f:selectItem itemLabel="#{msg['label.retencion']}" itemValue="07" />
-					    			<f:selectItem itemLabel="#{msg['label.liqcompra.upper']}" itemValue="03" />
-					    			<f:selectItem itemLabel="NOTA #{msg['label.credito']}" itemValue="04" />
-					    			<f:selectItem itemLabel="NOTA #{msg['label.debito.upper']}" itemValue="05" />
-					    			<f:selectItem itemLabel="#{msg['label.guiaremision.upper']}" itemValue="06" /> 
+										<f:selectItem itemLabel="Seleccionar ..." itemValue="#{null}" />
+						    			<f:selectItem itemLabel="FACTURA" itemValue="01" />
+						    			<f:selectItem itemLabel="#{msg['label.retencion']}" itemValue="07" />
+						    			<f:selectItem itemLabel="#{msg['label.liqcompra.upper']}" itemValue="03" />
+						    			<f:selectItem itemLabel="NOTA #{msg['label.credito']}" itemValue="04" />
+						    			<f:selectItem itemLabel="NOTA #{msg['label.debito.upper']}" itemValue="05" />
+						    			<f:selectItem itemLabel="#{msg['label.guiaremision.upper']}" itemValue="06" /> 
 					    		</p:selectOneMenu>
 							</div>
-							<div class="col-6 pl-1">
+							<div class="flex-grow-1 flex flex-column mr-1">
 								<p:inputMask id="inpNum" mask="999-999-999999999" maxlength="17" required="true" requiredMessage="REQUERIDO" value="#{docElectrinocCtrl.numDocumento}" styleClass="w-full" placeholder="NUM. COMPROBANTE">
 									<f:converter converterId="formatoNumComprobanteConverter"/>
 								</p:inputMask>
@@ -86,25 +84,23 @@
 					</div>
 					<div class="col-12 md:col-6 lg:col-5 align-self-end">
 						<div class="grid grid-nogutter">
-							<p:commandButton id="cmdLqCRefrecar"
-								title="Consultar comprobante electrónico" icon="fa fa-search" 
-								action="#{docElectrinocCtrl.buscar()}" styleClass="ui-button-outlined mr-1 inline" update="@form"
-							/>
-							<p:commandButton id="cmdFirmar"
-								title="Firmar comprobante electrónico" icon="fa fa-key" value="FIRMAR" 
-								action="#{docElectrinocCtrl.firmar()}" styleClass="ui-button-outlined inline mr-1 min-width-100" update="@form"
-								disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
-							/>
-							<p:commandButton id="cmdValidar"
-								value="VALIDAR" icon="fa fa-check" title="Validar comprobante electrónico" 
-								action="#{docElectrinocCtrl.validar()}" styleClass="inline min-width-100" update="@form"
-								disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
-							/>
+							<div class="col-12">
+								<p:commandButton id="cmdLqCRefrecar"
+									title="Consultar comprobante electrónico" icon="fa fa-search" 
+									action="#{docElectrinocCtrl.buscar()}" styleClass="ui-button-outlined mr-1 inline" update="@form"
+								/>
+								<p:commandButton id="cmdFirmar"
+									title="Firmar comprobante electrónico" icon="fa fa-key" value="FIRMAR" 
+									action="#{docElectrinocCtrl.firmar()}" styleClass="ui-button-outlined inline mr-1 min-width-100" update="@form"
+									disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
+								/>
+								<p:commandButton id="cmdValidar"
+									value="VALIDAR" icon="fa fa-check" title="Validar comprobante electrónico" 
+									action="#{docElectrinocCtrl.validar()}" styleClass="inline min-width-100" update="@form"
+									disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
+								/>
+							</div>
 						</div>
-					</div>
-					<div class="col-12">
-						<p:message for="somTipoComprobante"/>
-						<p:message for="inpNum"/>
 					</div>
 				</div>
 				
