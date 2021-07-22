@@ -5,19 +5,14 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">DOC ELECRONICO</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
         	
-        	.xmlDoc .ui-inputfield{
-				min-height: 30vh !important;
-				height: calc(100vh - 220px)!important;
-				/* background-color: #f2f2f2; */
-			}	
-			
+			/*
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;
 			}
@@ -30,34 +25,23 @@
 			
 			body .ui-message {
 				padding: 0em !important;
-			}
+			} */
 			
-			.cardTitle{
+			/* .cardTitle{
 				padding:0.5em 0px;
 				font-size: 18px !important;
-			}
-			
+			} */
+			/* 
 			body .ui-datatable .ui-datatable-data > tr > td {
 				padding: 0.3em; 
 				border: 0 none;
 				vertical-align: top;
-			}
+			} */
 			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}	
-			
-			body .ui-messages, 
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0em !important;
-				display: block !important;
-			}
-			
-			.xmlError{
-				padding: 20px;
-				background-color: #ffe5e5;
-				border: 1px solid #ccc;
+
+        	.xmlDoc .ui-inputfield{
+				min-height: 30vh !important;
+				height: calc(100vh - 200px)!important;
 			}
 			
         </style>
@@ -68,60 +52,54 @@
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	
-    	<!-- <p:breadCrumb>
-		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Documento #{msg['label.electronico']}" url="#{request.contextPath}/pages/configuracion/docElectronico.jsf" />
-		</p:breadCrumb> -->
+    	
 	    
 	    <!-- OPCIONES -->
 	    <h:form id="formMain">
 			
 			<div class="card card-w-title" >
 				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Validar XML Comprobante Electrónico</h3>
-				<div class="EmptyBox5"/>	
-				<div class="p-grid p-align-end vertical-container">
-					<div class="p-col-12 p-md-6 p-lg-2">
-						<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>
-						<div class="EmptyBox5"/>
-						<p:selectOneMenu id="somTipoComprobante" value="#{docElectrinocCtrl.tipoDocumentoIdentificador}" style="width:100%" required="true" requiredMessage="REQUERIDO">
-							<f:selectItem itemLabel="Seleccionar ..." itemValue="#{null}" />
-			    			<f:selectItem itemLabel="FACTURA" itemValue="01" />
-			    			<f:selectItem itemLabel="#{msg['label.retencion']}" itemValue="07" />
-			    			<f:selectItem itemLabel="#{msg['label.liqcompra.upper']}" itemValue="03" />
-			    			<f:selectItem itemLabel="NOTA #{msg['label.credito']}" itemValue="04" />
-			    			<f:selectItem itemLabel="NOTA #{msg['label.debito.upper']}" itemValue="05" />
-			    			<f:selectItem itemLabel="#{msg['label.guiaremision.upper']}" itemValue="06" /> 
-			    		</p:selectOneMenu>
-			    		<p:message for="somTipoComprobante"/>
+				
+				<div class="grid">
+					<div class="col-12 md:col-6 lg:col-5">						
+						<div class="grid grid-nogutter">
+							<div class="col-12 mb-1">
+								<h:outputText value="COMPROBANTE ELECTRÓNICO" styleClass="requerido"/>								
+							</div>
+							<div class="col-6">
+								<p:selectOneMenu id="somTipoComprobante" value="#{docElectrinocCtrl.tipoDocumentoIdentificador}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
+									<f:selectItem itemLabel="Seleccionar ..." itemValue="#{null}" />
+					    			<f:selectItem itemLabel="FACTURA" itemValue="01" />
+					    			<f:selectItem itemLabel="#{msg['label.retencion']}" itemValue="07" />
+					    			<f:selectItem itemLabel="#{msg['label.liqcompra.upper']}" itemValue="03" />
+					    			<f:selectItem itemLabel="NOTA #{msg['label.credito']}" itemValue="04" />
+					    			<f:selectItem itemLabel="NOTA #{msg['label.debito.upper']}" itemValue="05" />
+					    			<f:selectItem itemLabel="#{msg['label.guiaremision.upper']}" itemValue="06" /> 
+					    		</p:selectOneMenu>
+					    		<p:message for="somTipoComprobante"/>
+								
+							</div>
+							<div class="col-6 pl-1">
+								<p:inputMask mask="999-999-999999999" maxlength="17" required="true" requiredMessage="REQUERIDO" value="#{docElectrinocCtrl.numDocumento}" styleClass="w-full" placeholder="NUM. COMPROBANTE">
+									<f:converter converterId="formatoNumComprobanteConverter"/>
+								</p:inputMask>
+							</div>
+						</div>
 					</div>
-					
-					<div class="p-col-12 p-md-6 p-lg-2">
-						<h:outputText value="#{msg['label.numero']} DOCUMENTO *" styleClass="cpoRequerido"/>
-						<div class="EmptyBox5"/>
-						<p:inputMask mask="999-999-999999999" maxlength="17" required="true" requiredMessage="REQUERIDO" value="#{docElectrinocCtrl.numDocumento}" styleClass="Wid100">
-							<f:converter converterId="formatoNumComprobanteConverter"/>
-						</p:inputMask>
-					</div>
-					
-					<div class="p-col-4 p-md-3 p-lg-2">
+					<div class="col-12 md:col-6 lg:col-5 align-self-end">
+						
 						<p:commandButton id="cmdLqCRefrecar"
-							value="CONSULTAR" icon="fa fa-search" 
-							action="#{docElectrinocCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
+							title="Consultar comprobante electrónico" icon="fa fa-search" 
+							action="#{docElectrinocCtrl.buscar()}" styleClass="ui-button-outlined mr-1 inline" update="@form"
 						/>
-					</div>
-					
-					<div class="p-col-4 p-md-3 p-lg-2">
 						<p:commandButton id="cmdFirmar"
-							value="FIRMAR" icon="fa fa-key" 
-							action="#{docElectrinocCtrl.firmar()}" styleClass="secondary-button Wid100" update="@form"
+							title="Firmar comprobante electrónico" icon="fa fa-key" value="FIRMAR" 
+							action="#{docElectrinocCtrl.firmar()}" styleClass="ui-button-outlined inline mr-1 min-width-100" update="@form"
 							disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
 						/>
-					</div>
-					
-					<div class="p-col-4 p-md-3 p-lg-2">
 						<p:commandButton id="cmdValidar"
-							value="VALIDAR" icon="fa fa-check" 
-							action="#{docElectrinocCtrl.validar()}" styleClass="Wid100" update="@form"
+							value="VALIDAR" icon="fa fa-check" title="Validar comprobante electrónico" 
+							action="#{docElectrinocCtrl.validar()}" styleClass="inline min-width-100" update="@form"
 							disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
 						/>
 					</div>
@@ -136,40 +114,28 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="p-grid p-align-top vertical-container">
-				
-				<div class="p-col-12 p-md-8">
-					<div class="card card-w-title xmlDoc" style="margin-top:12px;">
-						
+			<div class="grid">
+				<div class="col-12">
+					<div class="card card-w-title xmlDoc mt-0" style="margin-top:12px;">
+						<div class="grid">
+							<div class="col-12">
+								<p:outputPanel rendered="#{not empty docElectrinocCtrl.xmlError}">
+									<span class="Fs14 font-bold text-green-600 block mb-1">Resultado validación</span>
+									<div class="w-full py-1 my-1 bg-bluegray-50 block px-2">
+										<h:outputText value="#{docElectrinocCtrl.xmlError}" styleClass="Fs14"/>
+									</div>
+								</p:outputPanel>
+							</div>
+						</div>
 						<p:inputTextarea value="#{docElectrinocCtrl.xmlDocElectronico}" styleClass="Wid100 Fs14">
 						</p:inputTextarea>
 					</div>
-				</div>
-				
-				<div class="p-col-12 p-md-4">
-					<div class="card card-w-title xmlDoc" style="margin-top:12px;">
-						
-						<h3 class="cardTitle"> <i class="fa fa-arrow-circle-right"></i> Resultado #{msg['label.validacion']}</h3>
-						
-						<p:outputPanel rendered="#{not empty docElectrinocCtrl.xmlError}">
-							<div class="xmlError Wid100">
-								<h:outputText value="#{docElectrinocCtrl.xmlError}" styleClass="Fs16"/>
-							</div>
-						</p:outputPanel>
-						
-						<div class="EmptyBox20"/>
-					</div>
-				</div>
-				
-				<div class="EmptyBox30"/>
-				
+				</div>				
 			</div>
-			
-			
 				    	
 	    </h:form>
 	    
-	    <div class="EmptyBox20"/>
+	    <div class="EmptyBox30"/>
     </ui:define>
 
 </ui:composition>
