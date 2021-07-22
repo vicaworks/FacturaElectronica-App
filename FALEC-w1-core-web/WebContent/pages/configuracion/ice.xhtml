@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">ICE</ui:define>
     
@@ -14,19 +14,7 @@
         	
         	.iceDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 260px)!important;
-			}
-			
-			body .ui-messages, 
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0em !important;
-				/* display: block !important; */
-			}	
-			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
+				height: calc(100vh - 200px)!important;
 			}
 			
 			@media screen and (max-width: 40em){
@@ -41,7 +29,6 @@
 			}	
 			
 			body .ui-fileupload .ui-fileupload-content {
-				/* display: none; */
 				border: none;
 				padding: 0px;
 				border-top: 0 none;
@@ -51,83 +38,73 @@
 			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
 				width: 100%;
 			}
+			
+			body .ui-datatable thead th {text-align: left;vertical-align: top;}
+			
         </style>
     </ui:define>
 
     <ui:define name="content">
-    	
+    	<!-- CARGAR LA PAGINA  -->
+    	<f:metadata>
+		    <f:viewAction action="#{iceCtrl.refrescar}" />
+		</f:metadata>
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	
 	    <!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
-	    	<div class="card card-w-title">
-	    		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> I.C.E.</h3>
-	    		<div class="EmptyBox5"/>
-	    		<div class="p-grid p-align-center">
-	    			
-	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-8" style="text-align:center;">
-	    				
-	    				<p:panelGrid columns="1"
-								style="margin:0px;border:none !important;width:100%;"
-								layout="grid"
-								columnClasses="ui-g-12">
-								
-								<p:panelGrid columns="4" style="border:none !important;margin:0px;width:100%;" 
-									columnClasses="ui-g-12 ui-lg-2,ui-g-12 ui-lg-2,ui-g-12 ui-lg-4,ui-g-12 ui-lg-2">
-												   
-									<p:commandButton id="cmdRefrecar"
-											value="CONSULTAR" icon="fa fa-search" 
-											action="#{iceCtrl.refrescar()}" styleClass="secondary-button Wid100" update="@form"
-											/>
-																									
-									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid100" 
-										action="#{iceCtrl.nuevo()}" inline="true">
-									</p:commandButton>
-									
-									<p:commandButton  id="cmdExcelCargar" 
-										title="CARGAR ARCHIVO EXCEL ICE"
-										icon="fa fa-file-excel-o"
-										value="IMPORTAR VALORES ICE"
-										styleClass="secondary-button Wid100"
-										onclick="PF('dlgImportIce').show()"
-										update=":frmImportIce"
-										immediate="true">
-										<f:setPropertyActionListener value="#{null}" target="#{iceCtrl.nombreFileIce}"/>
-										<f:setPropertyActionListener value="#{null}" target="#{iceCtrl.fileIces}"/>
-										<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.existeNovedadesIce}"/>
-										<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.renderResultadoImportIce}"/>
-									</p:commandButton>
-									
-									<p:commandButton  id="cmdExcel" 
-										title="EXPORTAR"
-										icon="fa fa-file-excel-o"
-										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="REPORTE"
-										styleClass="secondary-button Wid100">
-										<p:fileDownload value="#{iceCtrl.fileIce}"/>
-									</p:commandButton>
-									
-									
-									
-									
-								</p:panelGrid>
-								
-						</p:panelGrid>
-	    			</div>
-	    		</div>
-	    	</div>
-	    	
     	<!-- Mensajes -->
 		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 			closable="true" >
 			<p:autoUpdate></p:autoUpdate>
 		</p:messages>
-		<div class="EmptyBox5"/>
-		<div class="card card-w-title">
+		<div class="card card-w-title mt-0">
+			
+			<div class="grid justify-content-between">
+				<div class="col-3">
+					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> I.C.E.</h3>
+				</div>
+				
+				<div class="col-4 align-self-center">
+					<div class="flex justify-content-end">
+						<p:commandButton id="cmdRefrecar"
+							title="Consultar ICE" icon="fa fa-search" 
+							action="#{iceCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+							/>
+																										
+						<p:commandButton id="cmdNuevo"
+							title="Nuevo ICE" icon="fa fa-plus" styleClass="mr-1" 
+							action="#{iceCtrl.nuevo()}" inline="true">
+						</p:commandButton>
+						
+						<p:commandButton  id="cmdExcel" 
+							title="Exportar excel"
+							icon="fa fa-download"
+							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+							styleClass="ui-button-outlined mr-1">
+							<p:fileDownload value="#{iceCtrl.fileIce}"/>
+						</p:commandButton>
+						
+						<p:commandButton  id="cmdExcelCargar" 
+							title="Importar archivo ICE"
+							icon="fa fa-upload"
+							value="IMPORTAR"
+							styleClass="ui-button-success min-width-100"
+							onclick="PF('dlgImportIce').show()"
+							update=":frmImportIce"
+							immediate="true">
+							<f:setPropertyActionListener value="#{null}" target="#{iceCtrl.nombreFileIce}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{iceCtrl.fileIces}"/>
+							<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.existeNovedadesIce}"/>
+							<f:setPropertyActionListener value="#{false}" target="#{iceCtrl.renderResultadoImportIce}"/>
+						</p:commandButton>
+					</div>
+					
+				</div>
+			</div>
+		
 			<p:dataTable id="iceDT" 
 						var="ice" 
 						value="#{iceCtrl.iceAllList}" 
@@ -135,7 +112,7 @@
 						styleClass="iceDT"
 						scrollable="true"
 						rowKey="#{ice.idice}"
-		                 emptyMessage="No existen concidencias">
+		                emptyMessage="No existen concidencias">
 		  
 		  		<p:column headerText="OPC" style="width:10px;" styleClass="TexAlCenter">
 						
@@ -161,16 +138,12 @@
 						
 					</p:column>
 		  		
-		        <p:column headerText="Id"  filterMatchMode="contains" style="width:20px;">
+		        <p:column headerText="ID"  filterMatchMode="contains" style="width:20px;">
 		            <h:outputText value="#{ice.idice}" />
 		        </p:column>
 		        
-		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:20px;">
-						<f:facet name="header">
-							<h:outputText value="#{msg['label.codigo']}" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
-						</f:facet>
-						<h:outputText value="#{ice.codigo}" />
+		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:20px;" headerText="#{msg['label.codigo']}">
+					<h:outputText value="#{ice.codigo}" />
 				</p:column>
 				
 				<p:column headerText="ESTADO" style="width:40px;">
@@ -181,12 +154,8 @@
 		             <h:outputText value="#{ice.tarifaadvalorem}" />
 		        </p:column>
 		        
-		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:120px;">
-		                <f:facet name="header">
-							<h:outputText value="#{msg['label.descripcion']}" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
-						</f:facet>
-						 <h:outputText value="#{ice.descripcion}" />
+		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:120px;" headerText="#{msg['label.descripcion']}">
+					 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
 		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" styleClass="TexAlRight">
@@ -201,14 +170,10 @@
 	    	<div class="EmptyBox30"/>
 	    </h:form>
 	     <!-- formulario iva -->
-	    <ui:include src="incl_ice_form.xhtml" />
-	    
+	    <ui:include src="incl_ice_form.xhtml" />	    
 	        <!-- Form carga ice -->
 	    <ui:include src="incl_cargarIce_form.xhtml" />
 	    
     </ui:define>
-    
-    
-    
 
 </ui:composition>

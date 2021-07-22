@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">IVA</ui:define>
     
@@ -14,86 +14,71 @@
         	
         	.ivaDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 245px)!important;
-			}
-			
-			body .ui-messages, 
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0em !important;
-				/* display: block !important; */
+				height: calc(100vh - 170px)!important;
 			}	
 			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}	
+			body .ui-datatable thead th {text-align: left;vertical-align: top;}
 			
         </style>
     </ui:define>
 
     <ui:define name="content">
-    	
+    	<!-- CARGAR LA PAGINA  -->
+    	<f:metadata>
+		    <f:viewAction action="#{ivaCtrl.refrescar}" />
+		</f:metadata>
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	
 	    <!--OPCIONES -->
 		<h:form id="formMain">
-			<div class="card card-w-title">
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> I.V.A.</h3>
-	    		<div class="EmptyBox5"/>
-				<div class="p-grid">
-
-					<div class="p-col-12 p-md-5 p-justify-start">
-						<p:panelGrid columns="1"
-							style="margin:0px;border:none !important;width:100%;"
-							layout="grid" columnClasses="ui-g-12">
-
-							<p:panelGrid columns="4"
-								style="border:none !important;margin:0px;width:100%;"
-								columnClasses="ui-g-12 ui-lg-4,
-												   ui-g-12 ui-lg-4,
-												   ui-g-12 ui-lg-4">
-								
-								<p:commandButton id="cmdRefrecar" value="CONSULTAR"
-									icon="fa fa-search"
-									action="#{ivaCtrl.refrescar()}"
-									styleClass="secondary-button Wid100" update="@form" />
-
-								<p:commandButton id="nuevoIva"
-									value="NUEVO"
-								 icon="fa fa-plus" 
-								 styleClass="secondary-button Wid100"
-								 action="#{ivaCtrl.nuevo()}" inline="true"
-									 />
-
-								<p:commandButton id="cmdExcelEstab" title="EXPORTAR"
-									icon="fa fa-file-excel-o" ajax="false"
-									onclick="PrimeFaces.monitorDownload(start,stop)"
-									value="REPORTE" styleClass="secondary-button Wid100">
-									<p:fileDownload value="#{ivaCtrl.fileIva}" />
-								</p:commandButton>
-
-							</p:panelGrid>
-						</p:panelGrid>
-					</div>
-				</div>
-			</div>
-			
+						
 			<!-- Mensajes -->
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="EmptyBox5"/>
-			<div class="card card-w-title">
+			<div class="card card-w-title mt-0">
+				
+				
+				<div class="grid justify-content-between">
+					<div class="col-3">
+						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> I.V.A.</h3>
+					</div>
+					
+					<div class="col-4 align-self-center">
+						<div class="flex justify-content-end">
+							<p:commandButton id="cmdRefrecar" title="Consultar IVA"
+										icon="fa fa-search"
+										action="#{ivaCtrl.refrescar()}"
+										styleClass="ui-button-outlined mr-1" update="@form" />
+	
+							<p:commandButton id="nuevoIva"
+								title="Nuevo"
+								 icon="fa fa-plus" 
+								 styleClass="mr-1"
+								 action="#{ivaCtrl.nuevo()}" inline="true"
+								 />
+	
+							<p:commandButton id="cmdExcelEstab" title="Exportar excel"
+								icon="fa fa-download" ajax="false"
+								onclick="PrimeFaces.monitorDownload(start,stop)"
+								styleClass="ui-button-outlined">
+								<p:fileDownload value="#{ivaCtrl.fileIva}" />
+							</p:commandButton>
+						</div>			
+					</div>
+				</div>
+			
+			
+			
 				<p:dataTable var="iva"
 					value="#{ivaCtrl.ivaAllList}"
 					scrollable="true" styleClass="ivaDT"
 					rowKey="#{iva.idiva}">
 
-					<p:column headerText="OPC" style="width:40px;" styleClass="TexAlCenter">
+					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtIva">
 							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
@@ -119,48 +104,45 @@
 						<h:outputText value="#{iva.idiva}" />
 					</p:column>
 
-					<p:column headerText="#{msg['label.codigo']} SRI" style="width:20px;">
+					<p:column headerText="COD SRI" style="width:40px;">
 						<h:outputText value="#{iva.codigo}" />
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:40px;">
-						<h:outputText value="#{iva.estado=='I'?'INA':'ACT'}" styleClass="DispBlock #{iva.estado=='I'?'markRed':''}"/>
+						<h:outputText value="#{iva.estado=='I'?'INA':'ACT'}" styleClass="DispBlock #{iva.estado=='I'?'text-pink-500 font-bold':'text-green-700'}"/>
 					</p:column>
 
 					<p:column headerText="PORCENTAJE" priority="1"
-						style="width:50px; ">
+						style="width:70px; ">
 						<h:outputText value="#{iva.porcentaje}" />
 					</p:column>
 
 					<p:column headerText="VALOR"
-						style="width:30px; text-align: center; ">
+						style="width:50px; text-align: center; ">
 						<h:outputText value="#{iva.valor}" >
 						 <f:convertNumber pattern="#{appSessionCtrl.formatoPorcentaje}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="DEFECTO"
-						style="width:30px; text-align: center; ">
-						<h:outputText value="#{iva.defecto==0? 'No':'Si'}" styleClass="#{iva.defecto==0?'markRed':'markGreen'}"/>
+						style="width:50px; text-align: center; ">
+						<h:outputText value="#{iva.defecto==0? 'No':'Si'}" styleClass="#{iva.defecto==0?'':'markGreen'}"/>
 					</p:column>
 					
-					<p:column headerText="ETIQUETA COMPROBANTE" style="width:50px; ">
+					<p:column headerText="ETIQUETA COMPROBANTE" style="width:150px; ">
 						<h:outputText value="#{iva.labelfactura}" />
 					</p:column>
 					
-					<p:column headerText="ORDEN COMPROBANTE" style="width:30px; ">
+					<p:column headerText="ORDEN" style="width:30px; ">
 						<h:outputText value="#{iva.ordenfactura}" />
 					</p:column>
 
 				</p:dataTable>
 			</div>
-			<div class="EmptyBox30"/>
+			<div class="EmptyBox20"/>
 	    </h:form>
 	     <!-- formulario iva -->
 	    <ui:include src="incl_iva_form.xhtml" />
     </ui:define>
-    
-    
-    
 
 </ui:composition>

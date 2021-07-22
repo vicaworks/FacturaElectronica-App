@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.heightFrmIce {
-/* 				height: 200px; */
+		
 		}
 		
 	</style>
@@ -19,27 +19,21 @@
 		<h:form id="frmIce">
 			
 			<!-- OPCIONES -->
+			<div class="formgroup-inline">
 			
-			<div class="p-grid toolBarPopUp" >
+				<p:commandButton id="cmdGuardar"
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{iceCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form :formMain"
+					/>
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
+				<p:commandButton id="cmdNuevoIceForm"
+						value="NUEVO" icon="fa fa-plus" 
+						action="#{ivaCtrl.nuevoForm()}" styleClass="mr-1 ui-button-outlined min-width-100" update="@form" process="@this"/>
 					
-					
-					<p:commandButton id="cmdGuardar"
-						value="GUARDAR" icon="fa fa-check" 
-						action="#{iceCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
-						/>
-					
-					<p:commandButton id="cmdNuevoIceForm"
-							value="NUEVO" icon="fa fa-plus" 
-							action="#{ivaCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
-						
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgIce').hide()" immediate="true"  
-						/>
-					
-				</div>
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
+					onclick="PF('dlgIce').hide()" immediate="true"  
+					/>
 				
 			</div>
 			
@@ -50,54 +44,60 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100  heightFrmIce contenedorFormulario">
-			
-				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
-					
-					<h:outputText value="ID" />
-					<h:outputText value="#{iceCtrl.iceSelected.idice}" />
-					<h:outputText value="" />
-					
-					<h:outputText value="#{msg['label.codigo']} * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" 
-					requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="4" 
-					validatorMessage="SOLO NÚMEROS" placeholder="#{msg['label.codigo']} SRI">
-							<f:validateRegex pattern="^[+-]?[0-9]*$"></f:validateRegex> 
-							</p:inputText>
-					<p:message for="intCodigo"/>
-					
-					<h:outputText value="TARIFA AD VALOREM * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="Wid100" maxlength="10" placeholder="VALOR EN CADENA Ejm 0%" required="true" requiredMessage="REQUERIDO"/>
-					<p:message for="intTarifaAdValorem"/>
-					
-					<h:outputText value="#{msg['label.descripcion']} * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']}"/>
-					<p:message for="intDescripcion"/>
-					
-					<h:outputText value="VALOR * : " styleClass="cpoRequerido" required="true" requiredMessage="REQUERIDO" />
-					<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  requiredMessage="REQUERIDO" styleClass="Wid100" 
-						 converterMessage="SOLO NUMEROS"  placeholder="VALOR ejm: 2 o 2.75">
-						    <!-- <f:convertNumber locale="es_EC" pattern="0.###"/> -->
-							<!-- <o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/> -->
-					</p:inputText>
-					<p:message for="intValor"/>
-					
-					<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
-					<h:panelGroup>
-						<p:selectOneMenu id="somEstado"
-							value="#{iceCtrl.iceSelected.estado}"
-							required="true"
-							requiredMessage="REQUERIDO"
-							styleClass="Wid100" disabled="#{iceCtrl.iceSelected.idice==null}">
-							
-							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
-			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-			    			
-						</p:selectOneMenu>
-					</h:panelGroup>
-					<p:message for="somEstado" />
-					
-				</p:panelGrid>
+			<div class="form-ui w-full  heightFrmIce contenedorFormulario mt-2">
+				
+			    <div class="field grid">
+					<h:outputText value="#{msg['label.codigo']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" 
+						requiredMessage="REQUERIDO" styleClass="w-full" maxlength="4" 
+						validatorMessage="SOLO NÚMEROS" placeholder="#{msg['label.codigo']} SRI">
+								<f:validateRegex pattern="^[+-]?[0-9]*$"></f:validateRegex> 
+								</p:inputText>
+						<p:message for="intCodigo"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="TARIFA AD VALOREM" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="w-full" maxlength="10" placeholder="VALOR EN CADENA Ejm 0%" required="true" requiredMessage="REQUERIDO"/>
+						<p:message for="intTarifaAdValorem"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="#{msg['label.descripcion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']}"/>
+						<p:message for="intDescripcion"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="VALOR" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido" required="true" requiredMessage="REQUERIDO" />
+					<div class="col-12 md:col-8">
+						<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  requiredMessage="REQUERIDO" styleClass="w-full" 
+							 converterMessage="SOLO NUMEROS"  placeholder="VALOR ejm: 2 o 2.75">
+						</p:inputText>
+						<p:message for="intValor"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<h:panelGroup>
+							<p:selectOneMenu id="somEstado"
+								value="#{iceCtrl.iceSelected.estado}"
+								required="true"
+								requiredMessage="REQUERIDO"
+								styleClass="w-full" disabled="#{iceCtrl.iceSelected.idice==null}">
+								
+								<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+				    			
+							</p:selectOneMenu>
+						</h:panelGroup>
+						<p:message for="somEstado" />
+					</div>
+			    </div>
 				
 			</div>
 			

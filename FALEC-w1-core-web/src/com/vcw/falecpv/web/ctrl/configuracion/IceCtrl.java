@@ -64,6 +64,7 @@ public class IceCtrl extends BaseCtrl {
 	private UsuarioServicio usuarioServicio;
 
 	private List<Ice> iceAllList;
+	private List<Ice> filterIceAllList;
 	private List<Ice> iceAllFilterList;
 	
 	private Ice iceSelected;
@@ -75,13 +76,13 @@ public class IceCtrl extends BaseCtrl {
 	/**
 	 * 
 	 */
-	public IceCtrl() {
+	public IceCtrl() {		
 	}
 
 	@PostConstruct
 	public void init() {
 		try {
-			consultarIce();
+			//consultarIce();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -189,7 +190,9 @@ public class IceCtrl extends BaseCtrl {
 	private void consultarIce() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:iceDT");
 		iceAllList= new ArrayList<>();
+		filterIceAllList = new ArrayList<>();
 		iceAllList  = iceServicio.getIceDao().getAllIce(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		filterIceAllList = iceAllList; 
 	}
 
 	/**
@@ -618,6 +621,20 @@ public class IceCtrl extends BaseCtrl {
 
 	public void setFileIces(File fileIces) {
 		this.fileIces = fileIces;
+	}
+
+	/**
+	 * @return the filterIceAllList
+	 */
+	public List<Ice> getFilterIceAllList() {
+		return filterIceAllList;
+	}
+
+	/**
+	 * @param filterIceAllList the filterIceAllList to set
+	 */
+	public void setFilterIceAllList(List<Ice> filterIceAllList) {
+		this.filterIceAllList = filterIceAllList;
 	}
 	
 
