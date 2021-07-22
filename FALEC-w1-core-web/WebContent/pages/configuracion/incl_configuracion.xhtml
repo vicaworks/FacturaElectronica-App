@@ -8,13 +8,26 @@
 				xmlns:pe="http://primefaces.org/ui/extensions">
 	
 	<style type="text/css">		
-		.f-upload .ui-fileupload {
-			border: 1px solid #d8d8dc !important;
+		
+		.panel-configuracion .ui-accordion .ui-accordion-header.ui-state-hover, body .ui-accordion .ui-accordion-header.ui-tabs-outline {
+		  outline: 0 none;
+		  background-color: #fff;
+		  color: #252529;
 		}
+		
+		.panel-configuracion .ui-accordion .ui-accordion-header.ui-state-active {
+			background-color: #ffffff!important;
+			color: #1B2631 !important;
+		}
+		
+		.panel-configuracion .ui-accordion .ui-accordion-header.ui-state-active .ui-icon {color: #1B2631 !important;}
+		.panel-configuracion .ui-accordion .ui-accordion-header {margin-top: 5px;}
+		
+		.f-upload .ui-fileupload {border: 1px solid #d8d8dc !important;}
 		
 	</style>
 	
-	<div class="p-grid p-justify-center mt-0">
+	<div class="p-grid p-justify-center mt-0 panel-configuracion">
 		
 		<div class="p-col-12">
 		
