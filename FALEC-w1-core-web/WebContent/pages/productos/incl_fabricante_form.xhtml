@@ -19,27 +19,19 @@
 		<h:form id="frmFabricante">
 			
 			<!-- OPCIONES -->
-			
-			<div class="p-grid toolBarPopUp" >
-				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
-					
-					
-					<p:commandButton id="cmdGuardar"
-						value="GUARDAR" icon="fa fa-check" 
-						action="#{fabricanteCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
-						/>
-					<p:commandButton id="cmdnuevo"
-						value="NUEVO" icon="fa fa-plus" 
-						action="#{fabricanteCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form" process="@this"
-						/>	
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgFabricante').hide()" immediate="true"  
-						/>
-					
-				</div>
-				
+			<div class="formgroup-inline">
+				<p:commandButton id="cmdGuardar"
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{fabricanteCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form :formMain"
+					/>
+				<p:commandButton id="cmdnuevo"
+					value="NUEVO" icon="fa fa-plus" 
+					action="#{fabricanteCtrl.nuevoForm()}" styleClass="ui-button-outlined mr-1 min-width-100" update="@form" process="@this"
+					/>	
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-close" styleClass="min-width-100 ui-button-flat" 
+					onclick="PF('dlgFabricante').hide()" immediate="true"  
+					/>			
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmFabricante"
@@ -49,35 +41,36 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmFabricante contenedorFormulario">
-			
-				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
-					
-					<h:outputText value="ID" />
-					<h:outputText value="#{fabricanteCtrl.fabricanteSelected.idfabricante}" />
-					<h:outputText value="" />
-					
-					<h:outputText value="NOMBRE * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intNombre" value="#{fabricanteCtrl.fabricanteSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-					<p:message for="intNombre"/>
-					
-					
-					<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
-					<h:panelGroup>
+			<div class="form-ui w-full OvYScroll heightFrmFabricante contenedorFormulario mt-2">
+				
+			    <div class="field grid">			    	
+					<h:outputText value="ID" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+			    	<div class="col-12 md:col-10">
+						<h:outputText value="#{fabricanteCtrl.fabricanteSelected.idfabricante}" styleClass="mt-1 mr-1"/>
+			    	</div>
+			    </div>
+				<div class="field grid">
+					<h:outputText value="NOMBRE" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>			    	
+			    	<div class="col-12 md:col-10">
+						<p:inputText id="intNombre" value="#{fabricanteCtrl.fabricanteSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intNombre"/>
+			    	</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+			    	<div class="col-12 md:col-10">
 						<p:selectOneMenu id="somEstado"
 							value="#{fabricanteCtrl.fabricanteSelected.estado}"
 							required="true"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100" disabled="#{fabricanteCtrl.fabricanteSelected.idfabricante==null}">
+							styleClass="w-full" disabled="#{fabricanteCtrl.fabricanteSelected.idfabricante==null}">
 							
 							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
 			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
 			    			
 						</p:selectOneMenu>
-					</h:panelGroup>
-					<p:message for="somEstado" />
-					
-				</p:panelGrid>
+			    	</div>
+			    </div>
 				
 			</div>
 			
