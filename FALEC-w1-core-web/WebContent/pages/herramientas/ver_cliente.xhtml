@@ -9,8 +9,7 @@
 	<style type="text/css">
 	
 		.contenedorFormulario {
-				height: 50vh;
-				/* min-height: 560px; */
+				height: 30vh;
 		}
 		
 		@media screen and (max-width: 40em ) {
@@ -44,117 +43,95 @@
 		<h:form id="frmVerCliente">
 			
 			<!-- OPCIONES -->
-			<div class="p-grid toolBarPopUp" >
-				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
-
-					<p:commandButton id="cmdCerrarVerCli"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgVerCliente').hide()" immediate="true"  
-						/>
-					
-				</div>
-				
+			<div class="formgroup-inline">				
+				<p:commandButton id="cmdCerrarVerCli"
+					value="CERRAR" icon="fa fa-close" styleClass="min-width-110 ui-button-flat" 
+					onclick="PF('dlgVerCliente').hide()" immediate="true"  
+					/>
 			</div>
-			
+						
 			<!--  wraper del formulario para responsive -->
+			<div class="w-full overflow-y-scroll contenedorFormulario form-p-grid">
 			
-			<div class="form-ui Wid100 OvYScroll contenedorFormulario form-p-grid">
-			
-				<div class="p-grid">
+				<div class="grid">
 					
 					<!-- Datos del cliente -->	
-					<div class="p-col-12 p-md-6">
-						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos del cliente</div>
-			
-						<p:panelGrid id="gridClienteDat" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-4">
-				
-							<h:outputText value="ID : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.idcliente}" />
-							
-							<h:outputText value="TIPO #{msg['label.identificacion']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" />
-							
-							<h:outputText value="#{msg['label.identificacion']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.identificacion}" />
-							
-							<h:outputText value="#{msg['label.razonsocial']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.razonsocial}" />
-							
-							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.direccion}" />
-							
-							<h:outputText value="#{msg['label.correoelectronico']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.correoelectronico}" />
-							
-							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.telefono}" />
-							
-							<h:outputText value="ESTADO : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.estado}" />
-				
-						</p:panelGrid>
-							
+					<div class="col-12 md:col-6">						
+						<div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Datos del cliente</div>						
+						<div class="flex flex-column justify-content-start">							
+							<span class="block">
+								<h:outputText value="#{clienteCtrl.clienteSelected.tipoIdentificacion.tipoidentificacion}" styleClass="font-bold"/> : 
+								<h:outputText value="#{clienteCtrl.clienteSelected.identificacion}" />
+							</span>
+							<span class="block mt-1">
+								<h:outputText value="#{clienteCtrl.clienteSelected.razonsocial}" />
+							</span>
+							<span class="block mt-1">
+								<h:outputText value="#{clienteCtrl.clienteSelected.direccion}" />
+							</span>
+							<span class="block mt-1">
+								<strong>Email: </strong>
+								<h:outputText value="#{clienteCtrl.clienteSelected.correoelectronico}" />
+							</span>
+							<span class="block mt-1">
+								<strong>Estado: </strong>
+								<h:outputText value="#{clienteCtrl.clienteSelected.estado=='A'?'ACT':'INA'}" styleClass="#{clienteCtrl.clienteSelected.estado=='A'?'text-green-700':'font-bold text-pink-600'}" />
+							</span>						
+						</div>							
 					</div>
 						
 					<!-- Garantes -->
-					<div class="p-col-12 p-md-6">
-					
-						<!-- Garante 1 -->
-					
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Garante 1</div>
-					
-						<p:panelGrid id="gridClienteGar1" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6">
-							
-							<h:outputText value="NOMBRE : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.nombregarante1}" />
-							
-							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.cedulagarante1}" />
-							
-							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.direcciongarante1}" />
-							
-							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.telefonogarante1}" />
-							
-							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" />
-							
-						</p:panelGrid>
+					<div class="col-12 md:col-6">
+						
+						<!-- Garante 1 -->					
+						<div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 1</div>						
+						<div class="flex flex-column justify-content-start">							
+							<span class="block">
+								<h:outputText value="#{clienteCtrl.clienteSelected.nombregarante1==null?'-':clienteCtrl.clienteSelected.nombregarante1}" />								
+							</span>
+							<span class="block">
+								<h:outputText value="#{clienteCtrl.clienteSelected.cedulagarante1==null?'-':clienteCtrl.clienteSelected.cedulagarante1}" />
+							</span>
+							<span class="block">
+								<h:outputText value="#{clienteCtrl.clienteSelected.direcciongarante1==null?'-':clienteCtrl.clienteSelected.direcciongarante1}" />
+							</span>
+							<span class="block">
+								<strong>Tlf : </strong>
+								<h:outputText value="#{clienteCtrl.clienteSelected.telefonogarante1==null?'-':clienteCtrl.clienteSelected.telefonogarante1}" />
+							</span>
+							<span class="block">
+								<strong>Cargo : </strong>
+								<h:outputText value="#{clienteCtrl.clienteSelected.ocupaciongarante1==null?'-':clienteCtrl.clienteSelected.ocupaciongarante1}" />
+							</span>
+						</div>
 						
 						<!-- Garante 2 -->
 						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Garante 2</div>
+						<div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 2</div>
 						
-						<p:panelGrid id="gridClienteGar2" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6">
-							
-							<h:outputText value="NOMBRE : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.nombregarante2}" />
-							
-							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.cedulagarante2}" />
-							
-							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.direcciongarante2}" />
-							
-							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.telefonogarante2}" />
-							
-							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
-							<h:outputText value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" />
-							
-						</p:panelGrid>
-					
-					</div>
-					
-				</div>
-				
-			</div>
-			
-		</h:form>
-		
+						<div class="flex flex-column justify-content-start">							
+							<span class="block">
+								<h:outputText value="#{clienteCtrl.clienteSelected.nombregarante2==null?'-':clienteCtrl.clienteSelected.nombregarante2}" />
+							</span>
+							<span class="block">
+								<h:outputText value="#{clienteCtrl.clienteSelected.cedulagarante2==null?'-':clienteCtrl.clienteSelected.cedulagarante2}" />
+							</span>
+							<span class="block">
+								<h:outputText value="#{clienteCtrl.clienteSelected.direcciongarante2==null?'-':clienteCtrl.clienteSelected.direcciongarante2}" />
+							</span>
+							<span class="block">
+								<strong>Tlf : </strong>
+								<h:outputText value="#{clienteCtrl.clienteSelected.telefonogarante2==null?'-':clienteCtrl.clienteSelected.telefonogarante2}" />
+							</span>
+							<span class="block">
+								<strong>Cargo : </strong>
+								<h:outputText value="#{clienteCtrl.clienteSelected.ocupaciongarante2==null?'-':clienteCtrl.clienteSelected.ocupaciongarante2}" />
+							</span>
+						</div>					
+					</div>					
+				</div>				
+			</div>			
+		</h:form>		
    </p:dialog>  
     
 </ui:composition>

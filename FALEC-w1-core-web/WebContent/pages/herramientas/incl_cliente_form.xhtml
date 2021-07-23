@@ -43,29 +43,23 @@
 		<h:form id="frmCliente">
 			
 			<!-- OPCIONES -->
-			<div class="p-grid toolBarPopUp" >
+			<div class="formgroup-inline">
+				<p:commandButton id="cmdGuardarCli"
+					value="GUARDAR" icon="fa fa-floppy-o" ajax="true"
+					action="#{clienteCtrl.guardar()}" styleClass="min-width-100 mr-1" update="@form #{clienteCtrl.updateView}"
+					 inline="true" 
+					/>
+				<p:commandButton id="cmdMdlNuevoCli"
+					value="NUEVO" icon="fa fa-plus" styleClass="mr-1 ui-button-outlined min-width-100" 
+					action="#{clienteCtrl.nuevoModal()}" update="@form" inline="true" immediate="true" 
+					/>
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
 					
-					<p:commandButton id="cmdMdlNuevoCli"
-						value="NUEVO" icon="fa fa-plus" styleClass="secondary-button MRight10" 
-						action="#{clienteCtrl.nuevoModal()}" update="@form" inline="true" immediate="true" 
-						/>
-					
-					<p:commandButton id="cmdGuardarCli"
-						value="GUARDAR" icon="fa fa-check" ajax="true"
-						action="#{clienteCtrl.guardar()}" styleClass="MRight10" update="@form #{clienteCtrl.updateView}"
-						 inline="true" 
-						/>
-						
-					<p:commandButton id="cmdCerrarCli"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgCliente').hide()" immediate="true"
-						 inline="true"  
-						/>
-					
-				</div>
-				
+				<p:commandButton id="cmdCerrarCli"
+					value="CERRAR" icon="fa fa-close" styleClass="min-width-110 ui-button-flat" 
+					onclick="PF('dlgCliente').hide()" immediate="true"
+					 inline="true"  
+					/>				
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCliente"
@@ -75,172 +69,170 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmCliente contenedorFormulario form-p-grid">
+			<div class="w-full overflow-y-scroll heightFrmCliente contenedorFormulario mt-2">
 			
-				<div class="p-grid">
+				<div class="grid">
 					
 					<!-- Datos del cliente -->	
-					<div class="p-col-12 p-md-6">
+					<div class="col-12 md:col-10">
 						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos del cliente</div>
+						<div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Datos del cliente</div>
+						
+						<div class="field grid">							
+							<h:outputText value="Tipo identificación" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido" style="font-weight: bold" />
+							<div class="col-12 md:col-8">
+								<p:selectOneMenu id="somTipoIdentificacion" value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" 
+												 styleClass="w-full mt-1" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="REQUERIDO">
+									<f:selectItem itemLabel="TIPO IDENTIFICACIÓN [seleccionar] ..."
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 			
-						<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
-					
-							<h:outputText value="Tipo identificación * : " styleClass="cpoRequerido" style="font-weight: bold" />
-							<p:selectOneMenu id="somTipoIdentificacion" value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" 
-											 styleClass="Wid100" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="REQUERIDO">
-								<f:selectItem itemLabel="TIPO IDENTIFICACIÓN [seleccionar] ..."
-										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-		
-								<f:selectItems value="#{tipoIdentificacionCtrl.tipoIdentificacionList}" var="ident"
-									itemLabel="#{ident.tipoidentificacion}" itemValue="#{ident}" />
-							</p:selectOneMenu>
-							<p:message for="somTipoIdentificacion" />
-							
-							<h:outputText value="IDENTIFICACIÓN * : " styleClass="cpoRequerido" style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intIdentificacion" value="#{clienteCtrl.clienteSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:selectItems value="#{tipoIdentificacionCtrl.tipoIdentificacionList}" var="ident"
+										itemLabel="#{ident.tipoidentificacion}" itemValue="#{ident}" />
+								</p:selectOneMenu>
+								<p:message for="somTipoIdentificacion" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="IDENTIFICACIÓN" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido" style="font-weight: bold" />
+							<div class="col-12 md:col-8">
+								<p:inputText id="intIdentificacion" value="#{clienteCtrl.clienteSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
 									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 								</p:inputText>
-							</h:panelGroup>
-							<p:message for="intIdentificacion" />
-							
-							<h:outputText value="RAZÓN SOCIAL * : " styleClass="cpoRequerido" style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intRazonSocial" value="#{clienteCtrl.clienteSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-							</h:panelGroup>
-							<p:message for="intRazonSocial" />
-							
-							<h:outputText value="DIRECCIÓN * : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter" required="true" requiredMessage="REQUERIDO"/>
-							</h:panelGroup>
-							<p:message for="intDireccion" />
-							
-							<h:outputText value="#{msg['label.correoelectronico']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="Wid100" maxlength="50" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
+								<p:message for="intIdentificacion" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="RAZÓN SOCIAL" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido" style="font-weight: bold" />
+							<div class="col-12 md:col-8">
+								<p:inputText id="intRazonSocial" value="#{clienteCtrl.clienteSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:message for="intRazonSocial" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="DIRECCIÓN" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter" required="true" requiredMessage="REQUERIDO"/>							
+								<p:message for="intDireccion" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="#{msg['label.correoelectronico']}" styleClass="col-12 mb-2 md:col-4 md:mb-0" />
+							<div class="col-12 md:col-8">
+								<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="w-full mt-1" maxlength="50" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
 									<f:validator validatorId="emailValidator"/>
 								</p:inputText>
-							</h:panelGroup>
-							<p:message for="intCorreo" />
-							
-							<h:outputText value="TELEFÓNO : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intTelefono" value="#{clienteCtrl.clienteSelected.telefono}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+								<p:message for="intCorreo" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="TELEFÓNO" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intTelefono" value="#{clienteCtrl.clienteSelected.telefono}" styleClass="w-full" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
 									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 								</p:inputText>
-							</h:panelGroup>
-							<p:message for="intTelefono" />
-							
-							<h:outputText value="ESTADO * : " styleClass="cpoRequerido" style="font-weight: bold" />
-							<p:selectOneMenu id="somEstado" value="#{clienteCtrl.clienteSelected.estado}" 
-											 styleClass="Wid100" 
-											 required="true" requiredMessage="REQUERIDO"
-											 disabled="#{clienteCtrl.clienteSelected.idcliente==null}">
-								
-								<f:selectItem itemLabel="ACTIVO" itemValue="A" />
-								<f:selectItem itemLabel="INACTIVO" itemValue="I" />
-							</p:selectOneMenu>
-							<p:message for="somEstado" />
-							
-						</p:panelGrid>
+								<p:message for="intTelefono" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+							<div class="col-12 md:col-8">
+								<p:selectOneMenu id="somEstado" value="#{clienteCtrl.clienteSelected.estado}" 
+												 styleClass="w-full mt-1" 
+												 required="true" requiredMessage="REQUERIDO"
+												 disabled="#{clienteCtrl.clienteSelected.idcliente==null}">
+									
+									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
+									<f:selectItem itemLabel="INACTIVO" itemValue="I" />
+								</p:selectOneMenu>
+								<p:message for="somEstado" />
+							</div>
+					    </div>
+					    
+					    <div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 1</div>
+					    <div class="field grid">
+							<h:outputText value="NOMBRE" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intNomGar1" value="#{clienteCtrl.clienteSelected.nombregarante1}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<h:outputText value="" />
+							</div>
+					    </div>
+					    <div class="field grid">
+							<h:outputText value="#{msg['label.cedula']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 "/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intCedGar1" value="#{clienteCtrl.clienteSelected.cedulagarante1}" styleClass="w-full mt-1" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
+								<p:message for="intCedGar1" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="#{msg['label.direccion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intDirGar1" value="#{clienteCtrl.clienteSelected.direcciongarante1}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<h:outputText value="" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="#{msg['label.telefono']}" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intTelGar1" value="#{clienteCtrl.clienteSelected.telefonogarante1}" styleClass="w-full mt-1" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
+								<p:message for="intTelGar1" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="#{msg['label.ocupacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intOcupGar1" value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" styleClass="w-full mt-1" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
+								<h:outputText value="" />
+							</div>
+					    </div>
+					    
+						<div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 2</div>
 						
+					    <div class="field grid">							
+							<h:outputText value="NOMBRE" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intNomGar2" value="#{clienteCtrl.clienteSelected.nombregarante2}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<h:outputText value="" />
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="#{msg['label.cedula']} " styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intCedGar2" value="#{clienteCtrl.clienteSelected.cedulagarante2}" styleClass="w-full mt-1" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
+								<p:message for="intCedGar2" />
+							</div>
+					    </div>
+					    <div class="field grid">
+							<h:outputText value="#{msg['label.direccion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intDirGar2" value="#{clienteCtrl.clienteSelected.direcciongarante2}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<h:outputText value="" />
+							</div>
+					    </div>
+					    <div class="field grid">
+							<h:outputText value="#{msg['label.telefono']}" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intTelGar2" value="#{clienteCtrl.clienteSelected.telefonogarante2}" styleClass="w-full" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
+								</p:inputText>
+								<p:message for="intTelGar2" />
+							</div>
+					    </div>
+					    <div class="field grid">
+							<h:outputText value="#{msg['label.ocupacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intOcupGar2" value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" styleClass="w-full mt-1" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
+								<h:outputText value="" />
+							</div>
+					    </div>
 					</div>
-					
-					<!-- Garantes -->
-					<div class="p-col-12 p-md-6">
-					
-						<!-- Garante 1 -->
-					
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 1</div>
-					
-						<p:panelGrid id="gridClienteGar1" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
-							
-							<h:outputText value="NOMBRE : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intNomGar1" value="#{clienteCtrl.clienteSelected.nombregarante1}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-							</h:panelGroup>
-							<h:outputText value="" />
-							
-							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intCedGar1" value="#{clienteCtrl.clienteSelected.cedulagarante1}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
-									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
-								</p:inputText>
-							</h:panelGroup>
-							<p:message for="intCedGar1" />
-							
-							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intDirGar1" value="#{clienteCtrl.clienteSelected.direcciongarante1}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-							</h:panelGroup>
-							<h:outputText value="" />
-							
-							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intTelGar1" value="#{clienteCtrl.clienteSelected.telefonogarante1}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
-									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
-								</p:inputText>
-							</h:panelGroup>
-							<p:message for="intTelGar1" />
-							
-							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intOcupGar1" value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" styleClass="Wid100" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
-							</h:panelGroup>
-							<h:outputText value="" />
-							
-						</p:panelGrid>
-						
-						<!-- Garante 2 -->
-						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Contacto 2</div>
-						
-						<p:panelGrid id="gridClienteGar2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
-							
-							<h:outputText value="NOMBRE : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intNomGar2" value="#{clienteCtrl.clienteSelected.nombregarante2}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-							</h:panelGroup>
-							<h:outputText value="" />
-							
-							<h:outputText value="#{msg['label.cedula']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intCedGar2" value="#{clienteCtrl.clienteSelected.cedulagarante2}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
-									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
-								</p:inputText>
-							</h:panelGroup>
-							<p:message for="intCedGar2" />
-							
-							<h:outputText value="#{msg['label.direccion']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intDirGar2" value="#{clienteCtrl.clienteSelected.direcciongarante2}" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-							</h:panelGroup>
-							<h:outputText value="" />
-							
-							<h:outputText value="#{msg['label.telefono']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intTelGar2" value="#{clienteCtrl.clienteSelected.telefonogarante2}" styleClass="Wid100" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
-									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
-								</p:inputText>
-							</h:panelGroup>
-							<p:message for="intTelGar2" />
-							
-							<h:outputText value="#{msg['label.ocupacion']} : " style="font-weight: bold" />
-							<h:panelGroup>
-								<p:inputText id="intOcupGar2" value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" styleClass="Wid100" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
-							</h:panelGroup>
-							<h:outputText value="" />
-							
-						</p:panelGrid>
-					
-					</div>
-					
 				</div>
-				
 			</div>
-			
 		</h:form>
 		
    </p:dialog>  

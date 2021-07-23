@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Cliente</ui:define>
     
@@ -14,19 +14,10 @@
 			
 			.clienteDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 390px)!important;
+				height: calc(100vh - 260px)!important;
 			}
 			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
+			body .ui-datatable thead th {text-align: left;vertical-align: top;}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
 			 border: none;
@@ -54,7 +45,10 @@
     </ui:define>
 
     <ui:define name="content">
-
+		<!-- CARGAR LA PAGINA  -->
+    	<f:metadata>
+		    <f:viewAction action="#{clienteCtrl.refrescar}" />
+		</f:metadata>
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Cliente" url="#{request.contextPath}/pages/herramientas/cliente.jsf"/>
@@ -63,88 +57,59 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	
-	    	<div class="EmptyBox5"/>
-	    	<div class="card card-w-title">
-	    		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Cliente</h3>
-	    		<div class="p-grid p-align-center">
-	    			
-	    			<!-- criterio de búsqueda -->
-	    			<div class="p-col-12 p-md-6">
-						
-						<div class="p-col-12">
-							<h:outputText value="Buscar por:" styleClass="TextBold"/><br/>
-							<h:outputText value="#{msg['criterio.busquedacliente']}" style="color:gray;" styleClass="Fs11"/>
-						</div>
-						
-						<div class="p-col-12">
-							<p:inputText id="intCriterioCli" value="#{clienteCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="#{msg['criterio.busquedacliente']}"/>
-						</div>
-						
-					</div>
-	    			
-	    			<!-- Opciones -->
-	    			<div class="p-col-12 p-md-6" style="text-align:center;">
-	    				
-	    				<p:panelGrid columns="1"
-								style="margin:0px;border:none !important;width:100%;"
-								layout="grid"
-								columnClasses="ui-g-12">
-								
-								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
-									columnClasses="ui-g-12 ui-lg-6,
-												   ui-g-12 ui-lg-6">
-												   
-									<p:commandButton id="cmdRefrescarCli"
-											value="CONSULTAR" icon="fa fa-search" 
-											action="#{clienteCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
-											/>
-									
-									<p:commandButton id="cmdExcelCargarCli" 
-										title="CARGAR ARCHIVO EXCEL CLIENTES"
-										icon="fa fa-file-excel-o"
-										value="IMPORTAR CLIENTES"
-										styleClass="secondary-button Wid90 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}"
-										onclick="PF('dlgImportCliente').show()"
-										update=":frmImportCliente"
-										immediate="true">
-										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.nombreFileCliente}"/>
-										<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.fileClientes}"/>
-										<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.existenNovedades}"/>
-										<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.renderResultadoImportCliente}"/>
-									</p:commandButton>
-									
-									<p:commandButton id="cmdNuevoCli"
-										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}" 
-										action="#{clienteCtrl.nuevo()}" inline="true">
-										<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
-										<f:setPropertyActionListener value=":formMain:clienteDT" target="#{clienteCtrl.updateView}"/>
-									</p:commandButton>
-									
-									<p:commandButton id="cmdExcelCli" 
-													 title="EXPORTAR"
-													 icon="fa fa-file-excel-o"
-													 ajax="false" 
-													 onclick="PrimeFaces.monitorDownload(start,stop)"
-													 value="EXPORTAR"
-													 styleClass="secondary-button Wid90">
-										<p:fileDownload value="#{clienteCtrl.fileCliente}" />
-									</p:commandButton>									
-								
-								</p:panelGrid>
-								
-						</p:panelGrid>
-	    			</div>
-	    		</div>
-	    	</div>
-	    	
+	    
 	    	<!-- Mensajes -->
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" style="margin:0px!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			<div class="EmptyBox5"/>
-			<div class="card card-w-title">
+			<div class="card card-w-title mt-1">
+			
+				<div class="grid justify-content-between">
+					<div class="col-3">
+						<h3 class="cardTitle">Cliente</h3>
+					</div>
+					
+					<div class="col-4 align-self-center">
+						<div class="flex justify-content-end">
+							<p:commandButton id="cmdRefrescarCli"
+									title="Consultar" icon="fa fa-search" 
+									action="#{clienteCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+									/>
+									
+							<p:commandButton id="cmdNuevoCli"
+								title="Nuevo" icon="fa fa-plus" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}" 
+								action="#{clienteCtrl.nuevo()}" inline="true">
+								<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":formMain:clienteDT" target="#{clienteCtrl.updateView}"/>
+							</p:commandButton>
+							
+							<p:commandButton id="cmdExcelCli" 
+											 title="Exportar excel"
+											 icon="fa fa-download"
+											 ajax="false" 
+											 onclick="PrimeFaces.monitorDownload(start,stop)"
+											 styleClass="ui-button-outlined mr-1">
+								<p:fileDownload value="#{clienteCtrl.fileCliente}" />
+							</p:commandButton>
+							
+							<p:commandButton id="cmdExcelCargarCli" 
+								title="Cargar archivo excel clientes"
+								icon="fa fa-upload"
+								value="IMPORTAR"
+								styleClass="ui-button-success min-width-100 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}"
+								onclick="PF('dlgImportCliente').show()"
+								update=":frmImportCliente"
+								immediate="true">
+								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.nombreFileCliente}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.fileClientes}"/>
+								<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.existenNovedades}"/>
+								<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.renderResultadoImportCliente}"/>
+							</p:commandButton>
+														
+						</div>
+					</div>
+				</div>
 				
 				<p:dataTable id="clienteDT" var="c"
 					value="#{clienteCtrl.clienteList}" scrollable="true"
@@ -165,12 +130,12 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtCliente" my="left top" at="left bottom">
-							<p:menuitem value="Ver Cliente" action="#{clienteCtrl.verCliente(c.idcliente)}" icon="fa fa-edit" >
+							<p:menuitem value="Ver" action="#{clienteCtrl.verCliente(c.idcliente)}" icon="fa fa-eye" >
 							</p:menuitem>
-							<p:menuitem value="Editar Cliente" action="#{clienteCtrl.editarCliente(c.idcliente)}" icon="fa fa-edit" rendered="#{c.identificacion ne '9999999999999'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Editar" action="#{clienteCtrl.editarCliente(c.idcliente)}" icon="fa fa-edit" rendered="#{c.identificacion ne '9999999999999'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
 							</p:menuitem>
-				            <p:menuitem value="Eliminar Cliente" action="#{clienteCtrl.eliminar()}" icon="fa fa-close" process="clienteDT" update="@parent" rendered="#{c.identificacion ne '9999999999999'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}">
+				            <p:menuitem value="Eliminar" action="#{clienteCtrl.eliminar()}" icon="fa fa-close" process="clienteDT" update="@parent" rendered="#{c.identificacion ne '9999999999999'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}">
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 				            	<f:setPropertyActionListener value="#{c}" target="#{clienteCtrl.clienteSelected}"/>
 				            </p:menuitem>
@@ -185,24 +150,22 @@
 					<p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="IDENTIFICACIÓN" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
 						</f:facet>
 						<h:outputText value="#{c.identificacion}" />
 					</p:column>
 					
-					<p:column style="width:90px;" filterBy="#{c.razonsocial}" filterMatchMode="contains">
+					<p:column style="width:200px;" filterBy="#{c.razonsocial}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="RAZÓN SOCIAL" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
 						</f:facet>
 						<h:outputText value="#{c.razonsocial}" />
 					</p:column>
 					
-					<p:column headerText="DIRECCIÓN" style="width:50px;">
+					<p:column headerText="DIRECCIÓN" style="width:150px;">
 						<h:outputText value="#{c.direccion}"/>
 					</p:column>
 					
-					<p:column headerText="CORREO ELECTRÖNICO" style="width:50px;">
+					<p:column headerText="CORREO ELECTRÖNICO" style="width:100px;">
 						<h:outputText value="#{c.correoelectronico}"/>
 					</p:column>
 					
