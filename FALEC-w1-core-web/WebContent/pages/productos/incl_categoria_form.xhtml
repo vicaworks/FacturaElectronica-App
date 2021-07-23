@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.heightFrmUsuario {
-				height: 200px;
+			height: 200px;
 		}
 		
 	</style>
@@ -19,29 +19,21 @@
 		<h:form id="frmCategoria">
 			
 			<!-- OPCIONES -->
-			
-			<div class="p-grid toolBarPopUp" >
+			<div class="formgroup-inline">
+				<p:commandButton id="cmdGuardar"
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{categoriaCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form :formMain"
+					/>
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
+				<p:commandButton id="cmdNuevo"
+					value="NUEVO" icon="fa fa-plus" 
+					action="#{categoriaCtrl.nuevoForm()}" styleClass="ui-button-outlined mr-1 min-width-100" update="@form :formMain" process="@this"
+					/>
 					
-					
-					<p:commandButton id="cmdGuardar"
-						value="GUARDAR" icon="fa fa-check" 
-						action="#{categoriaCtrl.guardar()}" styleClass="MRight10" update="@form :formMain"
-						/>
-					
-					<p:commandButton id="cmdNuevo"
-						value="NUEVO" icon="fa fa-plus" 
-						action="#{categoriaCtrl.nuevoForm()}" styleClass="secondary-button MRight10" update="@form :formMain" process="@this"
-						/>
-						
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgCategoria').hide()" immediate="true"  
-						/>
-					
-				</div>
-				
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-close" styleClass="min-width-100 ui-button-flat" 
+					onclick="PF('dlgCategoria').hide()" immediate="true"  
+					/>			
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCategoria"
@@ -51,45 +43,50 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmUsuario contenedorFormulario">
-			
-				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
-					
-					<h:outputText value="ID" />
-					<h:outputText value="#{categoriaCtrl.categoriaSelected.idcategoria}" />
-					<h:outputText value="" />
-					
-					<h:outputText value="NOMBRE * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intCategoria" value="#{categoriaCtrl.categoriaSelected.categoria}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-					<p:message for="intCategoria"/>
-					
-					<h:outputText value="#{msg['label.descripcion']}: " styleClass="cpoRequerido"/>
-					<p:inputText id="intDscripcion" value="#{categoriaCtrl.categoriaSelected.descripcion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-					<p:message for="intDscripcion"/>
-					
-					
-					<h:outputText value="ESTADO * : " styleClass="cpoRequerido"/>
-					<h:panelGroup>
+			<div class="form-ui w-full OvYScroll heightFrmUsuario contenedorFormulario mt-2">
+				
+				<div class="field grid">			    	
+					<h:outputText value="ID" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+			    	<div class="col-12 md:col-10">
+						<h:outputText value="#{fabricanteCtrl.fabricanteSelected.idfabricante}" styleClass="mt-1"/>
+						<h:outputText value="#{categoriaCtrl.categoriaSelected.idcategoria}" />
+			    	</div>
+			    </div>
+			    
+			    <div class="field grid">		
+					<h:outputText value="NOMBRE" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+			    	<div class="col-12 md:col-10">
+						<p:inputText id="intCategoria" value="#{categoriaCtrl.categoriaSelected.categoria}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intCategoria"/>
+			    	</div>
+			    </div>
+			    <div class="field grid">		
+					<h:outputText value="#{msg['label.descripcion']}" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+					<div class="col-12 md:col-10">
+						<p:inputText id="intDscripcion" value="#{categoriaCtrl.categoriaSelected.descripcion}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intDscripcion"/>
+			    	</div>
+			    </div>
+			    <div class="field grid">		
+					<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+					<div class="col-12 md:col-10">
 						<p:selectOneMenu id="somEstado"
 							value="#{categoriaCtrl.categoriaSelected.estado}"
 							required="true"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100" disabled="#{categoriaCtrl.categoriaSelected.idcategoria==null}">
+							styleClass="w-full mt-1" disabled="#{categoriaCtrl.categoriaSelected.idcategoria==null}">
 							
 							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
 			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
 			    			
 						</p:selectOneMenu>
-					</h:panelGroup>
-					<p:message for="somEstado" />
-					
-				</p:panelGrid>
-				
+			    	</div>
+			    </div>
+								
 			</div>
 			
 		</h:form>
 		
-   </p:dialog>  
-    
+   </p:dialog>      
 
 </ui:composition>
