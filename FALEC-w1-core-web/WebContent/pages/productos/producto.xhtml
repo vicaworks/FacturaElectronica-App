@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Producto</ui:define>
     
@@ -13,27 +13,22 @@
         <style type="text/css">
 			
 			.productoDT .ui-datatable-scrollable-body{
-				min-height: 30vh !important;
-				height: calc(100vh - 390px)!important;
+				height: calc(100vh - 280px)!important;
 			}
 			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
+			.costo-unitario {
+				background: #C8E6C9;
+				color: #256029;
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
+			.product-image {
+				width: 100px;
+				padding: 5px;
+				box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 			}
 			
-			.imgSize{
-				/* height: 50%;
-				width: 50%; */
-				/* height: 50%;
-				width: 50%; */
-			}
+			body .ui-datatable thead th,
+			body .ui-datatable .ui-datatable-data > tr > td {text-align: left;vertical-align: top;}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
 			 border: none;
@@ -41,7 +36,6 @@
 			}	
 			
 			body .ui-fileupload .ui-fileupload-content {
-				/* display: none; */
 				border: none;
 				padding: 0px;
 				border-top: 0 none;
@@ -51,6 +45,8 @@
 			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
 				width: 100%;
 			}
+			
+			.ui-selectonemenu label.ui-selectonemenu-label {text-overflow: ellipsis;}
 			
 			@media screen and (max-width: 40em){
 					.ui-fileupload-buttonbar .ui-button .ui-button-text {
@@ -76,112 +72,83 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	<div class="EmptyBox5"/>
-	    	<div class="card card-w-title">
-	    		
-	    		<div class="p-grid p-nogutter p-align-center">
-	    			<div class="p-col-12 p-md-6">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Producto / Servicios</h3>
-	    			</div>
-	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;padding-right: 24px!important;">
-	                
-		                <p:selectOneMenu id="somEstablecimientoMain"
-							value="#{productoCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="cmb_establecimiento_wrapper"
-							disabled="#{not productoCtrl.habilitarEstablecimientoMain}">
-							
-							<f:selectItems value="#{productoCtrl.establecimientoMainList}" var="st"
-								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-							
-							<p:ajax event="valueChange" listener="#{productoCtrl.refrescar()}" update="@form"/>
-								
-						</p:selectOneMenu>
-		                
-		                
-	        		</div>
-	    		</div>
-				
-		   		<div class="EmptyBox5"/>
-	    		
-	    		<div class="p-grid p-align-center">
-	    			
-	    			<!-- criterio de busqueda -->
-	    			<div class="p-col-12 p-md-6">
-						
-						<div class="p-col-12">
-							<h:outputText value="BUSCAR *" styleClass="cpoRequerido Wid100"/><br/>
-							<h:outputText value="#{msg['criterio.busquedaproducto']}" style="color:gray;" styleClass="Fs11"/>
-						</div>
-						
-						<div class="p-col-12">
-							<p:inputText id="intCriterio" value="#{productoCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="#{msg['criterio.busquedaproducto']}"/>
-						</div>
-						
-					</div>
-	    			
-	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-6" style="text-align:center;">
-	    				
-	    				<p:panelGrid columns="1"
-								style="margin:0px;border:none !important;width:100%;"
-								layout="grid"
-								columnClasses="ui-g-12">
-								
-								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
-									columnClasses="ui-g-12 ui-lg-6,
-												   ui-g-12 ui-lg-6">
-												   
-									<p:commandButton id="cmdRefrecar"
-											value="CONSULTAR" icon="fa fa-search" 
-											action="#{productoCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
-											/>
-									
-									<p:commandButton  id="cmdExcel" 
-										title="EXPORTAR"
-										icon="fa fa-file-excel-o"
-										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="EXPORTAR"
-										styleClass="secondary-button Wid90">
-										<p:fileDownload value="#{productoCtrl.fileProducto}"/>
-									</p:commandButton>
-									
-									<p:commandButton id="cmdNuevo"
-										value="NUEVO" icon="fa fa-plus" styleClass="secondary-button Wid90 #{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}" 
-										action="#{productoCtrl.nuevo()}" inline="true">
-										<f:setPropertyActionListener value="PRODUCTO" target="#{productoCtrl.callModule}"/>
-										<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
-										<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
-									</p:commandButton>
-									
-									<p:commandButton  id="cmdExcelCargar" 
-										title="CARGAR ARCHIVO EXCEL PRODUCTOS"
-										icon="fa fa-file-excel-o"
-										value="IMPORTAR PRODUCTOS"
-										styleClass="secondary-button Wid90"
-										onclick="PF('dlgImportProducto').show()"
-										update=":frmImportProducto"
-										immediate="true">
-										<f:setPropertyActionListener value="#{null}" target="#{productoCtrl.nombreFileProducto}"/>
-										<f:setPropertyActionListener value="#{null}" target="#{productoCtrl.fileProductos}"/>
-										<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.existeNovedades}"/>
-										<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.renderResultadoImportProducto}"/>
-									</p:commandButton>
-								
-								</p:panelGrid>
-								
-						</p:panelGrid>
-	    			</div>
-	    		</div>
-	    	</div>
 	    	
 	    	<!-- Mensajes -->
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" style="margin:0px!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			<div class="EmptyBox5"/>
-			<div class="card card-w-title">
+			
+			<div class="card card-w-title mt-1">
+				
+				<div class="grid justify-content-between">
+	    			<div class="col-4 md:col-4">
+						<h3 class="cardTitle">Productos</h3>
+	    			</div>
+					
+					<div class="col-8 md:col-4 align-self-center" style="text-align: right;">
+		                <p:selectOneMenu id="somEstablecimientoMain"
+							value="#{productoCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							styleClass=""
+							style="text-overflow: hidden!important;max-width:200px!important;"
+							disabled="#{not productoCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItems value="#{productoCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />
+							
+							<p:ajax event="valueChange" listener="#{productoCtrl.refrescar()}" update="@form"/>
+								
+						</p:selectOneMenu>
+					</div>	                
+	    		</div>
+	    		
+				<div class="grid grid-nogutter mt-0 mb-1">
+					<div class="col-12 md:col-5 pr-2">
+						<div class="ui-inputgroup">
+		                    <span class="ui-inputgroup-addon"><i class="fa fa-search"></i></span>
+		                    <p:inputText id="intCriterio" value="#{productoCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="1000" placeholder="#{msg['criterio.busquedaproducto']}"/>
+		                </div>
+					</div>
+					<div class="col-12 md:col-6 mt-2 md:mt-0">
+						<div class="flex flex-inline">
+							<p:commandButton id="cmdRefrecar"
+									title="Consultar" icon="fa fa-search" 
+									action="#{productoCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+									/>
+							<p:commandButton id="cmdNuevo"
+								title="Nuevo" icon="fa fa-plus" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}" 
+								action="#{productoCtrl.nuevo()}" inline="true">
+								<f:setPropertyActionListener value="PRODUCTO" target="#{productoCtrl.callModule}"/>
+								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
+							</p:commandButton>
+							
+							<p:commandButton  id="cmdExcel" 
+								title="Exportar excel"
+								icon="fa fa-download"
+								ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+								styleClass="ui-button-outlined mr-1">
+								<p:fileDownload value="#{productoCtrl.fileProducto}"/>
+							</p:commandButton>
+							
+							<p:commandButton  id="cmdExcelCargar" 
+								title="Importar productos"
+								icon="fa fa-upload"
+								value="IMPORTAR"
+								styleClass="ui-button-success"
+								onclick="PF('dlgImportProducto').show()"
+								update=":frmImportProducto"
+								immediate="true">
+								<f:setPropertyActionListener value="#{null}" target="#{productoCtrl.nombreFileProducto}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{productoCtrl.fileProductos}"/>
+								<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.existeNovedades}"/>
+								<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.renderResultadoImportProducto}"/>
+							</p:commandButton>
+						</div>
+					</div>
+				</div>
+			
 				<p:dataTable id="productoDT" var="p"
 					value="#{productoCtrl.productoList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
@@ -195,7 +162,7 @@
 	                rowsPerPageTemplate="10,12,15,20">
 	                
 	                
-	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:10px;">
+	                <p:column headerText="OPC" styleClass="text-center" style="width:10px;">
 						
 						<p:commandLink id="cmlDtProducto">
 							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
@@ -238,95 +205,95 @@
 						
 					</p:column>
 					
-					<p:column headerText="#{msg['label.codigo']}" style="width:30px;">
-						<div class="p-grid">
-							<div class="p-col-5">
-								<h:outputText value="ID:" styleClass="Fs10 FontBold"/>
+					<p:column headerText="#{msg['label.codigo']}" style="width:60px;" filterBy="#{p.codigoprincipal}" filterMatchMode="contains">
+						<div class="grid">
+							<div class="col-2">
+								<h:outputText value="Id. " styleClass="Fs8"/>
 							</div>
-							<div class="p-col-7">
+							<div class="col-10">
 								<h:outputText value="#{p.idproducto}" >
 								</h:outputText>
 							</div>
-							<div class="p-col-5">
-								<h:outputText value="COD BAR:" styleClass="Fs10 FontBold"/>
+							<div class="col-2">
+								<i class="fa fa-small fa-barcode"></i>
 							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{p.codigoprincipal}" >
+							<div class="col-10">
+								<h:outputText value="#{p.codigoprincipal}" styleClass="font-bold">
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column style="width:50px;" filterBy="#{p.categoria}" filterMatchMode="contains">
+					<p:column style="width:60px;" filterBy="#{p.categoria}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="#{msg['label.categoria']}" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
 							
 						</f:facet>
 						<h:outputText value="#{p.categoria.categoria}" />
 					</p:column>
 					
-					<p:column style="width:90px;" filterBy="#{p.nombregenerico}" filterMatchMode="contains">
+					<p:column style="width:80px;" filterBy="#{p.nombregenerico}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="NOMBRE" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
-							
 						</f:facet>
 						<h:outputText value="#{p.nombregenerico}" />
 					</p:column>
 					
-					<p:column headerText="STOCK" style="width:20px;" styleClass="TexAlCenter">
+					<p:column headerText="STOCK" style="width:30px;" styleClass="text-center">
 					
-						<h:outputText value="#{p.stock}" styleClass="#{p.stock.doubleValue()==0.0?'markRed':'markGreen'}">
+						<h:outputText value="#{p.stock}" styleClass="#{p.stock.doubleValue()==0.0?'markRed':'markGreen'} mt-1">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 						
 					</p:column>
 					
-					<p:column headerText="VALORES" style="width:80px;">
-						<div class="p-grid">
-							<div class="p-col-5">
-								<h:outputText value="Costo Unit:" styleClass="Fs10 FontBold"/>
+					<p:column headerText="P. VENTA" style="width:90px;">
+						<div class="grid">
+							<div class="col-3">
+								<h:outputText value="PV-1:" styleClass="Fs8"/>
 							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{p.preciounitario}" >
+							<div class="col-9 pl-1">
+								<h:outputText value="#{p.preciouno}" styleClass="font-bold">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-5">
-								<h:outputText value="Precio Venta #1:" styleClass="Fs10 FontBold"/>
+							<div class="col-3">
+								<h:outputText value="PV-2:" styleClass="Fs8"/>
 							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{p.preciouno}" >
-									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							<div class="p-col-5">
-								<h:outputText value="Precio Venta #2:" styleClass="Fs10 FontBold"/>
-							</div>
-							<div class="p-col-7">
+							<div class="col-9 pl-1">
 								<h:outputText value="#{p.preciodos}" >
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-5">
-								<h:outputText value="Precio Venta #3:" styleClass="Fs10 FontBold"/>
+							<div class="col-3">
+								<h:outputText value="PV-3:" styleClass="Fs8"/>
 							</div>
-							<div class="p-col-7">
+							<div class="col-9 pl-1">
 								<h:outputText value="#{p.preciotres}" >
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+							<div class="col-3">
+								<h:outputText value="C.U." styleClass="Fs8"/>
+							</div>
+							<div class="col-9 pl-1">
+								<h:outputText value="#{p.preciounitario}" styleClass="costo-unitario Fs11">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					<p:column headerText="IMAGEN" style="width:60px;">
+						<p:outputPanel rendered="#{p.imagen==null}">
+							<i class="fa fa-5x fa-image opacity-30 product-image text-center"></i>
+						</p:outputPanel>
 						<h:outputText value="" rendered="#{p.imagen==null}"/>
-						<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" rendered="#{p.imagen!=null}" styleClass="imgSize" width="300" height="300"/>
+						<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" rendered="#{p.imagen!=null}" styleClass="product-image"/>
 					</p:column>
 	                
 				</p:dataTable>
-				<div class="EmptyBox20"/>
 			</div>
+			<div class="EmptyBox20"/>
 	    	
 	    </h:form>
 	    
