@@ -169,38 +169,39 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtProducto" my="left top" at="left bottom">
-							<p:menuitem value="Editar Producto" action="#{productoCtrl.editarProducto(p.idproducto)}" icon="fa fa-edit" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Editar" action="#{productoCtrl.editarProducto(p.idproducto)}" icon="fa fa-edit" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="PRODUCTO" target="#{productoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 								<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
 							</p:menuitem>
-							<p:menuitem value="Eliminar Producto" action="#{productoCtrl.eliminar()}" icon="fa fa-close" process="productoDT" update="@parent" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Eliminar" action="#{productoCtrl.eliminar()}" icon="fa fa-close" process="productoDT" update="@parent" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
 				            	<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 				            	<f:setPropertyActionListener value="#{p}" target="#{productoCtrl.productoSelected}"/>
 				            </p:menuitem>
-				            <p:separator />
-				            <p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" disabled="#{p.tipoProducto.nombre=='SERVICIO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
-				            	<f:setPropertyActionListener value="#{productoCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
-				            	<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
-				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
-				            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
-								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
-								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
-								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
-							</p:menuitem>
-							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" disabled="#{p.tipoProducto.nombre=='SERVICIO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
-								<f:setPropertyActionListener value="#{productoCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
-								<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
-				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
-								<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
-								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
-								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-								<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
-								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
-							</p:menuitem>
-							<p:menuitem value="Kardex" action="#{productoCtrl.redirectKardex(p)}" icon="fa fa-tags" disabled="#{p.tipoProducto.nombre=='SERVICIO'}">
-							</p:menuitem>
+				            <p:submenu label="Inventario">
+					            <p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" disabled="#{p.tipoProducto.nombre=='SERVICIO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+					            	<f:setPropertyActionListener value="#{productoCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
+					            	<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
+					            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+					            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+									<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
+									<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+									<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+									<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
+								</p:menuitem>
+								<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" disabled="#{p.tipoProducto.nombre=='SERVICIO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+									<f:setPropertyActionListener value="#{productoCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
+									<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
+					            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+									<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+									<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
+									<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+									<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
+									<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
+								</p:menuitem>
+								<p:menuitem value="Kardex" action="#{productoCtrl.redirectKardex(p)}" icon="fa fa-tags" disabled="#{p.tipoProducto.nombre=='SERVICIO'}">
+								</p:menuitem>
+							</p:submenu>
 						</p:menu>
 						
 					</p:column>
@@ -287,8 +288,16 @@
 						<p:outputPanel rendered="#{p.imagen==null}">
 							<i class="fa fa-5x fa-image opacity-30 product-image text-center"></i>
 						</p:outputPanel>
-						<h:outputText value="" rendered="#{p.imagen==null}"/>
-						<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" rendered="#{p.imagen!=null}" styleClass="product-image"/>
+						<p:outputPanel rendered="#{p.imagen!=null}">
+							<p:commandLink id="images">
+								<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" styleClass="product-image"/>
+							</p:commandLink>
+							<p:overlayPanel for="images" dismissable="false" showCloseIcon="true">
+					            <p:imageSwitch effect="fade">
+				                    <p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false"/>
+					            </p:imageSwitch>
+					        </p:overlayPanel>
+						</p:outputPanel>
 					</p:column>
 	                
 				</p:dataTable>

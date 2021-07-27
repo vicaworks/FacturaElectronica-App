@@ -159,6 +159,21 @@ public class InventarioCtrl extends BaseCtrl {
 	}
 	
 	
+	public void limpiarConsulta() {
+		
+		try {
+			
+			AppJsfUtil.limpiarFiltrosDataTable("formMain:inventarioDT");
+			productoList = null;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+		
+	}
+	
+	
 	
 	public void buscarDispacher() throws DaoException {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:inventarioDT");

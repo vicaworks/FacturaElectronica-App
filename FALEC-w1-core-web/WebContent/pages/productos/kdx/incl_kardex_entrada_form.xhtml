@@ -20,24 +20,18 @@
 			
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp" >
-				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
+			<div class="formgroup-inline">
+				<p:commandButton id="cmdKrxEntradaGuardar"
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{kardexCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form #{kardexCtrl.updateView}"
+					/>
 					
-					
-					<p:commandButton id="cmdKrxEntradaGuardar"
-						value="GUARDAR" icon="fa fa-check" 
-						action="#{kardexCtrl.guardar()}" styleClass="MRight10" update="@form #{kardexCtrl.updateView}"
-						/>
-						
-					<p:commandButton id="cmdKrxEntradaCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgEntradaInventario').hide()" immediate="true"  
-						/>
-					
-				</div>
-				
+				<p:commandButton id="cmdKrxEntradaCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
+					onclick="PF('dlgEntradaInventario').hide()" immediate="true"  
+					/>			
 			</div>
+			
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmKardex"
 				closable="true" >
@@ -52,7 +46,7 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmKdxEntrada contenedorFormulario">
+			<div class="w-full overflow-y-scroll heightFrmKdxEntrada contenedorFormulario mt-2">
 				
 				<o:validateMultiple id="claKardexFechaFabricacion_Val" components="claKardexFechaCompra claKardexFechaFabricacion" validator="#{validatorDateBeforeThan}" 
         						message="FECHA DE FABRICACION NO PUEDE SER MAYOR A LA FECHA DE COMPRA" />
@@ -60,100 +54,123 @@
         						message="FECHA DE COMPRA NO PUEDE SER MAYOR A LA FECHA DE REGISTRO" />
         		
 				
-				<p:panelGrid id="grid" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-6,ui-g-12 ui-md-2">
+				<div class="field grid">
+					<h:outputText value="ESTABLECIMIENTO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<h:outputText value="#{appSessionCtrl.formatoCadena(kardexCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="requerido mt-1"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="ID PRODUCTO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<h:outputText value="#{kardexCtrl.productoSelected.idproducto}" styleClass="requerido mt-1"/>
+					</div>
+			    </div>
+			    <div class="field grid">
 					
-					<h:outputText value="ESTABLECIMIENTO : " styleClass="FontBold"/>
-					<h:outputText value="#{appSessionCtrl.formatoCadena(kardexCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="FontBold FS12"/>
-					<h:outputText value="" />
+					<h:outputText value="PRODUCTO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<h:outputText value="#{kardexCtrl.productoSelected.nombregenerico}" styleClass="w-full mt-1"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="#{msg['label.codigo']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<h:outputText value="#{kardexCtrl.productoSelected.codigoprincipal}" styleClass="w-full mt-1"/>
+					</div>
+			    </div>
+			    <div class="field grid">
 					
-					<h:outputText value="ID PRODUCTO : " styleClass="FontBold"/>
-					<h:outputText value="#{kardexCtrl.productoSelected.idproducto}" styleClass="FontBold FS12"/>
-					<h:outputText value="" />
-					
-					<h:outputText value="PRODUCTO : " styleClass="FontBold"/>
-					<h:outputText value="#{kardexCtrl.productoSelected.nombregenerico}" styleClass="FontBold FS12"/>
-					<h:outputText value="" />
-					
-					<h:outputText value="#{msg['label.codigo']} : " styleClass="FontBold"/>
-					<h:outputText value="#{kardexCtrl.productoSelected.codigoprincipal}" styleClass="FontBold FS12"/>
-					<h:outputText value="" />
-					
-					<h:outputText value="STOCK : " styleClass="FontBold"/>
-					<h:outputText value="#{kardexCtrl.productoSelected.stock}" styleClass="FontBold FS12">
-						<f:convertNumber locale="es_EC" pattern="0.##"/>
-					</h:outputText>
-					<h:outputText value="" />
-					
-					<h:outputText value="CANTIDAD * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intKardexCantidad"
-						value="#{kardexCtrl.kardexProductoSelected.cantidad}"
-						required="true" requiredMessage="REQUERIDO"
-						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
-						<f:convertNumber locale="es_EC" pattern="0.##"/>
-						<f:validateDoubleRange minimum="0.1"/>
-					</p:inputText>
-					<p:message for="intKardexCantidad"/>
-					
-					<h:outputText value="FECHA REGISTRO * : "/>
-					<p:calendar id="claKardexFechaRegistro" value="#{kardexCtrl.kardexProductoSelected.fecharegistro}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-					</p:calendar>
-					<p:message for="claKardexFechaRegistro"/>
-					
-					<h:outputText value="COSTO UNITARIO * : " styleClass="cpoRequerido"/>
-					<p:inputText id="intKardexCostoUnitario"
-						value="#{kardexCtrl.kardexProductoSelected.costounitario}"
-						required="true" requiredMessage="REQUERIDO"
-						styleClass="Wid100" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
-						<f:convertNumber locale="es_EC" pattern="0.##"/>
-						<f:validateDoubleRange minimum="0.01" />
-					</p:inputText>
-					<p:message for="intKardexCostoUnitario"/>
-					
-					<h:outputText value="FECHA COMPRA * : "/>
-					<p:calendar id="claKardexFechaCompra" value="#{kardexCtrl.kardexProductoSelected.fechacompra}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-					</p:calendar>
-					<p:message for="claKardexFechaCompra"/>
-					
-					<h:outputText value="FECHA #{msg['label.fabricacion']} : "/>
-					<p:calendar id="claKardexFechaFabricacion" value="#{kardexCtrl.kardexProductoSelected.fechafabricacion}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="false" styleClass="Wid100">
-					</p:calendar>
-					<p:message for="claKardexFechaFabricacion"/>
-					
-					
-					<h:outputText value="FECHA VENCIMIENTO : "/>
-					<p:calendar id="claKardexFechaVencimiento" value="#{kardexCtrl.kardexProductoSelected.fechavencimiento}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="false" styleClass="Wid100">
-					</p:calendar>
-					<h:panelGroup>
+					<h:outputText value="STOCK" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<h:outputText value="#{kardexCtrl.productoSelected.stock}" styleClass="reuquerido mt-1">
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+						</h:outputText>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="CANTIDAD " styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:inputText id="intKardexCantidad"
+							value="#{kardexCtrl.kardexProductoSelected.cantidad}"
+							required="true" requiredMessage="REQUERIDO"
+							styleClass="w-full mt-1" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:validateDoubleRange minimum="0.1"/>
+						</p:inputText>
+						<p:message for="intKardexCantidad"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="FECHA REGISTRO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:calendar id="claKardexFechaRegistro" value="#{kardexCtrl.kardexProductoSelected.fecharegistro}"
+										pattern="dd/MM/yyyy"
+										locale="es" 
+										requiredMessage="REQUERIDO" required="true" styleClass="w-full mt-1">
+						</p:calendar>
+						<p:message for="claKardexFechaRegistro"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="COSTO UNITARIO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:inputText id="intKardexCostoUnitario"
+							value="#{kardexCtrl.kardexProductoSelected.costounitario}"
+							required="true" requiredMessage="REQUERIDO"
+							styleClass="w-full mt-1" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:validateDoubleRange minimum="0.01" />
+						</p:inputText>
+						<p:message for="intKardexCostoUnitario"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="FECHA COMPRA" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:calendar id="claKardexFechaCompra" value="#{kardexCtrl.kardexProductoSelected.fechacompra}"
+										pattern="dd/MM/yyyy"
+										locale="es" 
+										requiredMessage="REQUERIDO" required="true" styleClass="w-full mt-1">
+						</p:calendar>
+						<p:message for="claKardexFechaCompra"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="FECHA #{msg['label.fabricacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+					<div class="col-12 md:col-8">
+						<p:calendar id="claKardexFechaFabricacion" value="#{kardexCtrl.kardexProductoSelected.fechafabricacion}"
+										pattern="dd/MM/yyyy"
+										locale="es" 
+										requiredMessage="REQUERIDO" required="false" styleClass="w-full mt-1">
+						</p:calendar>
+						<p:message for="claKardexFechaFabricacion"/>
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="FECHA VENCIMIENTO" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+					<div class="col-12 md:col-8">
+						<p:calendar id="claKardexFechaVencimiento" value="#{kardexCtrl.kardexProductoSelected.fechavencimiento}"
+										pattern="dd/MM/yyyy"
+										locale="es" 
+										requiredMessage="REQUERIDO" required="false" styleClass="w-full mt-1">
+						</p:calendar>
 						<p:message for="claKardexFechaVencimiento"/>						
-					</h:panelGroup>
-					
-					<h:outputText value="#{msg['label.observacion']} * : "/>
-					<p:inputTextarea id="intKardexObservacion"
-						value="#{kardexCtrl.kardexProductoSelected.observacion}"
-						required="true" requiredMessage="REQUERIDO" styleClass="Wid100"
-						maxlength="800" converter="omnifaces.ToUpperCaseConverter"
-						style="height:30px;" />
-					<p:message for="intKardexObservacion"/>
-					
-				</p:panelGrid>
-				
-			</div>
-			
-		</h:form>
-		
-   </p:dialog>  
-    
+					</div>
+			    </div>
+			    <div class="field grid">
+					<h:outputText value="#{msg['label.observacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<div class="col-12 md:col-8">
+						<p:inputTextarea id="intKardexObservacion"
+							value="#{kardexCtrl.kardexProductoSelected.observacion}"
+							required="true" requiredMessage="REQUERIDO" styleClass="w-full  mt-1"
+							maxlength="800" converter="omnifaces.ToUpperCaseConverter"
+							style="height:30px;" />
+						<p:message for="intKardexObservacion"/>
+					</div>
+			    </div>
+			</div>			
+		</h:form>		
+   </p:dialog>      
 
 </ui:composition>
