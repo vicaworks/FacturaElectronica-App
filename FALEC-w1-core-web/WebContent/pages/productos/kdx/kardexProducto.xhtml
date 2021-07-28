@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Kardex</ui:define>
     
@@ -13,46 +13,16 @@
         <style type="text/css">
 			
 			.kardexDT .ui-datatable-scrollable-body{
-				min-height: 30vh !important;
-				height: calc(100vh - 415px)!important;
+				height: calc(100vh - 310px)!important;
 			}
+			
+			.field {margin-bottom: 0.25rem;}
+			.ui-menu {width: 190px;}
 			
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			.ui-buttonset .ui-button {
-				width: 100%;
-			}
-			
-			body .ui-messages, 
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0em !important;
-				display: block !important;
-			}
-			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}
-			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}
-			.cmb_establecimiento .cmb_establecimientolabel{
-				font-size: 10px;
-				color: rgba(0,0,0,0.7);
-				display: block;
-				margin: 0px;
-				padding: 0px;
-			}
         </style>
     </ui:define>
 
@@ -70,89 +40,10 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	<div class="EmptyBox5"/>
-	    	<div class="card card-w-title">
-	    		
-	    		<div class="p-grid p-nogutter p-align-center">
-	    			<div class="p-col-12 p-md-6">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Kardex</h3>
-	    			</div>
-	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;padding-right: 24px!important;">
-	    				<!-- <div class="cmb_establecimientolabel">
-		                	<h:outputText value="Establecimiento"/>
-	    				</div> -->
-		                <p:selectOneMenu id="somEstablecimientoMain"
-							value="#{kardexCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="cmb_establecimiento_wrapper"
-							disabled="#{not kardexCtrl.habilitarEstablecimientoMain}">
-							
-							<f:selectItems value="#{kardexCtrl.establecimientoMainList}" var="st"
-								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-							
-							<p:ajax event="valueChange" listener="#{kardexCtrl.limpiar()}" update="@form" process="@this"/>
-								
-						</p:selectOneMenu>
-		                
-		                
-	        		</div>
-	    		</div>
+	    	<!-- <div class="card card-w-title">
 	    		
 	    		<div class="p-grid p-align-center">
 	    			
-	    			<!-- criterio de busqueda -->
-	    			<div class="p-col-12 p-md-6">
-						
-						<div class="p-grid p-col-12 p-align-center">
-							
-							<div class="p-col-12 p-md-6">
-								<h:outputText value="DESDE * : " styleClass="cpoRequerido"/><br/>
-								<p:calendar id="claKardexFechaDesde" value="#{kardexCtrl.fechaInicial}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-								</p:calendar>
-								<p:message for="claKardexFechaHasta" style="padding:0em;"/>
-							</div>
-							
-							<div class="p-col-12 p-md-6">
-								<h:outputText value="HASTA * : " styleClass="cpoRequerido"/><br/>
-								<p:calendar id="claKardexFechaHasta" value="#{kardexCtrl.fechaFinal}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-								</p:calendar>
-								<p:message for="claKardexFechaHasta" style="padding:0em;"/>
-							</div>
-							
-						</div>
-						
-						<div class="p-col-12">
-						
-							<p:selectOneMenu id="somFrmListaProducto"
-											value="#{kardexCtrl.productoSelected}"
-											converter="omnifaces.SelectItemsConverter"
-											required="false"
-											requiredMessage="REQUERIDO"
-											styleClass="Wid100"
-											filter="true" filterMatchMode="contains">
-								<f:selectItem itemLabel="Seleccionar Producto  "
-										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-								<f:selectItems value="#{kardexCtrl.productoList}" var="prof"
-									itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
-								<p:ajax event="change" listener="#{kardexCtrl.cambioProducto}"></p:ajax>
-							</p:selectOneMenu>
-							<p:message for="somFrmListaProducto" />
-						</div>
-						
-						<div class="p-col-12">
-							<p:inputText id="intCodProducto" value="#{kardexCtrl.codProducto}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="BUSCAR POR : #{msg['label.codigo']} PRODUCTO"/>
-							<p:message for="intCodProducto" />
-						</div>
-						
-					</div>
-	    			
-	    			<!-- opciones -->
 	    			<div class="p-col-12 p-md-6" style="text-align:center;vertical-align: top;">
 	    				
 	    				<p:panelGrid columns="1" id="pngKardexOpciones"
@@ -163,56 +54,6 @@
 								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
 									columnClasses="ui-g-12 ui-lg-6,
 												   ui-g-12 ui-lg-6">
-												   
-									<p:commandButton id="cmdRefrecar"
-											value="CONSULTAR" icon="fa fa-search" 
-											action="#{kardexCtrl.refrescar()}" styleClass="secondary-button Wid90" update="@form"
-											/>
-									<p:commandButton  id="cmdExcel" 
-										title="EXPORTAR"
-										icon="fa fa-file-excel-o"
-										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="EXPORTAR"
-										styleClass="secondary-button Wid90"
-										disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
-										<p:fileDownload value="#{kardexCtrl.fileKardex}"/>
-									</p:commandButton>
-									
-									
-									<p:commandButton  id="cmdKardexEntrada" 
-										title="REG. ENTRADA KARDEX"
-										icon="fa fa-sign-in"
-										value="ENTRADA KARDEX"
-										styleClass="Wid90 secondary-button #{appSessionCtrl.accesoDisable('mn_inventario_kardex_entrada')?'ui-state-disabled':''}"
-										action="#{kardexCtrl.nuevo()}"
-										disabled="#{kardexCtrl.productoSelected==null}">
-										<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
-										<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
-										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-										<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
-									</p:commandButton>
-									
-									<p:commandButton  id="cmdExcel2" 
-										title="EXPORTAR TODOS"
-										icon="fa fa-file-excel-o"
-										ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-										value="EXPORTAR TODOS"
-										styleClass="secondary-button Wid90">
-										<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>
-									</p:commandButton>
-									
-									<p:commandButton  id="cmdKardexSalida" 
-										title="SALIDA KARDEX"
-										icon="fa fa-sign-out"
-										value="REGISTRAR SALIDA"
-										styleClass="Wid90 secondary-button #{appSessionCtrl.accesoDisable('mn_inventario_kardex_salida')?'ui-state-disabled':''}"
-										action="#{kardexCtrl.nuevo()}"
-										disabled="#{kardexCtrl.productoSelected==null}">
-										<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
-										<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
-										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-										<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
-									</p:commandButton>
 																			
 								
 								</p:panelGrid>
@@ -220,17 +61,130 @@
 						</p:panelGrid>
 	    			</div>
 	    		</div>
-	    	</div>
+	    	</div> -->
 	    	
 	    	<!-- Mensajes -->
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" style="margin:0px!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			
-			<div class="EmptyBox5"/>
 						
 			<div class="card card-w-title">
+				
+				<div class="grid justify-content-between">
+	    			<div class="col-4 md:col-4">
+						<h3 class="cardTitle">Kardex</h3>
+	    			</div>					
+					<div class="col-8 md:col-4 align-self-center" style="text-align: right;">						
+						<p:selectOneMenu id="somEstablecimientoMain"
+							value="#{kardexCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
+							disabled="#{not kardexCtrl.habilitarEstablecimientoMain}">
+							
+							<f:selectItems value="#{kardexCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />							
+							<p:ajax event="valueChange" listener="#{kardexCtrl.limpiar()}" update="@form"/> 								
+						</p:selectOneMenu>		                
+					</div>	                
+	    		</div>
+	    		
+	    		<div class="grid">
+	    			<div class="col-12 md:col-7">
+	    				<div class="formgrid grid">
+					        <div class="field col-12">
+					            <h:outputText value="Fechas"/>
+					            <div class="flex">
+					            	<div class="flex flex-grow-1 pr-1">
+					            		<p:calendar id="claKardexFechaDesde" value="#{kardexCtrl.fechaInicial}"
+											pattern="dd/MM/yyyy"
+											locale="es" 
+											requiredMessage="REQUERIDO" required="true" styleClass="w-full">
+										</p:calendar>
+					            	</div>
+					            	<div class="flex flex-grow-1">
+					            		<p:calendar id="claKardexFechaHasta" value="#{kardexCtrl.fechaFinal}"
+											pattern="dd/MM/yyyy"
+											locale="es" 
+											requiredMessage="REQUERIDO" required="true" styleClass="w-full">
+										</p:calendar>
+					            	</div>
+					            </div>
+					        </div>
+					        <div class="field col-12 overflow-x-hidden">
+								<p:selectOneMenu id="somFrmListaProducto"
+											value="#{kardexCtrl.productoSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="w-full"
+											style="text-overflow: ellipsis;"
+											filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="Seleccionar Producto  "
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+									<f:selectItems value="#{kardexCtrl.productoList}" var="prof"
+										itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
+									<p:ajax event="change" listener="#{kardexCtrl.cambioProducto}"></p:ajax>
+								</p:selectOneMenu>
+								<p:message for="somFrmListaProducto" styleClass="block"/>    	
+					        </div>
+					        <div class="field col-12">
+					        	<p:inputText id="intCodProducto" value="#{kardexCtrl.codProducto}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="1000" placeholder="Código Producto"/>
+								<p:message for="intCodProducto" />	
+							</div>
+					    </div>
+	    			</div>
+	    			<div class="col-12 md:col-5">
+	    				<div class="formgrid grid">
+					        <div class="field col-12">
+					            <h:outputText value="PCS" styleClass="text-white hidden md:block" />
+					            <div class="flex">
+					            	<p:commandButton id="cmdRefrecar"
+											title="Consultar" icon="fa fa-search" 
+											action="#{kardexCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+											/>
+									
+									<p:menuButton value="KARDEX" styleClass="mr-1 ui-button-outlined">
+										
+										<!-- styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_kardex_entrada')?'ui-state-disabled':''}" -->
+										<p:menuitem value="Entrada de Kardex" icon="fa fa-plus" 
+											action="#{kardexCtrl.nuevo()}"
+											disabled="#{kardexCtrl.productoSelected==null}">
+											<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+											<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+											<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+											<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>	
+										</p:menuitem>
+        								<!-- styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_kardex_salida')?'ui-state-disabled':''}" -->
+            							<p:menuitem value="Salida de Kardex" icon="fa fa-minus" 
+												action="#{kardexCtrl.nuevo()}"
+												disabled="#{kardexCtrl.productoSelected==null}">
+												<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+												<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+												<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+												<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>            								
+										</p:menuitem>
+										
+									</p:menuButton>
+									
+									<p:menuButton value="EXPORTAR" styleClass="ui-button-outlined">
+										<p:menuitem value="Exportar Producto" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+											styleClass="ui-button-outlined mr-1"
+											disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
+											<p:fileDownload value="#{kardexCtrl.fileKardex}"/>											
+										</p:menuitem>
+										<p:menuitem value="Exportar Todos los Productos" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+											styleClass="secondary-button Wid90">
+											<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>											
+										</p:menuitem>
+									</p:menuButton>
+									
+					            </div>
+					        </div>
+					     </div>
+	    			</div>
+	    		</div>
+				
 				<p:dataTable id="kardexDT" var="k"
 					value="#{kardexCtrl.kardexProductoList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
