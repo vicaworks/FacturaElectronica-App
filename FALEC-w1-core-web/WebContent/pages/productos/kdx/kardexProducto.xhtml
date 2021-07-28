@@ -40,28 +40,6 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	<!-- <div class="card card-w-title">
-	    		
-	    		<div class="p-grid p-align-center">
-	    			
-	    			<div class="p-col-12 p-md-6" style="text-align:center;vertical-align: top;">
-	    				
-	    				<p:panelGrid columns="1" id="pngKardexOpciones"
-								style="margin:0px;border:none !important;width:100%;"
-								layout="grid"
-								columnClasses="ui-g-12">
-								
-								<p:panelGrid columns="2" style="border:none !important;margin:0px;width:100%;" 
-									columnClasses="ui-g-12 ui-lg-6,
-												   ui-g-12 ui-lg-6">
-																			
-								
-								</p:panelGrid>
-								
-						</p:panelGrid>
-	    			</div>
-	    		</div>
-	    	</div> -->
 	    	
 	    	<!-- Mensajes -->
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
@@ -69,7 +47,7 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 						
-			<div class="card card-w-title">
+			<div class="card card-w-title mt-1">
 				
 				<div class="grid justify-content-between">
 	    			<div class="col-4 md:col-4">
@@ -144,10 +122,10 @@
 											action="#{kardexCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
 											/>
 									
-									<p:menuButton value="KARDEX" styleClass="mr-1 ui-button-outlined">
+									<p:menuButton value="INVENTARIO" styleClass="mr-1 ui-button-outlined">
 										
 										<!-- styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_kardex_entrada')?'ui-state-disabled':''}" -->
-										<p:menuitem value="Entrada de Kardex" icon="fa fa-plus" 
+										<p:menuitem value="Entrada Inventario" icon="fa fa-sign-in" 
 											action="#{kardexCtrl.nuevo()}"
 											disabled="#{kardexCtrl.productoSelected==null}">
 											<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
@@ -156,7 +134,7 @@
 											<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>	
 										</p:menuitem>
         								<!-- styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_kardex_salida')?'ui-state-disabled':''}" -->
-            							<p:menuitem value="Salida de Kardex" icon="fa fa-minus" 
+            							<p:menuitem value="Salida Inventario" icon="fa fa-sign-out" 
 												action="#{kardexCtrl.nuevo()}"
 												disabled="#{kardexCtrl.productoSelected==null}">
 												<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
