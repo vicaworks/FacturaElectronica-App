@@ -13,8 +13,10 @@
         <style type="text/css">
 			
 			.kardexDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 310px)!important;
+				height: calc(100vh - 300px)!important;
 			}
+			
+			.ui-datatable .ui-datatable-data > tr > td {vertical-align: top;}
 			
 			.field {margin-bottom: 0.25rem;}
 			.ui-menu {width: 190px;}
@@ -175,121 +177,80 @@
 					rows="10"
 					rowsPerPageTemplate="10,15,20,25,30,35,40">
 	                
-	                <p:column headerText="ID" style="width:20px;">
+	                <!-- <p:column headerText="ID" style="width:20px;">
 						<h:outputText value="#{k.idkardexproducto}" />
-					</p:column>
-					
-					<p:column headerText="FECHA / HORA" style="width:40px;" styleClass="TexAlCenter">
-						<h:outputText value="#{k.updated}" >
-							<f:convertDateTime  pattern="dd/MM/yyyy"/>
-						</h:outputText>
-						<br/>
-						<h:outputText value="#{k.updated}" >
-							<f:convertDateTime  pattern="HH:mm"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="FECHA REGISTRO INV" style="width:40px;">
-						<h:outputText value="#{k.fecharegistro}" >
-							<f:convertDateTime  pattern="dd/MM/yyyy"/>
-						</h:outputText>
-					</p:column>
-	                
-	                <!-- <p:column headerText="COD" style="width:30px;">
-						<h:outputText value="#{k.producto.idproducto}" >
-						</h:outputText>
 					</p:column> -->
 	                
-	                <p:column headerText="#{msg['label.descripcion']}" style="width:130px;">
-						<h:outputText value="#{k.observacion}" >
+	                <p:column headerText="FECHA PROD" style="width:80px;">						
+						<div class="flex flex-column">
+							<h:outputText value="Fecha Compra" styleClass="Fs9 block font-bold"/>
+							<h:outputText value="#{k.fechacompra}" styleClass="block">
+								<f:convertDateTime  pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						
+							<h:outputText value="Fecha Fabricación" styleClass="Fs9 block mt-1"/>
+							<h:outputText value="#{k.fechafabricacion}" styleClass="block mt-1" rendered="#{k.fechafabricacion!=null}">
+								<f:convertDateTime  pattern="dd/MM/yyyy"/>
+							</h:outputText>
+							<h:outputText value="-" styleClass="block mt-1" rendered="#{k.fechafabricacion==null}">
+							</h:outputText>
+							
+							<h:outputText value="Fecha Vencimiento" styleClass="Fs9 block mt-1"/>
+							<h:outputText value="#{k.fechavencimiento}" styleClass="Fs9 block" rendered="#{k.fechavencimiento!=null}">
+								<f:convertDateTime  pattern="dd/MM/yyyy"/>
+							</h:outputText>
+							<h:outputText value="-" styleClass="Fs9 block" rendered="#{k.fechavencimiento==null}">
+							</h:outputText>
+						</div>					
+					</p:column>
+					
+					<p:column headerText="#{msg['label.descripcion']}" style="width:120px;">
+						<h:outputText value="#{k.observacion}" styleClass="Fs10" >
 						</h:outputText>
 					</p:column>
 	                
-	                <p:column headerText="FECHA" style="width:110px;">
-						
-						<div class="p-grid">
-							<div class="p-col-5">
-								<h:outputText value="F. FABRI:" styleClass="Fs10 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{k.fechafabricacion}" >
-									<f:convertDateTime  pattern="dd/MM/yyyy"/>
-								</h:outputText>
-							</div>
-						</div>
-						
-						<div class="p-grid">
-							<div class="p-col-5">
-								<h:outputText value="F. COMP:" styleClass="Fs10 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{k.fechacompra}" >
-									<f:convertDateTime  pattern="dd/MM/yyyy"/>
-								</h:outputText>
-							</div>
-						</div>
-						
-						<div class="p-grid">
-							<div class="p-col-5">
-								<h:outputText value="F. VENCI:" styleClass="Fs10 FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{k.fechavencimiento}" >
-									<f:convertDateTime  pattern="dd/MM/yyyy"/>
-								</h:outputText>
-							</div>
-						</div>
-					
-					</p:column>
-	                
-	                <p:column headerText="TIPO" style="width:20px;" >
+	                <p:column headerText="TIPO" style="width:45px;" >
 						<h:outputText value="ENTRADA" rendered="#{k.tiporegistro=='E'}" styleClass="markGreen">
 						</h:outputText>
 						<h:outputText value="SALIDA" rendered="#{k.tiporegistro=='S'}" styleClass="markRed">
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CANTIDAD" style="width:40px;" styleClass="TexAlCenter">
+					<p:column headerText="CANT." style="width:40px;" styleClass="TexAlCenter">
 						<h:outputText value="#{k.cantidad}" >
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="COST UNIT" style="width:30px;" styleClass="TexAlRight">
+					<p:column headerText="PRE. UNIT." style="width:60px;" styleClass="TexAlRight">
 						<h:outputText value="#{k.costounitario}" >
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="COST TOT" style="width:30px;" styleClass="TexAlRight">
+					<p:column headerText="PREC TOT" style="width:70px;" styleClass="TexAlRight">
 						<h:outputText value="#{k.costototal}" >
-							<f:convertNumber  pattern="0.##"/>
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PREC VENTA" style="width:50px;" styleClass="TexAlCenter">
+					<p:column headerText="PREC VENTA" style="width:80px;" styleClass="TexAlCenter">
 						
-						<div class="p-grid">
-							<div class="p-col-4">
-								<h:outputText value="PV1:" styleClass="Fs10 FontBold"/>
-							</div>
-							<div class="p-col-8" style="text-align: left;">
+						<div class="flex flex-column text-left">
+							<div class="block">
+								<span class="Fs9 font-bold mr-1">Pv1</span>
 								<h:outputText value="#{k.producto.preciouno}" >
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-4">
-								<h:outputText value="PV2:" styleClass="Fs10 FontBold"/>
-							</div>
-							<div class="p-col-8" style="text-align: left;">
+							<div class="block">
+								<span class="Fs9 mr-1">Pv2</span>
 								<h:outputText value="#{k.producto.preciodos}" >
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 							</div>
-							<div class="p-col-4">
-								<h:outputText value="PV3:" styleClass="Fs10 FontBold"/>
-							</div>
-							<div class="p-col-8" style="text-align: left;">
+							<div class="block">
+								<span class="Fs9 mr-1">Pv3</span>
 								<h:outputText value="#{k.producto.preciotres}" >
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
@@ -298,12 +259,29 @@
 						
 					</p:column>
 					
-					<p:column headerText="EXISTENCIA" style="width:30px;" styleClass="TexAlCenter">
-						<h:outputText value="#{k.saldo}" styleClass="#{kardexCtrl.getCompararValoresDouble(k.saldo.doubleValue(),0)?'markRed':'markGreen'}">
+					<p:column headerText="EXISTENCIA" style="width:50px;" styleClass="TexAlCenter">
+						<h:outputText value="#{k.saldo}" styleClass="Fs14 font-bold opacity-80 #{kardexCtrl.getCompararValoresDouble(k.saldo.doubleValue(),0)?'text-pink-700':'text-gray-900'}">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 					</p:column>
 	                
+	                <p:column headerText="FECHAS" style="width:80px;" styleClass="TexAlCenter">						
+						<div class="flex flex-column text-left">
+							<span class="block Fs9 font-bold">Fecha inventario</span>
+							<h:outputText value="#{k.fecharegistro}" >
+								<f:convertDateTime  pattern="dd/MM/yyyy"/>
+							</h:outputText>
+							<span class="block Fs9 mt-1">Fecha registro</span>
+							<div class="block mt-1">
+								<h:outputText value="#{k.updated}" styleClass="mr-1 inline">
+									<f:convertDateTime  pattern="dd/MM/yyyy"/>
+								</h:outputText>
+								<h:outputText value="#{k.updated}" styleClass="block mt-1 Fs9 inline">
+									<f:convertDateTime  pattern="HH:mm"/>
+								</h:outputText>
+							</div>							
+						</div>
+					</p:column>
 	                
 	                
 				</p:dataTable>
