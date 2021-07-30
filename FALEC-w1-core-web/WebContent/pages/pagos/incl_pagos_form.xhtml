@@ -21,20 +21,15 @@
 		
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp" >
-				
-				<div class="p-col-12 p-md-4">
-					<p:commandButton id="cmdPgAceptar" action="#{pagoCtrl.aceptarPago()}"
-						value="ACEPTAR" icon="fa fa-check" update="@form :formPagos" styleClass="Wid100"/>
-											
-				</div>
-				<div class="p-col-12 p-md-4">	
-					<p:commandButton id="cmdPgCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button Wid100" 
-						onclick="PF('dlgFormPago').hide()" immediate="true"  
-						/>
-				</div>	
-				
+			<div class="formgroup-inline">
+				<p:commandButton id="cmdPgAceptar" action="#{pagoCtrl.aceptarPago()}"
+					value="GUARDAR" icon="fa fa-floppy-o" update="@form :formPagos" styleClass="mr-1 min-width-100"/>
+					
+				<p:commandButton id="cmdPgCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
+					onclick="PF('dlgFormPago').hide()" immediate="true"  
+					/>
+			
 			</div>
 			
 			<!-- Mensajes -->
@@ -45,46 +40,39 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightPagoForm contenedorFormulario">
+			<div class="w-full overflow-auto heightPagoForm contenedorFormulario">
 				
-				<div class="p-grid">
-					<div class="p-col-12">
-						<h:outputText value="VALOR *"  styleClass="cpoRequerido"/>
+				<div class="grid mt-1">
+					<div class="col-12">
+						<h:outputText value="VALOR"  styleClass="requerido"/>
 					</div>
-					<div class="EmptyBox5"/>
-					<div class="p-col-12">
-						<p:spinner value="#{pagoCtrl.pagoSelected.total}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+					<div class="col-12">
+						<p:spinner value="#{pagoCtrl.pagoSelected.total}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="w-full mt-1" >
 						</p:spinner>
 					</div>
-					<div class="EmptyBox5"/>
-					<div class="p-col-12">
-						<h:outputText value="PLAZO *"  styleClass="cpoRequerido"/>
+					<div class="col-12">
+						<h:outputText value="PLAZO"  styleClass="requerido mt-1"/>
 					</div>
-					<div class="EmptyBox5"/>
-					<div class="p-col-12">
-						<p:spinner value="#{pagoCtrl.pagoSelected.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" >
+					<div class="col-12">
+						<p:spinner value="#{pagoCtrl.pagoSelected.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="w-full mt-1" >
 						</p:spinner>
 					</div>
-					<div class="EmptyBox5"/>
-					<div class="p-col-12">
-						<h:outputText value="FECHA PAGO *" styleClass="cpoRequerido"/>
+					<div class="col-12">
+						<h:outputText value="FECHA PAGO" styleClass="requerido mt-1"/>
 					</div>
-					<div class="EmptyBox5"/>
-					<div class="p-col-12">
+					<div class="col-12">
 						<p:calendar id="cldPgFechaPago" value="#{pagoCtrl.pagoSelected.fechapago}"
 							pattern="dd/MM/yyyy"
 							locale="es"
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="Fecha tentativa de pago">
+							requiredMessage="REQUERIDO" required="true" styleClass="w-full mt-1" placeholder="Fecha tentativa de pago">
 						</p:calendar>
 						<p:message for="cldPgFechaPago"/>
 					</div>
-					<div class="EmptyBox5"/>
-					<div class="p-col-12">
-						<h:outputText value="NOTAS" styleClass="cpoRequerido"/>
+					<div class="col-12">
+						<h:outputText value="NOTAS" styleClass="requerido mt-1"/>
 					</div>
-					<div class="EmptyBox5"/>
-					<div class="p-col-12">
-						<p:inputTextarea maxlength="500" styleClass="Wid100" rows="4" value="#{pagoCtrl.pagoSelected.notas}"/>
+					<div class="col-12">
+						<p:inputTextarea maxlength="500" styleClass="w-full mt-1" rows="4" value="#{pagoCtrl.pagoSelected.notas}"/>
 					</div>
 					
 				</div>				

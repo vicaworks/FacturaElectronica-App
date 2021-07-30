@@ -31,52 +31,6 @@
 				padding: 0.2em !important;
 			}
 			
-			/* .boxMain{
-				padding: 15px;
-				text-align: center;
-				border-radius: 4px;
-			} */
-			
-			/* .box-header{
-				font-size: 10px;
-			}
-			
-			.box-content{
-				font-size: 18px;
-				font-weight: bold;
-			}
-			
-			.box-gray{
-				background-color: #2f2f2f;
-				color: #fff;
-			}
-			
-			.box-border-gray{
-				border:1px solid #2f2f2f;
-				color: #2f2f2f;
-			}
-			
-			.pago-header{
-				border-radius: 4px;
-				text-align: right;
-				padding: 10px 15px;
-				font-size: 18px;
-				/* font-weight: 700; */
-				border-bottom: 1px solid #F0F3F4;
-			}
-			
-			.pago-valor{
-				border-radius: 4px;
-				background-color: #f8f8f8;
-				text-align: left;
-				padding: 10px 15px;
-				font-size: 18px;
-				font-weight: 700;
-				color: #595959;
-				border: 1px solid #d8d8dc;
-			} */
-			
-			
         </style>
     </ui:define>
 
@@ -94,62 +48,6 @@
     	
     	<!-- Reporte global -->
 	    <h:form id="formMain">
-	    
-	    	<!-- <div class="card card-w-title">
-				<div class="p-grid p-align-center">
-	    			<div class="p-col-12 p-md-6">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Pagos emitidos</h3>
-	    			</div>
-	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
-	                
-		                <p:selectOneMenu id="somEstablecimientoMain"
-							value="#{pagosMainCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="cmb_establecimiento_wrapper"
-							disabled="#{not pagosMainCtrl.habilitarEstablecimientoMain}">
-							
-							<f:selectItems value="#{pagosMainCtrl.establecimientoMainList}" var="st"
-								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-							
-							<p:ajax event="valueChange" listener="#{pagosMainCtrl.buscar()}" update="@form"/>
-								
-						</p:selectOneMenu>
-		                
-		                
-	        		</div>
-	    		</div>
-				
-		   		<div class="EmptyBox5"/>
-		   		
-		   		<div class="p-grid p-align-top vertical-container">
-		    		
-		    		<div class="p-col-12 p-md-3">
-		    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-			    		
-						<p:message for="calDesde"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-3">
-		    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-			    		
-						<p:message for="calHasta"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-4">
-		    			<h:outputText value="Tipo Pago" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-		    			
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-2">
-		    		
-	  					
-						
-		    		</div>
-		    		
-		   		</div>
-		   		
-		   			
-	    	</div> -->
 	    
 	    	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"

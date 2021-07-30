@@ -16,18 +16,13 @@
 		
 		<h:form id="formRide">
 			
-			<div class="p-grid toolBarPopUp p-align-end vertical-container">
-				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
-					
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgRide').hide()" immediate="true"  
-						/>
-					
-				</div>	
-				
+			<div class="formgroup-inline mb-2">			
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
+					onclick="PF('dlgRide').hide()" immediate="true"  
+					/>
 			</div>
+			
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formRide"
 				closable="true" >
@@ -35,7 +30,7 @@
 			</p:messages>
 			
 			<!-- <pe:documentViewer height="500" value="#{rideCtrl.rideFile}" download="#{rideCtrl.downloadFileName}"/> -->			
-			<pe:documentViewer height="500" url="#{rideCtrl.url}" style="height: calc(100vh - 180px)!important;"/>
+			<pe:documentViewer height="500" url="#{rideCtrl.url}" style="height: calc(100vh - 180px)!important;" />
 			
 			
 			
