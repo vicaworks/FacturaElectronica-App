@@ -65,7 +65,7 @@
 							disabled="#{not cuentaPagarCtrl.habilitarEstablecimientoMain}">
 							
 							<f:selectItems value="#{cuentaPagarCtrl.establecimientoMainList}" var="st"
-								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+								itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />
 							
 							<p:ajax event="valueChange" listener="#{cuentaPagarCtrl.buscar()}" update="@form"/>
 								

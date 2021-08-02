@@ -9,12 +9,7 @@
 	<style type="text/css">
 		
  		.heightFrmCajaChica {
-				/* height: 75vh; */
 		} 
-		
-		.centerAligned td{
-		    vertical-align: center !important;
-		}
 		
 	</style>
 	
@@ -33,26 +28,22 @@
 			<p:remoteCommand name="buscarProveedor"  action="#{cajaChicaCtrl.buscarProveedor()}" process="@this :formCC:inpCriterioProveedor" update=":formCC:msgformCC :formCC:msgInpCriterioProveedor :formCC:gridProveedor"/>
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp p-align-center" >
-				
-				<div class="p-col-12 p-md-6">
-				
-					<p:commandButton id="cmdGuardarCCForm"
-						value="GUARDAR" icon="fa fa-floppy-o" 
-						action="#{cajaChicaCtrl.guardar()}" styleClass="MRight10" update="@form :formMain" disabled="#{not cajaChicaCtrl.flagGuardar}"
-						/>
+			<div class="formgroup-inline">			
+				<p:commandButton id="cmdGuardarCCForm"
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{cajaChicaCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form :formMain" disabled="#{not cajaChicaCtrl.flagGuardar}"
+					/>
+					
+				<p:commandButton id="cmdNuevoCCForm"
+					value="NUEVO" icon="fa fa-plus" 
+					action="#{cajaChicaCtrl.nuevo()}" styleClass="mr-1 ui-button-outlined min-width-100" update="@form" process="@this"/>
 						
-					<p:commandButton id="cmdNuevoCCForm"
-						value="NUEVO" icon="fa fa-plus" 
-						action="#{cajaChicaCtrl.nuevo()}" styleClass="secondary-button MRight10" update="@form" process="@this"/>
-							
-					<p:commandButton id="cmdCerrarCCForm"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgcajaChica').hide()" immediate="true"  
-						/>
-				</div>
-				
+				<p:commandButton id="cmdCerrarCCForm"
+					value="CERRAR" icon="fa fa-close" styleClass="ui-button-flat min-width-100" 
+					onclick="PF('dlgcajaChica').hide()" immediate="true"  
+					/>
 			</div>
+			
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formCC" id="msgformCC"
 				closable="true" >
@@ -61,93 +52,81 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmCajaChica contenedorFormulario">
+			<div class="w-full overflow-auto heightFrmCajaChica contenedorFormulario mt-1">
 				
-				<div class="p-grid p-align-start vertcal-container" style="width: 99.5%!important;">
+				<div class="grid align-content-start" style="width: 99.5%!important;">
 					
 					<!-- VALORES -->
-					<div class="p-col-12 p-md-6">
-					
-						<p:panelGrid id="grid1" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
-							
-							<h:panelGroup>
-								<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
+					<div class="col-12 md:col-6">
+						<div class="field grid">							
+							<h:outputText value="FECHA #{msg['label.emision']}" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<div class="col-12">
 								<p:calendar id="calCCfechaEmision" value="#{cajaChicaCtrl.transaccionSelected.fechaemision}"
 									pattern="dd/MM/yyyy"
 									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+									requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
 								</p:calendar>
 								<p:message for="calCCfechaEmision"/>
-							</h:panelGroup>
-							
-							<h:panelGroup>
-								<h:outputText value="CONCEPTO *" styleClass="cpoRequerido"/>
-							</h:panelGroup>
-							
-						</p:panelGrid>
-						
-						<p:panelGrid id="gridOPC" columns="2" styleClass="centerAligned ui-panelgrid-blank Wid100" columnClasses="ui-g-11,ui-g-1">
-							
-																
-							<h:panelGroup>
-								<p:selectOneMenu id="somCCConcepto"
-									value="#{cajaChicaCtrl.transaccionSelected.transaccionconcepto}"
-									converter="omnifaces.SelectItemsConverter"
-									required="true"
-									requiredMessage="REQUERIDO"
-									styleClass="Wid100"
-									filter="true"
-									filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar...." itemValue="#{null}"/>
-									<f:selectItems value="#{cajaChicaCtrl.transaccionconceptoList}" var="c"
-												itemLabel="#{c.nombre}" itemValue="#{c}" />
-									<p:ajax event="change" process="@this :formCC:gridOPC" update=":formCC:gridOPC"/>
-								</p:selectOneMenu>
-								<p:message for="somCCConcepto"/>
-							</h:panelGroup>								
-							<h:panelGroup>
-								<p:commandLink action="#{tranConceptoCtrl.nuevoEditar(null)}" process="@this">
-									<i class="fa fa-plus Fs16">
-									</i>
-									<f:setPropertyActionListener value="CAJACHICA" target="#{tranConceptoCtrl.callModule}"></f:setPropertyActionListener>
-									<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridOPC" target="#{tranConceptoCtrl.updateView}"></f:setPropertyActionListener>
-									<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{tranConceptoCtrl.cajaChicaCtrl}"></f:setPropertyActionListener>
-								</p:commandLink>
-								<p:spacer width="10px"/>								
-								<p:commandLink action="#{tranConceptoCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.transaccionconcepto.idtransaccionconcepto)}" disabled="#{cajaChicaCtrl.transaccionSelected.transaccionconcepto == null}" process="@this :formCC:somCCConcepto">
-									<i class="fa fa-edit Fs16">
-									</i>
-									<f:setPropertyActionListener value="CAJACHICA" target="#{tranConceptoCtrl.callModule}"></f:setPropertyActionListener>
-									<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridOPC" target="#{tranConceptoCtrl.updateView}"></f:setPropertyActionListener>
-									<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{tranConceptoCtrl.cajaChicaCtrl}"></f:setPropertyActionListener>
-								</p:commandLink>
-							</h:panelGroup>		
-						</p:panelGrid>
-						
-						<p:panelGrid id="grid11" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
-							
-							<h:panelGroup>
-								<h:outputText value="NOTA" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputTextarea maxlength="500" value="#{cajaChicaCtrl.transaccionSelected.nota}" styleClass="Wid100" rows="3"/>
-							</h:panelGroup>
-							
-							
-						</p:panelGrid>
-						
-						
-						<p:panelGrid id="grid5" columns="1"
-							styleClass="ui-panelgrid-blank Fs12 Wid100"
-							columnClasses="ui-g-12">
-							<h:panelGroup>
-								<h:outputText value="TIPO REGISTRO * " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
+							</div>
+					    </div>
+					    <div class="field grid">					    	
+							<h:outputText value="CONCEPTO" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<div class="col-12">
+								<div class="w-full">
+									<div class="flex">
+										<div class="flex-grow-1 flex overflow-hidden">
+											<p:outputPanel id="gridOPC" styleClass="w-full pr-1">
+												<p:selectOneMenu id="somCCConcepto"
+													value="#{cajaChicaCtrl.transaccionSelected.transaccionconcepto}"
+													converter="omnifaces.SelectItemsConverter"
+													required="true"
+													requiredMessage="REQUERIDO"
+													styleClass="w-full"
+													style="text-overflow: ellipsis!important"
+													filter="true"
+													filterMatchMode="contains">
+													<f:selectItem itemLabel="Seleccionar...." itemValue="#{null}"/>
+													<f:selectItems value="#{cajaChicaCtrl.transaccionconceptoList}" var="c"
+																itemLabel="#{c.nombre}" itemValue="#{c}" />
+													<p:ajax event="change" process="@this :formCC:gridOPC" update=":formCC:gridOPC"/>
+												</p:selectOneMenu>
+											</p:outputPanel>	
+										</div>
+										<div class="flex-none flex px-2 align-items-center">
+											<p:commandLink action="#{tranConceptoCtrl.nuevoEditar(null)}" process="@this" styleClass="mr-2 text-gray-900">
+												<i class="fa fa-plus Fs14">
+												</i>
+												<f:setPropertyActionListener value="CAJACHICA" target="#{tranConceptoCtrl.callModule}"></f:setPropertyActionListener>
+												<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridOPC" target="#{tranConceptoCtrl.updateView}"></f:setPropertyActionListener>
+												<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{tranConceptoCtrl.cajaChicaCtrl}"></f:setPropertyActionListener>
+											</p:commandLink>								
+											<p:commandLink action="#{tranConceptoCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.transaccionconcepto.idtransaccionconcepto)}" disabled="#{cajaChicaCtrl.transaccionSelected.transaccionconcepto == null}" process="@this :formCC:somCCConcepto" styleClass="text-gray-900">
+												<i class="fa fa-edit Fs14">
+												</i>
+												<f:setPropertyActionListener value="CAJACHICA" target="#{tranConceptoCtrl.callModule}"></f:setPropertyActionListener>
+												<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridOPC" target="#{tranConceptoCtrl.updateView}"></f:setPropertyActionListener>
+												<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{tranConceptoCtrl.cajaChicaCtrl}"></f:setPropertyActionListener>
+											</p:commandLink>
+										</div>
+									</div>
+								</div>
+								<p:message for="somCCConcepto" styleClass="block"/>
+							</div>							
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="NOTA" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<div class="col-12">
+								<p:inputTextarea maxlength="500" value="#{cajaChicaCtrl.transaccionSelected.nota}" styleClass="w-full" rows="3"/>
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="TIPO REGISTRO" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<div class="col-12">
 								<p:selectOneMenu id="somCCTipo"
 									value="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion}"
 									required="true"
 									requiredMessage="REQUERIDO"
-									styleClass="Wid100"
+									styleClass="w-full"
 									filter="true"
 									filterMatchMode="contains">
 									<f:selectItem itemLabel="Seleccionar...." itemValue="#{null}"/>
@@ -156,143 +135,128 @@
 									<p:ajax event="change" update=":formCC:grid5" process="@this :formCC:grid5" oncomplete="PrimeFaces.focus('formCC:ipsCCValorIngreso');PrimeFaces.focus('formCC:ipsCCValorEgreso');"/>
 								</p:selectOneMenu>
 								<p:message for="somCCTipo"/>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputText value="VALOR * " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:spinner id="ipsCCValorIngreso" value="#{cajaChicaCtrl.transaccionSelected.valoringreso}" styleClass="Wid100" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='INGRESO'}" min="0" decimalPlaces="2">
-								</p:spinner>
-								<p:message for="ipsCCValorIngreso" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='INGRESO'}"/>
-								<p:spinner id="ipsCCValorEgreso" value="#{cajaChicaCtrl.transaccionSelected.valoregreso}" styleClass="Wid100" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='EGRESO'}" min="0" decimalPlaces="2">
-								</p:spinner>
-								<p:message for="ipsCCValorEgreso" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='EGRESO'}"/>
-								<h:outputText value="-" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion==null}"/>
-							</h:panelGroup>
-						</p:panelGrid>
-						
+							</div>
+					    </div>
+					    <div class="field grid">							
+							<h:outputText value="VALOR" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<div class="col-12">
+								<p:outputPanel id="grid5">
+									<p:spinner id="ipsCCValorIngreso" value="#{cajaChicaCtrl.transaccionSelected.valoringreso}" styleClass="w-full" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='INGRESO'}" min="0" decimalPlaces="2">
+									</p:spinner>
+									<p:message for="ipsCCValorIngreso" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='INGRESO'}"/>
+									<p:spinner id="ipsCCValorEgreso" value="#{cajaChicaCtrl.transaccionSelected.valoregreso}" styleClass="w-full" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='EGRESO'}" min="0" decimalPlaces="2">
+									</p:spinner>
+									<p:message for="ipsCCValorEgreso" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='EGRESO'}"/>
+									<h:outputText value="-" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion==null}"/>
+								</p:outputPanel>
+							</div>
+					    </div>
+												
 						<div class="EmptyBox10"/>
-						<div class="p-grid p-justify-even">
-							<div class="p-col-12 p-md-3 boxMain box-gray">
-								<div class="DispBlock box-header">SALDO ACTUAL</div>
-								<h:outputText value="#{cajaChicaCtrl.saldoActual}" styleClass="box-content Fs16">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
+						
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa fa-angle-double-right Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3">
+									<h:outputText value="#{cajaChicaCtrl.saldoActual}" styleClass="Fs18 text-blue-500 font-bold">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">SALDO</span>
+									<span class="Fs12 text-gray-600 font-semibold">ACTUAL</span>
+								</div>
 							</div>
 						</div>
+						
 						<div class="EmptyBox10"/>
 						
 					</div>
 					
 					
 					<!-- DATOS CABECERA -->
-					<div class="p-col-12 p-md-6">
+					<div class="col-12 md:col-6">
 						
-						<p:panelGrid id="grid2" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
-						
-							<h:panelGroup>
-								<h:outputText value="PROVEEDOR " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<div class="ui-inputgroup">
-					                <span class="ui-inputgroup-addon">
-					                	
-					                	<p:commandButton process="@this :formCC:inpCriterioProveedor"
-											update=":formCC:msgformCC :formCC:msgInpCriterioProveedor :formCC:gridProveedor" 
-											action="#{cajaChicaCtrl.buscarProveedor()}" icon="fa fa-search">
-					                	</p:commandButton>
-					                
-					                </span>
-					                
-					                <p:inputText id="inpCriterioProveedor"
-										value="#{cajaChicaCtrl.criterioProveedor}" required="false"
-										requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
-										maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
-										validatorMessage="SOLO NUMEROS"
-										onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
-										<f:validateRegex pattern="^\d+$" />
-									</p:inputText>
-					                
-					            </div>
-					            <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="Wid100"/>
-							</h:panelGroup>
-							<h:panelGroup>
-								<div class="p-grid">
-									<div class="p-col-12 p-md-6">
-										<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100">
-											<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{listaClienteCtrl.cajaChicaCtrl}"/>
-											<f:setPropertyActionListener value="cajaChicaCtrl" target="#{listaClienteCtrl.callModule}"/>
-											<f:setPropertyActionListener value=":formCC:msgformCC :formCC:gridProveedor" target="#{listaClienteCtrl.viewUpdate}"/>
-											<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
-										</p:commandButton>
-									</div>
-									<div class="p-col-12 p-md-6">
-										<p:commandButton value="NUEVO / EDITAR PROVEEDOR" action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@this" icon="fa fa-user" styleClass="Wid100">
-											<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
-											<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{clienteCtrl.updateView}"/>
-											<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
-										</p:commandButton>
+						<div class="field grid">							
+							<h:outputText value="PROVEEDOR " styleClass="col-12 mb-1 md:mb-0"/>
+							<div class="col-12">
+								
+								<div class="w-full">
+									<div class="flex">
+										<div class="flex-grow-1 flex overflow-hidden">
+											<div class="ui-inputgroup w-full">
+							                    <p:inputText id="inpCriterioProveedor"
+													value="#{cajaChicaCtrl.criterioProveedor}" required="false"
+													requiredMessage="REQUERIDO" styleClass="w-full Fs12"
+													maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+													validatorMessage="SOLO NUMEROS"
+													onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
+												<f:validateRegex pattern="^\d+$" />
+												</p:inputText>
+							                    <p:commandButton icon="pi pi-search" styleClass="ui-button-success" process="@this :formCC:inpCriterioProveedor"
+														update=":formCC:msgformCC :formCC:msgInpCriterioProveedor :formCC:gridProveedor" 
+														action="#{cajaChicaCtrl.buscarProveedor()}"/>
+							                </div>
+										</div>
+										<div class="flex-none flex px-2 align-items-center">
+										
+											<p:commandLink action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@form" styleClass="mr-2 text-gray-900">
+												<i class="fa fa-plus Fs14">
+												</i>
+												<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
+												<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{clienteCtrl.updateView}"/>
+												<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
+											</p:commandLink>								
+											<p:commandLink action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@form" styleClass="text-gray-900">
+												<i class="fa fa-edit Fs14">
+												</i>
+												<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
+												<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{clienteCtrl.updateView}"/>
+												<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
+											</p:commandLink>
+										
+										</div>
 									</div>
 								</div>
-							</h:panelGroup>
-							
-						</p:panelGrid>
+				                <p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="block"/>
+							</div>
+					    </div>
 						
-						<p:panelGrid id="gridProveedor" columns="1"
-							styleClass="ui-panelgrid-blank Fs12 Wid100"
-							columnClasses="ui-g-12">
-							
-							<h:panelGroup>
-								<h:outputText value="C.I./RUC " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-							</h:panelGroup>
-							<h:panelGroup>
-								<p:inputText id="inpNcRuc" value="#{cajaChicaCtrl.transaccionSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-								<p:message for="inpNcRuc" />
-							</h:panelGroup>
-							
-							<h:panelGroup>
-								<h:outputText value="NOMBRE " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-							</h:panelGroup>
-							<h:panelGroup>
-								<p:inputText id="inpNCNombre" value="#{cajaChicaCtrl.transaccionSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-								<p:message for="inpNCNombre" />
-							</h:panelGroup>
-							
-							<h:panelGroup>
-								<h:outputText value="EMAIL " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-							</h:panelGroup>							
-							<h:panelGroup>
-								<p:inputText id="inpNcEmail" value="#{cajaChicaCtrl.transaccionSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-								<p:message for="inpNcEmail" />
-							</h:panelGroup>
-							
-							<h:panelGroup>
-								<h:outputText value="#{msg['label.direccion']} " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-							</h:panelGroup>							
-							<h:panelGroup>
-								<p:inputText id="inpNcDireccion" value="#{cajaChicaCtrl.transaccionSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-								<p:message for="inpNcDireccion" />
-							</h:panelGroup>
-										   
-						</p:panelGrid>
 						
-						<p:panelGrid id="grid4" columns="1"
-							styleClass="ui-panelgrid-blank Fs12 Wid100"
-							columnClasses="ui-g-12">
-							<h:panelGroup>
-								<h:outputText value="DOCUMENTO REFERENCIA " styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText id="inptDocReferencia" value="#{cajaChicaCtrl.transaccionSelected.numdocumento}" maxlength="20" styleClass="Wid100" required="false" requiredMessage="REQUERIDO">
+						<p:outputPanel id="gridProveedor" styleClass="w-full mb-1" style="height:8.55rem;">
+							<p:skeleton styleClass="w-full mt-1" height="8.35rem" rendered="#{cajaChicaCtrl.transaccionSelected.cliente==null}"/>
+							<f:subview rendered="#{cajaChicaCtrl.transaccionSelected.cliente!=null}">
+								<div class="flex flex-column">
+									<span class="Fs16 font-bold text-blue-700 mb-1 block">
+										<h:outputText value="#{cajaChicaCtrl.transaccionSelected.cliente.razonsocial!=null?cajaChicaCtrl.transaccionSelected.cliente.razonsocial:'-'}" />
+									</span>
+									<span class="Fs11 font-bold text-gray-600 mb-1 block">
+										<h:outputText value="#{cajaChicaCtrl.transaccionSelected.cliente.identificacion!=null?cajaChicaCtrl.transaccionSelected.cliente.identificacion:'-'}" />
+									</span>
+									<span class="Fs10 mb-1 block">
+										<h:outputText value="#{cajaChicaCtrl.transaccionSelected.cliente.direccion!=null?cajaChicaCtrl.transaccionSelected.cliente.direccion:'-'}" />
+									</span>
+									<span class="Fs10 mb-1 block">
+										<i class="pi pi-phone mr-1"></i>
+										<h:outputText value="#{cajaChicaCtrl.transaccionSelected.cliente.telefono!=null?cajaChicaCtrl.transaccionSelected.cliente.telefono:'-'}" />
+									</span>
+									<span class="Fs10 mb-1 block">
+										<i class="fa fa-envelope-o mr-1 Fs11"></i>
+										<h:outputText value="#{cajaChicaCtrl.transaccionSelected.cliente.correoelectronico!=null?cajaChicaCtrl.transaccionSelected.cliente.correoelectronico:'-'}" />
+									</span>
+									
+								</div>
+							</f:subview>
+						</p:outputPanel>
+						
+						<div class="field grid mt-1">							
+							<h:outputText value="DOCUMENTO REFERENCIA" styleClass="col-12 mb-1 md:mb-0"/>
+							<div class="col-12">
+								<p:inputText id="inptDocReferencia" value="#{cajaChicaCtrl.transaccionSelected.numdocumento}" maxlength="20" styleClass="w-full" required="false" requiredMessage="REQUERIDO">
 								</p:inputText>
-								<p:message for="inptDocReferencia" />
-							</h:panelGroup>
-						</p:panelGrid>
+								<p:message for="inptDocReferencia" styleClass="block"/>
+							</div>
+					    </div>
 						
 					</div>
 					

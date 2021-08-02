@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Caja chica</ui:define>
     
@@ -14,113 +14,14 @@
 			
 			.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 390px)!important;				
+				height: calc(100vh - 330px)!important;				
 			}
 			
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;text-align:
 			}
 			
-			body .ui-messages, 
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0em !important;
-				display: block !important;
-			}
 			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
-				border: 1px solid #d8d8dc;
-				background-color: #ccc;
-				color: black;
-				cursor: default;
-			}
-			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}
-			
-			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
-				padding: 0.2em !important;
-			}
-			
-			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
-				padding: 0em;
-			}
-			
-			.ui-inputgroup .ui-inputgroup-addon {
-				padding: 0px; 
-			}
-			
-			/* ======================================================================================================================== */
-			
-			.boxMain{
-				margin-top:5px;
-				padding: 10px !important;
-				text-align: center;
-				border-radius: 4px;
-			}
-			
-			.box-header{
-				font-size: 10px;
-			}
-			
-			.box-content{
-				font-size: 18px;
-				font-weight: bold;
-			}
-			
-			.box-gray{
-				background-color: #2f2f2f;
-				color: #fff;
-			}
-			
-			.box-border-gray{
-				border:1px solid #2f2f2f;
-				color: #2f2f2f;
-			}
-			
-			.box-border-orange{
-				border:1px solid orange;
-				color: #2f2f2f;
-			}
-			
-			.pago-header{
-				border-radius: 4px;
-				text-align: right;
-				padding: 5px 10px;
-				border-bottom: 1px solid #F0F3F4;
-			}
-			
-			.pago-valor{
-				border-radius: 4px;
-				background-color: #f8f8f8;
-				text-align: left;
-				padding: 5px 10px;
-				font-weight: 700;
-				color: #595959;
-				border: 1px solid #d8d8dc;
-			}
-			
-			.dt-spinner .ui-spinner .ui-spinner-input {
-				padding-right: 2em;
-				padding-top: 0.2em;
-				padding-bottom: 0.2em;
-			}
-			
-			.disable-color{
-				background-color: #F4F6F7 !important;
-			}
 			
         </style>
     </ui:define>
@@ -137,96 +38,6 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	
-	    	<div class="card card-w-title">
-				<div class="p-grid p-align-center">
-	    			<div class="p-col-12 p-md-6">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Caja Chica</h3>
-	    			</div>
-	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
-	                
-		                <p:selectOneMenu id="somEstablecimientoMain"
-							value="#{cajaChicaCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="cmb_establecimiento_wrapper"
-							disabled="#{not cajaChicaCtrl.habilitarEstablecimientoMain}">
-							
-							<f:selectItems value="#{cajaChicaCtrl.establecimientoMainList}" var="st"
-								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-							
-							<p:ajax event="valueChange" listener="#{cajaChicaCtrl.buscar()}" update="@form"/>
-								
-						</p:selectOneMenu>
-		                
-		                
-	        		</div>
-	    		</div>
-	    		
-		   		<div class="EmptyBox5"/>
-		   		
-		   		<div class="p-grid p-align-end vertical-container p-justify-start">
-		   			
-		   			<div class="p-col-12 p-md-4">
-		    			<h:outputText value="CONCEPTO *" styleClass="cpoRequerido Wid100"/>
-		    			<div class="EmptyBox5"/>
-		    			<p:selectOneMenu id="somConcepto"
-									value="#{cajaChicaCtrl.transaccionconcepto}"
-									converter="omnifaces.SelectItemsConverter"
-									required="false"
-									requiredMessage="REQUERIDO"
-									styleClass="Wid100"
-									filter="true"
-									filterMatchMode="contains">
-							<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-							<f:selectItems value="#{cajaChicaCtrl.transaccionconceptoList}" var="c"
-										itemLabel="#{c.nombre}" itemValue="#{c}" />
-						</p:selectOneMenu>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
-		    			<div class="EmptyBox5"/>
-			    		<p:calendar id="calDesde" value="#{cajaChicaCtrl.desde}"
-							pattern="dd/MM/yyyy"
-							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-						</p:calendar>
-						<p:message for="calDesde"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
-		    			<div class="EmptyBox5"/>
-			    		<p:calendar id="calHasta" value="#{cajaChicaCtrl.hasta}"
-							pattern="dd/MM/yyyy"
-							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-						</p:calendar>
-						<p:message for="calHasta"/>
-		    		</div>
-		   			
-		   			<div class="p-col-12 p-lg-4">
-		   				<p:commandButton id="cmdGlobalBuscar"
-							icon="fa fa-search"
-							action="#{cajaChicaCtrl.buscar()}" styleClass="secondary-button " update="@form" style="margin-right:5px;" value="BUSCAR"/>
-						<p:commandButton id="cmdRtnNuevo"
-							value="NUEVO" icon="fa fa-plus" 
-							action="#{cajaChicaCtrl.nuevoForm()}" styleClass=" secondary-button" update="@form" style="margin-right:5px;">
-	   					</p:commandButton>
-						<p:commandButton id="cmdGlobalExcel"
-	  						value="EXPORTAR"
-							icon="fa fa-sort-down" 
-							styleClass="secondary-button "
-							disabled="#{empty cajaChicaCtrl.transaccionList}"
-							ajax="false">
-							<p:fileDownload value="#{cajaChicaCtrl.fileResumen}" contentDisposition="inline"/>
-						</p:commandButton>
-					</div>
-					
-		   		
-		   		</div>
-		   		
-		   	</div>
 		   	
 		   	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
@@ -234,35 +45,151 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="EmptyBox5"/>
-			<div class="card card-w-title">
+			<div class="card card-w-title mt-1">
 				
-				<div class="EmptyBox5"/>
-				<div class="p-grid p-justify-even">
-					<div class="p-col-12 p-md-3 boxMain box-gray">
-						<div class="DispBlock box-header">SALDO ACTUAL</div>
-						<div class="EmptyBox5"/>
-						<h:outputText value="#{cajaChicaCtrl.saldoActual}" styleClass="box-content Fs16">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-					<div class="p-col-12 p-md-3 boxMain box-border-gray">
-						<div class="DispBlock box-header">TOTAL INGRESOS</div>
-						<div class="EmptyBox5"/>
-						<h:outputText value="#{cajaChicaCtrl.totalIngreso}" styleClass="box-content Fs16">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-					<div class="p-col-12 p-md-3 boxMain box-border-gray">
-						<div class="DispBlock box-header">TOTAL EGRESOS</div>
-						<div class="EmptyBox5"/>
-						<h:outputText value="#{cajaChicaCtrl.totalEgreso}" styleClass="box-content Fs16">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
+				<div class="grid justify-content-between">
+	    			<div class="col-5 md:col-4">
+						<h3 class="cardTitle">Caja Chica</h3>
+	    			</div>					
+					<div class="col-7 md:col-4 align-self-center" style="text-align: right;">
 					
+						<p:selectOneMenu id="somEstablecimientoMain"
+							value="#{cajaChicaCtrl.establecimientoMain}"
+							converter="omnifaces.SelectItemsConverter"
+							style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
+							disabled="#{not cajaChicaCtrl.habilitarEstablecimientoMain}">							
+							<f:selectItems value="#{cajaChicaCtrl.establecimientoMainList}" var="st"
+								itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />							
+							<p:ajax event="valueChange" listener="#{cajaChicaCtrl.buscar()}" update="@form"/>								
+						</p:selectOneMenu>
+						
+					</div>	                
+	    		</div>
+	    		
+	    		<div class="grid">
+	    			<div class="col-12 md:col-4">
+    					<span class="block">Fechas</span>
+	    				<div class="flex">
+	    					<div class="flex flex-grow-1">
+	    						<p:calendar id="calDesde" value="#{cajaChicaCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="w-full pr-1" placeholder="dd/MM/yyyy">
+								</p:calendar>
+	    					</div>
+	    					<div class="flex flex-grow-1">
+	    						<p:calendar id="calHasta" value="#{cajaChicaCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="w-full pr-1" placeholder="dd/MM/yyyy">
+								</p:calendar>
+	    					</div>
+	    				</div>
+	    			</div>
+	    			<div class="col-12 md:col-5 pr-1 overflow-x-hidden">
+	    				<span class="block">Concepto</span>
+	    				<div class="flex">
+	    					<div class="flex flex-grow-1">
+	    						<p:selectOneMenu id="somConcepto"
+											value="#{cajaChicaCtrl.transaccionconcepto}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="w-full"
+											style="text-overflow: hidden!important;"
+											filter="true"
+											filterMatchMode="contains">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+									<f:selectItems value="#{cajaChicaCtrl.transaccionconceptoList}" var="c"
+												itemLabel="#{c.nombre}" itemValue="#{c}" />
+								</p:selectOneMenu>
+	    					</div>
+	    				</div>
+	    			</div>
+	    			<div class="col-12 md:col-3">
+	    				<span class="hidden md:block text-white">Concepto</span>
+	    				<div class="flex flex-inline">
+	    					<p:commandButton id="cmdGlobalBuscar"
+								icon="fa fa-search"
+								action="#{cajaChicaCtrl.buscar()}" styleClass="ui-button-outlined mr-1 " update="@form" title="Buscar"/>
+							
+						<p:commandButton id="cmdRtnNuevo"
+							value="TRANSACCIÓN" icon="fa fa-plus" 
+							action="#{cajaChicaCtrl.nuevoForm()}" styleClass="mr-1" update="@form">
+	   					</p:commandButton>
+	   					
+						<p:commandButton id="cmdGlobalExcel"
+	  						title="Exportar excel"
+							icon="fa fa-download" 
+							styleClass="ui-button-outlined"
+							disabled="#{empty cajaChicaCtrl.transaccionList}"
+							ajax="false">
+							<p:fileDownload value="#{cajaChicaCtrl.fileResumen}" contentDisposition="inline"/>
+						</p:commandButton>
+	    				</div>
+	    			</div>
+	    		</div>
+				
+				<div class="grid justify-content-start md:justify-content-end my-3">
+					<div class="col-6 md:col-3">
+						<div class="grid grid-gutter">
+							<div class="col">
+								<div class="flex flex-inline">
+									<i class="opacity-60 fa fa-plus Fs20 align-self-center mx-3"></i>
+									<div class="flex flex-column">
+										<div class="w-full py-1 pl-3">
+											<h:outputText value="#{cajaChicaCtrl.totalIngreso}" styleClass="Fs18 text-blue-500 font-bold">
+												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+											</h:outputText>
+										</div>
+										<div class="w-full py-1 pl-2">
+											<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+											<span class="Fs12 text-gray-600 font-semibold">INGRESOS</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
+						</div>
+					</div>
+					<div class="col-6 md:col-3">
+						<div class="grid grid-gutter">
+							<div class="col">
+								<div class="flex flex-inline">
+									<i class="opacity-60 fa fa-minus Fs20 align-self-center mx-3"></i>
+									<div class="flex flex-column">
+										<div class="w-full py-1 pl-3">
+											<h:outputText value="#{cajaChicaCtrl.totalEgreso}" styleClass="Fs18 text-pink-500 font-bold">
+												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+											</h:outputText>
+										</div>
+										<div class="w-full py-1 pl-2">
+											<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+											<span class="Fs12 text-gray-600 font-semibold">EGRESOS</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-fixed hidden md:block" style="width:20px"><p:divider layout="vertical" /></div>
+						</div>
+					</div>
+					<div class="col-6 md:col-3">
+						<div class="flex flex-inline">
+							<i class="fa fa-angle-double-right opacity-60 Fs20 align-self-center mx-3 font-bold"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3">
+									<h:outputText value="#{cajaChicaCtrl.saldoActual}" styleClass="Fs18 text-gray-700 font-bold">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+									<span class="Fs12 text-gray-600 font-semibold">SALDO</span>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="EmptyBox5"/>
 				
 				<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
@@ -297,40 +224,42 @@
 						
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:40px;">
-						<h:outputText value="#{t.fechaemision}" >
-							<f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
+					<p:column headerText="FECHA" style="width:90px;">
+						<div class="flex flex-column">
+							<h:outputText value="#{t.transaccionconcepto.nombre}" styleClass="Fs10 font-bold block"/>
+							<h:outputText value="#{t.fechaemision}" styleClass="Fs10">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+							
+						</div>
 					</p:column>		
 					
-					<p:column headerText="CONCEPTO" style="width:90px;">
-						<h:outputText value="#{t.transaccionconcepto.nombre}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="PROVEEDOR" style="width:90px;">
-						<h:outputText value="#{t.cliente.razonsocial}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="DOC REFERENCIA" style="width:90px;">
-						<h:outputText value="#{t.numdocumento}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="NOTAS" style="width:90px;">
+					<p:column headerText="NOTAS" style="width:100px;">
 						<h:outputText value="#{t.nota}" >
 						</h:outputText>
 					</p:column>
 					
+					<p:column headerText="PROVEEDOR" style="width:120px;">
+						<div class="flex flex-column">
+							<div class="w-full">
+								<span class="Fs9 font-bold mr-1">DOC REF.</span>
+								<h:outputText value="#{t.numdocumento!=null?t.numdocumento:'-'}" >
+								</h:outputText>
+							</div>
+							<h:outputText value="#{t.cliente.razonsocial}" >
+							</h:outputText>
+						</div>
+					</p:column>
+					
+					
 					<p:column headerText="#{msg['label.reposicion']}" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{t.valoringreso}" styleClass="DispBlock #{t.valoringreso.doubleValue()>0 and t.ajuste==0?'markGreen':t.valoringreso.doubleValue()>0 and t.ajuste==1?'markGray':' '} ">
+						<h:outputText value="#{t.valoringreso}" styleClass="#{t.valoringreso.doubleValue()>0 and t.ajuste==0?'text-blue-600 font-bold':t.valoringreso.doubleValue()>0 and t.ajuste==1?'text-gray-600 font-bold':' '} ">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="GASTO" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{t.valoregreso}">
+						<h:outputText value="#{t.valoregreso}" styleClass="#{t.valoregreso>0?'text-pink-500 font-bold':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>	
