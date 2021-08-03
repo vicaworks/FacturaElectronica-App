@@ -24,7 +24,7 @@ public class GuestPreferences implements Serializable {
 	 */
 	private static final long serialVersionUID = 28715271998980081L;
 
-	private String menuMode = "layout-static";//"layout-slim";
+	private String menuMode = "layout-slim";//"layout-static";//"layout-slim";
 
     private String theme = "blue";//"blue";bluegrey
 

@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">REP Cliente producto</ui:define>
     
@@ -13,62 +13,13 @@
         <style type="text/css">
         	
         	.pvUnoDT .ui-datatable-scrollable-body{
-				/* min-height: 40vh !important;
-				max-height: 40vh !important; */
-				height: calc(100vh - 330px)!important;				
+				min-height: 30vh !important;
+				/*max-height: 40vh !important; */
+				height: calc(100vh - 265px)!important;				
 			}
 			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;text-align:
-			}
-			
-			body .ui-messages, 
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0em !important;
-				display: block !important;
-			}
-			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
-				border: 1px solid #d8d8dc;
-				background-color: #ccc;
-				color: black;
-				cursor: default;
-			}
-			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}
-			
-			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
-				padding: 0.2em !important;
-			}
-			
-			body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
-				padding: 0em;
-			}
-			
-			.ui-inputgroup .ui-inputgroup-addon {
-				padding: 0px; 
-			}
-			
-			.ui-autocomplete input{
-				width: 100%;
-			}
-			/* ================================================================================================== */
-			
-			
+			.ui-calendar .ui-inputfield,
+			.ui-autocomplete .ui-inputfield{width: 100% !important;}
 			
         </style>
     </ui:define>
@@ -88,102 +39,85 @@
 	    <h:form id="formMain">
 	    	
 	    	<div class="card card-w-title">
-				<div class="p-grid p-align-center">
-	    			<div class="p-col-12 p-md-6">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Cliente - Producto</h3>
-	    			</div>
-	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
-	                
-		                <p:selectOneMenu id="somEstablecimientoMain"
+	    	
+	    		<div class="grid justify-content-between">
+	    			<div class="col-5 md:col-4">
+						<h3 class="cardTitle">Cliente - Producto</h3>
+	    			</div>					
+					<div class="col-7 md:col-4 align-self-center" style="text-align: right;">					
+						<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{repClienteProductosCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
-							styleClass="cmb_establecimiento_wrapper"
-							disabled="#{not repClienteProductosCtrl.habilitarEstablecimientoMain}">
-							
-							<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
-							
+							style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
+							disabled="#{not repClienteProductosCtrl.habilitarEstablecimientoMain}">							
+							<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>							
 							<f:selectItems value="#{repClienteProductosCtrl.establecimientoMainList}" var="st"
-								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-							
-							<p:ajax event="valueChange" listener="#{repClienteProductosCtrl.buscar()}" update="@form"/>
-								
-						</p:selectOneMenu>
-		                
-		                
-	        		</div>
+								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />							
+							<p:ajax event="valueChange" listener="#{repClienteProductosCtrl.buscar()}" update="@form"/>								
+						</p:selectOneMenu>						
+					</div>	                
 	    		</div>
-		   		<div class="EmptyBox5"/>
-		   		
-		   		<div class="p-grid p-align-end vertical-container">
-		    		
-		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
-		    			<div class="EmptyBox5"/>
-			    		<p:calendar id="calDesde" value="#{repClienteProductosCtrl.desde}"
-							pattern="dd/MM/yyyy"
-							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-						</p:calendar>
-						<p:message for="calDesde"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-2">
-		    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
-		    			<div class="EmptyBox5"/>
-			    		<p:calendar id="calHasta" value="#{repClienteProductosCtrl.hasta}"
-							pattern="dd/MM/yyyy"
-							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-						</p:calendar>
-						<p:message for="calHasta"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-4">
-		    			<h:outputText value="CLIENTE *" styleClass="cpoRequerido Wid100"/>
-		    			<div class="EmptyBox5"/>
-		    			
-		    			<p:autoComplete id="intCriterioBusqueda" value="#{repClienteProductosCtrl.criterioBusqueda}" completeMethod="#{repClienteProductosCtrl.completeClienteCriterio}"
-                        	forceSelection="true" 
-                        	styleClass="Wid100" requiredMessage="REQUERIDO"
-                        	placeholder="C.I., R.U.C., Nombre del cliente"
-                        	minQueryLength="2"
-                        	required="true"/>
-		    			
-			    		<p:message for="intCriterioBusqueda"/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-2">
-			    		<p:commandButton id="cmdRefrecar"
-							value="CONSULTAR" icon="fa fa-search" 
-							action="#{repClienteProductosCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form"
-							/>
-		    		</div>
-		    		
-		    		<div class="p-col-12 p-md-2">
-			    		<p:commandButton id="cmdGlobalExcel"
-		  						value="EXPORTAR"
-								icon="fa fa-sort-down" 
-								styleClass="secondary-button Wid100"
+	    	
+	    		
+	    		<div class="grid">
+	    			<div class="col-12 md:col-5">
+	    				<span class="block">Fechas</span>
+	    				<div class="flex">
+	    					<div class="flex-grow-1 flex pr-1">
+	    						<p:calendar id="calDesde" value="#{repClienteProductosCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+								</p:calendar>
+	    					</div>
+	    					<div class="flex-grow-1 flex">
+	    						<p:calendar id="calHasta" value="#{repClienteProductosCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+								</p:calendar>
+	    					</div>
+	    				</div>
+	    			</div>
+	    			<div class="col-10 md:col-4">
+	    				<span>Cliente</span>
+	    				<div class="flex">
+	    					<p:autoComplete id="intCriterioBusqueda" value="#{repClienteProductosCtrl.criterioBusqueda}" completeMethod="#{repClienteProductosCtrl.completeClienteCriterio}"
+	                        	forceSelection="true" 
+	                        	requiredMessage="REQUERIDO"
+	                        	styleClass="w-full"
+	                        	placeholder="C.I., R.U.C., Nombre del cliente"
+	                        	minQueryLength="2"
+	                        	required="true"/>	
+	    				</div>
+	    			</div>
+	    			<div class="col-2">
+	    				<span class="text-white">O</span>
+    					<div class="flex">
+	    					<p:commandButton id="cmdRefrecar"
+								title="Consultar" icon="fa fa-search" 
+								action="#{repClienteProductosCtrl.buscar()}" styleClass="mr-1" update="@form"
+								/>
+							<p:commandButton id="cmdGlobalExcel"
+		  						title="Exportar excel"
+								icon="fa fa-download" 
+								styleClass="ui-button-outlined"
 								disabled="#{empty repClienteProductosCtrl.ventasQuerieList}"
 								ajax="false">
-								<p:fileDownload value="#{repClienteProductosCtrl.fileResumen}" contentDisposition="inline"/>
-							</p:commandButton>
-		    		</div>
-		    	</div>
-		   		
-		   	</div>
+								<p:fileDownload value="#{repClienteProductosCtrl.fileResumen}"/>
+							</p:commandButton>	
+    					</div>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	
 		   	
 		   	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
-			 <div class="EmptyBox5"/>
-			 <!--
-			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repClienteProductosCtrl.ventasQuerieList}">
-				<p:chart type="bar" model="#{repClienteProductosCtrl.barChartModel}" style="height:400px" responsive="true"/>
-			</p:panelGrid>
-			<div class="EmptyBox5"/> -->
+			
 			<div class="card card-w-title">
 				
 				<p:dataTable id="pvUnoDT"
