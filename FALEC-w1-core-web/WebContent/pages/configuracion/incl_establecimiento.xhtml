@@ -65,7 +65,7 @@
 			</p:column>
 			
 			<p:column headerText="#{msg['label.codigo']}"
-				style="width:10px; text-align: center;">
+				style="width:20px; text-align: center;">
 				<h:outputText value="#{appSessionCtrl.formatoCadena(estab.codigoestablecimiento,3,'0')}" />
 			</p:column>
 
@@ -75,11 +75,11 @@
 			</p:column>
 			
 			<p:column headerText="NOMBRE COMERCIAL" priority="1"
-				style="width:100px; ">
+				style="width:120px; ">
 				<h:outputText value="#{estab.nombrecomercial}" />
 			</p:column>
 			
-			<p:column headerText="#{msg['label.direccion']}" style="width:80px;">
+			<p:column headerText="#{msg['label.direccion']}" style="width:120px;">
 				<h:outputText value="#{estab.direccionestablecimiento}" />
 			</p:column>
 
@@ -87,12 +87,12 @@
 				<h:outputText value="#{estab.telefono}" />
 			</p:column>
 
-			<p:column headerText="CORREO" style="width:80px;">
+			<p:column headerText="CORREO" style="width:90px;">
 				<h:outputText value="#{estab.correo}" />
 			</p:column>
 			
 			<p:column headerText="AMBIENTE"
-				style="width:20px; text-align: center;">
+				style="width:40px; text-align: center;">
 				<h:outputText value="#{estab.ambiente==1? 'Pruebas':'Produccion'}" />
 			</p:column>
 

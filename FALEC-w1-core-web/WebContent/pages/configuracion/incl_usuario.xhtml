@@ -32,28 +32,23 @@
 		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
 		    		</p:selectOneMenu>
 		    	</div>
-		    	<div class="field">
-					<p:commandButton id="cmdRefrecar"
-							value="CONSULTAR" icon="fa fa-search" 
-							action="#{usuarioCtrl.refrescar()}" styleClass="ui-button-outlined min-width-110" update="@form"
-							/>
-				</div>
-				<div class="field">
-					<p:commandButton id="cmdNuevo"
-						value="NUEVO" icon="fa fa-plus" styleClass="min-width-110" 
+		    	
+		    	<p:commandButton id="cmdRefrecar"
+					title="Consultar" icon="fa fa-search" 
+					action="#{usuarioCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+					/>
+				<p:commandButton id="cmdNuevo"
+						title="Nuevo" icon="fa fa-plus" styleClass="mr-1" 
 						action="#{usuarioCtrl.nuevo()}" inline="true" 
 						/>
-				</div>
-				<div class="field">
-					<p:commandButton  id="cmdExcel" 
-						title="EXPORTAR"
-						icon="fa fa-download"
-						ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-						value="EXPORTAR"
-						styleClass="min-width-110 mr-1 ui-button-outlined">
-						<p:fileDownload value="#{usuarioCtrl.fileUsuarios}"/>
-					</p:commandButton>
-    			</div>
+				<p:commandButton  id="cmdExcel" 
+					title="Exportar excel"
+					icon="fa fa-download"
+					ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+					styleClass="ui-button-outlined">
+					<p:fileDownload value="#{usuarioCtrl.fileUsuarios}"/>
+				</p:commandButton>
+		    	
     		</div>
 		</div>
 		

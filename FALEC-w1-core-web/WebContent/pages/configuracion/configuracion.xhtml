@@ -12,27 +12,8 @@
     
     <ui:define name="head">
     
-    	<style type="text/css">
-        
-			/* .ui-calendar .ui-inputfield{
-				width: 100% !important;text-align:
-			}*/
+    	<style type="text/css">	
 			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
-				border: 1px solid #d8d8dc;
-				background-color: #ccc;
-				color: black;
-				cursor: default;
-			}
-			
-			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
-				padding: 0.2em !important;
-			}
 			
 			.tabComprobante{
  				padding: 0px 2em !important; 
@@ -148,7 +129,7 @@
 	    	</pe:remoteCommand>
 	    	
 	    	<div class="grid">
-				<div class="col-12 md:col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='PERFIL'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_perfil')?'ui-state-disabled':''}" onclick="switchOpcion('PERFIL');">
+				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='PERFIL'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_perfil')?'ui-state-disabled':''}" onclick="switchOpcion('PERFIL');">
 					
 					<h4>
 						<h:outputText value="01."/>
@@ -160,7 +141,7 @@
 					
 				</div>
 				
-				<div class="col-12 md:col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_establecimiento')?'ui-state-disabled':''}" onclick="switchOpcion('ESTABLECIMIENTO');">
+				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_establecimiento')?'ui-state-disabled':''}" onclick="switchOpcion('ESTABLECIMIENTO');">
 					
 					<h4>
 						<h:outputText value="02."/>
@@ -171,7 +152,7 @@
 					
 				</div>
 				
-				<div class="col-12 md:col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='USUARIOS'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_configuracion')?'ui-state-disabled':''}" onclick="switchOpcion('USUARIOS');">
+				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='USUARIOS'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_configuracion')?'ui-state-disabled':''}" onclick="switchOpcion('USUARIOS');">
 					
 					<h4>
 						<h:outputText value="03."/>
@@ -182,7 +163,7 @@
 					
 				</div>
 				
-				<div class="col-12 md:col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='CONFIGURACION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_usuario')?'ui-state-disabled':''}" onclick="switchOpcion('CONFIGURACION');">
+				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='CONFIGURACION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_usuario')?'ui-state-disabled':''}" onclick="switchOpcion('CONFIGURACION');">
 					
 					<h4>
 						<h:outputText value="04."/>

@@ -221,19 +221,19 @@
 					
 					<p:column headerText="ADEUDADO" style="width:90px;" styleClass="text-right">
 						<div class="flex flex-inline justify-content-end">
-							<h:outputText value="#{v.totalpago}" styleClass="text-gray-600 font-semibold mr-2" style="width:60px;">
+							<h:outputText value="#{v.totalpago}" styleClass="text-gray-600 font-semibold mr-2" style="width:80px;">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 							<p:commandLink process="@this" id="cc_valComprobante">
 								<i class="fa fa-external-link Fs12" style="color:#2f2f2f;"/>
 							</p:commandLink>
-							<p:overlayPanel for="cc_valComprobante" style="width:350px">
+							<p:overlayPanel for="cc_valComprobante" style="width:250px">
 					            
 					            
 					            <div class="grid">
 									<div class="col-12">
 										<div class="grid grid-nogutter justify-content-between">
-											<div class="col-7 py-2">
+											<div class="col-8 py-2">
 												<div class="w-full text-left">
 													<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
 													<span class="Fs14 text-blue-600 font-medium">COMPROBANTE</span>
