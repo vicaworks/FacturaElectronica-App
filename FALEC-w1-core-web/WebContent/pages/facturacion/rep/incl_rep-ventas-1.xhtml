@@ -16,26 +16,24 @@
 	</style>
 	
 	<div class="card card-w-title">
-		<div class="p-grid p-justify-between p-align-center">
-			<div class="p-col-12 p-md-6">
-				<h3 class="cardTitle">
-					<i class="fa fa-arrow-circle-right"/>
-					Opciones de #{msg['label.busqueda.lower']} globales
-				</h3>
-			</div>
-			
-			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
-				<!-- <h:outputText value="Establecimiento * : " style="margin-right:5px;"/> -->
+		
+		<div class="grid justify-content-between">
+   			<div class="col-5 md:col-4">
+				<h3 class="cardTitle">Reportes</h3>
+   			</div>					
+			<div class="col-7 md:col-4 align-self-center" style="text-align: right;">
+				
+				
 				<p:selectOneMenu id="somEstablecimientoMain"
 					value="#{repMainCtrl.establecimientoMain}"
 					converter="omnifaces.SelectItemsConverter"
-					styleClass="cmb_establecimiento_wrapper"
+					style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
 					disabled="#{not repMainCtrl.habilitarEstablecimientoMain}">
 					
 					<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
 					
 					<f:selectItems value="#{repMainCtrl.establecimientoMainList}" var="st"
-						itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+						itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />
 					
 					<p:ajax event="valueChange" update=":formMain :formMain2 :formMain3 :formMain4 :formMain5" process=":formMain :formMain2 :formMain3 :formMain4 :formMain5"
 						listener="#{repMainCtrl.consultarMain(repVentaCtrl,repFacCtrl,repFacAnuCtrl,repRecibCtrl,repRecibAnuCtrl)}">
@@ -43,135 +41,135 @@
 							
 				</p:selectOneMenu>
 				
+				
+			</div>	                
+   		</div>
+		
+		
+		<div class="grid">
+			<div class="col-12 md:col-4">
+				<div class="flex flex-column">
+	    			<h:outputText value="Vendedor" styleClass="w-full"/>
+	    			<p:selectOneMenu id="somVendedor"
+								value="#{repVentaCtrl.usuarioSelected}"
+								converter="omnifaces.SelectItemsConverter"
+								required="false"
+								requiredMessage="REQUERIDO"
+								styleClass="w-full"
+								filter="true"
+								filterMatchMode="contains">
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+						<f:selectItems value="#{repVentaCtrl.usuarioList}" var="u"
+										itemLabel="#{u.nombre}" itemValue="#{u}" />	
+					</p:selectOneMenu>
+					
+				</div>
 			</div>
-			
-		</div>
-   		<div class="EmptyBox5"/>
-    	<div class="p-grid p-align-center vertical-container">
-    	
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="VENDEDOR *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-    			<p:selectOneMenu id="somVendedor"
-							value="#{repVentaCtrl.usuarioSelected}"
-							converter="omnifaces.SelectItemsConverter"
-							required="false"
-							requiredMessage="REQUERIDO"
-							styleClass="Wid100"
-							filter="true"
-							filterMatchMode="contains">
-					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-					<f:selectItems value="#{repVentaCtrl.usuarioList}" var="u"
-									itemLabel="#{u.nombre}" itemValue="#{u}" />	
-				</p:selectOneMenu>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="TIPO PAGO *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-    			<p:selectOneMenu id="somTipoPago"
+			<div class="col-12 md:col-4">
+				<div class="flex flex-column">
+	    			<h:outputText value="Tipo de Pago" styleClass="w-full"/>
+					<p:selectOneMenu id="somTipoPago"
 							value="#{repVentaCtrl.tipopagoSelected}"
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100"
+							styleClass="w-full"
 							filter="true"
 							filterMatchMode="contains">
-					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-					<f:selectItems value="#{repVentaCtrl.tipopagoList}" var="tp"
-									itemLabel="#{tp.nombre}" itemValue="#{tp}" />	
-				</p:selectOneMenu>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="FABRICANTE *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-    			<p:selectOneMenu id="somFabricante"
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+						<f:selectItems value="#{repVentaCtrl.tipopagoList}" var="tp"
+										itemLabel="#{tp.nombre}" itemValue="#{tp}" />	
+					</p:selectOneMenu>	
+				</div>				
+			</div>
+			<div class="col-12 md:col-4">
+				<div class="flex flex-column">
+					<h:outputText value="Fabricante" styleClass="w-full"/>
+					<p:selectOneMenu id="somFabricante"
 							value="#{repVentaCtrl.fabricanteSelected}"
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100"
+							styleClass="w-full"
 							filter="true"
 							filterMatchMode="contains">
-					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-					<f:selectItems value="#{repVentaCtrl.fabricanteList}" var="fa"
-									itemLabel="#{fa.nombrecomercial}" itemValue="#{fa}" />	
-				</p:selectOneMenu>
-    		</div>
-    		 
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="#{msg['label.categoria']} *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-    			<p:selectOneMenu id="somCategoria"
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+						<f:selectItems value="#{repVentaCtrl.fabricanteList}" var="fa"
+										itemLabel="#{fa.nombrecomercial}" itemValue="#{fa}" />	
+					</p:selectOneMenu>		
+				</div>
+			</div>
+			<div class="col-12 md:col-4">
+				<div class="flex flex-column">
+					<h:outputText value="Categoría" styleClass="w-full"/>
+					<p:selectOneMenu id="somCategoria"
 							value="#{repVentaCtrl.categoriaSelected}"
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100"
+							styleClass="w-full"
 							filter="true"
 							filterMatchMode="contains">
-					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-					<f:selectItems value="#{repVentaCtrl.categoriaList}" var="ca"
-									itemLabel="#{ca.categoria}" itemValue="#{ca}" />	
-				</p:selectOneMenu>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="CRITERIO" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-    			<p:inputText value="#{repVentaCtrl.criterioBusqueda}" placeholder="#Factura, Cliente, Cod barra, producto" styleClass="Wid100"/>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-	    		<p:calendar id="calRep1" value="#{repVentaCtrl.desde}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calRep1"/>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-	    		<p:calendar id="calRep2" value="#{repVentaCtrl.hasta}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calRep2"/>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    		
-  					<div class="EmptyBox5"/>
-  					<p:commandButton id="cmdGlobalBuscar"
-						icon="fa fa-search" 
-						action="#{repVentaCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;">
-						<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repVentaCtrl.establecimientoMain}"/>
-					</p:commandButton>
-					
-  					<p:commandButton id="cmdGlobalExcel"
-						icon="fa fa-file-excel-o" 
-						styleClass="success-btn Fs18"
-						ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
-						<p:fileDownload value="#{repVentaCtrl.file}"/>
-					</p:commandButton>
-					
-    		</div>
-    		
-    	</div>
-    	
-    	<div class="EmptyBox5"/>
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+						<f:selectItems value="#{repVentaCtrl.categoriaList}" var="ca"
+										itemLabel="#{ca.categoria}" itemValue="#{ca}" />	
+					</p:selectOneMenu>		
+				</div>
+			</div>
+			<div class="col-12 md:col-8">
+				<div class="flex flex-column">
+					<h:outputText value="Fechas" styleClass="w-full"/>
+					<div class="flex">
+						<div class="flex-grow-1 flex pr-1">
+							<p:calendar id="calRep1" value="#{repVentaCtrl.desde}"
+								pattern="dd/MM/yyyy"
+								locale="es" 
+								requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+							</p:calendar>
+						</div>
+						<div class="flex-grow-1 flex">
+							<p:calendar id="calRep2" value="#{repVentaCtrl.hasta}"
+								pattern="dd/MM/yyyy"
+								locale="es" 
+								requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+							</p:calendar>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-10 md:col-8">
+				<div class="flex flex-column">
+					<h:outputText value="Criterio" styleClass="w-full"/>
+					<p:inputText value="#{repVentaCtrl.criterioBusqueda}" placeholder="#Factura, Cliente, Cod barra, producto" styleClass="w-full"/>		
+				</div>
+			</div>
+			<div class="col-2 md:col-4">
+				<div class="flex flex-column">
+					<h:outputText value="Criterio" styleClass="text-white"/>
+					<div class="flex flex-inline">
+						<p:commandButton id="cmdGlobalBuscar"
+							icon="fa fa-search" 
+							action="#{repVentaCtrl.buscar()}" styleClass="mr-1" update="@form">
+							<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repVentaCtrl.establecimientoMain}"/>
+						</p:commandButton>
+						
+	  					<p:commandButton id="cmdGlobalExcel"
+							icon="fa fa-download" 
+							styleClass="ui-button-outlined"
+							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+							<p:fileDownload value="#{repVentaCtrl.file}"/>
+						</p:commandButton>			
+					</div>		
+				</div>
+			</div>
+		</div>
+
     	<p:dataTable id="pvUnoDT"
        			scrollable="true"
        			value="#{repVentaCtrl.ventasQueryList}"
        			var="v"
        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-				styleClass="pvUnoDT Fs10"
+				styleClass="pvUnoDT mt-1"
 				rows="13"
                 paginator="true"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -179,19 +177,18 @@
                 paginatorPosition="bottom"  
 				rowKey="#{v.id}">
 			
-			<p:column headerText="N." style="width:80px;">
-				<h:outputText value="#{repVentaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
-			</p:column>
-			
-			<p:column headerText="TIP" style="width:15px;">
-				<h:outputText value="#{v.tipoComprobanteInicual}" style="font-size:8px;" styleClass="#{v.identificador=='00'?'markGray':'markGreen'}">
-				</h:outputText>
-			</p:column>
-			
 			<p:column headerText="FECHA" style="width:50px;">
 				<h:outputText value="#{v.fechaemision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="COMPROBANTE" style="width:90px;">
+				<div class="flex flex-column">
+					<h:outputText value="#{v.tipoComprobante}" styleClass="Fs9 font-bold block">
+					</h:outputText>
+					<h:outputText value="#{repVentaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
+				</div>
 			</p:column>
 			
 			<p:column headerText="CLIENTE" style="width:125px;">
@@ -208,90 +205,165 @@
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="PRE VTA" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.preciounitario}" >
+			<p:column  style="width:50px;" styleClass="TexAlRight">
+				<f:facet name="header">
+					<div class="flex flex-column">
+						<span class="block">COSTO</span>
+						<span class="block">UNITARIO</span>
+					</div>
+				</f:facet>
+				<h:outputText value="#{v.preciounitario}" styleClass="Fs10">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.subtotal}" styleClass="markGray">
+			<p:column style="width:50px;" styleClass="TexAlRight">
+				<f:facet name="header">
+					<div class="flex flex-column">
+						<span class="block">SUB</span>
+						<span class="block">TOTAL</span>
+					</div>
+				</f:facet>
+				<h:outputText value="#{v.subtotal}" styleClass="text-gray-600 font-bold Fs10">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="DESC" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.totaldescuento}" >
+			<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.totaldescuento}" styleClass="Fs10 #{v.totaldescuento>0?'font-bold':''}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="TOT SIN IVA" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.totalsinimpuestos}" styleClass="markGreen">
+			<p:column headerText="SIN IMPUESTO" style="width:60px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.totalsinimpuestos}" styleClass="Fs10 text-green-700 font-bold">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="ICE" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.valorice}" >
+			<p:column headerText="ICE" style="width:50px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.valorice}" styleClass="Fs10">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="IVA" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.valoriva}" >
+			<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.valoriva}" styleClass="Fs10">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			
-			<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.preciototal}" styleClass="markGreen">
+			<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
+				<h:outputText value="#{v.preciototal}" styleClass="font-bold text-blue-600 Fs10">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 						
 		</p:dataTable>
-    	
-    	<div class="EmptyBox5"/>
-    	<div class="p-grid p-justify-center">
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="CANTIDAD" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.cantidad}" styleClass="Fs16 FontBold">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="TOTAL SIN IVA" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.totalsinimpuestos}" styleClass="Fs16 FontBold markGreen">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="IVA" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.iva}" styleClass="Fs16 FontBold">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repVentaCtrl.totalesDto.total}" styleClass="Fs16 FontBold  markGreen">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    	</div>
+		
+		<div class="grid justify-content-end">
+			<div class="col-12 md:col-5">
+				<div class="grid grid-nogutter justify-content-between">
+					<div class="col-7 py-2">
+						<div class="w-full text-left">
+							<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
+							<span class="Fs14 text-blue-600 font-medium">RESUMEN</span>
+						</div>
+					</div>
+					<div class="col-1 text-center align-self-center">
+						<i class="fa fa-angle-down Fs14"></i>
+					</div>
+					<div class="col-12 mt-1">
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="CANTIDAD" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repVentaCtrl.totalesDto.cantidad}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="SUBTOTAL" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repVentaCtrl.totalesDto.subtotal}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="DESCUENTO" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repVentaCtrl.totalesDto.descuento}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="SIN IMPUESTOS" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repVentaCtrl.totalesDto.totalsinimpuestos}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="I.V.A" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repVentaCtrl.totalesDto.iva}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="TOTAL" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repVentaCtrl.totalesDto.total}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="EmptyBox10"/>
+					</div>
+				</div>
+			</div>
+		</div>
     	
 	</div>	
 	

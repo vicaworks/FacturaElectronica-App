@@ -16,79 +16,84 @@
 	</style>
 	
 	<div class="card card-w-title">
-		<h3 class="cardTitle">
-			<i class="fa fa-arrow-circle-right"/>
-			Facturas Anuladas
-		</h3>
-   		<div class="EmptyBox5"/>
-    	<div class="p-grid p-align-center vertical-container">
-    	
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="VENDEDOR *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-    			<p:selectOneMenu id="somVendedorRep2"
-							value="#{repFacCtrl.usuarioSelected}"
+		
+		<div class="grid justify-content-start">
+   			<div class="col-5 md:col-4">
+				<h3 class="cardTitle">Facturas Anuladas</h3>
+   			</div>					
+				                
+   		</div>
+   		
+   		<div class="grid">
+			<div class="col-12 md:col-6">
+				<div class="flex flex-column">
+	    			<h:outputText value="Vendedor" styleClass=" w-full"/>
+	    			<p:selectOneMenu id="somVendedorRep2"
+							value="#{repFacAnuCtrl.usuarioSelected}"
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
 							requiredMessage="REQUERIDO"
-							styleClass="Wid100">
-					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-					<f:selectItems value="#{repFacAnuCtrl.usuarioList}" var="u2"
-									itemLabel="#{u2.nombre}" itemValue="#{u2}" />	
-				</p:selectOneMenu>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="CRITERIO" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-    			<p:inputText value="#{repFacAnuCtrl.criterioBusqueda}" placeholder="#Factura, Cliente" styleClass="Wid100"/>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-2">
-    			<h:outputText value="DESDE *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-	    		<p:calendar value="#{repFacAnuCtrl.desde}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="false" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
-					
-				</p:calendar>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-2">
-    			<h:outputText value="HASTA *" styleClass="cpoRequerido Wid100"/>
-    			<div class="EmptyBox5"/>
-	    		<p:calendar value="#{repFacAnuCtrl.hasta}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="false" styleClass="Wid100 Fs14" placeholder="dd/MM/yyyy">
-					
-				</p:calendar>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-2">
-  					<div class="EmptyBox5"/>
-  					<p:commandButton icon="fa fa-search" 
-						action="#{repFacAnuCtrl.buscar()}" styleClass="secondary-button Fs18" update="@form" style="margin-right:5px;">
-						<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repFacAnuCtrl.establecimientoMain}"/>
-					</p:commandButton>
-						
-  					<p:commandButton icon="fa fa-file-excel-o" 
-						styleClass="success-btn Fs18" update="@form"
-						ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
-						<p:fileDownload value="#{repFacAnuCtrl.file}"/>
-					</p:commandButton>
-    		</div>
-    		
-    	</div>
-    	
-    	<div class="EmptyBox5"/>
+							styleClass="w-full">
+						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+						<f:selectItems value="#{repFacAnuCtrl.usuarioList}" var="u2"
+										itemLabel="#{u2.nombre}" itemValue="#{u2}" />	
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<div class="col-12 md:col-6">
+				<div class="flex flex-column">
+					<h:outputText value="Fechas" styleClass="w-full"/>
+					<div class="flex">
+						<div class="flex-grow-1 flex pr-1">
+							<p:calendar value="#{repFacAnuCtrl.desde}"
+								pattern="dd/MM/yyyy"
+								locale="es" 
+								requiredMessage="REQUERIDO" required="false" styleClass="w-full Fs14" placeholder="dd/MM/yyyy">
+								
+							</p:calendar>
+						</div>
+						<div class="flex-grow-1 flex">
+							<p:calendar value="#{repFacAnuCtrl.hasta}"
+								pattern="dd/MM/yyyy"
+								locale="es" 
+								requiredMessage="REQUERIDO" required="false" styleClass="w-full Fs14" placeholder="dd/MM/yyyy">
+								
+							</p:calendar>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-10 md:col-6 pr-1">
+				<div class="flex flex-column">
+					<h:outputText value="Criterio" styleClass=" w-full"/>
+					<p:inputText value="#{repFacAnuCtrl.criterioBusqueda}" placeholder="#Factura, Cliente" styleClass="w-full"/>
+				</div>
+			</div>
+			<div class="col-2 md:col-4">
+				<div class="flex flex-column">
+					<h:outputText value="Criterio" styleClass="text-white"/>
+					<div class="flex flex-inline">
+						<p:commandButton icon="fa fa-search" 
+							action="#{repFacAnuCtrl.buscar()}" styleClass="mr-1" update="@form" style="margin-right:5px;">
+							<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repFacAnuCtrl.establecimientoMain}"/>
+						</p:commandButton>
+							
+	  					<p:commandButton icon="fa fa-download" 
+							styleClass="ui-button-outlined" update="@form"
+							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+							<p:fileDownload value="#{repFacAnuCtrl.file}"/>
+						</p:commandButton>	
+					</div>
+				</div>
+			</div>
+		</div>
+	
     	<p:dataTable id="pvtresDT"
        			scrollable="true"
        			value="#{repFacAnuCtrl.ventasQueryList}"
        			var="fn"
        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-				styleClass="pvtresDT Fs11"  
+				styleClass="pvtresDT mt-1"  
 				rowKey="#{fn.id}"
 				rows="13"
                 paginator="true"
@@ -96,104 +101,179 @@
                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                 paginatorPosition="bottom">
 			
-				<p:column headerText="N." style="width:80px;">
-					<h:outputText value="#{repFacAnuCtrl.getFormatoNumDocumento(fn.numdocumento)}" />
-				</p:column>
-				
-				<p:column headerText="FECHA" style="width:40px;">
+				<p:column headerText="FECHA" style="width:50px;">
 					<h:outputText value="#{fn.fechaemision}" >
 						<f:convertDateTime pattern="dd/MM/yyyy"/>
 					</h:outputText>
 				</p:column>
+				
+				<p:column headerText="COMPROBANTE" style="width:90px;">
+					<h:outputText value="#{repFacAnuCtrl.getFormatoNumDocumento(fn.numdocumento)}" />
+				</p:column>
+				
 				
 				<p:column headerText="CLIENTE" style="width:125px;">
 					<h:outputText value="#{fn.razonsocial}" >
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="VENDEDOR" style="width:40px;">
-					<h:outputText value="#{fn.nombrepantalla}" >
+				<p:column headerText="VENDEDOR" style="width:60px;">
+					<h:outputText value="#{fn.nombrepantalla}" styleClass="Fs10">
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.subtotal}" styleClass="markGray">
+				<p:column style="width:50px;" styleClass="TexAlRight">
+					<f:facet name="header">
+						<div class="flex flex-column">
+							<span class="block">SUB</span>
+							<span class="block">TOTAL</span>
+						</div>
+					</f:facet>
+					<h:outputText value="#{fn.subtotal}" styleClass="Fs10">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.totaldescuento}" >
+					<h:outputText value="#{fn.totaldescuento}" styleClass="Fs10 #{fn.totaldescuento>0?'font-bold':''}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="TOT SIN IVA" style="width:40px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.totalsinimpuestos}" styleClass="markGreen">
+				<p:column style="width:50px;" styleClass="TexAlRight">
+					<f:facet name="header">
+						<div class="flex flex-column">
+							<span class="block">SIN</span>
+							<span class="block">IMPUESTOS</span>
+						</div>
+					</f:facet>
+					<h:outputText value="#{fn.totalsinimpuestos}" styleClass="Fs10 text-green-700 font-bold">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="ICE" style="width:30px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.ice}" >
+				<p:column headerText="ICE" style="width:50px;" styleClass="TexAlRight">
+					<h:outputText value="#{fn.ice}" styleClass="Fs10">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="IVA" style="width:30px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.iva}" >
+				<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
+					<h:outputText value="#{fn.iva}" styleClass="Fs10">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.total}" styleClass="markGreen">
+					<h:outputText value="#{fn.total}" styleClass="font-bold text-blue-600 Fs10">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 						
 		</p:dataTable>
     	
-    	<div class="EmptyBox5"/>
-    	<div class="p-grid p-justify-center">
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="SUBTOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacAnuCtrl.totalesDto.subtotal}" styleClass="Fs16 FontBold markGray">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="DESCUENTO" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacAnuCtrl.totalesDto.descuento}" styleClass="Fs16 FontBold">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="TOT SIN IVA" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacAnuCtrl.totalesDto.totalsinimpuestos}" styleClass="Fs16 FontBold markGreen">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="I.C.E" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacAnuCtrl.totalesDto.ice}" styleClass="Fs16 FontBold">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="I.V.A." styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacAnuCtrl.totalesDto.iva}" styleClass="Fs16 FontBold">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    		<div class="p-col-4 p-md-2" style="text-align: center;">
-    			<h:outputText value="TOTAL" styleClass="FontBold Fs9 DispBlock" style="color:gray;margin-bottom:5px;"/>
-    			<h:outputText value="#{repFacAnuCtrl.totalesDto.total}" styleClass="Fs16 FontBold markGreen">
-    				<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-    			</h:outputText>
-    		</div>
-    	</div>
-    	
+    	<div class="grid justify-content-end">
+			<div class="col-12 md:col-5">
+				<div class="grid grid-nogutter justify-content-between">
+					<div class="col-7 py-2">
+						<div class="w-full text-left">
+							<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
+							<span class="Fs14 text-blue-600 font-medium">RESUMEN</span>
+						</div>
+					</div>
+					<div class="col-1 text-center align-self-center">
+						<i class="fa fa-angle-down Fs14"></i>
+					</div>
+					<div class="col-12 mt-1">
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="CANTIDAD" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repFacAnuCtrl.totalesDto.cantidad}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="SUBTOTAL" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repFacAnuCtrl.totalesDto.subtotal}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="DESCUENTO" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repFacAnuCtrl.totalesDto.descuento}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="SIN IMPUESTOS" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repFacAnuCtrl.totalesDto.totalsinimpuestos}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="I.V.A" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repFacAnuCtrl.totalesDto.iva}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs9">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="TOTAL" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full">
+									<h:outputText value="#{repFacAnuCtrl.totalesDto.total}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="EmptyBox10"/>
+					</div>
+				</div>
+			</div>
+		</div>    	
 	</div>	
 	
 </ui:composition>
