@@ -10,144 +10,175 @@
 		
 		.pvResumenPagoDT .ui-datatable-scrollable-body{
 			min-height: 25vh !important;
-			max-height: 65vh !important;
+			max-height: 35vh !important;
 		}
 		
 		.heightDTCredito{
-			/* min-height: 25vh !important;
-			max-height: 25vh !important; */
+			
 		}
 		
 	</style>
 	
-	<p:dialog header="Resumen de pagos" widgetVar="dlgResumenPagos" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Resumen de pagos" widgetVar="dlgResumenPagos" modal="true" responsive="true" width="550px" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmResPagos">
 			
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp" >
+			<div class="formgroup-inline">
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
-					
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgResumenPagos').hide()" immediate="true"  
-						/>
-					
-				</div>
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-110" 
+					onclick="PF('dlgResumenPagos').hide()" immediate="true"  
+				/>
 				
 			</div>
+			
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightDTCredito contenedorFormulario">
+			<div class="w-full overflow-auto heightDTCredito contenedorFormulario">
 			
-				<p:dataTable id="pvResumenPagoDT"
-	        			scrollable="true"
-	        			value="#{pagoCtrl.pagoList}"
-	        			var="p"
-	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvResumenPagoDT Fs12"  
-						rowKey="#{p.idpago}">
 				
-					<p:column headerText="ITEM" style="width:100%;">
-						
-						<div class="EmptyBox5"/>
-						<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
-							
-							<div class="p-col-12">
-								<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markGray"/>
-							</div>
-							
-							<div class="p-col-12">
-							
-								<div class="p-grid Fs10">
-									
-									<div class="p-col-12 p-md-3 dt-spinner">
-									
-										<h:outputText value="VALOR" styleClass="Fs12"/>
-										
-										<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" readonly="true">
-										</p:spinner>
-										
+				<div class="grid" style="width:99.5%!important;height:40vh!important;">
+					
+					<f:subview rendered="#{empty pagoCtrl.pagoList}">
+						<div class="col-12 mt-1">
+							<span class="Fs12 text-gray-600">NO EXISTEN PAGOS REGISTRADOS</span>
+						</div>
+					</f:subview>
+					
+					<p:repeat value="#{pagoCtrl.pagoList}"	var="p">
+						<div class="col-12 mt-1">
+							<div class="flex flex-inline">
+								<div class="align-self-center text-center" style="width: 70px;">
+									<i class="fa fa-angle-double-right Fs30"></i>
+								</div>
+								<div class="flex flex-column w-full">
+									<div class="block my-1">
+										<span class="Fs9 font-bold mr-1">TIPO PAGO</span>
+										<span class="Fs16 text-blue-600 font-bold">
+											<h:outputText value="#{p.tipopago.nombre}"/>
+										</span>
 									</div>
-									
-									
-									<div class="p-col-12 p-md-3 dt-spinner">
-										<!-- Efectivo -->								
-										<h:outputText value="IMPORTE" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '1'}"/>
-										<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true">
-										</p:spinner>
-										
-										<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-										<h:outputText value="# DOCUMENTO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
-										<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}" readonly="true">
-										</p:inputText>
-										
-										<!-- credito -->
-										<h:outputText value="PLAZO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '4'}"/>
-										<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" readonly="true">
-										</p:spinner>
-										
+									<!-- Banco -->
+									<f:subview rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+										<div class="block mb-1">
+											<span class="Fs9 mr-1">BANCO</span>
+											<span class="Fs12">
+												<h:outputText value="#{p.nombrebanco!=null?p.nombrebanco:'-'}" styleClass="text-gray-900 text-semibold"/>
+											</span>
+										</div>
+									</f:subview>
+									<f:subview rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+										<div class="block mb-1">
+											<span class="Fs9 mr-1">DOC. REFERENCIA</span>
+											<span class="Fs12">
+												<h:outputText value="#{p.numerodocumento!=null?p.numerodocumento:'-'}" styleClass="text-gray-900 text-semibold"/>
+											</span>
+										</div>
+									</f:subview>
+									<!-- Fecha pago plazo -->
+									<div class="block mb-1">
+										<span class="mr-1">
+											<span class="Fs12">
+												<h:outputText value="#{p.plazo}">
+													<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+												</h:outputText>
+											</span>
+										</span>
+										<span class="">Días</span>
 									</div>
-									
-									<div class="p-col-12 p-md-3 dt-spinner">
-										<!-- Efectivo -->
-										<h:outputText value="CAMBIO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '1'}"/>
-										<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true">
-										</p:spinner>
-										
-										<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
-										<h:outputText value="BANCO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
-										<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}" readonly="true">
-										</p:inputText>
-										
-										<!-- credito -->
-										<h:outputText value="FECHA PAGO" styleClass="Fs12 FontBold" rendered="#{p.tipopago.subdetalle == '4'}"/>
-										<p:calendar id="claAdqFechaCompra" value="#{p.fechapago}"
-											pattern="dd/MM/yyyy"
-											locale="es"
-											requiredMessage="REQUERIDO" required="false" styleClass="Wid100" placeholder="Fecha tentativa de pago"
-											rendered="#{p.tipopago.subdetalle == '4'}" readonly="true" showOn="false">
-										</p:calendar>
-										
+									<div class="block mb-1">
+										<h:outputText value="#{p.fechapago}" styleClass="text-green-600 font-bold">
+											<f:convertDateTime  pattern="dd/MM/yyyy"/>
+										</h:outputText>
 									</div>
-									
-									<div class="p-col-12 p-md-3 dt-spinner">
-									
-										<h:outputText value="NOTAS" styleClass="Fs12 FontBold"/>
-										
-										<h:outputText value="#{p.notas}" />
-										
+									<!-- valores -->
+									<div class="block mb-1">
+										<div class="flex">
+											<div class="flex-grow-1 flex flex-column">
+												<div class="py-1">
+													<h:outputText value="#{p.total}" styleClass="Fs16 font-bold">
+														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+													</h:outputText>
+												</div>
+												<div class="py-1">
+													<span class="Fs9 mr-1">VALOR A </span>
+													<span class="Fs12 font-bold">PAGAR</span>
+												</div>
+											</div>
+											<div class="flex-grow-1 flex flex-column">
+												<div class="py-1">
+													<h:outputText value="#{p.valorentrega}" styleClass="#{p.cambio>0?'text-blue-600 font-bold':''} Fs16">
+														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+													</h:outputText>
+												</div>
+												<div class="py-1">
+													<span class="Fs9 mr-1">VALOR </span>
+													<span class="Fs12 font-bold">IMPORTE</span>
+												</div>
+											</div>
+											<div class="flex-grow-1 flex flex-column">
+												<div class="py-1">
+													<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0?'text-pink-600 font-bold':''} Fs16">
+														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+													</h:outputText>
+												</div>
+												<div class="py-1">
+													<span class="Fs9 mr-1">VALOR </span>
+													<span class="Fs12 font-bold">CAMBIO</span>
+												</div>
+											</div>
+										</div>
 									</div>
-									
+									<!-- Notas  -->
+									<div class="block mb-1">
+										<div class="flex flex-column">
+											<span class="Fs9 font-bold">Notas</span>
+											<p:skeleton width="w-full" height="2rem"/>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-					</p:column>
-								
-				</p:dataTable>
+					</p:repeat>
 				
-				<div class="EmptyBox10"/>
-				<div class="p-grid p-justify-even">
-					<div class="p-col-12 p-md-3 boxMain box-gray">
-						<div class="DispBlock box-header">TOTAL POR PAGAR</div>
-						<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="box-content">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-					
-					<div class="p-col-12 p-md-3 boxMain box-border-gray">
-						<div class="DispBlock box-header">TOTAL PAGO</div>
-						<h:outputText value="#{pagoCtrl.totalPago}" styleClass="box-content">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-				</div>	
-				
-				<div class="EmptyBox10"/>
+				</div>
 			</div>
+			<div class="EmptyBox10"/>
+			<div class="grid justify-content-around border-top-1 border-gray-100">
+				<div class="col-6 md:col-3 mt-1">
+					<div class="flex flex-column text-center">
+						<span class="Fs16 font-bold py-1">
+							<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="Fs18">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</span>
+						<div class="py-1">
+							<span class="Fs10 mr-1">TOTAL</span>
+							<span class="Fs14 font-bold text-green-600">A PAGAR</span>
+							
+						</div>
+					</div>
+				</div>
+				<div class="col-6 md:col-3 mt-1">
+					<div class="flex flex-column text-center">
+						<span class="Fs16 font-bold py-1">
+							<h:outputText value="#{pagoCtrl.totalPago}" styleClass="Fs18">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</span>
+						<div class="py-1">
+							<span class="Fs10 mr-1">TOTAL</span>
+							<span class="Fs14 font-bold text-blue-600">PAGO</span>
+							
+						</div>
+					</div>
+				</div>
+			</div>	
+			
+			<div class="EmptyBox10"/>
 			
 		</h:form>
 		

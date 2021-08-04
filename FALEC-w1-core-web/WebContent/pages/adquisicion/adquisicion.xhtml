@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Compras</ui:define>
     
@@ -14,63 +14,15 @@
 			
 			.adquisicionDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 405px);
+				height: calc(100vh - 280px);
 				
 			}
 			
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;
 			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-message {
-				padding: 0em !important;
-			}
-			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}
-			
-			.boxMain{
-				padding: 15px;
-				text-align: center;
-				border-radius: 4px;
-			}
-			
-			.box-header{
-				font-size: 10px;
-			}
-			
-			.box-content{
-				font-size: 18px;
-				font-weight: bold;
-			}
-			
-			.box-gray{
-				background-color: #2f2f2f;
-				color: #fff;
-			}
-			
-			.box-border-gray{
-				border:1px solid #2f2f2f;
-				color: #2f2f2f;
-			}
+			body .ui-datatable .ui-datatable-data > tr > td,
+			body .ui-datatable thead th {vertical-align: top;}
 			
         </style>
     </ui:define>
@@ -87,23 +39,25 @@
 		    <p:menuitem value="Lista de compras" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf"/>
 		</p:breadCrumb>
 		
-		
-		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	<div class="EmptyBox5"/>
-	    	<!-- Opciones -->
-	    	<div class="card card-w-title">
-	    		
-	    		<div class="p-grid p-align-center">
-	    			<div class="p-col-12 p-md-6">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Compras - Gastos</h3>
-	    			</div>
-	    			<div class="p-col-12 p-md-6 cmb_establecimiento" style="text-align: right;">
-	                
-		                <p:selectOneMenu id="somEstablecimientoMain"
+	    	
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+				closable="true" style="margin:0px!important;">
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+	    	
+	    	<div class="card card-w-title mt-1">
+	    	
+	    		<div class="grid justify-content-between">
+	    			<div class="col-5 md:col-4">
+						<h3 class="cardTitle">Compras</h3>
+	    			</div>					
+					<div class="col-7 md:col-4 align-self-center" style="text-align: right;">
+						
+						<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{adquisicionMainCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
-							styleClass="cmb_establecimiento_wrapper"
+							style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
 							disabled="#{not adquisicionMainCtrl.habilitarEstablecimientoMain}">
 							
 							<f:selectItems value="#{adquisicionMainCtrl.establecimientoMainList}" var="st"
@@ -112,120 +66,79 @@
 							<p:ajax event="valueChange" listener="#{adquisicionMainCtrl.refrescar()}" update="@form"/>
 								
 						</p:selectOneMenu>
-		                
-		                
-	        		</div>
+						
+					</div>	                
 	    		</div>
 				
-		   		<div class="EmptyBox5"/>
-	    		
-	    		<div class="p-grid p-align-center">
-	    			
-	    			<div class="p-col-12 p-md-9">
-	    				
-	    				<div class="p-grid">
-	    					
-	    					<div class="p-col-12 p-md-4">
-	    						<h:outputText value="ESTADO * : " styleClass="cpoRequerido Wid100"/>
-	    						<div class="EmptyBox5"/>
-		    					<p:selectOneMenu  value="#{adquisicionMainCtrl.estado}" 
-												 styleClass="Wid100" 
-												 required="false" requiredMessage="REQUERIDO">
-									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
-									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
-									<f:selectItem itemLabel="ANULADO" itemValue="I" />
-								</p:selectOneMenu>
+				<div class="grid">
+					<div class="col-4 lg:col-2">
+						<span class="block">Estado</span>
+						<div class="flex">
+							<p:selectOneMenu  value="#{adquisicionMainCtrl.estado}" 
+											 styleClass="w-full" 
+											 required="false" requiredMessage="REQUERIDO">
+								<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
+								<f:selectItem itemLabel="ACTIVO" itemValue="A" />
+								<f:selectItem itemLabel="ANULADO" itemValue="I" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<div class="col-8 lg:col-4">
+						<span class="block">Fechas</span>
+						<div class="flex">
+							<div class="flex-grow-1 flex pr-1">
+								<p:calendar id="claKardexFechaDesde" value="#{adquisicionMainCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="w-full">
+								</p:calendar>
 							</div>
-	    					
-	    					<div class="p-col-12 p-md-4">
-	    						<!-- desde -->
-	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
-	    						<div class="EmptyBox5"/>
-	    						<p:calendar id="claKardexFechaDesde" value="#{adquisicionMainCtrl.desde}"
+							<div class="flex-grow-1 flex">
+								<p:calendar id="claKardexFechaHasta" value="#{adquisicionMainCtrl.hasta}"
 									pattern="dd/MM/yyyy"
 									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+									requiredMessage="REQUERIDO" required="true" styleClass="w-full">
 								</p:calendar>
-								<p:message for="claKardexFechaHasta" style="padding:0em;"/>
-	    						
-	    					</div>
-	    					
-	    					<div class="p-col-12 p-md-4">
-	    						<!-- hasts  -->
-	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
-	    						<div class="EmptyBox5"/>
-	    						<p:calendar id="claKardexFechaHasta" value="#{adquisicionMainCtrl.hasta}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-								</p:calendar>
-								<p:message for="claKardexFechaHasta" style="padding:0em;"/>
-	    					</div>
-	    				
-	    					<div class="p-col-12">
-								<p:inputText id="intAdqCriterioBusqueda" value="#{adquisicionMainCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="BUSCAR POR : Nombre Proveedor, Ruc Proveedor, Num. Factura"/>	    						
-	    					</div>
-	    					
-	    				</div>
-	    				
-	    			</div>
-	    			
-	    			<!-- opciones -->
-	    			<div class="p-col-12 p-md-3">
-	    				
-	    				<div class="EmptyBox5"/>
-	    				
-	    				<p:commandButton id="cmdAdqRefrecar"
-							value="CONSULTAR" icon="fa fa-search" 
-							action="#{adquisicionMainCtrl.refrescar()}" styleClass="secondary-button Wid100" update="@form"
-						/>
-						
-						<div class="EmptyBox5"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 lg:col-4">
+						<span class="block">Criterio</span>
+						<div class="flex">
+							<p:inputText id="intAdqCriterioBusqueda" value="#{adquisicionMainCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="1000" placeholder="Proveedor, Ruc, Num. Factura"/>
+						</div>
+					</div>
+					<div class="col-6 lg:col-2">
+						<span class="block text-white">OP</span>
+						<div class="flex flex-inline">
+							<p:commandButton id="cmdAdqRefrecar"
+								title="Consultar" icon="fa fa-search" 
+								action="#{adquisicionMainCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+							/>
 	   				
-	   					<p:commandButton id="cmdAdqNuevo"
-							value="NUEVO" icon="fa fa-plus" 
-							action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="Wid100 secondary-button #{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}" update="@form">
-							<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{adquisicionFrmCtrl.establecimientoMain}"/>
-	   					</p:commandButton>
-	   					
-	   					<div class="EmptyBox5"/>
-	   					
-						<p:commandButton id="cmdAdqExcel"
-	  						value="EXPORTAR"
-							icon="fa fa-sort-down" 
-							styleClass="secondary-button Wid100"
-							disabled="#{empty adquisicionMainCtrl.adquisicionList}">
-						</p:commandButton>
-						
-						<p:menu overlay="true" trigger="cmdAdqExcel" my="left top" at="left bottom" style="width:250px !important;">
-							<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-								<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
-							</p:menuitem>
-							<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-								<p:fileDownload value="#{adquisicionMainCtrl.fileComprasDet}" contentDisposition="inline"/>
-							</p:menuitem>
-						</p:menu>
-	    				
-	    			</div>
-	    			
-    			</div>
-    			
-   			</div>
-   			
-   			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px!important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-	    	
-	    	<div class="EmptyBox5"/>
-	    	
-	    	<div class="card card-w-title">
+		   					<p:commandButton id="cmdAdqNuevo"
+								title="Nueva compra" icon="fa fa-plus" 
+								action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}" update="@form">
+								<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{adquisicionFrmCtrl.establecimientoMain}"/>
+		   					</p:commandButton>
+	   						
+	   						<p:menuButton value="EXPORTAR" disabled="#{empty adquisicionMainCtrl.adquisicionList}">
+								<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+									<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
+								</p:menuitem>
+								<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+									<p:fileDownload value="#{adquisicionMainCtrl.fileComprasDet}" contentDisposition="inline"/>
+								</p:menuitem>
+	   						</p:menuButton>
+							
+						</div>
+					</div>
+				</div>
 				
 				<p:dataTable id="adquisicionDT" var="a"
 					value="#{adquisicionMainCtrl.adquisicionList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="adquisicionDT Fs11"  
+					styleClass="adquisicionDT mt-1"  
 					rowKey="#{a.idadquisicion}"
 					paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -241,13 +154,11 @@
 						</p:commandLink>
 						
 						
-						<p:menu overlay="true" trigger="cmlDtCompra" my="left top" at="left bottom">
-							<!-- <p:menuitem value="Ver" action="#" icon="fa fa-eye" >
-							</p:menuitem> -->
+						<p:menu overlay="true" trigger="cmlDtCompra" my="left top" at="left bottom">							
 							<p:menuitem value="Editar" action="#{adquisicionMainCtrl.editarCompra(a.idadquisicion)}" icon="fa fa-edit" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{adquisicionFrmCtrl.establecimientoMain}"/>
 							</p:menuitem>
-							<p:menuitem value="Agregar #{msg['label.retencion2']}" action="#{retencionMainCtrl.nuevaRetencion()}" icon="fa fa-sign-in" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="#{msg['label.retencion2']}" action="#{retencionMainCtrl.nuevaRetencion()}" icon="fa fa-plus" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{retencionFrmCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{a}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
@@ -264,28 +175,31 @@
 						
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:40px;">
-						<h:outputText value="#{a.fecha}" >
-							<f:convertDateTime  pattern="dd/MM/yyyy"/>
-						</h:outputText>
+					<p:column headerText="COMPROBANTE" style="width:120px;" filterBy="#{a.numfactura}" filterMatchMode="contains">
+						<div class="flex flex-column">
+							<span class="Fs9 font-bold block">
+								<h:outputText value="#{a.tipocomprobante.comprobante}" >
+								</h:outputText>								
+							</span>
+							<span class="block">
+								<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(a.numfactura)}" >
+								</h:outputText>
+							</span>
+							<span class="Fs9">								
+								<h:outputText value="#{a.fecha}" >
+									<f:convertDateTime  pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</span>
+						</div>
 					</p:column>
 					
-					<p:column headerText="COMPROBANTE" style="width:50px;">
-						<h:outputText value="#{a.tipocomprobante.comprobante}" >
-						</h:outputText>
-					</p:column>
 					
-					<p:column style="width:90px;" filterBy="#{a.numfactura}" filterMatchMode="contains" headerText="NUM COMP">
-						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(a.numfactura)}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column style="width:120px;" filterBy="#{a.cliente.razonsocial}" filterMatchMode="contains" headerText="PROVEEDOR">
+					<p:column style="width:180px;" filterBy="#{a.cliente.razonsocial}" filterMatchMode="contains" headerText="PROVEEDOR">
 						<h:outputText value="#{a.cliente.razonsocial}" >
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="GASTO" style="width:20px;" styleClass="TexAlCenter">
+					<p:column headerText="GAST" style="width:20px;" styleClass="TexAlCenter">
 						<f:subview rendered="#{a.esgasto==1}">
 							<i class="fa fa-check Fs14" style="color:black;"/>
 						</f:subview>
@@ -294,74 +208,53 @@
 						</f:subview>
 					</p:column>
 										
-					<p:column headerText="ESTADO" style="width:50px;">
-						<h:outputText value="#{a.estado}" styleClass="#{a.style} Fs10">
+					<p:column headerText="ESTADO" style="width:60px;">
+						<h:outputText value="#{a.estado}" styleClass="#{a.style} Fs9">
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="SUBTOTAL" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="SUBTOTAL" style="width:60px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.subtotal}" >
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="DESCTO" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totaldescuento}" >
+					<p:column headerText="DESCTO" style="width:50px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totaldescuento}" styleClass="#{a.totaldescuento>0?'text-gray-600 font-bold':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="I.C.E" style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totalice}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="I.V.A" style="width:40px;" styleClass="TexAlRight">
+					<p:column headerText="I.V.A" style="width:50px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totaliva}" >
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					
-					<p:column headerText="TOTAL" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totalfactura}" styleClass="markGray DispBlock">
+					<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
+						<h:outputText value="#{a.totalfactura}" styleClass="text-blue-600 font-bold">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="#{msg['label.retencion']}" style="width:45px;" styleClass="TexAlRight">
+					<p:column headerText="#{msg['label.retencion']}" style="width:60px;" styleClass="TexAlRight">
 						<h:outputText value="#{a.totalretencion}" >
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="A PAGAR" style="width:45px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totalpagar}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="PAGO" style="width:60px;" styleClass="TexAlRight">
-						
-						<div class="p-grid" style="padding-top:2px;">
-							<div class="p-col-9" style="text-align: right;">
-								<h:outputText value="#{a.totalpagar}" styleClass="#{a.totalpagar.doubleValue()!=a.totalpagar.doubleValue() and v.estado!='ANULADO' ?'DispBlock Wid100 markRed':'DispBlock Wid100'}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							<div class="p-col-1">
-								<p:commandLink action="#{pagoCtrl.cargarPagosAdquisicionById()}" process="@this" disabled="#{a.estado=='ANULADO'}">
-									<i class="fa fa-external-link" style="color:#2f2f2f;"/>
-									<f:setPropertyActionListener value="#{a.idadquisicion}" target="#{pagoCtrl.idComprobante}"/>
-									<f:setPropertyActionListener value="#{a.totalpagar}" target="#{pagoCtrl.valorPagar}"/>
-								</p:commandLink>
-							</div>
-							<div class="p-col-1">
-							</div>
+					<p:column headerText="A PAGAR" style="width:90px;" styleClass="TexAlRight">
+						<div class="flex flex-inline justify-content-end">
+							<h:outputText value="#{a.totalpagar}" styleClass="#{a.totalpagar.doubleValue()!=a.totalPagoSum.doubleValue()?'text-pink-600':'text-gray-600'} font-bold mr-1" style="width:75px;">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<p:commandLink action="#{pagoCtrl.cargarPagosAdquisicionById()}" process="@this" disabled="#{a.estado=='ANULADO'}">
+								<i class="fa fa-external-link text-gray-900"/>
+								<f:setPropertyActionListener value="#{a.idadquisicion}" target="#{pagoCtrl.idComprobante}"/>
+								<f:setPropertyActionListener value="#{a.totalpagar}" target="#{pagoCtrl.valorPagar}"/>
+							</p:commandLink>
 						</div>
-						
-						
 					</p:column>
 					
 				</p:dataTable>
