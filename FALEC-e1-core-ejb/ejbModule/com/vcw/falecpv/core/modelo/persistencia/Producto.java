@@ -118,6 +118,15 @@ public class Producto implements Serializable {
     @Column(name = "stock")
     private BigDecimal stock;
     
+    @Column(name = "stockminimo")
+    private BigDecimal stockminimo;
+    
+    @Column(name = "stockmaximo")
+    private BigDecimal stockmaximo;
+    
+    @Column(name = "tipoventa")
+    private Integer tipoventa=1;
+    
     @Size(max = 800)
     @Column(name = "observacion", length = 800)
     private String observacion;
@@ -694,6 +703,50 @@ public class Producto implements Serializable {
 		this.cantidad = cantidad;
 	}
 
-	
+	/**
+	 * @return the stockminimo
+	 */
+	public BigDecimal getStockminimo() {
+		return stockminimo;
+	}
+
+	/**
+	 * @param stockminimo the stockminimo to set
+	 */
+	public void setStockminimo(BigDecimal stockminimo) {
+		this.stockminimo = stockminimo;
+	}
+
+	/**
+	 * @return the stockmaximo
+	 */
+	public BigDecimal getStockmaximo() {
+		return stockmaximo;
+	}
+
+	/**
+	 * @param stockmaximo the stockmaximo to set
+	 */
+	public void setStockmaximo(BigDecimal stockmaximo) {
+		this.stockmaximo = stockmaximo;
+	}
+
+	/**
+	 * @return the tipoventa
+	 */
+	public Integer getTipoventa() {
+		return tipoventa;
+	}
+
+	/**
+	 * @param tipoventa the tipoventa to set
+	 */
+	public void setTipoventa(Integer tipoventa) {
+		this.tipoventa = tipoventa;
+	}
+
+	public String getMarkStock() {
+		return (stock.doubleValue()<stockminimo.doubleValue())?"markRed":"markGreen";
+	}
 
 }

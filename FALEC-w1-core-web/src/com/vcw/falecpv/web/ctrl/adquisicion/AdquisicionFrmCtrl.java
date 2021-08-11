@@ -293,6 +293,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	public void calcularAdquicisioDetalleProductoAction(Adquisiciondetalle a,boolean calcDescuento) {
 		try {
 			calcularAdquicisioDetalleProducto(a,calcDescuento);
+			adquisicionSelected.setValorretenidoiva(BigDecimal.ZERO);
+			adquisicionSelected.setValorretenidorenta(BigDecimal.ZERO);
 			totalizarCompra();
 		} catch (Exception e) {
 			e.printStackTrace();

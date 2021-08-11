@@ -242,7 +242,7 @@
 					
 					<p:column headerText="STOCK" style="width:30px;" styleClass="text-center">
 					
-						<h:outputText value="#{p.stock}" styleClass="#{p.stock.doubleValue()==0.0?'markRed':'markGreen'} mt-1">
+						<h:outputText value="#{p.stock}" styleClass="#{p.markStock} mt-1">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 						

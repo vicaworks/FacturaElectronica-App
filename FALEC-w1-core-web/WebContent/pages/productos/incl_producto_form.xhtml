@@ -179,10 +179,25 @@
 			
 									<f:selectItems value="#{productoCtrl.tipoProductoList}" var="tp"
 										itemLabel="#{tp.nombre}" itemValue="#{tp}" />
+									<p:ajax update=":frmProducto:tieneInventario"/>
 								</p:selectOneMenu>
 								<p:message styleClass="block" for="somFrmProductoTipo" />
 							</div>
 					    </div>
+					    <div class="field grid">
+							<h:outputText value="#{msg['label.codigo']} BARRAS" styleClass="col-12 mb-1 md:col-4 md:mb-0 requerido"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intCodigoProducto" value="#{productoCtrl.productoSelected.codigoprincipal}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="25"/>
+								<p:message styleClass="block" for="intCodigoProducto"/>
+							</div>
+					    </div>
+					    <!-- <div class="field grid">
+							<h:outputText value="#{msg['label.codigo']} AUXILIAR" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
+							<div class="col-12 md:col-8">
+								<p:inputText id="intCodigoProductoAux" value="#{productoCtrl.productoSelected.codigoauxiliar}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="25"/>
+								<p:message styleClass="block" for="intCodigoProductoAux"/>
+							</div>
+					    </div> -->
 					    <div class="field grid">							
 							<h:outputText value="NOMBRE" styleClass="col-12 mb-1 md:col-4 md:mb-0 requerido"/>
 							<div class="col-12 md:col-8">
@@ -190,20 +205,13 @@
 								<p:message styleClass="block" for="intNombreProducto"/>
 							</div>
 					    </div>
-					    <div class="field grid">							
-							<h:outputText value="NOMBRE COMERCIAL" styleClass="col-12 mb-1 md:col-4 md:mb-0 requerido"/>
+					    <!-- <div class="field grid">							
+							<h:outputText value="NOMBRE COMERCIAL" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
 							<div class="col-12 md:col-8">
-								<p:inputText id="intNombreProductoComercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+								<p:inputText id="intNombreProductoComercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 								<p:message styleClass="block" for="intNombreProductoComercial"/>
 							</div>
-					    </div>
-					    <div class="field grid">
-							<h:outputText value="#{msg['label.codigo']} : " styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
-							<div class="col-12 md:col-8">
-								<p:inputText id="intCodigoProducto" value="#{productoCtrl.productoSelected.codigoprincipal}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="25"/>
-								<p:message styleClass="block" for="intCodigoProducto"/>
-							</div>
-					    </div>
+					    </div> -->					    
 					    <div class="field grid">							
 							<h:outputText value="#{msg['label.descripcion']}" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
 							<div class="col-12 md:col-8">
@@ -216,7 +224,7 @@
 					<div class="col-12 md:col-6 pr-1">
 						<div class="w-full Fs16 titulo my-1">Valores</div>
 						<div class="field grid">
-							<h:outputText value="Precio Unitario" styleClass="col-12 mb-1 md:col-4 md:mb-0 requerido"/>
+							<h:outputText value="Precio de Costo" styleClass="col-12 mb-1 md:col-4 md:mb-0 requerido"/>
 							<div class="col-12 md:col-8">
 								<p:inputText id="intPuProducto"
 									value="#{productoCtrl.productoSelected.preciounitario}"
@@ -266,44 +274,66 @@
 							</div>
 					    </div>
 					    <div class="field grid">
-							<h:outputText value="Precio Venta 1" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
+							<h:outputText value="Cómo se Vende" styleClass="col-12 mb-1 md:col-4 md:mb-0 requerido"/>
 							<div class="col-12 md:col-8">
-								<p:inputText id="intPreVenta1Producto"
-									value="#{productoCtrl.productoSelected.preciouno}"
-									required="true" requiredMessage="REQUERIDO"
-									styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
-									<f:validateDoubleRange minimum="0"/>
-								</p:inputText>
-								<small>Sin IVA</small>
-								<p:message styleClass="block" for="intPreVenta1Producto"/>
+								<p:selectOneMenu id="somFrmTipVentaProducto"
+									value="#{productoCtrl.productoSelected.tipoventa}"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="w-full"
+									filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="POR UNIDAD"
+											itemValue="#{1}"/>
+									<f:selectItem itemLabel="A GRANEL (Usa Decimales)"
+											itemValue="#{2}"/>			
+									<f:selectItem itemLabel="POR KIT"
+											itemValue="#{3}"/>
+								</p:selectOneMenu>
 							</div>
-					    </div>
+						</div>
 					    <div class="field grid">
-							<h:outputText value="Precio Venta 2" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
+							<h:outputText value="Precio Venta" styleClass="col-12 mb-1 md:col-4 md:mb-0 requerido"/>
 							<div class="col-12 md:col-8">
-								<p:inputText id="intPreVenta2Producto"
-									value="#{productoCtrl.productoSelected.preciodos}"
-									required="true" requiredMessage="REQUERIDO"
-									styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
-									<f:validateDoubleRange minimum="0"/>
-								</p:inputText>
-								<small>Sin IVA</small>
-								<p:message styleClass="block" for="intPreVenta2Producto"/>
+								<div class="flex">
+									<div class="flex-grow-1 flex flex-column mr-1">
+										<span class="mr-1 requerido">PV1 </span>
+										<p:inputText id="intPreVenta1Producto"
+											value="#{productoCtrl.productoSelected.preciouno}"
+											required="true" requiredMessage="REQUERIDO"
+											styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
+											<f:validateDoubleRange minimum="0"/>
+										</p:inputText>
+										<small>Sin IVA</small>
+										<p:message styleClass="block" for="intPreVenta1Producto"/>
+									</div>
+									
+									<div class="flex-grow-1 flex flex-column mr-1">
+										<span class="mr-1">PV2 </span>										
+										<p:inputText id="intPreVenta2Producto"
+											value="#{productoCtrl.productoSelected.preciodos}"
+											required="true" requiredMessage="REQUERIDO"
+											styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
+											<f:validateDoubleRange minimum="0"/>
+										</p:inputText>
+										<small>Sin IVA</small>
+										<p:message styleClass="block" for="intPreVenta2Producto"/>
+									</div>
+									
+									<div class="flex-grow-1 flex flex-column">										
+										<span class="mr-1">PV3 </span>
+										<p:inputText id="intPreVenta3Producto"
+											value="#{productoCtrl.productoSelected.preciotres}"
+											required="true" requiredMessage="REQUERIDO"
+											styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
+											<f:validateDoubleRange minimum="0"/>
+										</p:inputText>
+										<small>Sin IVA</small>
+										<p:message styleClass="block" for="intPreVenta3Producto"/>
+									</div>
+								</div>
 							</div>
-					    </div>
-					    <div class="field grid">
-							<h:outputText value="Precio Venta 3" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
-							<div class="col-12 md:col-8">
-								<p:inputText id="intPreVenta3Producto"
-									value="#{productoCtrl.productoSelected.preciotres}"
-									required="true" requiredMessage="REQUERIDO"
-									styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
-									<f:validateDoubleRange minimum="0"/>
-								</p:inputText>
-								<small>Sin IVA</small>
-								<p:message styleClass="block" for="intPreVenta3Producto"/>
-							</div>
-					    </div>
+						</div>
+					    
 					    <div class="field grid">
 							<h:outputText value="Descuento" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
 							<div class="col-12 md:col-8">
@@ -313,9 +343,60 @@
 									styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0">
 									<f:validateDoubleRange minimum="0"/>
 								</p:inputText>
+								<small>Valor en %</small>
 								<p:message styleClass="block" for="intDescuentoProducto"/>
 							</div>
 					    </div>
+					    
+					    
+					    <p:outputPanel id="tieneInventario" styleClass="w-full">
+						    <div class="field grid">
+						    	<h:outputText value="Inventario" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
+						    	<div class="col-12 md:col-8">
+						    		<div class="flex-grow-1 flex pl-2 border-left-2 border-gray-400">
+					        			<div class="flex flex-column">
+					        				<span class="requerido py-1 text-blue-500 font-bold">INVENTARIO</span>
+					        				<span class="Fs10 text-gray-800">Este producto <strong>#{productoCtrl.productoSelected.tipoProducto!=null and productoCtrl.productoSelected.tipoProducto.idtipoproducto=='1'?'SI':'NO'}</strong> utiliza inventario.</span>
+					        			</div>
+					        		</div>
+					        		<div class="EmptyBox10"></div>
+						    		<div class="flex">
+								    	<div class="flex-grow-1 flex min-width-120">
+								    		<div class="flex flex-column w-full mr-1">
+								    			<span class="requerido">Stock</span>								    			
+								    			<span class="Fs16 font-bold w-full">#{productoCtrl.productoSelected.stock}</span>
+								    		</div>
+								    	</div>
+								    	<div class="flex-grow-1 flex">
+								    		<div class="flex flex-column w-full mr-1">
+									    		<span class="requerido">Mínimo</span>
+								    			<p:inputText id="intFrmProductoStockMin"
+													value="#{productoCtrl.productoSelected.stockminimo}"
+													required="true" requiredMessage="REQUERIDO"
+													styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0"
+													disabled="#{productoCtrl.productoSelected.tipoProducto!=null and productoCtrl.productoSelected.tipoProducto.idtipoproducto!='1'}">
+													<f:validateDoubleRange minimum="0"/>
+												</p:inputText>
+												<p:message styleClass="block" for="intFrmProductoStockMin"/>
+											</div>
+								    	</div>
+								    	<div class="flex-grow-1 flex">
+								    		<div class="flex flex-column w-full">
+									    		<span class="requerido">Máximo</span>
+								    			<p:inputText id="intFrmProductoStockMax"
+													value="#{productoCtrl.productoSelected.stockmaximo}"
+													required="true" requiredMessage="REQUERIDO"
+													styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0"
+													disabled="#{productoCtrl.productoSelected.tipoProducto!=null and productoCtrl.productoSelected.tipoProducto.idtipoproducto!='1'}">
+													<f:validateDoubleRange minimum="0"/>
+												</p:inputText>
+												<p:message styleClass="block" for="intFrmProductoStockMax"/>
+											</div>
+								    	</div>
+						    		</div>
+							    </div>
+						    </div>					    
+					    </p:outputPanel>
 					</div>
 					
 					<div class="col-12 md:col-6 pr-1">
@@ -364,7 +445,7 @@
 								<p:message styleClass="block" for="intUniConversionProducto"/>
 							</div>
 					    </div>
-					    <div class="field grid">
+					    <!-- <div class="field grid">
 							
 							<h:outputText value="FECHA #{msg['label.fabricacion']}" styleClass="col-12 mb-1 md:col-4 md:mb-0"/>
 							<div class="col-12 md:col-8">
@@ -382,7 +463,7 @@
 							<div class="col-12 md:col-8">
 								<h:outputText value="#{productoCtrl.productoSelected.stock}"/>
 							</div>
-					    </div>
+					    </div> -->
 					</div>
 					
 					<div class="col-12 md:col-6 pr-1">

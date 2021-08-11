@@ -8,12 +8,10 @@
 	
 	<style type="text/css">
 		
-		/* .adquisicionDetDT .ui-datatable-scrollable-body{
-				min-height: 46vh !important;
-				
-		} */
 		
 		.ui-datascroller .ui-datascroller-content {/* min-height:500px!important; */height: calc(100vh - 345px);}
+		
+		.adquisicionDetDT .ui-inputnumber .ui-inputfield{height: 100%!important;text-align: center;font-size: 16px;width: 95px;max-width: 95px;}
 		
 	</style>
 	
@@ -23,7 +21,7 @@
 		<div class="flex flex-inline py-1">
 			<p:commandButton id="cmdAdqBuscarProducto"
 				title="Buscar Producto" icon="fa fa-search" 
-				action="#{listaProductoCtrl.cargarPantalla()}"  update="@form" process="@form @this :formMain:adquisicionDetDT" styleClass="mr-1">
+				action="#{listaProductoCtrl.cargarPantalla()}"  update="@form" process="@this :formMain:adquisicionDetDT" styleClass="mr-1">
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
@@ -60,10 +58,85 @@
 		<p:dataScroller id="adquisicionDetDT" value="#{adquisicionFrmCtrl.adquisiciondetalleList}" var="d" chunkSize="10" mode="inline" styleClass="adquisicionDetDT" >
             <f:facet name="header">
             	<i class="fa fa-list mr-1"></i>
-                Lista
+                Lista Productos
             </f:facet>
             
-           </p:dataScroller>
+            <div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">
+            	<div class="col-12" style="text-overflow: ellipsis;">
+            		<span style="color: black;" class="Fs12 font-medium">#{d.descripcion}</span>
+            	</div>
+            	<div class="col-12">            		
+            		<div class="flex flex-column md:flex-row">
+            			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-end pl-2 mt-2 md:mt-0">
+            				
+            				<p:commandLink id="clkAdqEdit" action="#{adquisicionFrmCtrl.editar()}" title="Editar" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" styleClass="text-center inline" style="min-width:75px!important;color:black!important;">
+								<i class="fa fa-edit Fs10 mr-1 text-gray-900"></i>
+								<span class="Fs12 text-gray-900">EDITAR</span>
+								<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
+							</p:commandLink>
+           					<p:divider layout="vertical" styleClass="mx-2  inline"/>
+           					<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" styleClass="text-center inline" style="min-width:75px!important;">
+								<i class="fa fa-trash-o Fs10 text-pink-600 text-semibold mr-1"></i>
+								<span class="Fs12 text-gray-900">ELIMINAR</span>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
+							</p:commandLink>
+            				
+            						
+            			</div>
+            			<div class="flex-grow-1 flex flex-order-0 md:flex-order-1">
+            				
+            				<div class="flex justify-content-around w-full">
+            					<div class="min-width-85 mr-1 align-self-center">
+            						<div class="flex w-full">
+	            						<div class="flex flex-column" style="margin-right: 15px;">
+	            							<span style="color:black;" class="font-medium">Cost. Unit.</span>
+	            							<p:inputNumber id="innPuDt" value="#{d.preciounitario}" symbol="$"
+	                                			symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+	                                		</p:inputNumber>
+	            						</div>
+	            						<div class="flex flex-column">
+	            							<span style="color:black;" class="font-medium">Cantidad</span>
+	            							<p:inputNumber id="innCantDt" value="#{d.cantidad}"
+			                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{d.producto!=null and (d.producto.tipoventa==1 or d.producto.tipoventa==3)}">
+			                            	    <p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
+			                            	</p:inputNumber>		                                
+			                            	<p:inputNumber id="innCantDt2" value="#{d.cantidad}"
+			                                	symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{d.producto==null or d.producto.tipoventa!=1}">
+			                                	<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
+			                                </p:inputNumber>
+	            						</div>
+            						</div>
+            					</div>
+            					
+            					<div class="min-width-80">
+            						<div class="flex flex-column">
+			           					<div class="w-full text-right">
+			           						<span class="Fs9 text-gray-500 mr-1">Desto</span>
+			           						<h:outputText value="#{d.descuento}" styleClass="Fs11 text-gray-600 font-bold">
+												<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+											</h:outputText>
+			           					</div>
+			           					<div class="w-full text-right">
+			           						<span class="Fs9 text-gray-500 mr-1">I.V.A.</span>
+			           						<h:outputText value="#{d.valoriva}" styleClass="Fs11 text-gray-600 font-bold">
+												<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+											</h:outputText>
+			           					</div>
+            							<h:outputText value="#{d.preciototal}" styleClass="Fs16 text-blue-500 font-bold mb-1 text-right">
+			            					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+			           					</h:outputText>
+            						</div>
+            					</div>
+            				</div>
+            						
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            
+        </p:dataScroller>
 		<!-- subtotales -->
 		<p:outputPanel id="oupTotales" styleClass="w-full">
 			<div class="grid">
@@ -140,7 +213,8 @@
 					</div>
 				</div>
 				<div class="col-12 md:col-5 align-self-center text-center py-2">
-					<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="Fs24 text-gray-600 font-bold">
+					<span class="inline Fs10 font-bold mr-1">TOTAL</span>
+					<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.totalfactura}" styleClass="Fs24 text-green-600 font-bold inline">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</div>

@@ -103,8 +103,8 @@ public class ProductoCtrl extends BaseCtrl {
 	
 	
 	private List<Producto> productoList;
-	private Producto productoSelected;
-	private Producto productoFormSelected;
+	private Producto productoSelected=new Producto();
+	private Producto productoFormSelected=new Producto();
 	private String criterioBusqueda;
 	private List<Fabricante> fabricanteList;
 	private List<TipoProducto> tipoProductoList;
@@ -210,6 +210,9 @@ public class ProductoCtrl extends BaseCtrl {
 		productoSelected.setPreciodos(BigDecimal.ZERO);
 		productoSelected.setPreciotres(BigDecimal.ZERO);
 		productoSelected.setPreciounitario(BigDecimal.ZERO);
+		productoSelected.setStockmaximo(BigDecimal.ZERO);
+		productoSelected.setStockminimo(BigDecimal.ZERO);
+		productoSelected.setTipoventa(1);
 		productoSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 		// valida
 		if(productoSelected.getIva()==null) {
@@ -363,9 +366,12 @@ public class ProductoCtrl extends BaseCtrl {
 				AppJsfUtil.addErrorMessage("frmProducto:intUniConversionProducto","MAYOR A 0.");
 				return;
 			}
+			if(productoSelected.getNombregenerico()==null || productoSelected.getNombregenerico().trim().length()==0) {
+				productoSelected.setNombregenerico(productoSelected.getNombre());				
+			}
 			
 			productoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-			productoSelected.setUpdated(new Date());
+			productoSelected.setUpdated(new Date());			
 			productoServicio.guardar(productoSelected);
 			
 			// lista del combo popup

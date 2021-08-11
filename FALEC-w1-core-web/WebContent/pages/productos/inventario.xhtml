@@ -13,7 +13,7 @@
         <style type="text/css">
 			
 			.inventarioDT .ui-datatable-scrollable-body{				
-				height: calc(100vh - 310px)!important;
+				height: calc(100vh - 280px)!important;
 			}
 			
 			body .ui-datatable thead th {text-align: left;vertical-align: top;}
@@ -341,7 +341,7 @@
 					</p:column>
 					
 					<p:column headerText="STOCK" style="width:30px;" styleClass="TexAlRight">
-						<h:outputText value="#{i.stock}" styleClass="#{i.stock.doubleValue()==0.0?'markRed':'markGreen'}">
+						<h:outputText value="#{i.stock}" styleClass="#{i.markStock}">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 					</p:column>
