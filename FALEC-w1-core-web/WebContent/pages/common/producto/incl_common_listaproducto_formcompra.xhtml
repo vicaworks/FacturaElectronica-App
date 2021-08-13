@@ -1,0 +1,203 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		.frmAdquisicion .ui-inputnumber .ui-inputfield{width: 100%!important;font-size: 14px;}
+	</style>	
+		
+	<div class="w-full overflow-auto heightFrmListProducto frmAdquisicion">
+         <div style="width:98.5%!important;">
+         	<div class="EmptyBox10"/>
+	         <div class="field grid">
+		        <label for="intAdqCodigo" class="col-12 mb-1 md:col-4 md:mb-0 requerido">CODIGO</label>
+		        <div class="col-12 md:col-8">
+		            <p:inputText id="intAdqCodigo" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.codProducto}" styleClass="w-full" required="true" requiredMessage="REQUERIDO" maxlength="25"
+		            	readonly="#{listaProductoCtrl.tipoRegistro==1}">
+		            </p:inputText>
+		            <p:message for="intAdqCodigo" styleClass="block"/>
+		        </div>
+		    </div>
+		    <div class="field grid">
+		        <label for="intAdqDescripcion" class="col-12 mb-1 md:col-4 md:mb-0 requerido">DESCRIPCIÓN</label>
+		        <div class="col-12 md:col-8">
+		        	<p:inputTextarea id="intAdqDescripcion" rows="4" styleClass="w-full" maxlength="300" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.descripcion}" required="true" requiredMessage="REQUERIDO"></p:inputTextarea>	            
+		            <p:message for="intAdqDescripcion" styleClass="block"/>
+		        </div>
+		   </div>
+		   <div class="grid mt-2">
+		   		<div class="col-6 md:col-4">
+		   			<div class="flex flex-column">
+		   				<span class="requerido mb-2">PRECIO UNIT</span>
+		   				<p:inputNumber id="innCantDt" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciounitario}"
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">                   	    
+	                   	</p:inputNumber>
+		   			</div>
+		   		</div>
+		   		<div class="col-6 md:col-4">
+		   			<div class="flex flex-column">
+		   				<span class="requerido mb-2">CANTIDAD</span>
+		   				<p:inputNumber id="innCantFrm" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.cantidad}"
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null or (listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto!=null and listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==2)}">                   	    
+	                   	</p:inputNumber>
+	                   	<p:inputNumber id="innCantFrm2" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.cantidad}"
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto!=null and (listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==1 or listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==3)}">                   	    
+	                   	</p:inputNumber>
+		   			</div>
+		   		</div>
+		   		<div class="col-6 md:col-4">
+	   				<span class="requerido">DESCUENTO</span>
+	   				<div class="flex w-full mt-2">
+		   				<div class="flex-grow-1 flex pr-1">
+		   					<p:inputNumber id="intAdFrDesc1" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.porcentajeDescuento}" symbol="%"
+		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" >                   	    
+		                   	</p:inputNumber>
+		   				</div>
+		   				<div class="flex-grow-1 flex">
+		   					<p:inputNumber id="intAdFrDesc2" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.descuento}"
+		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" >                   	    
+		                   	</p:inputNumber>
+		   				</div>
+	   				</div>		   		
+         		</div> 
+         		<div class="col-6 md:col-4 mt-2">
+         			<div class="flex flex-column">
+		   				<span class="requerido ">SUBTOTAL</span>
+		   				<span class="requerido mt-2 text-right">
+		   					<h:outputText value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciototalsinimpuesto}" styleClass="Fs14">
+		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+		   					</h:outputText>
+		   				</span>		   				
+		   			</div>
+         		</div>
+         		<div class="col-6 md:col-4 mt-2">
+	   				<span class="requerido">IVA</span>
+	   				<div class="flex mt-2 w-full">
+		   				<div class="flex-grow-1 flex pr-1">
+		   					<!-- onchange="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.idadquisiciondetalle}'}])" -->
+		   					<p:selectOneMenu id="somdetIvaItem2"
+							value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.iva}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100 Fs8">
+	
+							<f:selectItems value="#{listaProductoCtrl.adquisicionFrmCtrl.ivaList}" var="iva2"
+									itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
+									
+							<!-- <p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/> -->
+							
+						</p:selectOneMenu>
+		   				</div>
+		   				<div class="flex-grow-1 flex justify-content-end">
+		   					<h:outputText value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.valoriva}" styleClass="Fs14">
+		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+		   					</h:outputText>
+		   				</div>
+	   				</div>		   		
+         		</div>
+         		<div class="col-6 md:col-4 mt-2">
+	   				<span class="requerido">VALOR TOTAL</span>
+	   				<div class="flex mt-2 justify-content-end align-items-end">
+	   					<span class="Fs10 mr-1">TOTAL</span>
+	   					<span class="Fs16 text-blue-500 font-bold">
+	   						<h:outputText value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciototal}" >
+		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+		   					</h:outputText>
+	   					</span>
+	   				</div>
+	   			</div>
+         	</div>
+         	<div class="EmptyBox10"/>
+         	<p:divider align="left">
+		        <div class="flex justify-content-center">		            
+		            <b class="text-light">Producto</b>
+		        </div>
+		    </p:divider>
+		    <div class="EmptyBox10"/>
+         	<div class="field grid">
+         		<div class="col-4">
+         			<div class="flex justify-content-center">
+         				 <p:selectBooleanButton onLabel="Si" offLabel="No"
+                                onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}"/>
+         			</div>
+         		</div>
+		        <div class="col-8">
+		            <div class="flex pl-2 border-left-2 border-gray-400">
+	        			<div class="flex flex-column">
+	        				<span class="requerido py-1">ACTUALIZAR</span>
+	        				<span class="Fs10 text-gray-800">Actualizar los precios de venta del producto.</span>
+	        			</div>
+	        		</div>
+		        </div>
+		    </div>
+		    <div class="EmptyBox10"/>
+		    <div class="field grid">
+		        <span class="col-12 mb-1 md:col-4 md:mb-0">PRECIO DE VENTA</span>		        
+		        <div class="col-12 md:col-8">
+		        	<div class="flex">
+			        	<div class="flex-grow-1 flex flex-column pr-1">
+			        		<span class="font-bold">PV1</span>
+			        		<p:inputText id="intPreVenta1ProductoAdq"
+								value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.preciouno}"
+								required="true" requiredMessage="REQUERIDO"
+								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}">
+								<f:validateDoubleRange minimum="0"/>
+							</p:inputText>
+							<small>Sin IVA</small>
+							<p:message styleClass="block" for="intPreVenta1ProductoAdq"/>
+			        	</div>
+			        	<div class="flex-grow-1 flex flex-column pr-1">
+			        		<span class="">PV2</span>
+			        		<p:inputText id="intPreVenta2ProductoAdq"
+								value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.preciodos}"
+								required="true" requiredMessage="REQUERIDO"
+								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}">
+								<f:validateDoubleRange minimum="0"/>
+							</p:inputText>
+							<small>Sin IVA</small>
+							<p:message styleClass="block" for="intPreVenta2ProductoAdq"/>
+			        	</div>
+			        	<div class="flex-grow-1 flex flex-column">
+			        		<span class="">PV3</span>
+			        		<p:inputText id="intPreVenta3ProductoAdq"
+								value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.preciotres}"
+								required="true" requiredMessage="REQUERIDO"
+								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}">
+								<f:validateDoubleRange minimum="0"/>
+							</p:inputText>
+							<small>Sin IVA</small>
+							<p:message styleClass="block" for="intPreVenta3ProductoAdq"/>
+			        	</div>
+		        	</div>
+		        </div>
+		   </div>
+         	
+	   </div>            			
+	</div>
+	<div class="EmptyBox10"/>
+	<div class="grid justify-content-center">
+		<div class="col-6 py-1 px-2">
+			<p:commandLink styleClass="text-white">
+				<div class="flex border-1 border-gray-800 bg-green-600 justify-content-center p-2">
+					<i class="Fs14 fa fa-plus mr-1"/>
+					<span class="Fs14">AGREGAR</span>
+				</div>
+			</p:commandLink>
+		</div>
+		<div class="col-6 py-1 px-2">
+			<p:commandLink styleClass="text-gray-600">
+				<div class="flex border-1 border-gray-800 justify-content-center p-2">
+					<i class="Fs14 fa fa-eraser mr-1"/>
+					<span class="Fs14">LIMPIAR</span>
+				</div>
+			</p:commandLink>
+		</div>
+	</div>	
+
+</ui:composition>

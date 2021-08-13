@@ -12,11 +12,15 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.omnifaces.util.Ajax;
+import org.primefaces.event.TabChangeEvent;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
+import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
@@ -43,8 +47,13 @@ public class ListaProductoCtrl extends BaseCtrl {
 	@EJB
 	private ProductoServicio productoServicio;
 	
+	@EJB
+	private CategoriaServicio categoriaServicio;
+	
 	private List<Producto> productoList;
+	private List<Categoria> categoriaList;
 	private Producto productoSelected;
+	private Categoria categoriaSelected;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private NotaCreditoCtrl notaCreditoCtrl;
 	private String callModule;
@@ -53,6 +62,9 @@ public class ListaProductoCtrl extends BaseCtrl {
 	private String criterioBusqueda;
 	private String onComplete="";
 	private CotizacionFormCtrl cotizacionFormCtrl;
+	
+	private Integer tipoRegistro = 1;// 1 producto, 2 otro concepto
+	private Integer tabIndex = 0;
 	
 	/**
 	 * 
@@ -79,10 +91,48 @@ public class ListaProductoCtrl extends BaseCtrl {
 		}
 	}
 	
+	private void consultarCategorias() throws DaoException {
+		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO, establecimientoMain.getEmpresa().getIdempresa());
+	}
+	
+	public void onTabChange(@SuppressWarnings("rawtypes") TabChangeEvent event) {
+		tabIndex = Integer.parseInt(event.getTab().getId().substring(event.getTab().getId().lastIndexOf("_")+1,event.getTab().getId().length())); 
+    }
+	
 	@Override
 	public void refrescar() {
 		try {
 			consultarProductos();
+			if(productoList.size()==1) {
+				productoSelected = productoList.get(0);	
+				switch (callModule) {
+				case "ADQUISICION":
+					tabIndex = 0;
+					adquisicionFrmCtrl.seleccionarProducto(productoSelected);
+					productoList=null;
+					categoriaSelected=null;
+					break;
+
+				default:
+					break;
+				}
+			}else {
+				tabIndex = 1;
+				
+				
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void refrescarCategoria() {
+		try {
+			criterioBusqueda = categoriaSelected.getCategoria();
+			productoList = null;
+			productoList = productoServicio.getProductoDao().getByCriteriaEstado(establecimientoMain.getIdestablecimiento(), criterioBusqueda);
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -106,6 +156,31 @@ public class ListaProductoCtrl extends BaseCtrl {
 					return;
 				}
 			}
+			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(formModule, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void loadPantalla() {
+		try {
+			categoriaSelected = null;
+			productoSelected = null;
+			criterioBusqueda = null;
+			consultarCategorias();
+			
+			switch (callModule) {
+			case "ADQUISICION":
+				adquisicionFrmCtrl.nuevoDetalle();
+				tipoRegistro = 1;
+				break;
+
+			default:
+				break;
+			}
+			
 			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
 			
 		} catch (Exception e) {
@@ -324,6 +399,62 @@ public class ListaProductoCtrl extends BaseCtrl {
 	 */
 	public void setCotizacionFormCtrl(CotizacionFormCtrl cotizacionFormCtrl) {
 		this.cotizacionFormCtrl = cotizacionFormCtrl;
+	}
+
+	/**
+	 * @return the tipoRegistro
+	 */
+	public Integer getTipoRegistro() {
+		return tipoRegistro;
+	}
+
+	/**
+	 * @param tipoRegistro the tipoRegistro to set
+	 */
+	public void setTipoRegistro(Integer tipoRegistro) {
+		this.tipoRegistro = tipoRegistro;
+	}
+
+	/**
+	 * @return the tabIndex
+	 */
+	public Integer getTabIndex() {
+		return tabIndex;
+	}
+
+	/**
+	 * @param tabIndex the tabIndex to set
+	 */
+	public void setTabIndex(Integer tabIndex) {
+		this.tabIndex = tabIndex;
+	}
+
+	/**
+	 * @return the categoriaList
+	 */
+	public List<Categoria> getCategoriaList() {
+		return categoriaList;
+	}
+
+	/**
+	 * @param categoriaList the categoriaList to set
+	 */
+	public void setCategoriaList(List<Categoria> categoriaList) {
+		this.categoriaList = categoriaList;
+	}
+
+	/**
+	 * @return the categoriaSelected
+	 */
+	public Categoria getCategoriaSelected() {
+		return categoriaSelected;
+	}
+
+	/**
+	 * @param categoriaSelected the categoriaSelected to set
+	 */
+	public void setCategoriaSelected(Categoria categoriaSelected) {
+		this.categoriaSelected = categoriaSelected;
 	}
 
 }

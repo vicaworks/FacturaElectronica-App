@@ -371,7 +371,9 @@ public class ProductoCtrl extends BaseCtrl {
 			}
 			
 			productoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-			productoSelected.setUpdated(new Date());			
+			productoSelected.setUpdated(new Date());	
+			productoSelected.setNombregenerico(productoSelected.getNombre());
+			productoSelected.setCodigoauxiliar(productoSelected.getCodigoprincipal());
 			productoServicio.guardar(productoSelected);
 			
 			// lista del combo popup

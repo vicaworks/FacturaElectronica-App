@@ -199,7 +199,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
-	}
+	}	
 	
 	public void editarAdquisicion(String idAdquisicion)throws DaoException {
 		nuevaAdquisicion();
@@ -336,47 +336,56 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		totalizarPago();
 	}
 	
-	public void agregarDetalle() {
+	public void seleccionarProducto(Producto producto) {
 		
-		try {
-			
-			if(adquisiciondetalleList==null) {
-				adquisiciondetalleList = new ArrayList<>();
-			}
-			
-			consultarIce();
-			consultarIva();
-			
-			Adquisiciondetalle ad = new Adquisiciondetalle();
-			ad.setCantidad(BigDecimal.valueOf(1d));
-			ad.setDescripcion("-");
-			ad.setDescuento(BigDecimal.ZERO);
-			ad.setPorcentajeDescuento(BigDecimal.ZERO);
-			ad.setPrecioUntarioCalculado(BigDecimal.ZERO);
-			ad.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-			ad.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
-			// valida
-			if(ad.getIva()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
-				return;
-			}
-			ad.setIce(iceList.stream().filter(x->x.getValor().doubleValue()==0d).findFirst().orElse(null));
-			if(ad.getIce()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0.");
-				return;
-			}
-			ad.setPreciounitario(BigDecimal.ZERO);
-			ad.setProducto(null);
-			calcularAdquicisioDetalleProducto(ad,false);
-			adquisiciondetalleSelected = ad;
-			adquisiciondetalleList.add(0, ad);
-			totalizarCompra();
-			AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:adquisicionDetDT:0:intDetNombreProducto');");
+		try {			
+			adquisiciondetalleSelected.setCantidad(BigDecimal.valueOf(1d));
+			adquisiciondetalleSelected.setCodProducto(producto.getCodigoprincipal());
+			adquisiciondetalleSelected.setDescripcion(producto.getNombre());
+			adquisiciondetalleSelected.setDescuento(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setPorcentajeDescuento(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setPrecioUntarioCalculado(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setPreciounitario(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setProducto(producto);
+			//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:adquisicionDetDT:0:intDetNombreProducto');");
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
+	}
+	
+	public void nuevoDetalle() {
+		try {
+			adquisiciondetalleSelected = new Adquisiciondetalle();
+			consultarIce();
+			consultarIva();
+			adquisiciondetalleSelected.setCantidad(BigDecimal.ZERO);
+			//adquisiciondetalleSelected.setDescripcion("-");
+			adquisiciondetalleSelected.setPreciototalsinimpuesto(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setPreciototal(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setValoriva(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setDescuento(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setPorcentajeDescuento(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setPrecioUntarioCalculado(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setPreciounitario(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
+			adquisiciondetalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			if(adquisiciondetalleSelected.getIva()==null) {
+				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				return;
+			}			
+			adquisiciondetalleSelected.setIce(iceList.stream().filter(x->x.getValor().doubleValue()==0d).findFirst().orElse(null));
+			if(adquisiciondetalleSelected.getIce()==null) {
+				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0.");
+				return;
+			}			
+			adquisiciondetalleSelected.setProducto(null);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
 	}
 	
 	public void eliminarDetalle() {

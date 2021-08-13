@@ -19,7 +19,19 @@
 	
 	<div class="card card-w-title">
 		<div class="flex flex-inline py-1">
-			<p:commandButton id="cmdAdqBuscarProducto"
+			<p:commandButton  id="cmdAdqAgregarDetalle" 
+				icon="fa fa-plus"
+				value="ITEM"
+				styleClass="ui-button-outlined mr-1"
+				action="#{listaProductoCtrl.loadPantalla()}"
+				process="@this :formMain:adquisicionDetDT">
+				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
+				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
+			</p:commandButton>
+			<!-- <p:commandButton id="cmdAdqBuscarProducto"
 				title="Buscar Producto" icon="fa fa-search" 
 				action="#{listaProductoCtrl.cargarPantalla()}"  update="@form" process="@this :formMain:adquisicionDetDT" styleClass="mr-1">
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
@@ -50,7 +62,7 @@
 				<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{productoCtrl.viewUpdate}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{productoCtrl.adquisicionFrmCtrl}"/>
-			</p:commandButton>
+			</p:commandButton> -->
 		</div>
 		
 		

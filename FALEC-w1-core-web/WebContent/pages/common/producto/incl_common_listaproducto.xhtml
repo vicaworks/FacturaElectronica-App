@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		
+		.heightFrmListProducto {			
+			height: 450px;
+		}
+		
+		.highlight-producto:hover {
+			background-color: #E3F2FD85;
+		}
+		
+	</style>	
+	
+	
+	<p:dialog header="Productos" widgetVar="dlgListaProducto" modal="true" responsive="true" width="600px" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmListProducto">
+			
+			<p:remoteCommand name="buscarProducto" action="#{listaProductoCtrl.refrescar()}" update="@form" process="@this :frmListProducto:intListProBusqueda"/>
+		
+		
+			<p:focus for=":frmListProducto:intListProBusqueda"/>
+			<div class="flex mb-1">
+				<div class="flex-none flex min-width-70">
+					<p:selectOneMenu styleClass="w-full" tabindex="2" value="#{listaProductoCtrl.tipoRegistro}">
+						<f:selectItem itemLabel="Producto" itemValue="1"/>
+						<f:selectItem itemLabel="Otro Concepto" itemValue="2"/>
+					</p:selectOneMenu>
+				</div>
+				<div class="flex-grow-1 flex px-1">
+					<p:inputText id="intListProBusqueda" value="#{listaProductoCtrl.criterioBusqueda}" styleClass="w-full" tabindex="0" onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}"></p:inputText>
+				</div>
+				<div class="flex-none flex" style="width:30px!important;">
+					<p:commandButton styleClass="ui-button-success" icon="fa fa-search" tabindex="1" action="#{listaProductoCtrl.refrescar()}" process="@this :frmListProducto:intListProBusqueda"/>					
+				</div>
+			</div>
+			
+			<p:tabView activeIndex="#{listaProductoCtrl.tabIndex}" id="tvPLmain">
+				<p:ajax event="tabChange" listener="#{listaProductoCtrl.onTabChange}"/>
+            	<p:tab title="Selección" id="tabLP_0">
+            	
+            		<f:subview rendered="#{listaProductoCtrl.callModule=='ADQUISICION'}">
+            			<ui:include src="../../common/producto/incl_common_listaproducto_formcompra.xhtml" />
+            		</f:subview>            	
+            	
+            		
+            	</p:tab>
+            	<p:tab title="Busqueda" id="tabLP_1">
+            		<p:outputPanel id="opuPLLista" styleClass="w-full">
+	           			<div class="flex flex-row">
+	           				<div class="flex-grow-1 flex flex-column pr-1">
+	           					<p:selectOneMenu id="somPLProductoCategoria"
+									value="#{listaProductoCtrl.categoriaSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="REQUERIDO"
+									styleClass="w-full"
+									filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
+											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+			
+									<f:selectItems value="#{listaProductoCtrl.categoriaList}" var="c"
+										itemLabel="#{c.categoria}" itemValue="#{c}" />
+								</p:selectOneMenu>							
+	           				</div>
+	           				<div class="flex-grow-0 flex justify-content-center mx-1">
+	           					<p:commandButton icon="fa fa-search" styleClass="ui-button-outlined" action="#{listaProductoCtrl.refrescarCategoria}" process="@this frmListProducto:tvPLmain:somPLProductoCategoria" update=":frmListProducto:tvPLmain:opuPLLista"/>
+	           				</div>
+	           				<div class="flex-grow-0 flex justify-content-center px-1 align-items-center">
+	           					
+	           					<p:commandButton styleClass="ui-button-outlined" icon="fa fa-plus" value="Producto">
+	           					</p:commandButton>
+	           					
+	           				</div>
+	           			</div>
+	           			<p:message for="somPLProductoCategoria" styleClass="block"/>
+	            		<div class="w-full overflow-auto heightFrmImportIce heightFrmListProducto">
+	            			
+	            			<div class="flex mt-1" style="width:99.5%!important;">
+	      						
+	      						<f:subview rendered="#{empty listaProductoCtrl.productoList}">
+	      							<span class="py-2 text-pink-500 text-semibold">NO EXISTEN PRODUCTOS</span>
+	      						</f:subview>
+	      						
+	      						<div class="grid">
+		      						<p:repeat var="lp" value="#{listaProductoCtrl.productoList}">
+		      							<div class="col-12 mx-1 border-bottom-2 border-blue-100 highlight-producto">
+			      							<p:commandLink action="#" styleClass="px-1 ">
+			      								<div class="flex w-full">
+			      									<div class="flex-grow-1 flex flex-column pr-1">
+			      										<span class="Fs12 font-medium" style="color:black;">#{lp.nombre}</span>
+			      										<div>
+				      										<span class="Fs9 mr-1 text-gray-500 fa fa-barcode"/>
+				      										<span class="Fs10 mr-1 text-gray-800">#{lp.codigoprincipal}</span>
+			      										</div>
+			      										<div>
+				      										<span class="Fs9 mr-1 text-gray-500">TIPO VENTA</span>
+				      										<span class="Fs10 mr-1 text-gray-800">#{lp.tipoventa==1?'UNIDAD':lp.tipoventa==2?'A GRANEL':'KIT'}</span>
+			      										</div>
+			      									</div>
+			      									<div class="flex-grow-0 flex min-width-60 flex-column text-right pr-3">
+			      										<span class="Fs10" style="color:black;">STOCK</span>
+			      										<span class="Fs14 text-blue-600 font-bold">
+			      											<h:outputText value="#{lp.stock}" >
+			      												<f:convertNumber pattern="#{lp.tipoventa==2?appSessionCtrl.formatoNumber:appSessionCtrl.formatoInteger}"/>
+			      											</h:outputText>
+			      										</span>
+			      									</div>
+			      								</div>
+			      							</p:commandLink>	
+		      							</div>
+		      						</p:repeat>
+	      						</div>
+	      						
+	      					</div>
+	            			
+	            		</div>            		
+            		</p:outputPanel>
+            	</p:tab>
+            </p:tabView>
+			
+		</h:form>
+	
+	</p:dialog>
+	
+
+</ui:composition>

@@ -119,6 +119,9 @@ public class Adquisiciondetalle implements Serializable {
     @Transient
     private BigDecimal precioUntarioCalculado;
     
+    @Transient
+    private String codProducto;
+    
 	/**
 	 * 
 	 */
@@ -385,6 +388,20 @@ public class Adquisiciondetalle implements Serializable {
 	 */
 	public void setPreciototalsinimpuesto(BigDecimal preciototalsinimpuesto) {
 		this.preciototalsinimpuesto = preciototalsinimpuesto;
+	}
+
+	/**
+	 * @return the codProducto
+	 */
+	public String getCodProducto() {
+		return codProducto;
+	}
+
+	/**
+	 * @param codProducto the codProducto to set
+	 */
+	public void setCodProducto(String codProducto) {
+		this.codProducto = codProducto;
 	}
 
 }
