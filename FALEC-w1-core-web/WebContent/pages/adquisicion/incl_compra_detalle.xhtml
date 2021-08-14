@@ -106,18 +106,18 @@
 	            							<span style="color:black;" class="font-medium">Cost. Unit.</span>
 	            							<p:inputNumber id="innPuDt" value="#{d.preciounitario}" symbol="$"
 	                                			symbolPosition="s" emptyValue="zero" decimalPlaces="2">
-	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
 	                                		</p:inputNumber>
 	            						</div>
 	            						<div class="flex flex-column">
 	            							<span style="color:black;" class="font-medium">Cantidad</span>
 	            							<p:inputNumber id="innCantDt" value="#{d.cantidad}"
 			                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{d.producto!=null and (d.producto.tipoventa==1 or d.producto.tipoventa==3)}">
-			                            	    <p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
+			                            	    <p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
 			                            	</p:inputNumber>		                                
 			                            	<p:inputNumber id="innCantDt2" value="#{d.cantidad}"
 			                                	symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{d.producto==null or d.producto.tipoventa!=1}">
-			                                	<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
+			                                	<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
 			                                </p:inputNumber>
 	            						</div>
             						</div>

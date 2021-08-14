@@ -276,7 +276,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	private void calcularAdquicisioDetalleProducto(Adquisiciondetalle a,boolean calcDescuento) {
 		a.setPreciototalsinimpuesto(a.getCantidad().multiply(a.getPreciounitario()));
 		if(a.getPorcentajeDescuento()!=null && a.getPorcentajeDescuento().doubleValue()>0.0d && calcDescuento) {
-			a.setDescuento(a.getPreciototalsinimpuesto().multiply(a.getPorcentajeDescuento()).setScale(2, RoundingMode.HALF_UP));
+			a.setDescuento(a.getPreciototalsinimpuesto().multiply(a.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP));
 		}else {
 			a.setPorcentajeDescuento(BigDecimal.ZERO);
 		}
@@ -289,6 +289,14 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		a.setPreciototal(a.getPreciototalsinimpuesto().add(a.getValorice()).add(a.getValoriva()).setScale(2, RoundingMode.HALF_UP));
 		adquisiciondetalleSelected = a;
 	}
+	
+//	public void calcularPorcentajeDescuento(Adquisiciondetalle a,boolean calcDescuento) {
+//		if(a.getPreciototalsinimpuesto().doubleValue()>0) {
+//			a.setPorcentajeDescuento(
+//					a.getDescuento().divide(a.getPreciototalsinimpuesto()).multiply(BigDecimal.valueOf(100)).setScale(6, RoundingMode.HALF_UP));
+//			calcularAdquicisioDetalleProducto(a, calcDescuento);				
+//		}
+//	}
 	
 	public void calcularAdquicisioDetalleProductoAction(Adquisiciondetalle a,boolean calcDescuento) {
 		try {

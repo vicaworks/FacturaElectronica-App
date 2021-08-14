@@ -154,7 +154,7 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 	public List<Producto> getByCategoriaEstado(String idEstablecimiento,String idCategoria)throws DaoException{
 		try {
 			
-			String sql = "SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND p.estado='A' AND p.categoria.idcategoria:idcategoria ORDER BY p.nombre";
+			String sql = "SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND p.estado='A' AND p.categoria.idcategoria=:idcategoria ORDER BY p.nombre";
 						
 			Query q = getEntityManager().createQuery(sql);
 			q.setParameter("idestablecimiento", idEstablecimiento);

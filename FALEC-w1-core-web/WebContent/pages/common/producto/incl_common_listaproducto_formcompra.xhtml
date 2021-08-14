@@ -46,7 +46,8 @@
 		   			<div class="flex flex-column">
 		   				<span class="requerido mb-2">PRECIO UNIT</span>
 		   				<p:inputNumber id="innCantDt" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciounitario}" onfocus="this.setSelectionRange(0, this.value.length);"
-	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">                   	    
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+	                   	    <p:ajax event="change" listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected,true)}" update="@form" process="@form"/>                   	    
 	                   	</p:inputNumber>
 		   			</div>
 		   		</div>
@@ -54,10 +55,12 @@
 		   			<div class="flex flex-column">
 		   				<span class="requerido mb-2">CANTIDAD</span>
 		   				<p:inputNumber id="innCantFrm" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.cantidad}"
-	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null or (listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto!=null and listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==2)}">                   	    
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null or (listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto!=null and listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==2)}">
+	                   	    <p:ajax event="change" listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected,true)}" update="@form" process="@form"/>                   	    
 	                   	</p:inputNumber>
 	                   	<p:inputNumber id="innCantFrm2" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.cantidad}"
-	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto!=null and (listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==1 or listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==3)}">                   	    
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto!=null and (listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==1 or listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.tipoventa==3)}">
+	                   	    <p:ajax event="change" listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected,true)}" update="@form" process="@form"/>                   	    
 	                   	</p:inputNumber>
 		   			</div>
 		   		</div>
@@ -66,12 +69,16 @@
 	   				<div class="flex w-full mt-2">
 		   				<div class="flex-grow-1 flex pr-1">
 		   					<p:inputNumber id="intAdFrDesc1" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.porcentajeDescuento}" symbol="%"
-		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" >                   	    
+		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" 
+		                   	    disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciototalsinimpuesto.doubleValue()==0}">
+		                   	    <p:ajax event="change" listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected,true)}" update="@form"/>                   	    
 		                   	</p:inputNumber>
 		   				</div>
 		   				<div class="flex-grow-1 flex">
 		   					<p:inputNumber id="intAdFrDesc2" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.descuento}"
-		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" >                   	    
+		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" 
+		                   	    disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciototalsinimpuesto.doubleValue()==0}">
+		                   	    <p:ajax event="change" listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected,true)}" update="@form"/>                   	    
 		                   	</p:inputNumber>
 		   				</div>
 	   				</div>		   		
@@ -101,7 +108,7 @@
 							<f:selectItems value="#{listaProductoCtrl.adquisicionFrmCtrl.ivaList}" var="iva2"
 									itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
 									
-							<!-- <p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,d.producto!=null)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/> -->
+							<p:ajax event="change" listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected,true)}" update="@form"/>
 							
 						</p:selectOneMenu>
 		   				</div>

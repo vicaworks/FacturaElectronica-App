@@ -114,6 +114,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 				switch (callModule) {
 				case "ADQUISICION":
 					tabIndex = 0;
+					adquisicionFrmCtrl.nuevoDetalle();					
 					adquisicionFrmCtrl.seleccionarProducto(productoSelected);
 					productoList=null;
 					categoriaSelected=null;
@@ -162,9 +163,12 @@ public class ListaProductoCtrl extends BaseCtrl {
 	
 	public void refrescarCategoria() {
 		try {
-			criterioBusqueda = categoriaSelected.getCategoria();
 			productoList = null;
-			productoList = productoServicio.getProductoDao().getByCriteriaEstado(establecimientoMain.getIdestablecimiento(), criterioBusqueda);
+			if(categoriaSelected==null) {
+				AppJsfUtil.addErrorMessage("frmListProducto:tvPLmain:somPLProductoCategoria", "", "REQUERIDO");
+				return;
+			}
+			productoList = productoServicio.getProductoDao().getByCategoriaEstado(establecimientoMain.getIdestablecimiento(), categoriaSelected.getIdcategoria());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -177,9 +181,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 			switch (callModule) {
 			case "ADQUISICION":
 				adquisicionFrmCtrl.seleccionarProducto(productoSelected);
-				tabIndex = 0;
-				categoriaSelected = null;
-				criterioBusqueda = null;
+				tabIndex = 0;				
 				// foco
 				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt')");
 				break;
