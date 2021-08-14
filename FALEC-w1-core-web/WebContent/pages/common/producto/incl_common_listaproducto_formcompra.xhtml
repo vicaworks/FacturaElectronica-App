@@ -10,6 +10,17 @@
 	<style type="text/css">
 		.frmAdquisicion .ui-inputnumber .ui-inputfield{width: 100%!important;font-size: 14px;}
 	</style>	
+	
+	<script >
+		$(function () {
+		    var focusedElement;
+		    $(document).on('focus', 'input', function () {
+		        if (focusedElement == this) return; //already focused, return so user can now place cursor at specific point in input.
+		        focusedElement = this;
+		        setTimeout(function () { focusedElement.select(); }, 100); //select all text in any field on focus for easy re-entry. Delay sightly to allow focus to "stick" before selecting.
+		    });
+		});
+	</script>
 		
 	<div class="w-full overflow-auto heightFrmListProducto frmAdquisicion">
          <div style="width:98.5%!important;">
@@ -34,7 +45,7 @@
 		   		<div class="col-6 md:col-4">
 		   			<div class="flex flex-column">
 		   				<span class="requerido mb-2">PRECIO UNIT</span>
-		   				<p:inputNumber id="innCantDt" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciounitario}"
+		   				<p:inputNumber id="innCantDt" value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.preciounitario}" onfocus="this.setSelectionRange(0, this.value.length);"
 	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">                   	    
 	                   	</p:inputNumber>
 		   			</div>
@@ -123,8 +134,10 @@
          	<div class="field grid">
          		<div class="col-4">
          			<div class="flex justify-content-center">
-         				 <p:selectBooleanButton onLabel="Si" offLabel="No"
-                                onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}"/>
+         				 <p:selectBooleanButton value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.actualizarProducto}" onLabel="Si" offLabel="No"
+                                onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}">
+                                <p:ajax event="change" update=":frmListProducto:tvPLmain:fsvAdquisicion:intPreVenta1ProductoAdq :frmListProducto:tvPLmain:fsvAdquisicion:intPreVenta2ProductoAdq  :frmListProducto:tvPLmain:fsvAdquisicion:intPreVenta3ProductoAdq"/>
+                         </p:selectBooleanButton>
          			</div>
          		</div>
 		        <div class="col-8">
@@ -146,7 +159,7 @@
 			        		<p:inputText id="intPreVenta1ProductoAdq"
 								value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.preciouno}"
 								required="true" requiredMessage="REQUERIDO"
-								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}">
+								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null or not listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.actualizarProducto}">
 								<f:validateDoubleRange minimum="0"/>
 							</p:inputText>
 							<small>Sin IVA</small>
@@ -157,7 +170,7 @@
 			        		<p:inputText id="intPreVenta2ProductoAdq"
 								value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.preciodos}"
 								required="true" requiredMessage="REQUERIDO"
-								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}">
+								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null or not listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.actualizarProducto}">
 								<f:validateDoubleRange minimum="0"/>
 							</p:inputText>
 							<small>Sin IVA</small>
@@ -168,7 +181,7 @@
 			        		<p:inputText id="intPreVenta3ProductoAdq"
 								value="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.preciotres}"
 								required="true" requiredMessage="REQUERIDO"
-								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null}">
+								styleClass="w-full" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor >= 0" disabled="#{listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto==null or not listaProductoCtrl.adquisicionFrmCtrl.adquisiciondetalleSelected.producto.actualizarProducto}">
 								<f:validateDoubleRange minimum="0"/>
 							</p:inputText>
 							<small>Sin IVA</small>

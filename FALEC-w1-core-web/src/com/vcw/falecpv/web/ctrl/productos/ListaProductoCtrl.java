@@ -83,8 +83,14 @@ public class ListaProductoCtrl extends BaseCtrl {
 	}
 	
 	public void consultarProductos()throws DaoException{
+		//TODO eliminar
 		AppJsfUtil.limpiarFiltrosDataTable("frmListProducto:listaProductoDT");
 		productoList = null;
+		
+		// 1. busca por el codigo de barras
+		productoList = productoServicio.getProductoDao().getByCodigoBarraEstado(establecimientoMain.getIdestablecimiento(), criterioBusqueda);
+		if(!productoList.isEmpty()) return;
+		// 2. busca por criterio
 		productoList = productoServicio.getProductoDao().getByCriteriaEstado(establecimientoMain.getIdestablecimiento(), criterioBusqueda);
 		for (Producto producto : productoList) {
 			producto.setCantidad(1);
@@ -111,6 +117,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 					adquisicionFrmCtrl.seleccionarProducto(productoSelected);
 					productoList=null;
 					categoriaSelected=null;
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt')");
 					break;
 
 				default:
@@ -126,43 +133,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
-	}
-	
-	public void refrescarCategoria() {
-		try {
-			criterioBusqueda = categoriaSelected.getCategoria();
-			productoList = null;
-			productoList = productoServicio.getProductoDao().getByCriteriaEstado(establecimientoMain.getIdestablecimiento(), criterioBusqueda);
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-
-	public void cargarPantalla() {
-		try {
-			productoSelected = null;
-			criterioBusqueda = null;
-			consultarProductos();
-			if(callModule.equals("ADQUISICION")) {
-				for (Producto producto : productoList) {
-					producto.setPorcentajedescuento(BigDecimal.ZERO);
-				}
-			}
-			if(callModule.equals("GUIA_REMISION")) {
-				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
-				if(guiaRemFormCtrl.getDestinatarioSelected()==null) {
-					AppJsfUtil.addErrorMessage(formModule, "ERROR", "NO EXISTE DESTINATARIO SELECCIONADO.");
-					return;
-				}
-			}
-			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(formModule, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
+	}	
 	
 	public void loadPantalla() {
 		try {
@@ -181,6 +152,68 @@ public class ListaProductoCtrl extends BaseCtrl {
 				break;
 			}
 			
+			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage(formModule, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void refrescarCategoria() {
+		try {
+			criterioBusqueda = categoriaSelected.getCategoria();
+			productoList = null;
+			productoList = productoServicio.getProductoDao().getByCriteriaEstado(establecimientoMain.getIdestablecimiento(), criterioBusqueda);
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void seleccionarProducto() {
+		try {
+			
+			switch (callModule) {
+			case "ADQUISICION":
+				adquisicionFrmCtrl.seleccionarProducto(productoSelected);
+				tabIndex = 0;
+				categoriaSelected = null;
+				criterioBusqueda = null;
+				// foco
+				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt')");
+				break;
+
+			default:
+				break;
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	//====================================================================================================
+	
+	public void cargarPantalla() {
+		try {
+			productoSelected = null;
+			criterioBusqueda = null;
+			consultarProductos();
+			if(callModule.equals("ADQUISICION")) {
+				for (Producto producto : productoList) {
+					producto.setPorcentajedescuento(BigDecimal.ZERO);
+				}
+			}
+			if(callModule.equals("GUIA_REMISION")) {
+				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
+				if(guiaRemFormCtrl.getDestinatarioSelected()==null) {
+					AppJsfUtil.addErrorMessage(formModule, "ERROR", "NO EXISTE DESTINATARIO SELECCIONADO.");
+					return;
+				}
+			}
 			AppJsfUtil.showModalRender("dlgListaProducto", "frmListProducto");
 			
 		} catch (Exception e) {

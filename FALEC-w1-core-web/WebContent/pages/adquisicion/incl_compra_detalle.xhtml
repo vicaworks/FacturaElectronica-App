@@ -24,7 +24,8 @@
 				value="ITEM"
 				styleClass="ui-button-outlined mr-1"
 				action="#{listaProductoCtrl.loadPantalla()}"
-				process="@this :formMain:adquisicionDetDT">
+				process="@this :formMain:adquisicionDetDT"
+				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');">
 				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
 				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
 				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>

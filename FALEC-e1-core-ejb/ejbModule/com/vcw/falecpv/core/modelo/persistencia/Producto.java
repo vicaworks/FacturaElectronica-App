@@ -189,6 +189,9 @@ public class Producto implements Serializable {
     @Transient
     private Integer cantidad = 0;
     
+    @Transient
+    private boolean actualizarProducto = false;
+    
 	/**
 	 * 
 	 */
@@ -747,6 +750,20 @@ public class Producto implements Serializable {
 
 	public String getMarkStock() {
 		return (stock.doubleValue()<stockminimo.doubleValue())?"markRed":"markGreen";
+	}
+
+	/**
+	 * @return the actualizarProducto
+	 */
+	public boolean isActualizarProducto() {
+		return actualizarProducto;
+	}
+
+	/**
+	 * @param actualizarProducto the actualizarProducto to set
+	 */
+	public void setActualizarProducto(boolean actualizarProducto) {
+		this.actualizarProducto = actualizarProducto;
 	}
 
 }

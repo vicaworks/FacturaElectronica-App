@@ -23,11 +23,9 @@
 	<p:dialog header="Productos" widgetVar="dlgListaProducto" modal="true" responsive="true" width="600px" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmListProducto">
-			
+			<!-- <p:focus for=":frmListProducto:intListProBusqueda"/> -->			
 			<p:remoteCommand name="buscarProducto" action="#{listaProductoCtrl.refrescar()}" update="@form" process="@this :frmListProducto:intListProBusqueda"/>
-		
-		
-			<p:focus for=":frmListProducto:intListProBusqueda"/>
+			
 			<div class="flex mb-1">
 				<div class="flex-none flex min-width-70">
 					<p:selectOneMenu styleClass="w-full" tabindex="2" value="#{listaProductoCtrl.tipoRegistro}">
@@ -47,10 +45,9 @@
 				<p:ajax event="tabChange" listener="#{listaProductoCtrl.onTabChange}"/>
             	<p:tab title="Selección" id="tabLP_0">
             	
-            		<f:subview rendered="#{listaProductoCtrl.callModule=='ADQUISICION'}">
+            		<f:subview rendered="#{listaProductoCtrl.callModule=='ADQUISICION'}" id="fsvAdquisicion">
             			<ui:include src="../../common/producto/incl_common_listaproducto_formcompra.xhtml" />
             		</f:subview>            	
-            	
             		
             	</p:tab>
             	<p:tab title="Busqueda" id="tabLP_1">
@@ -93,7 +90,7 @@
 	      						<div class="grid">
 		      						<p:repeat var="lp" value="#{listaProductoCtrl.productoList}">
 		      							<div class="col-12 mx-1 border-bottom-2 border-blue-100 highlight-producto">
-			      							<p:commandLink action="#" styleClass="px-1 ">
+			      							<p:commandLink action="#{listaProductoCtrl.seleccionarProducto()}" styleClass="px-1" process="@this" update="@form">
 			      								<div class="flex w-full">
 			      									<div class="flex-grow-1 flex flex-column pr-1">
 			      										<span class="Fs12 font-medium" style="color:black;">#{lp.nombre}</span>
@@ -115,6 +112,7 @@
 			      										</span>
 			      									</div>
 			      								</div>
+			      								<f:setPropertyActionListener value="#{lp}" target="#{listaProductoCtrl.productoSelected}"/>
 			      							</p:commandLink>	
 		      							</div>
 		      						</p:repeat>

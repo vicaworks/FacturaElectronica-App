@@ -121,6 +121,30 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 	}
 	
 	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idEstablecimiento
+	 * @param criteria
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Producto> getByCodigoBarraEstado(String idEstablecimiento,String criteria)throws DaoException{
+		try {
+			
+			String sql = "SELECT p FROM Producto p WHERE p.establecimiento.idestablecimiento=:idestablecimiento AND p.estado='A' AND p.codigoprincipal=:codigobarra ORDER BY p.nombre"; 
+			
+			Query q = getEntityManager().createQuery(sql);
+			q.setParameter("idestablecimiento", idEstablecimiento);
+			q.setParameter("codigobarra", criteria);
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
 	 * @param idEstablecimiento
 	 * @param idCategoria
 	 * @return
