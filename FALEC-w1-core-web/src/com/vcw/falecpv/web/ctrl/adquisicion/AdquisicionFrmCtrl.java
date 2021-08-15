@@ -393,7 +393,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			adquisiciondetalleSelected.setPrecioUntarioCalculado(BigDecimal.ZERO);
 			adquisiciondetalleSelected.setPreciounitario(BigDecimal.ZERO);
 			adquisiciondetalleSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-			adquisiciondetalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));
+			adquisiciondetalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));			
 			if(adquisiciondetalleSelected.getIva()==null) {
 				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
 				return;
@@ -404,6 +404,8 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 				return;
 			}			
 			adquisiciondetalleSelected.setProducto(null);
+			adquisiciondetalleSelected.setValoriva(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setValorice(BigDecimal.ZERO);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

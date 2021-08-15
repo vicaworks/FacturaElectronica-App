@@ -9,18 +9,7 @@
 	
 	<style type="text/css">
 		.frmAdquisicion .ui-inputnumber .ui-inputfield{width: 100%!important;font-size: 14px;}
-	</style>	
-	
-	<script >
-		$(function () {
-		    var focusedElement;
-		    $(document).on('focus', 'input', function () {
-		        if (focusedElement == this) return; //already focused, return so user can now place cursor at specific point in input.
-		        focusedElement = this;
-		        setTimeout(function () { focusedElement.select(); }, 100); //select all text in any field on focus for easy re-entry. Delay sightly to allow focus to "stick" before selecting.
-		    });
-		});
-	</script>
+	</style>
 		
 	<div class="w-full overflow-auto heightFrmListProducto frmAdquisicion">
          <div style="width:98.5%!important;">
