@@ -252,10 +252,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	
 	public void agregarProducto(Producto p) {
 		
-		if(adquisiciondetalleList==null) {
-			adquisiciondetalleList = new ArrayList<>();
-		}
-		
 		Adquisiciondetalle ad = new Adquisiciondetalle();
 		ad.setCantidad(BigDecimal.valueOf(p.getCantidad()));
 		ad.setDescripcion(p.getNombregenerico());
@@ -268,9 +264,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		ad.setPreciounitario(p.getPreciouno());
 		ad.setPorcentajeDescuento(ad.getPorcentajeDescuento().divide(BigDecimal.valueOf(100)));
 		ad.setProducto(p);
-		calcularAdquicisioDetalleProducto(ad,true);
-		adquisiciondetalleList.add(ad);
-		totalizarCompra();
+		
 	}
 	
 	private void calcularAdquicisioDetalleProducto(Adquisiciondetalle a,boolean calcDescuento) {
@@ -290,14 +284,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisiciondetalleSelected = a;
 	}
 	
-//	public void calcularPorcentajeDescuento(Adquisiciondetalle a,boolean calcDescuento) {
-//		if(a.getPreciototalsinimpuesto().doubleValue()>0) {
-//			a.setPorcentajeDescuento(
-//					a.getDescuento().divide(a.getPreciototalsinimpuesto()).multiply(BigDecimal.valueOf(100)).setScale(6, RoundingMode.HALF_UP));
-//			calcularAdquicisioDetalleProducto(a, calcDescuento);				
-//		}
-//	}
-	
 	public void calcularAdquicisioDetalleProductoAction(Adquisiciondetalle a,boolean calcDescuento) {
 		try {
 			calcularAdquicisioDetalleProducto(a,calcDescuento);
@@ -307,6 +293,31 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void agregarDetalle() {
+		try {
+			if(adquisiciondetalleList==null) {
+				adquisiciondetalleList = new ArrayList<>();
+			}
+			if(adquisiciondetalleSelected.getAccion().equals("NUEVO")) {
+				adquisiciondetalleList.add(adquisiciondetalleSelected);				
+			}
+			adquisicionSelected.setValorretenidoiva(BigDecimal.ZERO);
+			adquisicionSelected.setValorretenidorenta(BigDecimal.ZERO);
+			totalizarCompra();
+			
+			if(adquisiciondetalleSelected.getProducto()!=null) {
+				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+			}else {
+				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:intAdqDescripcion')");
+			}
+			nuevoDetalle();
+			adquisiciondetalleSelected.setAccion("NUEVO");
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

@@ -62,6 +62,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	private String criterioBusqueda;
 	private String onComplete="";
 	private CotizacionFormCtrl cotizacionFormCtrl;
+	private String accion;
 	
 	private Integer tipoRegistro = 1;// 1 producto, 2 otro concepto
 	private Integer tabIndex = 0;
@@ -114,7 +115,8 @@ public class ListaProductoCtrl extends BaseCtrl {
 				switch (callModule) {
 				case "ADQUISICION":
 					tabIndex = 0;
-					adquisicionFrmCtrl.nuevoDetalle();					
+					adquisicionFrmCtrl.nuevoDetalle();			
+					adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion("NUEVO");
 					adquisicionFrmCtrl.seleccionarProducto(productoSelected);
 					productoList=null;
 					categoriaSelected=null;
@@ -145,8 +147,18 @@ public class ListaProductoCtrl extends BaseCtrl {
 			
 			switch (callModule) {
 			case "ADQUISICION":
-				adquisicionFrmCtrl.nuevoDetalle();
-				tipoRegistro = 1;
+				if(accion.equals("NUEVO")) {
+					adquisicionFrmCtrl.nuevoDetalle();
+					tipoRegistro = 1;					
+				}else {
+					if(adquisicionFrmCtrl.getAdquisiciondetalleSelected().getProducto()!=null) {
+						tipoRegistro = 1;
+						productoSelected = adquisicionFrmCtrl.getAdquisiciondetalleSelected().getProducto();
+					}else {
+						tipoRegistro = 2;
+					}
+				}
+				adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion(accion);
 				break;
 
 			default:
@@ -190,6 +202,31 @@ public class ListaProductoCtrl extends BaseCtrl {
 				break;
 			}
 			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void limpiar() {
+		try {
+			
+			criterioBusqueda = null;
+			switch (callModule) {
+			case "ADQUISICION":
+				adquisicionFrmCtrl.nuevoDetalle();
+				adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion("NUEVO");
+				if(tipoRegistro==1) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:intAdqDescripcion')");
+				}
+				break;
+
+			default:
+				break;
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -491,5 +528,19 @@ public class ListaProductoCtrl extends BaseCtrl {
 	public void setCategoriaSelected(Categoria categoriaSelected) {
 		this.categoriaSelected = categoriaSelected;
 	}
+
+	/**
+	 * @return the accion
+	 */
+	public String getAccion() {
+		return accion;
+	}
+
+	/**
+	 * @param accion the accion to set
+	 */
+	public void setAccion(String accion) {
+		this.accion = accion;
+	}	
 
 }

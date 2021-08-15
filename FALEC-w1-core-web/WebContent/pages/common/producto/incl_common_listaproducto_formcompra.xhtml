@@ -203,15 +203,18 @@
 	<div class="EmptyBox10"/>
 	<div class="grid justify-content-center">
 		<div class="col-6 py-1 px-2">
-			<p:commandLink styleClass="text-white">
+			<p:commandLink styleClass="text-white" update="@form #{listaProductoCtrl.viewUpdate}" actionListener="#{adquisicionFrmCtrl.agregarDetalle()}">
+				<f:setPropertyActionListener value="#{null}" target="#{listaProductoCtrl.criterioBusqueda}"/>
 				<div class="flex border-1 border-gray-800 bg-green-600 justify-content-center p-2">
-					<i class="Fs14 fa fa-plus mr-1"/>
-					<span class="Fs14">AGREGAR</span>
+					<i class="Fs14 fa #{adquisicionFrmCtrl.adquisiciondetalleSelected.accion=='EDITAR'?'fa-check':'fa-plus'} mr-1"/>
+					<span class="Fs14">
+						<h:outputText value="#{adquisicionFrmCtrl.adquisiciondetalleSelected.accion=='EDITAR'?'ACEPTAR':'AGREGAR'}" /> 
+					</span>
 				</div>
 			</p:commandLink>
 		</div>
 		<div class="col-6 py-1 px-2">
-			<p:commandLink styleClass="text-gray-600">
+			<p:commandLink styleClass="text-gray-600" process="@this" action="#{listaProductoCtrl.limpiar()}" update="@form">
 				<div class="flex border-1 border-gray-800 justify-content-center p-2">
 					<i class="Fs14 fa fa-eraser mr-1"/>
 					<span class="Fs14">LIMPIAR</span>

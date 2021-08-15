@@ -11,63 +11,43 @@
 		
 		.ui-datascroller .ui-datascroller-content {/* min-height:500px!important; */height: calc(100vh - 345px);}
 		
-		.adquisicionDetDT .ui-inputnumber .ui-inputfield{height: 100%!important;text-align: center;font-size: 16px;width: 95px;max-width: 95px;}
+		.adquisicionDetDT .ui-inputnumber .ui-inputfield{height: 100%!important;text-align: center;font-size: 14px;width: 95px;max-width: 95px;}
 		
 	</style>
 	
 	<p:remoteCommand name="establecerFocoDetalle" action="#{adquisicionFrmCtrl.establecerFocoDetalle}" update=":formMain:adquisicionDetDT"/>
 	
 	<div class="card card-w-title">
-		<div class="flex flex-inline py-1">
+		<!-- <div class="flex flex-inline py-1">
 			<p:commandButton  id="cmdAdqAgregarDetalle" 
 				icon="fa fa-plus"
 				value="ITEM"
 				styleClass="ui-button-outlined mr-1"
-				action="#{listaProductoCtrl.loadPantalla()}"
 				process="@this :formMain:adquisicionDetDT"
-				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');">
+				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
+				action="#{listaProductoCtrl.loadPantalla()}">
 				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
-				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value="NUEVO" target="#{listaProductoCtrl.accion}"/>
+				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" target="#{listaProductoCtrl.viewUpdate}"/>
 				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 			</p:commandButton>
-			<!-- <p:commandButton id="cmdAdqBuscarProducto"
-				title="Buscar Producto" icon="fa fa-search" 
-				action="#{listaProductoCtrl.cargarPantalla()}"  update="@form" process="@this :formMain:adquisicionDetDT" styleClass="mr-1">
+		</div> -->
+		<div class="flex justify-content-end py-1">
+			<p:commandLink id="cmdAdqAgregarDetalle" process="@this :formMain:adquisicionDetDT"
+				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
+				action="#{listaProductoCtrl.loadPantalla()}">
+				<i class="fa fa-plus text-gray-800 mr-1"></i>
+				<span class="text-gray-800">Agregar Ítem</span>
+				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
+				<f:setPropertyActionListener value="NUEVO" target="#{listaProductoCtrl.accion}"/>
+				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" target="#{listaProductoCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
-				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
-				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
-				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
-			</p:commandButton>
-			
-			<p:commandButton  id="cmdAdqAgregarDetalle" 
-				icon="fa fa-plus"
-				value="ITEM"
-				styleClass="ui-button-outlined mr-1"
-				action="#{adquisicionFrmCtrl.agregarDetalle()}"
-				process="@this :formMain:adquisicionDetDT"
-				update="@form">
-			</p:commandButton>
-			
-			<p:commandButton  id="cmdAdqAgregarProducto" 
-				icon="fa fa-file-o"
-				title="Nuevo producto"
-				styleClass="ui-button-outlined"
-				action="#{productoCtrl.nuevo()}"
-				update="@form" 
-				process="@this :formMain:adquisicionDetDT">
-				<f:setPropertyActionListener value="ADQUISICION" target="#{productoCtrl.callModule}"/>
-				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
-				<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
-				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT" target="#{productoCtrl.viewUpdate}"/>
-				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{productoCtrl.adquisicionFrmCtrl}"/>
-			</p:commandButton> -->
+			</p:commandLink>			
 		</div>
-		
-		
-			
 		<p:dataScroller id="adquisicionDetDT" value="#{adquisicionFrmCtrl.adquisiciondetalleList}" var="d" chunkSize="10" mode="inline" styleClass="adquisicionDetDT" >
             <f:facet name="header">
             	<i class="fa fa-list mr-1"></i>
@@ -76,15 +56,31 @@
             
             <div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">
             	<div class="col-12" style="text-overflow: ellipsis;">
-            		<span style="color: black;" class="Fs12 font-medium">#{d.descripcion}</span>
+            		<span style="color: black;" class="block Fs12 font-medium">#{d.descripcion}</span>
+            		<div>
+            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="Fs10">#{d.codProducto}</span>
+            		</div>
             	</div>
             	<div class="col-12">            		
             		<div class="flex flex-column md:flex-row">
             			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-end pl-2 mt-2 md:mt-0">
             				
-            				<p:commandLink id="clkAdqEdit" action="#{adquisicionFrmCtrl.editar()}" title="Editar" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" styleClass="text-center inline" style="min-width:75px!important;color:black!important;">
+            				<p:commandLink id="clkAdqEdit" 
+            					title="Editar" 
+            					process="@this :formMain:adquisicionDetDT" 
+            					disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" 
+            					styleClass="text-center inline" 
+            					style="min-width:75px!important;color:black!important;"
+            					action="#{listaProductoCtrl.loadPantalla()}"
+            					oncomplete="PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt');">
 								<i class="fa fa-edit Fs10 mr-1 text-gray-900"></i>
 								<span class="Fs12 text-gray-900">EDITAR</span>
+								<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
+								<f:setPropertyActionListener value="EDITAR" target="#{listaProductoCtrl.accion}"/>
+								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" target="#{listaProductoCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+								<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
+								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/> 
 								<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
 							</p:commandLink>
            					<p:divider layout="vertical" styleClass="mx-2  inline"/>

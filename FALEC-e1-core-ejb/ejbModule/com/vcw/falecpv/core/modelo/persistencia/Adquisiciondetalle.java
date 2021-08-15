@@ -122,6 +122,9 @@ public class Adquisiciondetalle implements Serializable {
     @Transient
     private String codProducto;
     
+    @Transient
+    private String accion;
+    
 	/**
 	 * 
 	 */
@@ -402,6 +405,20 @@ public class Adquisiciondetalle implements Serializable {
 	 */
 	public void setCodProducto(String codProducto) {
 		this.codProducto = codProducto;
+	}
+
+	/**
+	 * @return the accion
+	 */
+	public String getAccion() {
+		return accion;
+	}
+
+	/**
+	 * @param accion the accion to set
+	 */
+	public void setAccion(String accion) {
+		this.accion = accion;
 	}
 
 }
