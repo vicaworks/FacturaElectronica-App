@@ -21,7 +21,7 @@
 		<div class="flex justify-content-end py-1">
 			<p:commandLink id="cmdAdqAgregarDetalle" process="@this :formMain:adquisicionDetDT"
 				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
-				action="#{listaProductoCtrl.loadPantalla()}">
+				action="#{listaProductoCtrl.loadPantalla()}" styleClass="Fs12">
 				<i class="fa fa-plus text-gray-800 mr-1"></i>
 				<span class="text-gray-800">Agregar Ítem</span>
 				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
@@ -35,7 +35,7 @@
 		<p:dataScroller id="adquisicionDetDT" value="#{adquisicionFrmCtrl.adquisiciondetalleList}" var="d" chunkSize="10" mode="inline" styleClass="adquisicionDetDT" >
             <f:facet name="header">
             	<i class="fa fa-list mr-1"></i>
-                Lista Productos
+                Lista de Compras
             </f:facet>
             
             <div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">

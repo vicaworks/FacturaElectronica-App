@@ -38,7 +38,7 @@
 					<p:inputText id="intListProBusqueda" value="#{listaProductoCtrl.criterioBusqueda}" styleClass="w-full" tabindex="0" onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}" disabled="#{listaProductoCtrl.tipoRegistro==2}"></p:inputText>
 				</div>
 				<div class="flex-none flex" style="width:30px!important;">
-					<p:commandButton styleClass="ui-button-success" icon="fa fa-search" tabindex="1" action="#{listaProductoCtrl.refrescar()}" process="@this :frmListProducto:intListProBusqueda" disabled="#{listaProductoCtrl.tipoRegistro==2}"/>					
+					<p:commandButton styleClass="ui-button-success" icon="fa fa-search" tabindex="1" action="#{listaProductoCtrl.refrescar()}" update="@form" process="@this :frmListProducto:intListProBusqueda" disabled="#{listaProductoCtrl.tipoRegistro==2}"/>					
 				</div>
 			</div>
 			
