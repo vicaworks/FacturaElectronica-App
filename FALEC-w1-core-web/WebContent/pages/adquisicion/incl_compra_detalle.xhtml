@@ -18,22 +18,6 @@
 	<p:remoteCommand name="establecerFocoDetalle" action="#{adquisicionFrmCtrl.establecerFocoDetalle}" update=":formMain:adquisicionDetDT"/>
 	
 	<div class="card card-w-title">
-		<!-- <div class="flex flex-inline py-1">
-			<p:commandButton  id="cmdAdqAgregarDetalle" 
-				icon="fa fa-plus"
-				value="ITEM"
-				styleClass="ui-button-outlined mr-1"
-				process="@this :formMain:adquisicionDetDT"
-				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
-				action="#{listaProductoCtrl.loadPantalla()}">
-				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
-				<f:setPropertyActionListener value="NUEVO" target="#{listaProductoCtrl.accion}"/>
-				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" target="#{listaProductoCtrl.viewUpdate}"/>
-				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
-				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
-				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
-			</p:commandButton>
-		</div> -->
 		<div class="flex justify-content-end py-1">
 			<p:commandLink id="cmdAdqAgregarDetalle" process="@this :formMain:adquisicionDetDT"
 				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"

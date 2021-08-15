@@ -216,6 +216,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 			switch (callModule) {
 			case "ADQUISICION":
 				adquisicionFrmCtrl.nuevoDetalle();
+				adquisicionFrmCtrl.getAdquisiciondetalleSelected().setCodProducto("COD" + (adquisicionFrmCtrl.getAdquisiciondetalleList()==null?1:adquisicionFrmCtrl.getAdquisiciondetalleList().size()+1));
 				adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion("NUEVO");
 				if(tipoRegistro==1) {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
@@ -234,7 +235,36 @@ public class ListaProductoCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void cambioTipoRegistro() {
+		try {
+			productoSelected = null;
+			productoList = null;
+			categoriaSelected = null;
+			criterioBusqueda = null;
+			switch (callModule) {
+			case "ADQUISICION":
+				accion = "NUEVO";
+				adquisicionFrmCtrl.nuevoDetalle();
+				adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion(accion);
+				if(tipoRegistro==2) {
+					adquisicionFrmCtrl.getAdquisiciondetalleSelected().setCodProducto("COD" + (adquisicionFrmCtrl.getAdquisiciondetalleList()==null?1:adquisicionFrmCtrl.getAdquisiciondetalleList().size()+1));					
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:intAdqDescripcion')");
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}
+				break;
+
+			default:
+				break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	//====================================================================================================
+	// TODO Eliminar todos estos metodos al terminar la migracion
 	
 	public void cargarPantalla() {
 		try {

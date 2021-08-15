@@ -307,13 +307,17 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			adquisicionSelected.setValorretenidoiva(BigDecimal.ZERO);
 			adquisicionSelected.setValorretenidorenta(BigDecimal.ZERO);
 			totalizarCompra();
-			
+			boolean flagCodOtroConcepto = false;
 			if(adquisiciondetalleSelected.getProducto()!=null) {
 				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
 			}else {
+				flagCodOtroConcepto = true;
 				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:intAdqDescripcion')");
 			}
 			nuevoDetalle();
+			if(flagCodOtroConcepto) {
+				adquisiciondetalleSelected.setCodProducto("COD" + (adquisiciondetalleList==null?1:adquisiciondetalleList.size()+1));
+			}
 			adquisiciondetalleSelected.setAccion("NUEVO");
 		} catch (Exception e) {
 			e.printStackTrace();
