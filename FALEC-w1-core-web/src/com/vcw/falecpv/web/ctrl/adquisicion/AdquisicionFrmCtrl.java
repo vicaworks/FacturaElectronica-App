@@ -96,7 +96,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
-//			establecimientoFacade(establecimientoServicio, false);
 			adquisicionSelected = new Adquisicion();
 			adquisicionSelected.setSubtotal(BigDecimal.ZERO);
 			adquisicionSelected.setTotaliva(BigDecimal.ZERO);
@@ -232,8 +231,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisicionSelected.setEsgasto(0);
 		setTipocomprobanteList(tipocomprobanteServicio.getTipocomprobanteDao()
 				.getByEmpresaFormulario(TipoComprobanteEnum.ADQUICIION));
-		
-//		setTipopagoList(tipopagoServicio.getTipopagoDao().getByEmpresaFormulario(TipoPagoEnum.ADQUISICION));
 		totalizarCompra();
 		consultarIva();
 		consultarIce();
@@ -332,7 +329,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		adquisicionSelected.setTotalice(BigDecimal.ZERO);
 		adquisicionSelected.setTotaldescuento(BigDecimal.ZERO);
 		adquisicionSelected.setTotalfactura(BigDecimal.ZERO);
-		//adquisicionSelected.setTotalretencion(BigDecimal.ZERO);
 		adquisicionSelected.setTotalpagar(BigDecimal.ZERO);
 		int fil = 1;
 		for (Adquisiciondetalle a : adquisiciondetalleList) {
@@ -530,6 +526,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	
+	//================================ PAGO =============================================
+	
 	
 	public void calcularCambioAction(Pago p) {
 		try {
