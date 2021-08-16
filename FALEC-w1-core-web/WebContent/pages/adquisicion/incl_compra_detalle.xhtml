@@ -85,7 +85,7 @@
 	            						<div class="flex flex-column" style="margin-right: 15px;">
 	            							<span style="color:black;" class="font-light">Cost. Unit.</span>
 	            							<p:inputNumber id="innPuDt" value="#{d.preciounitario}" symbol="$"
-	                                			symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+	                                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
 	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
 	                                		</p:inputNumber>
 	            						</div>

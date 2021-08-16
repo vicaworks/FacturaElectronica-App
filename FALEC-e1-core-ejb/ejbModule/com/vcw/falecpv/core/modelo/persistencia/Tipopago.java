@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -57,6 +58,10 @@ public class Tipopago implements Serializable {
     @Column(name = "formulario", nullable = false, length = 100)
     private String formulario;
     
+    @Basic(optional = false)
+    @Column(name = "icono", nullable = true, length = 50)
+    private String icono;
+    
     
     @Size(max = 4)
     @Column(name = "codinterno", length = 4)
@@ -71,6 +76,9 @@ public class Tipopago implements Serializable {
     
     @Column(name = "descripcion", length = 300)
     private String descripcion;
+    
+    @Transient
+    private boolean activo = false;
     
 	/**
 	 * 
@@ -226,6 +234,34 @@ public class Tipopago implements Serializable {
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @return the icono
+	 */
+	public String getIcono() {
+		return icono;
+	}
+
+	/**
+	 * @param icono the icono to set
+	 */
+	public void setIcono(String icono) {
+		this.icono = icono;
+	}
+
+	/**
+	 * @return the activo
+	 */
+	public boolean isActivo() {
+		return activo;
+	}
+
+	/**
+	 * @param activo the activo to set
+	 */
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 
 }

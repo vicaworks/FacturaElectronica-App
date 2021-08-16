@@ -1,0 +1,289 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		
+		.heightFrmListPago {			
+			height: 500px;
+		}		
+		
+		.tipoPagoDT .ui-datascroller .ui-datascroller-content {height: 190px!important;}
+		
+		.tp_seleccion {
+			background-color: #E3F2FD85;
+		}
+		.tipoPagoDT .ui-inputnumber .ui-inputfield{height: 100%!important;text-align: right;font-size: 14px;width: 100%!important;}
+		
+		.tipoPagoDT .resaltar .ui-inputnumber .ui-inputfield{color:red!important;}
+		
+		.tipoPagoDT .ui-inputfield{line-height: 14px!important;}
+		
+	</style>	
+	<script >
+		$(function () {
+		    var focusedElement;
+		    $(document).on('focus', 'input', function () {
+		        if (focusedElement == this) return; //already focused, return so user can now place cursor at specific point in input.
+		        focusedElement = this;
+		        setTimeout(function () { focusedElement.select(); }, 100); //select all text in any field on focus for easy re-entry. Delay sightly to allow focus to "stick" before selecting.
+		    });
+		});
+	</script>	
+	
+	<p:dialog header="Pago" widgetVar="dlgListaPago" modal="true" responsive="true" width="700px" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmListPago">
+			
+			<div class="w-full overflow-auto heightFrmListPago frmAdquisicion">
+				
+				<div class="grid h-100" style="width:99%!important;">
+					
+					<div class="col-12 md:col-4">
+						
+						<h:outputText value="#{pagoCompCtrl.callModule=='ADQUISICION'?'Proveedor':'Cliente'}" styleClass="Fs14 text-gray-700 font-medium"/>
+						<div class="EmptyBox10"/>
+						<div class="flex flex-column">
+							<span class="Fs16 text-black font-bold">
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.razonsocial}" />
+							</span>
+							<span class="Fs12 text-black font-light">
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.identificacion}" />
+							</span>
+							<span class="Fs12 text-gray-600">
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.direccion}" />
+							</span>
+							<div class="Fs12 text-gray-600">
+								<i class="fa fa-phone mr-1"></i>
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.telefono==null?'-':pagoCompCtrl.cabeceraSelected.cliente.telefono}" />
+							</div>
+							<div class="Fs12 text-gray-600">
+								<i class="fa fa-envelope-o mr-1"></i>
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.correoelectronico==null?'-':pagoCompCtrl.cabeceraSelected.cliente.correoelectronico}" />
+							</div>
+						</div>
+						
+						
+						<div class="EmptyBox10"/>
+						<div class="grid grid-nogutter justify-content-between">
+							<div class="col-8 py-1">
+								<div class="w-full">
+									<span class="Fs10 mr-1 text-gray-700 font-semibold">RESUMEN</span>
+									<span class="Fs14 text-blue-600 font-medium">TOTALES</span>
+								</div>
+							</div>
+							<div class="col-1 text-center align-self-center">
+								<i class="fa fa-angle-down Fs14"></i>
+							</div>
+							<div class="col-12 mt-1">
+								
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+									<div class="flex flex-grow-1 Fs9">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800">SUBTOTAL</span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full">
+											<h:outputText value="#{pagoCompCtrl.cabeceraSelected.totalsinimpuestos}" styleClass="Fs12 text-black font-light">
+							   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							   				</h:outputText>
+										</div>
+									</div>				
+								</div>
+								
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+									<div class="flex flex-grow-1 Fs9">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800">DESCUENTO</span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full">
+											<h:outputText value="#{pagoCompCtrl.cabeceraSelected.totaldescuento}" styleClass="Fs12 text-black font-light">
+							   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							   				</h:outputText>
+										</div>
+									</div>				
+								</div>
+								
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+									<div class="flex flex-grow-1 Fs9">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800">I.C.E.</span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full">
+											<h:outputText value="#{pagoCompCtrl.cabeceraSelected.totalice}" styleClass="Fs12 text-black font-light">
+							   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							   				</h:outputText>
+										</div>
+									</div>				
+								</div>
+								
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+									<div class="flex flex-grow-1 Fs9">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800">I.V.A.</span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full">
+											<h:outputText value="#{pagoCompCtrl.cabeceraSelected.totaliva}" styleClass="Fs12 text-black font-light">
+							   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							   				</h:outputText>
+										</div>
+									</div>				
+								</div>
+									
+							</div>
+							<div class="EmptyBox10"/>
+							<div class="col-12 text-center">
+								<span class="inline Fs10 text-gray-600 mr-1">TOTAL</span>
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.totalconimpuestos}" styleClass="Fs24 text-black font-medium inline">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+						</div>
+						
+					</div>
+					
+					<!-- DETALLE DE PAGO -->
+					<div class="col-fixed" style="width:30px"/>
+					<div class="col-12 md:col-7 tipoPagoDT">
+						<h:outputText value="Método de Pago" styleClass="Fs14 text-gray-700 font-medium"/>
+						<div class="EmptyBox10"/>
+						
+						<p:dataScroller id="tipoPagoDT" value="#{pagoCompCtrl.tipoPagoList}" var="tp" chunkSize="10" mode="inline" scrollHeight="100px">
+							
+							<p:commandLink styleClass="w-full" action="#">
+								<div class="flex flex-row align-items-center m-1 mb-2 border-round pl-2 #{tp.activo?'border-1 border-gray-800 tp_seleccion':'border-1 border-gray-300'}" style="height: 30px;">
+									<i class="fa #{tp.icono} Fs14 mr-2 #{tp.activo?'text-gray-800':'text-gray-300'}"/>
+									<span class="Fs14 #{tp.activo?'text-gray-800':'text-gray-300'}">#{tp.nombre}</span>
+								</div>
+							</p:commandLink>
+							
+						</p:dataScroller>
+						<div class="EmptyBox10"/>
+						<div class="w-full overflow-auto p-0" style="max-height:230px; min-height: 30px;">
+							
+							<!-- <div class="border-round border-1 border-gray-400 w-full p-1 mb-1">
+								<div class="flex">
+									<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
+										<i class="fa fa-trash-o Fs18"></i>
+									</div>
+									<div class="flex-grow-1 flex flex-column pr-1">
+										<span class="text-black font-light">Monto</span>
+										<p:inputNumber value="#{525.50}"
+		                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+		                            	</p:inputNumber>
+									</div>
+									<div class="flex-grow-1 flex flex-column pr-1">
+										<span class="text-black font-light">Importe</span>
+										<p:inputNumber value="#{530}"
+		                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+		                            	</p:inputNumber>
+									</div>
+									<div class="flex-grow-1 flex flex-column resaltar">
+										<span class="text-black font-light">Cambio</span>
+										<p:inputNumber value="#{530}"
+		                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" readonly="true">
+		                            	</p:inputNumber>
+									</div>
+								</div>
+							</div> -->
+							
+							<div class="border-round border-1 border-gray-400 w-full p-1 mb-1">
+								<div class="flex">
+									<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
+										<i class="fa fa-trash-o Fs18 text-gray-500"></i>
+									</div>
+									<div class="flex-none flex flex-column pr-1" style="width:118px;">
+										<span class="text-black font-light">Monto</span>
+										<p:inputNumber value="#{525.50}"
+		                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+		                            	</p:inputNumber>
+									</div>
+									<div class="flex-grow-1 flex flex-column pr-1">
+										<span class="text-black font-light">Número Documento</span>
+										<p:inputText styleClass="w-full Fs14"/>
+										<span class="text-black font-light">Institución Financiera</span>
+										<p:inputText styleClass="w-full Fs14" />
+									</div>
+								</div>
+							</div>
+							<!-- 
+							<div class="border-round border-1 border-gray-400 w-full p-1 mb-1">
+								<div class="flex">
+									<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
+										<i class="fa fa-trash-o Fs18"></i>
+									</div>
+									<div class="flex-grow-1 flex flex-column pr-1">
+										<span class="text-black font-light">Monto</span>
+										<p:inputNumber value="#{525.50}"
+		                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+		                            	</p:inputNumber>
+									</div>
+									<div class="flex-grow-1 flex flex-column pr-1">
+										<span class="text-black font-light">Días</span>
+										<p:inputNumber value="#{530}"
+		                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0">
+		                            	</p:inputNumber>
+									</div>
+									<div class="flex-grow-1 flex flex-column resaltar">
+										<span class="text-black font-light">Fecha de Pago</span>
+										<p:calendar value=""
+											pattern="dd/MM/yyyy"
+											locale="es" 
+											requiredMessage="REQUERIDO" required="true" styleClass="w-full">
+										</p:calendar>
+									</div>
+								</div>
+							</div> -->
+							
+							
+							
+						</div>
+						<div class="EmptyBox10"/>
+						<div class="wfull text-right">
+							<span class="inline Fs10 text-gray-600 mr-1">TOTAL</span>
+							<h:outputText value="#{pagoCompCtrl.cabeceraSelected.totalconimpuestos}" styleClass="Fs24 text-blue-600 font-bold inline">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+					</div>
+					
+					
+				</div>
+				
+			</div>
+			<div class="EmptyBox10"/>
+			<div class="grid justify-content-center">
+				<div class="col-6 py-1 px-2">
+					<p:commandLink styleClass="text-white" update="@form">						
+						<div class="flex border-1 border-gray-800 bg-green-600 justify-content-center p-2">
+							<i class="Fs14 fa fa-dollar mr-1"/>
+							<span class="Fs14">
+								<h:outputText value="PAGAR" /> 
+							</span>
+						</div>
+					</p:commandLink>
+				</div>
+				<div class="col-6 py-1 px-2">
+					<p:commandLink styleClass="text-gray-600" process="@this" onclick="PF('dlgListaPago').hide()">
+						<div class="flex border-1 border-gray-800 justify-content-center p-2">
+							<i class="Fs14 fa fa-sign-out mr-1"/>
+							<span class="Fs14">CERRAR</span>
+						</div>
+					</p:commandLink>
+				</div>
+			</div>
+			
+		</h:form>
+	
+	</p:dialog>
+	
+
+</ui:composition>

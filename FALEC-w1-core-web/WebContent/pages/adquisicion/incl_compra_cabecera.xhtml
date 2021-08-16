@@ -256,7 +256,13 @@
 		    	</div>
 		    <div class="EmptyBox20"/>
 		    	<div class="col-6">
-	    			<p:commandLink action="#">
+	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this">
+	    				
+	    				<f:setPropertyActionListener value="ADQUISICION" target="#{pagoCompCtrl.callModule}"/>
+	    				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{pagoCompCtrl.adquisicionSelected}"/>
+	    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
+	    				<f:setPropertyActionListener value=":formMain" target="#{pagoCompCtrl.updateView}"/>
+	    				
 			    		<div class="flex align-items-stretch bg-green-400 border-1 border-gray-900 text-white border-round" style="height: 100%;">
 			    			<div class="flex align-items-center justify-content-center w-full">
 				    				<div class="flex flex-inline">
