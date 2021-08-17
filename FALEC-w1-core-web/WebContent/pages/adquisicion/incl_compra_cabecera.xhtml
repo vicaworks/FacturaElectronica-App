@@ -15,7 +15,7 @@
 	</style>
 	
 	<!-- consulta proveedor return keycode 13 -->
-	<p:remoteCommand name="buscarProveedor"  action="#{adquisicionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor"/>
+	<p:remoteCommand name="buscarProveedor"  action="#{adquisicionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT"/>
 	
 	<div class="card card-w-title">
 		
@@ -37,7 +37,7 @@
 					</p:inputText>
                     <p:commandButton icon="pi pi-search" styleClass="ui-button-success" 
                     	process="@this :formMain:inpCriterioProveedor"
-						update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor" 
+						update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT" 
 						action="#{adquisicionFrmCtrl.buscarProveedor()}"/>
                 </div>
 			</div>
@@ -256,15 +256,16 @@
 		    	</div>
 		    <div class="EmptyBox20"/>
 		    	<div class="col-6">
-	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this">
+	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null}">
 	    				
 	    				<f:setPropertyActionListener value="ADQUISICION" target="#{pagoCompCtrl.callModule}"/>
+	    				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{pagoCompCtrl.adquisicionFrmCtrl}"/>
 	    				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{pagoCompCtrl.adquisicionSelected}"/>
 	    				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.pagoList}" target="#{pagoCompCtrl.pagoList}"/>
 	    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
-	    				<f:setPropertyActionListener value=":formMain" target="#{pagoCompCtrl.updateView}"/>
+	    				<f:setPropertyActionListener value=":formMain:oupPagoDT" target="#{pagoCompCtrl.updateView}"/>
 	    				
-			    		<div class="flex align-items-stretch bg-green-400 border-1 border-gray-900 text-white border-round" style="height: 100%;">
+			    		<div class="flex align-items-stretch #{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null?'bg-gray-300':'bg-green-400'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
 			    			<div class="flex align-items-center justify-content-center w-full">
 				    				<div class="flex flex-inline">
 				    					<div class="flex mr-2">

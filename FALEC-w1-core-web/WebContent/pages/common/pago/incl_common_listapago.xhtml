@@ -56,17 +56,16 @@
 			}
 			
 		}
-		function seleccionarInputLista(clase)
-		{
+		function seleccionarInputLista(clase,mainDiv)
+		{							
 			$(clase).each(function() {
-			    if ($(this).is(':last-child')) {
-			        // Your code here
+			    if ($(this).is(':last-child')) {		
 			        var focusedElement = $(this).children('input');
 				    setTimeout(function () { focusedElement.select(); }, 100);
-			        //$(this).children('input').select();
-			        /* alert($(this).children('input').val()); */
 			    }
-			})	
+			});	
+			$(mainDiv).animate({
+	    		scrollTop: $(mainDiv)[0].scrollHeight}, "fast");
 		}
 	</script>	
 	
@@ -129,11 +128,11 @@
 						<h:outputText value="Método de Pago" styleClass="Fs14 text-gray-700 font-medium"/>
 						<div class="EmptyBox5"/>
 					</div>
-					<div class="col-12 lg:col-5 tipoPagoDT">
+					<div class="col-12 lg:col-5 tipoPagoDT" id="divTipoPagoDT">
 						
-						<p:dataScroller id="tipoPagoDT" value="#{pagoCompCtrl.tipoPagoList}" var="tp" chunkSize="10" mode="inline">
+						<p:dataScroller id="tipoPagoDT" value="#{pagoCompCtrl.tipoPagoList}" var="tp" chunkSize="10" mode="inline" styleClass="mainTipoPagoDT">
 							
-							<p:commandLink styleClass="w-full" action="#{pagoCompCtrl.aplicarPago()}" process="@form" update="@form" oncomplete="seleccionarInputLista('.selector-input-monto');">
+							<p:commandLink styleClass="w-full" action="#{pagoCompCtrl.aplicarPago()}" process="@form" update="@form" oncomplete="seleccionarInputLista('.selector-input-monto','.mainPagoDT');">
 								<f:setPropertyActionListener value="#{tp}" target="#{pagoCompCtrl.tipopagoSelected}"/>
 								<div class="flex flex-row align-items-center m-1 mb-2 border-round pl-2 #{tp.activo?'border-1 border-gray-800 tp_seleccion':'border-1 border-gray-300'}" style="height: 30px;" onmouseover="if(#{tp.activo==false}){tipoPagoMouse(this,'OVER');}" onmouseout="if(#{tp.activo==false}){tipoPagoMouse(this,'OUT');}">
 									<i class="fa #{tp.icono} Fs14 mr-2 #{tp.activo?'text-gray-800':'text-gray-300'}"/>
@@ -147,7 +146,7 @@
 					
 					<div class="col-12 lg:col-7 tipoPagoDT">
 						<div class="EmptyBox20 block lg:hidden"/>
-						<div class="w-full overflow-auto p-0" style="max-height:230px; min-height: 190px;">
+						<div class="w-full overflow-auto p-0 mainPagoDT" style="max-height:230px; min-height: 190px;">
 							 
 							<p:repeat var="p" value="#{pagoCompCtrl.pagoList}">								
 								<!-- efectivo -->
@@ -274,7 +273,7 @@
 			<div class="EmptyBox10"/>
 			<div class="grid justify-content-center">
 				<div class="col-6 py-1 px-2">
-					<p:commandLink styleClass="text-white" update="@form">						
+					<p:commandLink styleClass="text-white" update="@form #{pagoCompCtrl.updateView}" process="@form" action="#{pagoCompCtrl.realizarPago()}">						
 						<div class="flex border-1 border-gray-800 bg-green-600 justify-content-center p-2">
 							<i class="Fs14 fa fa-dollar mr-1"/>
 							<span class="Fs14">

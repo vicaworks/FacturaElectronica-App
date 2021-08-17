@@ -265,17 +265,44 @@ public class PagoCompCtrl implements Serializable {
 		pagoList.add(pagoSelected);
 		totalizarPago();
 		
-		switch (tp.getSubdetalle()) {
-		case "1":
-			//Ajax.oncomplete("PrimeFaces.focus('frmListPago:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
-			break;
-		case "4":
-			pagoSelected.setFechapago(new Date());
-			//Ajax.oncomplete("PrimeFaces.focus('frmListPago:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
-			break;	
-		default:
-			//Ajax.oncomplete("PrimeFaces.focus('frmListPago:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
-			break;
+	}
+	
+	public void realizarPago() {
+		try {
+			
+			if(totalSaldo.longValue()>0) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "ERROR", "   EXISTE UN SALDO PENDIENTE DE : $ " + totalSaldo.doubleValue());
+		        PrimeFaces.current().dialog().showMessageDynamic(message);
+				return;
+			}
+			
+			// validar campos obligatorios
+			for (Pago pago : pagoList) {
+				if (pago.getTipopago().getSubdetalle().equals("2") || pago.getTipopago().getSubdetalle().equals("3")) {
+					if(pago.getNumerodocumento()==null || pago.getNombrebanco()==null) {
+						FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "ERROR", "   LOS CAMPOS NUMERO DE DOCUMEMENTO, INSTITUCION FINANCIERA SON OBLIGATORIOS.");
+				        PrimeFaces.current().dialog().showMessageDynamic(message,true);
+						return;
+					}
+				}
+			}
+			
+			switch (callModule) {
+			case "ADQUISICION":
+				adquisicionFrmCtrl.setPagoList(pagoList);
+				adquisicionFrmCtrl.setTotalPago(totalPago);
+				adquisicionFrmCtrl.setTotalSaldo(totalSaldo);
+				break;
+
+			default:
+				break;
+			}
+			
+			AppJsfUtil.hideModal("dlgListaPago");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListPago", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
