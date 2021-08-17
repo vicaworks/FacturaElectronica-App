@@ -14,8 +14,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import org.omnifaces.util.Ajax;
-
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -29,7 +27,6 @@ import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
-import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.AdquisiciondetalleServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
@@ -40,7 +37,6 @@ import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
-import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -79,13 +75,12 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	private List<Iva> ivaList;
 	private List<Ice> iceList;
 	private BigDecimal valorTotalPago;
-	private String criterioProveedor;
-	private List<Pago> pagoList;
-	private Pago pagoSelected;
+	private String criterioProveedor;	
 	private BigDecimal porcentajeRenta;
 	private BigDecimal porcentajeIva;
 	private BigDecimal totalPago = BigDecimal.ZERO;
 	private BigDecimal totalSaldo = BigDecimal.ZERO;
+	private List<Pago> pagoList;
 	
 	/**
 	 * 
@@ -234,7 +229,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		totalizarCompra();
 		consultarIva();
 		consultarIce();
-		populateTipoPago();
 		consultarTipoComprobante();
 	}
 	
@@ -527,43 +521,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		}
 	}
 	
-	
-	//================================ PAGO =============================================
-	
-	
-	public void calcularCambioAction(Pago p) {
-		try {
-			pagoSelected = p;
-			if(pagoSelected.getValorentrega().doubleValue()==0) {
-				pagoSelected.setCambio(BigDecimal.ZERO);
-			}else {
-				pagoSelected.setCambio(pagoSelected.getValorentrega().add(pagoSelected.getTotal().negate()).setScale(2, RoundingMode.HALF_UP));
-				if(pagoSelected.getCambio().doubleValue()<0) {
-					pagoSelected.setCambio(BigDecimal.ZERO);
-				}
-			}
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void totalizarPagoaction(Pago p) {
-		try {
-			pagoSelected = p;
-			// tipo efectivo
-			if(pagoSelected.getTipopago().getSubdetalle().equals("1")) {
-				calcularCambioAction(p);
-			}
-			totalizarPago();
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
 	private void totalizarPago() {
 		
 		totalPago = BigDecimal.ZERO;
@@ -589,77 +546,13 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		
 	}
 	
-	public void eliminarDetallePago() {
-		
-		try {
-			
-			for (Pago p : pagoList) {
-				if(pagoSelected.getIdpago().equals(p.getIdpago())) {
-					break;
-				}
-			}
-			
-			pagoList.remove(pagoSelected);
-			if(pagoList.isEmpty()) {
-				pagoSelected=null;
-			}else {
-				pagoSelected = pagoList.get(pagoList.size()-1);
-			}
-			
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-		
-	}
-	
-	public void aplicarPago() throws DaoException {
-		if(adquisicionSelected == null) {
-			return;
-		}
-		
-		if (adquisicionSelected.getSubtotal().doubleValue()<=0) {
-			return;
-		}
-		
-		if (pagoList==null) {
-			pagoList = new ArrayList<>();
-		}
-		
-		Tipopago tp = getTipopagoSelected();
-		pagoSelected = new Pago();
-		pagoSelected.setAdquisicion(adquisicionSelected);
-		pagoSelected.setTipopago(tp);
-		pagoSelected.setTotal(adquisicionSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-		pagoSelected.setPlazo(BigDecimal.ZERO);
-		pagoSelected.setFechapago(new Date());
-		pagoSelected.setUnidadtiempo("DIAS");
-		pagoList.add(pagoSelected);
-		totalizarPago();
-		
-		switch (tp.getSubdetalle()) {
-		case "1":
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
-			break;
-		case "4":
-			pagoSelected.setFechapago(new Date());
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
-			break;	
-		default:
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
-			break;
-		}
-	}
-	
-	public void establecerFocoDetalle() {
-		try {
-			adquisiciondetalleSelected = adquisiciondetalleList.stream().filter(x->x.getIdadquisiciondetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void establecerFocoDetalle() {
+//		try {
+//			adquisiciondetalleSelected = adquisiciondetalleList.stream().filter(x->x.getIdadquisiciondetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * @return the adquisicionSelected
@@ -786,21 +679,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	public void setPagoList(List<Pago> pagoList) {
 		this.pagoList = pagoList;
 	}
-
-	/**
-	 * @return the pagoSelected
-	 */
-	public Pago getPagoSelected() {
-		return pagoSelected;
-	}
-
-	/**
-	 * @param pagoSelected the pagoSelected to set
-	 */
-	public void setPagoSelected(Pago pagoSelected) {
-		this.pagoSelected = pagoSelected;
-	}
-
+	
 	/**
 	 * @return the porcentajeRenta
 	 */
