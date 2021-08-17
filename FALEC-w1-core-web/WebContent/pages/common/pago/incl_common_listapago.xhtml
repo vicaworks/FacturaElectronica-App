@@ -56,6 +56,18 @@
 			}
 			
 		}
+		function seleccionarInputLista(clase)
+		{
+			$(clase).each(function() {
+			    if ($(this).is(':last-child')) {
+			        // Your code here
+			        var focusedElement = $(this).children('input');
+				    setTimeout(function () { focusedElement.select(); }, 100);
+			        //$(this).children('input').select();
+			        /* alert($(this).children('input').val()); */
+			    }
+			})	
+		}
 	</script>	
 	
 	<p:dialog header="Pago" widgetVar="dlgListaPago" modal="true" responsive="true" width="780px" closeOnEscape="true" styleClass="modalResponsivo">
@@ -121,7 +133,7 @@
 						
 						<p:dataScroller id="tipoPagoDT" value="#{pagoCompCtrl.tipoPagoList}" var="tp" chunkSize="10" mode="inline">
 							
-							<p:commandLink styleClass="w-full" action="#{pagoCompCtrl.aplicarPago()}" process="@form" update="@form">
+							<p:commandLink styleClass="w-full" action="#{pagoCompCtrl.aplicarPago()}" process="@form" update="@form" oncomplete="seleccionarInputLista('.selector-input-monto');">
 								<f:setPropertyActionListener value="#{tp}" target="#{pagoCompCtrl.tipopagoSelected}"/>
 								<div class="flex flex-row align-items-center m-1 mb-2 border-round pl-2 #{tp.activo?'border-1 border-gray-800 tp_seleccion':'border-1 border-gray-300'}" style="height: 30px;" onmouseover="if(#{tp.activo==false}){tipoPagoMouse(this,'OVER');}" onmouseout="if(#{tp.activo==false}){tipoPagoMouse(this,'OUT');}">
 									<i class="fa #{tp.icono} Fs14 mr-2 #{tp.activo?'text-gray-800':'text-gray-300'}"/>
@@ -140,7 +152,7 @@
 							<p:repeat var="p" value="#{pagoCompCtrl.pagoList}">								
 								<!-- efectivo -->
 								<f:subview rendered="#{p.tipopago.subdetalle == '1'}" id="svbLPEMod1">
-									<div class="border-round border-1 border-gray-400 w-full p-1 mb-1">
+									<div class="border-round border-1 border-gray-300 w-full p-1 mb-1">
 										<div class="flex">
 											<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
 												<p:commandLink action="#{pagoCompCtrl.eliminarDetallePago()}" process="@this" update="@form">
@@ -152,7 +164,7 @@
 											<div class="flex-grow-1 flex flex-column pr-1">
 												<span class="text-black font-light">Monto</span>
 												<p:inputNumber id="innPlMonto" value="#{p.total}"
-				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" styleClass="selector-input-monto">
 				                            	    <p:ajax event="change" listener="#{pagoCompCtrl.totalizarPagoaction(p)}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
@@ -175,7 +187,7 @@
 								
 								<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
 								<f:subview rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}" id="svbLPEMod2">
-									<div class="border-round border-1 border-gray-400 w-full p-1 mb-1">
+									<div class="border-round border-1 border-gray-300 w-full p-1 mb-1">
 										<div class="flex">
 											<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
 												<p:commandLink action="#{pagoCompCtrl.eliminarDetallePago()}" process="@this" update="@form">
@@ -187,7 +199,7 @@
 											<div class="flex-none flex flex-column pr-1" style="width:133px;">
 												<span class="text-black font-light">Monto</span>
 												<p:inputNumber  id="innPlMonto" value="#{p.total}"
-				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" styleClass="selector-input-monto">
 				                            	    <p:ajax event="change" listener="#{pagoCompCtrl.totalizarPagoaction(p)}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
@@ -205,7 +217,7 @@
 								
 								<!-- credito -->
 								<f:subview rendered="#{p.tipopago.subdetalle == '4'}" id="svbLPEMod3">
-									<div class="border-round border-1 border-gray-400 w-full p-1 mb-1">
+									<div class="border-round border-1 border-gray-300 w-full p-1 mb-1">
 										<div class="flex">
 											<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
 												<p:commandLink action="#{pagoCompCtrl.eliminarDetallePago()}" process="@this" update="@form">
@@ -217,7 +229,7 @@
 											<div class="flex-grow-1 flex flex-column pr-1">
 												<span class="text-black font-light">Monto</span>
 												<p:inputNumber id="innPlMonto" value="#{p.total}"
-				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" styleClass="selector-input-monto">
 				                            	    <p:ajax event="change" listener="#{pagoCompCtrl.totalizarPagoaction(p)}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
