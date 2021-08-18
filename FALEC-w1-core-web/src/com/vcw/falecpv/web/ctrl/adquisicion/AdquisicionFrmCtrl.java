@@ -254,6 +254,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		ad.setIce(p.getIce());
 		ad.setPreciounitario(p.getPreciouno());
 		ad.setPorcentajeDescuento(ad.getPorcentajeDescuento().divide(BigDecimal.valueOf(100)));
+		ad.setCodProducto(p.getCodigoprincipal());
 		ad.setProducto(p);
 		
 	}
@@ -278,8 +279,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	public void calcularAdquicisioDetalleProductoAction(Adquisiciondetalle a,boolean calcDescuento) {
 		try {
 			calcularAdquicisioDetalleProducto(a,calcDescuento);
-			adquisicionSelected.setValorretenidoiva(BigDecimal.ZERO);
-			adquisicionSelected.setValorretenidorenta(BigDecimal.ZERO);
+			limpiarTotales();
 			totalizarCompra();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -310,11 +310,23 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 				adquisiciondetalleSelected.setCodProducto("COD" + (adquisiciondetalleList==null?1:adquisiciondetalleList.size()+1));
 			}
 			adquisiciondetalleSelected.setAccion("NUEVO");
+			limpiarTotales();
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	private void limpiarTotales() {
+		adquisicionSelected.setValorretenidoiva(BigDecimal.ZERO);
+		adquisicionSelected.setValorretenidorenta(BigDecimal.ZERO);
+		totalPago = BigDecimal.ZERO;
+		totalSaldo = BigDecimal.ZERO;
+		pagoList = null;
+		porcentajeIva = BigDecimal.ZERO;
+		porcentajeRenta = BigDecimal.ZERO;
+	}
+	
 	
 	private void totalizarCompra() {
 		
@@ -373,7 +385,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			adquisiciondetalleSelected = new Adquisiciondetalle();
 			consultarIce();
 			consultarIva();
-			adquisiciondetalleSelected.setCantidad(BigDecimal.ZERO);
+			adquisiciondetalleSelected.setCantidad(BigDecimal.valueOf(1));
 			//adquisiciondetalleSelected.setDescripcion("-");
 			adquisiciondetalleSelected.setPreciototalsinimpuesto(BigDecimal.ZERO);
 			adquisiciondetalleSelected.setPreciototal(BigDecimal.ZERO);
@@ -478,6 +490,9 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			totalizarCompra();
 			porcentajeIva = null;
 			porcentajeRenta = null;
+			totalPago = BigDecimal.ZERO;
+			totalSaldo = BigDecimal.ZERO;
+			pagoList = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));

@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.omnifaces.util.Ajax;
 import org.primefaces.PrimeFaces;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -105,7 +106,7 @@ public class PagoCompCtrl implements Serializable {
 				tipopagoSelected = tipoPagoList.get(0);
 				aplicarPago();
 			}else {
-				tipopagoSelected = tipoPagoList.get(tipoPagoList.size()-1);
+				tipopagoSelected = pagoList.get(pagoList.size()-1).getTipopago();
 				tipoPagoList.forEach(x->{
 					x.setActivo(false);
 					if(x.getIdtipopago().equals(tipopagoSelected.getIdtipopago())) {
@@ -113,6 +114,7 @@ public class PagoCompCtrl implements Serializable {
 					}
 				});
 				totalizarPago();
+				Ajax.oncomplete("seleccionarInputLista('.selector-input-monto','.mainPagoDT')");					
 			}
 			
 			AppJsfUtil.showModalRender("dlgListaPago", "frmListPago");
@@ -280,7 +282,7 @@ public class PagoCompCtrl implements Serializable {
 			for (Pago pago : pagoList) {
 				if (pago.getTipopago().getSubdetalle().equals("2") || pago.getTipopago().getSubdetalle().equals("3")) {
 					if(pago.getNumerodocumento()==null || pago.getNombrebanco()==null) {
-						FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "ERROR", "   LOS CAMPOS NUMERO DE DOCUMEMENTO, INSTITUCION FINANCIERA SON OBLIGATORIOS.");
+						FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "ERROR", "   LOS CAMPOS NUMERO DE DOCUMENTO, INSTITUCION FINANCIERA SON OBLIGATORIOS.");
 				        PrimeFaces.current().dialog().showMessageDynamic(message,true);
 						return;
 					}

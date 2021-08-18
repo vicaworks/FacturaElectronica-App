@@ -167,7 +167,7 @@
 						<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade" id="ovlAdCalValorRenta">
 							<div class="flex">
 								<div class="flex-grow-1 flex">
-									<p:inputNumber symbol="%"  value="#{adquisicionFrmCtrl.porcentajeRenta}" 
+									<p:inputNumber symbol="%"  value="#{adquisicionFrmCtrl.porcentajeRenta}" id="intRetRentaPorcentaje" 
 		                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionRenta();return false;}">  
 				                	</p:inputNumber>
 								</div>
@@ -198,13 +198,13 @@
 						<p:overlayPanel for="cmlCalValorIva" hideEffect="fade" id="ovlAdCalValorIva">
 							<div class="flex">
 								<div class="flex-grow-1 flex">									
-									<p:inputNumber symbol="%" value="#{adquisicionFrmCtrl.porcentajeIva}"
+									<p:inputNumber symbol="%" value="#{adquisicionFrmCtrl.porcentajeIva}" id="intRetIvaPorcentaje"
 			                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionIva();return false;}">  
 					                </p:inputNumber>
 						                
 								</div>
 								<div class="flex-none flex px-1 align-self-center">
-									<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva">
+									<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva">
 										<i class="fa fa-check-circle Fs16 text-green-600 font-semibold"></i>
 									</p:commandLink>  
 								</div>

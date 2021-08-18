@@ -15,8 +15,6 @@
 		
 	</style>
 	
-	<p:remoteCommand name="establecerFocoDetalle" action="#{adquisicionFrmCtrl.establecerFocoDetalle}" update=":formMain:adquisicionDetDT"/>
-	
 	<div class="card card-w-title">
 		<div class="flex justify-content-end py-1">
 			<p:commandLink id="cmdAdqAgregarDetalle" process="@this :formMain:adquisicionDetDT"
@@ -26,7 +24,7 @@
 				<span class="text-gray-800">Agregar Ítem</span>
 				<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
 				<f:setPropertyActionListener value="NUEVO" target="#{listaProductoCtrl.accion}"/>
-				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" target="#{listaProductoCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
 				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
@@ -42,7 +40,7 @@
             	<div class="col-12" style="text-overflow: ellipsis;">
             		<span style="color: black;" class="block Fs12 font-medium">#{d.descripcion}</span>
             		<div>
-            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="Fs10">#{d.codProducto}</span>
+            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="Fs10">#{d.producto!=null?d.producto.codigoprincipal:"-"} </span>
             		</div>
             	</div>
             	<div class="col-12">            		
@@ -61,14 +59,14 @@
 								<span class="Fs12 text-gray-900">EDITAR</span>
 								<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="EDITAR" target="#{listaProductoCtrl.accion}"/>
-								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" target="#{listaProductoCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
 								<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 								<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
 								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/> 
 								<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
 							</p:commandLink>
            					<p:divider layout="vertical" styleClass="mx-2  inline"/>
-           					<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" styleClass="text-center inline" style="min-width:75px!important;">
+           					<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" styleClass="text-center inline" style="min-width:75px!important;">
 								<i class="fa fa-trash-o Fs10 text-pink-600 text-semibold mr-1"></i>
 								<span class="Fs12 text-gray-900">ELIMINAR</span>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -86,18 +84,18 @@
 	            							<span style="color:black;" class="font-light">Cost. Unit.</span>
 	            							<p:inputNumber id="innPuDt" value="#{d.preciounitario}" symbol="$"
 	                                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
-	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT"/>
+	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 	                                		</p:inputNumber>
 	            						</div>
 	            						<div class="flex flex-column">
 	            							<span style="color:black;" class="font-light">Cantidad</span>
 	            							<p:inputNumber id="innCantDt" value="#{d.cantidad}"
 			                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{d.producto!=null and (d.producto.tipoventa==1 or d.producto.tipoventa==3)}">
-			                            	    <p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
+			                            	    <p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 			                            	</p:inputNumber>		                                
 			                            	<p:inputNumber id="innCantDt2" value="#{d.cantidad}"
 			                                	symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{d.producto==null or d.producto.tipoventa!=1}">
-			                                	<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetIva"/>
+			                                	<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 			                                </p:inputNumber>
 	            						</div>
             						</div>

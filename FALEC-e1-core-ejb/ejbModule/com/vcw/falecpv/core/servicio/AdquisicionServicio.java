@@ -137,9 +137,12 @@ public class AdquisicionServicio extends AppGenericService<Adquisicion, String> 
 						k.setObservacion(obs.toString());
 						kardexProductoServicio.registrarKardexFacade(k);
 					}
-					
-				}
-				
+					// actualiza los precios de venta
+					if(d.getProducto().isActualizarProducto()) {
+						d.getProducto().setPreciounitario(d.getPreciounitario());	
+						productoServicio.getProductoDao().actualizarPrecioVenta(d.getProducto());
+					}
+				}				
 			}
 			
 			// detalle del pago

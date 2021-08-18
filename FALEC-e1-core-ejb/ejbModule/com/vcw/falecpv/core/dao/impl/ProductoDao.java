@@ -438,5 +438,25 @@ public class ProductoDao extends AppGenericDao<Producto, String> {
 		}
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param producto
+	 * @return
+	 * @throws DaoException
+	 */
+	public int actualizarPrecioVenta(Producto producto)throws DaoException{
+		try {
+			Query q = getEntityManager().createNativeQuery("UPDATE producto SET preciouno=:preciouno, preciodos=:preciodos, preciotres=:preciotres, preciounitario=:preciounitario WHERE idproducto=:idproducto");
+			q.setParameter("preciouno", producto.getPreciouno());
+			q.setParameter("preciodos", producto.getPreciodos());
+			q.setParameter("preciotres", producto.getPreciotres());
+			q.setParameter("idproducto", producto.getIdproducto());
+			q.setParameter("preciounitario", producto.getPreciounitario());
+			return q.executeUpdate();
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
 
 }
