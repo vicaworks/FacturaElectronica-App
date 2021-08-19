@@ -9,12 +9,12 @@
 	<style type="text/css">
 		
 		.heightFrmTransportista {
-				height: 350px;
+				height: 260px;
 		}	
 		
 	</style>
 	
-	<p:dialog header="Transportista" widgetVar="dlgTransportista" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Transportista" widgetVar="dlgTransportista" modal="true" responsive="true" width="500px" closeOnEscape="true" styleClass="modalResponsivo">
 	
 		
 		<h:form id="frmTransportista">
@@ -32,7 +32,7 @@
 				</p:commandButton>
 					
 				<p:commandButton id="cmdCerrar"
-					value="CERRAR" icon="fa fa-close" styleClass="min-width-100 ui-button-flat" 
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-100 ui-button-flat" 
 					onclick="PF('dlgTransportista').hide()" immediate="true"/>
 			</div>
 			
@@ -42,98 +42,99 @@
 			</p:messages>
 			
 			<div class="w-full overflow-y-scroll heightFrmTransportista contenedorFormulario mt-2">
-			
-				<div class="field grid">			    	
-					
-					<h:outputText value="ID" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<h:outputText value="#{transportistaCtrl.transportistaSelected.idtransportista}" styleClass="mt-1"/>
-			    	</div>
-			    </div>
-			    <div class="field grid">
-					<h:outputText value="TIPO #{msg['label.identificacion']}" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<p:selectOneMenu id="somTransportistaTipoIden"
-							value="#{transportistaCtrl.transportistaSelected.tipoIdentificacion}"
-							converter="omnifaces.SelectItemsConverter"
-							required="true"
-							requiredMessage="REQUERIDO"
-							styleClass="w-full mt-1">							
-							<f:selectItem itemLabel="[seleccionar] ..."
-									itemValue="#{null}" value="#{null}" noSelectionOption="true" />									
-							<f:selectItems value="#{transportistaCtrl.tipoIdentificacionList}" var="tip"
-								itemLabel="#{tip.tipoidentificacion}" itemValue="#{tip}" />
-							<p:ajax event="change" update=":frmTransportista:intTransportistaIentifiaccion " process="@this :frmTransportista:intTransportistaIentifiaccion"/>
-						</p:selectOneMenu>
-						<p:message for="somTransportistaTipoIden" />
-			    	</div>
-			    </div>
-			    <div class="field grid">
-					<h:outputText value="#{msg['label.identificacion']}" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<p:inputText id="intTransportistaIentifiaccion"
-							value="#{transportistaCtrl.transportistaSelected.identificacion}"
-							required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
-							maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="SOLO NUMEROS; 10 DIGITOS PARA CI, 13 DIGITOS PARA RUC">
-							<f:validateRegex pattern="^\d{10}+$" disabled="#{transportistaCtrl.transportistaSelected.tipoIdentificacion==null or transportistaCtrl.transportistaSelected.tipoIdentificacion.codigo=='04'}"/>
-							<f:validateRegex pattern="^\d{13}+$" disabled="#{transportistaCtrl.transportistaSelected.tipoIdentificacion==null or transportistaCtrl.transportistaSelected.tipoIdentificacion.codigo=='05'}"/>
-						</p:inputText>
-						<p:message for="intTransportistaIentifiaccion"/>
-			    	</div>
-			    </div>
-			    <div class="field grid">
-					<h:outputText value="RAZON SOCIAL" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<p:inputText id="intTransportistaRazonSocial"
-							value="#{transportistaCtrl.transportistaSelected.razonsocial}"
-							required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
-							maxlength="200" converter="omnifaces.ToUpperCaseConverter" />
-						<p:message for="intTransportistaRazonSocial"/>
-			    	</div>
-			    </div>
-			    <div class="field grid">
-					<h:outputText value="PLACA" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<p:inputText id="intTransportistaPlaca"
-							value="#{transportistaCtrl.transportistaSelected.placa}"
-							required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
-							maxlength="10" converter="omnifaces.ToUpperCaseConverter" />
-						<p:message for="intTransportistaPlaca"/>
-			    	</div>
-			    </div>
-			    <div class="field grid">
-					<h:outputText value="#{msg['label.telefono']} : " styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
-			    	<div class="col-12 md:col-10">
-						<p:inputText id="intTransportistaTelefono"
-							value="#{transportistaCtrl.transportistaSelected.telefono}"
-							required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
-							maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="#{msg['converter.solonumeros']}">
-							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
-						</p:inputText>
-						<p:message for="intTransportistaTelefono"/>
-			    	</div>
-			    </div>
-			    <div class="field grid">			    	
-					<h:outputText value="#{msg['label.correoelectronico']} : " styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
-			    	<div class="col-12 md:col-10">
-						<p:inputText id="intTransportistaEmail"
-							value="#{transportistaCtrl.transportistaSelected.email}"
-							styleClass="w-full mt-1" maxlength="100" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
-							<f:validator validatorId="emailValidator"/>
-						</p:inputText>
-						<p:message for="intTransportistaEmail"/>
-			    	</div>
-			    </div>
-			    <div class="field grid">
-					<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<p:selectOneMenu id="somestadoTransportista" value="#{transportistaCtrl.transportistaSelected.estado}" styleClass="w-full mt-1" disabled="#{transportistaCtrl.transportistaSelected.idtransportista==null}">
-			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
-			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-			    		</p:selectOneMenu>
-			    		<p:message for="somestadoTransportista"/>
-			    	</div>
-			    </div>				
+				<div style="width: 99%!important;">
+					<div class="field grid">			    	
+						
+						<h:outputText value="ID" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<div class="col-12 md:col-8">
+							<h:outputText value="#{transportistaCtrl.transportistaSelected.idtransportista}" styleClass="mt-1"/>
+				    	</div>
+				    </div>
+				    <div class="field grid">
+						<h:outputText value="TIPO #{msg['label.identificacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<div class="col-12 md:col-8">
+							<p:selectOneMenu id="somTransportistaTipoIden"
+								value="#{transportistaCtrl.transportistaSelected.tipoIdentificacion}"
+								converter="omnifaces.SelectItemsConverter"
+								required="true"
+								requiredMessage="REQUERIDO"
+								styleClass="w-full mt-1">							
+								<f:selectItem itemLabel="[seleccionar] ..."
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />									
+								<f:selectItems value="#{transportistaCtrl.tipoIdentificacionList}" var="tip"
+									itemLabel="#{tip.tipoidentificacion}" itemValue="#{tip}" />
+								<p:ajax event="change" update=":frmTransportista:intTransportistaIentifiaccion " process="@this :frmTransportista:intTransportistaIentifiaccion"/>
+							</p:selectOneMenu>
+							<p:message for="somTransportistaTipoIden" />
+				    	</div>
+				    </div>
+				    <div class="field grid">
+						<h:outputText value="#{msg['label.identificacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<div class="col-12 md:col-8">
+							<p:inputText id="intTransportistaIentifiaccion"
+								value="#{transportistaCtrl.transportistaSelected.identificacion}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="SOLO NUMEROS; 10 DIGITOS PARA CI, 13 DIGITOS PARA RUC">
+								<f:validateRegex pattern="^\d{10}+$" disabled="#{transportistaCtrl.transportistaSelected.tipoIdentificacion==null or transportistaCtrl.transportistaSelected.tipoIdentificacion.codigo=='04'}"/>
+								<f:validateRegex pattern="^\d{13}+$" disabled="#{transportistaCtrl.transportistaSelected.tipoIdentificacion==null or transportistaCtrl.transportistaSelected.tipoIdentificacion.codigo=='05'}"/>
+							</p:inputText>
+							<p:message for="intTransportistaIentifiaccion"/>
+				    	</div>
+				    </div>
+				    <div class="field grid">
+						<h:outputText value="RAZON SOCIAL" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<div class="col-12 md:col-8">
+							<p:inputText id="intTransportistaRazonSocial"
+								value="#{transportistaCtrl.transportistaSelected.razonsocial}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="200" converter="omnifaces.ToUpperCaseConverter" />
+							<p:message for="intTransportistaRazonSocial"/>
+				    	</div>
+				    </div>
+				    <div class="field grid">
+						<h:outputText value="PLACA" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<div class="col-12 md:col-8">
+							<p:inputText id="intTransportistaPlaca"
+								value="#{transportistaCtrl.transportistaSelected.placa}"
+								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="10" converter="omnifaces.ToUpperCaseConverter" />
+							<p:message for="intTransportistaPlaca"/>
+				    	</div>
+				    </div>
+				    <div class="field grid">
+						<h:outputText value="#{msg['label.telefono']} : " styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+				    	<div class="col-12 md:col-8">
+							<p:inputText id="intTransportistaTelefono"
+								value="#{transportistaCtrl.transportistaSelected.telefono}"
+								required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								maxlength="20" converter="omnifaces.ToUpperCaseConverter" validatorMessage="#{msg['converter.solonumeros']}">
+								<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+							</p:inputText>
+							<p:message for="intTransportistaTelefono"/>
+				    	</div>
+				    </div>
+				    <div class="field grid">			    	
+						<h:outputText value="#{msg['label.correoelectronico']} : " styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+				    	<div class="col-12 md:col-8">
+							<p:inputText id="intTransportistaEmail"
+								value="#{transportistaCtrl.transportistaSelected.email}"
+								styleClass="w-full mt-1" maxlength="100" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
+								<f:validator validatorId="emailValidator"/>
+							</p:inputText>
+							<p:message for="intTransportistaEmail"/>
+				    	</div>
+				    </div>
+				    <div class="field grid">
+						<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<div class="col-12 md:col-8">
+							<p:selectOneMenu id="somestadoTransportista" value="#{transportistaCtrl.transportistaSelected.estado}" styleClass="w-full mt-1" disabled="#{transportistaCtrl.transportistaSelected.idtransportista==null}">
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+				    		</p:selectOneMenu>
+				    		<p:message for="somestadoTransportista"/>
+				    	</div>
+				    </div>				
+				</div>
 			</div>		
 		</h:form>	
 	</p:dialog>	

@@ -378,7 +378,7 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			// lista del combo popup
 			consultarProductoForm();
-			String form="frmProducto";
+			String form="frmProducto";			
 			switch (callModule) {
 			case "PRODUCTO":
 				// lista principal
@@ -389,7 +389,8 @@ public class ProductoCtrl extends BaseCtrl {
 				break;
 			case "ADQUISICION":
 				productoSelected.setCantidad(1);
-				adquisicionFrmCtrl.agregarProducto(productoSelected);
+				listaProductoCtrl.setProductoSelected(productoSelected);
+				listaProductoCtrl.seleccionarProducto();
 				break;
 			case "LISTA_PRODUCTO":
 				listaProductoCtrl.setCriterioBusqueda(productoSelected.getNombregenerico());

@@ -16,7 +16,7 @@
 		
 	</style>
 	
-	<p:dialog header="Usuario" widgetVar="dlgUsuario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Usuario" widgetVar="dlgUsuario" modal="true" responsive="true" width="600px" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmUsuario">
 			<!-- OPCIONES -->
@@ -39,14 +39,14 @@
 			<div class="form-ui w-full OvYScroll heightFrmUsuario contenedorFormulario mt-2">
 				
 				<div class="field grid mt-1">
-					<h:outputText value="EMPRESA : " class="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="EMPRESA : " class="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+			        <div class="col-12 md:col-8">
 						<h:outputText value="#{usuarioCtrl.usuarioSelected.empresa.nombrecomercial}" styleClass="w-full"/>
 			        </div>
 			    </div>
 				<div class="field grid">
-					<h:outputText value="ESTABLECIMIENTO" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-					<div class="col-12 md:col-10">
+					<h:outputText value="ESTABLECIMIENTO" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+					<div class="col-12 md:col-8">
 						<p:selectOneMenu id="somEstablecimientos"
 							value="#{usuarioCtrl.usuarioSelected.establecimiento}"
 							converter="omnifaces.SelectItemsConverter"
@@ -64,29 +64,29 @@
 				</div>
 				
 				<div class="field grid">
-					<h:outputText value="NOMBRE" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="NOMBRE" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:inputText id="intNombre" value="#{usuarioCtrl.usuarioSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intNombre"/>
 					</div>
 				</div>
 				<div class="field grid">
-					<h:outputText value="NOMBRE PANTALLA" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="NOMBRE PANTALLA" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:inputText id="intNombrePantalla" value="#{usuarioCtrl.usuarioSelected.nombrepantalla}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intNombrePantalla"/>
 					</div>
 				</div>
 				<div class="field grid">
-					<h:outputText value="IDENTIFICACIÓN" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="IDENTIFICACIÓN" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:inputText id="intIdentifiaccion" value="#{usuarioCtrl.usuarioSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20"/>
 						<p:message for="intIdentifiaccion"/>
 					</div>
 				</div>
 				<div class="field grid">
-					<h:outputText value="TELÉFONO" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="TELÉFONO" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:inputText id="intTelefono" value="#{usuarioCtrl.usuarioSelected.telefono}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20" validatorMessage="SOLO NÚMEROS">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 						</p:inputText>
@@ -94,8 +94,8 @@
 					</div>
 				</div>
 				<div class="field grid">
-					<h:outputText value="CORREO ELECTRÓNICO" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="CORREO ELECTRÓNICO" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:inputText id="intEmailUsuario" value="#{usuarioCtrl.usuarioSelected.correoelectronico}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="100">
 							<f:validator validatorId="emailSelectItemValidator"/>
 						</p:inputText>
@@ -103,8 +103,8 @@
 					</div>
 				</div>
 				<div class="field grid">
-					<h:outputText value="PUNTO EMISIÓN" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="PUNTO EMISIÓN" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:inputText id="intPuntoEmision" value="#{usuarioCtrl.usuarioSelected.puntoemision}" required="true" requiredMessage="REQUERIDO" converterMessage="SOLO NÚMEROS" styleClass="w-full" maxlength="3" validatorMessage="SOLO NÚMEROS">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 						</p:inputText>
@@ -112,15 +112,15 @@
 					</div>
 				</div>
 				<div class="field grid">
-					<h:outputText value="FIRMA EMAIL" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="FIRMA EMAIL" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:textEditor secure="false" id="teefirmaemail" widgetVar="teefirmaemail" value="#{usuarioCtrl.usuarioSelected.firmaemail}" height="150"  />
 						<p:message for="teefirmaemail" styleClass="block"/>
 					</div>
 				</div>
 				<div class="field grid">
 					<h:outputText value="ACTUALIZAR CREDENCIALES" styleClass="requerido md:col-2 md:mb-0"/>
-					<div class="col-12 md:col-10">
+					<div class="col-12 md:col-8">
 						<p:selectBooleanCheckbox value="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" disabled="#{usuarioCtrl.usuarioSelected.idusuario == null}">
 							<p:ajax update=":frmUsuario:grid2" event="change" process="@this"/>
 						</p:selectBooleanCheckbox>
@@ -128,30 +128,30 @@
 				</div>				
 				<p:outputPanel id="grid2">
 					<div class="field grid">
-						<h:outputText value="LOGIN" id="intLogin1" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        	<div class="col-12 md:col-10">
+						<h:outputText value="LOGIN" id="intLogin1" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        	<div class="col-12 md:col-8">
 							<p:inputText id="intLogin" value="#{usuarioCtrl.usuarioSelected.login}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" readonly="#{usuarioCtrl.usuarioSelected.idusuario!=null}"/>
 							<p:message for="intLogin"  id="intLogin2" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
 						</div>
 					</div>
 					<div class="field grid">
-						<h:outputText value="CLAVE " id="intClave11" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-				        <div class="col-12 md:col-10">
+						<h:outputText value="CLAVE " id="intClave11" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+				        <div class="col-12 md:col-8">
 							<p:password id="intClave1" value="#{usuarioCtrl.usuarioSelected.clave}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
 							<p:message for="intClave1" id="intClave12" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
 						</div>
 					</div>
 					<div class="field grid">
-						<h:outputText value="CONFIRMACIÓN" id="intClave21" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-				        <div class="col-12 md:col-10">
+						<h:outputText value="CONFIRMACIÓN" id="intClave21" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+				        <div class="col-12 md:col-8">
 							<p:password id="intClave2" value="#{usuarioCtrl.usuarioSelected.clave2}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
 							<p:message for="intClave2" id="intClave22" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
 						</div>
 					</div>
 				</p:outputPanel>
 				<div class="field grid">
-					<h:outputText value="ESTADO" styleClass="requerido col-12 mb-2 md:col-2 md:mb-0"/>
-			        <div class="col-12 md:col-10">
+					<h:outputText value="ESTADO" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
+			        <div class="col-12 md:col-8">
 						<p:selectOneMenu id="somEstadoUsu"
 							value="#{usuarioCtrl.usuarioSelected.estado}"
 							required="true"
