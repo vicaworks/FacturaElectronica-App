@@ -20,106 +20,73 @@
 	</style>
 	
 	
-	<p:dialog header="Transferencia SRI" widgetVar="dlLogTransferencia" modal="true" responsive="true" width="95%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Transferencia SRI" widgetVar="dlLogTransferencia" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="formLogTrans">
 			
-			<div class="p-grid toolBarPopUp p-align-end vertical-container">
-				
-				<div class="p-col-12 p-lg-2" style="text-align:left;">					
-					
-					<p:commandButton id="cmdEnviarEmail"
-						value="REFRESCAR" icon="fa fa-repeat" styleClass="secondary-button Wid100" process="@form" update="@form"
-						action="#{logTransferCtrl.buscar()}"
-						/>
-					
-				</div>
-				
-				<div class="p-col-12 p-lg-2" style="text-align:left;">					
-					
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button Wid100" 
-						onclick="PF('dlLogTransferencia').hide()" immediate="true"  
-						/>
-					
-				</div>	
-				
+			
+			<div class="formgroup-inline">
+			
+				<p:commandButton id="cmdEnviarEmail"
+					value="REFRESCAR" icon="fa fa-repeat" styleClass="ui-button-outlined min-width-100 mr-1" process="@form" update="@form"
+					action="#{logTransferCtrl.buscar()}"
+					/>
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
+					onclick="PF('dlLogTransferencia').hide()" immediate="true"  
+					/>
 			</div>
+			
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formEnvioDoc" id="msgFormEnvioDoc"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="form-ui Wid100 OvYScroll heightLogTransf contenedorFormulario">
+			<div class="w-full overflow-auto heightLogTransf contenedorFormulario mt-2">
 				
-				<div class="p-grid p-align-top p-justify-center" style="width: 99.5%!important;">
+				<div class="grid align-content-top justify-content-center" style="width: 99.5%!important;">
 					
 					<!-- datos de cabecera -->
-					<div class="p-col-12 p-md-5">
+					<div class="col-12 md:col-5">
 						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Documento #{msg['label.electronico']}</div>
+						<span class="block Fs16 text-black font-bold my-1">Datos Documento #{msg['label.electronico']}</span>
 						
-						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
-							<h:panelGroup>
-								<h:outputText value="ESTABLECIMIENTO *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText value="#{logTransferCtrl.cabeceraSelected.establecimiento.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText value="#{logTransferCtrl.cabeceraSelected.tipocomprobante.comprobante}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputText value="CLAVE ACCESO *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText value="#{logTransferCtrl.cabeceraSelected.claveacceso}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText value="#{logTransferCtrl.cabeceraSelected.fechaemision}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+						<div class="flex flex-column">
+							<div class="mb-1">
+								<span class="Fs10 text-gray-600 mr-1">#{appSessionCtrl.formatoCadena(logTransferCtrl.cabeceraSelected.establecimiento.codigoestablecimiento,3,'0')}</span>
+								<span class="Fs12 text-gray-800 mr-1">#{logTransferCtrl.cabeceraSelected.establecimiento.nombrecomercial}</span>
+							</div>
+							<span class="requerido mb-1">TIPO COMPROBANTE</span>
+							<p:inputText value="#{logTransferCtrl.cabeceraSelected.tipocomprobante.comprobante}" styleClass="w-full" readonly="true"/>							
+							<span class="requerido mb-1">CLAVE ACCESO</span>
+							<p:inputText value="#{logTransferCtrl.cabeceraSelected.claveacceso}" styleClass="w-full" readonly="true"/>
+							<span class="requerido mb-1">FECHA DE EMISIÓN</span>
+							<p:inputText value="#{logTransferCtrl.cabeceraSelected.fechaemision}" styleClass="w-full" readonly="true">
 									<f:convertDateTime pattern="dd/MM/yyyy"/>
-								</p:inputText>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputText value="R.U.C. / C.I. *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?logTransferCtrl.cabeceraSelected.transportista.identificacion:logTransferCtrl.cabeceraSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?'TRANSPORTISTA':appSessionCtrl.getLabelComprobante(logTransferCtrl.cabeceraSelected.tipocomprobante.identificador)} *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?logTransferCtrl.cabeceraSelected.transportista.razonsocial:logTransferCtrl.cabeceraSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputText value="ESTADO *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<p:inputText value="#{logTransferCtrl.cabeceraSelected.estado}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-								</p:inputText>
-							</h:panelGroup>
+							</p:inputText>
 							
-							<h:panelGroup>
-								<h:outputText value="NUM DOCUMENTO *" styleClass="cpoRequerido"/>
-								<div class="EmptyBox5"/>
-								<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(logTransferCtrl.cabeceraSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
-							</h:panelGroup>
-								
-						</p:panelGrid>
+							<span class="requerido mb-1">R.U.C. / C.I.</span>
+							<p:inputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?logTransferCtrl.cabeceraSelected.transportista.identificacion:logTransferCtrl.cabeceraSelected.cliente.identificacion}" styleClass="w-full" readonly="true"/>
+							
+							<span class="requerido mb-1">								
+								<h:outputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?'TRANSPORTISTA':appSessionCtrl.getLabelComprobante(logTransferCtrl.cabeceraSelected.tipocomprobante.identificador)}"/>
+							</span>
+							<p:inputText value="#{logTransferCtrl.cabeceraSelected.transportista!=null?logTransferCtrl.cabeceraSelected.transportista.razonsocial:logTransferCtrl.cabeceraSelected.cliente.razonsocial}" styleClass="w-full" readonly="true"/>
+
+							<span class="requerido mb-1">ESTADO</span>
+							<p:inputText value="#{logTransferCtrl.cabeceraSelected.estado}" styleClass="w-full" readonly="true"/>
+							<span class="requerido mb-1">NÚMERO DE COMPROBANTE</span>
+							<p:inputText value="#{compFacCtrl.getFormatoNumDocumento(logTransferCtrl.cabeceraSelected.numdocumento)}" styleClass="w-full" readonly="true"/>
+							
+						</div>
 						
 					</div>
 					
 					<!-- log -->
-					<div class="p-col-12 p-md-7">
-						
-						<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Transferencias SRI</div>
-						<div class="EmptyBox5"/>
+					<div class="col-12 md:col-7">
+					
+						<span class="block Fs16 text-black font-bold my-1">Histórico de Transferencias SRI</span>
 						
 						<p:dataTable id="pvLogTransferenciaDT"
 		        			scrollable="true"

@@ -170,7 +170,9 @@ public class FacEmitidaCtrl extends BaseCtrl {
 			totalesDto.setIva(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getIva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIce(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getIce().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setTotal(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setPago(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getValorapagar().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setRetencion(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getValorretenido().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setApagar(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getValorapagar().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setPago(BigDecimal.valueOf(ventasQueryList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalpago().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 		}
 		
 	}

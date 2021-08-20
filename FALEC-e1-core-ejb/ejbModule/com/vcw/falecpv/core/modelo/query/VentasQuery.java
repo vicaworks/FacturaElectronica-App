@@ -74,6 +74,7 @@ public class VentasQuery implements Serializable {
 	private Date updated;
 	private boolean seleccion = false;
 	private String codigoestablecimiento;
+	private String clienteCompleto;
 	
 	/**
 	 * 
@@ -812,5 +813,21 @@ public class VentasQuery implements Serializable {
 	public void setCodigoestablecimiento(String codigoestablecimiento) {
 		this.codigoestablecimiento = codigoestablecimiento;
 	}
+	
+	/**
+	 * @return the clienteCompleto
+	 */
+	public String getClienteCompleto() {
+		clienteCompleto = (identificacion!=null?identificacion:"") + (razonsocial!=null?razonsocial:"");
+		return clienteCompleto;
+	}
+
+	/**
+	 * @param clienteCompleto the clienteCompleto to set
+	 */
+	public void setClienteCompleto(String clienteCompleto) {
+		this.clienteCompleto = clienteCompleto;
+	}
+
 
 }

@@ -25,6 +25,8 @@ public class TotalesDto implements Serializable {
 	private BigDecimal total = BigDecimal.ZERO;
 	private BigDecimal pago = BigDecimal.ZERO;
 	private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
+	private BigDecimal retencion = BigDecimal.ZERO;
+	private BigDecimal apagar = BigDecimal.ZERO;
 	
 	/**
 	 * 
@@ -142,6 +144,34 @@ public class TotalesDto implements Serializable {
 	 */
 	public void setTotalsinimpuestos(BigDecimal totalsinimpuestos) {
 		this.totalsinimpuestos = totalsinimpuestos;
+	}
+
+	/**
+	 * @return the retencion
+	 */
+	public BigDecimal getRetencion() {
+		return retencion;
+	}
+
+	/**
+	 * @param retencion the retencion to set
+	 */
+	public void setRetencion(BigDecimal retencion) {
+		this.retencion = retencion;
+	}
+
+	/**
+	 * @return the apagar
+	 */
+	public BigDecimal getApagar() {
+		return apagar;
+	}
+
+	/**
+	 * @param apagar the apagar to set
+	 */
+	public void setApagar(BigDecimal apagar) {
+		this.apagar = apagar;
 	}
 
 }

@@ -11,18 +11,18 @@ import java.util.stream.Stream;
  */
 public enum ComprobanteEstadoEnum {
 	
-	BORRADOR("markBlue"),
-	ERROR("markRed"),
-	PENDIENTE("markYellow"),
-	RECIBIDO_SRI("markGreen"),
-	ERROR_SRI("markRed"),
+	BORRADOR("bg-blue-200 text-black"),//markBlue
+	ERROR("bg-pink-200 text-black"),//markRed
+	PENDIENTE("bg-yellow-100 text-black"),//markYellow
+	RECIBIDO_SRI("bg-green-200 text-black"),//markGreen
+	ERROR_SRI("bg-pink-200 text-black"),//markRed
 //	AUTORIZADO("markBlack"),
 //	AUTORIZADO("markBlueOcean"),
-	AUTORIZADO("markGreen"),
-	ANULADO("markGray"),
-	RETENCION("markOrange"),
-	REGISTRADO("markGreen"),
-	RECHAZADO_SRI("markRed");
+	AUTORIZADO("bg-green-200 text-black"),//markGreen
+	ANULADO("bg-gray-200 text-black"),//markGray
+	RETENCION("bg-orange-300 text-black"),//markOrange
+	REGISTRADO("bg-green-200 text-black"),//markGreen
+	RECHAZADO_SRI("bg-pink-200 text-black");//markRed
 	
 	private String style;
 

@@ -323,6 +323,9 @@ public class Cabecera implements Serializable {
     @Transient
 	private List<XmlTotalComprobante> totalComprobanteList;
     
+    @Transient
+	private String clienteCompleto;
+    
     /**
 	 * 
 	 */
@@ -1549,5 +1552,19 @@ public class Cabecera implements Serializable {
 	public void setTotalComprobanteList(List<XmlTotalComprobante> totalComprobanteList) {
 		this.totalComprobanteList = totalComprobanteList;
 	}
+	
+	/**
+	 * @return the clienteCompleto
+	 */
+	public String getClienteCompleto() {
+		clienteCompleto = (cliente!=null?cliente.getIdentificacion().concat(cliente.getRazonsocial()):"");
+		return clienteCompleto;
+	}
 
+	/**
+	 * @param clienteCompleto the clienteCompleto to set
+	 */
+	public void setClienteCompleto(String clienteCompleto) {
+		this.clienteCompleto = clienteCompleto;
+	}
 }
