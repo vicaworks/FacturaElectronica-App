@@ -137,7 +137,7 @@
 							<p:column headerText=" " style="width:10%;" styleClass="TexAlCenter">
 								<p:commandLink  action="#{enviarDocCtrl.eliminar()}" process="@this :formEnvioDoc:pvEnvioCorreosDT" update=":formEnvioDoc:msgFormEnvioDoc :formEnvioDoc:pvEnvioCorreosDT">
 									<f:setPropertyActionListener value="#{c}" target="#{enviarDocCtrl.correoSelected}"/>
-									<i class="fa fa-trash-o Fs20" style="color:red;"></i>
+									<i class="fa fa-trash-o Fs20 text-gray-600"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								</p:commandLink>
 							</p:column>

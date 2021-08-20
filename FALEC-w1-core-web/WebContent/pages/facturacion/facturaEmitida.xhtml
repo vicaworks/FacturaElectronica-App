@@ -87,9 +87,14 @@
 								<p:selectOneMenu  value="#{facEmitidaCtrl.estado}" 
 												 styleClass="w-full" 
 												 required="false" requiredMessage="REQUERIDO">
-									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
-									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
-									<f:selectItem itemLabel="ANULADO" itemValue="I" />
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />
+									<f:selectItem itemLabel="BORRADOR" itemValue="BORRADOR" />			 
+									<f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE" />
+									<f:selectItem itemLabel="RECIBIDO SRI" itemValue="RECIBIDO_SRI" />									
+									<f:selectItem itemLabel="AUTORIZADO" itemValue="AUTORIZADO" />
+									<f:selectItem itemLabel="ERROR SRI" itemValue="ERROR_SRI" />
+									<f:selectItem itemLabel="RECHAZADO SRI" itemValue="RECHAZADO_SRI" />
+									<f:selectItem itemLabel="ANULADO" itemValue="ANULADO" />
 								</p:selectOneMenu>
 							</div>
 							<div class="flex-grow-1 flex flex-column min-width-150">
