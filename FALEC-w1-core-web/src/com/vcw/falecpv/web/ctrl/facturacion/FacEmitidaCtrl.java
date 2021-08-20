@@ -144,7 +144,7 @@ public class FacEmitidaCtrl extends BaseCtrl {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		seleccion = false;
 		ventasQueryList = null;
-		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, establecimientoMain.getIdestablecimiento(),GenTipoDocumentoEnum.FACTURA);
+		ventasQueryList = consultaVentaServicio.getFacturasEmitidas(getEstado(),usuarioSelected!=null?usuarioSelected.getIdusuario():null, criterioBusqueda, desde, hasta, establecimientoMain.getIdestablecimiento(),GenTipoDocumentoEnum.FACTURA);
 	}
 	
 	@Override

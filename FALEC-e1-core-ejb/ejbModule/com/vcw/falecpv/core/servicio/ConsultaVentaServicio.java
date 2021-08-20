@@ -42,7 +42,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<VentasQuery> getFacturasEmitidas(String idusuario,String criterio,Date desde,Date hasta,String idEstablecimiento,GenTipoDocumentoEnum genTipoDocumentoEnum)throws DaoException{
+	public List<VentasQuery> getFacturasEmitidas(String estado,String idusuario,String criterio,Date desde,Date hasta,String idEstablecimiento,GenTipoDocumentoEnum genTipoDocumentoEnum)throws DaoException{
 		try {
 			
 			String sql = "select " + 
@@ -76,6 +76,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 					"		inner join usuario u on u.idusuario = c.idusuario  " +
 					"	where  " +
 					"		c.fechaemision between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' " +
+					(estado!=null?"		and c.estado = '" + estado + "' ":" ")  +
 					"		and c.idestablecimiento = '" + idEstablecimiento + "' " +
 					"		and tc.identificador = '" +  genTipoDocumentoEnum.getIdentificador() + "' " ;
 			
