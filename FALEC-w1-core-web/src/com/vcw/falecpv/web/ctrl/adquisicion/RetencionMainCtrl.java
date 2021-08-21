@@ -6,9 +6,12 @@ package com.vcw.falecpv.web.ctrl.adquisicion;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -34,11 +37,13 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
+import com.vcw.falecpv.core.modelo.dto.TotalesDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Impuestoretencion;
 import com.vcw.falecpv.core.servicio.CabeceraRetencionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
@@ -78,6 +83,9 @@ public class RetencionMainCtrl extends BaseCtrl {
 	@EJB
 	private EmailComprobanteServicio emailComprobanteServicio;
 	
+	@EJB
+	private RetencionimpuestoServicio retencionimpuestoServicio;
+	
 	private Date desde;
 	private Date hasta;
 	private String criterioBusqueda;
@@ -85,6 +93,7 @@ public class RetencionMainCtrl extends BaseCtrl {
 	private RetencionFrmCtrl retencionFormCtrl;
 	private Cabecera retencionSelected;
 	private boolean seleccion = false;
+	private TotalesDto totalesDto = new TotalesDto();
 	
 	/**
 	 * 
@@ -108,10 +117,11 @@ public class RetencionMainCtrl extends BaseCtrl {
 	}
 	
 	public void consultarRetenciones()throws DaoException{
-		seleccion = false;
+		seleccion = false;		
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:retencionDT");
 		retencionList = null;
 		retencionList = cabeceraServicio.getCabeceraDao().getByRetencionCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(),estado);
+		totalizar();
 	}
 	
 	@Override
@@ -124,6 +134,19 @@ public class RetencionMainCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	private void totalizar() throws DaoException {
+		totalesDto = new TotalesDto();
+		
+		if(retencionList!=null) {
+			totalesDto.setTotalRetenido(BigDecimal.valueOf(retencionList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalretencion().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			
+			totalesDto.setSubtotalDtoList(
+					retencionimpuestoServicio.getResumentRetencionImpuestoByIdCabecera(retencionList.stream().filter(x->!x.getEstado().equals("ANULADO")).map(x->x.getIdcabecera()).collect(Collectors.joining("','")))
+					);			
+		}
+		
 	}
 	
 	@Override
@@ -684,6 +707,20 @@ public class RetencionMainCtrl extends BaseCtrl {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the totalesDto
+	 */
+	public TotalesDto getTotalesDto() {
+		return totalesDto;
+	}
+
+	/**
+	 * @param totalesDto the totalesDto to set
+	 */
+	public void setTotalesDto(TotalesDto totalesDto) {
+		this.totalesDto = totalesDto;
 	}
 
 }

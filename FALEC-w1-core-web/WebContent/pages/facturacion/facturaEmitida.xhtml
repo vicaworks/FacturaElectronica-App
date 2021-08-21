@@ -134,7 +134,7 @@
 										action="#{facEmitidaCtrl.buscar()}" styleClass="ui-button-outlined mr-1" update="@form"/>
 									<p:commandButton id="cmdRtnNuevo"
 										title="Nueva Factura" icon="fa fa-plus" value="Nuevo" 
-										action="#{compFacCtrl.nuevoFromMain()}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_nuevo')?'ui-state-disabled':''}" update="@form">
+										action="#{compFacCtrl.nuevoFromMain()}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_nuevo')?'ui-state-disabled':''} ui-button-success" update="@form">
 										<f:setPropertyActionListener value="FACTURA" target="#{compFacCtrl.callModule}"/>
 										<f:setPropertyActionListener value="#{facEmitidaCtrl.establecimientoMain}" target="#{compFacCtrl.establecimientoMain}"/>
 				   					</p:commandButton>
@@ -150,7 +150,7 @@
 				
 				<div class="flex mt-2 align-items-center">
 					<i class="fa fa-ellipsis-v Fs14 mr-2"/> 
-					<p:commandLink id="cmlDtFacEmitidasSeleccion" disabled="#{empty facEmitidaCtrl.ventasQueryList}" styleClass="min-width-90 mr-1">
+					<p:commandLink id="cmlDtFacEmitidasSeleccion" disabled="#{empty facEmitidaCtrl.ventasQueryList}" styleClass="min-width-80 mr-1">
 						<div class="flex w-full">
 							<span class="mr-1 text-black Fs12 font-light">Selección</span>
 							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
@@ -166,7 +166,7 @@
 						
 					</p:menu>
 					
-					<p:commandLink id="cmdGlobalExcel" disabled="#{empty facEmitidaCtrl.ventasQueryList}" styleClass="min-width-90 mr-1">
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty facEmitidaCtrl.ventasQueryList}" styleClass="min-width-80 mr-1">
 						<div class="flex w-full">
 							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
 							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
@@ -182,9 +182,9 @@
 						</p:menuitem>
 					</p:menu>
 					
-					<p:link href="#divTotales" styleClass="min-width-90 mr-1" disabled="#{empty facEmitidaCtrl.ventasQueryList}">
+					<p:link href="#divTotales" styleClass="min-width-80 mr-1" disabled="#{empty facEmitidaCtrl.ventasQueryList}">
 						<div class="flex w-full">
-							<span class="mr-1 text-blue-600 Fs12 font-semibold">Ver Totales</span>
+							<span class="mr-1 text-black Fs12 font-semibold">Ver Totales</span>
 							<i class="fa fa-angle-down Fs18 text-white font-semibold" />
 						</div>
 				    </p:link>
@@ -371,29 +371,6 @@
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
-					
-					<!-- <p:column headerText="IMPUESTO" style="width:70px;" styleClass="TexAlCenter">
-						
-						<div class="p-grid Fs10 p-justify-end">
-							<div class="p-col-3">
-								<h:outputText value="I.C.E." styleClass="FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{v.ice}" >
-									<f:convertNumber pattern="$#,##0.00"/>
-								</h:outputText>
-							</div>
-							<div class="p-col-3" >
-								<h:outputText value="I.V.A." styleClass="FontBold"/>
-							</div>
-							<div class="p-col-7">
-								<h:outputText value="#{v.iva}" >
-									<f:convertNumber pattern="$#,##0.00"/>
-								</h:outputText>
-							</div>
-						</div>
-					
-					</p:column> -->
 					
 					<p:column headerText="TOTAL" style="width:70px;" styleClass="TexAlRight">
 						<h:outputText value="#{v.total}" styleClass="block w-full text-black font-semibold">

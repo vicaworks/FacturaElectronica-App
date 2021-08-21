@@ -5,6 +5,8 @@ package com.vcw.falecpv.core.modelo.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author cristianvillarreal
@@ -27,6 +29,8 @@ public class TotalesDto implements Serializable {
 	private BigDecimal totalsinimpuestos = BigDecimal.ZERO;
 	private BigDecimal retencion = BigDecimal.ZERO;
 	private BigDecimal apagar = BigDecimal.ZERO;
+	private BigDecimal totalRetenido = BigDecimal.ZERO;
+	private List<SubtotalDto> subtotalDtoList = new ArrayList<>();
 	
 	/**
 	 * 
@@ -172,6 +176,34 @@ public class TotalesDto implements Serializable {
 	 */
 	public void setApagar(BigDecimal apagar) {
 		this.apagar = apagar;
+	}
+
+	/**
+	 * @return the totalRetenido
+	 */
+	public BigDecimal getTotalRetenido() {
+		return totalRetenido;
+	}
+
+	/**
+	 * @param totalRetenido the totalRetenido to set
+	 */
+	public void setTotalRetenido(BigDecimal totalRetenido) {
+		this.totalRetenido = totalRetenido;
+	}
+
+	/**
+	 * @return the subtotalDtoList
+	 */
+	public List<SubtotalDto> getSubtotalDtoList() {
+		return subtotalDtoList;
+	}
+
+	/**
+	 * @param subtotalDtoList the subtotalDtoList to set
+	 */
+	public void setSubtotalDtoList(List<SubtotalDto> subtotalDtoList) {
+		this.subtotalDtoList = subtotalDtoList;
 	}
 
 }
