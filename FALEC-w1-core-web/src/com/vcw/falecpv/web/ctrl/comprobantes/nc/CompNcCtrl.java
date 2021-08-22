@@ -6,6 +6,7 @@ package com.vcw.falecpv.web.ctrl.comprobantes.nc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
+import com.vcw.falecpv.core.modelo.dto.TotalesDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -84,6 +86,7 @@ public class CompNcCtrl extends BaseCtrl {
 	private List<Cabecera> notaCreditoList;
 	private Cabecera notaCreditoSelected;
 	private boolean seleccion = false;
+	private TotalesDto totalesDto = new TotalesDto();
 	
 	/**
 	 * 
@@ -110,6 +113,7 @@ public class CompNcCtrl extends BaseCtrl {
 		seleccion = false;
 		notaCreditoList = null;
 		notaCreditoList = notaCreditoServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(),estado);
+		totalizar();
 	}
 	
 	@Override
@@ -120,6 +124,21 @@ public class CompNcCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	private void totalizar() {
+		totalesDto = new TotalesDto();
+		
+		if(notaCreditoList!=null) {
+			totalesDto.setSubtotal(BigDecimal.valueOf(notaCreditoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));			
+			totalesDto.setDescuento(BigDecimal.valueOf(notaCreditoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaldescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));			
+			totalesDto.setTotalsinimpuestos(BigDecimal.valueOf(notaCreditoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));			
+			totalesDto.setIva(BigDecimal.valueOf(notaCreditoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaliva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setIce(BigDecimal.valueOf(notaCreditoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalice().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));			
+			totalesDto.setTotal(BigDecimal.valueOf(notaCreditoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalconimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));		
+		
+		}
+		
 	}
 	
 	@Override
@@ -665,6 +684,20 @@ public class CompNcCtrl extends BaseCtrl {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the totalesDto
+	 */
+	public TotalesDto getTotalesDto() {
+		return totalesDto;
+	}
+
+	/**
+	 * @param totalesDto the totalesDto to set
+	 */
+	public void setTotalesDto(TotalesDto totalesDto) {
+		this.totalesDto = totalesDto;
 	}
 
 }

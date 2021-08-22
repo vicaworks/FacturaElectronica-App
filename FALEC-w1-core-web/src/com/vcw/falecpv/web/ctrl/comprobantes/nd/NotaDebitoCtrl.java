@@ -6,6 +6,8 @@ package com.vcw.falecpv.web.ctrl.comprobantes.nd;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +35,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
+import com.vcw.falecpv.core.modelo.dto.TotalesDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -83,6 +86,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 	private List<Cabecera> notDebitoList;
 	private Cabecera notDebitoSelected;
 	private boolean seleccion = false;
+	private TotalesDto totalesDto = new TotalesDto();
 	
 	/**
 	 * 
@@ -109,6 +113,7 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:notDebitoDT");
 		notDebitoList = null;
 		notDebitoList =  notaDebitoServicio.getByCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estado);
+		totalizar();
 	}
 	
 	@Override
@@ -119,6 +124,18 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	private void totalizar() {
+		totalesDto = new TotalesDto();
+		
+		if(notDebitoList!=null) {
+			totalesDto.setTotalsinimpuestos(BigDecimal.valueOf(notDebitoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setIva(BigDecimal.valueOf(notDebitoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaliva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotal(BigDecimal.valueOf(notDebitoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalconimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));			
+			totalesDto.setPago(BigDecimal.valueOf(notDebitoList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalPagadoSum().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+		}
+		
 	}
 
 	@Override
@@ -609,6 +626,20 @@ public class NotaDebitoCtrl extends BaseCtrl {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the totalesDto
+	 */
+	public TotalesDto getTotalesDto() {
+		return totalesDto;
+	}
+
+	/**
+	 * @param totalesDto the totalesDto to set
+	 */
+	public void setTotalesDto(TotalesDto totalesDto) {
+		this.totalesDto = totalesDto;
 	}
 
 }
