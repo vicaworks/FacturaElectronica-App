@@ -6,6 +6,8 @@ package com.vcw.falecpv.web.ctrl.comprobantes.liqcompra;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +35,7 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
+import com.vcw.falecpv.core.modelo.dto.TotalesDto;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -91,6 +94,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 	private List<Cabecera> liqCompraList;
 	private Cabecera liqCompraSelected;
 	private boolean seleccion = false;
+	private TotalesDto totalesDto = new TotalesDto();
 	
 	/**
 	 * 
@@ -117,6 +121,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:liqCompraDT");
 		liqCompraList = null;
 		liqCompraList = liqCompraServicio.getByLiqCompraCriteria(desde, hasta, criterioBusqueda, establecimientoMain.getIdestablecimiento(), estado);
+		totalizar();
 	}
 
 	@Override
@@ -127,6 +132,23 @@ public class LiqCompraCtrl extends BaseCtrl {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
+	}
+	
+	private void totalizar() {
+		totalesDto = new TotalesDto();
+		
+		if(liqCompraList!=null) {			
+			totalesDto.setSubtotal(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setDescuento(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaldescuento().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotalsinimpuestos(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setIva(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaliva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setIce(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalice().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotal(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setRetencion(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getValorretenido().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setApagar(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getValorapagar().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setPago(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalPagadoSum().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+		}
+		
 	}
 
 	@Override
@@ -663,6 +685,20 @@ public class LiqCompraCtrl extends BaseCtrl {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the totalesDto
+	 */
+	public TotalesDto getTotalesDto() {
+		return totalesDto;
+	}
+
+	/**
+	 * @param totalesDto the totalesDto to set
+	 */
+	public void setTotalesDto(TotalesDto totalesDto) {
+		this.totalesDto = totalesDto;
 	}
 	
 	
