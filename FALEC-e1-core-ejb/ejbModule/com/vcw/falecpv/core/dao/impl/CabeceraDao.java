@@ -103,7 +103,8 @@ public class CabeceraDao extends AppGenericDao<Cabecera, String> {
 			if(criteria==null || criteria.trim().isEmpty()) {
 				
 				if(estado!=null) {
-					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.estado"  +  (estado.equals("I")?"=":"<>") +  "'ANULADO' AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE c.estado=:estado AND c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
+					q.setParameter("estado", estado);
 				}else {
 					q = getEntityManager().createQuery("SELECT c FROM Cabecera c WHERE  c.tipocomprobante.identificador=:idtipocomprobante AND c.fechaemision BETWEEN :desde AND :hasta AND c.establecimiento.idestablecimiento=:idEstablecimiento ORDER BY  c.fechaemision ASC,c.idcabecera DESC");
 				}
