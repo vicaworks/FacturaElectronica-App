@@ -158,13 +158,8 @@ public class GuiaRemisionServicio extends DBUtilGenericoApp {
 				sql += "		and (c.fechainiciotransporte between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' or c.fechafintransporte between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "') ";
 				
 				
-//				if(criteria==null || criteria.trim().isEmpty()) {
-//					
-//					sql += "		and (c.fechainiciotransporte between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "' or c.fechafintransporte between '" + SqlUtil.formatPostgresDate(desde) + "' and '" + SqlUtil.formatPostgresDate(hasta) + "') ";
-//				}
-				
 				if(estado!=null) {
-					sql += "    and c.estado " + (estado.equals("I")?"=":"<>") + "'ANULADO' ";
+					sql += "    and c.estado = '" + estado + "' ";
 				}
 				
 				if(criteria!=null && !criteria.trim().isEmpty()) {
