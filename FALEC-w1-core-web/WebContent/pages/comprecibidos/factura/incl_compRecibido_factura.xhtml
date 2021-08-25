@@ -11,155 +11,92 @@
 	
 		.compFacSriDT .ui-datatable-scrollable-body{
 			min-height: 35vh !important;
-			height: calc(100vh - 465px)!important;
-		}        	
-      	
+			height: calc(100vh - 320px)!important;
+		}
       	
       </style>
 
-	<div class="card card-w-title">
-		<h3 class="cardTitle"><i class="fa fa-arrow-circle-right" /> Facturas</h3>
-		<div class="EmptyBox5" />
-		<div class="p-grid p-align-top vertical-container">
-			<div class="p-col-12 p-md-3">
-    			<h:outputText value="Desde" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-	    		<p:calendar id="calDesde" value="#{compRecFacturaCtrl.desde}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calDesde"/>
-    		</div>
-    		
-    		<div class="p-col-12 p-md-3">
-    			<h:outputText value="Hasta" styleClass="FontBold DispBlock" style="margin-bottom:5px;"/>
-	    		<p:calendar id="calHasta" value="#{compRecFacturaCtrl.hasta}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calHasta"/>
-    		</div>
-    		<div class="p-col-12 p-md-3">
-				
-				<div style="margin-bottom: 1px;">
-	    			<p:selectBooleanCheckbox value="#{compRecFacturaCtrl.aplicarFechas}"/><h:outputText value=" Aplicar fechas criterio de búsqueda" styleClass="FontBold"/>
-				</div>
-    		
-    			<p:inputText value="#{compRecFacturaCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Emisor" styleClass="Wid100"/>
-    		</div>
-    		<div class="p-col-12 p-lg-3">
-    			<p:commandButton 
-							icon="fa fa-search"
-							action="#{compRecFacturaCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
-				<div class="EmptyBox5"/>
-				<p:commandButton id="cmdGlobalExcel"
-	  						value="EXPORTAR"
-							icon="fa fa-sort-down" 
-							styleClass="secondary-button Wid100"
-							disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}">
-				</p:commandButton>
-				
-				<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;" >
-					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-						<p:fileDownload value="#{compRecFacturaCtrl.fileResumen}" contentDisposition="inline"/>
-					</p:menuitem>
-					<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-						<p:fileDownload value="#{compRecFacturaCtrl.fileDetalle}" contentDisposition="inline"/>
-					</p:menuitem>
-				</p:menu>
-    		</div>
-		</div>
-	</div>
-	
-	<div class="EmptyBox5"/>
-	<div class="card card-w-title">
+	<div class="card card-w-title mt-1">
 		
-		<div class="p-grid p-nogutter p-justify-center">
-			<div class="p-col-4 p-lg-3">
-				
-				<div class="cardContador cardContador-borderOrange">
-					<div class="cardContador-header">
-						<h:outputText value="SUBTOTAL" />
+		<span class="Fs16 my-1 text-black font-semibold">Factura</span>
+		
+		<div class="grid">
+			<div class="col-12 md:col-6">
+				<div class="mb-1">
+					<span class="text-black font-light">Fechas</span>
+				</div>
+				<div  class="flex">
+					<div class="flex-grow-1 flex pr-1">
+						<p:calendar id="calDesde" value="#{compRecFacturaCtrl.desde}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+						</p:calendar>
 					</div>
-					<div class="cardContador-content">
-						<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totalsinimpuestos}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+					<div class="flex-grow-1 flex">
+						<p:calendar id="calHasta" value="#{compRecFacturaCtrl.hasta}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+						</p:calendar>
 					</div>
 				</div>
-				
 			</div>
-			
-			<div class="p-col-4 p-lg-2">
-				
-				<div class="cardContador cardContador-borderBlack">
-					<div class="cardContador-header">
-						<h:outputText value="DESCUENTOS" />
+			<div class="col-12 md:col-6">
+				<div class="flex mb-1">
+					<p:selectBooleanCheckbox value="#{compRecFacturaCtrl.aplicarFechas}" styleClass="mr-1"/>
+					<h:outputText value=" Aplicar Rango de Fechas" styleClass="FontBold"/>
+				</div>
+				<div  class="flex">
+					<div class="flex-grow-1 flex pr-1">
+						<p:inputText value="#{compRecFacturaCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Nombre Emisor" styleClass="w-full"/>
 					</div>
-					<div class="cardContador-content">
-						<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totaldescuento}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+					<div class="flex-grow-0 flex">
+						<p:commandButton 
+							icon="fa fa-search"
+							action="#{compRecFacturaCtrl.buscar()}" styleClass="ui-button-success" update="@form" style="margin-right:5px;" value="Buscar"/>		
 					</div>
 				</div>
-				
 			</div>
-			
-			<div class="p-col-4 p-lg-2">
-				
-				<div class="cardContador cardContador-borderBlack">
-					<div class="cardContador-header">
-						<h:outputText value="ICE" />
-					</div>
-					<div class="cardContador-content">
-						<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totalice}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-				</div>
-				
-			</div>
-			
-			<div class="p-col-4 p-lg-2">
-				
-				<div class="cardContador cardContador-borderBlack">
-					<div class="cardContador-header">
-						<h:outputText value="IVA" />
-					</div>
-					<div class="cardContador-content">
-						<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totaliva}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-				</div>
-				
-			</div>
-			
-			<div class="p-col-4 p-lg-3">
-				
-				<div class="cardContador cardContador-bgBlack">
-					<div class="cardContador-header">
-						<h:outputText value="TOTAL" />
-					</div>
-					<div class="cardContador-content">
-						<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totalconimpuestos}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</div>
-				</div>
-				
-			</div>
-			
 		</div>
-		<div class="EmptyBox5"/>
-		<div class="p-grid p-justify-start p-align-center">
-			<p:spacer width="10px"/>
-			<i class="fa fa-ellipsis-v fa-lg"/>
-			<p:spacer width="10px"/>
-			<p:commandButton disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)" value="Descargar selección" icon="fa fa-download" styleClass="secondary-button Fs10">
-				<p:fileDownload value="#{compRecFacturaCtrl.descargarSeleccion}" contentDisposition="inline"/>
-			</p:commandButton>
+		
+		<div class="flex mt-2 align-items-center">
+			<i class="fa fa-ellipsis-v Fs14 mr-2"/> 
+			<p:commandLink id="cmdGlobalExcelSeleccion" disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}" styleClass="min-width-80 mr-1">
+				<div class="flex w-full">
+					<span class="mr-1 text-black Fs12 font-light">Selección</span>
+					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				</div>
+			</p:commandLink>
+			<p:menu overlay="true" trigger="cmdGlobalExcelSeleccion" my="left top" at="left bottom" style="width:250px !important;" >
+				<p:menuitem value="Exportar Comprobante PDF" icon="fa fa-file-pdf-o" ajax="false">
+					<p:fileDownload value="#{compRecFacturaCtrl.descargarSeleccion}" contentDisposition="inline"/>
+				</p:menuitem>				
+			</p:menu>
+			
+			
+			<p:commandLink id="cmdGlobalExcel" disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}" styleClass="min-width-80 mr-1">
+				<div class="flex w-full">
+					<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				</div>
+			</p:commandLink>
+			<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;" >
+				<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+					<p:fileDownload value="#{compRecFacturaCtrl.fileResumen}" contentDisposition="inline"/>
+				</p:menuitem>
+				<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+					<p:fileDownload value="#{compRecFacturaCtrl.fileDetalle}" contentDisposition="inline"/>
+				</p:menuitem>
+			</p:menu>
+			
+			<p:link href="#divTotales" styleClass="min-width-80 mr-1" disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}">
+				<div class="flex w-full">
+					<span class="mr-1 text-black Fs12 font-semibold">Ver Totales</span>
+					<i class="fa fa-angle-down Fs18 text-white font-semibold" />
+				</div>
+		    </p:link>
+			
 		</div>
 		<div class="EmptyBox5"/>
 		<p:dataTable id="compFacSriDT" var="fac" widgetVar="w_compFacSriDT"
@@ -204,17 +141,17 @@
 				</p:menu>	
 		    </p:column>    
 		    
-		    <p:column headerText="COMPROBANTE" style="width:90px;">
+		    <p:column headerText="COMPROBANTE" style="width:110px;">
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(fac.serieComprobante)}" />
 			</p:column>
 			
-			<p:column headerText="FECHA #{msg['label.emision']}" style="width:40px;">
+			<p:column headerText="FECHA #{msg['label.emision']}" style="width:50px;">
 				<h:outputText value="#{fac.fechaEmision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA AUTOR." style="width:40px;">
+			<p:column headerText="FECHA AUTOR." style="width:50px;">
 				<h:outputText value="#{fac.fechaAutorizacion}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
@@ -229,7 +166,7 @@
 				</h:outputText>
 			</p:column>
 					
-			<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+			<p:column headerText="SUBTOT" style="width:60px;" styleClass="TexAlRight">
 				<h:outputText value="#{fac.totalsinimpuestos}" >
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
@@ -241,20 +178,20 @@
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="ICE" style="width:40px;" styleClass="TexAlRight">
+			<!-- <p:column headerText="ICE" style="width:40px;" styleClass="TexAlRight">
 				<h:outputText value="#{fac.totalice}" >
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
-			</p:column>
+			</p:column> -->
 			
-			<p:column headerText="IVA" style="width:40px;" styleClass="TexAlRight">
+			<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
 				<h:outputText value="#{fac.totaliva}" >
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{fac.totalconimpuestos}" >
+			<p:column headerText="TOTAL" style="width:70px;" styleClass="TexAlRight">
+				<h:outputText value="#{fac.totalconimpuestos}" styleClass="text-black font-semibold">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
@@ -262,10 +199,94 @@
 		
 		</p:dataTable>
 		
-		<div class="EmptyBox20"/>
-	
+		<div class="EmptyBox5"/>
+		<div class="grid justify-content-end" id="divTotales">
+			<div class="col-12 md:col-5 lg:col-4">
+				<div class="grid grid-nogutter justify-content-between">
+					<div class="col-7 py-2">
+						<div class="w-full text-left">
+							<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
+							<span class="Fs14 text-blue-600 font-medium">RESUMEN</span>
+						</div>
+					</div>
+					<div class="col-1 text-center align-self-center">
+						<i class="fa fa-angle-down Fs14"></i>
+					</div>
+					<div class="col-12 mt-1">
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs12">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="SUBTOTAL" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full Fs16">
+									<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totalsinimpuestos}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs12">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="DESCUENTO" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full Fs16">
+									<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totaldescuento}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs12">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="I.C.E." /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full Fs16">
+									<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totalice}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs12">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="I.V.A." /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full Fs16">
+									<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totaliva}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+						
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+							<div class="flex flex-grow-1 Fs12">
+								<i class="fa fa-angle-right mr-1 font-bold"></i>
+								<span class="text-gray-800"><h:outputText value="TOTAL" /></span>
+							</div>						
+							<div class="flex flex-grow-1">
+								<div class="text-right pr-3 w-full Fs16">
+									<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totalconimpuestos}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+							</div>				
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="EmptyBox20"/>	
 	</div>
-	
-	<div class="EmptyBox30"/>
 
 </ui:composition>

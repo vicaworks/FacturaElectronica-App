@@ -48,16 +48,16 @@ public class FileSriDto implements Serializable {
 		String style = "";
     	switch (estado) {
 		case ACTUALIZADO:
-			style = "markOrange";
+			style = "bg-green-200";
 			break;
 		case PENDIENTE:
-			style = "markGray";
+			style = "bg-yellow-200";
 			break;	
 		case REGISTRADO:
-			style = "markGreen";
+			style = "bg-green-200";
 			break;
 		default:
-			style = "markRed";
+			style = "bg-pink-200";
 			break;
 		}
     	

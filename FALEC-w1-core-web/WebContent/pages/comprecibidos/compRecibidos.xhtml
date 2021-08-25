@@ -6,7 +6,7 @@
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
 				xmlns:pe="http://primefaces.org/ui/extensions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Comp. Recibidos</ui:define>
     
@@ -17,22 +17,12 @@
 				width: 100% !important;
 			}
 			
-			body .ui-messages, 
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0em !important;
-			}
-			
-			.cardTitle{
-				padding:0.5em 0px;
-				font-size: 18px !important;
-			}
-			
+						
 			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: center;
+				vertical-align: top;
 			}
+			
+			body .ui-datatable thead th {text-align: center;vertical-align: top;}
 			
 			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
 				border: 1px solid #d8d8dc;
@@ -41,13 +31,7 @@
 				cursor: default;
 			}
 			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}
 			
-			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
-				padding: 0.2em !important;
-			}
 			
 			/* TAB Comprobantes */
 			.tabComprobante{
@@ -73,83 +57,20 @@
 			}
 			
 			.tabComprobante h4{
- 				margin-top: 10px !important;
+ 				margin-top: 5px !important;
  				margin-bottom: 0px !important;
+ 				font-size: 14px;
 			}
 			
 			.tabComprobante h3{
- 				margin: 10px 0px !important;
+ 				margin: 5px 0px !important;
  				color:#1B2631;
+ 				font-size: 16px;
 			}
 			
 			.tabComprobanteBg{
 				background-color: #fff !important;
-			}
-			
-			/* -- card contador -- */
-			
-			.cardContador{
-				border-radius:4px;
-				margin:5px;
-				display: grid;
-				grid-gap: 3px;
-			    grid-template-columns: 1fr;
-			    grid-template-rows: 20px auto;
-			    grid-template-areas: "cardContador-header  cardContador-header"
-			    					 "cardContador-content cardContador-content";
-			}
-			
-			.cardContador .cardContador-header{
-				grid-area: cardContador-header;
-				padding: 3px;
-				justify-self: center;
-				align-self:center;
-				font-size: 10px;
-				
-			}
-			
-			.cardContador .cardContador-content{
-				grid-area: cardContador-content;
-				padding: 3px;
-				justify-self: center;
-				align-self:center;
-				font-size: 16px;
-				font-weight: 900;
-			}
-			
-			.cardContador-bgBlack{
-				border: 1px solid #2f2f2f;
-				border-top: 5px solid #2f2f2f;
-				background-color: #2f2f2f;
-				color: #fff;
-			}
-			
-			.cardContador-borderBlack{
-				border: 1px solid #2f2f2f;
-				border-top: 5px solid #2f2f2f;
-				color: #2f2f2f;
-			}
-			
-			.cardContador-borderGreen{
-				border: 1px solid #797D7F;
-				border-top: 5px solid #1E8449;
-				color: #2f2f2f;
-			}
-			
-			.cardContador-borderOrange{
-				border: 1px solid #797D7F;
-				border-top: 5px solid #BA4A00;
-				color: #2f2f2f;
-			}
-			
-			.cardContador-borderYellow{
-				border: 1px solid #797D7F;
-				border-top: 5px solid #F1C40F;
-				color: #2f2f2f;
-			}
-			
-			/* ============================================= */
-			
+			}			
 			
         </style>
         
@@ -167,8 +88,8 @@
 			    <pe:methodParam name="comprobante"/>
 	    	</pe:remoteCommand>
 	    	
-			<div class="p-grid">
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobanteBg tabComprobante #{compRecibidosCtrl.comprobanteRender=='IMPORTAR'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" onclick="switchComprobante('IMPORTAR');">
+			<div class="grid">
+				<div class="col-6 lg:col-2 tabComprobanteBg tabComprobante #{compRecibidosCtrl.comprobanteRender=='IMPORTAR'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" onclick="switchComprobante('IMPORTAR');">
 					
 					<h4>
 						<h:outputText value="01."/>
@@ -178,7 +99,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='FACTURA'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_factura')?'ui-state-disabled':''}" onclick="switchComprobante('FACTURA');">
+				<div class="col-6 lg:col-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='FACTURA'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_factura')?'ui-state-disabled':''}" onclick="switchComprobante('FACTURA');">
 					
 					<h4>
 						<h:outputText value="02."/>
@@ -188,7 +109,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='RETENCION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_retencion')?'ui-state-disabled':''}" onclick="switchComprobante('RETENCION');">
+				<div class="col-6 lg:col-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='RETENCION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_retencion')?'ui-state-disabled':''}" onclick="switchComprobante('RETENCION');">
 					
 					<h4>
 						<h:outputText value="03."/>
@@ -198,7 +119,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_CREDITO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_notacredito')?'ui-state-disabled':''}" onclick="switchComprobante('NOTA_CREDITO');">
+				<div class="col-6 lg:col-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_CREDITO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_notacredito')?'ui-state-disabled':''}" onclick="switchComprobante('NOTA_CREDITO');">
 					
 					<h4>
 						<h:outputText value="04."/>
@@ -208,7 +129,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_DEBITO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_notadebito')?'ui-state-disabled':''}" onclick="switchComprobante('NOTA_DEBITO');">
+				<div class="col-6 lg:col-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='NOTA_DEBITO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_notadebito')?'ui-state-disabled':''}" onclick="switchComprobante('NOTA_DEBITO');">
 					
 					<h4>
 						<h:outputText value="05."/>
@@ -218,7 +139,7 @@
 					</h3>
 					
 				</div>
-				<div class="p-col-12 p-md-6 p-lg-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='GUIA_REMISION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_guiaremision')?'ui-state-disabled':''}" onclick="switchComprobante('GUIA_REMISION');">
+				<div class="col-6 lg:col-2 tabComprobante tabComprobanteBg #{compRecibidosCtrl.comprobanteRender=='GUIA_REMISION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_comprecib_guiaremision')?'ui-state-disabled':''}" onclick="switchComprobante('GUIA_REMISION');">
 					
 					<h4>
 						<h:outputText value="06."/>

@@ -9,7 +9,7 @@
 	
 	<style type="text/css">
 		.ui-fileupload-content {
-		    min-height: 200px;
+		    min-height: 100px;
 		    background-color: #F0F3F4 !important;
 		}
  	</style>
@@ -19,23 +19,20 @@
 		
 		<h:form id="formCRFile">
 			
-			<div class="p-grid toolBarPopUp p-align-end vertical-container">
+			<div class="formgroup-inline">
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
-					
-					<p:commandButton id="cmdAceptar"
-						value="ACEPTAR" icon="fa fa-check" styleClass="" update="@form"
-						action="#{compRecibidosCtrl.aceptarFile()}"  
-						/>
-					<p:spacer width="10px;"/>
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgCRImportFile').hide()" immediate="true"  
-						/>
-					
-				</div>	
-				
+				<p:linkButton value="Ayuda" styleClass="min-width-60 mr-1 ui-button-outlined" icon="pi pi-tags" target="_black" href="#{request.contextPath}/manuales/importComprobante.html" title="Manual de Usuario">
+		    	</p:linkButton>
+				<p:commandButton id="cmdAceptar"
+					value="ACEPTAR" icon="fa fa-check" styleClass="min-width-60 mr-1" update="@form"
+					action="#{compRecibidosCtrl.aceptarFile()}"  
+					/>
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-60 mr-1 ui-button-flat" 
+					onclick="PF('dlgCRImportFile').hide()" immediate="true"  
+					/>
 			</div>
+		
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formCRFile"
 				closable="true" >
@@ -43,13 +40,13 @@
 			</p:messages>
 			
 			<h3>
-				<i class="fa fa-warning Fs16"></i> Seleccionar o arrastrar el archivo descargado de la página web del SRI *.txt
+				<i class="fa fa-warning Fs18 text-black text-yellow-500"></i> Seleccionar o arrastrar el archivo descargado de la página web del SRI *.txt
 			</h3>
 			<div>
 				<f:subview rendered="#{compRecibidosCtrl.nombreFile!=null}">
 					<h:outputText value="Archivo Seleccionado :" />
-					<h:outputText value="#{compRecibidosCtrl.nombreFile}" styleClass="markGreen"/>
-					<div class="EmptyBox20"/>
+					<p:tag styleClass="p-mr-2" severity="success" value="#{compRecibidosCtrl.nombreFile}" rounded="false"></p:tag>
+					<div class="EmptyBox10"/>
 				</f:subview>
 			</div>
 			<p:fileUpload id="recImportupload"
@@ -65,7 +62,7 @@
 					dragDropSupport="true" 
 					auto="true"
 					update="@form"
-					previewWidth="0">
+					previewWidth="0" styleClass="ui-button-outlined">
 			</p:fileUpload>
 			
 		</h:form>

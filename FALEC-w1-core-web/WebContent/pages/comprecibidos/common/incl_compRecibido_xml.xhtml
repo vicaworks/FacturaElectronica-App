@@ -15,7 +15,7 @@
 		
 		<h:form id="formCRXml">
 			
-			<div class="p-grid toolBarPopUp p-align-end vertical-container">
+			<!-- <div class="p-grid toolBarPopUp p-align-end vertical-container">
 				
 				<div class="p-col-12 p-md-6" style="text-align:left;">					
 					
@@ -26,12 +26,11 @@
 					
 				</div>	
 				
-			</div>
-			
-			<div class="EmptyBox10"/>
-			<p:inputTextarea value="#{compRecibidosCtrl.comprobanteRecibidoSelected.valorXml}" styleClass="Wid100" style="max-height:450px;" rendered="#{not compRecibidosCtrl.formatoXml}">
+			</div> -->			
+			<div class="EmptyBox5"/>
+			<p:inputTextarea value="#{compRecibidosCtrl.comprobanteRecibidoSelected.valorXml}" styleClass="w-full" style="max-height:450px;" rendered="#{not compRecibidosCtrl.formatoXml}">
 			</p:inputTextarea>
-			<p:inputTextarea value="#{compRecibidosCtrl.xml}" styleClass="Wid100" style="max-height:450px;" rendered="#{compRecibidosCtrl.formatoXml}">
+			<p:inputTextarea value="#{compRecibidosCtrl.xml}" styleClass="w-full" style="max-height:450px;" rendered="#{compRecibidosCtrl.formatoXml}">
 			</p:inputTextarea>
 						
 			
