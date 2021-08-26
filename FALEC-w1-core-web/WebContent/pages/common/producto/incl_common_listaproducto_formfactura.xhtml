@@ -34,7 +34,7 @@
 			   			<p:commandLink styleClass="w-full" action="#{listaProductoCtrl.compFacCtrl.cambiarPrecioVenta(1)}" process="@this" update="@form">
 				   			<div class="flex border-1 border-round border-gray-200 py-2 w-full #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==1?'bg-blue-500':''}" style="margin: 5px 0px 5px 0px;">
 				   				<div class="flex justify-content-between w-full">
-				   					<span class="Fs14  #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==1?'text-white font-bold':'text-gray-600'} mx-2 Fs16">1</span>
+				   					<span class="Fs14  #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==1?'text-white':'text-gray-700'} font-bold mx-2 Fs16">1</span>
 				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==1?'text-white font-bold':'text-gray-600'} mx-2">
 				   						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null?listaProductoCtrl.compFacCtrl.detalleSelected.producto.preciouno:0.00}" >
 				   							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
@@ -48,7 +48,7 @@
 			   			<p:commandLink styleClass="w-full" action="#{listaProductoCtrl.compFacCtrl.cambiarPrecioVenta(2)}" process="@this" update="@form">
 				   			<div class="flex border-1 border-round border-gray-200 py-2 w-full #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==2?'bg-blue-500':''}" style="margin: 5px 0px 5px 0px;">
 				   				<div class="flex justify-content-between w-full">
-				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==2?'text-white font-bold':'text-gray-600'} mx-2 Fs16">2</span>
+				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==2?'text-white':'text-gray-700'} font-bold mx-2 Fs16">2</span>
 				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==2?'text-white font-bold':'text-gray-600'} mx-2">
 				   						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null?listaProductoCtrl.compFacCtrl.detalleSelected.producto.preciodos:0.00}" >
 				   							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
@@ -62,7 +62,7 @@
 			   			<p:commandLink styleClass="w-full" action="#{listaProductoCtrl.compFacCtrl.cambiarPrecioVenta(3)}" process="@this" update="@form">
 				   			<div class="flex border-1 border-round border-gray-200 py-2 w-full #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==3?'bg-blue-500':''}" style="margin: 5px 0px 5px 0px;">
 				   				<div class="flex justify-content-between w-full">
-				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==3?'text-white font-bold':'text-gray-600'} mx-2 Fs16">3</span>
+				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==3?'text-white':'text-gray-700'} font-bold mx-2 Fs16">3</span>
 				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==3?'text-white font-bold':'text-gray-600'} mx-2">
 				   						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null?listaProductoCtrl.compFacCtrl.detalleSelected.producto.preciotres:0.00}" >
 				   							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>

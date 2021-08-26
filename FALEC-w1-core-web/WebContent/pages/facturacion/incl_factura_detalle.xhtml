@@ -58,7 +58,7 @@
             					styleClass="text-center inline" 
             					style="min-width:75px!important;color:black!important;"
             					action="#{listaProductoCtrl.loadPantalla()}"
-            					oncomplete="PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt');">
+            					oncomplete="if(#{d.producto!=null and d.producto.tipoventa==2}){PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm');}else{PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')}">
 								<i class="fa fa-edit Fs10 mr-1 text-gray-900"></i>
 								<span class="Fs12 text-black-light">EDITAR</span>
 								<f:setPropertyActionListener value="FACTURA" target="#{listaProductoCtrl.callModule}"/>
