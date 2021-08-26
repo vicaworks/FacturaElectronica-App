@@ -126,8 +126,6 @@ public class CompFacCtrl extends BaseCtrl {
 	private BigDecimal totalSaldo = BigDecimal.ZERO;
 	private List<Detalle> detalleFacList;
 	private Detalle detalleSelected;
-	private List<Producto> productoList;
-	private Producto productoSelected;
 	private String criterioBusqueda;
 	private List<Ice> iceList;
 	private List<Iva> ivaList;
@@ -146,15 +144,12 @@ public class CompFacCtrl extends BaseCtrl {
 	@PostConstruct
 	public void init() {
 		try {
-			
-			productoSelected = null;
 			detalleFacList = null;
 			detalleSelected = null;
 			criterioBusqueda = null;
 			
 			if(establecimientoMain!=null) {
 				nuevaFactura();
-				consultarProductos();
 				consultarIce();
 				consultarIva();
 			}
@@ -220,12 +215,10 @@ public class CompFacCtrl extends BaseCtrl {
 	public void nuevo() {
 		try {
 			
-			productoSelected = null;
 			nuevaFactura();
 			detalleFacList = null;
 			detalleSelected = null;
 			criterioBusqueda = null;
-			consultarProductos();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -236,12 +229,10 @@ public class CompFacCtrl extends BaseCtrl {
 	public String nuevoFromMain() {
 		try {
 			
-			productoSelected = null;
 			nuevaFactura();
 			detalleFacList = null;
 			detalleSelected = null;
 			criterioBusqueda = null;
-			consultarProductos();
 			
 			return "./factura.jsf?faces-redirect=true";
 			
@@ -251,11 +242,6 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 
 		return null;
-	}
-	
-	public void consultarProductos()throws DaoException{
-		productoList = null;
-		productoList = productoServicio.getProductoDao().consultarAllImageEager(establecimientoMain.getIdestablecimiento(),criterioBusqueda);
 	}
 	
 	public void nuevaFactura() throws DaoException, NumberFormatException, ParametroRequeridoException {
@@ -287,48 +273,53 @@ public class CompFacCtrl extends BaseCtrl {
 		infoadicionalList = cabecerSelected.getInfoadicionalList();
 	}
 	
-	public void agregarProducto() {
+	public void agregarProducto(Producto productoSelected) {
 		try {
 			
-			if(detalleFacList==null) {
-				detalleFacList = new ArrayList<>();
-			}
-			
-			detalleSelected = existeProductoLista();
-			// para que siemore agregue un producto a la lista 
-			detalleSelected = null;
-			boolean existe = false;
-			if(detalleSelected!=null) {
-				detalleSelected.setCantidad(
-						productoSelected.getCantidad() != null ? detalleSelected.getCantidad().add(BigDecimal.valueOf(productoSelected.getCantidad()))
-								: BigDecimal.valueOf(1));
-				existe = true;
-			}else {
-				detalleSelected = new Detalle();
-				detalleSelected.setCantidad(
-						productoSelected.getCantidad() != null ? BigDecimal.valueOf(productoSelected.getCantidad())
-								: BigDecimal.valueOf(1));
-				detalleSelected.setDescripcion(productoSelected.getNombregenerico());
-				detalleSelected.setPreciounitario(productoSelected.getPreciouno());
-				detalleSelected.setProducto(productoSelected);
-				detalleSelected.setIva(productoSelected.getIva());
-				detalleSelected.setIce(productoSelected.getIce());
-			}
-			
+			detalleSelected = new Detalle();
+			detalleSelected.setCodproducto(productoSelected.getCodigoprincipal());			
+			detalleSelected.setCantidad(BigDecimal.valueOf(1));
+			detalleSelected.setDescripcion(productoSelected.getNombre());
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setProducto(productoSelected);
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setPorcentajeDescuento(productoSelected.getPorcentajedescuento());
+			detalleSelected.setIva(productoSelected.getIva());
+			detalleSelected.setIce(productoSelected.getIce());
+			detalleSelected.setPrecioVenta(1);
 			calcularItem(detalleSelected,true);
-			
-			if(!existe) {
-				detalleFacList.add(detalleSelected);
-			}
-			
-			totalizar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
+	public void cambiarPrecioVenta(Integer precio) {
+		switch (precio) {
+		case 1:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciouno());
+			detalleSelected.setPrecioVenta(1);
+			break;
+		case 2:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciodos());
+			detalleSelected.setPrecioVenta(2);
+			break;	
+		case 3:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciotres());
+			detalleSelected.setPrecioVenta(3);
+			break;
+		default:
+			break;
+		}
+		calcularItem(detalleSelected, true);		
+		if(detalleSelected.getProducto().getTipoventa()==2) {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm')");						
+		}else {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
+		}
+		
+	}
 	
 	public void calcularItemAction(boolean calcDescuento,Detalle det) {
 		try {
@@ -344,7 +335,7 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	private void calcularItem(Detalle dFac,boolean calcDescuento) {
 		if(calcDescuento) {
-			dFac.setDescuento(dFac.getProducto().getPorcentajedescuento().divide(BigDecimal.valueOf(100))
+			dFac.setDescuento(dFac.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))
 					.multiply(dFac.getPreciounitario()).multiply(dFac.getCantidad())
 					.setScale(2, RoundingMode.HALF_UP));
 		}
@@ -395,6 +386,9 @@ public class CompFacCtrl extends BaseCtrl {
 		calcularRettencion("IVA");
 		cabecerSelected.setValorretenido(cabecerSelected.getValorretenidorenta().add(cabecerSelected.getValorretenidoiva()).setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalpagar(cabecerSelected.getTotalconimpuestos().add(cabecerSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
+		pagoList = null;
+		totalPago = BigDecimal.ZERO;
+		
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}
@@ -419,14 +413,29 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 	}
 	
-	private Detalle existeProductoLista() {
-		for (Detalle d : detalleFacList) {
-			if(d.getProducto()!=null && d.getProducto().getIdproducto().equals(productoSelected.getIdproducto())) {
-				return d;
+//	private Detalle existeProductoLista() {
+//		for (Detalle d : detalleFacList) {
+//			if(d.getProducto()!=null && d.getProducto().getIdproducto().equals(productoSelected.getIdproducto())) {
+//				return d;
+//			}
+//		}
+//		
+//		return null;
+//	}
+	
+	public void agregarDetalle() {
+		try {
+			if(detalleFacList==null) {
+				detalleFacList = new ArrayList<>();
 			}
+			if(detalleSelected.getAccion().equals("NUEVO")) {
+				detalleFacList.add(detalleSelected);				
+			}
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
-		
-		return null;
 	}
 	
 	public void agregarItem() {
@@ -440,32 +449,31 @@ public class CompFacCtrl extends BaseCtrl {
 			consultarIva();
 			
 			detalleSelected = new Detalle();
-			detalleSelected.setCantidad(BigDecimal.valueOf(1));
+			detalleSelected.setCantidad(BigDecimal.valueOf(1));			
 			detalleSelected.setDescuento(BigDecimal.ZERO);
-			detalleSelected.setDescripcion("");
 			detalleSelected.setPreciounitario(BigDecimal.ZERO);
+			detalleSelected.setDescuento(BigDecimal.ZERO);
+			detalleSelected.setValorice(BigDecimal.ZERO);
+			detalleSelected.setValoriva(BigDecimal.ZERO);
 			detalleSelected.setProducto(null);
+			detalleSelected.setPrecioVenta(0);
 			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
 				return;
 			}
 			detalleSelected.setIce(iceList.stream().filter(x->x.getCodigo().equals("-1")).findFirst().orElse(null));
 			if(detalleSelected.getIce()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0 Y CODIGO SRI [-1].");
+				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0 Y CODIGO SRI [-1].");
 				return;
 			}
 			
-			detalleFacList.add(detalleSelected);
-			
 			calcularItem(detalleSelected, false);
-			totalizar();
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (detalleFacList.size()-1) + ":intDetNombreProducto');");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -622,30 +630,6 @@ public class CompFacCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
-	}
-	
-	public void buscarCodigoProducto() {
-		try {
-			
-			if(criterioBusqueda!=null && criterioBusqueda.trim().length()==0) {
-				return;
-			}
-			
-			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, establecimientoMain.getIdestablecimiento());
-			
-			if(productoSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE : " + criterioBusqueda);
-				return;
-			}
-			productoSelected.setCantidad(1);
-			agregarProducto();
-			criterioBusqueda = null;
-//			Ajax.oncomplete("PrimeFaces.focus('formMain:intCriterioBusqueda')");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
 	}
 	
 	public void generarRecibo() {
@@ -1103,36 +1087,7 @@ public class CompFacCtrl extends BaseCtrl {
 	 */
 	public void setDetalleSelected(Detalle detalleSelected) {
 		this.detalleSelected = detalleSelected;
-	}
-
-	/**
-	 * @return the productoList
-	 */
-	public List<Producto> getProductoList() {
-		return productoList;
-	}
-
-	/**
-	 * @param productoList the productoList to set
-	 */
-	public void setProductoList(List<Producto> productoList) {
-		this.productoList = productoList;
-	}
-
-	/**
-	 * @return the productoSelected
-	 */
-	public Producto getProductoSelected() {
-		return productoSelected;
-	}
-
-	/**
-	 * @param productoSelected the productoSelected to set
-	 */
-	public void setProductoSelected(Producto productoSelected) {
-		this.productoSelected = productoSelected;
-	}
-
+	}	
 	/**
 	 * @return the criterioBusqueda
 	 */

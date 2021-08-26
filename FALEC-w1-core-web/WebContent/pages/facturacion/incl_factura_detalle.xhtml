@@ -8,300 +8,227 @@
 	
 	<style type="text/css">
 		
-		.pvDetalleDT .ui-datatable-scrollable-body{
+		.pvDetalleDT .ui-datascroller-content{
 			min-height: 20vh !important;
-			height: calc(100vh - 375px)!important;
+			height: calc(100vh - 345px)!important;
 		}
 		
-		.divTotal{
-			/* width: 100%; */
-			margin: 0px;
-			padding: 0.3em !important;
-			background-color: #0fc763;
-			color: white;
-			text-align: center;
-			font-size: 3em;
-			border-radius: 4px;
-		}
-		
-		.ui-inputfield {
-			font-size: 12px !important;
-		}
-		
-		body .ui-inputgroup .ui-inputgroup-addon, body .ui-inputgroup .ui-inputgroup-addon-checkbox {
-		 padding: 0px !important;
-		}
-		.ui-inputgroup .ui-inputgroup-addon {
-		 padding: 0px !important;
-		}
+		.pvDetalleDT .ui-inputnumber .ui-inputfield{height: 100%!important;text-align: center;font-size: 14px;width: 95px;max-width: 95px;}
 		
 	</style>
-	
-	<!-- <p:remoteCommand name="buscarProducto" update=":formMain:msgFormMain :formMain:intCriterioBusqueda :formMain:pvDetalleDT" onstart="alert('bbbbb')"/> -->
-	<p:remoteCommand name="buscarCodigoProducto" actionListener="#{compFacCtrl.buscarCodigoProducto()}" global="true" update=":formMain:msgFormMain :formMain:intCriterioBusqueda :formMain:pvDetalleDT :formMain:oupPagoDT"/>
-	<p:remoteCommand name="establecerFocoDetalle" action="#{compFacCtrl.establecerFocoDetalle}" update="formMain:pvDetalleDT"/>
 		
-	<div class="card card-w-title">
+	<div class="card card-w-title mt-0">
 		
-		<div class="EmptyBox10"/>
+		<div class="flex justify-content-end py-1">
+			<p:commandLink id="cmdAdqAgregarDetalle" process="@this :formMain:pvDetalleDT"
+				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
+				action="#{listaProductoCtrl.loadPantalla()}" styleClass="Fs12">
+				<i class="fa fa-plus text-gray-800 mr-1"></i>
+				<span class="text-gray-800">Agregar Ítem</span>
+				<f:setPropertyActionListener value="FACTURA" target="#{listaProductoCtrl.callModule}"/>
+				<f:setPropertyActionListener value="NUEVO" target="#{listaProductoCtrl.accion}"/>
+				<f:setPropertyActionListener value=":formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+				<f:setPropertyActionListener value="#{compFacCtrl}" target="#{listaProductoCtrl.compFacCtrl}"/>
+				<f:setPropertyActionListener value="#{compFacCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
+			</p:commandLink>			
+		</div>
 		
-		<div class="p-grid">
-				
-			<!-- Codigo de barra -->
-			<div class="p-col-12">
-				<div class="p-grid">
-					
-					<div class="p-col-12 p-md-6">
-						<div class="ui-inputgroup">
-		                    <span class="ui-inputgroup-addon">
-		                        <p:commandButton id="cmdConsultarProducto"
-									icon="fa fa-search" 
-									action="#{compFacCtrl.buscarCodigoProducto()}" 
-									styleClass="Fs12 Wid100" 
-									update="@this :formMain:msgFormMain :formMain:intCriterioBusqueda :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" 
-									process="@this :formMain:intCriterioBusqueda"/>
-		                    </span>
-		                    <p:inputText id="intCriterioBusqueda" value="#{compFacCtrl.criterioBusqueda}" placeholder="#{msg['label.codigo2']} de barra / producto" styleClass="Wid100 Fs12" onkeydown="if(event.keyCode==13){ buscarCodigoProducto(); return false;}" >
-		                    </p:inputText>
-		                </div>	
-					</div>
-					
-					<div class="p-col-12 p-md-3">
-		 				<p:commandButton id="cmdFacProducto"
-							value="PRODUCTO" icon="fa fa-search" 
-							action="#{listaProductoCtrl.cargarPantalla()}" styleClass="secondary-button Wid100" update="@form :frmListProducto" process="@this :formMain:pvDetalleDT">
-							
-							<f:setPropertyActionListener value="#{compFacCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
-							<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
-							<f:setPropertyActionListener value="FACTURA_FORM2" target="#{listaProductoCtrl.callModule}"/>
-							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" target="#{listaProductoCtrl.viewUpdate}"/>
-							<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
-							
-						</p:commandButton>
-					</div>
-					
-					<div class="p-col-12 p-md-3">
-		 				<p:commandButton id="cmdFacDetalle"
-							value="ITEM" icon="fa fa-plus" 
-							action="#{compFacCtrl.agregarItem()}" styleClass="secondary-button Wid100" update="@this :formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal" process="@this :formMain:pvDetalleDT">
-						</p:commandButton> 
-					</div>
-					
-				</div>
-			</div>
+		<p:dataScroller id="pvDetalleDT" value="#{compFacCtrl.detalleFacList}" var="d" chunkSize="10" mode="inline" styleClass="pvDetalleDT">
+			<f:facet name="header">
+            	<i class="fa fa-list mr-1"></i>
+                Detalle Factura
+            </f:facet>
 			
-			<!-- detalle factura -->
-			
-			<div class="p-col-12">
-				
-				<p:dataTable id="pvDetalleDT" var="d"
-						value="#{compFacCtrl.detalleFacList}" scrollable="true"
-						emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvDetalleDT Fs12"  
-						rowKey="#{d.iddetalle}"
-						selectionMode="single"
-						selection="#{compFacCtrl.detalleSelected}">
-						
-					<p:ajax event="rowSelect"  update=":formMain:pvDetalleDT">
-					</p:ajax>
-					<!-- item con producto -->	
-					<p:column headerText="ITEM" style="width:100%;">
-						
-						<div class="p-grid p-nogutter p-align-center" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
-						
-							<div class="p-col-12 p-sm-9">
-								<p:inputText id="intDetNombreProducto" value="#{d.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="400"  onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
-										<p:ajax event="change"></p:ajax>
-									</p:inputText>
-								<p:message for="intDetNombreProducto"/>
-							</div>
-							
-							<div class="p-col-8 p-sm-2" style="text-align: right;">
-								<!-- Subtotal -->
-								<h:outputText value="#{d.preciototalsinimpuesto}" styleClass="Fs12 FontBold">
+			<div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">
+            	<div class="col-9 md:col-10">       
+            		<div class="flex flex-column">
+            			<span style="color: black;" class="block Fs12 font-medium">#{d.descripcion}</span>
+	            		<div>
+	            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="Fs10">#{d.producto!=null?d.producto.codigoprincipal:"-"} </span>
+	            		</div>
+            		</div>     		
+            		<div class="flex flex-column md:flex-row">
+            			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-start md:align-self-end pl-2 mt-2 md:mt-0">
+            				
+            				<p:commandLink id="clkFacEdit" 
+            					title="Editar" 
+            					process="@this :formMain:pvDetalleDT" 
+            					disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}" 
+            					styleClass="text-center inline" 
+            					style="min-width:75px!important;color:black!important;"
+            					action="#{listaProductoCtrl.loadPantalla()}"
+            					oncomplete="PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt');">
+								<i class="fa fa-edit Fs10 mr-1 text-gray-900"></i>
+								<span class="Fs12 text-black-light">EDITAR</span>
+								<f:setPropertyActionListener value="FACTURA" target="#{listaProductoCtrl.callModule}"/>
+								<f:setPropertyActionListener value="EDITAR" target="#{listaProductoCtrl.accion}"/>
+								<f:setPropertyActionListener value=":formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+								<f:setPropertyActionListener value="#{compFacCtrl}" target="#{listaProductoCtrl.compFacCtrl}"/>
+								<f:setPropertyActionListener value="#{compFacCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
+								<f:setPropertyActionListener value="#{d}" target="#{compFacCtrl.detalleSelected}"/>
+								<f:setPropertyActionListener value="EDITAR" target="#{compFacCtrl.detalleSelected.accion}"/>
+							</p:commandLink>
+           					<p:divider layout="vertical" styleClass="mx-2  inline"/>
+           					<p:commandLink id="clkFacDelete" 
+           						title="ELIMINAR" 
+           						action="#{compFacCtrl.eliminarDetalle()}" 
+           						update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" 
+           						process="@this :formMain:pvDetalleDT" 
+           						disabled="#{compFacCtrl.enableAccion}" 
+           						style="min-width:75px!important;">
+								<i class="fa fa-trash-o Fs10 text-pink-600 text-semibold mr-1"></i>
+								<span class="Fs12 text-gray-900">ELIMINAR</span>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								<f:setPropertyActionListener value="#{d}" target="#{compFacCtrl.detalleSelected}"/>								
+							</p:commandLink>
+            				
+            			</div>
+            			<div class="flex-grow-1 flex flex-order-0 md:flex-order-1">
+            				
+            				<div class="flex justify-content-around w-full">
+            					<div class="min-width-85 mr-1 align-self-end">
+            						<div class="flex w-full">
+	            						<div class="flex flex-column" style="margin-right: 15px;">
+	            							<span style="color:black;" class="font-light">Cost. Unit.</span>
+	            							<p:inputNumber id="innPuDt" value="#{d.preciounitario}" symbol="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
+	                                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
+	                                			<p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
+	                                		</p:inputNumber>
+	            						</div>
+	            						<div class="flex flex-column">
+	            							<span style="color:black;" class="font-light">Cantidad</span>
+	            							<p:inputNumber id="innCantDt" value="#{d.cantidad}" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
+			                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{d.producto!=null and (d.producto.tipoventa==1 or d.producto.tipoventa==3)}">
+			                            	    <p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
+			                            	</p:inputNumber>		                                
+			                            	<p:inputNumber id="innCantDt2" value="#{d.cantidad}" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
+			                                	symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{d.producto==null or d.producto.tipoventa!=1}">
+			                                	<p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
+			                                </p:inputNumber>
+	            						</div>
+            						</div>
+            					</div>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            	<div class="col-3 md:col-2">
+            		<div class="h-full flex align-items-center justify-content-end">
+						<div class="flex flex-column">
+	    					<div class="w-full text-right">
+	    						<span class="Fs9 text-gray-500 mr-1">Desto</span>
+	    						<h:outputText value="#{d.descuento}" styleClass="Fs11 font-light" style="color:black;">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
-							</div>
-							
-							<div class="p-col-4 p-sm-1" style="text-align: center;">
-								<p:commandLink id="clkEliminar" action="#{compFacCtrl.eliminarDetalle()}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT" process="@this :formMain:pvDetalleDT" disabled="#{compFacCtrl.enableAccion}">
-									<f:setPropertyActionListener value="#{d}" target="#{compFacCtrl.detalleSelected}"/>
-									<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
-									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-								</p:commandLink>
-							</div>
-							
-						</div>
-						
-						<!-- cantidad, subdetalle -->
-				
-						<div class="p-grid p-nogutter p-align-center">
-							<div class="EmptyBox5"/>
-							
-							<div class="p-col-6 p-md-2 dt-spinner">
-								<h:outputText  id="intDetFacCantidad1" value="CANT." styleClass="Fs10" style="margin-right:10px;">
+	    					</div>
+	    					<div class="w-full text-right">
+	    						<span class="Fs9 text-gray-500 mr-1">I.C.E.</span>
+	    						<h:outputText value="#{d.valorice}" styleClass="Fs11 font-light" style="color:black;">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
-								<br/>
-								<p:spinner id="insDetFacCanbtidad1" value="#{d.cantidad}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
-									<p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-								</p:spinner>
-							</div>
-							<div class="p-col-6 p-md-2 dt-spinner">
-							
-								<h:outputText value="P.UNITARIO" styleClass="Fs10" style="margin-right:10px;"/>
-								<br/>
-								<p:spinner value="#{d.preciounitario}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Wid100" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
-									<p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-								</p:spinner>
-								
-							</div>
-							<div class="p-col-6 p-md-2 dt-spinner">
-							
-								<h:outputText value="DESCUTO($)" styleClass="Fs10" style="margin-right:10px;"/>
-								<br/>
-								<p:spinner value="#{d.descuento}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="Fs8" onclick="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
-									<p:ajax listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-								</p:spinner>
-								
-							</div>
-							
-							<div class="p-col-6 p-md-3 dt-selection">
-								<h:outputText value="ICE" styleClass="Fs10" style="margin-right:10px;"/>
-								<br/>
-								<p:selectOneMenu id="somdetIceItem1"
-									value="#{d.ice}"
-									converter="omnifaces.SelectItemsConverter"
-									required="true"
-									requiredMessage="REQUERIDO"
-									styleClass="Wid100 Fs8"
-									onchange="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
-			
-									<f:selectItems value="#{compFacCtrl.iceList}" var="ice"
-										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
-										
-									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-									
-								</p:selectOneMenu>
-							</div>
-							
-							<div class="p-col-6 p-md-3 dt-selection">
-								<h:outputText value="IVA" styleClass="Fs10" style="margin-right:10px;"/>
-								<br/>
-								<p:selectOneMenu id="somdetIvaItem1"
-									value="#{d.iva}"
-									converter="omnifaces.SelectItemsConverter"
-									required="true"
-									requiredMessage="REQUERIDO"
-									styleClass="Wid100 Fs8"
-									onchange="establecerFocoDetalle([{name:'idDetalle' , value:'#{d.iddetalle}'}])">
-			
-									<f:selectItems value="#{compFacCtrl.ivaList}" var="iva"
-										itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
-									
-									<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(false,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT"/>
-									
-								</p:selectOneMenu>
-							</div>
-							
+	    					</div>
+	    					<div class="w-full text-right">
+	    						<span class="Fs9 text-gray-500 mr-1">I.V.A.</span>
+	    						<h:outputText value="#{d.valoriva}" styleClass="Fs11 font-light" style="color:black;">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+	    					</div>
+  							<h:outputText value="#{d.preciototal}" styleClass="Fs16 text-black font-medium mb-1 text-right">
+	     						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+	    					</h:outputText>
 						</div>
-						
-					</p:column>
-					
-				</p:dataTable>
-				
-				
+    				</div>
+            	</div>
 			</div>
 			
-			<!-- Totales -->
-			<div class="EmptyBox20"/>
-			<div class="p-col-12">
-			
-				<p:outputPanel id="oupFacTotal">
-				
-					<div class="p-grid p-nogutter p-align-center">
-						
-						<div class="p-col-12 p-md-7">
-							<div class="p-grid p-nogutter">
-								
-								<div class="p-col-7 cardSubtotal">
-									<i class="fa fa-caret-right"></i>
-									<p:spacer width="10px"/>
-									<h:outputText value="Subtotal :" />
-								</div>
-								
-								<div class="p-col-5 cardSubtotal-valor">
-									<h:outputText value="#{compFacCtrl.cabecerSelected.totalsinimpuestos}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-								</div>
-								
-								<div class="p-col-7 cardSubtotal">
-									<i class="fa fa-caret-right"></i>
-									<p:spacer width="10px"/>
-									<h:outputText value="Descuento :" />
-								</div>
-								
-								<div class="p-col-5 cardSubtotal-valor">
-									<h:outputText value="#{compFacCtrl.cabecerSelected.totaldescuento}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-								</div>
-								
-								<div class="p-col-7 cardSubtotal">
-									<i class="fa fa-caret-right"></i>
-									<p:spacer width="10px"/>
-									<h:outputText value="I.C.E. :" />
-								</div>
-								
-								<div class="p-col-5 cardSubtotal-valor">
-									<h:outputText value="#{compFacCtrl.cabecerSelected.totalice}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-								</div>
-								
-								<div class="p-col-7 cardSubtotal">
-									<i class="fa fa-caret-right"></i>
-									<p:spacer width="10px"/>
-									<h:outputText value="I.V.A. #{compFacCtrl.descripcionIva} :" />
-								</div>
-								
-								<div class="p-col-5 cardSubtotal-valor">
-									<h:outputText value="#{compFacCtrl.cabecerSelected.totaliva}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-								</div>
-																
+		
+		</p:dataScroller>		
+		<!-- subtotales -->
+		<p:outputPanel id="oupFacTotal" styleClass="w-full">
+			<div class="grid">
+				<div class="col-12 md:col-7">
+					<div class="grid grid-nogutter justify-content-between">
+						<div class="col-8 py-1">
+							<div class="w-full">
+								<span class="Fs10 mr-1 text-gray-700 font-semibold">RESUMEN</span>
+								<span class="Fs14 text-blue-600 font-medium">TOTALES</span>
 							</div>
 						</div>
-						
-						<div class="p-col-12 p-md-5">
-							<!-- TOTAL -->
+						<div class="col-1 text-center align-self-center">
+							<i class="fa fa-angle-down Fs14"></i>
+						</div>
+						<div class="col-12 mt-1">
 							
-							<div class="cardTotal cardTotal-borderOrange">
-								<div class="cardTotal-header">
-									<h:outputText value="TOTAL" />
-								</div>
-								<div class="cardTotal-content-total">
-									<div class="EmptyBox5"/>
-									<h:outputText value="#{compFacCtrl.cabecerSelected.totalconimpuestos}" styleClass="Fs20">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-									<div class="EmptyBox5"/>
-								</div>
+							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+								<div class="flex flex-grow-1 Fs9">
+									<i class="fa fa-angle-right mr-1 font-bold"></i>
+									<span class="text-gray-800">Subtotal</span>
+								</div>						
+								<div class="flex flex-grow-1">
+									<div class="text-right pr-3 w-full">
+										<h:outputText value="#{compFacCtrl.cabecerSelected.totalsinimpuestos}" styleClass="Fs14 text-black font-light">
+						   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						   				</h:outputText>
+									</div>
+								</div>				
 							</div>
 							
+							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+								<div class="flex flex-grow-1 Fs9">
+									<i class="fa fa-angle-right mr-1 font-bold"></i>
+									<span class="text-gray-800">Descuento</span>
+								</div>						
+								<div class="flex flex-grow-1">
+									<div class="text-right pr-3 w-full">
+										<h:outputText value="#{compFacCtrl.cabecerSelected.totaldescuento}" styleClass="Fs14 text-black font-light">
+						   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						   				</h:outputText>
+									</div>
+								</div>				
+							</div>
+							
+							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+								<div class="flex flex-grow-1 Fs9">
+									<i class="fa fa-angle-right mr-1 font-bold"></i>
+									<span class="text-gray-800">I.C.E.</span>
+								</div>						
+								<div class="flex flex-grow-1">
+									<div class="text-right pr-3 w-full">
+										<h:outputText value="#{compFacCtrl.cabecerSelected.totalice}" styleClass="Fs14 text-black font-light">
+						   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						   				</h:outputText>
+									</div>
+								</div>				
+							</div>
+							
+							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
+								<div class="flex flex-grow-1 Fs9">
+									<i class="fa fa-angle-right mr-1 font-bold"></i>
+									<span class="text-gray-800">I.V.A.</span>
+								</div>						
+								<div class="flex flex-grow-1">
+									<div class="text-right pr-3 w-full">
+										<h:outputText value="#{compFacCtrl.cabecerSelected.totaliva}" styleClass="Fs14 text-black font-light">
+						   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						   				</h:outputText>
+									</div>
+								</div>				
+							</div>
+								
 						</div>
-						
 					</div>
-				
-				</p:outputPanel>
-				
+				</div>
+				<div class="col-12 md:col-5 align-self-center text-center py-2">
+					<span class="inline Fs10 font-bold mr-1">TOTAL</span>
+					<h:outputText value="#{compFacCtrl.cabecerSelected.totalconimpuestos}" styleClass="Fs24 text-blue-600 font-bold inline">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
 			</div>
-			
-			<div class="EmptyBox20"/>
-			
-		</div>
-				
+		</p:outputPanel>			
+		<div class="EmptyBox20"/>				
 	</div>
 	
 	

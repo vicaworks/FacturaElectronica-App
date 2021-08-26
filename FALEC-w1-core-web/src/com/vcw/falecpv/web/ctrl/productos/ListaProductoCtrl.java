@@ -63,6 +63,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	private String onComplete="";
 	private CotizacionFormCtrl cotizacionFormCtrl;
 	private String accion;
+	private CompFacCtrl compFacCtrl;
 	
 	private Integer tipoRegistro = 1;// 1 producto, 2 otro concepto
 	private Integer tabIndex = 0;
@@ -117,20 +118,27 @@ public class ListaProductoCtrl extends BaseCtrl {
 					tabIndex = 0;
 					adquisicionFrmCtrl.nuevoDetalle();			
 					adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion("NUEVO");
-					adquisicionFrmCtrl.seleccionarProducto(productoSelected);
-					productoList=null;
-					categoriaSelected=null;
+					adquisicionFrmCtrl.seleccionarProducto(productoSelected);					
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt')");
 					break;
-
+				case "FACTURA":
+					tabIndex = 0;
+					compFacCtrl.agregarProducto(productoSelected);
+					compFacCtrl.getDetalleSelected().setAccion("NUEVO");
+					compFacCtrl.getDetalleSelected().setProducto(productoSelected);
+					if(productoSelected.getTipoventa()==2) {
+						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm')");						
+					}else {
+						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
+					}
+					break;
 				default:
 					break;
 				}
+				productoList=null;
+				categoriaSelected=null;
 			}else {
 				tabIndex = 1;
-				
-				
-				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,7 +168,28 @@ public class ListaProductoCtrl extends BaseCtrl {
 				}
 				adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion(accion);
 				break;
-
+			case "FACTURA":
+				if(accion.equals("NUEVO")) {
+					compFacCtrl.agregarItem();
+					tipoRegistro = 1;					
+				}else {
+					if(compFacCtrl.getDetalleSelected().getProducto()!=null) {
+						tipoRegistro = 1;
+						productoSelected = compFacCtrl.getDetalleSelected().getProducto();
+						// precio venta
+						compFacCtrl.getDetalleSelected().setPrecioVenta(0);
+						if(compFacCtrl.getDetalleSelected().getProducto().getPreciouno().doubleValue()==compFacCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							compFacCtrl.getDetalleSelected().setPrecioVenta(1);
+						}else if(compFacCtrl.getDetalleSelected().getProducto().getPreciodos().doubleValue()==compFacCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							compFacCtrl.getDetalleSelected().setPrecioVenta(2);
+						}else if(compFacCtrl.getDetalleSelected().getProducto().getPreciotres().doubleValue()==compFacCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							compFacCtrl.getDetalleSelected().setPrecioVenta(3);
+						}
+					}else {
+						tipoRegistro = 2;
+					}
+				}
+				break;
 			default:
 				break;
 			}
@@ -190,14 +219,25 @@ public class ListaProductoCtrl extends BaseCtrl {
 	public void seleccionarProducto() {
 		try {
 			
+			accion = "NUEVO";
 			switch (callModule) {
 			case "ADQUISICION":
 				adquisicionFrmCtrl.seleccionarProducto(productoSelected);
+				adquisicionFrmCtrl.getAdquisiciondetalleSelected().setAccion(accion);
 				tabIndex = 0;				
 				// foco
 				AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt')");
 				break;
-
+			case "FACTURA":
+				compFacCtrl.agregarProducto(productoSelected);
+				compFacCtrl.getDetalleSelected().setAccion(accion);
+				tabIndex = 0;
+				if(productoSelected.getTipoventa()==2) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm')");						
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
+				}
+				break;
 			default:
 				break;
 			}
@@ -224,7 +264,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:intAdqDescripcion')");
 				}
 				break;
-
+			case "FACTURA":
+				compFacCtrl.agregarItem();
+				compFacCtrl.getDetalleSelected().setAccion("NUEVO");
+				if(tipoRegistro==1) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}else {
+					compFacCtrl.getDetalleSelected().setCodproducto("COD" + (compFacCtrl.getDetalleFacList()==null?1:compFacCtrl.getDetalleFacList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:intFacDescripcion')");
+				}
+				break;
 			default:
 				break;
 			}
@@ -253,7 +302,17 @@ public class ListaProductoCtrl extends BaseCtrl {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
 				}
 				break;
-
+			case "FACTURA":
+				accion = "NUEVO";
+				compFacCtrl.agregarItem();
+				compFacCtrl.getDetalleSelected().setAccion(accion);				
+				if(tipoRegistro==2) {
+					compFacCtrl.getDetalleSelected().setCodproducto("COD" + (compFacCtrl.getDetalleFacList()==null?1:compFacCtrl.getDetalleFacList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:intFacDescripcion')");
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}
+				break;
 			default:
 				break;
 			}
@@ -306,17 +365,17 @@ public class ListaProductoCtrl extends BaseCtrl {
 				AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
 				break;
 			
-			case "FACTURA_FORM2":
-				CompFacCtrl compFacCtrl = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
-				compFacCtrl.setProductoSelected(productoSelected);
-				compFacCtrl.agregarProducto();
-				AppJsfUtil.hideModal("dlgListaProducto");
-				// foco a la lista
-				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
-				
-				//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
-				//AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
-				break;
+//			case "FACTURA_FORM2":
+//				CompFacCtrl compFacCtrl = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
+//				compFacCtrl.setProductoSelected(productoSelected);
+//				compFacCtrl.agregarProducto();
+//				AppJsfUtil.hideModal("dlgListaProducto");
+//				// foco a la lista
+//				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
+//				
+//				//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
+//				//AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
+//				break;
 			case "COTIZACION_FORM":
 				cotizacionFormCtrl.setProductoSelected(productoSelected);
 				cotizacionFormCtrl.agregarProducto();
@@ -571,6 +630,20 @@ public class ListaProductoCtrl extends BaseCtrl {
 	 */
 	public void setAccion(String accion) {
 		this.accion = accion;
+	}
+
+	/**
+	 * @return the compFacCtrl
+	 */
+	public CompFacCtrl getCompFacCtrl() {
+		return compFacCtrl;
+	}
+
+	/**
+	 * @param compFacCtrl the compFacCtrl to set
+	 */
+	public void setCompFacCtrl(CompFacCtrl compFacCtrl) {
+		this.compFacCtrl = compFacCtrl;
 	}	
 
 }

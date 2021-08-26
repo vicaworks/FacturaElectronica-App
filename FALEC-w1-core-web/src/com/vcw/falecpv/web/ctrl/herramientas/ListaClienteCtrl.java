@@ -121,6 +121,7 @@ public class ListaClienteCtrl extends BaseCtrl {
 			case "CompFacCtrl":
 				compFacCtrl = (CompFacCtrl)AppJsfUtil.getManagedBean("compFacCtrl");
 				compFacCtrl.getCabecerSelected().setCliente(clienteSelected);
+				compFacCtrl.setCriterioBusqueda(clienteSelected.getIdentificacion());
 				break;
 			
 			case "RETENCION":

@@ -11,6 +11,12 @@
 		.heightFrmListCliente {
 				height: 550px;
 		}
+		
+		.listaClienteDT .ui-datatable-scrollable-body{
+				min-height: 300px !important;
+				height: 450px;
+		}
+		
 		 .ui-grid td {
 	        white-space: nowrap;
 	    }
@@ -27,38 +33,28 @@
 			
 			<!-- OPCIONES -->
 			
-			<div class="p-grid p-align-end toolBarPopUp">
-				
-				<div class="p-col-12 p-md-6">
+			<div class="flex">
+				<div class="flex-grow-1 flex">
 					<p:inputText id="intListCliCriterioBusqueda"
 						value="#{listaClienteCtrl.criterioBusqueda}" required="false"
-						requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
+						requiredMessage="REQUERIDO" styleClass="w-full" maxlength="1000"
 						placeholder="BUSCAR POR : C.I., R.U.C., NOMBRE" 
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
 					</p:inputText>
 				</div>
-				<div class="p-col-12 p-md-6">
-				
+				<div class="flex-grow-0 flex px-1">					
 					<p:commandButton id="cmdListClienteRefrescar"
-						value="BUSCAR" icon="fa fa-search" 
-						action="#{listaClienteCtrl.refrescar()}" styleClass="MRight10" update="@form"
+						value="Buscar" icon="fa fa-search" 
+						action="#{listaClienteCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
 						/>
-					
-					<p:commandButton value="NUEVO" action="#{clienteCtrl.nuevoEditar(null)}" immediate="true" icon="fa fa-plus" styleClass="secondary-button MRight10" update="@form" oncomplete="PF('dlgListaCliente').hide();">
+					<p:commandButton value="Nuevo" action="#{clienteCtrl.nuevoEditar(null)}" immediate="true" icon="fa fa-plus" styleClass="ui-button-outlined" update="@form" oncomplete="PF('dlgListaCliente').hide();">
 						<f:setPropertyActionListener value="#{listaClienteCtrl.callModule}" target="#{clienteCtrl.callModule}"/>
 						<f:setPropertyActionListener value="#{listaClienteCtrl.viewUpdate}" target="#{clienteCtrl.updateView}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 						<f:setPropertyActionListener value="#{listaClienteCtrl.cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
 						<f:setPropertyActionListener value="#{listaClienteCtrl.adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
 					</p:commandButton>
-						
-					<p:commandButton id="cmdListCliCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgListaCliente').hide()" immediate="true"  
-						/>
-					
-				</div>	
-			
+				</div>
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmListCliente"
@@ -67,15 +63,15 @@
 			</p:messages>
 			
 			<!--  wraper del formulario para responsive -->
-			
-			<div class="form-ui Wid100 OvYScroll heightFrmListCliente contenedorFormulario">
+			<div class="EmptyBox10"/>
+			<div class="w-full overflow-auto heightFrmListCliente contenedorFormulario">
 				
 				<p:dataTable id="listaClienteDT" var="c"
 					value="#{listaClienteCtrl.clienteList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
 					styleClass="listaClienteDT Fs11"  
 					rowKey="#{c.idcliente}"
-					rows="13"
+					rows="16"
 	                paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -86,43 +82,39 @@
 	                <p:ajax event="rowSelect" listener="#{listaClienteCtrl.guardar()}" update="@form #{listaClienteCtrl.viewUpdate}">
 	                	<f:setPropertyActionListener value="#{c}" target="#{listaClienteCtrl.clienteSelected}"/>
 					</p:ajax>
+					
+					<p:column headerText="OPC" styleClass="TexAlCenter" style="width:10px;">
+	                	<p:commandLink id="clkListClienteAdd" action="#{listaClienteCtrl.guardar()}" update="@form #{listaClienteCtrl.viewUpdate}">
+							<i class="fa fa-hand-o-right Fs20" style="color:#252529;"></i>
+							<f:setPropertyActionListener value="#{c}" target="#{listaClienteCtrl.clienteSelected}"/>
+						</p:commandLink>
+	                </p:column>
 	                
-	                <p:column headerText="CÓDIGO" style="width:30px;">
-						<h:outputText value="#{c.idcliente}" styleClass="FontBold Fs12" />
-					</p:column>
-	                
-	                <p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
+	                <p:column style="width:60px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="IDENTIFICACIÓN" />
 						</f:facet>
 						<h:outputText value="#{c.identificacion}" />
 					</p:column>
 					
-					<p:column style="width:90px;" filterBy="#{c.razonsocial}" filterMatchMode="contains">
+					<p:column style="width:200px;" filterBy="#{c.razonsocial}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="RAZÓN SOCIAL" />
 						</f:facet>
 						<h:outputText value="#{c.razonsocial}" />
 					</p:column>
 					
-	                <p:column headerText="DIRECCIÓN" style="width:50px;">
+	                <p:column headerText="DIRECCIÓN" style="width:100px;">
 						<h:outputText value="#{c.direccion}"/>
 					</p:column>
 					
-					<p:column headerText="CORREO ELECTRÖNICO" style="width:50px;">
+					<p:column headerText="EMAIL" style="width:60px;">
 						<h:outputText value="#{c.correoelectronico}"/>
 					</p:column>
 					
 					<p:column headerText="TELÉFONO" style="width:50px;">
 						<h:outputText value="#{c.telefono}"/>
 					</p:column>
-					
-	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:20px;">
-	                	<p:commandLink id="clkListClienteAdd" action="#{listaClienteCtrl.guardar()}" update="@form #{listaClienteCtrl.viewUpdate}">
-							<i class="fa fa-hand-o-left Fs20" style="color:#252529;"></i>
-							<f:setPropertyActionListener value="#{c}" target="#{listaClienteCtrl.clienteSelected}"/>
-						</p:commandLink>
-	                </p:column>
 	                
 	            </p:dataTable>
 				

@@ -1,0 +1,220 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		.frmFactura .ui-inputnumber .ui-inputfield{width: 100%!important;font-size: 14px;}
+	</style>
+		
+	<div class="w-full overflow-auto heightFrmListProducto frmFactura">
+         <div style="width:98.5%!important;">
+         	<div class="EmptyBox10"/>
+	         <div class="field">	         
+		        <label for="intFacCodigo" class="requerido">CODIGO</label>
+	            <p:inputText id="intFacCodigo" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.codproducto}" styleClass="w-full" required="true" requiredMessage="REQUERIDO" maxlength="25"
+	            	readonly="#{listaProductoCtrl.tipoRegistro==1}">
+	            </p:inputText>
+	            <p:message for="intFacCodigo" styleClass="block"/>		        
+		    </div>
+		    <div class="field">
+		        <label for="intFacDescripcion" class="requerido">DESCRIPCIÓN</label>		        
+	        	<p:inputTextarea id="intFacDescripcion" rows="4" styleClass="w-full" maxlength="300" 
+	        		value="#{listaProductoCtrl.compFacCtrl.detalleSelected.descripcion}" required="true" requiredMessage="REQUERIDO"></p:inputTextarea>	            
+	            <p:message for="intFacDescripcion" styleClass="block"/>
+		   </div>
+		   <p:outputPanel id="oupPrecios" rendered="#{listaProductoCtrl.tipoRegistro==1}">
+			   	<span class="requerido">OPCIONES DE PRECIO DE VENTA</span>
+			   	<div class="flex">			   		
+			   		<div class="flex-grow-1 flex pr-1">
+			   			<p:commandLink styleClass="w-full" action="#{listaProductoCtrl.compFacCtrl.cambiarPrecioVenta(1)}" process="@this" update="@form">
+				   			<div class="flex border-1 border-round border-gray-200 py-2 w-full #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==1?'bg-blue-500':''}" style="margin: 5px 0px 5px 0px;">
+				   				<div class="flex justify-content-between w-full">
+				   					<span class="Fs14  #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==1?'text-white font-bold':'text-gray-600'} mx-2 Fs16">1</span>
+				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==1?'text-white font-bold':'text-gray-600'} mx-2">
+				   						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null?listaProductoCtrl.compFacCtrl.detalleSelected.producto.preciouno:0.00}" >
+				   							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				   						</h:outputText>				   						
+				   					</span>
+				   				</div>
+				   			</div>
+			   			</p:commandLink>
+			   		</div>
+			   		<div class="flex-grow-1 flex pr-1">
+			   			<p:commandLink styleClass="w-full" action="#{listaProductoCtrl.compFacCtrl.cambiarPrecioVenta(2)}" process="@this" update="@form">
+				   			<div class="flex border-1 border-round border-gray-200 py-2 w-full #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==2?'bg-blue-500':''}" style="margin: 5px 0px 5px 0px;">
+				   				<div class="flex justify-content-between w-full">
+				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==2?'text-white font-bold':'text-gray-600'} mx-2 Fs16">2</span>
+				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==2?'text-white font-bold':'text-gray-600'} mx-2">
+				   						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null?listaProductoCtrl.compFacCtrl.detalleSelected.producto.preciodos:0.00}" >
+				   							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				   						</h:outputText>
+				   					</span>
+				   				</div>
+				   			</div>
+				   		</p:commandLink>
+			   		</div>
+			   		<div class="flex-grow-1 flex">
+			   			<p:commandLink styleClass="w-full" action="#{listaProductoCtrl.compFacCtrl.cambiarPrecioVenta(3)}" process="@this" update="@form">
+				   			<div class="flex border-1 border-round border-gray-200 py-2 w-full #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==3?'bg-blue-500':''}" style="margin: 5px 0px 5px 0px;">
+				   				<div class="flex justify-content-between w-full">
+				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==3?'text-white font-bold':'text-gray-600'} mx-2 Fs16">3</span>
+				   					<span class="Fs14 #{listaProductoCtrl.compFacCtrl.detalleSelected.precioVenta==3?'text-white font-bold':'text-gray-600'} mx-2">
+				   						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null?listaProductoCtrl.compFacCtrl.detalleSelected.producto.preciotres:0.00}" >
+				   							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+				   						</h:outputText>
+				   					</span>
+				   				</div>
+				   			</div>
+				   		</p:commandLink>
+			   		</div>
+			   	</div>
+		   </p:outputPanel>
+		   <div class="grid mt-2">
+		   		<div class="col-6 md:col-4">
+		   			<div class="flex flex-column">
+		   				<span class="requerido mb-2">PRECIO UNIT</span>
+		   				<p:inputNumber id="innCantDt" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.preciounitario}" onfocus="this.setSelectionRange(0, this.value.length);"
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
+	                   	    <p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null,listaProductoCtrl.compFacCtrl.detalleSelected)}" update="@form" process="@form"/>                   	    
+	                   	</p:inputNumber>
+		   			</div>
+		   		</div>
+		   		<div class="col-6 md:col-4">
+		   			<div class="flex flex-column">
+		   				<span class="requerido mb-2">CANTIDAD</span>
+		   				<p:inputNumber id="innCantFrm" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.cantidad}"
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto==null or (listaProductoCtrl.compFacCtrl.detalleSelected!=null and listaProductoCtrl.compFacCtrl.detalleSelected.producto.tipoventa==2)}">
+	                   	    <p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null,listaProductoCtrl.compFacCtrl.detalleSelected)}" update="@form" process="@form"/>                   	    
+	                   	</p:inputNumber>
+	                   	<p:inputNumber id="innCantFrm2" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.cantidad}"
+	                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null and (listaProductoCtrl.compFacCtrl.detalleSelected.producto.tipoventa==1 or listaProductoCtrl.compFacCtrl.detalleSelected.producto.tipoventa==3)}">
+	                   	    <p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null,listaProductoCtrl.compFacCtrl.detalleSelected)}" update="@form" process="@form"/>                   	    
+	                   	</p:inputNumber>
+		   			</div>
+		   		</div>
+		   		<div class="col-6 md:col-4">
+	   				<span class="requerido">DESCUENTO</span>
+	   				<div class="flex w-full mt-2">
+		   				<div class="flex-grow-1 flex pr-1">
+		   					<p:inputNumber id="intAdFrDesc1" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.porcentajeDescuento}" symbol="%"
+		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="3" 
+		                   	    disabled="#{listaProductoCtrl.compFacCtrl.detalleSelected.preciototalsinimpuesto.doubleValue()==0}">
+		                   	    <p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null,listaProductoCtrl.compFacCtrl.detalleSelected)}" update="@form" process="@form"/>                   	    
+		                   	</p:inputNumber>
+		   				</div>
+		   				<div class="flex-grow-1 flex">
+		   					<p:inputNumber id="intAdFrDesc2" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.descuento}"
+		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" 
+		                   	    disabled="#{listaProductoCtrl.compFacCtrl.detalleSelected.preciototalsinimpuesto.doubleValue()==0}">
+		                   	    <p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null,listaProductoCtrl.compFacCtrl.detalleSelected)}" update="@form" process="@form"/>                   	    
+		                   	</p:inputNumber>
+		   				</div>
+	   				</div>		   		
+         		</div>
+         		<div class="col-6 md:col-4 mt-2">         			
+	   				<span class="requerido ">SUBTOTAL</span>
+	   				<div class="flex mt-2 w-full">
+	   					<div class="flex-grow-0 flex pr-1">
+	   						<div style="height:21px!important;" class="text-white">-</div>
+	   					</div>
+		   				<div class="flex-grow-1 flex justify-content-end align-self-end">
+		   					<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.preciototalsinimpuesto}" styleClass="Fs14 text-black" style="margin-top:7px;">
+		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+		   					</h:outputText>
+		   				</div>
+	   				</div>
+         		</div>
+         		<div class="col-6 md:col-4 mt-2">
+	   				<span class="requerido">ICE</span>
+	   				<div class="flex mt-2 w-full">
+		   				<div class="flex-grow-1 flex pr-1">
+		   					<p:selectOneMenu id="somdetIceItem2"
+							value="#{listaProductoCtrl.compFacCtrl.detalleSelected.ice}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Fs8">
+	
+							<f:selectItems value="#{listaProductoCtrl.compFacCtrl.iceList}" var="ice"
+										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
+									
+							<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null,listaProductoCtrl.compFacCtrl.detalleSelected)}" update="@form" process="@form"/>
+							
+						</p:selectOneMenu>
+		   				</div>
+		   				<div class="flex-grow-1 flex justify-content-end  align-self-end">
+		   					<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.valorice}" styleClass="Fs14">
+		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+		   					</h:outputText>
+		   				</div>
+	   				</div>		   		
+         		</div>         		
+         		<div class="col-6 md:col-4 mt-2">
+	   				<span class="requerido">IVA</span>
+	   				<div class="flex mt-2 w-full">
+		   				<div class="flex-grow-1 flex pr-1">
+		   					<p:selectOneMenu id="somdetIvaItem2"
+							value="#{listaProductoCtrl.compFacCtrl.detalleSelected.iva}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Fs8">
+	
+							<f:selectItems value="#{listaProductoCtrl.compFacCtrl.ivaList}" var="iva2"
+									itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
+									
+							<p:ajax event="change" listener="#{compFacCtrl.calcularItemAction(listaProductoCtrl.compFacCtrl.detalleSelected.producto!=null,listaProductoCtrl.compFacCtrl.detalleSelected)}" update="@form" process="@form"/>
+							
+						</p:selectOneMenu>
+		   				</div>
+		   				<div class="flex-grow-1 flex justify-content-end  align-self-end">
+		   					<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.valoriva}" styleClass="Fs14">
+		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+		   					</h:outputText>
+		   				</div>
+	   				</div>		   		
+         		</div>
+         		<div class="col-12">
+         			<div class="EmptyBox20"/>
+         			<div class="flex justify-content-center">
+         				<span class="Fs10 text-gray-600 mr-1 align-self-end">TOTAL</span>
+	   					<span class="Fs20 text-black font-semibold">
+	   						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.preciototal}" >
+		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+		   					</h:outputText>
+	   					</span>         				
+         			</div>
+         		</div>
+         	</div>
+         	
+	   </div>            			
+	</div>
+	<div class="EmptyBox10"/>
+	<div class="grid justify-content-center">
+		<div class="col-6 py-1 px-2">
+			<p:commandLink styleClass="text-white" update="@form #{listaProductoCtrl.viewUpdate}" actionListener="#{listaProductoCtrl.compFacCtrl.agregarDetalle()}" action="#{listaProductoCtrl.limpiar()}">
+				<f:setPropertyActionListener value="#{null}" target="#{listaProductoCtrl.criterioBusqueda}"/>
+				<div class="flex border-1 border-gray-800 bg-green-600 justify-content-center p-2">
+					<i class="Fs14 fa #{listaProductoCtrl.compFacCtrl.detalleSelected.accion=='EDITAR'?'fa-check':'fa-plus'} mr-1"/>
+					<span class="Fs14">
+						<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.accion=='EDITAR'?'ACEPTAR':'AGREGAR'}" /> 
+					</span>
+				</div>
+			</p:commandLink>
+		</div>
+		<div class="col-6 py-1 px-2">
+			<p:commandLink styleClass="text-gray-600" process="@this" action="#{listaProductoCtrl.limpiar()}" update="@form">
+				<div class="flex border-1 border-gray-800 justify-content-center p-2">
+					<i class="Fs14 fa fa-eraser mr-1"/>
+					<span class="Fs14">LIMPIAR</span>
+				</div>
+			</p:commandLink>
+		</div>
+	</div>	
+
+</ui:composition>

@@ -101,6 +101,19 @@ public class Detalle implements Serializable {
 	
     @Transient
     private String idUsuarioEliminacion;
+    
+    @Transient
+    private String accion;
+    
+    @Transient
+    private String codproducto;
+    
+    @Transient
+    private BigDecimal porcentajeDescuento = BigDecimal.ZERO;
+    
+    @Transient
+    private Integer precioVenta = 1;
+    
 	/**
 	 * 
 	 */
@@ -353,6 +366,62 @@ public class Detalle implements Serializable {
 	 */
 	public void setIdUsuarioEliminacion(String idUsuarioEliminacion) {
 		this.idUsuarioEliminacion = idUsuarioEliminacion;
+	}
+
+	/**
+	 * @return the accion
+	 */
+	public String getAccion() {
+		return accion;
+	}
+
+	/**
+	 * @param accion the accion to set
+	 */
+	public void setAccion(String accion) {
+		this.accion = accion;
+	}
+
+	/**
+	 * @return the codproducto
+	 */
+	public String getCodproducto() {
+		return codproducto;
+	}
+
+	/**
+	 * @param codproducto the codproducto to set
+	 */
+	public void setCodproducto(String codproducto) {
+		this.codproducto = codproducto;
+	}
+
+	/**
+	 * @return the porcentajeDescuento
+	 */
+	public BigDecimal getPorcentajeDescuento() {
+		return porcentajeDescuento;
+	}
+
+	/**
+	 * @param porcentajeDescuento the porcentajeDescuento to set
+	 */
+	public void setPorcentajeDescuento(BigDecimal porcentajeDescuento) {
+		this.porcentajeDescuento = porcentajeDescuento;
+	}
+
+	/**
+	 * @return the precioVenta
+	 */
+	public Integer getPrecioVenta() {
+		return precioVenta;
+	}
+
+	/**
+	 * @param precioVenta the precioVenta to set
+	 */
+	public void setPrecioVenta(Integer precioVenta) {
+		this.precioVenta = precioVenta;
 	}
 
 	

@@ -1,0 +1,458 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.pvPagoDetalleDT .ui-datatable-scrollable-body{
+			/* min-height: 20vh !important;
+			height: calc(100vh - 755px)!important; */
+			
+		}
+		
+	</style>
+	
+	<!-- consulta cliente return keycode 13 -->
+	<p:remoteCommand name="buscarCliente"  action="#{compFacCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente"/>
+	
+	<div class="card card-w-title">
+		
+		<div class="p-grid">
+			<div class="p-col-4">
+				<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Factura</h2>
+			</div>
+			<div class="p-col-8" style="text-align: right;">
+				<h:outputText value="Establecimiento - #{appSessionCtrl.formatoCadena(compFacCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="cpoRequerido Fs11" style="color:rgba(0,0,0,0.9);"/>
+			</div>
+		</div>
+		
+		
+		<p:panelGrid id="gridSecuencial" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
+			
+			<h:panelGroup>
+				<h:outputText value="ESTADO BORRADOR" styleClass="cpoRequerido" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<p:selectBooleanButton value="#{compFacCtrl.cabecerSelected.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}">
+					<p:ajax event="change" process="@this :formMain:gridSecuencial" update=":formMain:gridSecuencial" listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
+					</p:ajax>
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido" rendered="#{not compFacCtrl.cabecerSelected.borrador}"/>
+			<h:panelGroup  rendered="#{not compFacCtrl.cabecerSelected.borrador}">
+				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado!='BORRADOR'}">
+					<div class="EmptyBox5"></div>
+					<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(compFacCtrl.cabecerSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
+					<div class="EmptyBox5"></div>
+				</p:outputLabel>
+				<p:outputLabel rendered="#{compFacCtrl.cabecerSelected.idcabecera==null or (compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado=='BORRADOR')}">
+					<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialEstablecimiento}" />
+					<h:outputText value=" - " />
+					<p:inputMask id="intSecCaja" value="#{compFacCtrl.cabecerSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+					<h:outputText value=" - " />
+					<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialNumero}" rendered="#{not compFacCtrl.cabecerSelected.editarSecuencial}"/>
+					<p:inputMask id="intSecDocumento" value="#{compFacCtrl.cabecerSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{compFacCtrl.editarSecuencialAction()}" process=":formMain:gridSecuencial" update=":formMain:msgFormMain :formMain:gridSecuencial">
+						<i class="fa fa-edit Fs16" style="color:#2f2f2f;"/>
+					</p:commandLink>
+					<p:spacer width="5px;"/>
+					<p:commandLink action="#{compFacCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:gridSecuencial">
+						<i class="fa fa-ban Fs16 " style="color:#2f2f2f;"/>
+					</p:commandLink>
+					<p:message styleClass="Wid100" for="intSecCaja"/>
+					<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+				</p:outputLabel>
+				
+			</h:panelGroup>
+		</p:panelGrid>
+		
+		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12" style="margin-top:0px;">	
+			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
+					pattern="dd/MMMM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="FECHA EMISION" style="font-size:14px !important;">
+				</p:calendar>
+				<p:message for="claFacFecha" />
+			</h:panelGroup>
+			
+			<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<div class="ui-inputgroup">
+	                <span class="ui-inputgroup-addon">
+	                	
+	                	<p:commandButton process="@this :formMain:inpCriterioCliente"
+							update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" 
+							action="#{compFacCtrl.buscarCliente()}" icon="fa fa-search">
+	                	</p:commandButton>
+	                
+	                </span>
+	                
+	                <p:inputText id="inpCriterioCliente"
+						value="#{compFacCtrl.criterioCliente}" required="false"
+						requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						validatorMessage="SOLO NUMEROS"
+						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
+						<f:validateRegex pattern="^\d+$" />
+					</p:inputText>
+	                
+	            </div>
+	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+			</h:panelGroup>
+		
+		</p:panelGrid>
+		
+		<p:panelGrid id="grid2" columns="3" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-6 ui-md-6 ui-lg-4,ui-g-6 ui-md-6 ui-lg-4,ui-g-6 ui-md-6 ui-lg-4">
+			
+			<p:commandButton value="CONS. FINAL" action="#{compFacCtrl.buscarConsumidorFinal()}" immediate="true" update=":formMain:msgFormMain :formMain:gridCliente" icon="fa fa-users" styleClass="secondary-button Wid100 Fs10">
+			</p:commandButton>
+			
+			<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
+				<f:setPropertyActionListener value="#{compFacCtrl}" target="#{listaClienteCtrl.compFacCtrl}"/>
+				<f:setPropertyActionListener value="CompFacCtrl" target="#{listaClienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
+				<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+			</p:commandButton>
+			
+			<p:commandButton value="CLIENTE / EDITAR" action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-plus" styleClass="Wid100 Fs10">
+				<f:setPropertyActionListener value="CompFacCtrl" target="#{clienteCtrl.callModule}"/>
+				<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
+				<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+			</p:commandButton>
+			
+		</p:panelGrid>
+		<p:panelGrid id="gridCliente" columns="1"
+			styleClass="ui-panelgrid-blank Fs12 Wid100"
+			columnClasses="ui-g-12">
+			
+			<h:outputText value="CI / RUC *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpfacRuc" value="#{compFacCtrl.cabecerSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpfacRuc" />
+			</h:panelGroup>
+			
+			<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpfacNombre" value="#{compFacCtrl.cabecerSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpfacNombre" />
+			</h:panelGroup>
+			
+			<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpFacEmail" value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpFacEmail" />
+			</h:panelGroup>
+			
+			<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpFacDireccion" value="#{compFacCtrl.cabecerSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpFacDireccion" />
+			</h:panelGroup>
+			
+		</p:panelGrid>
+	</div>
+	<div class="EmptyBox5"/>	
+	<!--
+		Funciones de calculo de la retencion renta e iva 
+	 -->
+	 <p:remoteCommand name="calcularretencionRenta" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{compFacCtrl.calcularRettencionAction('RENTA')}"/>
+	 <p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT" action="#{compFacCtrl.calcularRettencionAction('IVA')}"/>
+	 <!--
+	 	=====================================================================================================  
+	 -->
+	<p:outputPanel id="oupPagoDT">
+	
+		<div class="card card-w-title">	
+		
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Valor a Pagar</h2>
+			<div class="EmptyBox10"/>
+			
+			
+			<div class="p-grid p-align-center vertical-container">
+				<div class="p-col-12 p-md-4">
+					<p:commandLink id="cmlCalValorRenta" title="Calcular">
+						<i class="fa fa-calculator" style="color:#B45F04;"/>
+					</p:commandLink>
+					<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade">
+						<p:inputNumber symbol="%"  value="#{compFacCtrl.porcentajeRenta}" 
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionRenta();return false;}">
+		                </p:inputNumber>
+						<p:commandLink action="#{compFacCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT">
+							<i class="fa fa-floppy-o Fs14" style="color:#B45F04;"></i>
+						</p:commandLink>  
+				    </p:overlayPanel>
+					<p:spacer width="3"/>
+					<h:outputText value="Val retenido Renta" styleClass="cpoRequerido"/>
+					<div class="EmptyBox5"/>
+					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidorenta}" decimalPlaces="2"  styleClass="Wid100" onkeydown="if(event.keyCode==13){return false;}">
+						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+					</p:spinner>
+				</div>
+				
+				<div class="p-col-12 p-md-4">
+					<p:commandLink id="cmlCalValorIva" title="Calcular">
+						<i class="fa fa-calculator" style="color:#B45F04;"/>
+					</p:commandLink>
+					<p:spacer width="3"/>
+					<p:overlayPanel for="cmlCalValorIva" hideEffect="fade">
+						<p:inputNumber symbol="%" value="#{compFacCtrl.porcentajeIva}"
+                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionIva();return false;}">  
+		                </p:inputNumber>
+						<p:commandLink action="#{compFacCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT">
+							<i class="fa fa-floppy-o Fs14" style="color:#B45F04;"></i>
+						</p:commandLink>  
+				    </p:overlayPanel>
+					<p:spacer width="3"/>
+					<h:outputText value="Val retenido I.V.A." styleClass="cpoRequerido"/>
+					<div class="EmptyBox5"/>
+					<p:spinner value="#{compFacCtrl.cabecerSelected.valorretenidoiva}" decimalPlaces="2"  styleClass="Wid100" onkeydown="if(event.keyCode==13){return false;}">
+						<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+					</p:spinner>
+				</div>
+				
+				<div class="p-col-12 p-md-4" style="text-align: center;">
+					<h:outputText value="Total retenido" styleClass="FontBold"/>
+					<div class="EmptyBox5"/>
+					<div class="Wid100" >
+						<h:outputText  styleClass="Fs18 DispBlock" value="#{compFacCtrl.cabecerSelected.valorretenido}">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</div>
+				</div>
+			</div>
+			
+			<div class="EmptyBox20"/>
+			
+			<div class="p-grid p-justify-even">
+				<div class="p-col-12 p-md-3 boxMain box-gray">
+					<div class="DispBlock box-header">TOTAL POR PAGAR</div>
+					<h:outputText value="#{compFacCtrl.cabecerSelected.totalpagar}" styleClass="box-content">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">TOTAL PAGADO</div>
+					<h:outputText value="#{compFacCtrl.totalPago}" styleClass="box-content">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+				
+				<div class="p-col-12 p-md-3 boxMain box-border-gray">
+					<div class="DispBlock box-header">PENDIENTE DE PAGO</div>
+					<h:outputText value="#{compFacCtrl.totalSaldo}" styleClass="box-content">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
+			</div>	
+			
+			<div class="EmptyBox10"/>
+		</div>
+		
+		<div class="EmptyBox5"/>
+		<div class="card card-w-title">	
+		
+			<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Pago</h2>
+			<p:panelGrid id="gridOpcPagos" columns="2"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12 ui-md-10,
+				 				ui-g-12 ui-md-2">
+				 				
+				 <p:selectOneMenu id="somFrmListaProducto"
+											value="#{compFacCtrl.tipopagoSelected}"
+											converter="omnifaces.SelectItemsConverter"
+											required="false"
+											requiredMessage="REQUERIDO"
+											styleClass="Wid100"
+											filter="true" filterMatchMode="contains">
+
+					<f:selectItems value="#{compFacCtrl.tipopagoList}" var="tp"
+						itemLabel="#{tp.nombre}" itemValue="#{tp}" />
+						
+					<p:ajax event="valueChange" listener="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT"/>	
+						
+				</p:selectOneMenu>
+				 					 
+				 <p:commandButton value="PAGO" icon="fa fa-plus" action="#{compFacCtrl.aplicarPago()}" process="@this :formMain:oupPagoDT" styleClass="secondary-button Wid100 Fs10" update=":formMain:msgFormMain :formMain:gridOpcPagos :formMain:oupPagoDT" disabled="#{compFacCtrl.enableAccion}">
+				 </p:commandButton>
+				
+			</p:panelGrid>
+			
+			<!-- detalle pago -->
+			<div class="EmptyBox5"/>
+			
+			<p:dataTable id="pvPagoDetalleDT"
+	        			scrollable="true"
+	        			value="#{compFacCtrl.pagoList}"
+	        			var="p"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pvPagoDetalleDT Fs12"  
+						rowKey="#{p.idpago}"
+						selectionMode="single"
+						selection="#{compFacCtrl.pagoSelected}">
+				
+				<p:ajax event="rowSelect"  update=":formMain:pvPagoDetalleDT">
+				</p:ajax>
+				
+				<p:column headerText="ITEM" style="width:90%;">
+					
+					<div class="EmptyBox5"/>
+					<div class="p-grid p-align-center vertical-container ui-inputfield-pago">
+						
+						<div class="p-col-12">
+							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14 markGray"/>
+						</div>
+						
+						<div class="p-col-12">
+						
+							<div class="p-grid Fs10">
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+								
+									<h:outputText value="VALOR" styleClass="Fs12"/>
+									
+									<p:spinner id="ipsPagValor" value="#{p.total}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" >
+										<p:ajax listener="#{compFacCtrl.totalizarPagoaction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+									</p:spinner>
+									
+								</div>
+								
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+									<!-- Efectivo -->								
+									<h:outputText value="IMPORTE" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorEntrega" value="#{p.valorentrega}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" >
+										<p:ajax listener="#{compFacCtrl.calcularCambioAction(p)}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+									</p:spinner>
+									
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="# DOCUMENTO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoNumDoc" value="#{p.numerodocumento}" required="false" styleClass="Wid100" maxlength="150" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
+									
+									<!-- credito -->
+									<h:outputText value="PLAZO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:spinner id="ipsPagPlazo" value="#{p.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '4'}" >
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
+									
+								</div>
+								
+								<div class="p-col-12 p-md-4 dt-spinner">
+									<!-- Efectivo -->
+									<h:outputText value="CAMBIO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '1'}"/>
+									<p:spinner id="ipsPagValorCambio" value="#{p.cambio}" min="0" decimalPlaces="2" prefix="$" onkeydown="if(event.keyCode==13){return false;}" styleClass="Wid100" rendered="#{p.tipopago.subdetalle == '1'}" readonly="true" >
+										<p:ajax update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:spinner>
+									
+									<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
+									<h:outputText value="BANCO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}"/>
+									<p:inputText id="inpPagoBanco" value="#{p.nombrebanco}" required="false" styleClass="Wid100" maxlength="100" rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
+										<p:ajax event="change" update=":formMain:pvPagoDetalleDT">
+											<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+										</p:ajax>
+									</p:inputText>
+									
+									<!-- credito -->
+									<h:outputText value="FECHA PAGO" styleClass="Fs12" rendered="#{p.tipopago.subdetalle == '4'}"/>
+									<p:calendar id="claAdqFechaCompra" value="#{p.fechapago}"
+										pattern="dd/MM/yyyy"
+										locale="es"
+										requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="Fecha tentativa de pago"
+										rendered="#{p.tipopago.subdetalle == '4'}">
+									</p:calendar>
+									
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</p:column>
+				
+				<p:column style="width:10%;" styleClass="TexAlCenter">
+					
+					<div class="p-grid p-justify-center p-align-center">
+						<div class="p-col-12">
+							<p:commandLink  action="#{compFacCtrl.eliminarDetallePago()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT" disabled="#{compFacCtrl.enableAccion}">
+								<f:setPropertyActionListener value="#{p}" target="#{compFacCtrl.pagoSelected}"/>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>		
+						</div>
+					</div>
+				
+				</p:column>
+							
+			</p:dataTable>
+		
+		</div>
+		<div class="EmptyBox5"/>
+	<div class="card card-w-title">	
+		
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+		<p:outputPanel id="oupInfoAdicionalMain">
+			
+			<p:panelGrid columns="1"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12">
+				 				
+				 <p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{compFacCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button m-button Fs10"/>
+				<h:panelGroup>
+				</h:panelGroup>				 
+				
+			</p:panelGrid>
+			
+			<p:outputPanel id="grdInfoAdicional">
+			
+				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+				</p:panelGrid>
+				<div class="EmptyBox5"/>
+				<div class="p-grid p-align-center vertical-container grdInfoAdicional">
+					
+					<p:repeat var="info" value="#{compFacCtrl.infoadicionalList}" >
+						<div class="p-col-5">
+							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalNombre"/>
+						</div>
+						<div class="p-col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalValor"/>
+						</div>
+						<div class="p-col-1" style="text-align: center;">
+							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
+								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					
+					</p:repeat>
+				</div>
+			
+			</p:outputPanel>
+		</p:outputPanel>
+		
+	</div>
+	</p:outputPanel>	
+	
+	
+</ui:composition>
