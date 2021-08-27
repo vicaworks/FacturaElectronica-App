@@ -11,15 +11,8 @@
 		
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
 			
-		}
+		}		
 		
-		.ui-selectbooleanbutton{ border-color: #566573;}
-		
-		.ui-selectbooleanbutton.ui-state-active, body .ui-selectonebutton > .ui-button.ui-state-active, body .ui-selectmanybutton > .ui-button.ui-state-active {
-			background: #99A3A4!important;
-			border-color: #99A3A4!important;
-			color: #ffffff;
-		}
 	</style>
 	<script >
 		function seleccionarInputListaInfo(clase,mainDiv)
@@ -58,14 +51,6 @@
 							listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
 						</p:ajax>
 			        </p:toggleSwitch>
-					<!-- <p:selectBooleanButton onLabel="Si" offLabel="No"
-                                onIcon="pi pi-check" offIcon="pi pi-times" value="#{compFacCtrl.cabecerSelected.borrador}" style="height:24px;width:55px;">
-                    	<p:ajax  
-							process="@this :formMain:gridSecuencial" 
-							update=":formMain:gridSecuencial" 
-							listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
-						</p:ajax>
-                    </p:selectBooleanButton> -->
 				</div>
 				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
 					<span class="Fs12 text-black font-semibold">Borrador</span>
@@ -83,13 +68,6 @@
 									update=":formMain:gridSecuencial">
 								</p:ajax>
 				        </p:toggleSwitch>
-						<!-- <p:selectBooleanButton onLabel="Si" offLabel="No"
-	                                onIcon="pi pi-check" offIcon="pi pi-times" value="#{compFacCtrl.cabecerSelected.editarSecuencial}" onchange="PrimeFaces.focus('formMain:intSecDocumento');" style="height:24px;width:55px;">
-	                    	<p:ajax event="change" 
-								process="@this :formMain:gridSecuencial" 
-								update=":formMain:gridSecuencial">
-							</p:ajax>
-	                    </p:selectBooleanButton> -->
 					</div>
 					<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
 						<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
