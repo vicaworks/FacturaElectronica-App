@@ -29,6 +29,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -63,6 +64,7 @@ public class PagoCompCtrl implements Serializable {
 	
 	// controlers
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
+	private CompFacCtrl compFacCtrl;
 	
 	/**
 	 * 
@@ -99,6 +101,7 @@ public class PagoCompCtrl implements Serializable {
 				break;
 
 			default:
+				cabeceraSelected.setValorapagar(cabeceraSelected.getTotalpagar());
 				break;
 			}
 			
@@ -194,7 +197,7 @@ public class PagoCompCtrl implements Serializable {
 		
 		totalPago = totalPago.setScale(2, RoundingMode.HALF_UP);
 		
-		totalSaldo = adquisicionSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
+		totalSaldo = cabeceraSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
 		if(totalSaldo.doubleValue()<0) {
 			totalSaldo = BigDecimal.ZERO;
 		}
@@ -250,7 +253,7 @@ public class PagoCompCtrl implements Serializable {
 			pagoSelected.setCabecera(cabeceraSelected);
 		}
 		pagoSelected.setTipopago(tp);
-		pagoSelected.setTotal(adquisicionSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
+		pagoSelected.setTotal(cabeceraSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
 		pagoSelected.setPlazo(BigDecimal.ZERO);
 		pagoSelected.setFechapago(new Date());
 		pagoSelected.setUnidadtiempo("DIAS");
@@ -295,7 +298,11 @@ public class PagoCompCtrl implements Serializable {
 				adquisicionFrmCtrl.setTotalPago(totalPago);
 				adquisicionFrmCtrl.setTotalSaldo(totalSaldo);
 				break;
-
+			case "FACTURA":
+				compFacCtrl.setPagoList(pagoList);
+				compFacCtrl.setTotalPago(totalPago);
+				compFacCtrl.setTotalSaldo(totalSaldo);
+				break;
 			default:
 				break;
 			}
@@ -474,6 +481,20 @@ public class PagoCompCtrl implements Serializable {
 	 */
 	public void setTipopagoSelected(Tipopago tipopagoSelected) {
 		this.tipopagoSelected = tipopagoSelected;
+	}
+
+	/**
+	 * @return the compFacCtrl
+	 */
+	public CompFacCtrl getCompFacCtrl() {
+		return compFacCtrl;
+	}
+
+	/**
+	 * @param compFacCtrl the compFacCtrl to set
+	 */
+	public void setCompFacCtrl(CompFacCtrl compFacCtrl) {
+		this.compFacCtrl = compFacCtrl;
 	}
 	
 }

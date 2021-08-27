@@ -19,12 +19,13 @@
 		
 	<div class="card card-w-title mt-0">
 		
-		<div class="flex justify-content-end py-1">
+		<div class="flex justify-content-start py-1">
+			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
 			<p:commandLink id="cmdAdqAgregarDetalle" process="@this :formMain:pvDetalleDT"
 				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
 				action="#{listaProductoCtrl.loadPantalla()}" styleClass="Fs12">
 				<i class="fa fa-plus text-gray-800 mr-1"></i>
-				<span class="text-gray-800">Agregar Ítem</span>
+				<span class="text-gray-900">Agregar Ítem</span>
 				<f:setPropertyActionListener value="FACTURA" target="#{listaProductoCtrl.callModule}"/>
 				<f:setPropertyActionListener value="NUEVO" target="#{listaProductoCtrl.accion}"/>
 				<f:setPropertyActionListener value=":formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>

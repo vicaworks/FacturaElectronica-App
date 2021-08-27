@@ -284,6 +284,7 @@ public class CompFacCtrl extends BaseCtrl {
 			detalleSelected.setProducto(productoSelected);
 			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
 			detalleSelected.setPorcentajeDescuento(productoSelected.getPorcentajedescuento());
+			detalleSelected.setPreciocompra(productoSelected.getPreciounitario());
 			detalleSelected.setIva(productoSelected.getIva());
 			detalleSelected.setIce(productoSelected.getIce());
 			detalleSelected.setPrecioVenta(1);
@@ -933,12 +934,12 @@ public class CompFacCtrl extends BaseCtrl {
 		habilitarCrud(cabecerSelected.getEstado());
 		
 		detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idFactura);
+		totalizar();
 		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idFactura);
 		pagoList.stream().forEach(x->{
 			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
 		}); 
-		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idFactura);
-		totalizar();
 		totalizarPago();
 		if (cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
 			cabecerSelected.setBorrador(true);

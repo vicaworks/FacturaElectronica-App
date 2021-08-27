@@ -61,7 +61,10 @@ public class Detalle implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "preciounitario")
-    private BigDecimal preciounitario;
+    private BigDecimal preciounitario;    
+    @NotNull
+    @Column(name = "preciocompra")
+    private BigDecimal preciocompra = BigDecimal.ZERO;
     @Basic(optional = false)
     @NotNull
     @Column(name = "valorice")
@@ -75,12 +78,12 @@ public class Detalle implements Serializable {
     @Size(min = 1, max = 400)
     @Column(name = "descripcion")
     private String descripcion;
-    
-	
+    @NotNull
+    @Column(name = "codproducto")
+    private String codproducto;
     @ManyToOne(optional = true)
     @JoinColumn(name = "idice", referencedColumnName = "idice", nullable = true)
-    private Ice ice;
-    
+    private Ice ice;    
     @ManyToOne(optional = true)
     @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = true)
     private Iva iva;
@@ -105,8 +108,7 @@ public class Detalle implements Serializable {
     @Transient
     private String accion;
     
-    @Transient
-    private String codproducto;
+    
     
     @Transient
     private BigDecimal porcentajeDescuento = BigDecimal.ZERO;
@@ -422,6 +424,20 @@ public class Detalle implements Serializable {
 	 */
 	public void setPrecioVenta(Integer precioVenta) {
 		this.precioVenta = precioVenta;
+	}
+
+	/**
+	 * @return the preciocompra
+	 */
+	public BigDecimal getPreciocompra() {
+		return preciocompra;
+	}
+
+	/**
+	 * @param preciocompra the preciocompra to set
+	 */
+	public void setPreciocompra(BigDecimal preciocompra) {
+		this.preciocompra = preciocompra;
 	}
 
 	

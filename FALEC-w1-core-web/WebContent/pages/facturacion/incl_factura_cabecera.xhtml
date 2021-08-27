@@ -13,6 +13,13 @@
 			
 		}
 		
+		.ui-selectbooleanbutton{ border-color: #566573;}
+		
+		.ui-selectbooleanbutton.ui-state-active, body .ui-selectonebutton > .ui-button.ui-state-active, body .ui-selectmanybutton > .ui-button.ui-state-active {
+			background: #99A3A4!important;
+			border-color: #99A3A4!important;
+			color: #ffffff;
+		}
 	</style>
 	<script >
 		function seleccionarInputListaInfo(clase,mainDiv)
@@ -41,53 +48,72 @@
 			</div>			
 		</div>
 		
-		<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}" styleClass="mb-2">
+		<p:outputPanel id="gridSecuencial" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}" styleClass="mb-2 mt-2">
 			<div class="flex">
-				<div class="flex-grow-0 flex min-width-60 justify-content-center">
-					<p:selectBooleanCheckbox value="#{compFacCtrl.cabecerSelected.borrador}">
-						<p:ajax event="change" 
+				<div class="flex-grow-0 flex min-width-50 justify-content-start">
+					<p:toggleSwitch value="#{compFacCtrl.cabecerSelected.borrador}" style="height:24px;">
+			            <p:ajax  
 							process="@this :formMain:gridSecuencial" 
 							update=":formMain:gridSecuencial" 
 							listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
 						</p:ajax>
-					</p:selectBooleanCheckbox>
+			        </p:toggleSwitch>
+					<!-- <p:selectBooleanButton onLabel="Si" offLabel="No"
+                                onIcon="pi pi-check" offIcon="pi pi-times" value="#{compFacCtrl.cabecerSelected.borrador}" style="height:24px;width:55px;">
+                    	<p:ajax  
+							process="@this :formMain:gridSecuencial" 
+							update=":formMain:gridSecuencial" 
+							listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
+						</p:ajax>
+                    </p:selectBooleanButton> -->
 				</div>
-				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-blue-600 py-1 px-2">
+				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
 					<span class="Fs12 text-black font-semibold">Borrador</span>
 					<span class="Fs10 text-gray-400">La factura se guarda como borrador y permite modificaciones</span>
 				</div>
-			</div>			
+			</div>
+			
+			<p:outputPanel rendered="#{not compFacCtrl.cabecerSelected.borrador}" styleClass="gridSecuencial">
+				<div class="EmptyBox5"/>
+				<div class="flex">
+					<div class="flex-grow-0 flex min-width-50 justify-content-start">
+						<p:toggleSwitch value="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
+				            <p:ajax event="change" 
+									process="@this :formMain:gridSecuencial" 
+									update=":formMain:gridSecuencial">
+								</p:ajax>
+				        </p:toggleSwitch>
+						<!-- <p:selectBooleanButton onLabel="Si" offLabel="No"
+	                                onIcon="pi pi-check" offIcon="pi pi-times" value="#{compFacCtrl.cabecerSelected.editarSecuencial}" onchange="PrimeFaces.focus('formMain:intSecDocumento');" style="height:24px;width:55px;">
+	                    	<p:ajax event="change" 
+								process="@this :formMain:gridSecuencial" 
+								update=":formMain:gridSecuencial">
+							</p:ajax>
+	                    </p:selectBooleanButton> -->
+					</div>
+					<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
+						<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
+						<span class="Fs10 text-gray-400">Asigna un número de factura de forma manual</span>
+						<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" styleClass="mt-2">
+							<div class="flex align-items-center">
+								<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialEstablecimiento}" styleClass="Fs14"/>
+								<span class="mx-2">-</span>
+								<p:inputMask id="intSecCaja" value="#{compFacCtrl.cabecerSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+								<span class="mx-2">-</span>
+								<p:inputMask id="intSecDocumento" value="#{compFacCtrl.cabecerSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+							</div>
+							<div class="flex">
+								<p:message styleClass="block" for="intSecCaja" />
+								<p:message styleClass="block" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+							</div>
+						</p:outputPanel>
+					</div>
+				</div>
+			</p:outputPanel>
+			
 		</p:outputPanel>
 		
-		<p:outputPanel id="gridSecuencial" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}">
-			<div class="flex">
-				<div class="flex-grow-0 flex min-width-60 justify-content-center">
-					<p:selectBooleanCheckbox value="#{compFacCtrl.cabecerSelected.editarSecuencial}" onchange="PrimeFaces.focus('formMain:intSecDocumento')">
-						<p:ajax event="change" 
-							process="@this :formMain:gridSecuencial" 
-							update=":formMain:gridSecuencial">
-						</p:ajax>
-					</p:selectBooleanCheckbox>
-				</div>
-				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-blue-600 py-1 px-2">
-					<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
-					<span class="Fs10 text-gray-400">Asigna un número de factura de forma manual</span>
-					<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" styleClass="mt-2">
-						<div class="flex align-items-center">
-							<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialEstablecimiento}" styleClass="Fs14"/>
-							<span class="mx-2">-</span>
-							<p:inputMask id="intSecCaja" value="#{compFacCtrl.cabecerSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
-							<span class="mx-2">-</span>
-							<p:inputMask id="intSecDocumento" value="#{compFacCtrl.cabecerSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
-						</div>
-						<div class="flex">
-							<p:message styleClass="block" for="intSecCaja" />
-							<p:message styleClass="block" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
-						</div>
-					</p:outputPanel>
-				</div>
-			</div>
-		</p:outputPanel>
+		
 		
 		<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
@@ -108,12 +134,15 @@
 		<span class="block mt-1 text-gray-700 font-medium">CLIENTE</span>
 		<div class="flex">
 			<div class="flex-grow-0 flex pr-1">
-				<p:commandButton value="CONS. FINAL" action="#{compFacCtrl.buscarConsumidorFinal()}" 
+				
+				<p:commandLink styleClass="min-width-100 border-1 border-gray-400" style="height:24px;" action="#{compFacCtrl.buscarConsumidorFinal()}" 
 						immediate="true" 
-						update=":formMain:msgFormMain :formMain:gridCliente" 
-						icon="fa fa-users" 
-						styleClass="ui-button-outlined min-width-50">
-				</p:commandButton>
+						update=":formMain:msgFormMain :formMain:gridCliente">
+					<div class="flex align-items-center justify-content-evenly" style="height:24px;">
+						<i class="fa fa-users mr-1 text-gray-700"></i>
+						<span class="text-gray-700">CONS. FINAL</span>
+					</div>
+				</p:commandLink>
 			</div>
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
@@ -288,8 +317,8 @@
 	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null}">
 	    				
 	    				<f:setPropertyActionListener value="FACTURA" target="#{pagoCompCtrl.callModule}"/>
-	    				<!-- <f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{pagoCompCtrl.adquisicionFrmCtrl}"/>
-	    				<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{pagoCompCtrl.adquisicionSelected}"/> -->
+	    				<f:setPropertyActionListener value="#{compFacCtrl}" target="#{pagoCompCtrl.compFacCtrl}"/>
+	    				<f:setPropertyActionListener value="#{compFacCtrl.cabecerSelected}" target="#{pagoCompCtrl.cabeceraSelected}"/>
 	    				<f:setPropertyActionListener value="#{compFacCtrl.pagoList}" target="#{pagoCompCtrl.pagoList}"/>
 	    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
 	    				<f:setPropertyActionListener value=":formMain:oupPagoDT" target="#{pagoCompCtrl.updateView}"/>
@@ -332,6 +361,7 @@
 		<span class="block text-black Fs14 font-medium">Información Adicional</span>
 		
 		<div class="flex my-2">
+			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
 			<p:commandLink action="#{compFacCtrl.agregarInfoAdicional()}" update="@form:oupInfoAdicionalMain" process="@this @form:oupInfoAdicionalMain" oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
 				<i class="Fs12 fa fa-plus mr-1 text-gray-700"/>
 				<span class="text-black">Agregar</span>

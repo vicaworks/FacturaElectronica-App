@@ -188,11 +188,6 @@ public class ListaProductoCtrl extends BaseCtrl {
 					}else {
 						tipoRegistro = 2;						
 					}
-//					if(compFacCtrl.getDetalleSelected().getProducto()!=null && compFacCtrl.getDetalleSelected().getProducto().getTipoventa()==2) {
-//						Ajax.oncomplete("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm')");						
-//					}else {
-//						Ajax.oncomplete("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
-//					}
 				}
 				break;
 			default:
