@@ -15,8 +15,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import org.omnifaces.util.Ajax;
-
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -34,7 +32,6 @@ import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
-import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
@@ -57,7 +54,6 @@ import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.RecEmitidoCtrl;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
-import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -511,43 +507,6 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void aplicarPago() throws DaoException {
-		if(cabecerSelected == null) {
-			return;
-		}
-		
-		if (cabecerSelected.getTotalsinimpuestos().doubleValue()<=0) {
-			return;
-		}
-		
-		if (pagoList==null) {
-			pagoList = new ArrayList<>();
-		}
-		
-		Tipopago tp = getTipopagoSelected();
-		pagoSelected = new Pago();
-		pagoSelected.setCabecera(cabecerSelected);
-		pagoSelected.setTipopago(tp);
-		pagoSelected.setTotal(cabecerSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-		pagoSelected.setPlazo(BigDecimal.ZERO);
-		pagoSelected.setUnidadtiempo("DIAS");
-		pagoList.add(pagoSelected);
-		totalizarPago();
-		
-		switch (tp.getSubdetalle()) {
-		case "1":
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
-			break;
-		case "4":
-			pagoSelected.setFechapago(new Date());
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
-			break;	
-		default:
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
-			break;
-		}
-	}
-	
 	private void totalizarPago() {
 		
 		totalPago = BigDecimal.ZERO;
@@ -569,66 +528,6 @@ public class CompFacCtrl extends BaseCtrl {
 		totalSaldo = cabecerSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
 		if(totalSaldo.doubleValue()<0) {
 			totalSaldo = BigDecimal.ZERO;
-		}
-		
-	}
-	
-	public void calcularCambioAction(Pago p) {
-		try {
-			pagoSelected = p;
-			if(pagoSelected.getValorentrega().doubleValue()==0) {
-				pagoSelected.setCambio(BigDecimal.ZERO);
-			}else {
-				pagoSelected.setCambio(pagoSelected.getValorentrega().add(pagoSelected.getTotal().negate()).setScale(2, RoundingMode.HALF_UP));
-				if(pagoSelected.getCambio().doubleValue()<0) {
-					pagoSelected.setCambio(BigDecimal.ZERO);
-				}
-			}
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void totalizarPagoaction(Pago p) {
-		try {
-			pagoSelected = p;
-			// tipo efectivo
-			if(pagoSelected.getTipopago().getSubdetalle().equals("1")) {
-				calcularCambioAction(p);
-			}
-			totalizarPago();
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	
-	public void eliminarDetallePago() {
-		
-		try {
-			
-			for (Pago p : pagoList) {
-				if(pagoSelected.getIdpago().equals(p.getIdpago())) {
-					break;
-				}
-			}
-			
-			pagoList.remove(pagoSelected);
-			if(pagoList.isEmpty()) {
-				pagoSelected=null;
-			}else {
-				pagoSelected = pagoList.get(pagoList.size()-1);
-			}
-			
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
 	}
@@ -948,13 +847,13 @@ public class CompFacCtrl extends BaseCtrl {
 		return null;
 	}
 	
-	public void establecerFocoDetalle() {
-		try {
-			detalleSelected = detalleFacList.stream().filter(x->x.getIddetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void establecerFocoDetalle() {
+//		try {
+//			detalleSelected = detalleFacList.stream().filter(x->x.getIddetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public String crearUnaCopia(String idCabeceraSeleccion) {
 		try {
