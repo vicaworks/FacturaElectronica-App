@@ -59,6 +59,9 @@
             		</f:subview>
             		<f:subview rendered="#{listaProductoCtrl.callModule=='FACTURA'}" id="fsvFactura">
             			<ui:include src="../../common/producto/incl_common_listaproducto_formfactura.xhtml" />
+            		</f:subview>
+            		<f:subview rendered="#{listaProductoCtrl.callModule=='NOTA_CREDITO'}" id="fsvNCredito">
+            			<ui:include src="../../common/producto/incl_common_listaproducto_formNotaCredito.xhtml" />
             		</f:subview>            	
             		
             	</p:tab>

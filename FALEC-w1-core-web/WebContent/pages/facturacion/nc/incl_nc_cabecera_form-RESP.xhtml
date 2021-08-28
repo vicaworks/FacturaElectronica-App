@@ -1,0 +1,295 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	
+	<!-- consulta cliente return keycode 13 -->
+	<p:remoteCommand name="buscarCliente"  action="#{notaCreditoCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion"/>
+					
+	<div class="card card-w-title">
+		
+		<div class="p-grid">
+			<div class="p-col-4">
+				<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Nota de #{msg['label.credito2']}</h2>
+			</div>
+			<div class="p-col-8" style="text-align: right;">
+				<h:outputText value="Establecimiento - #{appSessionCtrl.formatoCadena(notaCreditoCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="cpoRequerido Fs11" style="color:rgba(0,0,0,0.9);"/>
+			</div>
+		</div>
+		
+		<!-- Formulario -->
+		<p:panelGrid id="gridNotaCreditoDG" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+			
+			<h:panelGroup>
+				<h:outputText value="ESTADO BORRADOR" styleClass="cpoRequerido" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.estadoBorrador}"/> <p:spacer width="10px;"></p:spacer>
+				<p:selectBooleanButton value="#{notaCreditoCtrl.notaCreditoSeleccion.borrador}" onLabel="SI" offLabel="No" style="width:60px" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.estadoBorrador}">
+					<p:ajax event="change" process="@this :formMain:gridNotaCreditoDG" update=":formMain:gridNotaCreditoDG" listener="#{notaCreditoCtrl.cambioEstadoBorrador(notaCreditoCtrl.notaCreditoSeleccion)}">
+					</p:ajax>
+				</p:selectBooleanButton>
+			</h:panelGroup>
+			
+			<h:outputText value="SECUENCIAL DOCUMENTO" styleClass="cpoRequerido" rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.borrador}"/>	
+				
+			<h:panelGroup rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.borrador}">
+				<p:outputPanel id="oupSecuenalNc">
+					
+					<p:outputLabel rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado!='BORRADOR'}">
+						<div class="EmptyBox5"></div>
+						<h:outputText value="#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}" styleClass="Fs18 FontBold"/>
+						<div class="EmptyBox5"></div>
+					</p:outputLabel>
+					
+					<p:outputLabel rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera==null or(notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado=='BORRADOR')}">
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialEstablecimiento}" />
+						<h:outputText value=" - " />
+						<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+						<h:outputText value=" - " />
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" rendered="#{not notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
+						<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="REQUERIDO"/>
+						<p:spacer width="5px;"/>
+						<p:commandLink action="#{notaCreditoCtrl.editarSecuencialAction()}" process=":formMain:gridNotaCreditoDG" update=":formMain:msgFormMain :formMain:gridNotaCreditoDG">
+							<i class="fa fa-edit Fs16" style="color:#2f2f2f;"/>
+						</p:commandLink>
+						<p:spacer width="5px;"/>
+						<p:commandLink action="#{notaCreditoCtrl.noEditarSecuencialAction()}" process="@this" update=":formMain:msgFormMain :formMain:gridNotaCreditoDG">
+							<i class="fa fa-ban Fs16" style="color:#2f2f2f;"/>
+						</p:commandLink>
+						<p:message styleClass="Wid100" for="intSecCaja"/>
+						<p:message styleClass="Wid100" for="intSecDocumento" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}"/>
+					</p:outputLabel>
+				</p:outputPanel>					
+			
+				
+			</h:panelGroup>
+			
+		</p:panelGrid>
+			
+		<p:panelGrid id="gridNotaCreditoDG3" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:calendar id="claNcFechaEmision" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemision}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+					
+					<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
+					
+				</p:calendar>
+				<p:message for="claNcFechaEmision" />
+			</h:panelGroup>
+			
+			<h:outputText value="PERIODO FISCAL" styleClass="cpoRequerido"/>
+			<h:panelGroup >
+				<p:outputPanel id="oupPeriodoFiscal">
+					<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.periodofiscal}"/>
+				</p:outputPanel>
+			</h:panelGroup>
+			
+			<h:outputText value="MOTIVO MODIFICACIÓN *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="intMotivoAnulacion" value="#{notaCreditoCtrl.notaCreditoSeleccion.motivo}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100"/>
+				<p:message for="intMotivoAnulacion" />
+			</h:panelGroup>
+			
+		</p:panelGrid>
+		
+	</div>	
+	
+	<div class="EmptyBox5"/>
+	
+	<div class="card card-w-title">
+		
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  Documento Asociado</h2>
+		
+		<!-- Formulario -->
+		<p:panelGrid id="gridNotaCreditoDG2" columns="1" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-12">
+			
+			<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>				
+			<h:panelGroup>
+				<div class="ui-inputgroup">
+	                <span class="ui-inputgroup-addon">
+	                	
+	                	<p:commandButton process="@this :formMain:inpCriterioCliente"
+							update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion"
+							action="#{notaCreditoCtrl.buscarCliente()}" icon="fa fa-search">
+	                	</p:commandButton>
+	                
+	                </span>
+	                
+	                <p:inputText id="inpCriterioCliente"
+						value="#{notaCreditoCtrl.criterioCliente}" required="false"
+						requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						validatorMessage="SOLO NUMEROS"
+						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
+						<f:validateRegex pattern="^\d+$" />
+					</p:inputText>
+	                
+	            </div>
+	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100"/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<div class="EmptyBox5"/>
+				<div class="p-grid">
+					<div class="p-col-12 p-md-6">
+						<p:commandButton  id="cmdRtnCliente2" 
+								title="NUEVO / EDITAR CLIENTE"
+								icon="fa fa-plus"
+								value="CLIENTE/ EDITAR"
+								styleClass="Wid100 Fs11"
+								action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}"
+								immediate="true">
+								<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
+								<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{clienteCtrl.updateView}"/>
+								<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+						</p:commandButton>
+					</div>
+					<div class="p-col-12 p-md-6">
+						
+						<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs11">
+							<f:setPropertyActionListener value="#{notaCreditoCtrl}" target="#{listaClienteCtrl.notaCreditoCtrl}"/>
+							<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{listaClienteCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:inpNCNombre :formMain:inpNcRuc :formMain:inpNcEmail :formMain:inpNcDireccion" target="#{listaClienteCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+						</p:commandButton>
+					
+					</div>
+				</div>
+			</h:panelGroup>
+			
+			<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpNCNombre" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNCNombre" />
+			</h:panelGroup>
+			
+			<h:outputText value="CI / RUC *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpNcRuc" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcRuc" />
+			</h:panelGroup>
+			
+			<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpNcEmail" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcEmail" />
+			</h:panelGroup>
+			
+			<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:inputText id="inpNcDireccion" value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+				</p:inputText>
+				<p:message for="inpNcDireccion" />
+			</h:panelGroup>
+			
+			<h:outputText value="TIPO COMPROBANTE *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="somNcTipComprobante"
+							value="#{notaCreditoCtrl.notaCreditoSeleccion.tipocomprobanteretencion}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="REQUERIDO"
+							styleClass="Wid100"
+							filter="true" filterMatchMode="contains">
+					<f:selectItem itemLabel="Seleccionar ..."
+							itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+
+					<f:selectItems value="#{notaCreditoCtrl.tipocomprobanteList}" var="tp"
+						itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
+						
+				</p:selectOneMenu>
+				<p:message for="somNcTipComprobante" />
+			</h:panelGroup>
+			
+			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<p:calendar id="claNcFechaEmisionAsociado" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemisiondocasociado}"
+					pattern="dd/MM/yyyy"
+					locale="es" 
+					requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+					
+					<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
+					
+				</p:calendar>
+				<p:message for="claNcFechaEmisionAsociado" />
+			</h:panelGroup>
+			
+			<h:outputText value="NUM DOCUMENTO *" styleClass="cpoRequerido"/>
+			<h:panelGroup>
+				<div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon">
+                        <p:commandButton id="cmdConsultarDocu"
+							icon="fa fa-search" 
+							action="#{notaCreditoCtrl.buscarNumDocumento()}" 
+							styleClass="Fs12 Wid100 displayButton" 
+							update="@form"
+							process="@this :formMain:somNcTipComprobante :formMain:inpNcNumFac" title="BUSCAR"/>
+                    </span>
+					<p:inputMask id="inpNcNumFac" value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
+						<f:converter converterId="formatoNumComprobanteConverter"/>
+					</p:inputMask>
+                </div>
+				<p:message for="inpNcNumFac" />
+			</h:panelGroup>
+			
+		</p:panelGrid>
+	</div>	
+	<div class="EmptyBox5"/>
+	<div class="card card-w-title">	
+		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> #{msg['label.informacionadicional']}</h2>
+		<p:outputPanel id="oupInfoAdicionalMain">
+			<p:panelGrid columns="1"
+				 styleClass="ui-panelgrid-blank Wid100" 
+				 columnClasses="ui-g-12">
+				 				
+			 	<p:commandButton value="AGREGAR" icon="fa fa-plus" action="#{notaCreditoCtrl.agregarInfoAdicional()}" update="@form" styleClass="secondary-button Fs10 m-button"/>
+				<h:panelGroup>
+				</h:panelGroup>				 
+				
+			</p:panelGrid>	
+				
+			<p:outputPanel id="grdInfoAdicional">
+			
+				<p:panelGrid id="grid4" columns="3" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-5,ui-g-5,ui-g-2">
+					<h:outputText value="NOMBRE *" styleClass="cpoRequerido" />
+					<h:outputText value="#{msg['label.descripcion']} *" styleClass="cpoRequerido" />
+				</p:panelGrid>
+				<div class="EmptyBox5"/>
+				<div class="p-grid p-align-center vertical-container grdInfoAdicional">
+					
+					<p:repeat var="info" value="#{notaCreditoCtrl.infoadicionalList}" >
+						<div class="p-col-5">
+							<p:inputText id="inpInfoAdicionalNombre" styleClass="Wid100" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalNombre"/>
+						</div>
+						<div class="p-col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="Wid100" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
+							<p:message for="inpInfoAdicionalValor"/>
+						</div>
+						<div class="p-col-1" style="text-align: center;">
+							<p:commandLink  action="#{notaCreditoCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain">
+								<f:setPropertyActionListener value="#{info}" target="#{notaCreditoCtrl.infoadicionalSelected}"/>
+								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
+						</div>
+					
+					</p:repeat>
+				</div>
+			
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<div class="EmptyBox20"/>
+		
+	</div>	
+
+</ui:composition>

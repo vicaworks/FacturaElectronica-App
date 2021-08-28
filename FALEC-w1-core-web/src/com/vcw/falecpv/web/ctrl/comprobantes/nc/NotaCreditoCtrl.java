@@ -15,8 +15,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import org.omnifaces.util.Ajax;
-
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -54,7 +52,6 @@ import com.vcw.falecpv.web.common.RideCtrl;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
-import com.xpert.faces.utils.FacesUtils;
 
 /**
  * @author cristianvillarreal
@@ -117,10 +114,8 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	private FacEmitidaCtrl facEmitidaCtrl;
 	private List<Detalle> detalleNcList;
 	private Detalle detalleSelected;
-	private Producto productoSelected;
 	private List<Iva> ivaList;
 	private List<Ice> iceList;
-	private String criterioBusqueda;
 	private String criterioCliente;
 	private RideCtrl rideCtrl;
 	
@@ -382,10 +377,11 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	
 	private void calcularItem(Detalle dFac,boolean calcDescuento) {
 		if(calcDescuento) {
-			dFac.setDescuento(dFac.getProducto().getPorcentajedescuento().divide(BigDecimal.valueOf(100))
+			dFac.setDescuento(dFac.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))
 					.multiply(dFac.getPreciounitario()).multiply(dFac.getCantidad())
 					.setScale(2, RoundingMode.HALF_UP));
 		}
+		
 		dFac.setPreciototalsinimpuesto(dFac.getCantidad().multiply(dFac.getPreciounitario()).add(dFac.getDescuento().negate()).setScale(2, RoundingMode.HALF_UP));
 		dFac.setValorice(dFac.getIce().getValor().divide(BigDecimal.valueOf(100)).multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
 		dFac.setValoriva(dFac.getIva().getValor().divide(BigDecimal.valueOf(100))
@@ -463,78 +459,54 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void buscarCodigoProducto() {
+	public void agregarProducto(Producto productoSelected) {
 		try {
 			
-			if(criterioBusqueda!=null && criterioBusqueda.trim().length()==0) {
-				return;
-			}
 			
-			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, establecimientoMain.getIdestablecimiento());
-			
-			if(productoSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE : " + criterioBusqueda);
-				return;
-			}
-			productoSelected.setCantidad(1);
-			agregarProducto();
-			criterioBusqueda = null;
-//			Ajax.oncomplete("PrimeFaces.focus('formMain:intCriterioBusqueda')");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void agregarProducto() {
-		try {
-			
-			if(detalleNcList==null) {
-				detalleNcList = new ArrayList<>();
-			}
-			
-			detalleSelected = existeProductoLista();
-			boolean existe = false;
-			if(detalleSelected!=null) {
-				detalleSelected.setCantidad(
-						productoSelected.getCantidad() != null ? detalleSelected.getCantidad().add(BigDecimal.valueOf(productoSelected.getCantidad()))
-								: BigDecimal.valueOf(1));
-				existe = true;
-			}else {
-				detalleSelected = new Detalle();
-				detalleSelected.setCantidad(
-						productoSelected.getCantidad() != null ? BigDecimal.valueOf(productoSelected.getCantidad())
-								: BigDecimal.valueOf(1));
-				detalleSelected.setDescripcion(productoSelected.getNombregenerico());
-				detalleSelected.setPreciounitario(productoSelected.getPreciouno());
-				detalleSelected.setProducto(productoSelected);
-				detalleSelected.setIva(productoSelected.getIva());
-				detalleSelected.setIce(productoSelected.getIce());
-			}
-			
+			detalleSelected = new Detalle();
+			detalleSelected.setCodproducto(productoSelected.getCodigoprincipal());			
+			detalleSelected.setCantidad(BigDecimal.valueOf(1));
+			detalleSelected.setDescripcion(productoSelected.getNombre());
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setProducto(productoSelected);
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setPorcentajeDescuento(productoSelected.getPorcentajedescuento());
+			detalleSelected.setPreciocompra(productoSelected.getPreciounitario());
+			detalleSelected.setIva(productoSelected.getIva());
+			detalleSelected.setIce(productoSelected.getIce());
+			detalleSelected.setPrecioVenta(1);
 			calcularItem(detalleSelected,true);
 			
-			if(!existe) {
-				detalleNcList.add(detalleSelected);
-			}
-			
-			totalizar();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
-	private Detalle existeProductoLista() {
-		for (Detalle d : detalleNcList) {
-			if(d.getProducto()!=null && d.getProducto().getIdproducto().equals(productoSelected.getIdproducto())) {
-				return d;
-			}
+	public void cambiarPrecioVenta(Integer precio) {
+		switch (precio) {
+		case 1:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciouno());
+			detalleSelected.setPrecioVenta(1);
+			break;
+		case 2:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciodos());
+			detalleSelected.setPrecioVenta(2);
+			break;	
+		case 3:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciotres());
+			detalleSelected.setPrecioVenta(3);
+			break;
+		default:
+			break;
+		}
+		calcularItem(detalleSelected, true);		
+		if(detalleSelected.getProducto().getTipoventa()==2) {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm')");						
+		}else {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
 		}
 		
-		return null;
 	}
 	
 	public void agregarItem() {
@@ -548,31 +520,46 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			consultarIva();
 			
 			detalleSelected = new Detalle();
-			detalleSelected.setCantidad(BigDecimal.valueOf(1));
+			detalleSelected.setCantidad(BigDecimal.valueOf(1));			
 			detalleSelected.setDescuento(BigDecimal.ZERO);
-			detalleSelected.setDescripcion("");
 			detalleSelected.setPreciounitario(BigDecimal.ZERO);
+			detalleSelected.setDescuento(BigDecimal.ZERO);
+			detalleSelected.setValorice(BigDecimal.ZERO);
+			detalleSelected.setValoriva(BigDecimal.ZERO);
 			detalleSelected.setProducto(null);
+			detalleSelected.setPrecioVenta(0);
 			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
 				return;
 			}
 			detalleSelected.setIce(iceList.stream().filter(x->x.getCodigo().equals("-1")).findFirst().orElse(null));
 			if(detalleSelected.getIce()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0 Y CODIGO SRI [-1].");
+				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0 Y CODIGO SRI [-1].");
 				return;
 			}
-			detalleNcList.add(detalleSelected);
 			
 			calcularItem(detalleSelected, false);
-			totalizar();
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (detalleNcList.size()-1) + ":intDetNombreProducto');");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void agregarDetalle() {
+		try {
+			if(detalleNcList==null) {
+				detalleNcList = new ArrayList<>();
+			}
+			if(detalleSelected.getAccion().equals("NUEVO")) {
+				detalleNcList.add(detalleSelected);				
+			}
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -683,17 +670,8 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		habilitarCrud(notaCreditoSeleccion.getEstado());
 		if (notaCreditoSeleccion.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {
 			notaCreditoSeleccion.setBorrador(true);
-		}
-		
+		}		
 		return null;
-	}
-	
-	public void establecerFocoDetalle() {
-		try {
-			detalleSelected = detalleNcList.stream().filter(x->x.getIddetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void imprimir() {
@@ -859,20 +837,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	}
 
 	/**
-	 * @return the productoSelected
-	 */
-	public Producto getProductoSelected() {
-		return productoSelected;
-	}
-
-	/**
-	 * @param productoSelected the productoSelected to set
-	 */
-	public void setProductoSelected(Producto productoSelected) {
-		this.productoSelected = productoSelected;
-	}
-
-	/**
 	 * @return the ivaList
 	 */
 	public List<Iva> getIvaList() {
@@ -898,20 +862,6 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	 */
 	public void setIceList(List<Ice> iceList) {
 		this.iceList = iceList;
-	}
-
-	/**
-	 * @return the criterioBusqueda
-	 */
-	public String getCriterioBusqueda() {
-		return criterioBusqueda;
-	}
-
-	/**
-	 * @param criterioBusqueda the criterioBusqueda to set
-	 */
-	public void setCriterioBusqueda(String criterioBusqueda) {
-		this.criterioBusqueda = criterioBusqueda;
 	}
 
 	/**

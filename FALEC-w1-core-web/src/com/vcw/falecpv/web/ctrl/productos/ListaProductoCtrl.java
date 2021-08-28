@@ -132,6 +132,17 @@ public class ListaProductoCtrl extends BaseCtrl {
 						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
 					}
 					break;
+				case "NOTA_CREDITO":
+					tabIndex = 0;
+					notaCreditoCtrl.agregarProducto(productoSelected);
+					notaCreditoCtrl.getDetalleSelected().setAccion("NUEVO");
+					notaCreditoCtrl.getDetalleSelected().setProducto(productoSelected);
+					if(productoSelected.getTipoventa()==2) {
+						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:innCantFrm')");						
+					}else {
+						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:innCantFrm2')");
+					}
+					break;
 				default:
 					break;
 				}
@@ -190,6 +201,28 @@ public class ListaProductoCtrl extends BaseCtrl {
 					}
 				}
 				break;
+			case "NOTA_CREDITO":
+				if(accion.equals("NUEVO")) {
+					notaCreditoCtrl.agregarItem();
+					tipoRegistro = 1;					
+				}else {
+					if(notaCreditoCtrl.getDetalleSelected().getProducto()!=null) {
+						tipoRegistro = 1;
+						productoSelected = notaCreditoCtrl.getDetalleSelected().getProducto();
+						// precio venta
+						notaCreditoCtrl.getDetalleSelected().setPrecioVenta(0);
+						if(notaCreditoCtrl.getDetalleSelected().getProducto().getPreciouno().doubleValue()==notaCreditoCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							notaCreditoCtrl.getDetalleSelected().setPrecioVenta(1);
+						}else if(notaCreditoCtrl.getDetalleSelected().getProducto().getPreciodos().doubleValue()==notaCreditoCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							notaCreditoCtrl.getDetalleSelected().setPrecioVenta(2);
+						}else if(notaCreditoCtrl.getDetalleSelected().getProducto().getPreciotres().doubleValue()==notaCreditoCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							notaCreditoCtrl.getDetalleSelected().setPrecioVenta(3);
+						}
+					}else {
+						tipoRegistro = 2;						
+					}
+				}
+				break;
 			default:
 				break;
 			}
@@ -238,6 +271,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
 				}
 				break;
+			case "NOTA_CREDITO":
+				notaCreditoCtrl.agregarProducto(productoSelected);
+				notaCreditoCtrl.getDetalleSelected().setAccion(accion);
+				tabIndex = 0;
+				if(productoSelected.getTipoventa()==2) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:innCantFrm')");						
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:innCantFrm2')");
+				}
+				break;
 			default:
 				break;
 			}
@@ -272,6 +315,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 				}else {
 					compFacCtrl.getDetalleSelected().setCodproducto("COD" + (compFacCtrl.getDetalleFacList()==null?1:compFacCtrl.getDetalleFacList().size()+1));
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:intFacDescripcion')");
+				}
+				break;
+			case "NOTA_CREDITO":
+				notaCreditoCtrl.agregarItem();
+				notaCreditoCtrl.getDetalleSelected().setAccion("NUEVO");
+				if(tipoRegistro==1) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}else {
+					notaCreditoCtrl.getDetalleSelected().setCodproducto("COD" + (notaCreditoCtrl.getDetalleNcList()==null?1:notaCreditoCtrl.getDetalleNcList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:intFacDescripcion')");
 				}
 				break;
 			default:
@@ -309,6 +362,17 @@ public class ListaProductoCtrl extends BaseCtrl {
 				if(tipoRegistro==2) {
 					compFacCtrl.getDetalleSelected().setCodproducto("COD" + (compFacCtrl.getDetalleFacList()==null?1:compFacCtrl.getDetalleFacList().size()+1));
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:intFacDescripcion')");
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}
+				break;
+			case "NOTA_CREDITO":
+				accion = "NUEVO";
+				notaCreditoCtrl.agregarItem();
+				notaCreditoCtrl.getDetalleSelected().setAccion(accion);				
+				if(tipoRegistro==2) {
+					notaCreditoCtrl.getDetalleSelected().setCodproducto("COD" + (notaCreditoCtrl.getDetalleNcList()==null?1:notaCreditoCtrl.getDetalleNcList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:intFacDescripcion')");
 				}else {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
 				}
@@ -382,14 +446,14 @@ public class ListaProductoCtrl extends BaseCtrl {
 				AppJsfUtil.hideModal("dlgListaProducto");
 				Ajax.oncomplete("PrimeFaces.focus('formMain:formulario:pvDetalleDT:" + (cotizacionFormCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
 				break;
-			case "NOTA_CREDITO":
-				
-				notaCreditoCtrl.setProductoSelected(productoSelected);
-				notaCreditoCtrl.agregarProducto();
-				AppJsfUtil.hideModal("dlgListaProducto");
-				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (notaCreditoCtrl.getDetalleNcList().size()-1) + ":insDetFacCanbtidad1_input')");
-				
-				break;
+//			case "NOTA_CREDITO":
+//				
+//				notaCreditoCtrl.setProductoSelected(productoSelected);
+//				notaCreditoCtrl.agregarProducto();
+//				AppJsfUtil.hideModal("dlgListaProducto");
+//				Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (notaCreditoCtrl.getDetalleNcList().size()-1) + ":insDetFacCanbtidad1_input')");
+//				
+//				break;
 			case "GUIA_REMISION" :
 				GuiaRemFormCtrl guiaRemFormCtrl = (GuiaRemFormCtrl) AppJsfUtil.getManagedBean("guiaRemFormCtrl");
 				String agregar = guiaRemFormCtrl.agregarProducto(productoSelected);

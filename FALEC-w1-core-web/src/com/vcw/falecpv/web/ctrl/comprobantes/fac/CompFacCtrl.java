@@ -389,6 +389,7 @@ public class CompFacCtrl extends BaseCtrl {
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}
+		determinarDescripcionIVA(detalleFacList);
 		
 	}
 	

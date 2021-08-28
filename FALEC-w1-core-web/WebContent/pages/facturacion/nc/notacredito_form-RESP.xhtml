@@ -5,8 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-				xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-                template="/WEB-INF/template/templateV2.xhtml">
+                template="/WEB-INF/template/template.xhtml">
 
     <ui:define name="title">#{msg['title.notacredito']}</ui:define>
     
@@ -17,27 +16,104 @@
 				width: 100% !important;
 			}
 			
-			.pvDetalleDT .ui-selectonemenu .ui-selectonemenu-label {
-				text-align: center;
+			.ui-calendar .ui-inputfield{
+				font-size: 14px !important;
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td,
-			body .ui-datatable thead th {vertical-align: top;}
+			body .ui-messages, 
+			body .ui-message {
+				padding: 0em !important;
+				margin: 0em !important;
+			}
 			
-			.card{margin-bottom: 0.25rem!important;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				padding: 0.3em; 
+				border: 0 none;
+				vertical-align: center;
+			}
 			
+			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+				border: 1px solid #d8d8dc;
+				background-color: #e6e6e6;
+				color: black;
+				cursor: default;
+			}
+			
+			.ui-panelgrid .ui-panelgrid-cell {
+				padding: 0.25em !important;
+			}
+			
+			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
+				padding: 0.2em 0.5em !important;
+			}
+			
+			body .ui-datatable thead th {
+				/* padding: 0px !important; */
+			}
+			
+			.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+				/* padding: 0px !important; */
+			}
+			
+			.dt-spinner .ui-spinner .ui-spinner-input {
+				padding-right: 2em;
+				padding-top: 0.2em;
+				padding-bottom: 0.2em;
+				font-size: 10px!important;
+			}
+			
+			.dt-selection .ui-inputfield {
+				padding: 0.2em 0.5em !important;
+				font-size: 10px!important;
+			}
+			
+			.dt-selection .ui-selectonemenu-label {
+				text-align: right;
+				font-size: 10px!important;
+			}
+			
+			body .ui-inputgroup .ui-inputgroup-addon, 
+			body .ui-inputgroup .ui-inputgroup-addon-checkbox {
+			 padding: 0px !important;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}	
+			
+			body .ui-fileupload .ui-fileupload-content {
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
+			
+			body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
+				width: 100%;
+			}
+			
+			/* =========================================================================================================================== */
+			
+			.pvDetalleDT .ui-datatable-scrollable-body{
+					min-height: 30vh !important;
+					height: calc(100vh - 365px);
+			}
+			
+			.pvDetalleDT .ui-selectonemenu .ui-selectonemenu-label {
+				text-align: right;
+			}
+			
+			
+			.cardTitle{
+				margin: 0px 0px 5px 0px !important;
+			}
+			
+			.disable-color{
+				background-color: #F4F6F7 !important;
+			}
 			
         </style>
-        <script >
-			$(function () {
-			    var focusedElement;
-			    $(document).on('focus', 'input', function () {
-			        if (focusedElement == this) return; //already focused, return so user can now place cursor at specific point in input.
-			        focusedElement = this;
-			        setTimeout(function () { focusedElement.select(); }, 100); //select all text in any field on focus for easy re-entry. Delay sightly to allow focus to "stick" before selecting.
-			    });
-			});
-		</script>
     </ui:define>
 
     <ui:define name="content">
@@ -63,16 +139,21 @@
 			    <p:menuitem value="Nota de #{msg['label.credito2']}" url="#{request.contextPath}/pages/facturacion/nc/notacredito_form.jsf"/>
 			</p:breadCrumb>
     	</f:subview>
+    	
+    	<div class="EmptyBox5"/>
     	<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
 	    	<!-- OPCIONES -->
-	    	<div class="card card-w-title mt-1">
+	    	<div class="card card-w-title">
 	    		
-	    		<div class="flex">
+	    		<div class="EmptyBox5"/>
+	    		
+	    		<div class="p-grid p-justify-start">
+	    			
 	    			<p:commandButton id="cmdRtnNuevo"
-								value="Nuevo" icon="fa fa-plus" 
-								action="#{notaCreditoCtrl.nuevo()}" styleClass="ui-button-success min-width-70 mr-1 #{appSessionCtrl.accesoDisable('mn_compelec_notcredito_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
+								value="NUEVO" icon="fa fa-plus" 
+								action="#{notaCreditoCtrl.nuevo()}" styleClass="secondary-button m-button Fs10 #{appSessionCtrl.accesoDisable('mn_compelec_notcredito_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
 								
 						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facturaSeleccion}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{notaCreditoCtrl.facEmitidaCtrl}"/>
@@ -82,17 +163,17 @@
 						<f:setPropertyActionListener value="#{compNcCtrl}" target="#{notaCreditoCtrl.compNcCtrl}"/>
 						
 					</p:commandButton>
-	    		
+					
     				<p:commandButton id="cmdrtnGuardar"
-							value="Guardar" icon="fa fa-floppy-o" 
-							action="#{notaCreditoCtrl.guardar()}" styleClass="ui-button-outlined min-width-70 mr-1" update="@form" disabled="#{notaCreditoCtrl.enableAccion}"/>
-							
+							value="GUARDAR" icon="fa fa-floppy-o" 
+							action="#{notaCreditoCtrl.guardar()}" styleClass="m-button Fs10" update="@form" disabled="#{notaCreditoCtrl.enableAccion}"/>
+					
 					<p:commandButton id="cmdImprimir"
-							value="Imprimir" icon="fa fa-print Fs11" title="Imprimir Factura"
-							action="#{notaCreditoCtrl.imprimir()}" styleClass="ui-button-outlined min-width-70" update="@form">
+							value="IMPRIMIR" icon="fa fa-print Fs11" title="Imprimir Factura"
+							action="#{notaCreditoCtrl.imprimir()}" styleClass="secondary-button Fs10 m-button" update="@form">
 						<f:setPropertyActionListener value="#{rideCtrl}" target="#{notaCreditoCtrl.rideCtrl}"/>		
 					</p:commandButton>
-					
+	    			
 	    		</div>
 	    		
 	    	</div>
@@ -103,14 +184,16 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="grid">
+			<div class="EmptyBox10"/>
+			
+			<div class="p-grid p-align-top">
 				
-				<div class="col-12 lg:col-5">
+				<div class="p-col-12 p-lg-5">
 					<!-- cabecera -->
 					<ui:include src="incl_nc_cabecera_form.xhtml" />
 				</div>
 				
-				<div class="col-12 lg:col-7">
+				<div class="p-col-12 p-lg-7">
 					<!-- detalle -->
 					<ui:include src="incl_nc_detalle_form.xhtml" />
 				</div>
@@ -126,14 +209,13 @@
 	    <ui:include src="../../herramientas/incl_cliente_form.xhtml" />
 	    
 	    <!-- Busqueda Productos -->
-	    <ui:include src="../../common/producto/incl_common_listaproducto.xhtml" />
+	    <ui:include src="../../productos/incl_listaProducto.xhtml" />
 	    
 	    <!-- RIDE -->
 		<ui:include src="../../common/incl_ride.xhtml" />
 		
 		<!-- Form Producto -->
 	    <ui:include src="../../productos/incl_producto_form.xhtml" />
-	    
 	    
 	    <!-- Form Fabricante -->
 	    <ui:include src="../../productos/incl_fabricante_form.xhtml" />

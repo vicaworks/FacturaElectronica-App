@@ -73,6 +73,12 @@ public class Detalle implements Serializable {
     @NotNull
     @Column(name = "valoriva")
     private BigDecimal valoriva;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "porcentajedescuento")
+    private BigDecimal porcentajeDescuento = BigDecimal.ZERO;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 400)
@@ -87,6 +93,7 @@ public class Detalle implements Serializable {
     @ManyToOne(optional = true)
     @JoinColumn(name = "idiva", referencedColumnName = "idiva", nullable = true)
     private Iva iva;
+    
     
     @JoinColumn(name = "idcabecera", referencedColumnName = "idcabecera")
     @ManyToOne
@@ -107,11 +114,6 @@ public class Detalle implements Serializable {
     
     @Transient
     private String accion;
-    
-    
-    
-    @Transient
-    private BigDecimal porcentajeDescuento = BigDecimal.ZERO;
     
     @Transient
     private Integer precioVenta = 1;

@@ -59,9 +59,9 @@
             					styleClass="text-center inline" 
             					style="min-width:75px!important;color:black!important;"
             					action="#{listaProductoCtrl.loadPantalla()}"
-            					oncomplete="if(#{d.producto!=null and d.producto.tipoventa==2}){PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm');}else{PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')}">
-								<i class="fa fa-edit Fs10 mr-1 text-gray-900"></i>
-								<span class="Fs12 text-black-light">EDITAR</span>
+            					oncomplete="if(#{d.producto==null or (d.producto!=null and d.producto.tipoventa==2)}){PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm');}else{PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')}">
+								<i class="fa fa-edit Fs12 mr-1 text-gray-800"></i>
+								<span class="Fs14 text-black font-light">EDITAR</span>
 								<f:setPropertyActionListener value="FACTURA" target="#{listaProductoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="EDITAR" target="#{listaProductoCtrl.accion}"/>
 								<f:setPropertyActionListener value=":formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
@@ -79,8 +79,7 @@
            						process="@this :formMain:pvDetalleDT" 
            						disabled="#{compFacCtrl.enableAccion}" 
            						style="min-width:75px!important;">
-								<i class="fa fa-trash-o Fs10 text-pink-600 text-semibold mr-1"></i>
-								<span class="Fs12 text-gray-900">ELIMINAR</span>
+								<span class="Fs14 text-blue-600 font-medium">ELIMINAR</span>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{d}" target="#{compFacCtrl.detalleSelected}"/>								
 							</p:commandLink>
@@ -207,7 +206,7 @@
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
 								<div class="flex flex-grow-1 Fs9">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
-									<span class="text-gray-800">I.V.A.</span>
+									<span class="text-gray-800 mr-1">I.V.A.</span> <span>#{notaCreditoCtrl.descripcionIva}</span>
 								</div>						
 								<div class="flex flex-grow-1">
 									<div class="text-right pr-3 w-full">
