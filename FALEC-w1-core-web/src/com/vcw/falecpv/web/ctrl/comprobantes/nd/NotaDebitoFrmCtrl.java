@@ -34,7 +34,6 @@ import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Motivo;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
-import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
@@ -338,10 +337,11 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		
 		notDebitoSelected.setTotalconimpuestos(notDebitoSelected.getTotalsinimpuestos().add(notDebitoSelected.getTotaliva()).setScale(2, RoundingMode.HALF_UP));
 		notDebitoSelected.setTotalpagar(notDebitoSelected.getTotalconimpuestos().add(notDebitoSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
-		if(totalPago!=null && totalPago.doubleValue()>0) {
-			totalizarPago();
-		}
-		
+//		if(totalPago!=null && totalPago.doubleValue()>0) {
+//			totalizarPago();
+//		}
+		pagoList = null;
+		totalPago = BigDecimal.ZERO;
 	}
 	
 	public void calcularIvaAction() {
@@ -380,44 +380,6 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
-	
-	public void aplicarPago() throws DaoException {
-		if(notDebitoSelected == null) {
-			return;
-		}
-		
-		if (notDebitoSelected.getTotalsinimpuestos().doubleValue()<=0) {
-			return;
-		}
-		
-		if (pagoList==null) {
-			pagoList = new ArrayList<>();
-		}
-		
-		Tipopago tp = getTipopagoSelected();
-		pagoSelected = new Pago();
-		pagoSelected.setCabecera(notDebitoSelected);
-		pagoSelected.setTipopago(tp);
-		pagoSelected.setTotal(notDebitoSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-		pagoSelected.setPlazo(BigDecimal.ZERO);
-		pagoSelected.setUnidadtiempo("DIAS");
-		pagoList.add(pagoSelected);
-		totalizarPago();
-		
-		switch (tp.getSubdetalle()) {
-		case "1":
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
-			break;
-		case "4":
-			pagoSelected.setFechapago(new Date());
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
-			break;	
-		default:
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
-			break;
-		}
-	}
-	
 	private void totalizarPago() {
 		
 		totalPago = BigDecimal.ZERO;
@@ -443,64 +405,6 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		
 	}
 	
-	public void calcularCambioAction(Pago p) {
-		try {
-			pagoSelected = p;
-			if(pagoSelected.getValorentrega().doubleValue()==0) {
-				pagoSelected.setCambio(BigDecimal.ZERO);
-			}else {
-				pagoSelected.setCambio(pagoSelected.getValorentrega().add(pagoSelected.getTotal().negate()).setScale(2, RoundingMode.HALF_UP));
-				if(pagoSelected.getCambio().doubleValue()<0) {
-					pagoSelected.setCambio(BigDecimal.ZERO);
-				}
-			}
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void totalizarPagoaction(Pago p) {
-		try {
-			pagoSelected = p;
-			if(pagoSelected.getTipopago().getSubdetalle().equals("1")) {
-				calcularCambioAction(p);
-			}
-			totalizarPago();
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void eliminarDetallePago() {
-		
-		try {
-			
-			for (Pago p : pagoList) {
-				if(pagoSelected.getIdpago().equals(p.getIdpago())) {
-					break;
-				}
-			}
-			
-			pagoList.remove(pagoSelected);
-			if(pagoList.isEmpty()) {
-				pagoSelected=null;
-			}else {
-				pagoSelected = pagoList.get(pagoList.size()-1);
-			}
-			
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-		
-	}
-	
 	public String editar(String idNotDebito) throws DaoException, NumberFormatException, ParametroRequeridoException {
 		
 		nuevaNotDebito();
@@ -512,12 +416,12 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		
 		motivoList = motivoServicio.getMotivoDao().getByIdCabecera(idNotDebito);
 		totalimpuesto = totalimpuestoServicio.getTotalimpuestoDao().getByIdCabecera(idNotDebito).isEmpty()?null:totalimpuestoServicio.getTotalimpuestoDao().getByIdCabecera(idNotDebito).get(0);
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotDebito);
+		totalizar();
 		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idNotDebito);
 		pagoList.stream().forEach(x->{
 			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
 		});
-		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idNotDebito);
-		totalizar();
 		totalizarPago();
 		habilitarCrud(notDebitoSelected.getEstado());
 		if (notDebitoSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {

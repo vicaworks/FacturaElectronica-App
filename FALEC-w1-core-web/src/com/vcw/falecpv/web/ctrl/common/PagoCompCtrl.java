@@ -30,6 +30,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -65,6 +66,7 @@ public class PagoCompCtrl implements Serializable {
 	// controlers
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private CompFacCtrl compFacCtrl;
+	private NotaDebitoFrmCtrl notaDebitoFrmCtrl;
 	
 	/**
 	 * 
@@ -303,6 +305,11 @@ public class PagoCompCtrl implements Serializable {
 				compFacCtrl.setTotalPago(totalPago);
 				compFacCtrl.setTotalSaldo(totalSaldo);
 				break;
+			case "NOTA_DEBITO":
+				notaDebitoFrmCtrl.setPagoList(pagoList);
+				notaDebitoFrmCtrl.setTotalPago(totalPago);
+				notaDebitoFrmCtrl.setTotalSaldo(totalSaldo);
+				break;
 			default:
 				break;
 			}
@@ -495,6 +502,20 @@ public class PagoCompCtrl implements Serializable {
 	 */
 	public void setCompFacCtrl(CompFacCtrl compFacCtrl) {
 		this.compFacCtrl = compFacCtrl;
+	}
+
+	/**
+	 * @return the notaDebitoFrmCtrl
+	 */
+	public NotaDebitoFrmCtrl getNotaDebitoFrmCtrl() {
+		return notaDebitoFrmCtrl;
+	}
+
+	/**
+	 * @param notaDebitoFrmCtrl the notaDebitoFrmCtrl to set
+	 */
+	public void setNotaDebitoFrmCtrl(NotaDebitoFrmCtrl notaDebitoFrmCtrl) {
+		this.notaDebitoFrmCtrl = notaDebitoFrmCtrl;
 	}
 	
 }

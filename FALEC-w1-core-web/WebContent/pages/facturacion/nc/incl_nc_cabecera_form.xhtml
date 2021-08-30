@@ -94,7 +94,7 @@
 		
 		<p:outputPanel rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
-				<span class="text-black mb-1">SECUENCIAL COMPROBANTE</span>
+				<span class="text-black mb-1 Fs11">SECUENCIAL COMPROBANTE</span>
 				<span class="Fs16 text-black font-bold">#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}</span>
 			</div>
 			<div class="EmptyBox5"/>
@@ -102,7 +102,7 @@
 		
 		<div class="formgrid grid">
 			<div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">FECHA DE EMISIÓN</label>
+	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium Fs11">FECHA DE EMISIÓN</label>
 	        	<p:calendar id="claRtnFechaCompra" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemision}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -113,7 +113,7 @@
 				</p:calendar>
 	        </div>
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">PERIODO FISCAL</label>
+	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium Fs11">PERIODO FISCAL</label>
         		<div class="flex align-items-end" style="height:24px;">
 		        	<p:outputPanel id="oupPeriodoFiscal" styleClass="w-full text-right">
 							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.periodofiscal}" styleClass="Fs14"/>
@@ -124,7 +124,7 @@
 		<div class="EmptyBox5"/>
 		<span class="Fs14 text-black font-semibold">Documento Asociado</span>
 		<div class="EmptyBox5"/>
-		<span class="block mt-1 text-gray-700 font-medium mb-1">CLIENTE</span>
+		<span class="block mt-1 text-gray-700 font-medium mb-1 Fs11">CLIENTE</span>
 		<div class="flex">
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
@@ -276,10 +276,10 @@
 			
 			<div class="flex">
 				<div class="flex-grow-1 flex">
-					<span class="text-black Fs12">NOMBRE</span>
+					<span class="text-gray-700 font-medium Fs11">NOMBRE</span>
 				</div>
 				<div class="flex-grow-1 flex pl-1">
-					<span class="text-black Fs12">DESCRIPCIÓN</span>
+					<span class="text-gray-700 font-medium Fs11">DESCRIPCIÓN</span>
 				</div>
 			</div>
 			

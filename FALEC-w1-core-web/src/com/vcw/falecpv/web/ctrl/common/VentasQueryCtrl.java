@@ -71,7 +71,7 @@ public class VentasQueryCtrl extends BaseCtrl {
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -30);
 			criterio = null;
-			resumenCabeceraQuery = null;
+			resumenCabeceraQuery = null;			
 			consultar();
 			AppJsfUtil.executeJavaScript("PrimeFaces.focus('formVentasQuery:intVentasQueryCriterio');");
 			AppJsfUtil.showModalRender("dlgListaVentas", "formVentasQuery");

@@ -95,13 +95,13 @@
 		
 		<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
-				<span class="text-black mb-1">SECUENCIAL COMPROBANTE</span>
+				<span class="text-black mb-1 Fs11">SECUENCIAL COMPROBANTE</span>
 				<span class="Fs16 text-black font-bold">#{compFacCtrl.getFormatoNumDocumento(compFacCtrl.cabecerSelected.numdocumento)}</span>
 			</div>
 		</p:outputPanel>
 		
 		<div class="field mt-2">
-			<h:outputText value="FECHA DE EMISIÓN" styleClass="text-gray-700 font-medium"/>
+			<h:outputText value="FECHA DE EMISIÓN" styleClass="text-gray-700 font-medium Fs11"/>
 			<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
 				pattern="dd/MM/yyyy"
 				locale="es" 
@@ -109,7 +109,7 @@
 			</p:calendar>
 		</div>
 		
-		<span class="block mt-1 text-gray-700 font-medium">CLIENTE</span>
+		<span class="block mt-1 text-gray-700 font-medium Fs11">CLIENTE</span>
 		<div class="flex">
 			<div class="flex-grow-0 flex pr-1">
 				
@@ -194,7 +194,7 @@
 		<p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" action="#{compFacCtrl.calcularRettencionAction('IVA')}"/>
 		<div class="formgrid grid mt-2">
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium">RETENCIÓN RENTA</label>	        	
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">RETENCIÓN RENTA</label>	        	
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">        				
         				<p:commandLink id="cmlCalValorRenta" title="Calcular">
@@ -225,7 +225,7 @@
         		</div>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium">RETENCIÓN I.V.A.</label>
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">RETENCIÓN I.V.A.</label>
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">
         				<p:commandLink id="cmlCalValorIva" title="Calcular">
@@ -351,10 +351,10 @@
 			
 			<div class="flex">
 				<div class="flex-grow-1 flex">
-					<span class="text-black Fs12">NOMBRE</span>
+					<span class="text-gray-700 font-medium Fs11">NOMBRE</span>
 				</div>
 				<div class="flex-grow-1 flex pl-1">
-					<span class="text-black Fs12">DESCRIPCIÓN</span>
+					<span class="text-gray-700 font-medium Fs11">DESCRIPCIÓN</span>
 				</div>
 			</div>
 			
