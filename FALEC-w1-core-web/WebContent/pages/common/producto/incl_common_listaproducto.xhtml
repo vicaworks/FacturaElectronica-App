@@ -63,6 +63,9 @@
             		<f:subview rendered="#{listaProductoCtrl.callModule=='NOTA_CREDITO'}" id="fsvNCredito">
             			<ui:include src="../../common/producto/incl_common_listaproducto_formNotaCredito.xhtml" />
             		</f:subview>            	
+            		<f:subview rendered="#{listaProductoCtrl.callModule=='LIQ_COMPRA'}" id="fsvLQCompra">
+            			<ui:include src="../../common/producto/incl_common_listaproducto_formLiqCompra.xhtml" />
+            		</f:subview>
             		
             	</p:tab>
             	<p:tab title="Busqueda" id="tabLP_1">

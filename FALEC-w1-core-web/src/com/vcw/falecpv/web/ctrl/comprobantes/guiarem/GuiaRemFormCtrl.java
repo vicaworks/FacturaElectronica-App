@@ -36,6 +36,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Transportista;
 import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
+import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
 import com.vcw.falecpv.core.servicio.DestinatarioServicio;
 import com.vcw.falecpv.core.servicio.DetalleServicio;
@@ -100,6 +101,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	@EJB
 	private SriDispacher sriDispacher;
 	
+	@EJB
+	private ConfiguracionServicio configuracionServicio;
+	
 	private String callModule;
 	private Cabecera guiaRemisionSelected;
 	private Destinatario destinatarioSelected;
@@ -143,6 +147,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		consultarTransportista();
 		consultarTipoComprobante();
 		guiaRemisionSelected = new Cabecera();
+		guiaRemisionSelected.setFechaemision(new Date());
 		guiaRemisionSelected.setDireccionpartida(establecimientoMain.getDireccionestablecimiento());
 		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		guiaRemisionSelected.setFechainiciotransporte(new Date());
@@ -153,6 +158,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setBorrador(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.ESTADO_BORRADOR, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento()));
 		inicializarSecuencia(guiaRemisionSelected);
 		enableAccion=false;
+		guiaRemisionSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(GenTipoDocumentoEnum.LIQUIDACION_COMPRA));
+		guiaRemisionSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
+		configuracionServicio.populateInformacionAdicional(guiaRemisionSelected);
+		infoadicionalList = guiaRemisionSelected.getInfoadicionalList();
 	}
 	
 	@Override

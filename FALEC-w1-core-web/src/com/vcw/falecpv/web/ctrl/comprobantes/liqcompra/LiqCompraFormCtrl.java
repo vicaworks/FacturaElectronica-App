@@ -15,8 +15,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import org.omnifaces.util.Ajax;
-
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
@@ -33,8 +31,8 @@ import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
+import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipocomprobante;
-import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
@@ -322,36 +320,51 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void agregarItem() {
+	public void agregarProducto(Producto productoSelected) {
 		try {
 			
-			if(liqCompraDetalleList==null) {
-				liqCompraDetalleList = new ArrayList<>();
-			}
+			detalleSelected = new Detalle();
+			detalleSelected.setCodproducto(productoSelected.getCodigoprincipal());			
+			detalleSelected.setCantidad(BigDecimal.valueOf(1));
+			detalleSelected.setDescripcion(productoSelected.getNombre());
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setProducto(productoSelected);
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setPorcentajeDescuento(productoSelected.getPorcentajedescuento());
+			detalleSelected.setPreciocompra(productoSelected.getPreciounitario());
+			detalleSelected.setIva(productoSelected.getIva());
+			detalleSelected.setIce(productoSelected.getIce());
+			detalleSelected.setPrecioVenta(1);
+			calcularItem(detalleSelected,true);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void agregarItem() {
+		try {
 			
 			consultarIva();
 			
 			detalleSelected = new Detalle();
-			detalleSelected.setCantidad(BigDecimal.valueOf(1));
+			detalleSelected.setCantidad(BigDecimal.valueOf(1));			
 			detalleSelected.setDescuento(BigDecimal.ZERO);
-			detalleSelected.setDescripcion("");
 			detalleSelected.setPreciounitario(BigDecimal.ZERO);
-			detalleSelected.setProducto(null);
+			detalleSelected.setDescuento(BigDecimal.ZERO);
 			detalleSelected.setValorice(BigDecimal.ZERO);
 			detalleSelected.setValoriva(BigDecimal.ZERO);
+			detalleSelected.setProducto(null);
+			detalleSelected.setPrecioVenta(0);
 			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
-				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
 				return;
 			}
-			
-			liqCompraDetalleList.add(detalleSelected);
-			
-			calcularItem(detalleSelected);
-			totalizar();
-			
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvDetalleDT:" + (liqCompraDetalleList.size()-1) + ":intDetNombreProducto');");
+						
+			calcularItem(detalleSelected,false);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -359,10 +372,51 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void calcularItemAction(Detalle det) {
+	public void agregarDetalle() {
+		try {
+			if(liqCompraDetalleList==null) {
+				liqCompraDetalleList = new ArrayList<>();
+			}
+			if(detalleSelected.getAccion().equals("NUEVO")) {
+				liqCompraDetalleList.add(detalleSelected);				
+			}
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void cambiarPrecioVenta(Integer precio) {
+		switch (precio) {
+		case 1:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciouno());
+			detalleSelected.setPrecioVenta(1);
+			break;
+		case 2:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciodos());
+			detalleSelected.setPrecioVenta(2);
+			break;	
+		case 3:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciotres());
+			detalleSelected.setPrecioVenta(3);
+			break;
+		default:
+			break;
+		}
+		calcularItem(detalleSelected, true);		
+		if(detalleSelected.getProducto().getTipoventa()==2) {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm')");						
+		}else {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
+		}
+		
+	}
+	
+	public void calcularItemAction(boolean calcDescuento,Detalle det) {
 		try {
 			detalleSelected = det;
-			calcularItem(detalleSelected);
+			calcularItem(detalleSelected,calcDescuento);
 			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -370,13 +424,19 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	private void calcularItem(Detalle dFac) {
+	private void calcularItem(Detalle dFac,boolean calcDescuento) {
 		
+		if(calcDescuento) {
+			dFac.setDescuento(dFac.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))
+					.multiply(dFac.getPreciounitario()).multiply(dFac.getCantidad())
+					.setScale(2, RoundingMode.HALF_UP));
+		}
 		dFac.setPreciototalsinimpuesto(dFac.getCantidad().multiply(dFac.getPreciounitario()).add(dFac.getDescuento().negate()).setScale(2, RoundingMode.HALF_UP));
+//		dFac.setValorice(dFac.getIce().getValor().divide(BigDecimal.valueOf(100)).multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
+		dFac.setValorice(BigDecimal.ZERO);
 		dFac.setValoriva(dFac.getIva().getValor().divide(BigDecimal.valueOf(100))
-				.multiply(dFac.getPreciototalsinimpuesto()).setScale(2, RoundingMode.HALF_UP));
-		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva()).setScale(2, RoundingMode.HALF_UP));
-		
+				.multiply(dFac.getPreciototalsinimpuesto().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
+		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));		
 		liqCompraSelected.setValorretenidoiva(BigDecimal.ZERO);
 		liqCompraSelected.setValorretenidorenta(BigDecimal.ZERO);
 		
@@ -392,21 +452,20 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setTotalconimpuestos(BigDecimal.ZERO);
 		
 		int i= 1;
-		for (Detalle d : liqCompraDetalleList) {
-			
-			liqCompraSelected.setTotalsinimpuestos(liqCompraSelected.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
-			liqCompraSelected.setTotaliva(liqCompraSelected.getTotaliva().add(d.getValoriva()));
-			liqCompraSelected.setTotaldescuento(liqCompraSelected.getTotaldescuento().add(d.getDescuento()));
-			
-			if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
-				d.setIddetalle("MM" + i);
-			}
-			
-			i++;
+		if(liqCompraDetalleList!=null) {			
+			for (Detalle d : liqCompraDetalleList) {
+				
+				liqCompraSelected.setTotalsinimpuestos(liqCompraSelected.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
+				liqCompraSelected.setTotaliva(liqCompraSelected.getTotaliva().add(d.getValoriva()));
+				liqCompraSelected.setTotaldescuento(liqCompraSelected.getTotaldescuento().add(d.getDescuento()));
+				
+				if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
+					d.setIddetalle("MM" + i);
+				}
+				
+				i++;
+			}		
 		}
-		
-		// determinar descripcion iva
-		determinarDescripcionIVA(liqCompraDetalleList);
 		
 		liqCompraSelected.setTotaliva(liqCompraSelected.getTotaliva().setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotaldescuento(liqCompraSelected.getTotaldescuento().setScale(2, RoundingMode.HALF_UP));
@@ -416,10 +475,12 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		calcularRettencion("IVA");
 		liqCompraSelected.setValorretenido(liqCompraSelected.getValorretenidorenta().add(liqCompraSelected.getValorretenidoiva()).setScale(2, RoundingMode.HALF_UP));
 		liqCompraSelected.setTotalpagar(liqCompraSelected.getTotalconimpuestos().add(liqCompraSelected.getValorretenido().negate()).setScale(2, RoundingMode.HALF_UP));
+		pagoList = null;
+		totalPago = BigDecimal.ZERO;
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}
-		
+		determinarDescripcionIVA(liqCompraDetalleList);
 	}
 	
 	public void eliminarDetalle() {
@@ -455,43 +516,6 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	public void aplicarPago() throws DaoException {
-		if(liqCompraSelected == null) {
-			return;
-		}
-		
-		if (liqCompraSelected.getTotalsinimpuestos().doubleValue()<=0) {
-			return;
-		}
-		
-		if (pagoList==null) {
-			pagoList = new ArrayList<>();
-		}
-		
-		Tipopago tp = getTipopagoSelected();
-		pagoSelected = new Pago();
-		pagoSelected.setCabecera(liqCompraSelected);
-		pagoSelected.setTipopago(tp);
-		pagoSelected.setTotal(liqCompraSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP));
-		pagoSelected.setPlazo(BigDecimal.ZERO);
-		pagoSelected.setUnidadtiempo("DIAS");
-		pagoList.add(pagoSelected);
-		totalizarPago();
-		
-		switch (tp.getSubdetalle()) {
-		case "1":
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValorEntrega_input');");
-			break;
-		case "4":
-			pagoSelected.setFechapago(new Date());
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagPlazo_input');");
-			break;	
-		default:
-			Ajax.oncomplete("PrimeFaces.focus('formMain:pvPagoDetalleDT:" + (pagoList.size()-1) + ":ipsPagValor_input');");
-			break;
-		}
-	}
-	
 	private void totalizarPago() {
 		
 		totalPago = BigDecimal.ZERO;
@@ -513,64 +537,6 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		totalSaldo = liqCompraSelected.getTotalpagar().add(totalPago.negate()).setScale(2, RoundingMode.HALF_UP);
 		if(totalSaldo.doubleValue()<0) {
 			totalSaldo = BigDecimal.ZERO;
-		}
-		
-	}
-	
-	public void calcularCambioAction(Pago p) {
-		try {
-			pagoSelected = p;
-			if(pagoSelected.getValorentrega().doubleValue()==0) {
-				pagoSelected.setCambio(BigDecimal.ZERO);
-			}else {
-				pagoSelected.setCambio(pagoSelected.getValorentrega().add(pagoSelected.getTotal().negate()).setScale(2, RoundingMode.HALF_UP));
-				if(pagoSelected.getCambio().doubleValue()<0) {
-					pagoSelected.setCambio(BigDecimal.ZERO);
-				}
-			}
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void totalizarPagoaction(Pago p) {
-		try {
-			pagoSelected = p;
-			if(pagoSelected.getTipopago().getSubdetalle().equals("1")) {
-				calcularCambioAction(p);
-			}
-			totalizarPago();
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
-	public void eliminarDetallePago() {
-		
-		try {
-			
-			for (Pago p : pagoList) {
-				if(pagoSelected.getIdpago().equals(p.getIdpago())) {
-					break;
-				}
-			}
-			
-			pagoList.remove(pagoSelected);
-			if(pagoList.isEmpty()) {
-				pagoSelected=null;
-			}else {
-				pagoSelected = pagoList.get(pagoList.size()-1);
-			}
-			
-			totalizarPago();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 		
 	}
@@ -608,13 +574,12 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		}
 		
 		liqCompraDetalleList = detalleServicio.getDetalleDao().getByIdCabecera(idLiqCompra);
+		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idLiqCompra);
+		totalizar();
 		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idLiqCompra);
 		pagoList.stream().forEach(x->{
 			x.setTipoPagoFormularioEnum(TipoPagoFormularioEnum.getByCodInterno(x.getTipopago().getCodinterno()));
-		});
-		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idLiqCompra);
-		
-		totalizar();
+		});		
 		totalizarPago();
 		habilitarCrud(liqCompraSelected.getEstado());
 		if (liqCompraSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString())) {

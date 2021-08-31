@@ -357,22 +357,21 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setTotalconimpuestos(BigDecimal.ZERO);
 		
 		int i= 1;
-		for (Detalle d : detalleFacList) {
-			
-			cabecerSelected.setTotalsinimpuestos(cabecerSelected.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
-			cabecerSelected.setTotaliva(cabecerSelected.getTotaliva().add(d.getValoriva()));
-			cabecerSelected.setTotalice(cabecerSelected.getTotalice().add(d.getValorice()));
-			cabecerSelected.setTotaldescuento(cabecerSelected.getTotaldescuento().add(d.getDescuento()));
-			
-			if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
-				d.setIddetalle("MM" + i);
+		if(detalleFacList!=null) {
+			for (Detalle d : detalleFacList) {
+				
+				cabecerSelected.setTotalsinimpuestos(cabecerSelected.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
+				cabecerSelected.setTotaliva(cabecerSelected.getTotaliva().add(d.getValoriva()));
+				cabecerSelected.setTotalice(cabecerSelected.getTotalice().add(d.getValorice()));
+				cabecerSelected.setTotaldescuento(cabecerSelected.getTotaldescuento().add(d.getDescuento()));
+				
+				if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
+					d.setIddetalle("MM" + i);
+				}
+				
+				i++;
 			}
-			
-			i++;
 		}
-		
-		// determinar descripcion iva
-		determinarDescripcionIVA(detalleFacList);
 		
 		cabecerSelected.setTotaliva(cabecerSelected.getTotaliva().setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setTotalice(cabecerSelected.getTotalice().setScale(2, RoundingMode.HALF_UP));
@@ -389,6 +388,7 @@ public class CompFacCtrl extends BaseCtrl {
 		if(totalPago!=null && totalPago.doubleValue()>0) {
 			totalizarPago();
 		}
+		// determinar descripcion iva
 		determinarDescripcionIVA(detalleFacList);
 		
 	}
@@ -438,10 +438,6 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	public void agregarItem() {
 		try {
-			
-			if(detalleFacList==null) {
-				detalleFacList = new ArrayList<>();
-			}
 			
 			consultarIce();
 			consultarIva();

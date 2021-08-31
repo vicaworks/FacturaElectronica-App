@@ -30,6 +30,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -67,6 +68,7 @@ public class PagoCompCtrl implements Serializable {
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private CompFacCtrl compFacCtrl;
 	private NotaDebitoFrmCtrl notaDebitoFrmCtrl;
+	private LiqCompraFormCtrl liqCompraFormCtrl;
 	
 	/**
 	 * 
@@ -310,6 +312,11 @@ public class PagoCompCtrl implements Serializable {
 				notaDebitoFrmCtrl.setTotalPago(totalPago);
 				notaDebitoFrmCtrl.setTotalSaldo(totalSaldo);
 				break;
+			case "LIQ_COMPRA":
+				liqCompraFormCtrl.setPagoList(pagoList);
+				liqCompraFormCtrl.setTotalPago(totalPago);
+				liqCompraFormCtrl.setTotalSaldo(totalSaldo);
+				break;
 			default:
 				break;
 			}
@@ -516,6 +523,20 @@ public class PagoCompCtrl implements Serializable {
 	 */
 	public void setNotaDebitoFrmCtrl(NotaDebitoFrmCtrl notaDebitoFrmCtrl) {
 		this.notaDebitoFrmCtrl = notaDebitoFrmCtrl;
+	}
+
+	/**
+	 * @return the liqCompraFormCtrl
+	 */
+	public LiqCompraFormCtrl getLiqCompraFormCtrl() {
+		return liqCompraFormCtrl;
+	}
+
+	/**
+	 * @param liqCompraFormCtrl the liqCompraFormCtrl to set
+	 */
+	public void setLiqCompraFormCtrl(LiqCompraFormCtrl liqCompraFormCtrl) {
+		this.liqCompraFormCtrl = liqCompraFormCtrl;
 	}
 	
 }

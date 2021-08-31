@@ -46,7 +46,7 @@
             		<div class="flex flex-column">
             			<span style="color: black;" class="block Fs12 font-medium">#{d.descripcion}</span>
 	            		<div>
-	            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="Fs10">#{d.producto!=null?d.producto.codigoprincipal:"-"} </span>
+	            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="Fs10">#{d.producto!=null?d.producto.codigoprincipal:d.codproducto} </span>
 	            		</div>
             		</div>     		
             		<div class="flex flex-column md:flex-row">
@@ -94,18 +94,18 @@
 	            							<span style="color:black;" class="font-light">Cost. Unit.</span>
 	            							<p:inputNumber id="innPuDt" value="#{d.preciounitario}" symbol="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
 	                                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
-	                                			<p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
+	                                			<p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 	                                		</p:inputNumber>
 	            						</div>
 	            						<div class="flex flex-column">
 	            							<span style="color:black;" class="font-light">Cantidad</span>
 	            							<p:inputNumber id="innCantDt" value="#{d.cantidad}" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
 			                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" rendered="#{d.producto!=null and (d.producto.tipoventa==1 or d.producto.tipoventa==3)}">
-			                            	    <p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
+			                            	    <p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 			                            	</p:inputNumber>		                                
 			                            	<p:inputNumber id="innCantDt2" value="#{d.cantidad}" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
 			                                	symbolPosition="s" emptyValue="zero" decimalPlaces="3" rendered="#{d.producto==null or d.producto.tipoventa!=1}">
-			                                	<p:ajax listener="#{compFacCtrl.calcularItemAction((d.producto!=null?true:false),d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
+			                                	<p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}" update=":formMain:msgFormMain :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 			                                </p:inputNumber>
 	            						</div>
             						</div>

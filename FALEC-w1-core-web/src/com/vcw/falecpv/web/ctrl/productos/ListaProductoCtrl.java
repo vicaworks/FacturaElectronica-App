@@ -26,6 +26,7 @@ import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -64,6 +65,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 	private CotizacionFormCtrl cotizacionFormCtrl;
 	private String accion;
 	private CompFacCtrl compFacCtrl;
+	private LiqCompraFormCtrl liqCompraFormCtrl;
 	
 	private Integer tipoRegistro = 1;// 1 producto, 2 otro concepto
 	private Integer tabIndex = 0;
@@ -143,6 +145,18 @@ public class ListaProductoCtrl extends BaseCtrl {
 						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:innCantFrm2')");
 					}
 					break;
+				case "LIQ_COMPRA":
+					tabIndex = 0;
+					liqCompraFormCtrl.agregarItem();					
+					liqCompraFormCtrl.agregarProducto(productoSelected);
+					liqCompraFormCtrl.getDetalleSelected().setAccion("NUEVO");
+					liqCompraFormCtrl.getDetalleSelected().setProducto(productoSelected);
+					if(productoSelected.getTipoventa()==2) {
+						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvLQCompra:innCantFrm')");						
+					}else {
+						AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvLQCompra:innCantFrm2')");
+					}
+					break;
 				default:
 					break;
 				}
@@ -200,7 +214,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 						tipoRegistro = 2;						
 					}
 				}
-				break;
+				break;			
 			case "NOTA_CREDITO":
 				if(accion.equals("NUEVO")) {
 					notaCreditoCtrl.agregarItem();
@@ -217,6 +231,28 @@ public class ListaProductoCtrl extends BaseCtrl {
 							notaCreditoCtrl.getDetalleSelected().setPrecioVenta(2);
 						}else if(notaCreditoCtrl.getDetalleSelected().getProducto().getPreciotres().doubleValue()==notaCreditoCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
 							notaCreditoCtrl.getDetalleSelected().setPrecioVenta(3);
+						}
+					}else {
+						tipoRegistro = 2;						
+					}
+				}
+				break;
+			case "LIQ_COMPRA":
+				if(accion.equals("NUEVO")) {
+					liqCompraFormCtrl.agregarItem();
+					tipoRegistro = 1;					
+				}else {
+					if(liqCompraFormCtrl.getDetalleSelected().getProducto()!=null) {
+						tipoRegistro = 1;
+						productoSelected = liqCompraFormCtrl.getDetalleSelected().getProducto();
+						// precio venta
+						liqCompraFormCtrl.getDetalleSelected().setPrecioVenta(0);
+						if(liqCompraFormCtrl.getDetalleSelected().getProducto().getPreciouno().doubleValue()==liqCompraFormCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							liqCompraFormCtrl.getDetalleSelected().setPrecioVenta(1);
+						}else if(liqCompraFormCtrl.getDetalleSelected().getProducto().getPreciodos().doubleValue()==liqCompraFormCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							liqCompraFormCtrl.getDetalleSelected().setPrecioVenta(2);
+						}else if(liqCompraFormCtrl.getDetalleSelected().getProducto().getPreciotres().doubleValue()==liqCompraFormCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							liqCompraFormCtrl.getDetalleSelected().setPrecioVenta(3);
 						}
 					}else {
 						tipoRegistro = 2;						
@@ -281,6 +317,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:innCantFrm2')");
 				}
 				break;
+			case "LIQ_COMPRA":
+				liqCompraFormCtrl.agregarProducto(productoSelected);
+				liqCompraFormCtrl.getDetalleSelected().setAccion(accion);
+				tabIndex = 0;
+				if(productoSelected.getTipoventa()==2) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvLQCompra:innCantFrm')");						
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvLQCompra:innCantFrm2')");
+				}
+				break;
 			default:
 				break;
 			}
@@ -324,6 +370,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
 				}else {
 					notaCreditoCtrl.getDetalleSelected().setCodproducto("COD" + (notaCreditoCtrl.getDetalleNcList()==null?1:notaCreditoCtrl.getDetalleNcList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:intFacDescripcion')");
+				}
+				break;
+			case "LIQ_COMPRA":
+				liqCompraFormCtrl.agregarItem();
+				liqCompraFormCtrl.getDetalleSelected().setAccion("NUEVO");
+				if(tipoRegistro==1) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}else {
+					liqCompraFormCtrl.getDetalleSelected().setCodproducto("COD" + (liqCompraFormCtrl.getLiqCompraDetalleList()==null?1:liqCompraFormCtrl.getLiqCompraDetalleList().size()+1));
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:intFacDescripcion')");
 				}
 				break;
@@ -373,6 +429,17 @@ public class ListaProductoCtrl extends BaseCtrl {
 				if(tipoRegistro==2) {
 					notaCreditoCtrl.getDetalleSelected().setCodproducto("COD" + (notaCreditoCtrl.getDetalleNcList()==null?1:notaCreditoCtrl.getDetalleNcList().size()+1));
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvNCredito:intFacDescripcion')");
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}
+				break;
+			case "LIQ_COMPRA":
+				accion = "NUEVO";
+				liqCompraFormCtrl.agregarItem();
+				liqCompraFormCtrl.getDetalleSelected().setAccion(accion);				
+				if(tipoRegistro==2) {
+					liqCompraFormCtrl.getDetalleSelected().setCodproducto("COD" + (liqCompraFormCtrl.getLiqCompraDetalleList()==null?1:liqCompraFormCtrl.getLiqCompraDetalleList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvLQCompra:intFacDescripcion')");
 				}else {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
 				}
@@ -708,6 +775,20 @@ public class ListaProductoCtrl extends BaseCtrl {
 	 */
 	public void setCompFacCtrl(CompFacCtrl compFacCtrl) {
 		this.compFacCtrl = compFacCtrl;
+	}
+
+	/**
+	 * @return the liqCompraFormCtrl
+	 */
+	public LiqCompraFormCtrl getLiqCompraFormCtrl() {
+		return liqCompraFormCtrl;
+	}
+
+	/**
+	 * @param liqCompraFormCtrl the liqCompraFormCtrl to set
+	 */
+	public void setLiqCompraFormCtrl(LiqCompraFormCtrl liqCompraFormCtrl) {
+		this.liqCompraFormCtrl = liqCompraFormCtrl;
 	}	
 
 }
