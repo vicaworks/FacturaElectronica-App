@@ -27,6 +27,7 @@ import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Cliente;
 import com.vcw.falecpv.core.modelo.persistencia.Destinatario;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Detalledestinatario;
@@ -378,7 +379,8 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.getDestinatarioList().stream().forEach(x->{
 			totalizarGuiaRemisionDestinatario(x);
 		});
-		guiaRemisionSelected.setTotal(BigDecimal.valueOf(guiaRemisionSelected.getDestinatarioList().stream().mapToDouble(x->x.getTotal().doubleValue()).sum()));
+		guiaRemisionSelected.setTotal(BigDecimal.valueOf(guiaRemisionSelected.getDestinatarioList().stream().mapToDouble(x->x.getTotal().doubleValue()).sum()));		
+		guiaRemisionSelected.setCantidadDestinatario(guiaRemisionSelected.getDestinatarioList().size());
 		
 	}
 	
@@ -399,7 +401,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	public void nuevoDestinatario() {
 		try {
 			
-			destinatarioSelected = new Destinatario();
+			destinatarioSelected = null;
 			criterioCliente = null;
 			AppJsfUtil.showModalRender("dlgDestinatario", "frmDestinatario");
 			
@@ -432,14 +434,19 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
 	public void consultarCliente(String identificador) throws DaoException {
-		destinatarioSelected.setCliente(null);
-		destinatarioSelected.setCliente(clienteServicio.getClienteDao().getByIdentificador(identificador,
-				establecimientoMain.getEmpresa().getIdempresa()));
+		
+		Cliente cl = clienteServicio.getClienteDao().getByIdentificador(identificador,
+				establecimientoMain.getEmpresa().getIdempresa());
+		if(cl!=null) {
+			if(destinatarioSelected==null) destinatarioSelected = new Destinatario();
+			destinatarioSelected.setCliente(null);
+			destinatarioSelected.setCliente(cl);
+		}
 	}
 	
 	public String asignarFactura(ResumenCabeceraQuery resumenCabeceraQuery)throws DaoException {
@@ -450,7 +457,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		
 		Cabecera c = cabeceraServicio.consultarByPk(resumenCabeceraQuery.getIdcabecera());
 		// existe ya una factura igual
-		if(guiaRemisionSelected.getDestinatarioList().stream().filter(x->x.getNumdocsustento().replace("-", "").equals(c.getNumdocumento())).collect(Collectors.toList()).size()>0) {
+		if(guiaRemisionSelected.getDestinatarioList().stream().filter(x->x.getNumdocsustento()!=null && x.getNumdocsustento().replace("-", "").equals(c.getNumdocumento())).collect(Collectors.toList()).size()>0) {
 			return "LA FACTURA : " + c.getNumdocumento() + " YA EXISTE, DESTINATARIO : " + c.getCliente().getRazonsocial();
 		}
 		

@@ -176,6 +176,7 @@ public class ClienteCtrl extends BaseCtrl {
 				guiaRemFormCtrl.getDestinatarioSelected().setCliente(clienteSelected);
 				guiaRemFormCtrl.getDestinatarioSelected().setIdentificaciondestinatario(clienteSelected.getIdentificacion());
 				guiaRemFormCtrl.getDestinatarioSelected().setRazonsocialdestinatario(clienteSelected.getRazonsocial());
+				guiaRemFormCtrl.getDestinatarioSelected().setDirdestinatario(clienteSelected.getDireccion());
 				AppJsfUtil.hideModal("dlgCliente");
 				break;
 				

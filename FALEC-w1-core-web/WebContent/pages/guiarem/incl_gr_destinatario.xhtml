@@ -10,7 +10,7 @@
 		
 		.guiaRemDestinatarioDT .ui-datascroller-content{
 				min-height: 40vh !important;
-				height: calc(100vh - 270px);
+				height: calc(100vh - 260px);
 		}
 		
 	</style>
@@ -49,29 +49,32 @@
             <div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">
             	<div class="col-12">
             		<div class="flex flex-column mb-1">
-						<span class="Fs14 text-black font-semibold my-1">#{d.razonsocialdestinatario}</span>
-						<span class="text-black Fs12">#{d.identificaciondestinatario}</span>
+						<span class="Fs14 text-gray-900 font-semibold my-1">#{d.razonsocialdestinatario}</span>
+						<span class="text-gray-700 Fs12">#{d.identificaciondestinatario}</span>
 						<div class="block">
 							<i class="fa fa-map-marker mr-1 mb-1 Fs12"></i>
-							<span class="text-black Fs10 mb-1">#{d.dirdestinatario}</span>
+							<span class="text-gray-700 Fs10 mb-1">#{d.dirdestinatario}</span>
 						</div>
-						<span class="text-black Fs11">MOTIVO DE TRASLADO</span>
-						<span class="text-black font-semibold Fs11">#{d.motivotraslado}</span>
-						<span class="text-black Fs11">#{d.tipocomprobante.comprobante}</span>
-						<span class="text-black font-semibold Fs12">#{guiaRemFormCtrl.getFormatoNumDocumento(d.numdocsustento)}</span>
-						<span class="text-black Fs11">
-							<h:outputText value="#{d.fechaemisiondocsustento}"  styleClass="DispBlock FontBold">
+						<span class="text-gray-700 Fs11">MOTIVO DE TRASLADO</span>
+						<span class="text-gray-900 font-semibold Fs11">#{d.motivotraslado}</span>
+						<span class="text-gray-700 Fs11">#{d.tipocomprobante.comprobante}</span>
+						
+						<div class="flex justify-content-between">
+							<span class="text-gray-900 font-semibold Fs12">#{guiaRemFormCtrl.getFormatoNumDocumento(d.numdocsustento)}</span>
+							<h:outputText value="#{d.fechaemisiondocsustento}"  styleClass="text-gray-600">
 								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>						
-						</span>
-						<span class="text-black Fs11">NÚMERO DE AUTORIZACIÓN</span>
-						<span class="text-black font-semibold Fs11">#{d.numautdocsustento}</span>
-						<span class="text-black Fs11">CÓDIGO ESTABLECIMEINTO DESTINO</span>
-						<span class="text-black font-semibold Fs11">#{d.codestabdestino!=null?d.codestabdestino:'-'}</span>
-						<span class="text-black Fs11">RUTA</span>
-						<span class="text-black font-semibold Fs11">#{d.ruta!=null?d.ruta:'-'}</span>
-						<span class="text-black Fs11">DOCUMENTO ADUANERO ÚNICO</span>
-						<span class="text-black font-semibold Fs11">#{d.docaduanerounico!=null?d.docaduanerounico:'-'}</span>
+							</h:outputText>
+						</div>
+						
+						
+						<span class="text-gray-700 Fs11">NÚMERO DE AUTORIZACIÓN</span>
+						<span class="text-gray-800 font-semibold font-semibold Fs10">#{d.numautdocsustento}</span>
+						<span class="text-gray-700 Fs11">CÓDIGO ESTABLECIMEINTO DESTINO</span>
+						<span class="text-gray-800 font-semibold Fs11">#{d.codestabdestino!=null?d.codestabdestino:'-'}</span>
+						<span class="text-gray-700 Fs11">RUTA</span>
+						<span class="text-gray-800 font-semibold Fs11">#{d.ruta!=null?d.ruta:'-'}</span>
+						<span class="text-gray-700 Fs11">DOCUMENTO ADUANERO ÚNICO</span>
+						<span class="text-gray-800 font-semibold Fs11">#{d.docaduanerounico!=null?d.docaduanerounico:'-'}</span>
 					</div>
 					
 					<div class="EmptyBox5"/>
@@ -88,7 +91,7 @@
 							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
 						<p:divider layout="vertical" styleClass="mx-2  inline"/>
-						<p:commandLink action="#{guiaRemFormCtrl.eliminarDestinatario()}" styleClass="text-center inline" process="@this" update="@form:oupGuiaRemDetalleDT">
+						<p:commandLink action="#{guiaRemFormCtrl.eliminarDestinatario()}" styleClass="text-center inline" process="@this" update="@form:guiaRemDestinatarioDT @form:guiaRemDetalleDT @form:oupGuiaRemDetalleDT @form:oupTotDestinatario">
 							<i class="fa fa-trash-o mr-1 text-blue-600 text-semibold Fs14"></i>
 							<span class="Fs14 text-blue-600 font-bold">ELIMINAR</span>
 							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -101,16 +104,26 @@
             
             
        </p:dataScroller>		
-		<div class="EmptyBox10"/>
-		<div class="flex justify-content-end align-items-end">
-			<span class="Fs10 text-gray-800 mr-2">TOTAL</span>
-			<span class="Fs20 text-blue-600 font-semibold">
-				<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.total}" styleClass="FontBold Fs20" >
-					<f:convertNumber pattern="#,##0.##"/>
-				</h:outputText>
-			</span>
-		</div>
-		<div class="EmptyBox30"/>
+		<div class="EmptyBox5"/>
+		<p:outputPanel id="oupTotDestinatario" styleClass="flex justify-content-between">
+			<div>
+				<span class="Fs10 text-gray-800 mr-2n align-self-end">DESTINATARIOS</span>
+				<span class="Fs20 text-blue-600 font-semibold">
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.cantidadDestinatario}" styleClass="FontBold Fs20" >
+						<f:convertNumber pattern="#,##0"/>
+					</h:outputText>
+				</span>
+			</div>
+			<div>
+				<span class="Fs10 text-gray-800 mr-2n align-self-end">PRODUCTOS</span>
+				<span class="Fs20 text-blue-600 font-semibold">
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.total}" styleClass="FontBold Fs20" >
+						<f:convertNumber pattern="#,##0.##"/>
+					</h:outputText>
+				</span>
+			</div>
+		</p:outputPanel>
 	</div>
+	<div class="EmptyBox30"/>
 	
 </ui:composition>

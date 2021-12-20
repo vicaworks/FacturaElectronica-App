@@ -9,12 +9,12 @@
 	<style type="text/css">
 		
 		.heightFrmDetalleDestinatario {
-				height: 250px;
+				height: 200px;
 		}	
 		
 	</style>
 	
-	<p:dialog header="Detalle Destinatario" widgetVar="dlgDetalleDestinatario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Detalle Destinatario" widgetVar="dlgDetalleDestinatario" modal="true" responsive="true" width="500px" closeOnEscape="true" styleClass="modalResponsivo">
 	
 		
 		<h:form id="frmDetDestinatario">
@@ -22,27 +22,20 @@
 			
 			<!-- OPCIONES -->
 			
-			<div class="p-grid toolBarPopUp" >
+			<div class="formgroup-inline">										
+				<p:commandButton 
+					value="APLICAR" icon="fa fa-check" 
+					action="#{guiaRemFormCtrl.guardarDetalle()}" styleClass="mr-1 min-width-100" update="@form :formMain">
+				</p:commandButton>
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">					
+				<p:commandButton 
+					value="NUEVO" icon="fa fa-plus" 
+					action="#{guiaRemFormCtrl.agregarDetalle(false,'frmDetDestinatario')}" styleClass="mr-1 ui-button-outlined min-width-100" update="@form :formMain">
+				</p:commandButton>					
 					
-					<p:commandButton 
-						value="ACEPTAR" icon="fa fa-check" 
-						action="#{guiaRemFormCtrl.guardarDetalle()}" styleClass="MRight10" update="@form :formMain">
-					</p:commandButton>
-					
-					<p:commandButton 
-						value="NUEVO" icon="fa fa-plus" 
-						action="#{guiaRemFormCtrl.agregarDetalle(false,'frmDetDestinatario')}" styleClass="secondary-button MRight10" update="@form :formMain">
-					</p:commandButton>
-						
-						
-					<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgDetalleDestinatario').hide()" immediate="true"/>
-					
-				</div>
-				
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-100 ui-button-flat" 
+					onclick="PF('dlgDetalleDestinatario').hide()" immediate="true"/>				
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmDetDestinatario"
@@ -50,49 +43,34 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmDetalleDestinatario contenedorFormulario">
+			<div class="w-full overflow-auto heightFrmDetalleDestinatario heightFrmProducto mt-1">
 
-				<!-- Datos Generales -->	
-				<div class="Wid100 titulo"><i class="fa fa-check-circle Fs16"></i> Datos Generales</div>
+				<div class="field">
+					<span class="block mt-1 text-gray-700 font-medium Fs11 mb-1">DESCRIPCIÓN</span>
+					<p:inputText id="intDesDetDescripcion" value="#{guiaRemFormCtrl.detalledestinatarioSeleted.descripcion}" styleClass="w-full" maxlength="300" required="true" requiredMessage="REQUERIDO"/>
+					<p:message for="intDesDetDescripcion" styleClass="block"/>					
+				</div>
 				
-				<div class="EmptyBox5"/>
-				
-				<p:panelGrid columns="1"
-						styleClass="ui-panelgrid-blank Wid100"
-						columnClasses="ui-g-12">
-					
-					<h:panelGroup>
-						<h:outputText value="#{msg['label.descripcion']} *" styleClass="campoRequerido DispBlock"/>
-						<div class="EmptyBox5"/>
-						<p:inputText id="intDesDetDescripcion" value="#{guiaRemFormCtrl.detalledestinatarioSeleted.descripcion}" styleClass="Wid100" maxlength="300" required="true" requiredMessage="REQUERIDO"/>
-						<p:message for="intDesDetDescripcion"/>
-					</h:panelGroup>
-					
-			    </p:panelGrid>
-				
-				<p:panelGrid id="gridTransportistaDG" columns="2"
-						styleClass="ui-panelgrid-blank Wid100"
-						columnClasses="ui-g-12 ui-md-6,
-									   ui-g-12 ui-md-6">
-					
-					<h:panelGroup>
-						<h:outputText value="#{msg['label.codigo']} *" styleClass="campoRequerido DispBlock"/>
-						<div class="EmptyBox5"/>
-						<p:inputText id="intDesDetCodigo" value="#{guiaRemFormCtrl.detalledestinatarioSeleted.codigointerno}" styleClass="Wid100" maxlength="25" required="true" requiredMessage="REQUERIDO"/>
-						<p:message for="intDesDetCodigo"/>
-					</h:panelGroup>
-					
-					<h:panelGroup>
-						<h:outputText value="CANTIDAD *" styleClass="campoRequerido DispBlock"/>
-						<div class="EmptyBox5"/>
-						<p:spinner id="spnDetDestCantidad" value="#{guiaRemFormCtrl.detalledestinatarioSeleted.cantidad}" decimalPlaces="0" required="true" requiredMessage="REQUERIDO" styleClass="Wid100">
-						</p:spinner>
-						<p:message for="spnDetDestCantidad"/>
-					</h:panelGroup>
-					
-			    </p:panelGrid>
-				
+				<div class="flex">
+					<div class="flex flex-column flex-grow-1 pr-1">
+						<span class="block mt-1 text-gray-700 font-medium Fs11 mb-1">CÓDIGO</span>
+						<p:inputText id="intDesDetCodigo" value="#{guiaRemFormCtrl.detalledestinatarioSeleted.codigointerno}" styleClass="w-full" maxlength="25" required="true" requiredMessage="REQUERIDO"/>
+						<p:message for="intDesDetCodigo" styleClass="block"/>						
+					</div>
+					<div class="flex flex-column flex-grow-1 pr-1">
+						<span class="block mt-1 text-gray-700 font-medium Fs11 mb-1">CANTIDAD</span>						
+						<p:inputText id="spnDetDestCantidad" value="#{guiaRemFormCtrl.detalledestinatarioSeleted.cantidad}" styleClass="w-full text-right spnDetDestCantidad" maxlength="25" required="true" requiredMessage="REQUERIDO" converterMessage="SOLO NÚMEROS"/>
+						<p:message for="spnDetDestCantidad" styleClass="block"/>						
+					</div>
+				</div>
+								
 			</div>
+			
+			<script >
+			$(function () {
+				$('.spnDetDestCantidad').focus();
+				});
+			</script>
 		
 		</h:form>
 	

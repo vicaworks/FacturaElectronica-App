@@ -10,7 +10,7 @@
 		
 		.guiaRemDetalleDT .ui-datascroller-content{
 				min-height: 40vh !important;
-				height: calc(100vh - 301px);
+				height: calc(100vh - 290px);
 		}
 		
 	</style>
@@ -51,7 +51,7 @@
 			<p:dataScroller id="guiaRemDetalleDT" value="#{guiaRemFormCtrl.destinatarioSelected.detalledestinatarioList}" var="det" chunkSize="10" mode="inline" styleClass="guiaRemDetalleDT">
 				<f:facet name="header">
 	            	<i class="fa fa-list mr-1"></i>
-	                Detalle Destinatario
+	                Productos
 	            </f:facet>
 	            
 	            <div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">
@@ -96,21 +96,23 @@
 	            
 	       	</p:dataScroller>
 		
-			<div class="EmptyBox10"/>
+			<div class="EmptyBox5"/>
 			<div class="flex justify-content-end align-items-end">
-				<span class="Fs10 text-gray-800 mr-2">TOTAL</span>
-				<span class="Fs20 text-blue-600 font-semibold">
-					<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.total}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}" >
-						<f:convertNumber pattern="#,##0.##"/>
-					</h:outputText>
-					
-					<h:outputText value="#{0}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}" >
-						<f:convertNumber pattern="#,##0.##"/>
-					</h:outputText>
-				</span>
+				<div>
+					<span class="Fs10 text-gray-800 mr-2">PRODUCTOS</span>
+					<span class="Fs20 text-blue-600 font-semibold">
+						<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.total}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}" >
+							<f:convertNumber pattern="#,##0.##"/>
+						</h:outputText>
+						
+						<h:outputText value="#{0}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}" >
+							<f:convertNumber pattern="#,##0.##"/>
+						</h:outputText>
+					</span>
+				</div>
 			</div>
 		</p:outputPanel>
-		<div class="EmptyBox30"/>
 	</div>	
+	<div class="EmptyBox30"/>
 	
 </ui:composition>

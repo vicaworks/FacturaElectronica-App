@@ -285,6 +285,9 @@ public class Cabecera implements Serializable {
     private BigDecimal total = BigDecimal.ZERO;
     
     @Transient
+    private int cantidadDestinatario = 0;
+    
+    @Transient
     private boolean editarSecuencial;
     
     @Transient
@@ -1566,5 +1569,19 @@ public class Cabecera implements Serializable {
 	 */
 	public void setClienteCompleto(String clienteCompleto) {
 		this.clienteCompleto = clienteCompleto;
+	}
+
+	/**
+	 * @return the cantidadDestinatario
+	 */
+	public int getCantidadDestinatario() {
+		return cantidadDestinatario;
+	}
+
+	/**
+	 * @param cantidadDestinatario the cantidadDestinatario to set
+	 */
+	public void setCantidadDestinatario(int cantidadDestinatario) {
+		this.cantidadDestinatario = cantidadDestinatario;
 	}
 }
