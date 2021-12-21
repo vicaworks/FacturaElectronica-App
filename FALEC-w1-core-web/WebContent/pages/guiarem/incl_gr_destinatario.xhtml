@@ -76,29 +76,26 @@
 						<span class="text-gray-700 Fs11">DOCUMENTO ADUANERO ÚNICO</span>
 						<span class="text-gray-800 font-semibold Fs11">#{d.docaduanerounico!=null?d.docaduanerounico:'-'}</span>
 					</div>
-					
-					<div class="EmptyBox5"/>
-					<div class="flex">					
+					<div class="flex my-1 justify-content-start">					
 						<p:commandLink action="#{guiaRemFormCtrl.editarDestinatario()}" styleClass="text-center inline" process="@this">
-							<i class="fa fa-edit Fs14 mr-1 text-gray-800"></i>
-							<span class="Fs14 text-black">EDITAR</span>
+							<i class="fa fa-edit Fs11 mr-1 text-gray-800"></i>
+							<span class="Fs12 text-gray-800">EDITAR</span>
 							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
 						<p:divider layout="vertical" styleClass="mx-2  inline"/>
 						<p:commandLink action="#" styleClass="text-center inline" process="@this" update="@form:oupGuiaRemDetalleDT">
-							<i class="fa fa-list Fs14 mr-1 text-gray-800"></i>
-							<span class="Fs14 text-black">PRODUCTOS</span>
+							<i class="fa fa-list Fs11 mr-1 text-gray-800"></i>
+							<span class="Fs12 text-gray-800">PRODUCTOS</span>
 							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
-						<p:divider layout="vertical" styleClass="mx-2  inline"/>
+						<p:divider layout="vertical" styleClass="mx-2 inline"/>
 						<p:commandLink action="#{guiaRemFormCtrl.eliminarDestinatario()}" styleClass="text-center inline" process="@this" update="@form:guiaRemDestinatarioDT @form:guiaRemDetalleDT @form:oupGuiaRemDetalleDT @form:oupTotDestinatario">
-							<i class="fa fa-trash-o mr-1 text-blue-600 text-semibold Fs14"></i>
-							<span class="Fs14 text-blue-600 font-bold">ELIMINAR</span>
+							<i class="fa fa-trash-o mr-1 text-pink-600 Fs11"></i>
+							<span class="Fs12 text-pink-400">ELIMINAR</span>
 							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
 					</div>
-					<div class="EmptyBox5"/>
             	</div>
             </div>
             
