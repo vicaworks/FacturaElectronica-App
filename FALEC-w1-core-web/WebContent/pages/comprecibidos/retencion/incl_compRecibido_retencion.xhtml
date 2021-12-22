@@ -116,7 +116,7 @@
 		    
 		    <p:ajax  event="toggleSelect" listener="#{compRecRetencionCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvRetencion:compRetSriDT"/>
 		    
-		    <p:column selectionMode="multiple" style="text-align: center;width:10px" />
+		    <p:column selectionMode="multiple" style="width:10px" styleClass="text-center"/>
 		    
 		    <p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
 		    	<p:commandLink id="cmlDtFacEmitidas">
@@ -142,39 +142,39 @@
 				</p:menu>	
 		    </p:column>    
 		    
-		    <p:column headerText="COMPROBANTE" style="width:110px;">
+		    <p:column headerText="COMPROBANTE" style="width:110px;" styleClass="text-right">
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(ret.serieComprobante)}" />
 			</p:column>
 			
-			<p:column headerText="FECHA #{msg['label.emision']}" style="width:60px;">
+			<p:column headerText="FECHA #{msg['label.emision']}" style="width:60px;" styleClass="text-right">
 				<h:outputText value="#{ret.fechaEmision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA AUTOR." style="width:60px;">
+			<p:column headerText="FECHA AUTOR." style="width:60px;" styleClass="text-right">
 				<h:outputText value="#{ret.fechaAutorizacion}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="RUC / CI EMISOR" style="width:90px;" filterBy="#{ret.rucEmisor}" filterMatchMode="contains">
+			<p:column headerText="RUC / CI EMISOR" style="width:90px;" filterBy="#{ret.rucEmisor}" filterMatchMode="contains" styleClass="text-right">
 				<h:outputText value="#{ret.rucEmisor}" />
 			</p:column>
 			
 			<p:column headerText="EMISOR" style="width:200px;" filterBy="#{ret.razonSocialEmisor}" filterMatchMode="contains">
-				<h:outputText value="#{ret.razonSocialEmisor}" >
+				<h:outputText value="#{ret.razonSocialEmisor}" styleClass="uppercase">
 				</h:outputText>
 			</p:column>
 					
 			<p:column headerText="RENTA" style="width:60px;" styleClass="TexAlRight">
-				<h:outputText value="#{ret.totalrenta}" >
+				<h:outputText value="#{ret.totalrenta}" styleClass="#{ret.totalrenta.doubleValue()==0.0?'opacity-60':''}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="IVA" style="width:60px;" styleClass="TexAlRight">
-				<h:outputText value="#{ret.totaliva}" >
+				<h:outputText value="#{ret.totaliva}" styleClass="#{ret.totaliva.doubleValue()==0.0?'opacity-60':''}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
@@ -215,10 +215,10 @@
 							</div>				
 						</div>
 						
-						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
+						<!-- <div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
 							<div class="flex flex-grow-1 Fs12">
 								<i class="fa fa-angle-right mr-1 font-bold"></i>
-								<span class="text-gray-800"><h:outputText value="I.V.A." /></span>
+								<span class="text-gray-800"><h:outputText value="DESCUENTO" /></span>
 							</div>						
 							<div class="flex flex-grow-1">
 								<div class="text-right pr-3 w-full Fs16">
@@ -227,7 +227,7 @@
 									</h:outputText>
 								</div>
 							</div>				
-						</div>
+						</div> -->
 						
 						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
 							<div class="flex flex-grow-1 Fs12">

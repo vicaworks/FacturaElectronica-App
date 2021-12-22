@@ -40,6 +40,7 @@ public class PagosQuery implements Serializable {
 	private BigDecimal totalconimpuestos = BigDecimal.ZERO;
 	private BigDecimal valorretenido = BigDecimal.ZERO;
 	private BigDecimal valorapagar = BigDecimal.ZERO;
+	private String filterDocumento;
 
 	/**
 	 * 
@@ -353,6 +354,27 @@ public class PagosQuery implements Serializable {
 	 */
 	public void setValorapagar(BigDecimal valorapagar) {
 		this.valorapagar = valorapagar;
+	}
+
+	/**
+	 * @return the filterDocumento
+	 */
+	public String getFilterDocumento() {
+		filterDocumento = "";
+		if(getNumerodocumento()!=null) {
+			filterDocumento += getNumerodocumento() + " ";
+		}
+		if(getNombrebanco()!=null) {
+			filterDocumento += getNombrebanco() + " ";
+		}
+		return filterDocumento;
+	}
+
+	/**
+	 * @param filterDocumento the filterDocumento to set
+	 */
+	public void setFilterDocumento(String filterDocumento) {
+		this.filterDocumento = filterDocumento;
 	}
 
 

@@ -106,7 +106,7 @@
 		    
 		    <p:ajax  event="toggleSelect" listener="#{compRecGuiaRemCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
 		    
-		    <p:column selectionMode="multiple" style="text-align: center;width:10px" />
+		    <p:column selectionMode="multiple" style="width:10px" styleClass="text-center"/>
 		    
 		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 		    	<p:commandLink id="cmlDtFacEmitidas">
@@ -132,32 +132,32 @@
 				</p:menu>	
 		    </p:column>    
 		    
-		    <p:column headerText="COMPROBANTE" style="width:110px;">
+		    <p:column headerText="COMPROBANTE" style="width:110px;" styleClass="text-right">
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(gr.serieComprobante)}" />
 			</p:column>
 			
-			<p:column headerText="FECHA #{msg['label.emision']}" style="width:60px;">
+			<p:column headerText="FECHA #{msg['label.emision']}" style="width:60px;" styleClass="text-right">
 				<h:outputText value="#{gr.fechaEmision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA AUTOR." style="width:60px;">
+			<p:column headerText="FECHA AUTOR." style="width:60px;" styleClass="text-right">
 				<h:outputText value="#{gr.fechaAutorizacion}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="RUC / CI TRANSPORTISTA" style="width:90px;" filterBy="#{gr.rucEmisor}" filterMatchMode="contains">
+			<p:column headerText="RUC / CI TRANSPORTISTA" style="width:90px;" filterBy="#{gr.rucEmisor}" filterMatchMode="contains" styleClass="text-right">
 				<h:outputText value="#{gr.rucEmisor}" />
 			</p:column>
 			
 			<p:column headerText="TRANSPORTISTA" style="width:150px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains">
-				<h:outputText value="#{gr.razonSocialEmisor}" >
+				<h:outputText value="#{gr.razonSocialEmisor}" styleClass="uppercase">
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="PLACA" style="width:50px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains">
+			<p:column headerText="PLACA" style="width:50px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains" styleClass="text-right">
 				<h:outputText value="#{gr.placa}" >
 				</h:outputText>
 			</p:column>
@@ -166,13 +166,13 @@
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA INICIAL" style="width:60px;">
+			<p:column headerText="FECHA INICIAL" style="width:60px;" styleClass="text-right">
 				<h:outputText value="#{gr.fechaPartida}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA LLEGADA" style="width:60px;">
+			<p:column headerText="FECHA LLEGADA" style="width:60px;" styleClass="text-right">
 				<h:outputText value="#{gr.fechaLlegada}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>

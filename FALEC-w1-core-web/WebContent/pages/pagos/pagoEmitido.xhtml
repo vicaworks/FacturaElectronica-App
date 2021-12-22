@@ -24,8 +24,9 @@
 			
 			.field {margin-bottom: 0.25rem;}
 			
-			body .ui-datatable .ui-datatable-data > tr > td,
-			body .ui-datatable thead th {vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td{vertical-align: top;}
+			
+			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}
 			
 			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
 				padding: 0.2em !important;
@@ -159,78 +160,57 @@
 						rowsPerPageTemplate="10,15,20,25,30,35,40">
 					
 					
-					<!-- <p:column headerText="REGISTRO" style="width:40px;" styleClass="TexAlCenter">
-						<h:outputText value="#{v.updated}" >
-							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-						</h:outputText>
+					<p:column headerText="#{msg['label.identificacion']}" style="width:90px;" filterBy="#{v.identificacion}" filterMatchMode="contains" styleClass="text-right">
+						<h:outputText value="#{v.identificacion}"/>
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:40px;">
-						<h:outputText value="#{v.fechaemision}" >
-							<f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
-					</p:column> -->
-					
-					
-					<p:column headerText="#{msg['label.identificacion']}" style="width:70px;" filterBy="#{v.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{v.identificacion}" styleClass="Fs9"/>
-					</p:column>
-					
-					<p:column headerText="CLIENTE" style="width:120px;" filterBy="#{v.razonsocial}" filterMatchMode="contains">
+					<p:column headerText="CLIENTE" style="width:150px;" filterBy="#{v.razonsocial}" filterMatchMode="contains">
 						<h:outputText value="#{v.razonsocial}" />
 					</p:column>
 					
-					<p:column headerText="COMPROBANTE" style="width:80px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="COMPROBANTE" style="width:150px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
 						<div class="flex flex-column">
-							<h:outputText value="#{v.comprobante}" styleClass="font-bold Fs9"/>							
-							<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="Fs9"/>
+							<h:outputText value="#{v.comprobante}" styleClass="text-gray-700 Fs10"/>							
+							<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="Fs11 text-gray-700 font-semibold"/>
 						</div>
 					</p:column>
 					
-					<p:column headerText="TIPO PAGO" style="width:80px;">
+					<p:column headerText="TIPO PAGO" style="width:100px;">
 						<h:outputText value="#{v.nombre}" styleClass="Fs9">
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="TOTAL" style="width:70px;" styleClass="text-right">
-						<h:outputText value="#{v.totalconimpuestos}">
+						<h:outputText value="#{v.totalconimpuestos}" >
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="A PAGAR" style="width:70px;" styleClass="text-right">
-						<h:outputText value="#{v.valorapagar}" styleClass="text-green-600 font-medium Fs11">
+						<h:outputText value="#{v.valorapagar}" styleClass="text-black font-medium Fs11">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					
-					<!-- <p:column headerText="VALOR" style="width:60px;" styleClass="text-right">
-						<h:outputText value="#{v.total}" styleClass="Fs11 text-blue-700 font-medium">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column> -->
-					
 					<p:column headerText="IMPORTE" style="width:60px;" styleClass="text-right">
-						<h:outputText value="#{v.valorentrega}" styleClass="#{v.valorentrega>0?'text-gray-600 font-medium':''}">
+						<h:outputText value="#{v.valorentrega}" styleClass="#{v.valorentrega>0?'text-gray-800 font-medium':'opacity-60'}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CAMBIO" style="width:40px;" styleClass="text-right">
-						<h:outputText value="#{v.cambio}" styleClass="#{v.cambio>0?'text-pink-600 font-medium':''}">
+					<p:column headerText="CAMBIO" style="width:60px;" styleClass="text-right">
+						<h:outputText value="#{v.cambio}" styleClass="#{v.cambio>0?'text-pink-400':'opacity-60'}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="DOC" style="width:50px;" filterBy="#{v.numerodocumento}" filterMatchMode="contains">
-						<h:outputText value="#{v.numerodocumento}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="BANCO" style="width:50px;"  filterBy="#{v.nombrebanco}" filterMatchMode="contains">
-						<h:outputText value="#{v.nombrebanco}" styleClass="Fs9">
-						</h:outputText>
+					<p:column headerText="DOCUMENTO" style="width:120px;" filterBy="#{v.filterDocumento}" filterMatchMode="contains">						
+						<div class="flex flex-column pl-1">							
+							<h:outputText value="#{v.nombrebanco!=null?v.nombrebanco:'N/A'}" styleClass="Fs10 text-gray-600 #{v.nombrebanco!=null?'uppercase':'opacity-60'}">
+							</h:outputText>
+							<h:outputText value="#{v.numerodocumento!=null?v.numerodocumento:'--------'}" styleClass="Fs12 text-gray-600 font-medium #{v.numerodocumento!=null?'':'opacity-60'}">
+							</h:outputText>
+						</div>
 					</p:column>
 								
 				</p:dataTable>

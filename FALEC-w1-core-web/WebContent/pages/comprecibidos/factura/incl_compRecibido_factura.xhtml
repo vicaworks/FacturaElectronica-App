@@ -115,7 +115,7 @@
 		    
 		    <p:ajax  event="toggleSelect" listener="#{compRecFacturaCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
 		    
-		    <p:column selectionMode="multiple" style="text-align: center;width:10px" />
+		    <p:column selectionMode="multiple" style="width:10px" styleClass="text-center"/>
 		    
 		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
 		    	<p:commandLink id="cmlDtFacEmitidas">
@@ -141,28 +141,28 @@
 				</p:menu>	
 		    </p:column>    
 		    
-		    <p:column headerText="COMPROBANTE" style="width:110px;">
+		    <p:column headerText="COMPROBANTE" style="width:110px;" styleClass="text-right">
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(fac.serieComprobante)}" />
 			</p:column>
 			
-			<p:column headerText="FECHA #{msg['label.emision']}" style="width:50px;">
+			<p:column headerText="FECHA #{msg['label.emision']}" style="width:50px;" styleClass="text-right">
 				<h:outputText value="#{fac.fechaEmision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA AUTOR." style="width:50px;">
+			<p:column headerText="FECHA AUTOR." style="width:50px;" styleClass="text-right">
 				<h:outputText value="#{fac.fechaAutorizacion}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="RUC / CI EMISOR" style="width:80px;" filterBy="#{fac.rucEmisor}" filterMatchMode="contains">
+			<p:column headerText="RUC / CI EMISOR" style="width:80px;" filterBy="#{fac.rucEmisor}" filterMatchMode="contains" styleClass="text-right">
 				<h:outputText value="#{fac.rucEmisor}" />
 			</p:column>
 			
 			<p:column headerText="EMISOR" style="width:150px;" filterBy="#{fac.razonSocialEmisor}" filterMatchMode="contains">
-				<h:outputText value="#{fac.razonSocialEmisor}" >
+				<h:outputText value="#{fac.razonSocialEmisor}" styleClass="uppercase">
 				</h:outputText>
 			</p:column>
 					
@@ -173,7 +173,7 @@
 			</p:column>
 			
 			<p:column headerText="DESCUENTO" style="width:40px;" styleClass="TexAlRight">
-				<h:outputText value="#{fac.totaldescuento}" >
+				<h:outputText value="#{fac.totaldescuento}" styleClass="#{fac.totaldescuento.doubleValue()==0?'opacity-60':''}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
@@ -185,7 +185,7 @@
 			</p:column> -->
 			
 			<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
-				<h:outputText value="#{fac.totaliva}" >
+				<h:outputText value="#{fac.totaliva}" styleClass="#{fac.totaliva.doubleValue()==0?'opacity-60':''}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
