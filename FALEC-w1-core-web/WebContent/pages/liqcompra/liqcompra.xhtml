@@ -25,7 +25,7 @@
 				vertical-align: top;
 			}
 			
-			body .ui-datatable thead th {text-align: center;vertical-align: top;}
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
 			
         </style>
@@ -44,86 +44,6 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-			
-			<!-- <div class="EmptyBox5"/>
-			
-			<div class="card card-w-title">
-				
-				
-				<div class="p-grid p-align-center">
-					
-					<div class="p-col-12 p-md-8">
-						
-						<div class="p-grid">
-	    					
-	    					<div class="p-col-12 p-md-4">
-	    						<h:outputText value="ESTADO * : " styleClass="cpoRequerido Wid100"/>
-	    						<div class="EmptyBox5"/>
-		    					<p:selectOneMenu  value="#{liqCompraCtrl.estado}" 
-												 styleClass="Wid100" 
-												 required="false" requiredMessage="REQUERIDO">
-									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />			 
-									<f:selectItem itemLabel="ACTIVO" itemValue="A" />
-									<f:selectItem itemLabel="ANULADO" itemValue="I" />
-								</p:selectOneMenu>
-							</div>
-	    					
-	    					<div class="p-col-12 p-md-4">
-	    						desde
-	    						<h:outputText value="DESDE * : " styleClass="cpoRequerido Wid100"/>
-	    						<div class="EmptyBox5"/>
-	    						<p:calendar id="claLiqCompraFechaDesde" value="#{liqCompraCtrl.desde}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-								</p:calendar>
-								<p:message for="claLiqCompraFechaDesde" style="padding:0em;"/>
-	    						
-	    					</div>
-	    					
-	    					<div class="p-col-12 p-md-4">
-	    						hasts 
-	    						<h:outputText value="HASTA * : " styleClass="cpoRequerido Wid100"/>
-	    						<div class="EmptyBox5"/>
-	    						<p:calendar id="claLiqCompraFechaHasta" value="#{liqCompraCtrl.hasta}"
-									pattern="dd/MM/yyyy"
-									locale="es" 
-									requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-								</p:calendar>
-								<p:message for="claLiqCompraFechaHasta" style="padding:0em;"/>
-	    					</div>
-	    					
-	    					<div class="p-col-12">
-								<p:inputText id="claLiqCompraCriterioBusqueda" value="#{liqCompraCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000" placeholder="##{msg['label.liqcompra']}, Nom./R.U.C./C.I. Proveedor"/>	    						
-	    					</div>
-	    					
-	    				</div>
-					
-					</div>
-					
-					opciones
-	    			<div class="p-col-12 p-md-4">
-	    				
-	    				<div class="EmptyBox5"/>
-	    				
-	    				
-	   					
-	   					<div class="EmptyBox5"/>
-	   					
-						<p:commandButton id="cmdLqCExcel"
-	  						value="EXPORTAR"
-							icon="fa fa-sort-down" 
-							styleClass="secondary-button Wid100"
-							disabled="#{empty liqCompraCtrl.liqCompraList}">
-						</p:commandButton>
-						
-						
-	    				
-	    			</div>
-					
-				</div>
-			
-			</div> -->
 			
 			<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
@@ -278,13 +198,13 @@
 					rows="20"
 					rowsPerPageTemplate="15,20,25,30,35,40">
 					
-					<p:column style="width:10px;">
+					<p:column style="width:10px;" styleClass="text-center">
 						<f:facet name="header">
 							<p:selectBooleanCheckbox value="#{liqCompraCtrl.seleccion}">
 								<p:ajax event="change" listener="#{liqCompraCtrl.changeSeleccion()}" update="@form:msgFormMain @form:liqCompraDT"/>
 							</p:selectBooleanCheckbox>
 						</f:facet>
-						<p:selectBooleanCheckbox value="#{r.seleccion}" style="margin-left:10px;" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
+						<p:selectBooleanCheckbox value="#{r.seleccion}" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
 							<p:ajax event="change" update="@parent"/>
 						</p:selectBooleanCheckbox>
 					</p:column>
@@ -333,7 +253,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.numdocumento}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{liqCompraCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
@@ -341,7 +261,7 @@
 						
 						<div class="flex">
 							<div class="flex-grow-1 flex">
-								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} p-1 border-round block w-full">
+								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} p-1 border-round block w-full text-center">
 								</h:outputText>
 							</div>
 							<div class="flex-grow-0 flex px-1 align-items-center">
@@ -356,7 +276,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:55px;">
+					<p:column headerText="FECHA" style="width:55px;" styleClass="text-right">
 						<h:outputText value="#{r.fechaemision}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
@@ -364,9 +284,9 @@
 					
 					<p:column headerText="PROVEEDOR" style="width:140px;" filterBy="#{r.clienteCompleto}" filterMatchMode="contains">
 						<div class="flex flex-column">
-							<h:outputText value="#{r.cliente.identificacion}" styleClass="Fs10 text-black"/>
-							<h:outputText value="#{r.cliente.razonsocial}" styleClass="Fs11 text-gray-700">
+							<h:outputText value="#{r.cliente.razonsocial}" styleClass="Fs11 text-gray-800">
 							</h:outputText>
+							<h:outputText value="#{r.cliente.identificacion}" styleClass="Fs10 text-gray-700 font-semibold"/>
 						</div>
 					</p:column>
 					
@@ -390,14 +310,14 @@
 					</p:column>
 					
 					<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{r.totaldescuento}" styleClass="Fs10">
+						<h:outputText value="#{r.totaldescuento}" styleClass="Fs10 #{r.totaldescuento.doubleValue()==0?'opacity-60':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="I.V.A." style="width:50px;" styleClass="TexAlRight">
 						
-						<h:outputText value="#{r.totaliva}" styleClass="Fs10">
+						<h:outputText value="#{r.totaliva}" styleClass="Fs10 #{r.totaliva.doubleValue()==0?'opacity-60':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					
@@ -410,7 +330,7 @@
 					</p:column>
 					
 					<p:column headerText="#{msg['label.retencion']}" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{r.valorretenido}" styleClass="Fs10">
+						<h:outputText value="#{r.valorretenido}" styleClass="Fs10 #{r.valorretenido.doubleValue()==0?'opacity-60':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>

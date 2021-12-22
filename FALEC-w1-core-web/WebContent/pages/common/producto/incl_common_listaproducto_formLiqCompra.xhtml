@@ -129,32 +129,7 @@
 		   				</div>
 	   				</div>
          		</div>
-    <!--      		<div class="col-6 md:col-4 mt-2">
-	   				<span class="requerido">ICE</span>
-	   				<div class="flex mt-2 w-full">
-		   				<div class="flex-grow-1 flex pr-1">
-	 	   					<p:selectOneMenu id="somdetIceItem2"
-							value="#{listaProductoCtrl.liqCompraFormCtrl.detalleSelected.ice}"
-							converter="omnifaces.SelectItemsConverter"
-							required="true"
-							requiredMessage="REQUERIDO"
-							styleClass="Fs8">
-	
-							<f:selectItems value="#{listaProductoCtrl.liqCompraFormCtrl.iceList}" var="ice"
-										itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
-									
-							<p:ajax event="change" listener="#{liqCompraFormCtrl.calcularItemAction(true,listaProductoCtrl.liqCompraFormCtrl.detalleSelected)}" update="@form" process="@form"/>
-							
-						</p:selectOneMenu> 
-						<p:skeleton height="24px"/>
-		   				</div>
-		   				<div class="flex-grow-1 flex justify-content-end  align-self-end">
-		   					<h:outputText value="#{listaProductoCtrl.liqCompraFormCtrl.detalleSelected.valorice}" styleClass="Fs14">
-		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-		   					</h:outputText>
-		   				</div>
-	   				</div>		   		
-         		</div> -->         		
+         		         		
          		<div class="col-6 md:col-4 mt-2">
 	   				<span class="requerido">IVA</span>
 	   				<div class="flex mt-2 w-full">
@@ -182,9 +157,9 @@
          		</div>
          		<div class="col-12">
          			<div class="EmptyBox20"/>
-         			<div class="flex justify-content-center">
-         				<span class="Fs10 text-gray-600 mr-1 align-self-end">TOTAL</span>
-	   					<span class="Fs20 text-black font-semibold">
+         			<div class="flex justify-content-center align-items-end">
+         				<span class="Fs10 text-gray-600 mr-1">TOTAL</span>
+	   					<span class="Fs30 text-black font-semibold">
 	   						<h:outputText value="#{listaProductoCtrl.liqCompraFormCtrl.detalleSelected.preciototal}" >
 		   						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 		   					</h:outputText>
