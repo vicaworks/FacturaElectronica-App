@@ -26,7 +26,7 @@
 				vertical-align: top;
 			}
 			
-			body .ui-datatable thead th {text-align: center;vertical-align: top;}
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
         </style>
     </ui:define>
@@ -194,13 +194,13 @@
 					rows="20"
 					rowsPerPageTemplate="15,20,25,30,35,40,45">
 					
-					<p:column style="width:10px;">
+					<p:column style="width:10px;" styleClass="text-center">
 						<f:facet name="header">
 							<p:selectBooleanCheckbox value="#{compNcCtrl.seleccion}">
 								<p:ajax event="change" listener="#{compNcCtrl.changeSeleccion()}" update="@form:msgFormMain @form:notaCreditoDT"/>
 							</p:selectBooleanCheckbox>
 						</f:facet>
-						<p:selectBooleanCheckbox value="#{n.seleccion}" style="margin-left:10px;" rendered="#{n.estado!='ANULADO' and n.estado!='BORRADOR'}">
+						<p:selectBooleanCheckbox value="#{n.seleccion}" rendered="#{n.estado!='ANULADO' and n.estado!='BORRADOR'}">
 							<p:ajax event="change" update="@parent"/>
 						</p:selectBooleanCheckbox>
 					</p:column>
@@ -257,7 +257,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{n.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{n.numdocumento}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numdocumento)}" rendered="#{n.estado!='BORRADOR'}"/>
 					</p:column>
 					
@@ -265,7 +265,7 @@
 						
 						<div class="flex">
 							<div class="flex-grow-1 flex">
-								<h:outputText value="#{n.estado}" styleClass="#{n.estadoStyle} p-1 border-round block w-full">
+								<h:outputText value="#{n.estado}" styleClass="#{n.estadoStyle} p-1 border-round block w-full text-center">
 								</h:outputText>
 							</div>
 							<div class="flex-grow-0 flex px-1 align-items-center">
@@ -280,7 +280,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:60px;">
+					<p:column headerText="FECHA" style="width:60px;" styleClass="text-right">
 						<h:outputText value="#{n.fechaemision}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
@@ -289,9 +289,9 @@
 					
 					<p:column headerText="CLIENTE" style="width:150px;" filterBy="#{n.clienteCompleto}" filterMatchMode="contains">
 						<div class="flex flex-column">
-							<h:outputText value="#{n.cliente.identificacion}" styleClass="Fs10 text-black"/>
-							<h:outputText value="#{n.cliente.razonsocial}" styleClass="Fs11 text-gray-700">
+							<h:outputText value="#{n.cliente.razonsocial}" styleClass="Fs11 text-gray-800">
 							</h:outputText>
+							<h:outputText value="#{n.cliente.identificacion}" styleClass="Fs10 text-gray-700 font-semibold"/>
 						</div>
 					</p:column>
 					
@@ -308,11 +308,11 @@
 						</f:subview>
 					</p:column>
 					
-					<p:column headerText="DOC ASOCIADO" style="width:120px;" filterBy="#{n.numfactura}" filterMatchMode="contains">
+					<p:column headerText="DOC ASOCIADO" style="width:120px;" filterBy="#{n.numfactura}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{compNcCtrl.getFormatoNumDocumento(n.numfactura)}"/>
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:60px;">
+					<p:column headerText="FECHA" style="width:60px;" styleClass="text-right">
 						<h:outputText value="#{n.fechaemisiondocasociado}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
@@ -330,13 +330,6 @@
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
-					
-					
-					<!-- <p:column headerText="I.C.E." style="width:40px;" styleClass="TexAlRight">
-						<h:outputText value="#{n.totalice}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column> -->
 					
 					<p:column headerText="I.V.A." style="width:65px;" styleClass="TexAlRight">
 						<h:outputText value="#{n.totaliva}">
