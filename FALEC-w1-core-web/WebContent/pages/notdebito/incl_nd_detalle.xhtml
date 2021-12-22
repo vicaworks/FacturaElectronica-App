@@ -83,7 +83,7 @@
 						<div class="col-12 mt-1">
 							
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
-								<div class="flex flex-grow-1 Fs9">
+								<div class="flex flex-grow-1 Fs10">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
 									<span class="text-gray-800">Subtotal</span>
 								</div>						
@@ -96,7 +96,7 @@
 								</div>				
 							</div>
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
-								<div class="flex flex-grow-1 Fs9">
+								<div class="flex flex-grow-1 Fs10">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
 									<span class="text-gray-800 mr-1">Seleccionar I.V.A.</span>
 								</div>						
@@ -120,9 +120,9 @@
 								</div>				
 							</div>
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
-								<div class="flex flex-grow-1 Fs9">
+								<div class="flex flex-grow-1 Fs10">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
-									<span class="text-gray-800 mr-1">I.V.A.</span> <span>#{notaDebitoFrmCtrl.totalimpuesto.valor}</span>
+									<span class="text-gray-800 mr-1">I.V.A.</span>
 								</div>						
 								<div class="flex flex-grow-1">
 									<div class="text-right pr-3 w-full">
@@ -143,20 +143,19 @@
 					</h:outputText>
 				</div>
 				
-				<!-- <div class="col-12 md:col-7">
-					<div class="EmptyBox20"/>
-					<div class="grid grid-nogutter justify-content-end">
+				<div class="col-12 md:col-7">
+					<div class="grid justify-content-end">
 						<div class="col-12 md:col-6">
 							<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null}">
 	    				
-			    				<f:setPropertyActionListener value="FACTURA" target="#{pagoCompCtrl.callModule}"/>
-			    				<f:setPropertyActionListener value="#{compFacCtrl}" target="#{pagoCompCtrl.compFacCtrl}"/>
+			    				<f:setPropertyActionListener value="NOTA_DEBITO" target="#{pagoCompCtrl.callModule}"/>
+			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl}" target="#{pagoCompCtrl.notaDebitoFrmCtrl}"/>
 			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.notDebitoSelected}" target="#{pagoCompCtrl.cabeceraSelected}"/>
-			    				<f:setPropertyActionListener value="#{compFacCtrl.pagoList}" target="#{pagoCompCtrl.pagoList}"/>
+			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.pagoList}" target="#{pagoCompCtrl.pagoList}"/>
 			    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
-			    				<f:setPropertyActionListener value=":formMain:oupPagoDT" target="#{pagoCompCtrl.updateView}"/>
+			    				<f:setPropertyActionListener value=":formMain:oupNcTotal" target="#{pagoCompCtrl.updateView}"/>
 			    				
-					    		<div class="flex align-items-stretch #{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null?'bg-gray-300':'bg-green-400'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
+					    		<div class="flex align-items-stretch #{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
 					    			<div class="flex align-items-center justify-content-center w-full">
 						    				<div class="flex flex-inline">
 						    					<div class="flex mr-2">
@@ -172,44 +171,11 @@
 						</div>
 					</div>
 				</div>
-				
 				<div class="col-12 md:col-5 align-self-center text-center py-2">
-					<span class="inline Fs10 font-bold mr-1">PAGO</span>
-					<h:outputText value="#{notaDebitoFrmCtrl.totalPago}" styleClass="Fs24 text-gray-600 font-bold inline">
-						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-					</h:outputText>
-				</div> -->
-				<div class="col-12 md:col-7">
-				</div>
-				<div class="col-12 md:col-5 align-self-center text-center py-2">
-					<div class="grid grid-nogutter">
-						<div class="col-6">
-							<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null}">
-	    				
-			    				<f:setPropertyActionListener value="NOTA_DEBITO" target="#{pagoCompCtrl.callModule}"/>
-			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl}" target="#{pagoCompCtrl.notaDebitoFrmCtrl}"/>
-			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.notDebitoSelected}" target="#{pagoCompCtrl.cabeceraSelected}"/>
-			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.pagoList}" target="#{pagoCompCtrl.pagoList}"/>
-			    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
-			    				<f:setPropertyActionListener value=":formMain:oupNcTotal" target="#{pagoCompCtrl.updateView}"/>
-			    				
-					    		<div class="flex align-items-stretch #{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null?'bg-gray-300':'bg-green-400'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
-					    			<div class="flex align-items-center justify-content-center w-full">
-						    				<div class="flex flex-inline">
-						    					<div class="flex mr-2">
-						    						<i class="fa fa-chevron-circle-right Fs50 text-white"></i>
-						    					</div>
-						    					<div class="flex align-items-center">
-						    						<span class="Fs14 text-white">Pago</span>
-						    					</div>
-						    				</div>
-					    			</div>
-					    		</div>
-			    			</p:commandLink>
-						</div>
-						<div class="col-6 align-self-center">
+					<div class="grid grid-nogutter">						
+						<div class="col-12 align-self-center">
 							<span class="inline Fs10 font-bold mr-1">PAGO</span>
-							<h:outputText value="#{notaDebitoFrmCtrl.totalPago}" styleClass="Fs24 text-gray-600 font-bold inline">
+							<h:outputText value="#{notaDebitoFrmCtrl.totalPago}" styleClass="Fs24 text-black font-bold inline">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</div>

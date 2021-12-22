@@ -326,13 +326,13 @@
 					</p:column>
 					
 					<p:column headerText="DESC" style="width:55px;" styleClass="TexAlRight">
-						<h:outputText value="#{n.totaldescuento}" >
+						<h:outputText value="#{n.totaldescuento}" styleClass="#{n.totaldescuento.doubleValue()==0?'opacity-60':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="I.V.A." style="width:65px;" styleClass="TexAlRight">
-						<h:outputText value="#{n.totaliva}">
+						<h:outputText value="#{n.totaliva}" styleClass="#{n.totaliva.doubleValue()==0?'opacity-60':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
