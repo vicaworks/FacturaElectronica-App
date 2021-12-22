@@ -50,18 +50,18 @@
 	            		</div>
             		</div>     		
             		<div class="flex flex-column md:flex-row">
-            			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-start md:align-self-end pl-2 mt-2 md:mt-0">
+            			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-start md:align-self-end mt-2 md:mt-0">
             				
             				<p:commandLink id="clkFacEdit" 
             					title="Editar" 
             					process="@this :formMain:pvDetalleDT" 
             					disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}" 
-            					styleClass="text-center inline" 
-            					style="min-width:75px!important;color:black!important;"
+            					styleClass="text-left inline" 
+            					style="min-width:60px!important;color:black!important;"
             					action="#{listaProductoCtrl.loadPantalla()}"
             					oncomplete="if(#{d.producto==null or (d.producto!=null and d.producto.tipoventa==2)}){PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm');}else{PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')}">
-								<i class="fa fa-edit Fs12 mr-1 text-gray-800"></i>
-								<span class="Fs14 text-black font-light">EDITAR</span>
+								<i class="fa fa-edit Fs10 mr-1 text-gray-800"></i>
+								<span class="Fs12 text-gray-800 font-light">EDITAR</span>
 								<f:setPropertyActionListener value="FACTURA" target="#{listaProductoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="EDITAR" target="#{listaProductoCtrl.accion}"/>
 								<f:setPropertyActionListener value=":formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
@@ -79,7 +79,7 @@
            						process="@this :formMain:pvDetalleDT" 
            						disabled="#{compFacCtrl.enableAccion}" 
            						style="min-width:75px!important;">
-								<span class="Fs14 text-blue-600 font-medium">ELIMINAR</span>
+								<span class="Fs12 text-pink-400">ELIMINAR</span>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{d}" target="#{compFacCtrl.detalleSelected}"/>								
 							</p:commandLink>

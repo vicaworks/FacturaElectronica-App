@@ -285,7 +285,7 @@
 			    			</div>
 			    			<div class="py-1">
 			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs14 text-green-600 font-bold">A PAGAR</span>
+			    				<span class="Fs14 text-blue-600 font-bold">A PAGAR</span>
 			    			</div>
 			    		</div>
 			    	</div>
@@ -301,7 +301,7 @@
 	    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
 	    				<f:setPropertyActionListener value=":formMain:oupPagoDT" target="#{pagoCompCtrl.updateView}"/>
 	    				
-			    		<div class="flex align-items-stretch #{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null?'bg-gray-300':'bg-green-400'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
+			    		<div class="flex align-items-stretch #{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
 			    			<div class="flex align-items-center justify-content-center w-full">
 				    				<div class="flex flex-inline">
 				    					<div class="flex mr-2">
@@ -325,7 +325,7 @@
 			    			</div>
 			    			<div class="py-1">
 			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs16 text-gray-700 font-bold">PAGO</span>
+			    				<span class="Fs16 text-green-600 font-bold">PAGO</span>
 			    			</div>	    			
 			    		</div>
 			    	</div>

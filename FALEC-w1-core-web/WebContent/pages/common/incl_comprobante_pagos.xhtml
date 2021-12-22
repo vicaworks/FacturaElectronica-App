@@ -45,7 +45,7 @@
 								<div class="flex flex-column w-full">
 									<div class="block my-1">
 										<span class="Fs9 font-bold mr-1">TIPO PAGO</span>
-										<span class="Fs16 text-blue-600 font-bold">
+										<span class="Fs16 text-gray-800 font-bold">
 											<h:outputText value="#{p.tipopago.nombre}"/>
 										</span>
 									</div>
@@ -78,7 +78,7 @@
 										<span class="">Días</span>
 									</div>
 									<div class="block mb-1">
-										<h:outputText value="#{p.fechapago}" styleClass="text-green-600 font-bold">
+										<h:outputText value="#{p.fechapago}" styleClass="text-gray-800 font-bold">
 											<f:convertDateTime  pattern="dd/MM/yyyy"/>
 										</h:outputText>
 									</div>
@@ -98,7 +98,7 @@
 											</div>
 											<div class="flex-grow-1 flex flex-column">
 												<div class="py-1">
-													<h:outputText value="#{p.valorentrega}" styleClass="#{p.cambio>0?'text-blue-600 font-bold':''} Fs16">
+													<h:outputText value="#{p.valorentrega}" styleClass="#{p.cambio>0?'text-green-600 font-semibold':''} Fs16">
 														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 													</h:outputText>
 												</div>
@@ -109,7 +109,7 @@
 											</div>
 											<div class="flex-grow-1 flex flex-column">
 												<div class="py-1">
-													<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0?'text-pink-600 font-bold':''} Fs16">
+													<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0?'text-pink-400 font-semibold':''} Fs16">
 														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 													</h:outputText>
 												</div>
@@ -138,28 +138,28 @@
 			<div class="grid justify-content-around border-top-1 border-gray-100">
 				<div class="col-6 md:col-3 mt-1">
 					<div class="flex flex-column text-center">
-						<span class="Fs16 font-bold py-1">
-							<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="Fs18">
+						<span class="font-bold text-black py-1">
+							<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="Fs20">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</span>
 						<div class="py-1">
 							<span class="Fs10 mr-1">TOTAL</span>
-							<span class="Fs14 font-bold text-green-600">A PAGAR</span>
+							<span class="Fs14 font-bold text-black">A PAGAR</span>
 							
 						</div>
 					</div>
 				</div>
 				<div class="col-6 md:col-3 mt-1">
 					<div class="flex flex-column text-center">
-						<span class="Fs16 font-bold py-1">
-							<h:outputText value="#{pagoCtrl.totalPago}" styleClass="Fs18">
+						<span class="font-bold text-blue-600 py-1">
+							<h:outputText value="#{pagoCtrl.totalPago}" styleClass="Fs20">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</span>
 						<div class="py-1">
 							<span class="Fs10 mr-1">TOTAL</span>
-							<span class="Fs14 font-bold text-blue-600">PAGO</span>
+							<span class="Fs14 font-bold text-black">PAGO</span>
 							
 						</div>
 					</div>

@@ -25,7 +25,7 @@
 				vertical-align: top;
 			}
 			
-			body .ui-datatable thead th {text-align: center;vertical-align: top;}
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
         </style>
     </ui:define>
@@ -283,14 +283,14 @@
 					
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:120px;" styleClass="text-right" filterBy="#{v.numdocumento}" filterMatchMode="contains">
 						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" rendered="#{v.estado!='BORRADOR'}"/>
 					</p:column>
 					
 					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{v.estado}" filterMatchMode="contains">
 						<div class="flex">
 							<div class="flex-grow-1 flex">
-								<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} p-1 border-round block w-full">
+								<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} p-1 border-round block w-full text-center">
 								</h:outputText>
 							</div>
 							<div class="flex-grow-0 flex px-1 align-items-center">
@@ -305,7 +305,7 @@
 											
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:55px;">
+					<p:column headerText="FECHA" style="width:55px;" styleClass="text-right">
 						<h:outputText value="#{v.fechaemision}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
@@ -313,9 +313,9 @@
 					
 					<p:column headerText="CLIENTE" style="width:140px;" filterBy="#{v.clienteCompleto}" filterMatchMode="contains">
 						<div class="flex flex-column">
-							<h:outputText value="#{v.identificacion}" styleClass="Fs10 text-black"/>
-							<h:outputText value="#{v.razonsocial}" styleClass="Fs11 text-gray-700">
+							<h:outputText value="#{v.razonsocial}" styleClass="Fs11 text-gray-800">
 							</h:outputText>
+							<h:outputText value="#{v.identificacion}" styleClass="Fs10 text-gray-800 font-semibold"/>
 						</div>
 					</p:column>
 					
@@ -353,7 +353,7 @@
 					</p:column>
 					
 					<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.totaldescuento}" styleClass="Fs10">
+						<h:outputText value="#{v.totaldescuento}" styleClass="Fs10 #{v.totaldescuento.doubleValue()==0.0?'opacity-70':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
@@ -371,8 +371,8 @@
 					</p:column>
 					
 					
-					<p:column headerText="RETNC." style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.valorretenido}" styleClass="Fs10">
+					<p:column headerText="RETNC." style="width:50px;" styleClass="TexAlRight ">
+						<h:outputText value="#{v.valorretenido}" styleClass="Fs10 #{v.valorretenido.doubleValue()==0.0?'opacity-70':''}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
@@ -540,6 +540,7 @@
 	    
 	    <!-- GUIA REMISION DESTINATARIO FORMULARIO -->
 		<ui:include src="../guiarem/incl_gr_destinatarioForm.xhtml" />
+		<!-- LISTA DE PAGOS -->
 		<ui:include src="../common/incl_comprobante_pagos.xhtml" />
 		<!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />

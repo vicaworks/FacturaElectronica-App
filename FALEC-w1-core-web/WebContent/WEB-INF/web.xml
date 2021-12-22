@@ -3,10 +3,7 @@
 
   <display-name>FALEC-w1-core-web</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
-    <welcome-file>sample.jsf</welcome-file>
   </welcome-file-list>
   
   <!-- Auto scan REST service -->
