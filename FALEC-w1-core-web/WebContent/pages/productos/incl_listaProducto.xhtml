@@ -11,13 +11,10 @@
 		.heightFrmListProducto {
 				height: 550px;
 		}
-		 .ui-grid td {
-	        white-space: nowrap;
-	    }
 		
 	</style>
 	
-	<p:dialog header="Productos" widgetVar="dlgListaProducto" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Productos" widgetVar="dlgListaProducto" modal="true" responsive="true" width="550px" closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmListProducto">
 			
@@ -26,58 +23,42 @@
 			<p:remoteCommand name="establecerProducto" action="#{listaProductoCtrl.establecerFocoProducto}" update="@form"/>
 			
 			
-			<!-- OPCIONES -->
-			
-			<div class="p-grid p-align-end toolBarPopUp">
-				
-						
-					<div class="p-col-12 p-md-6">
-						<p:inputText id="intListProCriterioBusqueda"
-							value="#{listaProductoCtrl.criterioBusqueda}" required="false"
-							requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
-							placeholder="BUSCAR POR : #{msg['label.categoria']}, NOMBRE PRODUCTO, #{msg['label.codigo']} PRODUCTO" 
-							onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}">
-						</p:inputText>
-					</div>
-					<div class="p-col-12 p-md-6">
-					
-						<p:commandButton id="cmdListProductoRefrescar"
-							value="BUSCAR" icon="fa fa-search" 
-							action="#{listaProductoCtrl.refrescar()}" styleClass="MRight10" update="@form"
-							/>
-						
-						<p:commandButton id="cmdFacDetalle"
-							value="PRODUCTO" icon="fa fa-plus" 
-							action="#{productoCtrl.nuevo()}" styleClass="secondary-button MRight10" update="@form">
-							<f:setPropertyActionListener value="LISTA_PRODUCTO" target="#{productoCtrl.callModule}"/>
-							<f:setPropertyActionListener value="frmListProducto" target="#{productoCtrl.formModule}"/>
-							<f:setPropertyActionListener value=":frmListProducto" target="#{productoCtrl.viewUpdate}"/>
-							<f:setPropertyActionListener value="#{listaProductoCtrl}" target="#{productoCtrl.listaProductoCtrl}"/>
-						</p:commandButton>
-							
-						<p:commandButton id="cmdCerrar"
-							value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-							onclick="PF('dlgListaProducto').hide()" immediate="true"  
-							/>
-						
-					</div>	
-					
-				
+			<!-- OPCIONES -->			
+			<div class="flex">				
+				<div class="ui-inputgroup flex flex-grow-1 pr-1">
+                    <p:inputText id="intListProCriterioBusqueda"
+						value="#{listaProductoCtrl.criterioBusqueda}" required="false"
+						requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
+						placeholder="BUSCAR POR : #{msg['label.categoria']}, NOMBRE PRODUCTO, #{msg['label.codigo']} PRODUCTO" 
+						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}">
+					</p:inputText>
+                    <p:commandButton icon="pi pi-search" styleClass="ui-button-success" action="#{listaProductoCtrl.refrescar()}" update="@form"/>
+                </div>
+                <div class="flex flex-grow-0 px-2 align-items-center">
+                	<p:commandLink action="#{productoCtrl.nuevo()}" update="@form">
+                		<i class="fa fa-plus Fs16 text-gray-800" ></i>
+						<f:setPropertyActionListener value="LISTA_PRODUCTO" target="#{productoCtrl.callModule}"/>
+						<f:setPropertyActionListener value="frmListProducto" target="#{productoCtrl.formModule}"/>
+						<f:setPropertyActionListener value=":frmListProducto" target="#{productoCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value="#{listaProductoCtrl}" target="#{productoCtrl.listaProductoCtrl}"/>
+                	</p:commandLink>
+                </div>
 			</div>
 			
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmListProducto"
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmListProducto" style="width: 98%!important;"  
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmListProducto contenedorFormulario">
+			<div class="w-full overflow-auto heightFrmListProducto contenedorFormulario">
 				
 				<p:dataTable id="listaProductoDT" var="pr"
 					value="#{listaProductoCtrl.productoList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="listaProductoDT Fs11"  
+					styleClass="listaProductoDT Fs11"
+					style="width: 99.5%!important;"  
 					rowKey="#{pr.idproducto}"
 					rows="11"
 	                paginator="true"
@@ -91,70 +72,45 @@
 	                	<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 					</p:ajax>
 	                
-	                
-	                <p:column headerText="#{msg['label.codigo']}" style="width:30px;" filterBy="#{pr.codigoprincipal}" filterMatchMode="contains">
-	                	<h:outputText value="#{pr.codigoprincipal}" >
-						</h:outputText>
-	                </p:column>
-	                
-	                <p:column style="width:90px;" filterBy="#{pr.nombregenerico}" filterMatchMode="contains">
+	                <p:column style="width:150px;" filterBy="#{pr.filterNombre}" filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="NOMBRE" />
-							<h:outputText value=" [filtro]"  style="color:gray;"/>
-							
 						</f:facet>
-						<h:outputText value="#{pr.nombregenerico}" />
-					</p:column>
-					
-					<p:column headerText="IMG" style="width:20px;" styleClass="TexAlCenter">
-	                	<p:commandLink id="clkListProductoImg" disabled="#{pr.imagen==null}">
-							<i class="fa fa-eye Fs30" style="color:black;"></i>
-						</p:commandLink>
-						<p:overlayPanel id="imagePanel" for="clkListProductoImg" hideEffect="fade" rendered="#{pr.imagen!=null}" showCloseIcon="true">
-					        <p:graphicImage value="#{productoCtrl.getImageToStream(pr.imagen)}" stream="false"  styleClass="imgSize" width="300" height="300"/>
-					    </p:overlayPanel>
-	                </p:column>
-					
-					<p:column headerText="STOCK" style="width:30px;" styleClass="TexAlCenter">
-						<h:outputText value="#{pr.stock}" styleClass="#{pr.stock.doubleValue()==0.0?'markRed':'markGreen'}" rendered="#{pr.tipoProducto.nombre=='PRODUCTO'}">
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
-						</h:outputText>
-						
-						<h:outputText value="-" rendered="#{pr.tipoProducto.nombre!='PRODUCTO'}">
-						</h:outputText>
+						<div class="flex">
+							<div class="flex-grow-1 flex flex-column">
+								<h:outputText value="#{pr.nombregenerico}" />
+								<div class="flex align-items-center">
+									<i class="fa fa-barcode Fs10 text-gray-400 mr-1"/>
+				                	<h:outputText value="#{pr.codigoprincipal}" styleClass="text-blue-700">
+									</h:outputText>									
+								</div>
+							</div>
+							<div class="flex-grow-0 flex aling-items-start px-1">
+			                	<p:commandLink id="clkListProductoImg" disabled="#{pr.imagen==null}">
+									<i class="fa fa-file-image-o text-gray-800 Fs20"></i>
+								</p:commandLink>
+								<p:overlayPanel id="imagePanel" for="clkListProductoImg" hideEffect="fade" rendered="#{pr.imagen!=null}" showCloseIcon="true">
+							        <p:graphicImage value="#{productoCtrl.getImageToStream(pr.imagen)}" stream="false"  />
+							    </p:overlayPanel>								
+							</div>
+						</div>
 					</p:column>
 					
 					<p:column headerText="CANTIDAD" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProCantidad" value="#{pr.cantidad}" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])" >
+						
+						<p:inputText id="idListProCantidad" value="#{pr.cantidad}" required="true" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" requiredMessage="REQUERIDO"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])"
+							styleClass="w-full Fs20 text-right">							
 	                		<p:ajax update=":frmListProducto:listaProductoDT">
 	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 	                		</p:ajax>
-	                	</p:spinner>
-	                	<p:message for="idListProCantidad"/>
+						</p:inputText>
+	                	<p:message for="idListProCantidad" styleClass="block"/>
+	                	
 	                </p:column>
-	                
-	                <p:column headerText="PRE UNIT" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProPUnitario" value="#{pr.preciouno}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100" decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}">
-	                		<p:ajax update=":frmListProducto:listaProductoDT">
-	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
-	                		</p:ajax>
-	                	</p:spinner>
-	                	<p:message for="idListProPUnitario"/>
-	                </p:column>
-	                
-	                <p:column headerText="DESCUENTO % Ejm 5.5" styleClass="TexAlCenter" style="width:40px;">
-	                	<p:spinner id="idListProDescuento" value="#{pr.porcentajedescuento}" min="0.0" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" styleClass="Wid100"  decimalPlaces="2"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" >
-	                		<p:ajax update=":frmListProducto:listaProductoDT">
-	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
-	                		</p:ajax>
-	                	</p:spinner>
-	                	<p:message for="idListProDescuento"/>
-	                </p:column>
-					
 					
 	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:20px;">
 	                	<p:commandLink id="clkListProductoAdd" action="#{listaProductoCtrl.guardar()}" update="@form #{listaProductoCtrl.viewUpdate}">
-							<i class="fa fa-cart-plus Fs30" style="color:#252529;"></i>
+							<i class="fa fa-plus Fs20" style="color:#252529;"></i>
 							<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 						</p:commandLink>
 	                </p:column>

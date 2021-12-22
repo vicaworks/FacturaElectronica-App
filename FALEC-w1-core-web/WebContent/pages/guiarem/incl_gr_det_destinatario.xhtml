@@ -31,7 +31,7 @@
 					disabled="#{guiaRemFormCtrl.destinatarioSelected==null}">
 					<f:setPropertyActionListener value="#{guiaRemFormCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 					<f:setPropertyActionListener value="GUIA_REMISION" target="#{listaProductoCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:oupGuiaRemDetalleDT" target="#{listaProductoCtrl.viewUpdate}"/>
+					<f:setPropertyActionListener value=":formMain:oupGuiaRemDetalleDT :formMain:oupTotDestinatario" target="#{listaProductoCtrl.viewUpdate}"/>
 					<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 				</p:commandButton>			
 				
@@ -46,7 +46,6 @@
 					</div>
 				</f:subview>
 			</div>
-			<!-- <h:outputText value="#{guiaRemFormCtrl.destinatarioSelected!=null?guiaRemFormCtrl.destinatarioSelected.razonsocialdestinatario:'-'}" styleClass="block mb-1 markBlack"/> -->
 			
 			<p:dataScroller id="guiaRemDetalleDT" value="#{guiaRemFormCtrl.destinatarioSelected.detalledestinatarioList}" var="det" chunkSize="10" mode="inline" styleClass="guiaRemDetalleDT">
 				<f:facet name="header">
@@ -72,8 +71,7 @@
 									<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>
 								</p:commandLink>
 	            				<p:divider layout="vertical" styleClass="mx-2  inline"/>
-	            				<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" title="Eliminar" update="@form:oupGuiaRemDetalleDT" process="@this" disabled="#{guiaRemFormCtrl.enableAccion}">
-	            					
+	            				<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" title="Eliminar" update="@form:oupGuiaRemDetalleDT @form:oupTotDestinatario" process="@this" disabled="#{guiaRemFormCtrl.enableAccion}">	            					
 									<i class="fa fa-trash-o mr-1 text-pink-400 Fs11"></i>
 									<span class="Fs11 text-pink-400">ELIMINAR</span>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

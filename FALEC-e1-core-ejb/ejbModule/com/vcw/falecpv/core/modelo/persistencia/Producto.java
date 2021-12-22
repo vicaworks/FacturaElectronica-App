@@ -192,6 +192,9 @@ public class Producto implements Serializable {
     @Transient
     private boolean actualizarProducto = false;
     
+    @Transient
+    private String filterNombre;
+    
 	/**
 	 * 
 	 */
@@ -764,6 +767,27 @@ public class Producto implements Serializable {
 	 */
 	public void setActualizarProducto(boolean actualizarProducto) {
 		this.actualizarProducto = actualizarProducto;
+	}
+
+	/**
+	 * @return the filterNombre
+	 */
+	public String getFilterNombre() {
+		filterNombre = "";
+		if(getNombregenerico()!=null) {
+			filterNombre += getFilterNombre();
+		}
+		if(getCodigoprincipal()!=null) {
+			filterNombre += getCodigoprincipal();
+		}
+		return filterNombre;
+	}
+
+	/**
+	 * @param filterNombre the filterNombre to set
+	 */
+	public void setFilterNombre(String filterNombre) {
+		this.filterNombre = filterNombre;
 	}
 
 }

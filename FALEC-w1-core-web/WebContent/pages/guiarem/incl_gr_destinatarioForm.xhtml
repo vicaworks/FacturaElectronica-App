@@ -26,12 +26,12 @@
 			
 				<p:commandButton id="cmdGuardarTransportista"
 					value="ACEPTAR" icon="fa fa-check" 
-					action="#{guiaRemFormCtrl.guardarDestinatario()}" styleClass="mr-1 min-width-100" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
+					action="#{guiaRemFormCtrl.guardarDestinatario()}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
 				</p:commandButton>
 				
 				<p:commandButton id="cmdGuardarTransportista2"
 					value="ACEPTAR" icon="fa fa-check" 
-					action="#{guiaRemFormCtrl.guardarDestinatarioByOtros()}" styleClass="mr-1 min-width-100" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
+					action="#{guiaRemFormCtrl.guardarDestinatarioByOtros()}" styleClass="mr-1 min-width-100 ui-button-outlined ui-button-success" update="@form :formMain" rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
 				</p:commandButton>
 					
 					

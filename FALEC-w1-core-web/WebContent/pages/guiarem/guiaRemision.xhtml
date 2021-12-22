@@ -27,13 +27,6 @@
 			
 			body .ui-datatable thead th {text-align: center;vertical-align: top;}
 			
-			body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
-				border: 1px solid #d8d8dc;
-				background-color: #ccc;
-				color: black;
-				cursor: default;
-			}
-			
         </style>
     </ui:define>
 
@@ -256,7 +249,7 @@
 						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" rendered="#{r.cabecera.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:70px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains">
+					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains">
 						<div class="flex">
 							<div class="flex-grow-1 flex">
 								<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} p-1 border-round block w-full">
@@ -273,14 +266,14 @@
 						</div>						
 					</p:column>
 					
-					<p:column headerText="DESTINATARIOS" style="width:150px;" filterBy="#{r.razonsocialdestinatario}" filterMatchMode="contains">
+					<p:column headerText="DESTINATARIOS" style="width:250px;" filterBy="#{r.filterDestinatario}" filterMatchMode="contains">
 						
 						<div class="flex flex-column">
-							<span class="Fs10 text-black font-semibold mb-1">
-								#{r.identificaciondestinatario}
-							</span>
 							<span class="Fs11 text-black mb-1">
 								#{r.razonsocialdestinatario}
+							</span>
+							<span class="Fs10 text-black font-semibold mb-1">
+								#{r.identificaciondestinatario}
 							</span>
 							<span class="Fs11 text-gray-800 mb-1">COMPROBANTE</span>
 							<span class="Fs14 text-black font-semibold mb-1">#{guiaRemCtrl.getFormatoNumDocumento(r.numdocsustento)}</span>
@@ -291,67 +284,60 @@
 								<span class="Fs12 markGray mr-2">#{r.detalledestinatarioList.size()}</span>
 								
 							</div>
-							<div class="EmptyBox10"/>
-							<div>
-								<i class="fa fa-ellipsis-v Fs14 mx-1"/> 
-								<p:commandLink oncomplete="PF('dlgResGuiaRemision').show();" update="@form :frmDetGR">
-									<span class="mr-1 Fs12 text-black">Ver Detalle</span>
-									<i class="fa fa-external-link text-gray-800 Fs14"/>
+							<div class="flex my-1 justify-content-start">
+								<p:commandLink oncomplete="PF('dlgResGuiaRemision').show();" update="@form :frmDetGR" styleClass="text-center inline">
+									<i class="fa fa-list Fs11 mr-1 text-blue-700"></i>
+									<span class="Fs12 text-blue-700">ÍTEMS</span>
 									<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
 									<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.destinatarioSelected}"/>
 									<f:setPropertyActionListener value="#{r.detalledestinatarioList}" target="#{guiaRemCtrl.detalledestinatarioList}"/>
 								</p:commandLink>
+								<p:divider layout="vertical" styleClass="mx-2  inline"/>
 							</div>
-							<div class="EmptyBox5"/>
 						</div>	
 					
 					</p:column>
 					
-					<p:column style="width:10px;" styleClass="TexAlCenter">
+					<p:column style="width:30px;">
 						<f:facet name="header">
-							<p:spacer width="3px"/>
-							<i class="fa fa-envelope Fs14"/>
+							<div class="w-full text-center">
+								<i class="fa fa-envelope Fs14"/>
+							</div>
 						</f:facet>
-						<f:subview rendered="#{r.cabecera.envioemail==1}">
-							<i class="fa fa-check Fs14" style="color:black;"/>
-						</f:subview>
-						<f:subview rendered="#{r.cabecera.envioemail==0}">
-							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
-						</f:subview>
-					</p:column>
-					
-					<p:column headerText="RUC / CI " style="width:60px;" filterBy="#{r.cabecera.transportista.identificacion}" filterMatchMode="contains">
-						<h:outputText value="#{r.cabecera.transportista.identificacion}" />
-					</p:column>
-					
-					<p:column headerText="TRANSPORTISTA" style="width:120px;" filterBy="#{r.cabecera.transportista.razonsocial}" filterMatchMode="contains">
-						<h:outputText value="#{r.cabecera.transportista.razonsocial}" />
-					</p:column>
-					
-					<p:column headerText="FECHA RUTA" style="width:90px;">
-						
-						<div class="flex flex-column">
-							<div class="mb-1 flex align-items-end">
-								<span class="text-gray-700 Fs10 mr-1" style="min-width: 30px;">Inicio</span>
-								<span class="text-black Fs12">
-									<h:outputText value="#{r.cabecera.fechainiciotransporte}">
-										<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</span>
-							</div>
-							<div class="mb-1 flex align-items-end">
-								<span class="text-gray-700 Fs10 mr-1" style="min-width: 30px;">Fin</span>
-								<span class="text-black Fs12">
-									<h:outputText value="#{r.cabecera.fechafintransporte}">
-										<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</span>
-							</div>
+						<div class="flex pl-3 justify-content-center">
+							<f:subview rendered="#{r.cabecera.envioemail==1}">
+								<i class="fa fa-check Fs14" style="color:black;"/>
+							</f:subview>
+							<f:subview rendered="#{r.cabecera.envioemail==0}">
+								<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+							</f:subview>
 						</div>
 					</p:column>
 					
+					<p:column headerText="TRANSPORTISTA" style="width:200px;" filterBy="#{r.filterTransportista}" filterMatchMode="contains">
+						<div class="flex flex-column pl-3" >
+							<h:outputText value="#{r.cabecera.transportista.razonsocial}" styleClass="Fs13"/>
+							<h:outputText value="#{r.cabecera.transportista.identificacion}" styleClass="text-gray-800 Fs11 font-semibold"/>							
+							<span class="my-1">FECHA RUTA</span>							
+							<div class="flex justify-content-between flex-wrap">
+								<span class="flex align-items-end">
+									<span class="Fs10 mr-1 ">Desde</span>
+									<h:outputText value="#{r.cabecera.fechainiciotransporte}" styleClass="text-gray-800 Fs12">
+										<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</span>
+								<span class="flex align-items-end">
+									<span class="Fs10 mr-1 ">Hasta</span>
+									<h:outputText value="#{r.cabecera.fechafintransporte}" styleClass="text-gray-800 Fs12">
+										<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</span>										
+							</div>
+						</div>
+					</p:column>
+										
 				</p:dataTable>
-				<div class="EmptyBox20"/>			
+				<div class="EmptyBox10"/>			
 			</div>
 	    
 	    

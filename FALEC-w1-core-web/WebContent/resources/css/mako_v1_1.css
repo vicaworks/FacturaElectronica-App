@@ -345,6 +345,13 @@ body .ui-message {
 
 /* FORMATO MESSAGE INFO */
 
+body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+	border: 1px solid #d8d8dc;
+	background-color: #e6e6e6;
+	color: black;
+	cursor: default;
+}
+
 body .ui-commandlink, body .ui-link {text-decoration: none!important;}
 body .ui-selectonemenu .ui-selectonemenu-label {min-height: 0px !important;}
 .layout-wrapper .layout-main .layout-content {padding: 5px;}

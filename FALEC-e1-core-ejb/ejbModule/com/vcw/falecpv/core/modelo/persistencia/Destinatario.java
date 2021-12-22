@@ -5,6 +5,7 @@ package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -109,6 +110,12 @@ public class Destinatario implements Serializable {
     
     @Transient
     private boolean seleccion = false;
+    
+    @Transient
+    private String filterDestinatario;
+    
+    @Transient
+    private String filterTransportista;
 
 	/**
 	 * 
@@ -418,6 +425,61 @@ public class Destinatario implements Serializable {
 	 */
 	public void setSeleccion(boolean seleccion) {
 		this.seleccion = seleccion;
+	}
+
+	/**
+	 * @return the filterDestinatario
+	 */
+	public String getFilterDestinatario() {
+		filterDestinatario = "";
+		if(getRazonsocialdestinatario()!=null) {
+			filterDestinatario += getRazonsocialdestinatario() + " ";
+		}
+		if(getRazonsocialdestinatario()!=null) {
+			filterDestinatario += getRazonsocialdestinatario() + " ";
+		}
+		if(getIdentificaciondestinatario()!=null) {
+			filterDestinatario += getIdentificaciondestinatario() + " ";
+		}
+		if(getRuta()!=null) {
+			filterDestinatario += getRuta() + " ";
+		}	
+		
+		return filterDestinatario;
+	}
+
+	/**
+	 * @param filterDestinatario the filterDestinatario to set
+	 */
+	public void setFilterDestinatario(String filterDestinatario) {
+		this.filterDestinatario = filterDestinatario;
+	}
+
+	/**
+	 * @return the filterTransportista
+	 */
+	public String getFilterTransportista() {
+		filterTransportista = "";
+		if(getCabecera()!=null && getCabecera().getTransportista()!=null && getCabecera().getTransportista().getRazonsocial()!=null) {
+			filterTransportista += getCabecera().getTransportista().getRazonsocial() + " ";
+		}
+		if(getCabecera()!=null && getCabecera().getTransportista()!=null && getCabecera().getTransportista().getIdentificacion()!=null) {
+			filterTransportista += getCabecera().getTransportista().getIdentificacion() + " ";
+		}
+		if(getCabecera()!=null && getCabecera().getFechainiciotransporte()!=null) {
+			filterTransportista += (new SimpleDateFormat("dd/MM/yyyy")).format(getCabecera().getFechainiciotransporte()) + " ";
+		}
+		if(getCabecera()!=null && getCabecera().getFechafintransporte()!=null) {
+			filterTransportista += (new SimpleDateFormat("dd/MM/yyyy")).format(getCabecera().getFechafintransporte()) + " ";
+		}
+		return filterTransportista;
+	}
+
+	/**
+	 * @param filterTransportista the filterTransportista to set
+	 */
+	public void setFilterTransportista(String filterTransportista) {
+		this.filterTransportista = filterTransportista;
 	}
 
 }
