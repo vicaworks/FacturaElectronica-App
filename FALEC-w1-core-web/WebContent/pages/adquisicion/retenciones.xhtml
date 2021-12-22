@@ -26,7 +26,7 @@
 				vertical-align: top;
 			}
 			
-			body .ui-datatable thead th {text-align: center;vertical-align: top;}
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
 		</style>
     </ui:define>
@@ -208,13 +208,13 @@
 					rows="20"
 					rowsPerPageTemplate="15,20,25,30,35,40,45,50">
 					
-					<p:column style="width:20px;">
+					<p:column style="width:20px;" styleClass="text-center">
 						<f:facet name="header">
 							<p:selectBooleanCheckbox value="#{retencionMainCtrl.seleccion}">
 								<p:ajax event="change" listener="#{retencionMainCtrl.changeSeleccion()}" update="@form:msgFormMain @form:retencionDT"/>
 							</p:selectBooleanCheckbox>
 						</f:facet>
-						<p:selectBooleanCheckbox value="#{r.seleccion}" style="margin-left:10px;" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
+						<p:selectBooleanCheckbox value="#{r.seleccion}" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
 							<p:ajax event="change" update="@parent"/>
 						</p:selectBooleanCheckbox>
 					</p:column>
@@ -277,7 +277,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.numdocumento}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
 					</p:column>
 					
@@ -285,7 +285,7 @@
 						
 						<div class="flex">
 							<div class="flex-grow-1 flex">
-								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} p-1 border-round block w-full"/>
+								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} p-1 border-round block w-full text-center"/>
 							</div>
 							<div class="flex-grow-0 flex px-1 align-items-center">
 								<p:commandLink action="#{logTransferCtrl.cargarFormulario(r.idcabecera)}" process="@this" disabled="#{r.estado=='BORRADOR'}">
@@ -299,14 +299,14 @@
 						
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:55px;">
+					<p:column headerText="FECHA" style="width:55px;" styleClass="text-right">
 						<h:outputText value="#{r.fechaemision}" >
 							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
 					
-					<p:column headerText="RUC / CI" style="width:50px;" filterBy="#{r.cliente.identificacion}" filterMatchMode="contains">
+					<p:column headerText="RUC / CI" style="width:50px;" filterBy="#{r.cliente.identificacion}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{r.cliente.identificacion}" />
 					</p:column>
 					
@@ -328,17 +328,17 @@
 						</f:subview>
 					</p:column>
 					
-					<p:column headerText="DOC ASOCIADO" style="width:90px;" filterBy="#{r.numfactura}" filterMatchMode="contains">
+					<p:column headerText="DOC ASOCIADO" style="width:90px;" filterBy="#{r.numfactura}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{retencionMainCtrl.getFormatoNumDocumento(r.numfactura)}" />
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:50px;">
+					<p:column headerText="FECHA" style="width:50px;" styleClass="text-right">
 						<h:outputText value="#{r.fechaemisiondocasociado}" >
 							<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PERIODO" style="width:40px;">
+					<p:column headerText="PERIODO" style="width:40px;" styleClass="text-right">
 						<h:outputText value="#{r.periodofiscal}" >
 						</h:outputText>
 					</p:column>

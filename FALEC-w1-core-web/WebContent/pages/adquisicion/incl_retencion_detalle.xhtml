@@ -113,8 +113,8 @@
 		            		</div>
 	            		</div>
 	            		<p:commandLink styleClass="mt-3" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle" disabled="#{retencionFrmCtrl.enableAccion}">
-	            			<i class="fa fa-trash-o Fs14 mr-1 text-blue-600"></i>
-	            			<span class="Fs14 text-blue-600">ELIMINAR</span>
+	            			<i class="fa fa-trash-o Fs11 mr-1 text-pink-400"></i>
+	            			<span class="Fs12 text-pink-400">ELIMINAR</span>
 	            			<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							<f:setPropertyActionListener value="#{d}" target="#{retencionFrmCtrl.retenciondetalleSelected}"/>
 	            		</p:commandLink>
@@ -141,7 +141,7 @@
 	        <div class="EmptyBox5"/>
 	        <div class="w-full p-3 text-right">
 	        	<span class="Fs12 text-gray-500 mr-1">TOTAL</span>
-	        	<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs20 text-blue-600 font-bold">
+	        	<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs22 text-blue-700 font-bold">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 	        </div>
