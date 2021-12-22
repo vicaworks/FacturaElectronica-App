@@ -25,7 +25,7 @@
 				vertical-align: top;
 			}
 			
-			body .ui-datatable thead th {text-align: center;vertical-align: top;}
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
         </style>
     </ui:define>
@@ -188,13 +188,13 @@
 					rows="7"
 					rowsPerPageTemplate="7,10,15,20,25,30,35,40">
 					
-					<p:column style="width:15px;" styleClass="TexAlCenter">
+					<p:column style="width:15px;" styleClass="text-center">
 						<f:facet name="header">
 							<p:selectBooleanCheckbox value="#{guiaRemCtrl.seleccion}">
 								<p:ajax event="change" listener="#{guiaRemCtrl.changeSeleccion()}" update="@form:msgFormMain @form:guiaRemDT"/>
 							</p:selectBooleanCheckbox>
 						</f:facet>
-						<p:selectBooleanCheckbox value="#{r.seleccion}" style="margin-left:10px;" rendered="#{r.cabecera.estado!='ANULADO' and r.cabecera.estado!='BORRADOR'}">
+						<p:selectBooleanCheckbox value="#{r.seleccion}" rendered="#{r.cabecera.estado!='ANULADO' and r.cabecera.estado!='BORRADOR'}">
 							<p:ajax event="change" update="@parent"/>
 						</p:selectBooleanCheckbox>
 					</p:column>
@@ -245,11 +245,11 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.cabecera.numdocumento}" filterMatchMode="contains">
+					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.cabecera.numdocumento}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" rendered="#{r.cabecera.estado!='BORRADOR'}"/>
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains">
+					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains" styleClass="text-center">
 						<div class="flex">
 							<div class="flex-grow-1 flex">
 								<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} p-1 border-round block w-full">
