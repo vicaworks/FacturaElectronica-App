@@ -13,10 +13,14 @@
         <style type="text/css">
 			
 			.kardexDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 300px)!important;
+				height: calc(100vh - 320px)!important;
 			}
 			
-			.ui-datatable .ui-datatable-data > tr > td {vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
 			.field {margin-bottom: 0.25rem;}
 			.ui-menu {width: 190px;}
@@ -120,50 +124,57 @@
 					            <h:outputText value="PCS" styleClass="text-white hidden md:block" />
 					            <div class="flex">
 					            	<p:commandButton id="cmdRefrecar"
-											title="Consultar" icon="fa fa-search" 
-											action="#{kardexCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
-											/>
-									
-									<p:menuButton value="INVENTARIO" styleClass="mr-1 ui-button-outlined">
-										
-										<!-- styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_kardex_entrada')?'ui-state-disabled':''}" -->
-										<p:menuitem value="Entrada Inventario" icon="fa fa-sign-in" 
-											action="#{kardexCtrl.nuevo()}"
-											disabled="#{kardexCtrl.productoSelected==null}">
-											<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
-											<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
-											<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-											<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>	
-										</p:menuitem>
-        								<!-- styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_kardex_salida')?'ui-state-disabled':''}" -->
-            							<p:menuitem value="Salida Inventario" icon="fa fa-sign-out" 
-												action="#{kardexCtrl.nuevo()}"
-												disabled="#{kardexCtrl.productoSelected==null}">
-												<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
-												<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
-												<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-												<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>            								
-										</p:menuitem>
-										
-									</p:menuButton>
-									
-									<p:menuButton value="EXPORTAR" styleClass="ui-button-outlined">
-										<p:menuitem value="Exportar Producto" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-											styleClass="ui-button-outlined mr-1"
-											disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
-											<p:fileDownload value="#{kardexCtrl.fileKardex}"/>											
-										</p:menuitem>
-										<p:menuitem value="Exportar Todos los Productos" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-											styleClass="secondary-button Wid90">
-											<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>											
-										</p:menuitem>
-									</p:menuButton>
-									
-					            </div>
+											title="Consultar" icon="fa fa-search" value="Buscar" 
+											action="#{kardexCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"/>
+								</div>
 					        </div>
 					     </div>
 	    			</div>
 	    		</div>
+				
+				<div class="flex my-1 align-items-center">
+					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+					<p:commandLink id="cmlDtInventario" styleClass="min-width-80 mr-1">
+						<div class="flex w-full">
+							<span class="mr-1 text-black Fs12 font-light">Inventario</span>
+							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+						</div>
+					</p:commandLink>
+					<p:menu overlay="true" trigger="cmlDtInventario" my="left top" at="left bottom">
+						<p:menuitem value="Entrada Inventario" icon="fa fa-sign-in" 
+							action="#{kardexCtrl.nuevo()}"
+							disabled="#{kardexCtrl.productoSelected==null}">
+							<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+							<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+							<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>	
+						</p:menuitem>
+  						<p:menuitem value="Salida Inventario" icon="fa fa-sign-out" 
+								action="#{kardexCtrl.nuevo()}"
+								disabled="#{kardexCtrl.productoSelected==null}">
+							<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+							<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+							<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>            								
+						</p:menuitem>
+					</p:menu>
+					<p:commandLink id="cmdGlobalExcel" styleClass="min-width-80 mr-1">
+						<div class="flex w-full">
+							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+						</div>
+					</p:commandLink>
+					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+						<p:menuitem value="Exportar Producto" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+							disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
+							<p:fileDownload value="#{kardexCtrl.fileKardex}"/>											
+						</p:menuitem>
+						<p:menuitem value="Exportar Todos los Productos" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+							<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>											
+						</p:menuitem>
+					</p:menu>	
+					
+				</div>
 				
 				<p:dataTable id="kardexDT" var="k"
 					value="#{kardexCtrl.kardexProductoList}" scrollable="true"
@@ -176,10 +187,6 @@
 	                paginatorPosition="bottom"  
 					rows="10"
 					rowsPerPageTemplate="10,15,20,25,30,35,40">
-	                
-	                <!-- <p:column headerText="ID" style="width:20px;">
-						<h:outputText value="#{k.idkardexproducto}" />
-					</p:column> -->
 	                
 	                <p:column headerText="FECHA PROD" style="width:80px;">						
 						<div class="flex flex-column">
@@ -234,9 +241,9 @@
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="PREC VENTA" style="width:80px;" styleClass="TexAlCenter">
+					<p:column headerText="PREC VENTA" style="width:80px;">
 						
-						<div class="flex flex-column text-left">
+						<div class="flex flex-column text-right">
 							<div class="block">
 								<span class="Fs9 font-bold mr-1">Pv1</span>
 								<h:outputText value="#{k.producto.preciouno}" >
