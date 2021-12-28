@@ -74,7 +74,7 @@
 					<h:outputText value="Criterio" styleClass="text-white"/>
 					<div class="flex flex-inline">
 						<p:commandButton icon="fa fa-search" 
-							action="#{repFacAnuCtrl.buscar()}" styleClass="mr-1" update="@form" style="margin-right:5px;">
+							action="#{repFacAnuCtrl.buscar()}" styleClass="ui-button-success mr-1" update="@form" style="margin-right:5px;">
 							<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repFacAnuCtrl.establecimientoMain}"/>
 						</p:commandButton>
 							
@@ -101,14 +101,14 @@
                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                 paginatorPosition="bottom">
 			
-				<p:column headerText="FECHA" style="width:50px;">
+				<p:column headerText="FECHA" style="width:50px;" styleClass="text-right">
 					<h:outputText value="#{fn.fechaemision}" >
 						<f:convertDateTime pattern="dd/MM/yyyy"/>
 					</h:outputText>
 				</p:column>
 				
-				<p:column headerText="COMPROBANTE" style="width:90px;">
-					<h:outputText value="#{repFacAnuCtrl.getFormatoNumDocumento(fn.numdocumento)}" />
+				<p:column headerText="COMPROBANTE" style="width:90px;" styleClass="text-right">
+					<h:outputText value="#{repFacAnuCtrl.getFormatoNumDocumento(fn.numdocumento)}" styleClass="text-gray-700 font-medium"/>
 				</p:column>
 				
 				
@@ -129,13 +129,13 @@
 							<span class="block">TOTAL</span>
 						</div>
 					</f:facet>
-					<h:outputText value="#{fn.subtotal}" styleClass="Fs10">
+					<h:outputText value="#{fn.subtotal}" styleClass="Fs10 #{fn.subtotal.doubleValue()>0.0?'text-gray-700 font-medium':'opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.totaldescuento}" styleClass="Fs10 #{fn.totaldescuento>0?'font-bold':''}">
+					<h:outputText value="#{fn.totaldescuento}" styleClass="Fs10 #{fn.subtotal.doubleValue()>0.0?'text-gray-700':'opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
@@ -147,25 +147,25 @@
 							<span class="block">IMPUESTOS</span>
 						</div>
 					</f:facet>
-					<h:outputText value="#{fn.totalsinimpuestos}" styleClass="Fs10 text-green-700 font-bold">
+					<h:outputText value="#{fn.totalsinimpuestos}" styleClass="Fs10 #{fn.totalsinimpuestos.doubleValue()>0.0?'text-gray-700 font-medium':'opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="ICE" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.ice}" styleClass="Fs10">
+					<h:outputText value="#{fn.ice}" styleClass="Fs10 #{fn.ice.doubleValue()>0.0?'text-gray-700':'opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.iva}" styleClass="Fs10">
+					<h:outputText value="#{fn.iva}" styleClass="Fs10 #{fn.iva.doubleValue()>0.0?'text-gray-700':'opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
-					<h:outputText value="#{fn.total}" styleClass="font-bold text-blue-600 Fs10">
+					<h:outputText value="#{fn.total}" styleClass="Fs10 #{fn.total.doubleValue()>0.0?'text-blue-600 font-medium':'opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>

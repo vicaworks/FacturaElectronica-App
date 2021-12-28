@@ -21,6 +21,12 @@
 						
 			.ui-calendar .ui-inputfield{width: 100% !important;}
 			
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
+			
         </style>
     </ui:define>
 
@@ -110,7 +116,7 @@
 	    					<div class="flex flex-inline">
 	    						<p:commandButton id="cmdRefrecar"
 									title="Consultar" icon="fa fa-search" onclick="limpiar()"
-									action="#{repProductosCtrl.buscar()}" styleClass="mr-1" update="@form">
+									action="#{repProductosCtrl.buscar()}" styleClass="ui-button-success mr-1" update="@form">
 								</p:commandButton>
 								<p:commandButton id="cmdGlobalExcel"
 			  						title="EXPORTAR"
@@ -154,9 +160,12 @@
 						rows="17"
 						rowsPerPageTemplate="17,20,25,30,35,40">
 					
-					<p:column headerText="CODIGO" style="width:50px;">
-						<h:outputText value="#{v.codigoprincipal}" >
-						</h:outputText>
+					<p:column headerText="CODIGO" style="width:40px;">
+						<div class="flex align-items-center justify-content-end">
+							<i class="Fs10 text-gray-700 fa fa-barcode mr-1"/>
+							<h:outputText value="#{v.codigoprincipal}" styleClass="text-gray-700 font-medium">
+							</h:outputText>
+						</div>
 					</p:column>
 					
 					<p:column headerText="ITEM" style="width:200px;">
@@ -171,7 +180,7 @@
 					</p:column>
 					
 					<p:column headerText="VALOR" style="width:70px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.preciototalsinimpuesto}" >
+						<h:outputText value="#{v.preciototalsinimpuesto}" styleClass="text-gray-700 font-medium">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>

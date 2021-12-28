@@ -149,7 +149,7 @@
 					<div class="flex flex-inline">
 						<p:commandButton id="cmdGlobalBuscar"
 							icon="fa fa-search" 
-							action="#{repVentaCtrl.buscar()}" styleClass="mr-1" update="@form">
+							action="#{repVentaCtrl.buscar()}" styleClass="mr-1 ui-button-success" update="@form">
 							<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repVentaCtrl.establecimientoMain}"/>
 						</p:commandButton>
 						
@@ -177,7 +177,7 @@
                 paginatorPosition="bottom"  
 				rowKey="#{v.id}">
 			
-			<p:column headerText="FECHA" style="width:50px;">
+			<p:column headerText="FECHA" style="width:50px;" styleClass="text-right">
 				<h:outputText value="#{v.fechaemision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
@@ -185,9 +185,9 @@
 			
 			<p:column headerText="COMPROBANTE" style="width:90px;">
 				<div class="flex flex-column">
-					<h:outputText value="#{v.tipoComprobante}" styleClass="Fs9 font-bold block">
+					<h:outputText value="#{v.tipoComprobante}" styleClass="Fs9 text-gray-600">
 					</h:outputText>
-					<h:outputText value="#{repVentaCtrl.getFormatoNumDocumento(v.numdocumento)}" />
+					<h:outputText value="#{repVentaCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="text-gray-700 font-medium"/>
 				</div>
 			</p:column>
 			
@@ -224,38 +224,38 @@
 						<span class="block">TOTAL</span>
 					</div>
 				</f:facet>
-				<h:outputText value="#{v.subtotal}" styleClass="text-gray-600 font-bold Fs10">
+				<h:outputText value="#{v.subtotal}" styleClass="text-gray-700 font-medium Fs10">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.totaldescuento}" styleClass="Fs10 #{v.totaldescuento>0?'font-bold':''}">
+				<h:outputText value="#{v.totaldescuento}" styleClass="Fs10 #{v.totaldescuento>0?'font-medium text-gray-700':' opacity-50'}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="SIN IMPUESTO" style="width:60px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.totalsinimpuestos}" styleClass="Fs10 text-green-700 font-bold">
+				<h:outputText value="#{v.totalsinimpuestos}" styleClass="Fs10 text-green-600 font-medium">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="ICE" style="width:50px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.valorice}" styleClass="Fs10">
+				<h:outputText value="#{v.valorice}" styleClass="Fs10 #{v.valorice.doubleValue()>0.0?'':' opacity-50'}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.valoriva}" styleClass="Fs10">
+				<h:outputText value="#{v.valoriva}" styleClass="Fs10 #{v.valoriva.doubleValue()>0.0?'':' opacity-50'}">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>
 			
 			
 			<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
-				<h:outputText value="#{v.preciototal}" styleClass="font-bold text-blue-600 Fs10">
+				<h:outputText value="#{v.preciototal}" styleClass="font-medium text-blue-600 Fs10">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
 			</p:column>

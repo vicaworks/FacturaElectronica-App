@@ -75,7 +75,7 @@
 					<h:outputText value="Criterio" styleClass="text-white"/>
 					<div class="flex flex-inline">
 						<p:commandButton icon="fa fa-search" 
-							action="#{repFacCtrl.buscar()}" styleClass="mr-1" update="@form" style="margin-right:5px;">
+							action="#{repFacCtrl.buscar()}" styleClass="ui-button-success mr-1" update="@form" style="margin-right:5px;">
 							<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repFacCtrl.establecimientoMain}"/>
 						</p:commandButton>
 							
@@ -102,13 +102,13 @@
                 paginatorPosition="bottom"  
 				rowKey="#{f.id}">
 			
-				<p:column headerText="FECHA" style="width:50px;">
+				<p:column headerText="FECHA" style="width:50px;" styleClass="text-right">
 					<h:outputText value="#{f.fechaemision}" >
 						<f:convertDateTime pattern="dd/MM/yyyy"/>
 					</h:outputText>
 				</p:column>
-				<p:column headerText="COMPROBANTE" style="width:90px;">
-					<h:outputText value="#{repFacCtrl.getFormatoNumDocumento(f.numdocumento)}" />
+				<p:column headerText="COMPROBANTE" style="width:90px;" styleClass="text-right">
+					<h:outputText value="#{repFacCtrl.getFormatoNumDocumento(f.numdocumento)}" styleClass="text-gray-700 font-medium"/>
 				</p:column>
 				
 				
@@ -129,13 +129,13 @@
 							<span class="block">TOTAL</span>
 						</div>
 					</f:facet>
-					<h:outputText value="#{f.subtotal}">
+					<h:outputText value="#{f.subtotal}" styleClass="Fs10 #{f.subtotal.doubleValue()>0.0?'text-gray-700 font-medium':' opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.totaldescuento}" styleClass="Fs10">
+					<h:outputText value="#{f.totaldescuento}" styleClass="Fs10 #{f.totaldescuento.doubleValue()>0.0?'':' opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
@@ -147,37 +147,37 @@
 							<span class="block">IMPUESTOS</span>
 						</div>
 					</f:facet>
-					<h:outputText value="#{f.totalsinimpuestos}" styleClass="Fs10 text-green-700 font-bold">
+					<h:outputText value="#{f.totalsinimpuestos}" styleClass="Fs10 #{f.totalsinimpuestos.doubleValue()>0.0?'text-gray-700 font-medium':' opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="ICE" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.ice}" styleClass="Fs10">
+					<h:outputText value="#{f.ice}" styleClass="Fs10 #{f.ice.doubleValue()>0.0?'':' opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="IVA" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.iva}" styleClass="Fs10">
+					<h:outputText value="#{f.iva}" styleClass="Fs10 #{f.iva.doubleValue()>0.0?'':' opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.total}" styleClass="font-bold text-blue-600 Fs10">
+					<h:outputText value="#{f.total}" styleClass="Fs10 #{f.total.doubleValue()>0.0?'text-gray-700 font-medium':' opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="#{msg['label.retencion']}" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.valorretenido}" styleClass="Fs10 #{f.valorretenido>0?'font-bold':''}">
+					<h:outputText value="#{f.valorretenido}" styleClass="Fs10 #{f.valorretenido.doubleValue()>0.0?'':' opacity-50'}">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>
 				
 				<p:column headerText="A PAGAR" style="width:50px;" styleClass="TexAlRight">
-					<h:outputText value="#{f.valorapagar}" styleClass="font-bold text-blue-600 Fs10">
+					<h:outputText value="#{f.valorapagar}" styleClass="font-medium text-blue-600 Fs10">
 						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 					</h:outputText>
 				</p:column>				
