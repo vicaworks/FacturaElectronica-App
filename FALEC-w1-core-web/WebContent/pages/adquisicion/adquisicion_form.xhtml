@@ -52,22 +52,19 @@
 	    	
 	    	<div class="card card-w-title mt-1">
 	    		
-	    		<div class="grid">
-	    			<div class="col-3">
-		    			<span class="Fs14 text-gray-600 font-bold pt-1 pb-2">Compra</span>
-	    			</div>
-	    			<div class="col-9">
-		    			<div class="flex flex-inline justify-content-end">
+	    		<div class="grid">	    			
+	    			<div class="col-12">
+		    			<div class="flex flex-inline justify-content-start">
 		    				<p:commandButton id="cmdAdqNuevo"
-									title="Nueva compra" icon="fa fa-file-o" 
-									action="#{adquisicionFrmCtrl.nuevo()}" styleClass="ui-button-outlined mr-1" update="@form" immediate="true"/>
+									title="Nueva compra" icon="fa fa-file-o" value="Nuevo"
+									action="#{adquisicionFrmCtrl.nuevo()}" styleClass="ui-button-success min-width-70 mr-1" update="@form" immediate="true"/>
 		    				<p:commandButton id="cmdAdqGuardar"
-									title="Guardar compra" icon="fa fa-floppy-o" 
-									action="#{adquisicionFrmCtrl.guardar()}" styleClass="mr-1" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
+									title="Guardar compra" icon="fa fa-floppy-o" value="Guardar"
+									action="#{adquisicionFrmCtrl.guardar()}" styleClass="ui-button-outlined min-width-70 mr-1" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
 							<p:commandButton id="cmdAdqRetencion"
 								value="#{msg['label.retencion']}" icon="fa fa-plus" 
 								action="#{retencionMainCtrl.nuevaRetencion()}" 
-								styleClass="ui-button-warning min-width-100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
+								styleClass="ui-button-outlined min-width-100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
 								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{retencionFrmCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 								<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>

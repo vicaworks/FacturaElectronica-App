@@ -46,7 +46,7 @@
 			<div class="w-full overflow-auto heightFrmUsuario contenedorFormulario mt-2 pr-1">
 				
 				<div class="field grid">			    	
-					<h:outputText value="ID" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+					<h:outputText value="Id" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
 			    	<div class="col-12 md:col-10">
 						<h:outputText value="#{fabricanteCtrl.fabricanteSelected.idfabricante}" styleClass="mt-1"/>
 						<h:outputText value="#{categoriaCtrl.categoriaSelected.idcategoria}" />
@@ -54,21 +54,21 @@
 			    </div>
 			    
 			    <div class="field grid">		
-					<h:outputText value="NOMBRE" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+					<h:outputText value="Nombre" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
 			    	<div class="col-12 md:col-10">
 						<p:inputText id="intCategoria" value="#{categoriaCtrl.categoriaSelected.categoria}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intCategoria"/>
 			    	</div>
 			    </div>
 			    <div class="field grid">		
-					<h:outputText value="#{msg['label.descripcion']}" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+					<h:outputText value="Descripción" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
 					<div class="col-12 md:col-10">
 						<p:inputText id="intDscripcion" value="#{categoriaCtrl.categoriaSelected.descripcion}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intDscripcion"/>
 			    	</div>
 			    </div>
 			    <div class="field grid">		
-					<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+					<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
 					<div class="col-12 md:col-10">
 						<p:selectOneMenu id="somEstado"
 							value="#{categoriaCtrl.categoriaSelected.estado}"

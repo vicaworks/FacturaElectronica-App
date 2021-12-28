@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.heightPagoForm{
-			height: 350px !important;
+			height: 270px !important;
 			
 		}
 		
@@ -23,7 +23,7 @@
 			
 			<div class="formgroup-inline">
 				<p:commandButton id="cmdPgAceptar" action="#{pagoCtrl.aceptarPago()}"
-					value="GUARDAR" icon="fa fa-floppy-o" update="@form :formPagos" styleClass="mr-1 min-width-100"/>
+					value="GUARDAR" icon="fa fa-floppy-o" update="@form :formPagos" styleClass="mr-1 min-width-100 ui-button-outlined"/>
 					
 				<p:commandButton id="cmdPgCerrar"
 					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
@@ -40,23 +40,27 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightPagoForm contenedorFormulario">
+			<div class="w-full overflow-auto heightPagoForm contenedorFormulario mt-2">
 				
-				<div class="grid mt-1">
+				<div class="grid mt-1" style="width:99.5%!important;">
 					<div class="col-12">
-						<h:outputText value="VALOR"  styleClass="requerido"/>
+						
+						
+						<div class="flex">
+							<div class="flex flex-column flex-grow-1 pr-1">
+								<h:outputText value="VALOR"  styleClass="requerido"/>
+								<p:spinner value="#{pagoCtrl.pagoSelected.total}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="w-full mt-1" >
+								</p:spinner>
+							</div>
+							<div class="flex flex-column flex-grow-1">
+								<h:outputText value="PLAZO"  styleClass="requerido"/>
+								<p:spinner value="#{pagoCtrl.pagoSelected.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="w-full mt-1" >
+								</p:spinner>								
+							</div>
+						</div>
+						
 					</div>
-					<div class="col-12">
-						<p:spinner value="#{pagoCtrl.pagoSelected.total}" min="0" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="w-full mt-1" >
-						</p:spinner>
-					</div>
-					<div class="col-12">
-						<h:outputText value="PLAZO"  styleClass="requerido mt-1"/>
-					</div>
-					<div class="col-12">
-						<p:spinner value="#{pagoCtrl.pagoSelected.plazo}" min="0" decimalPlaces="0" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="w-full mt-1" >
-						</p:spinner>
-					</div>
+					
 					<div class="col-12">
 						<h:outputText value="FECHA PAGO" styleClass="requerido mt-1"/>
 					</div>

@@ -16,7 +16,8 @@
 	</style>
 	
 	<div class="card card-w-title">
-		<div class="flex justify-content-end py-1">
+		<div class="flex justify-content-start py-1">
+			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
 			<p:commandLink id="cmdAdqAgregarDetalle" process="@this :formMain:adquisicionDetDT"
 				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
 				action="#{listaProductoCtrl.loadPantalla()}" styleClass="Fs12">
@@ -45,18 +46,18 @@
             	</div>
             	<div class="col-12">            		
             		<div class="flex flex-column md:flex-row">
-            			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-end pl-2 mt-2 md:mt-0">
+            			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-end mt-2 md:mt-0">
             				
             				<p:commandLink id="clkAdqEdit" 
             					title="Editar" 
             					process="@this :formMain:adquisicionDetDT" 
             					disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" 
-            					styleClass="text-center inline" 
-            					style="min-width:75px!important;color:black!important;"
+            					styleClass="text-left inline" 
+            					style="min-width:60px!important;color:black!important;"
             					action="#{listaProductoCtrl.loadPantalla()}"
             					oncomplete="PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt');">
-								<i class="fa fa-edit Fs10 mr-1 text-gray-900"></i>
-								<span class="Fs12 text-gray-900">EDITAR</span>
+								<i class="fa fa-edit Fs10 mr-1 text-gray-800"></i>
+								<span class="Fs12 text-gray-800 font-light">EDITAR</span>
 								<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="EDITAR" target="#{listaProductoCtrl.accion}"/>
 								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
@@ -67,8 +68,7 @@
 							</p:commandLink>
            					<p:divider layout="vertical" styleClass="mx-2  inline"/>
            					<p:commandLink id="clkAdqDelete" action="#{adquisicionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" styleClass="text-center inline" style="min-width:75px!important;">
-								<i class="fa fa-trash-o Fs10 text-pink-600 text-semibold mr-1"></i>
-								<span class="Fs12 text-gray-900">ELIMINAR</span>
+								<span class="Fs12 text-pink-400">ELIMINAR</span>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
 							</p:commandLink>
@@ -115,7 +115,7 @@
 												<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
 			           					</div>
-            							<h:outputText value="#{d.preciototal}" styleClass="Fs16 text-blue-600 font-bold mb-1 text-right">
+            							<h:outputText value="#{d.preciototal}" styleClass="Fs16 text-black font-medium mb-1 text-right">
 			            					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 			           					</h:outputText>
             						</div>

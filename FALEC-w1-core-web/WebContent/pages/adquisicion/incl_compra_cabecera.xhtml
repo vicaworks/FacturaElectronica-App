@@ -19,11 +19,15 @@
 	
 	<div class="card card-w-title">
 		
-		<div class="w-full">
-			<span class="Fs10 mr-1 text-gray-500 font-bold">ESTABLECIMIENTO</span>
-			<h:outputText value="#{appSessionCtrl.formatoCadena(adquisicionFrmCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="text-blue-600 font-bold Fs14"/>
+		<div class="flex justify-content-between">
+			<span class="Fs14 text-black font-semibold">Compra</span>
+			<div>
+				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(compFacCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+			</div>			
 		</div>
-		<span class="block mt-1 requerido">PROVEEDOR</span>
+		
+		<span class="block mt-1 text-gray-700 font-medium Fs11">PROVEEDOR</span>
 		<div class="flex">
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
@@ -90,7 +94,7 @@
 		</p:outputPanel>
 		<div class="formgrid grid">
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="requerido">TIPO COMPROBANTE</label>
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">TIPO COMPROBANTE</label>
 	            <p:selectOneMenu id="somAdqTipComprobante"
 							value="#{adquisicionFrmCtrl.adquisicionSelected.tipocomprobante}"
 							converter="omnifaces.SelectItemsConverter"
@@ -108,7 +112,7 @@
 				<p:message for="somAdqTipComprobante" styleClass="block"/>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="claAdqFechaCompra" class="requerido">FECHA</label>
+	            <label for="claAdqFechaCompra" class="text-gray-700 font-medium Fs11">FECHA</label>
 	            <p:calendar id="claAdqFechaCompra" value="#{adquisicionFrmCtrl.adquisicionSelected.fecha}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -117,7 +121,7 @@
 				<p:message for="claAdqFechaCompra" styleClass="block"/>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="inpAdqNumFac" class="requerido">NUM. COMPROBANTE</label>
+	            <label for="inpAdqNumFac" class="text-gray-700 font-medium Fs11">NUM. COMPROBANTE</label>
 	            <p:inputMask id="inpAdqNumFac"
 					value="#{adquisicionFrmCtrl.adquisicionSelected.numfactura}"
 					mask="999-999-999999999" required="true"
@@ -129,7 +133,7 @@
 				<p:message for="inpAdqNumFac" styleClass="block"/> 	
             </div>
             <div class="field col-12 md:col-6">
-	            <label for="inpAdqNumAut" class="requerido">NUM. AUTORIZACIÓN</label>
+	            <label for="inpAdqNumAut" class="text-gray-700 font-medium Fs11">NUM. AUTORIZACIÓN</label>
 	            <p:inputText id="inpAdqNumAut" value="#{adquisicionFrmCtrl.adquisicionSelected.autorizacion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="150" placeholder="Formato: 1123411234600" validatorMessage="SOLO NUMEROS">
 					<f:validateRegex pattern="^\d+$"/>
 				</p:inputText>
@@ -142,7 +146,7 @@
 	        		</div>
 	        		<div class="flex-grow-1 flex pl-2 border-left-2 border-gray-400">
 	        			<div class="flex flex-column">
-	        				<span class="requerido py-1">REGISTRAR COMO GASTO</span>
+	        				<span class="text-gray-700 font-medium Fs11 py-1">REGISTRAR COMO GASTO</span>
 	        				<span class="Fs10 text-gray-800">Permite filtarr en los reportes como gasto.</span>
 	        			</div>
 	        		</div>
@@ -158,7 +162,7 @@
 	 	<p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva" action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}"/>
 	    <div class="formgrid grid mt-1">
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="requerido">RETENCIÓN RENTA</label>	        	
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">RETENCIÓN RENTA</label>	        	
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">        				
         				<p:commandLink id="cmlCalValorRenta" title="Calcular">
@@ -189,7 +193,7 @@
         		</div>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="requerido">RETENCIÓN I.V.A.</label>
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">RETENCIÓN I.V.A.</label>
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">
         				<p:commandLink id="cmlCalValorIva" title="Calcular">
@@ -249,7 +253,7 @@
 			    			</div>
 			    			<div class="py-1">
 			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs14 text-green-600 font-bold">A PAGAR</span>
+			    				<span class="Fs14 text-blue-600 font-bold">A PAGAR</span>
 			    			</div>
 			    		</div>
 			    	</div>
@@ -265,7 +269,7 @@
 	    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
 	    				<f:setPropertyActionListener value=":formMain:oupPagoDT" target="#{pagoCompCtrl.updateView}"/>
 	    				
-			    		<div class="flex align-items-stretch #{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null?'bg-gray-300':'bg-green-400'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
+			    		<div class="flex align-items-stretch #{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
 			    			<div class="flex align-items-center justify-content-center w-full">
 				    				<div class="flex flex-inline">
 				    					<div class="flex mr-2">
@@ -289,7 +293,7 @@
 			    			</div>
 			    			<div class="py-1">
 			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs16 text-gray-700 font-bold">PAGO</span>
+			    				<span class="Fs16 text-green-600 font-bold">PAGO</span>
 			    			</div>	    			
 			    		</div>
 			    	</div>

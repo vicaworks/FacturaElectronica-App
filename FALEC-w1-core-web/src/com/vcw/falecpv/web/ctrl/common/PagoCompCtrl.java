@@ -101,6 +101,7 @@ public class PagoCompCtrl implements Serializable {
 				cabeceraSelected.setTotaliva(adquisicionSelected.getTotaliva());
 				cabeceraSelected.setTotalconimpuestos(adquisicionSelected.getTotalfactura());
 				cabeceraSelected.setValorapagar(adquisicionSelected.getTotalpagar());
+				cabeceraSelected.setTotalpagar(adquisicionSelected.getTotalpagar());
 				cabeceraSelected.setFechaemision(adquisicionSelected.getFecha());
 				break;
 

@@ -44,20 +44,20 @@
 			<div class="w-full overflow-auto heightFrmFabricante contenedorFormulario mt-2 pr-1">
 				
 			    <div class="field grid">			    	
-					<h:outputText value="ID" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+					<h:outputText value="Id" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
 			    	<div class="col-12 md:col-10">
 						<h:outputText value="#{fabricanteCtrl.fabricanteSelected.idfabricante}" styleClass="mt-1 mr-1"/>
 			    	</div>
 			    </div>
 				<div class="field grid">
-					<h:outputText value="NOMBRE" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>			    	
+					<h:outputText value="Nombre" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>			    	
 			    	<div class="col-12 md:col-10">
 						<p:inputText id="intNombre" value="#{fabricanteCtrl.fabricanteSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intNombre"/>
 			    	</div>
 			    </div>
 			    <div class="field grid">
-					<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
+					<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
 			    	<div class="col-12 md:col-10">
 						<p:selectOneMenu id="somEstado"
 							value="#{fabricanteCtrl.fabricanteSelected.estado}"

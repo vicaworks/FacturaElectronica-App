@@ -24,7 +24,7 @@
 			
 				<p:commandButton id="cmdKrxSalidaGuardar"
 					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{kardexCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form #{kardexCtrl.updateView}"
+					action="#{kardexCtrl.guardar()}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form #{kardexCtrl.updateView}"
 					/>
 					
 				<p:commandButton id="cmdKrxSalidaCerrar"
@@ -44,53 +44,53 @@
 			<div class="w-full overflow-auto heightFrmKdxSalida contenedorFormulario mt-2 pr-1">
 				
 				<div class="field grid">
-					<h:outputText value="ESTABLECIMIENTO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<h:outputText value="Establecimiento" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 					<div class="col-12 md:col-8">
 						<h:outputText value="#{appSessionCtrl.formatoCadena(kardexCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="mt-1"/>
 					</div>
 			    </div>
 			    <div class="field grid">
-					<h:outputText value="ID PRODUCTO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<h:outputText value="Id Producto" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 					<h:outputText value="#{kardexCtrl.productoSelected.idproducto}" styleClass="mt-1"/>
 					<div class="col-12 md:col-8">
 					</div>
 			    </div>
 			    <div class="field grid">
-					<h:outputText value="PRODUCTO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<h:outputText value="Producto" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 					<h:outputText value="#{kardexCtrl.productoSelected.nombregenerico}" styleClass="mt-1"/>
 					<div class="col-12 md:col-8">
 					</div>
 			    </div>
 			    <div class="field grid">					
-					<h:outputText value="#{msg['label.codigo']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<h:outputText value="Código Barra" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 					<h:outputText value="#{kardexCtrl.productoSelected.codigoprincipal}" styleClass="mt-1"/>
 					<div class="col-12 md:col-8">
 					</div>
 			    </div>
 			    <div class="field grid">
-					<h:outputText value="STOCK" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+					<h:outputText value="Stock" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
 					<div class="col-12 md:col-8">
 						<h:outputText value="#{kardexCtrl.productoSelected.stock}" styleClass="mt-1">
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:convertNumber pattern="0.##"/>
 						</h:outputText>
 					</div>
 			    </div>
 			    <div class="field grid">
 					
-					<h:outputText value="CANTIDAD" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<h:outputText value="Cantidad" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 					<div class="col-12 md:col-8">
 						<p:inputText id="intKrxSalidaCantidad"
 							value="#{kardexCtrl.kardexProductoSelected.cantidad}"
 							required="true" requiredMessage="REQUERIDO"
 							styleClass="w-full mt-1" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
-							<f:convertNumber locale="es_EC" pattern="0.##"/>
+							<f:convertNumber pattern="0.##"/>
 							<f:validateDoubleRange minimum="0.01" />
 						</p:inputText>
 						<p:message for="intKrxSalidaCantidad"/>
 					</div>
 			    </div>
 			    <div class="field grid">					
-					<h:outputText value="FECHA REGISTRO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<h:outputText value="Fecha Registro" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 					<div class="col-12 md:col-8">
 						<p:calendar id="claKrxSalidaFechaRegistro" value="#{kardexCtrl.kardexProductoSelected.fecharegistro}"
 										pattern="dd/MM/yyyy"
@@ -101,7 +101,7 @@
 					</div>
 			    </div>
 			    <div class="field grid">
-					<h:outputText value="#{msg['label.observacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+					<h:outputText value="Observación" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 					<div class="col-12 md:col-8">
 						<p:inputTextarea id="intKrxSalidaObservacion"
 							value="#{kardexCtrl.kardexProductoSelected.observacion}"

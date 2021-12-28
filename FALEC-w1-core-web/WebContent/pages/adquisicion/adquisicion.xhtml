@@ -14,15 +14,16 @@
 			
 			.adquisicionDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 280px);
+				height: calc(100vh - 300px);
 				
 			}
 			
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;
 			}
-			body .ui-datatable .ui-datatable-data > tr > td,
-			body .ui-datatable thead th {vertical-align: top;}
+			
+			body .ui-datatable .ui-datatable-data > tr > td	{vertical-align: top;}
+			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}
 			
         </style>
     </ui:define>
@@ -102,37 +103,44 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-6 lg:col-4">
+					<div class="col-12 lg:col-6">
 						<span class="block">Criterio</span>
 						<div class="flex">
-							<p:inputText id="intAdqCriterioBusqueda" value="#{adquisicionMainCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="1000" placeholder="Proveedor, Ruc, Num. Factura"/>
+							<div class="flex flex-grow-1 mr-1">
+								<p:inputText id="intAdqCriterioBusqueda" value="#{adquisicionMainCtrl.criterioBusqueda}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="1000" placeholder="Proveedor, Ruc, Num. Factura"/>
+							</div>
+							<div class="flex flex-grow-0 align-self-end">
+								<p:commandButton id="cmdAdqRefrecar"
+									title="Consultar" icon="fa fa-search" value="Buscar" 
+									action="#{adquisicionMainCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+								/>	   				
+			   					<p:commandButton id="cmdAdqNuevo"
+									title="Nueva compra" icon="fa fa-plus" value="Nuevo"
+									action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''} ui-button-success" update="@form">
+									<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{adquisicionFrmCtrl.establecimientoMain}"/>
+			   					</p:commandButton>
+							</div>
 						</div>
 					</div>
-					<div class="col-6 lg:col-2">
-						<span class="block text-white">OP</span>
-						<div class="flex flex-inline">
-							<p:commandButton id="cmdAdqRefrecar"
-								title="Consultar" icon="fa fa-search" 
-								action="#{adquisicionMainCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
-							/>
-	   				
-		   					<p:commandButton id="cmdAdqNuevo"
-								title="Nueva compra" icon="fa fa-plus" 
-								action="#{adquisicionMainCtrl.nuevaCompra()}" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}" update="@form">
-								<f:setPropertyActionListener value="#{adquisicionMainCtrl.establecimientoMain}" target="#{adquisicionFrmCtrl.establecimientoMain}"/>
-		   					</p:commandButton>
-	   						
-	   						<p:menuButton value="EXPORTAR" disabled="#{empty adquisicionMainCtrl.adquisicionList}">
-								<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-									<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
-								</p:menuitem>
-								<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-									<p:fileDownload value="#{adquisicionMainCtrl.fileComprasDet}" contentDisposition="inline"/>
-								</p:menuitem>
-	   						</p:menuButton>
-							
+				</div>
+				
+				<div class="flex mt-2 align-items-center">
+					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty adquisicionMainCtrl.adquisicionList}" styleClass="min-width-80 mr-1">
+						<div class="flex w-full">
+							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
 						</div>
-					</div>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+							<p:fileDownload value="#{adquisicionMainCtrl.fileCompras}" contentDisposition="inline"/>
+						</p:menuitem>
+						<p:menuitem value="Exportar excel / detalle" icon="fa fa-list" ajax="false">
+							<p:fileDownload value="#{adquisicionMainCtrl.fileComprasDet}" contentDisposition="inline"/>
+						</p:menuitem>
+					</p:menu>
 				</div>
 				
 				<p:dataTable id="adquisicionDT" var="a"
@@ -166,8 +174,6 @@
 								<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
 								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
 							</p:menuitem>
-							<!-- <p:menuitem value="#{msg['label.retencion2']}" action="#" icon="fa fa-print" disabled="#{a.estado=='ANULADO'}">
-							</p:menuitem> -->
 							<p:menuitem value="Anular" action="#{adquisicionMainCtrl.anular(a.idadquisicion)}" icon="fa fa-trash-o" disabled="#{a.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compras_admin')?'ui-state-disabled':''}" update="@form">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
@@ -177,15 +183,15 @@
 					
 					<p:column headerText="COMPROBANTE" style="width:120px;" filterBy="#{a.numfactura}" filterMatchMode="contains">
 						<div class="flex flex-column">
-							<span class="Fs9 font-bold block">
+							<span class="Fs9 text-gray-700">
 								<h:outputText value="#{a.tipocomprobante.comprobante}" >
 								</h:outputText>								
 							</span>
-							<span class="block">
+							<span class="Fs11 text-gray-700 font-medium">
 								<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(a.numfactura)}" >
 								</h:outputText>
 							</span>
-							<span class="Fs9">								
+							<span class="Fs9 text-gray-700">								
 								<h:outputText value="#{a.fecha}" >
 									<f:convertDateTime  pattern="dd/MM/yyyy"/>
 								</h:outputText>
@@ -209,7 +215,7 @@
 					</p:column>
 										
 					<p:column headerText="ESTADO" style="width:60px;">
-						<h:outputText value="#{a.estado}" styleClass="#{a.style} Fs9">
+						<h:outputText value="#{a.estado}" styleClass="#{a.style} p-1 border-round block w-full text-center">
 						</h:outputText>
 					</p:column>
 					
@@ -220,33 +226,33 @@
 					</p:column>
 					
 					<p:column headerText="DESCTO" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totaldescuento}" styleClass="#{a.totaldescuento>0?'text-gray-600 font-bold':''}">
+						<h:outputText value="#{a.totaldescuento}" styleClass="#{a.totaldescuento>0?'text-gray-600':' opacity-50'}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="I.V.A" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totaliva}" >
+						<h:outputText value="#{a.totaliva}" styleClass="#{a.totaliva>0?'text-gray-600':' opacity-50'}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					
 					<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totalfactura}" styleClass="text-blue-600 font-bold">
+						<h:outputText value="#{a.totalfactura}" styleClass="text-gray-800 font-medium">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="#{msg['label.retencion']}" style="width:60px;" styleClass="TexAlRight">
-						<h:outputText value="#{a.totalretencion}" >
+						<h:outputText value="#{a.totalretencion}" styleClass="#{a.totalretencion>0?'text-gray-600':' opacity-50'}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="A PAGAR" style="width:90px;" styleClass="TexAlRight">
 						<div class="flex flex-inline justify-content-end">
-							<h:outputText value="#{a.totalpagar}" styleClass="#{a.totalpagar.doubleValue()!=a.totalPagoSum.doubleValue()?'text-pink-600':'text-gray-600'} font-bold mr-1" style="width:75px;">
+							<h:outputText value="#{a.totalpagar}" styleClass="#{a.totalpagar.doubleValue()!=a.totalPagoSum.doubleValue()?'text-pink-400':'text-gray-800'} font-bold mr-1" style="width:75px;">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 							<p:commandLink action="#{pagoCtrl.cargarPagosAdquisicionById()}" process="@this" disabled="#{a.estado=='ANULADO'}">

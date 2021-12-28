@@ -108,7 +108,7 @@
 			    <div class="field grid">			        
 			        <h:outputText value="VALOR RETENIDO RENTA " styleClass="requerido col-12 mb-1 md:col-4 md:mb-0"/>
 			        <div class="col-12 md:col-8">
-						<p:inputText id="intValRetRenta" value="#{porPagarCtrl.cabeceraSelected.valorretenidorenta}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converterMessage="SOLO NÚMEROS">
+						<p:inputText id="intValRetRenta" value="#{porPagarCtrl.cabeceraSelected.valorretenidorenta}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" converterMessage="SOLO NÚMEROS">
 							<p:ajax event="change" listener="#{porPagarCtrl.calcular()}" update="@form"/>
 						</p:inputText>
 			        </div>
@@ -116,7 +116,7 @@
 			    <div class="field grid">			        
 			        <h:outputText value="VALOR RETENIDO IVA" styleClass="requerido col-12 mb-1 md:col-4 md:mb-0"/>
 			        <div class="col-12 md:col-8">
-						<p:inputText id="intValRetIva" value="#{porPagarCtrl.cabeceraSelected.valorretenidoiva}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" converterMessage="SOLO NÚMEROS">
+						<p:inputText id="intValRetIva" value="#{porPagarCtrl.cabeceraSelected.valorretenidoiva}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" converterMessage="SOLO NÚMEROS">
 							<p:ajax event="change" listener="#{porPagarCtrl.calcular()}" update="@form"/>
 						</p:inputText>
 			        </div>
@@ -124,24 +124,23 @@
 			    <div class="field grid">
 			        <h:outputText value="-" styleClass="col-12 mb-1 md:col-4 md:mb-0 text-white hidden md:block"/>
 			        <div class="col-12 md:col-8">
-			        	<div class="flex flex-column">
-			        		<div class="py-2 Fs16 font-bold pl-2">
+			        	<div class="flex flex-column text-right">
+			        		<div class="py-2 Fs16 text-blue-500 font-medium pl-2">
 			        			<h:outputText value="#{porPagarCtrl.cabeceraSelected.valorapagar}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 			        		</div>
-			        		<div class="py-1 pl-2">
-			        			<span class="Fs10 text-gray-600 mr-1">VALOR A</span>
-			        			<span class="Fs16 text-blue-500 font-bold">PAGAR</span>
+			        		<div class="pl-2">
+			        			<span class="Fs10 text-gray-500 mr-1">VALOR A</span>
+			        			<span class="Fs14 text-gray-700 font-medium">PAGAR</span>
 			        		</div>
 			        	</div>
 			        </div>
 			    </div>
-			</p:outputPanel>
-			
+			</p:outputPanel>			
 			
 			<p:outputPanel rendered="#{porPagarCtrl.callModule=='MAIN_POR_PAGAR'}">
-				
+							
 				<div class="field grid mt-2">			        
 			        <h:outputText value="NUM COMPROBANTE" styleClass="requerido col-12 mb-1 md:col-4 md:mb-0"/>
 			        <div class="col-12 md:col-8">
@@ -223,15 +222,15 @@
 			    <div class="field grid">
 			        <h:outputText value="-" styleClass="col-12 mb-1 md:col-4 md:mb-0 text-white hidden md:block"/>
 			        <div class="col-12 md:col-8">
-			        	<div class="flex flex-column">
-			        		<div class="py-2 Fs16 font-bold pl-2">
+			        	<div class="flex flex-column text-right">
+			        		<div class="py-2 Fs16 text-blue-500 font-medium pl-2">
 			        			<h:outputText value="#{porPagarCtrl.adquisicionSelected.totalpagar}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 			        		</div>
 			        		<div class="py-1 pl-2">
-			        			<span class="Fs10 text-gray-600 mr-1">VALOR A</span>
-			        			<span class="Fs16 text-blue-500 font-bold">PAGAR</span>
+			        			<span class="Fs10 text-gray-500 mr-1">VALOR A</span>
+			        			<span class="Fs14 text-gray-700 font-medium">PAGAR</span>
 			        		</div>
 			        	</div>
 			        </div>

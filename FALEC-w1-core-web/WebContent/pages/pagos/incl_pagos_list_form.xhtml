@@ -68,38 +68,43 @@
 						</p:column>
 						
 						<p:column headerText="VALOR" style="width:40px;" styleClass="text-right">
-							<h:outputText value="#{p.total}" styleClass="markGreen DispBlock">
+							<h:outputText value="#{p.total}" styleClass="text-gray-700 font-medium">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</p:column>
 						
 						<p:column headerText="IMPORTE" style="width:40px;" styleClass="text-right">
-							<h:outputText value="#{p.valorentrega}" >
+							<h:outputText value="#{p.valorentrega}" styleClass="#{p.valorentrega.doubleValue()>0.0?' text-green-700':' opacity-60'}">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</p:column>
 						
 						<p:column headerText="CAMBIO" style="width:40px;" styleClass="text-right">
-							<h:outputText value="#{p.cambio}" >
+							<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0.0?' text-pink-400':' opacity-60'}">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="NUM. DOCUMENTO" style="width:80px;" styleClass="TexAlLeft">
+						<p:column headerText="BANCO" style="width:80px;">
+							<h:outputText value="#{p.nombrebanco}" >
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="NUM. DOCUMENTO" style="width:80px;" styleClass="text-right">
 							<h:outputText value="#{p.numerodocumento}" >
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="BANCO" style="width:80px;" styleClass="TexAlLeft">
-							<h:outputText value="#{p.nombrebanco}" >
-							</h:outputText>
-						</p:column>
 						
 					</p:dataTable>
 					
 					<span class="block Fs14 font-bold my-2">Adeudado</span>
 					<div class="flex">
-						<p:commandButton value="PAGO" action="#{pagoCtrl.nuevoPago()}" styleClass="ui-button-flat min-width-110" icon="fa fa-plus"/>
+						<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+						<p:commandLink action="#{pagoCtrl.nuevoPago()}" styleClass="text-gray-700">
+							<i class="fa fa-plus Fs14 mr-1"/>
+							<span class="Fs12">Agregar Pago</span>
+						</p:commandLink>
 					</div>
 					
 					<p:dataTable id="pagosDT"
@@ -144,10 +149,11 @@
 							</h:outputText>
 						</p:column>
 						
-						<p:column headerText="" style="width:25px;" styleClass="TexAlCenter">							
-							<p:commandButton update="@form" action="#{pagoCtrl.aplicarAbonoAction()}" icon="fa fa-hand-o-right Fs14" styleClass="ui-button-success">
+						<p:column headerText="" style="width:25px;" styleClass="TexAlCenter">
+							<p:commandLink update="@form" action="#{pagoCtrl.aplicarAbonoAction()}">
+								<i class="Fs18 text-gray-800 fa fa-hand-o-right"/>
 								<f:setPropertyActionListener value="#{f.total}" target="#{f.valorpago}"/>
-							</p:commandButton>
+							</p:commandLink>
 						</p:column>
 						
 						<p:column headerText="ABONO" style="width:70px;" styleClass="dt-spinner">
@@ -168,24 +174,28 @@
 					
 					<span class="block Fs14 font-bold my-2">Valor a Pagar</span>
 					<div class="flex">
-						
-						<p:commandButton value="EDITAR" action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_COBRAR'}"  icon="fa fa-edit" styleClass="ui-button-flat min-width-100">
+						<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+						<p:commandLink action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_COBRAR'}" styleClass="min-width-100 text-gray-800">
+							<i class="fa fa-edit Fs14 mr-1"/>
+							<span class="Fs12">Editar</span>
 							<f:setPropertyActionListener value="MAIN_POR_COBRAR" target="#{porPagarCtrl.callModule}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idCabeceraSelected}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl.cuentaCobrarCtrl}" target="#{porPagarCtrl.cuentaCobrarCtrl}"/>
 							<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.callForm}"/>
 							<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
-						</p:commandButton>
+						</p:commandLink>
 						
-						<p:commandButton value="EDITAR" action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_PAGAR'}" icon="fa fa-edit" styleClass="ui-button-flat min-width-100">
+						<p:commandLink action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_PAGAR'}" styleClass="min-width-100 text-gray-800">
+							<i class="fa fa-edit Fs14 mr-1"/>
+							<span class="Fs12">Editar</span>
 							<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idAdquisicionSelected}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl.cuentaPagarCtrl}" target="#{porPagarCtrl.cuentaPagarCtrl}"/>
 							<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.callForm}"/>
 							<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
-						</p:commandButton>
+						</p:commandLink>
 						
 					</div>
 					
@@ -193,31 +203,39 @@
 						
 						<div class="col-12 md:col-6 align-self-center">
 							
-							<div class="grid grid-nogutter justify-content-evenly">
-								<div class="col-6 sm:col-5 ">
-									<div class="flex flex-column">
-										<div class="w-full py-2 pl-3">
-											<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="Fs18 text-gray-700 font-bold">
-												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-											</h:outputText>
-										</div>
-										<div class="w-full py-1 pl-2">
-											<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-											<span class="Fs12 text-gray-600 font-semibold">VALOR A PAGAR</span>
+							<div class="grid grid-nogutter">
+								<div class="col-6 border-round border-right-2 border-gray-200" style="background-color: #F5F9F9;">
+									<div class="flex justify-content-center">
+										<div class="flex flex-column">
+											<div class="w-full py-2 pl-3 text-center">
+												<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="Fs18 text-gray-700 font-bold">
+													<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+												</h:outputText>
+											</div>
+											<div class="w-full py-1 pl-2">
+												<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+												<span class="Fs12 text-gray-600 font-semibold">VALOR A PAGAR</span>
+											</div>
 										</div>
 									</div>
-								</div>					
-								<div class="col-6 sm:col-5">
-									<div class="w-full py-2 pl-3">
-											<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="Fs18 #{cuentaCobrarCtrl.totalVencido>0?'font-bold text-pink-600':''}">
-												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-											</h:outputText>
-										</div>
-										<div class="w-full py-1 pl-2">
-											<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-											<span class="Fs12 text-gray-600 font-semibold">ADEUDADO</span>
-										</div>
 								</div>
+								
+								<div class="col-6">
+									<div class="flex justify-content-center">
+										<div class="flex flex-column">
+											<div class="w-full py-2 pl-3 text-center">
+												<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="Fs18 #{cuentaCobrarCtrl.totalVencido>0?'font-bold text-pink-600':''}">
+													<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+												</h:outputText>
+											</div>
+											<div class="w-full py-1 pl-2">
+												<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+												<span class="Fs12 text-gray-600 font-semibold">ADEUDADO</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								
 							</div>
 							
 						</div>
@@ -237,7 +255,7 @@
 								<div class="col-12 mt-1">
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs9">
+										<div class="flex flex-grow-1 Fs10">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="Otros pagos" /></span>
 										</div>						
@@ -251,7 +269,7 @@
 									</div>
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs9">
+										<div class="flex flex-grow-1 Fs10">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="Adeudado" /></span>
 										</div>						
@@ -265,7 +283,7 @@
 									</div>
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs9">
+										<div class="flex flex-grow-1 Fs10">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="Abono" /></span>
 										</div>						
@@ -279,7 +297,7 @@
 									</div>
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs9">
+										<div class="flex flex-grow-1 Fs10">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="Saldo" /></span>
 										</div>						

@@ -13,10 +13,14 @@
         <style type="text/css">
 			
 			.inventarioDT .ui-datatable-scrollable-body{				
-				height: calc(100vh - 280px)!important;
+				height: calc(100vh - 310px)!important;
 			}
 			
-			body .ui-datatable thead th {text-align: left;vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
 			.frm-producto-wrapper .ui-selectonemenu label.ui-selectonemenu-label {text-overflow: ellipsis;}
 			.frm-producto-wrapper .ui-calendar .ui-inputfield{width: 100%;}
@@ -94,8 +98,8 @@
 	    		</div>
 	    		
 	    		<div class="grid">
-					<div class="col-8 lg:col-5 overflow-x-hidden">
-						<h:outputText value="OPCIONES DE BÚSQUEDA" styleClass="requerido"/>
+					<div class="col-12 lg:col-5 overflow-x-hidden">
+						<span>Opciones de Búsqueda</span>
 						<div class="flex mt-1">
 							<div class="flex-grow-1 flex  flex-column mr-1">
 								<p:selectOneMenu id="somInvOpcionBusqueda"
@@ -132,38 +136,30 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-4 align-self-end">
+					<div class="col-12 md:col-4 align-self-end">
 						<div class="grid grid-nogutter">
 							<div class="col-12">
 								<p:commandButton id="cmdInvRefrecar"
-									title="Consultar" icon="fa fa-search" 
+									title="Consultar" icon="fa fa-search" value="Buscar" 
 									action="#{inventarioCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
 								/>
 								
 								<p:commandButton id="cmdInvNuevoProducto"
-									title="PRODUCTO" icon="fa fa-plus" 
-									action="#{productoCtrl.nuevo()}" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_inventario_nuevo_producto')?'ui-state-disabled':''}" update="@form" process="@this">
+									title="PRODUCTO" icon="fa fa-plus" value="Producto"
+									action="#{productoCtrl.nuevo()}" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_inventario_nuevo_producto')?'ui-state-disabled':''} ui-button-success" update="@form" process="@this">
 									<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
 									<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
 									<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 									<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
 									<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{productoCtrl.inventarioCtrl}"/>
-								</p:commandButton>
-								<p:commandButton  id="cmdExcel" 
-												title="Exportar excel"
-												icon="fa fa-download"
-												ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-												styleClass="ui-button-outlined"
-												disabled="#{empty inventarioCtrl.productoList}">
-									<p:fileDownload value="#{inventarioCtrl.fileInventario}"/>
-								</p:commandButton>		
+								</p:commandButton>										
 							</div>
 						</div>
 					</div>
 					<div class="col-8 lg:col-5">
 						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'STOCKMENORIGUAL'}">								
 							<div class="field grid grid-nogutter">
-								<h:outputText value="Valor" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/> 
+								<h:outputText value="Valor :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
 								<div class="col-12 md:col-8 pr-1">
 									<p:inputText id="intinvStock" value="#{inventarioCtrl.stock}"
 										required="true" requiredMessage="REQUERIDO"
@@ -177,7 +173,7 @@
 							    
 					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'FECHACADUCIDAD'}">	    							
 						    <div class="field grid grid-nogutter">
-								<h:outputText value="Seleccionar" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/> 
+								<h:outputText value="Fecha Caducidad :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
 								<div class="col-12 md:col-8 pr-1">
 	    							<p:calendar id="claInvFechaCaducidad" value="#{inventarioCtrl.fechaCaducidad}"
 										pattern="dd/MM/yyyy"
@@ -191,7 +187,7 @@
 					    
 					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'PRODUCTO'}">
 						    <div class="field grid grid-nogutter">
-								<h:outputText value="Seleccionar" styleClass="col-12 requerido"/> 
+								<h:outputText value="Producto" styleClass="col-12"/> 
 								<div class="col-12 pr-1 overflow-x-hidden">
 	    							<p:selectOneMenu id="somInvListaProducto"
 											value="#{inventarioCtrl.productoFormSelected}"
@@ -212,7 +208,7 @@
 					    
 					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'CODPRODUCTO'}">
 						    <div class="field grid grid-nogutter">
-								<h:outputText value="Código barra" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/> 
+								<h:outputText value="Código de Barra :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
 								<div class="col-12 md:col-8 pr-1">
 	    							<p:inputText id="intInvCodProducto" value="#{inventarioCtrl.codProducto}"
 										required="true" requiredMessage="REQUERIDO"
@@ -225,7 +221,7 @@
 					    
 					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'CATEGORIA'}">   						
 						    <div class="field grid grid-nogutter">
-								<h:outputText value="Seleccionar" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/> 
+								<h:outputText value="Categoría :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
 								<div class="col-12 md:col-8 pr-1">
 	    							<p:selectOneMenu id="somInvListaCategoria"
 											value="#{inventarioCtrl.categoriaSelected}"
@@ -247,7 +243,7 @@
 					    
 					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'FABRICANTE'}">   							
 						    <div class="field grid grid-nogutter">
-								<h:outputText value="Seleccionar" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/> 
+								<h:outputText value="Fabricante :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
 								<div class="col-12 md:col-8 pr-1">
 	    							<p:selectOneMenu id="somInvListaFabricante"
 											value="#{inventarioCtrl.fabricanteSelected}"
@@ -268,7 +264,26 @@
 						
 					</div>
 				</div>
-			
+				
+				<div class="flex my-1 align-items-center">
+					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty inventarioCtrl.productoList}" styleClass="min-width-80 mr-1">
+						<div class="flex w-full">
+							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+						</div>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+							<p:fileDownload value="#{inventarioCtrl.fileInventario}"/>
+						</p:menuitem>
+						<p:menuitem value="Exportar excel / detalle" icon="fa fa-list" ajax="false">
+							<p:fileDownload value="#{facEmitidaCtrl.fileDetalle}" contentDisposition="inline"/>
+						</p:menuitem>
+					</p:menu>
+					
+				</div>
 				
 				<p:dataTable id="inventarioDT" var="i"
 					value="#{inventarioCtrl.productoList}" scrollable="true"
@@ -322,38 +337,38 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:20px;">
+					<!-- <p:column headerText="ID" style="width:20px;">
 						<h:outputText value="#{i.idproducto}" />
+					</p:column> -->
+					
+					<p:column headerText="#{msg['label.codigo']}" style="width:30px;" filterBy="#{i.codigoprincipal}" filterMatchMode="contains" styleClass="text-right">
+						<h:outputText value="#{i.codigoprincipal}" styleClass="text-gray-600 font-medium"/>
 					</p:column>
 					
-					<p:column headerText="#{msg['label.codigo']}" style="width:30px;" filterBy="#{i.codigoprincipal}" filterMatchMode="contains">
-						<h:outputText value="#{i.codigoprincipal}" />
-					</p:column>
-					
-					<p:column headerText="NOMBRE" style="width:120px;"  filterBy="#{i.nombregenerico}" filterMatchMode="contains">
+					<p:column headerText="NOMBRE" style="width:200px;"  filterBy="#{i.nombregenerico}" filterMatchMode="contains">
 						<h:outputText value="#{i.nombregenerico}" />
 					</p:column>
 					
-					<p:column headerText="FECHA VENCIMIENTO" style="width:60px;" styleClass="TexAlCenter" rendered="#{inventarioCtrl.opcionBusqueda=='FECHACADUCIDAD'}">
+					<p:column headerText="FECHA VENCIMIENTO" style="width:60px;" styleClass="text-right" rendered="#{inventarioCtrl.opcionBusqueda=='FECHACADUCIDAD'}">
 						<h:outputText value="#{i.fechavencimiento}" styleClass="#{i.fechavencimiento!=null?'markRed':''} ">
 							<f:convertDateTime  pattern="dd/MM/yyyy"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="STOCK" style="width:30px;" styleClass="TexAlRight">
+					<p:column headerText="STOCK" style="width:30px;" styleClass="text-right">
 						<h:outputText value="#{i.stock}" styleClass="#{i.markStock}">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="COST. UNIT." style="width:30px;" styleClass="TexAlRight">
+					<p:column headerText="COST. UNIT." style="width:30px;" styleClass="text-right">
 						<h:outputText value="#{i.preciounitario}" >
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="COST. TOTAL." style="width:30px;" styleClass="TexAlRight">
-						<h:outputText value="#{i.costototal}" >
+					<p:column headerText="COST. TOTAL." style="width:30px;" styleClass="text-right">
+						<h:outputText value="#{i.costototal}" styleClass="text-gray-6800 font-medium">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
