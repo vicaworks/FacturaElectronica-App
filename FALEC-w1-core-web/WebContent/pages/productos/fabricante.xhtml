@@ -15,7 +15,11 @@
 				min-height: 30vh !important;
 				height: calc(100vh - 220px)!important;
 			}
-			body .ui-datatable thead th {text-align: left;vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
         </style>
     </ui:define>
 
@@ -54,10 +58,10 @@
 					    		
 							<p:commandButton id="cmdRefrecar"
 								title="Consultar" icon="fa fa-search" 
-								action="#{fabricanteCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+								action="#{fabricanteCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
 								/>
 							<p:commandButton id="cmdNuevo"
-								title="Nuevo" icon="fa fa-plus" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}" 
+								title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}" 
 								action="#{fabricanteCtrl.nuevo()}" inline="true">
 								<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
 							</p:commandButton>

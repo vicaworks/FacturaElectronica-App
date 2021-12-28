@@ -27,8 +27,11 @@
 				box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 			}
 			
-			body .ui-datatable thead th,
-			body .ui-datatable .ui-datatable-data > tr > td {text-align: left;vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
 			 border: none;
@@ -113,30 +116,22 @@
 					<div class="col-12 md:col-6 mt-2 md:mt-0">
 						<div class="flex flex-inline">
 							<p:commandButton id="cmdRefrecar"
-									title="Consultar" icon="fa fa-search" 
-									action="#{productoCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+									title="Consultar" icon="fa fa-search" value="Buscar"
+									action="#{productoCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
 									/>
 							<p:commandButton id="cmdNuevo"
-								title="Nuevo" icon="fa fa-plus" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}" 
+								value="Nuevo" title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}" 
 								action="#{productoCtrl.nuevo()}" inline="true">
 								<f:setPropertyActionListener value="PRODUCTO" target="#{productoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 								<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
-							</p:commandButton>
-							
-							<p:commandButton  id="cmdExcel" 
-								title="Exportar excel"
-								icon="fa fa-download"
-								ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-								styleClass="ui-button-outlined mr-1">
-								<p:fileDownload value="#{productoCtrl.fileProducto}"/>
-							</p:commandButton>
+							</p:commandButton>							
 							
 							<p:commandButton  id="cmdExcelCargar" 
 								title="Importar productos"
 								icon="fa fa-upload"
-								value="IMPORTAR"
-								styleClass="ui-button-success"
+								value="Importar"
+								styleClass="ui-button-outlined mr-1"
 								onclick="PF('dlgImportProducto').show()"
 								update=":frmImportProducto"
 								immediate="true">
@@ -144,6 +139,14 @@
 								<f:setPropertyActionListener value="#{null}" target="#{productoCtrl.fileProductos}"/>
 								<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.existeNovedades}"/>
 								<f:setPropertyActionListener value="#{false}" target="#{productoCtrl.renderResultadoImportProducto}"/>
+							</p:commandButton>
+							
+							<p:commandButton  id="cmdExcel" 
+								title="Exportar excel"
+								icon="fa fa-download"
+								ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+								styleClass="ui-button-outlined">
+								<p:fileDownload value="#{productoCtrl.fileProducto}"/>
 							</p:commandButton>
 						</div>
 					</div>
@@ -240,7 +243,7 @@
 						<h:outputText value="#{p.nombregenerico}" />
 					</p:column>
 					
-					<p:column headerText="STOCK" style="width:30px;" styleClass="text-center">
+					<p:column headerText="STOCK" style="width:30px;" styleClass="text-right">
 					
 						<h:outputText value="#{p.stock}" styleClass="#{p.markStock} mt-1">
 							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
@@ -248,43 +251,38 @@
 						
 					</p:column>
 					
-					<p:column headerText="P. VENTA" style="width:90px;">
-						<div class="grid">
-							<div class="col-3">
-								<h:outputText value="PV-1:" styleClass="Fs8"/>
-							</div>
-							<div class="col-9 pl-1">
+					<p:column headerText="P. VENTA" style="width:90px;" styleClass="text-right">
+						<div class="flex flex-column">
+							<div class="flex justify-content-end">
+								<h:outputText value="PV-1:" styleClass="Fs8 mr-1"/>
 								<h:outputText value="#{p.preciouno}" styleClass="font-bold">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
+								
 							</div>
-							<div class="col-3">
-								<h:outputText value="PV-2:" styleClass="Fs8"/>
-							</div>
-							<div class="col-9 pl-1">
+							<div class="flex justify-content-end">
+								<h:outputText value="PV-2:" styleClass="Fs8 mr-1"/>
 								<h:outputText value="#{p.preciodos}" >
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
+								</h:outputText>								
 							</div>
-							<div class="col-3">
-								<h:outputText value="PV-3:" styleClass="Fs8"/>
-							</div>
-							<div class="col-9 pl-1">
+							<div class="flex justify-content-end">
+								<h:outputText value="PV-3:" styleClass="Fs8 mr-1"/>
 								<h:outputText value="#{p.preciotres}" >
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
+								
 							</div>
-							<div class="col-3">
-								<h:outputText value="C.U." styleClass="Fs8"/>
-							</div>
-							<div class="col-9 pl-1">
+							<div class="flex justify-content-end">
+								<h:outputText value="C.U." styleClass="Fs8 mr-1"/>
 								<h:outputText value="#{p.preciounitario}" styleClass="costo-unitario Fs11">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
+								
 							</div>
-						</div>
+						</div>	
 					</p:column>
-					<p:column headerText="IMAGEN" style="width:60px;">
+					<p:column headerText="IMAGEN" style="width:60px;" styleClass="text-center">
 						<p:outputPanel rendered="#{p.imagen==null}">
 							<i class="fa fa-5x fa-image opacity-30 product-image text-center"></i>
 						</p:outputPanel>

@@ -16,7 +16,11 @@
 				height: calc(100vh - 235px)!important;
 			}
 			
-			body .ui-datatable thead th {text-align: left;vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
 			 border: none;
@@ -73,30 +77,21 @@
 						<div class="flex justify-content-end">
 							<p:commandButton id="cmdRefrescarCli"
 									title="Consultar" icon="fa fa-search" 
-									action="#{clienteCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+									action="#{clienteCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
 									/>
 									
 							<p:commandButton id="cmdNuevoCli"
-								title="Nuevo" icon="fa fa-plus" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}" 
+								title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}" 
 								action="#{clienteCtrl.nuevo()}" inline="true">
 								<f:setPropertyActionListener value="CLIENTE" target="#{clienteCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:clienteDT" target="#{clienteCtrl.updateView}"/>
 							</p:commandButton>
 							
-							<p:commandButton id="cmdExcelCli" 
-											 title="Exportar excel"
-											 icon="fa fa-download"
-											 ajax="false" 
-											 onclick="PrimeFaces.monitorDownload(start,stop)"
-											 styleClass="ui-button-outlined mr-1">
-								<p:fileDownload value="#{clienteCtrl.fileCliente}" />
-							</p:commandButton>
-							
 							<p:commandButton id="cmdExcelCargarCli" 
 								title="Cargar archivo excel clientes"
 								icon="fa fa-upload"
-								value="IMPORTAR"
-								styleClass="ui-button-success min-width-100 #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''}"
+								value="Importar"
+								styleClass="ui-button-outlined #{appSessionCtrl.accesoDisable('mn_catalogo_cliente_admin')?'ui-state-disabled':''} mr-1"
 								onclick="PF('dlgImportCliente').show()"
 								update=":frmImportCliente"
 								immediate="true">
@@ -105,6 +100,16 @@
 								<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.existenNovedades}"/>
 								<f:setPropertyActionListener value="#{false}" target="#{clienteCtrl.renderResultadoImportCliente}"/>
 							</p:commandButton>
+							
+							<p:commandButton id="cmdExcelCli" 
+											 title="Exportar excel"
+											 icon="fa fa-download"
+											 ajax="false" 
+											 onclick="PrimeFaces.monitorDownload(start,stop)"
+											 styleClass="ui-button-outlined">
+								<p:fileDownload value="#{clienteCtrl.fileCliente}" />
+							</p:commandButton>
+							
 														
 						</div>
 					</div>
@@ -146,7 +151,7 @@
 						<h:outputText value="#{c.idcliente}"/>
 					</p:column>
 					
-					<p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains">
+					<p:column style="width:50px;" filterBy="#{c.identificacion}" filterMatchMode="contains" styleClass="text-right">
 						<f:facet name="header">
 							<h:outputText value="IDENTIFICACIÓN" />
 						</f:facet>
@@ -164,11 +169,11 @@
 						<h:outputText value="#{c.direccion}"/>
 					</p:column>
 					
-					<p:column headerText="CORREO ELECTRÖNICO" style="width:100px;">
+					<p:column headerText="CORREO ELECTRÖNICO" style="width:100px;"  styleClass="text-right">
 						<h:outputText value="#{c.correoelectronico}"/>
 					</p:column>
 					
-					<p:column headerText="TELÉFONO" style="width:50px;">
+					<p:column headerText="TELÉFONO" style="width:50px;"  styleClass="text-right">
 						<h:outputText value="#{c.telefono}"/>
 					</p:column>
 	                
