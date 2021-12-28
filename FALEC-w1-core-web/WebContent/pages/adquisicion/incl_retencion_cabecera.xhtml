@@ -134,7 +134,7 @@
 					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{clienteCtrl.retencionFrmCtrl}"/>
 				</p:commandLink>								
-				<p:commandLink action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente:null)}" process="@this" styleClass="text-gray-900">
+				<p:commandLink action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
 					<i class="fa fa-edit Fs16">
 					</i>
 					<f:setPropertyActionListener value="RETENCION" target="#{clienteCtrl.callModule}"/>

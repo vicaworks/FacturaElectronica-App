@@ -323,7 +323,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 	
 	private void calcularItem(Detalle dFac,boolean calcDescuento) {
 		if(calcDescuento) {
-			dFac.setDescuento(productoSelected.getPorcentajedescuento().divide(BigDecimal.valueOf(100))
+			dFac.setDescuento(dFac.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))
 					.multiply(dFac.getPreciounitario()).multiply(dFac.getCantidad())
 					.setScale(2, RoundingMode.HALF_UP));
 		}

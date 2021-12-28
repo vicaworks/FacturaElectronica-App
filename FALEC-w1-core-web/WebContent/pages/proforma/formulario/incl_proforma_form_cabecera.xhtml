@@ -9,12 +9,8 @@
 	
     <style type="text/css">
     	.pvPagoDetalleDT .ui-datatable-scrollable-body{
-			/* min-height: 20vh !important;
-			height: calc(100vh - 755px)!important; */
 		}   	
 		.cpoRequerido{
-			/* color:#566573!important; */
-			/* font-weight: 400; */
 		}
     </style>
     
@@ -23,148 +19,147 @@
 	
 	<div class="card card-w-title">
 		
-		<h2 class="cardTitle"><i class="fa fa-check-circle"></i>  #{msg['label.cotizacion.title']}</h2>
+		<div class="flex justify-content-between">
+			<span class="Fs14 text-black font-semibold">Cotización</span>
+			<div>
+				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(cotizacionFormCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+			</div>			
+		</div>
 		
-		<p:panelGrid id="grid" columns="1" styleClass="ui-panelgrid-blank Wid100 Fs12" columnClasses="ui-g-12">
-			
-			<h:outputText value="SECUENCIAL" styleClass="cpoRequerido"/>
-			<h:panelGroup>
-				<p:outputLabel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera!=null}">
-					<div class="EmptyBox5"></div>
-					<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(cotizacionFormCtrl.cabecerSelected.numdocumento)}" styleClass="Fs18 FontBold"/>
-					<div class="EmptyBox5"></div>
-				</p:outputLabel>
-				<p:outputLabel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
-					<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialEstablecimiento}" />
-					<h:outputText value=" - " />
-					<p:inputText id="intSecCaja" value="#{cotizacionFormCtrl.cabecerSelected.secuencialCaja}" maxlength="3" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
-					<h:outputText value=" - " />
-					<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialNumero}" rendered="#{not cotizacionFormCtrl.cabecerSelected.editarSecuencial}"/>
-					<p:message styleClass="Wid100 DispBlock" for="intSecCaja"/>
-				</p:outputLabel>
-				
-			</h:panelGroup>
-			
-			<h:outputText value="FECHA #{msg['label.emision']} *" styleClass="cpoRequerido"/>
-			<h:panelGroup>
+		<div class="flex flex-column mt-2">
+			<span class="text-gray-700 font-medium mb-1 Fs11">Secuencial Comprobante</span>
+			<p:outputPanel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera!=null}">
+				<span class="Fs16 text-black font-bold">#{cotizacionFormCtrl.getFormatoNumDocumento(cotizacionFormCtrl.cabecerSelected.numdocumento)}</span>
+			</p:outputPanel>
+			<p:outputPanel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">					
+				<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialEstablecimiento}" styleClass="Fs14 text-black font-bold"/>
+				<h:outputText value=" - " />
+				<p:inputText id="intSecCaja" value="#{cotizacionFormCtrl.cabecerSelected.secuencialCaja}" maxlength="3" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+				<h:outputText value=" - " />
+				<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialNumero}" rendered="#{not cotizacionFormCtrl.cabecerSelected.editarSecuencial}" styleClass="Fs14 text-black font-bold"/>
+				<p:message styleClass="Wid100 DispBlock" for="intSecCaja"/>
+			</p:outputPanel>
+		</div>
+		
+		<div class="flex mt-2">
+			<div class="flex flex-column flex-grow-1 mr-1">
+				<h:outputText value="Fecha de Emisión" styleClass="text-gray-700 font-medium Fs11"/>
 				<p:calendar id="claFacFecha" value="#{cotizacionFormCtrl.cabecerSelected.fechaemision}"
-					pattern="dd/MMMM/yyyy"
+					pattern="dd/MM/yyyy"
 					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="FECHA EMISION" style="font-size:14px !important;">
-				</p:calendar>
-				<p:message for="claFacFecha" />
-			</h:panelGroup>
-			
-			<h:outputText value="FECHA VENCIMIENTO *" styleClass="cpoRequerido"/>
-			<h:panelGroup>
+					requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="FECHA EMISION" style="font-size:14px !important;">
+				</p:calendar>				
+			</div>
+			<div class="flex flex-column flex-grow-1 mr-1">
+				<h:outputText value="Fecha de Vencimiento" styleClass="text-gray-700 font-medium Fs11"/>
 				<p:calendar id="claFacFechaVencimiento" value="#{cotizacionFormCtrl.cabecerSelected.fechaVencimiento}"
-					pattern="dd/MMMM/yyyy"
+					pattern="dd/MM/yyyy"
 					locale="es" 
 					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="FECHA VENCIMIENTO" style="font-size:14px !important;">
 				</p:calendar>
-				<p:message for="claFacFecha" />
-			</h:panelGroup>
-			
-			<h:outputText value="REQUIERE AUTORIZACIÓN *" styleClass="cpoRequerido"/>
-			<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.autorizacionBol}" offLabel="NO" onLabel="SI" showLabels="true" disabled="#{cotizacionFormCtrl.habilitarAutorizar()}"/>
-			
-			<h:outputText value="EMAIL ENVIADO *" styleClass="cpoRequerido"/>
-			<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.envioEmailBol}" offLabel="NO" onLabel="SI" showLabels="true"/>
-			
-			<h:outputText value="RESUMEN *" styleClass="cpoRequerido"/>
-			<h:panelGroup>
-				<p:inputText id="inpResumen"
-					value="#{cotizacionFormCtrl.cabecerSelected.resumen}" required="true"
-					requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
-					maxlength="500" placeholder="RESUMEN DEL CONTENIDO DE LA #{msg['label.cotizacion']}">
-				</p:inputText>
-				<p:message for="inpResumen" styleClass="DispBlock"/>
-			</h:panelGroup>
-			
-			<h:outputText value="CLIENTE *" styleClass="cpoRequerido"/>
-			<h:panelGroup>
-				<div class="ui-inputgroup">
-	                <span class="ui-inputgroup-addon">
-	                	
-	                	<p:commandButton process="@this :formMain:formulario:inpCriterioCliente"
-							update=":formMain:formulario:msgProformaForm :formMain:formulario:msgInpCriterioCliente :formMain:formulario:gridCliente" 
-							action="#{cotizacionFormCtrl.buscarCliente()}" icon="fa fa-search">
-	                	</p:commandButton>
-	                
-	                </span>
-	                
-	                <p:inputText id="inpCriterioCliente"
+			</div>
+			<p:message for="claFacFecha" styleClass="block"/>
+			<p:message for="claFacFechaVencimiento" styleClass="block"/>
+		</div>		
+		
+		<span class="block mt-1 text-gray-700 font-medium Fs11">Cliente</span>
+		<div class="flex">			
+			<div class="flex-grow-1 flex overflow-hidden">
+				<div class="ui-inputgroup w-full">
+                    <p:inputText id="inpCriterioCliente"
 						value="#{cotizacionFormCtrl.criterioCliente}" required="false"
-						requiredMessage="REQUERIDO" styleClass="Wid100 Fs12"
+						requiredMessage="REQUERIDO" styleClass="w-full Fs12"
 						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
 						validatorMessage="SOLO NUMEROS"
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
 						<f:validateRegex pattern="^\d+$" />
 					</p:inputText>
-	                
-	            </div>
-	            <p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="Wid100 DispBlock"/>
-			</h:panelGroup>
+                    <p:commandButton icon="pi pi-search" styleClass="ui-button-success" 
+                    	process="@this :formMain:formulario:inpCriterioCliente"
+						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
+						<f:setPropertyActionListener value="#{cotizacionFormCtrl}" target="#{listaClienteCtrl.cotizacionFormCtrl}"/>
+						<f:setPropertyActionListener value="COTIZACION" target="#{listaClienteCtrl.callModule}"/>
+						<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+					</p:commandButton>
+                </div>
+			</div>
+			<div class="flex-grow-0 flex align-items-center px-1">
+				<p:commandLink action="#{clienteCtrl.nuevoEditar(cotizacionFormCtrl.cabecerSelected.cliente!=null?cotizacionFormCtrl.cabecerSelected.cliente.idcliente:null)}" process="@this" styleClass="ml-1 mr-2 text-gray-900">
+					<i class="fa fa-plus Fs16">
+					</i>
+					<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
+					<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+				</p:commandLink>								
+				<p:commandLink action="#{clienteCtrl.nuevoEditar(cotizacionFormCtrl.cabecerSelected.cliente!=null?cotizacionFormCtrl.cabecerSelected.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
+					<i class="fa fa-edit Fs16">
+					</i>
+					<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
+					<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
+				</p:commandLink>
+			</div>
+		</div>
+		<div class="flex">
+			<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="w-full block"/>
+		</div>
 		
-		</p:panelGrid>	
+		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex " style="height:9rem;">
+			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{cotizacionFormCtrl.cabecerSelected.cliente==null}"/>
+			<f:subview rendered="#{cotizacionFormCtrl.cabecerSelected.cliente!=null}">
+				<div class="flex align-self-center">
+					<div class="flex flex-column">
+						<span class="Fs16 font-bold text-blue-600 mb-1 block">
+							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.razonsocial!=null?cotizacionFormCtrl.cabecerSelected.cliente.razonsocial:'-'}" />
+						</span>
+						<span class="Fs12 font-bold text-gray-600 mb-1 block">
+							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.identificacion!=null?cotizacionFormCtrl.cabecerSelected.cliente.identificacion:'-'}" />
+						</span>
+						<span class="Fs11 mb-1 block">
+							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.direccion!=null?cotizacionFormCtrl.cabecerSelected.cliente.direccion:'-'}" />
+						</span>
+						<span class="Fs11 mb-1 block">
+							<i class="pi pi-phone mr-1"></i>
+							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.telefono!=null?cotizacionFormCtrl.cabecerSelected.cliente.telefono:'-'}" />
+						</span>
+						<span class="Fs11 mb-1 block">
+							<i class="fa fa-envelope-o mr-1 Fs11"></i>
+							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico!=null?cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico:'-'}" />
+						</span>
+						
+					</div>
+				</div>
+			</f:subview>
+		</p:outputPanel>
 		
-		<p:panelGrid id="grid2" columns="2" styleClass="ui-panelgrid-blank Wid100" columnClasses="ui-g-6 ui-md-6,ui-g-6 ui-md-6">
-			
-			<p:commandButton value="BUSCAR" action="#{listaClienteCtrl.cargarPantalla()}" immediate="true" icon="fa fa-search" styleClass="secondary-button Wid100 Fs10">
-				<f:setPropertyActionListener value="#{cotizacionFormCtrl}" target="#{listaClienteCtrl.cotizacionFormCtrl}"/>
-				<f:setPropertyActionListener value="COTIZACION" target="#{listaClienteCtrl.callModule}"/>
-				<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
-				<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
-			</p:commandButton>
-			
-			<p:commandButton value="CLIENTE / EDITAR" action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" immediate="true" icon="fa fa-plus" styleClass="Wid100 Fs10">
-				<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
-				<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
-				<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
-			</p:commandButton>
-			
-		</p:panelGrid>
+		<div class="flex mt-3">
+			<div class="flex flex-grow-1 justify-content-evenly mr-1">				
+				<h:outputText value="Requiere Autorización" styleClass="text-gray-700 font-medium Fs11"/>			
+				<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.autorizacionBol}" offLabel="NO" onLabel="SI" showLabels="true" disabled="#{cotizacionFormCtrl.habilitarAutorizar()}"/>			
+			</div>
+			<div class="flex flex-grow-1 justify-content-evenly mr-1">
+				<h:outputText value="Email Enviado" styleClass="text-gray-700 font-medium Fs11"/>			
+				<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.envioEmailBol}" offLabel="NO" onLabel="SI" showLabels="true"/>				
+			</div>
+		</div>
 		
-		<p:panelGrid id="gridCliente" columns="1"
-			styleClass="ui-panelgrid-blank Fs12 Wid100"
-			columnClasses="ui-g-12">
-			
-			<h:outputText value="CI / RUC *" styleClass="cpoRequerido"/>
-			<h:panelGroup>
-				<p:inputText id="inpfacRuc" value="#{cotizacionFormCtrl.cabecerSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-				</p:inputText>
-				<p:message for="inpfacRuc" />
-			</h:panelGroup>
-			
-			<h:outputText value="NOMBRE *" styleClass="cpoRequerido"/>
-			<h:panelGroup>
-				<p:inputText id="inpfacNombre" value="#{cotizacionFormCtrl.cabecerSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-				</p:inputText>
-				<p:message for="inpfacNombre" />
-			</h:panelGroup>
-			
-			<h:outputText value="EMAIL *" styleClass="cpoRequerido"/>
-			<h:panelGroup>
-				<p:inputText id="inpFacEmail" value="#{cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-				</p:inputText>
-				<p:message for="inpFacEmail" />
-			</h:panelGroup>
-			
-			<h:outputText value="#{msg['label.direccion']}" styleClass="cpoRequerido"/>
-			<h:panelGroup>
-				<p:inputText id="inpFacDireccion" value="#{cotizacionFormCtrl.cabecerSelected.cliente.direccion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
-				</p:inputText>
-				<p:message for="inpFacDireccion" />
-			</h:panelGroup>
-			
-		</p:panelGrid>
+		<div class="field mt-2">
+			<h:outputText value="Resumen" styleClass="text-gray-700 font-medium Fs11"/>
+			<p:inputText id="inpResumen"
+				value="#{cotizacionFormCtrl.cabecerSelected.resumen}" required="true"
+				requiredMessage="REQUERIDO" styleClass="w-full Fs12"
+				maxlength="500">
+			</p:inputText>
+			<small>Resumen contenido de la cotización</small>
+			<p:message for="inpResumen" styleClass="block"/>
+		</div>
 	
 	</div>
 	
-	<div class="EmptyBox5"/>
-	
 	<div class="card card-w-title">	
-		<h2 class="cardTitle"><i class="fa fa-check-circle"></i> Comentarios impresión</h2>
+		<span class="block text-black Fs14 font-medium mb-2">Impresión</span>
 		
 		<p:accordionPanel>
 	        <p:tab title="Comentarios antes del detalle">

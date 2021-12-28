@@ -17,369 +17,397 @@
     </style>
 
 	<div class="card card-w-title">
-		<div class="EmptyBox5"/>
-		<div class="p-grid p-align-top ui-fluid">
-			<div class="p-col-6 p-lg-2">
-				<h:outputText value="ESTABLECIMIENTO" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somEstablecimientoMain"
-							value="#{cotizacionCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							disabled="#{not cotizacionCtrl.habilitarEstablecimientoMain}">
-							
-					<f:selectItems value="#{cotizacionCtrl.establecimientoMainList}" var="st"
-						itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
-					
-					<p:ajax event="valueChange" listener="#{cotizacionCtrl.buscar()}" update="@form"/>
-					<p:ajax event="valueChange" listener="#{cotizacionFormCtrl.cambioEstablecimiento(cotizacionCtrl.establecimientoMain)}" update="@form"/>
-						
-				</p:selectOneMenu>
-				
-			</div>
+	
+		<div class="grid justify-content-between m-0">
+   			<div class="col-4 md:col-4">
+				<span class="Fs14 text-gray-700 font-medium">Cotización</span>
+   			</div>
 			
-			<div class="p-col-6 p-lg-2">
-				
-				<h:outputText value="ESTADO" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somCotEstado"
+			<div class="col-8 md:col-4 align-self-center" style="text-align: right;">						
+				<p:selectOneMenu id="somEstablecimientoMain"
+					value="#{cotizacionCtrl.establecimientoMain}"
+					converter="omnifaces.SelectItemsConverter"
+					style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
+					disabled="#{not facEmitidaCtrl.habilitarEstablecimientoMain}">
+					
+					<f:selectItems value="#{cotizacionCtrl.establecimientoMainList}" var="st"
+						itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />
+					
+					<p:ajax event="valueChange" listener="#{facEmitidaCtrl.buscar()}" update="@form"/>								
+				</p:selectOneMenu>		                
+			</div>	                
+   		</div>
+		
+		<div class="grid">
+			
+			<div class="col-12 md:col-6">				
+				<div class="flex">
+					<div class="flex flex-column flex-grow-1" style="flex-basis: 50%!important;">
+						<span class="Fs11 text-gray-800">Fecha</span>
+						<div class="flex">
+							<div class="flex flex-grow-1 mr-1">
+								<p:calendar id="calDesde" value="#{cotizacionCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+								</p:calendar>
+							</div>
+							<div class="flex flex-grow-1 mr-1">
+								<p:calendar id="calHasta" value="#{cotizacionCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+								</p:calendar>
+							</div>
+						</div>
+					</div>
+					<div class="flex flex-column flex-grow-1"  style="flex-basis: 50%!important;">
+						<span class="Fs11 text-gray-800">Estado</span>
+						<div class="flex">
+							<div class="flex flex-grow-1">
+								<p:selectOneMenu id="somCotEstado"
 									value="#{cotizacionCtrl.estado}"
 									required="false"
-									requiredMessage="REQUERIDO">
-					<f:selectItem itemLabel="TODOS" itemValue="TODOS"/>
-					<f:selectItem itemLabel="SEGUIMI - AUTORIZA" itemValue="SEGUIMIENTO-AUTORIZACION"/>
-					<f:selectItem itemLabel="AUTORIZACIÓN" itemValue="AUTORIZACION"/>
-					<f:selectItem itemLabel="FACTURADO" itemValue="FACTURADO"/>	
-					<f:selectItem itemLabel="SEGUIMIENTO" itemValue="SEGUIMIENTO"/>
-					<f:selectItem itemLabel="ARCHIVADO" itemValue="ARCHIVADO"/>
-				</p:selectOneMenu>
-				
-				
+									requiredMessage="REQUERIDO" styleClass="w-full">
+									<f:selectItem itemLabel="Todos" itemValue="TODOS"/>
+									<f:selectItem itemLabel="Seguimiento / Autorización" itemValue="SEGUIMIENTO-AUTORIZACION"/>
+									<f:selectItem itemLabel="Autorización" itemValue="AUTORIZACION"/>
+									<f:selectItem itemLabel="Facturado" itemValue="FACTURADO"/>	
+									<f:selectItem itemLabel="Seguimiento" itemValue="SEGUIMIENTO"/>
+									<f:selectItem itemLabel="Archivado" itemValue="ARCHIVADO"/>
+								</p:selectOneMenu>
+							</div>
+						</div>
+					</div>
+					<p:message for="calDesde" styleClass="block"/>
+					<p:message for="calHasta" styleClass="block"/>
+					<p:message for="somCotEstado" styleClass="block"/>
+				</div>			
 			</div>
-			
-			<div class="p-col-6 p-lg-2">
-				
-				<h:outputText value="DESDE" styleClass="DispBlock p-mb-1"/>
-	    		<p:calendar id="calDesde" value="#{cotizacionCtrl.desde}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calDesde"/>
-			
-			</div>
-			
-			<div class="p-col-6 p-lg-2">
-				
-				<h:outputText value="HASTA" styleClass="DispBlock p-mb-1"/>
-	    		<p:calendar id="calHasta" value="#{cotizacionCtrl.hasta}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calHasta"/>
-			
-			</div>
-			
-			<div class="p-col-12 p-lg-4">
-				
-				<h:outputText value="VENDEDOR" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somtareaUsuario1"
-							value="#{cotizacionCtrl.usuarioSeleccion}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100"
-							disabled="#{cotizacionCtrl.disableUsuario}">
-							
-					<f:selectItem itemLabel="TODOS"
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-					<f:selectItems value="#{cotizacionCtrl.usuarioList}" var="u2"
-						itemLabel="#{u2.nombre}" itemValue="#{u2}" />
-						
-				</p:selectOneMenu>
-				
-			</div>
-			
-			<div class="p-col-12 p-lg-6">
-				
-				<h:outputText value="CLIENTE" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somtareaCliente1"
+			<div class="col-12 md:col-6">
+				<div class="flex">
+					<div class="flex flex-column flex-grow-1">
+						<span class="Fs11 text-gray-800">Cliente</span>
+						<p:selectOneMenu id="somtareaCliente1"
 							value="#{cotizacionCtrl.clienteSeleccion}"
 							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100">
+							styleClass="w-full">
 				
-					<f:selectItem itemLabel="TODOS"
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-					<f:selectItems value="#{cotizacionCtrl.clienteList}" var="c1"
-						itemLabel="#{c1.razonsocial}" itemValue="#{c1}" />
-					
-				</p:selectOneMenu>
-				
-			</div>
-			
-			<div class="p-col-12 p-lg-2">
-				
-				<h:outputText value="NUM COTIZACIÓN" styleClass="DispBlock p-mb-1"/>
-	    		<p:inputText value="#{cotizacionCtrl.criterioBusqueda}"/>
-				
-			</div>
-			
-			<div class="p-col-12 p-lg-4 p-as-end">
-    			<p:commandButton 
-						icon="fa fa-search"
-						action="#{cotizacionCtrl.buscar()}" styleClass="secondary-button p-mr-1" update="@form" title="Consultar"/>
-						
-				<p:commandButton 
-						icon="fa fa-plus"
-						action="#{cotizacionFormCtrl.nuevoFromMain(cotizacionCtrl.establecimientoMain)}" styleClass="secondary-button p-mr-1" update="@form" process="@this"  title="Nueva Cotización">
-					<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>			
-				</p:commandButton>
-				
-				<p:commandButton id="cmdGlobalExcel"
-	  						value="EXPORTAR"
-							icon="fa fa-sort-down" 
-							styleClass="secondary-button"
-							style="width:150px!important;"
-							disabled="#{empty cotizacionCtrl.proformaList}">
+							<f:selectItem itemLabel="TODOS"
+													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{cotizacionCtrl.clienteList}" var="c1"
+								itemLabel="#{c1.razonsocial}" itemValue="#{c1}" />
 							
-				</p:commandButton>				
-				<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-					<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-						<p:fileDownload value="#{cotizacionCtrl.fileResumen}" contentDisposition="inline"/>
-					</p:menuitem>
-					<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-						<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
-					</p:menuitem>
-				</p:menu>
+						</p:selectOneMenu>
+					</div>
+				</div>
 			</div>
 			
-		</div>
+			<div class="col-12 md:col-6">				
+				<div class="flex">
+					<div class="flex flex-column flex-grow-1 mr-1" style="flex-basis: 50%!important;">
+						<span class="Fs11 text-gray-800">Vendedor</span>
+						<p:selectOneMenu id="somtareaUsuario1"
+								value="#{cotizacionCtrl.usuarioSeleccion}"
+								converter="omnifaces.SelectItemsConverter"
+								styleClass="w-full"
+								disabled="#{cotizacionCtrl.disableUsuario}">
+								
+							<f:selectItem itemLabel="TODOS"
+													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{cotizacionCtrl.usuarioList}" var="u2"
+								itemLabel="#{u2.nombre}" itemValue="#{u2}" />
+								
+						</p:selectOneMenu>
+					</div>
+					<div class="flex flex-column flex-grow-1" style="flex-basis: 50%!important;">
+						<span class="Fs11 text-gray-800"># Cotización</span>		
+			    		<p:inputText value="#{cotizacionCtrl.criterioBusqueda}" styleClass="w-full"/>
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-12 md:col-6">
+				<div class="flex align-items-end h-full">
+	    			<p:commandButton 
+							icon="fa fa-search" value="Buscar"
+							action="#{cotizacionCtrl.buscar()}" styleClass="ui-button-success mr-1" update="@form" title="Consultar"/>
+							
+					<p:commandButton 
+							icon="fa fa-plus" value="Nuevo"
+							action="#{cotizacionFormCtrl.nuevoFromMain(cotizacionCtrl.establecimientoMain)}" styleClass="ui-button-outlined" update="@form" process="@this"  title="Nueva Cotización">
+						<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>			
+					</p:commandButton>
+					
+				</div>
+			</div>
+			
+		</div>				
 	</div>	
 	<!-- Mensajes -->
 	<p:messages id="msgInicio" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 		closable="true" >
 		<p:autoUpdate></p:autoUpdate>
 	</p:messages>
-	<div class="EmptyBox5"/>
 	<div class="card card-w-title">
 		
-		<div class="p-d-flex p-flex-column">
-			<div class="p-order-2 p-mt-2 p-order-md-1 p-mt-md-0">
-				<div class="p-grid">
-					<div class="p-col-6 p-lg-3">
-						
-						<div class="cardContador cardContador-bgBlack">
-							<div class="cardContador-header">
-								<h:outputText value="TOTAL COTIZACIONES" />
-							</div>
-							<div class="cardContador-content">
-								<h:outputText value="#{cotizacionCtrl.totalCotizacion}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
-							</div>
-						</div>
-						
-					</div>
-					
-					<div class="p-col-6 p-lg-3">
-						
-						<div class="cardContador cardContador-borderGreen">
-							<div class="cardContador-header">
-								<h:outputText value="FACTURADAS" />
-							</div>
-							<div class="cardContador-content">
-								<h:outputText value="#{cotizacionCtrl.totalfacturados}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
-							</div>
-						</div>
-						
-					</div>
-					
-					<div class="p-col-6 p-lg-3">
-						
-						<div class="cardContador cardContador-borderOrange">
-							<div class="cardContador-header">
-								<h:outputText value="SEGUIMIENTO" />
-							</div>
-							<div class="cardContador-content">
-								<h:outputText value="#{cotizacionCtrl.totalSeguimiento}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
-							</div>
-						</div>
-						
-					</div>
-					
-					<div class="p-col-6 p-lg-3">
-						
-						<div class="cardContador cardContador-borderBlack">
-							<div class="cardContador-header">
-								<h:outputText value="ARCHIVADAS" />
-							</div>
-							<div class="cardContador-content">
-								<h:outputText value="#{cotizacionCtrl.totalArchivados}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
+		<div class="grid justify-content-start md:justify-content-end">
+			<div class="col-6 lg:col-3">
+				<div class="grid grid-gutter">
+					<div class="col">
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa  fa-angle-double-up Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3 text-right">
+									<h:outputText value="#{cotizacionCtrl.totalCotizacion}" styleClass="Fs18 text-gray-700 font-medium">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+									<span class="Fs12 text-gray-600 font-semibold">COTIZACIONES</span>
+								</div>
 							</div>
 						</div>
 					</div>
+					<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
 				</div>
 			</div>
 			
-			<div class="p-order-1 p-order-md-2">
-				
-				<p:dataTable id="pvUnoDT"
-		       			scrollable="true"
-		       			value="#{cotizacionCtrl.proformaList}"
-		       			var="p"
-		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvUnoDT Fs11"
-		                paginator="true"
-		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-		                paginatorPosition="bottom"  
-						rowKey="#{v.idcabecera}"
-						rows="20"
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
-				
-						<p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
-							<p:commandLink id="cmlDtProformas">
-								<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
-							</p:commandLink>
-							<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
-								
-								<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}"
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_imprimir')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="#{p.idcabecera}" target="#{rideCtrl.idCabecera}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Estado" action="#{cotizacionCtrl.estadoCotizacion}" icon="fa fa-star-half-o" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}"
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_estado')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Autorizar" action="#{cotizacionCtrl.autorizar}" icon="fa fa-key" update=":formMain" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_autorizar')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
-									<p:confirm header="#{msg['label.confirmacion']}" message="ESTÁ SEGURO DE AUTORIZAR ESTA COTIZACIÓN." icon="fa fw-3x fa-exclamation-triangle" />
-								</p:menuitem>
-								
-								<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EDITAR',p.estado)}" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_editar')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Archivar" action="#{cotizacionCtrl.eliminar}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('ARCHIVAR',p.estado)}">
-									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
-									<f:setPropertyActionListener value="ARCHIVADO" target="#{cotizacionCtrl.estadoProforma}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EMAIL',p.estado)}" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_email')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Crear una Copia" action="#{cotizacionFormCtrl.crearUnaCopia(p.idcabecera)}" icon="fa fa-copy" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('COPIA',p.estado)}" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{cotizacionFormCtrl.establecimientoMain}"/>
-									<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Agregar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('TAREA',p.estado)}" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_agregartarea')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="COTIZACION" target="#{tareaCotCtrl.callModule}"/>
-									<f:setPropertyActionListener value="#{null}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
-									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":formMain:inicio:msgInicio :formMain:inicio:pvUnoDT :formMain:tarea:pvDosDT " target="#{tareaCotCtrl.updateView}"/>
-									<f:setPropertyActionListener value="#{p}" target="#{tareaCotCtrl.cotizacionSelected}"/>
-								</p:menuitem>
-								
-							</p:menu>
-								
-						</p:column>	
-						
-						<p:column headerText="VENDEDOR" style="width:80px;" filterBy="#{p.usuario}" filterMatchMode="contains">
-							<h:outputText value="#{p.usuario}" />
-						</p:column>
-						
-						<p:column headerText="NUM " style="width:100px;" filterBy="#{p.numdocumento}" filterMatchMode="contains">
-							<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(p.numdocumento)}" />
-						</p:column>	
-						
-						<p:column headerText="ESTADO" style="width:70px;" filterBy="#{p.estado}" filterMatchMode="contains">
-							<h:outputText value="#{p.estado}">
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="FECHA" style="width:40px;">
-							<h:outputText value="#{p.fechaemision}" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="RUC / CI" style="width:80px;" filterBy="#{p.cliente.identificacion}" filterMatchMode="contains">
-							<h:outputText value="#{p.cliente.identificacion}" />
-						</p:column>
-						
-						<p:column headerText="CLIENTE" style="width:180px;" filterBy="#{p.cliente.razonsocial}" filterMatchMode="contains">
-							<h:outputText value="#{p.cliente.razonsocial}" >
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="RESUMEN" style="width:100px;">
-							<h:outputText value="#{p.resumen}" >
-							</h:outputText>
-						</p:column>
-						
-						<p:column style="width:5px;" styleClass="TexAlCenter">
-							<f:facet name="header">
-								<p:spacer width="3px"/>
-								<i class="fa fa-envelope Fs14"/>
-							</f:facet>
-							<f:subview rendered="#{p.envioemail==1}">
-								<i class="fa fa-check Fs14" style="color:black;"/>
-							</f:subview>
-							<f:subview rendered="#{p.envioemail==0}">
-								<i class="fa fa-minus Fs14" style="color:#ccc;"/>
-							</f:subview>
-						</p:column>
-						
-						<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
-							<h:outputText value="#{p.totalsinimpuestos.add(p.totaldescuento)}" >
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
-							<h:outputText value="#{p.totaldescuento}" >
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
-							<h:outputText value="#{p.totalsinimpuestos}" >
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="IMPUESTOS" style="width:25px;" styleClass="TexAlRight">
-							<h:outputText value="#{p.totaliva.add(p.totalice)}" >
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
-							<h:outputText value="#{p.totalconimpuestos}" >
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>				
-						
-				</p:dataTable>			
-			
+			<div class="col-6 lg:col-3">
+				<div class="grid grid-gutter">
+					<div class="col">
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa fa-plus Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3 text-right">
+									<h:outputText value="#{cotizacionCtrl.totalfacturados}" styleClass="Fs18 text-blue-600 font-medium">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+									<span class="Fs12 text-gray-600 font-semibold">FACTURADOS</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
+				</div>
 			</div>
 			
-		
+			<div class="col-6 lg:col-3">
+				<div class="grid grid-gutter">
+					<div class="col">
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa fa-search Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3 text-right">
+									<h:outputText value="#{cotizacionCtrl.totalSeguimiento}" styleClass="Fs18 text-green-500 font-medium">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">EN</span>
+									<span class="Fs12 text-gray-600 font-semibold">SEGUIMIENTO</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
+				</div>
+			</div>
+			
+			<div class="col-6 lg:col-3">
+				<div class="grid grid-gutter">
+					<div class="col">
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa  fa-angle-double-down Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3 text-right">
+									<h:outputText value="#{cotizacionCtrl.totalArchivados}" styleClass="Fs18 text-pink-500 font-bold">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+									<span class="Fs12 text-gray-600 font-semibold">ARCHIVADOS</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
+				</div>
+			</div>
+			
 		</div>
 		
-		<div class="EmptyBox30"/>
+		<div class="flex mb-1 align-items-center">
+			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+			<p:commandLink id="cmdGlobalExcel" disabled="#{empty cotizacionCtrl.proformaList}" styleClass="min-width-80 mr-1">
+				<div class="flex w-full">
+					<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				</div>
+			</p:commandLink>
+			<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+				<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+					<p:fileDownload value="#{cotizacionCtrl.fileResumen}" contentDisposition="inline"/>
+				</p:menuitem>
+				<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+					<p:fileDownload value="#{cotizacionCtrl.fileDetalle}" contentDisposition="inline"/>
+				</p:menuitem>
+			</p:menu>
+		</div>
+				
+		<p:dataTable id="pvUnoDT"
+       			scrollable="true"
+       			value="#{cotizacionCtrl.proformaList}"
+       			var="p"
+       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+				styleClass="pvUnoDT Fs11"
+                paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                paginatorPosition="bottom"  
+				rowKey="#{v.idcabecera}"
+				rows="20"
+				rowsPerPageTemplate="10,15,20,25,30,35,40">
 		
+				<p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
+					<p:commandLink id="cmlDtProformas">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					<p:menu overlay="true" trigger="cmlDtProformas" my="left top" at="left bottom">
+						
+						<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',p.estado)}"
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_imprimir')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="#{p.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Estado" action="#{cotizacionCtrl.estadoCotizacion}" icon="fa fa-star-half-o" disabled="#{cotizacionCtrl.accesoOpciones('ESTADO',p.estado)}"
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_estado')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Autorizar" action="#{cotizacionCtrl.autorizar}" icon="fa fa-key" update=":formMain" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_autorizar')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
+							<p:confirm header="#{msg['label.confirmacion']}" message="ESTÁ SEGURO DE AUTORIZAR ESTA COTIZACIÓN." icon="fa fw-3x fa-exclamation-triangle" />
+						</p:menuitem>
+						
+						<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EDITAR',p.estado)}" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_editar')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Archivar" action="#{cotizacionCtrl.eliminar}" icon="fa fa-trash-o" process="pvUnoDT" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('ARCHIVAR',p.estado)}">
+							<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
+							<f:setPropertyActionListener value="ARCHIVADO" target="#{cotizacionCtrl.estadoProforma}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Email" action="#{cotizacionCtrl.cargarFormularioEmail}" icon="fa fa-envelope-o" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EMAIL',p.estado)}" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_email')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Crear una Copia" action="#{cotizacionFormCtrl.crearUnaCopia(p.idcabecera)}" icon="fa fa-copy" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('COPIA',p.estado)}" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{cotizacionFormCtrl.establecimientoMain}"/>
+							<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Agregar Tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('TAREA',p.estado)}" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_agregartarea')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="COTIZACION" target="#{tareaCotCtrl.callModule}"/>
+							<f:setPropertyActionListener value="#{null}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+							<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+							<f:setPropertyActionListener value=":formMain:inicio:msgInicio :formMain:inicio:pvUnoDT :formMain:tarea:pvDosDT " target="#{tareaCotCtrl.updateView}"/>
+							<f:setPropertyActionListener value="#{p}" target="#{tareaCotCtrl.cotizacionSelected}"/>
+						</p:menuitem>
+						
+					</p:menu>
+						
+				</p:column>	
+				
+				<p:column headerText="VENDEDOR" style="width:80px;" filterBy="#{p.usuario}" filterMatchMode="contains" styleClass="text-right">
+					<h:outputText value="#{p.usuario}"/>
+				</p:column>
+				
+				<p:column headerText="COTIZACIÓN" style="width:100px;" filterBy="#{p.numdocumento}" filterMatchMode="contains">
+					<div class="flex flex-column">
+						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(p.numdocumento)}" styleClass="text-gray-700 font-medium"/>
+						<h:outputText value="#{p.fechaemision}" styleClass="text-gray-600">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>						
+					</div>					
+				</p:column>	
+				
+				<p:column headerText="ESTADO" style="width:70px;" filterBy="#{p.estado}" filterMatchMode="contains">
+					<h:outputText value="#{p.estado}">
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="CLIENTE" style="width:180px;" filterBy="#{p.cliente.razonsocial}" filterMatchMode="contains">
+					<div class="flex flex-column">
+						<h:outputText value="#{p.cliente.razonsocial}" styleClass="text-gray-800">
+						</h:outputText>
+						<h:outputText value="#{p.cliente.identificacion}" styleClass="text-gray-700 font-medium"/>
+					</div>
+				</p:column>
+				
+				<p:column headerText="RESUMEN" style="width:100px;">
+					<h:outputText value="#{p.resumen}" styleClass="Fs10">
+					</h:outputText>
+				</p:column>
+				
+				<p:column style="width:5px;" styleClass="TexAlCenter">
+					<f:facet name="header">
+						<p:spacer width="3px"/>
+						<i class="fa fa-envelope Fs14"/>
+					</f:facet>
+					<f:subview rendered="#{p.envioemail==1}">
+						<i class="fa fa-check Fs14" style="color:black;"/>
+					</f:subview>
+					<f:subview rendered="#{p.envioemail==0}">
+						<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+					</f:subview>
+				</p:column>
+				
+				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totalsinimpuestos.add(p.totaldescuento)}" styleClass="text-gray-800 font-medium">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="DESC" style="width:25px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totaldescuento}" styleClass="#{p.totaldescuento.doubleValue()>0.0?'text-gray-800':'opacity-50'}">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="SUBTOT" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totalsinimpuestos}" styleClass="text-gray-800 font-medium">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="IMPUESTOS" style="width:25px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totaliva.add(p.totalice)}" styleClass="#{p.totaliva.add(p.totalice).doubleValue()>0.0?'text-gray-800':'opacity-50'}">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="TOTAL" style="width:40px;" styleClass="TexAlRight">
+					<h:outputText value="#{p.totalconimpuestos}" styleClass="text-blue-600 font-medium">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</p:column>				
+				
+		</p:dataTable>		
+	
 	</div>
+	
+	<div class="EmptyBox30"/>
 
 </ui:composition>

@@ -135,7 +135,7 @@
 					<f:setPropertyActionListener value=":formMain:gridProveedor" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{clienteCtrl.liqCompraFormCtrl}"/>
 				</p:commandLink>								
-				<p:commandLink action="#{clienteCtrl.nuevoEditar(liqCompraFormCtrl.liqCompraSelected.cliente!=null?liqCompraFormCtrl.liqCompraSelected.cliente:null)}" process="@this" styleClass="text-gray-900">
+				<p:commandLink action="#{clienteCtrl.nuevoEditar(liqCompraFormCtrl.liqCompraSelected.cliente!=null?liqCompraFormCtrl.liqCompraSelected.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
 					<i class="fa fa-edit Fs16">
 					</i>
 					<f:setPropertyActionListener value="LIQCOMPRA" target="#{clienteCtrl.callModule}"/>

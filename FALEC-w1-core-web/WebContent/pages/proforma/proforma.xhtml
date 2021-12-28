@@ -6,7 +6,7 @@
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
 				xmlns:pe="http://primefaces.org/ui/extensions"
-                template="/WEB-INF/template/template.xhtml">
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Cotizaciones</ui:define>
     
@@ -33,6 +33,8 @@
 				border: 0 none;
 				vertical-align: top;
 			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
 			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
 				padding: 0.2em 0.5em !important;
@@ -129,6 +131,12 @@
 				border-bottom: solid 5px #34495E;
 			}
 			
+			.tabProforma h3{
+				font-size:14px;
+				margin: 5px 0px !important;
+ 				color:#1B2631;
+			}
+			
 			.tabProforma:hover > h3,
 			.tabProforma:hover {
  				color:#FBFCFC;
@@ -138,14 +146,12 @@
 			}
 			
 			.tabProforma h4{
+				
+				font-size:12px;
  				margin-bottom: 5px;
  				margin-top: 10px;
 			}
 			
-			.tabProforma h3{
-				margin: 5px 0px !important;
- 				color:#1B2631;
-			}
 			
 			.tabProformaBg{
 				background-color: #fff !important;
@@ -256,9 +262,9 @@
 			    <pe:methodParam name="proforma"/>
 	    	</pe:remoteCommand>
 	    	
-	    	<div class="p-grid">
+	    	<div class="grid">
 	    	
-				<div class="p-col-6 p-md-3 tabProforma #{cotizacionCtrl.comprobanteRender=='INICIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('INICIO');">
+				<div class="col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='INICIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('INICIO');">
 					
 					<h4>
 						<h:outputText value="01."/>
@@ -269,7 +275,7 @@
 					
 				</div>
 				
-				<div class="p-col-6 p-md-3 tabProforma #{cotizacionCtrl.comprobanteRender=='FORMULARIO'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_frm')?'ui-state-disabled':''}" onclick="switchProforma('FORMULARIO');">
+				<div class="p-col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='FORMULARIO'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_frm')?'ui-state-disabled':''}" onclick="switchProforma('FORMULARIO');">
 					
 					<h4>
 						<h:outputText value="02."/>
@@ -280,7 +286,7 @@
 					
 				</div>
 				
-				<div class="p-col-6 p-md-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREA'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_tarea')?'ui-state-disabled':''}" onclick="switchProforma('TAREA');">
+				<div class="p-col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREA'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_tarea')?'ui-state-disabled':''}" onclick="switchProforma('TAREA');">
 					
 					<h4>
 						<h:outputText value="03."/>
@@ -291,7 +297,7 @@
 					
 				</div>
 				
-				<div class="p-col-6 p-md-3 tabProforma #{cotizacionCtrl.comprobanteRender=='REPORTE'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_rep')?'ui-state-disabled':''}" onclick="switchProforma('REPORTE');">
+				<div class="p-col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='REPORTE'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_rep')?'ui-state-disabled':''}" onclick="switchProforma('REPORTE');">
 					
 					<h4>
 						<h:outputText value="04."/>

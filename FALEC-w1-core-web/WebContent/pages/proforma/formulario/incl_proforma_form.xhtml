@@ -1,4 +1,4 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlnsf="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -11,63 +11,46 @@
        	
     </style>
 	
-	<div class="card card-w-title" >
+	<div class="card card-w-title">
 				
-		<div class="EmptyBox10"/>
-   		
-   		<div class="p-grid p-align-left">
+		<div class="flex">		
+			<p:commandButton id="cmdCotNuevo"
+				value="Nuevo" icon="fa fa-plus" 
+				action="#{cotizacionFormCtrl.nuevo()}" styleClass="min-width-70 mr-1 ui-button-success #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
+			</p:commandButton>
+			<p:commandButton id="cmdGenCotizacion"
+				value="Guardar" icon="fa fa-floppy-o" 
+				action="#{cotizacionFormCtrl.generarCotizacion()}" styleClass="min-width-70 mr-1 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_guardar')?'ui-state-disabled':''}" update="@form"/>
+			<p:commandButton 
+					value="Imprimir" icon="fa fa-floppy-o" 
+					action="#{cotizacionFormCtrl.imprimir}" styleClass="min-width-70 mr-1 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_imprimir')?'ui-state-disabled':''}" update="@form">
+				<f:setPropertyActionListener value="#{rideCtrl}" target="#{cotizacionFormCtrl.rideCtrl}"/>
+			</p:commandButton>
 			
-			<div class="p-col-6 p-lg-2">
-   				<p:commandButton id="cmdCotNuevo"
-						value="NUEVO" icon="fa fa-plus" 
-						action="#{cotizacionFormCtrl.nuevo()}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
-				</p:commandButton>
- 					</div>
- 					
- 					<div class="p-col-6 p-lg-2">
-   				<p:commandButton id="cmdGenCotizacion"
-						value="GUARDAR" icon="fa fa-floppy-o" 
-						action="#{cotizacionFormCtrl.generarCotizacion()}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_guardar')?'ui-state-disabled':''}" update="@form"/>
-			</div>
+			<p:commandButton 
+					value="Crear Copia" icon="fa fa-copy" 
+					action="#{cotizacionFormCtrl.crearUnaCopia(cotizacionFormCtrl.cabecerSelected.idcabecera)}" styleClass="min-width-70 mr-1 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}" update="@form" disabled="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
+					<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
+			</p:commandButton>
 			
-			<div class="p-col-6 p-lg-2">
-				<p:commandButton 
-						value="IMPRIMIR" icon="fa fa-floppy-o" 
-						action="#{cotizacionFormCtrl.imprimir}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_imprimir')?'ui-state-disabled':''}" update="@form">
-					<f:setPropertyActionListener value="#{rideCtrl}" target="#{cotizacionFormCtrl.rideCtrl}"/>
-				</p:commandButton>
-			</div>   			
-			
-			<div class="p-col-6 p-lg-2">
-				<p:commandButton 
-						value="CREAR COPIA" icon="fa fa-copy" 
-						action="#{cotizacionFormCtrl.crearUnaCopia(cotizacionFormCtrl.cabecerSelected.idcabecera)}" styleClass="secondary-button Wid100 Fs12 #{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}" update="@form" disabled="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
-						<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
-				</p:commandButton>
-			</div>
-   			
-   		</div>
+		</div>
 	
 	</div>
-	
 	<!-- Mensajes -->
-	<p:messages id="msgProformaForm" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+	<p:messages id="msgProformaForm" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain" styleClass="block"
 		closable="true" >
 		<p:autoUpdate></p:autoUpdate>
 	</p:messages>
-	<div class="EmptyBox10"/>
-	<div class="p-grid">
-	    		
-   		<div class="p-col-12 p-lg-7">
+	
+	<div class="grid">
+  		<div class="col-12 lg:col-7">	    				
    			<!-- Detalle de la cotizacion -->
    			<ui:include src="./incl_proforma_form_detalle.xhtml" />
-   		</div>
-   		
-   		<div class="p-col-12 p-lg-5">
+  		</div>
+  		
+  		<div class="col-12 lg:col-5">	    	
    			<!-- Datos de la cabecera / pagos -->
    			<ui:include src="./incl_proforma_form_cabecera.xhtml" />
-   		</div>
-   	
-   	</div>
-
+  		</div>	    	
+  	</div>
 </ui:composition>

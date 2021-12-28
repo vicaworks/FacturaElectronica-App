@@ -154,7 +154,7 @@
 					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 				</p:commandLink>								
-				<p:commandLink action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente:null)}" process="@this" styleClass="text-gray-900">
+				<p:commandLink action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
 					<i class="fa fa-edit Fs16">
 					</i>
 					<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>

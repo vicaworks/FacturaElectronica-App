@@ -13,15 +13,16 @@
 			
 			<div class="formgroup-inline">
 			
-					<p:commandButton 
-						value="GUARDAR" icon="fa fa-floppy-o" 
-						action="#{etiquetaCtrl.guardar}" styleClass="mr-1 min-width-110" update="@form #{etiquetaCtrl.updateView}"
-						/>
-					
-					<p:commandButton id="cmdListCliCerrar"
-						value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
-						onclick="PF('dlgCotizacionTareaEtqueta').hide()" immediate="true"  
-						/>
+				<p:commandButton 
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{etiquetaCtrl.guardar}" styleClass="mr-1 min-width-110 ui-button-outlined" update="@form #{etiquetaCtrl.updateView}"
+					/>
+				
+				<p:commandButton id="cmdListCliCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
+					onclick="PF('dlgCotizacionTareaEtqueta').hide()" immediate="true"  
+					/>
+			
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCotizacionTareaEtiqueta"
@@ -36,7 +37,7 @@
 				<div class="grid p-1" style="width: 99.5%!important;">
 					
 					<div class="field col-12">
-						<label for="t-descripcion" class="requerido">ETIQUETA</label>
+						<label for="t-descripcion" class="requerido">Etiqueta</label>
 						<p:inputText maxlength="100" value="#{etiquetaCtrl.tareaetiquetaSelected.etiqueta}" id="t-nuevaetiqueta" styleClass="w-full mt-1">
 						</p:inputText>
 						<p:message for="t-nuevaetiqueta" styleClass="block" id="msgt-nuevaetiqueta"/>
