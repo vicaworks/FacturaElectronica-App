@@ -46,14 +46,14 @@
 				
 				<div style="width: 99.5%;">
 					<div class="field grid">						
-						<h:outputText value="NOMBRE" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Nombre" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 						<div class="col-12 md:col-8">
 							<p:inputText id="intTrxConcento" value="#{tranConceptoCtrl.transaccionconcepto.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="200" converter="omnifaces.ToUpperCaseConverter"/>
 							<p:message for="intTrxConcento"></p:message>
 						</div>
 				    </div>
 				    <div class="field grid">						
-						<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 						<div class="col-12 md:col-8">
 							<p:selectOneMenu id="somEstado"
 								value="#{tranConceptoCtrl.transaccionconcepto.estado}"

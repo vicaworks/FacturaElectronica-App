@@ -59,7 +59,7 @@
 					<!-- VALORES -->
 					<div class="col-12 md:col-6">
 						<div class="field grid">							
-							<h:outputText value="FECHA #{msg['label.emision']}" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<h:outputText value="Fecha Emisión" styleClass="col-12 mb-1 md:mb-0 requerido"/>
 							<div class="col-12">
 								<p:calendar id="calCCfechaEmision" value="#{cajaChicaCtrl.transaccionSelected.fechaemision}"
 									pattern="dd/MM/yyyy"
@@ -70,7 +70,7 @@
 							</div>
 					    </div>
 					    <div class="field grid">					    	
-							<h:outputText value="CONCEPTO" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<h:outputText value="Concepto Transacción" styleClass="col-12 mb-1 md:mb-0 requerido"/>
 							<div class="col-12">
 								<div class="w-full">
 									<div class="flex">
@@ -114,13 +114,13 @@
 							</div>							
 					    </div>
 					    <div class="field grid">							
-							<h:outputText value="NOTA" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<h:outputText value="Descripción" styleClass="col-12 mb-1 md:mb-0 requerido"/>
 							<div class="col-12">
 								<p:inputTextarea maxlength="500" value="#{cajaChicaCtrl.transaccionSelected.nota}" styleClass="w-full" rows="3"/>
 							</div>
 					    </div>
 					    <div class="field grid">							
-							<h:outputText value="TIPO REGISTRO" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<h:outputText value="Tipo de Registro" styleClass="col-12 mb-1 md:mb-0 requerido"/>
 							<div class="col-12">
 								<p:selectOneMenu id="somCCTipo"
 									value="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion}"
@@ -138,7 +138,7 @@
 							</div>
 					    </div>
 					    <div class="field grid">							
-							<h:outputText value="VALOR" styleClass="col-12 mb-1 md:mb-0 requerido"/>
+							<h:outputText value="Valor" styleClass="col-12 mb-1 md:mb-0 requerido"/>
 							<div class="col-12">
 								<p:outputPanel id="grid5">
 									<p:spinner id="ipsCCValorIngreso" value="#{cajaChicaCtrl.transaccionSelected.valoringreso}" styleClass="w-full" rendered="#{cajaChicaCtrl.transaccionSelected.tipoTransaccion=='INGRESO'}" min="0" decimalPlaces="2">
@@ -154,7 +154,7 @@
 												
 						<div class="EmptyBox10"/>
 						
-						<div class="flex flex-inline justify-content-center">
+						<div class="flex flex-inline justify-content-end">
 							<i class="opacity-60 fa fa-angle-double-right Fs20 align-self-center mx-3"></i>
 							<div class="flex flex-column">
 								<div class="w-full py-1 pl-3">
@@ -178,7 +178,7 @@
 					<div class="col-12 md:col-6">
 						
 						<div class="field grid">							
-							<h:outputText value="PROVEEDOR " styleClass="col-12 mb-1 md:mb-0"/>
+							<h:outputText value="Proveedor " styleClass="col-12 mb-1 md:mb-0"/>
 							<div class="col-12">
 								
 								<div class="w-full">
@@ -200,14 +200,14 @@
 										</div>
 										<div class="flex-none flex px-2 align-items-center">
 										
-											<p:commandLink action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@form" styleClass="mr-2 text-gray-900">
+											<p:commandLink action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@this :formCC:inpCriterioProveedor" styleClass="mr-2 text-gray-900">
 												<i class="fa fa-plus Fs14">
 												</i>
 												<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
 												<f:setPropertyActionListener value=":formCC:gridProveedor" target="#{clienteCtrl.updateView}"/>
 												<f:setPropertyActionListener value="#{cajaChicaCtrl}" target="#{clienteCtrl.cajaChicaCtrl}"/>
 											</p:commandLink>								
-											<p:commandLink action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@form" styleClass="text-gray-900">
+											<p:commandLink action="#{clienteCtrl.nuevoEditar(cajaChicaCtrl.transaccionSelected.cliente!=null?cajaChicaCtrl.transaccionSelected.cliente.idcliente:null)}" process="@this :formCC:inpCriterioProveedor" styleClass="text-gray-900">
 												<i class="fa fa-edit Fs14">
 												</i>
 												<f:setPropertyActionListener value="CAJACHICA" target="#{clienteCtrl.callModule}"/>
@@ -250,7 +250,7 @@
 						</p:outputPanel>
 						
 						<div class="field grid mt-1">							
-							<h:outputText value="DOCUMENTO REFERENCIA" styleClass="col-12 mb-1 md:mb-0"/>
+							<h:outputText value="Documento Referencia" styleClass="col-12 mb-1 md:mb-0"/>
 							<div class="col-12">
 								<p:inputText id="inptDocReferencia" value="#{cajaChicaCtrl.transaccionSelected.numdocumento}" maxlength="20" styleClass="w-full" required="false" requiredMessage="REQUERIDO">
 								</p:inputText>

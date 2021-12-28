@@ -86,7 +86,7 @@
 	    					</div>
 	    				</div>
 	    			</div>
-	    			<div class="col-12 md:col-5 pr-1 overflow-x-hidden">
+	    			<div class="col-12 md:col-6 pr-1 overflow-x-hidden">
 	    				<span class="block">Concepto</span>
 	    				<div class="flex">
 	    					<div class="flex flex-grow-1">
@@ -106,38 +106,29 @@
 	    					</div>
 	    				</div>
 	    			</div>
-	    			<div class="col-12 md:col-3">
+	    			<div class="col-12 md:col-2">
 	    				<span class="hidden md:block text-white">Concepto</span>
 	    				<div class="flex flex-inline">
 	    					<p:commandButton id="cmdGlobalBuscar"
-								icon="fa fa-search"
-								action="#{cajaChicaCtrl.buscar()}" styleClass="ui-button-outlined mr-1 " update="@form" title="Buscar"/>
+								icon="fa fa-search" value="Buscar"
+								action="#{cajaChicaCtrl.buscar()}" styleClass="ui-button-success mr-1 " update="@form" title="Buscar"/>
 							
 						<p:commandButton id="cmdRtnNuevo"
 							value="TRANSACCIÓN" icon="fa fa-plus" 
-							action="#{cajaChicaCtrl.nuevoForm()}" styleClass="mr-1" update="@form">
+							action="#{cajaChicaCtrl.nuevoForm()}" styleClass="ui-button-outlined" update="@form">
 	   					</p:commandButton>
-	   					
-						<p:commandButton id="cmdGlobalExcel"
-	  						title="Exportar excel"
-							icon="fa fa-download" 
-							styleClass="ui-button-outlined"
-							disabled="#{empty cajaChicaCtrl.transaccionList}"
-							ajax="false">
-							<p:fileDownload value="#{cajaChicaCtrl.fileResumen}" contentDisposition="inline"/>
-						</p:commandButton>
 	    				</div>
 	    			</div>
 	    		</div>
 				
-				<div class="grid justify-content-start md:justify-content-end my-3">
-					<div class="col-6 md:col-3">
+				<div class="grid justify-content-start md:justify-content-end my-1">
+					<div class="col-6 lg:col-4">
 						<div class="grid grid-gutter">
 							<div class="col">
-								<div class="flex flex-inline">
+								<div class="flex flex-inline justify-content-center">
 									<i class="opacity-60 fa fa-plus Fs20 align-self-center mx-3"></i>
 									<div class="flex flex-column">
-										<div class="w-full py-1 pl-3">
+										<div class="w-full py-1 pl-3 text-right">
 											<h:outputText value="#{cajaChicaCtrl.totalIngreso}" styleClass="Fs18 text-blue-500 font-bold">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -152,13 +143,13 @@
 							<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
 						</div>
 					</div>
-					<div class="col-6 md:col-3">
+					<div class="col-6 lg:col-4">
 						<div class="grid grid-gutter">
 							<div class="col">
-								<div class="flex flex-inline">
+								<div class="flex flex-inline justify-content-center">
 									<i class="opacity-60 fa fa-minus Fs20 align-self-center mx-3"></i>
 									<div class="flex flex-column">
-										<div class="w-full py-1 pl-3">
+										<div class="w-full py-1 pl-3 text-right">
 											<h:outputText value="#{cajaChicaCtrl.totalEgreso}" styleClass="Fs18 text-pink-500 font-bold">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -173,11 +164,11 @@
 							<div class="col-fixed hidden md:block" style="width:20px"><p:divider layout="vertical" /></div>
 						</div>
 					</div>
-					<div class="col-6 md:col-3">
-						<div class="flex flex-inline">
+					<div class="col-6 lg:col-4">
+						<div class="flex flex-inline justify-content-center">
 							<i class="fa fa-angle-double-right opacity-60 Fs20 align-self-center mx-3 font-bold"></i>
 							<div class="flex flex-column">
-								<div class="w-full py-1 pl-3">
+								<div class="w-full py-1 pl-3 text-right">
 									<h:outputText value="#{cajaChicaCtrl.saldoActual}" styleClass="Fs18 text-gray-700 font-bold">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
@@ -190,7 +181,20 @@
 						</div>
 					</div>
 				</div>
-				
+				<div class="flex mb-1 align-items-center">
+					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty cajaChicaCtrl.transaccionList}" styleClass="min-width-80 mr-1">
+						<div class="flex w-full">
+							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+						</div>
+					</p:commandLink>
+					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+							<p:fileDownload value="#{cajaChicaCtrl.fileResumen}" contentDisposition="inline"/>
+						</p:menuitem>
+					</p:menu>
+				</div>
 				<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
 		       			value="#{cajaChicaCtrl.transaccionList}"
@@ -224,7 +228,7 @@
 						
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:90px;">
+					<p:column headerText="DESCRIPCIÓN" style="width:90px;">
 						<div class="flex flex-column">
 							<h:outputText value="#{t.transaccionconcepto.nombre}" styleClass="Fs10 font-bold block"/>
 							<h:outputText value="#{t.fechaemision}" styleClass="Fs10">
@@ -242,24 +246,24 @@
 					<p:column headerText="PROVEEDOR" style="width:120px;">
 						<div class="flex flex-column">
 							<div class="w-full">
-								<span class="Fs9 font-bold mr-1">DOC REF.</span>
-								<h:outputText value="#{t.numdocumento!=null?t.numdocumento:'-'}" >
+								<span class="Fs9 mr-1 text-gray-500">DOC REF.</span>
+								<h:outputText value="#{t.numdocumento!=null?t.numdocumento:'-'}" styleClass="text-gray-700 font-medium">
 								</h:outputText>
 							</div>
-							<h:outputText value="#{t.cliente.razonsocial}" >
+							<h:outputText value="#{t.cliente.razonsocial}" styleClass="text-gray-800">
 							</h:outputText>
 						</div>
 					</p:column>
 					
 					
 					<p:column headerText="#{msg['label.reposicion']}" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{t.valoringreso}" styleClass="#{t.valoringreso.doubleValue()>0 and t.ajuste==0?'text-blue-600 font-bold':t.valoringreso.doubleValue()>0 and t.ajuste==1?'text-gray-600 font-bold':' '} ">
+						<h:outputText value="#{t.valoringreso}" styleClass="#{t.valoringreso.doubleValue()>0 and t.ajuste==0?'text-blue-600 font-medium ':t.valoringreso.doubleValue()>0 and t.ajuste==1?'text-gray-600 font-medium ':' opacity-50'} ">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="GASTO" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{t.valoregreso}" styleClass="#{t.valoregreso>0?'text-pink-500 font-bold':''}">
+						<h:outputText value="#{t.valoregreso}" styleClass="#{t.valoregreso>0?'text-pink-400':'opacity-50'}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 					</p:column>	
