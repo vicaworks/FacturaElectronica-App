@@ -15,8 +15,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import org.omnifaces.util.Ajax;
-
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
@@ -268,39 +266,23 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		cotizacionProductoDetalle = parametroGenericoEmpresaServicio.consultarParametroEmpresa(PGEmpresaEnum.COTIZACION_PRODUCTO_DESCRIPCION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getEmpresa().getIdempresa());
 	}
 	
-	public void agregarProducto() {
+	public void agregarProducto(Producto productoSelected) {
 		try {
 			
-			if(detalleFacList==null) {
-				detalleFacList = new ArrayList<>();
-			}
 			
-			detalleSelected = existeProductoLista();
-			boolean existe = false;
-			if(detalleSelected!=null) {
-				detalleSelected.setCantidad(
-						productoSelected.getCantidad() != null ? detalleSelected.getCantidad().add(BigDecimal.valueOf(productoSelected.getCantidad()))
-								: BigDecimal.valueOf(1));
-				existe = true;
-			}else {
-				detalleSelected = new Detalle();
-				detalleSelected.setCantidad(
-						productoSelected.getCantidad() != null ? BigDecimal.valueOf(productoSelected.getCantidad())
-								: BigDecimal.valueOf(1));
-				detalleSelected.setDescripcion(productoSelected.getNombregenerico());
-				detalleSelected.setPreciounitario(productoSelected.getPreciouno());
-				detalleSelected.setProducto(productoSelected);
-				detalleSelected.setIva(productoSelected.getIva());
-				detalleSelected.setIce(productoSelected.getIce());
-			}
-			
+			detalleSelected = new Detalle();
+			detalleSelected.setCodproducto(productoSelected.getCodigoprincipal());			
+			detalleSelected.setCantidad(BigDecimal.valueOf(1));
+			detalleSelected.setDescripcion(productoSelected.getNombre());
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setProducto(productoSelected);
+			detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+			detalleSelected.setPorcentajeDescuento(productoSelected.getPorcentajedescuento());
+			detalleSelected.setPreciocompra(productoSelected.getPreciounitario());
+			detalleSelected.setIva(productoSelected.getIva());
+			detalleSelected.setIce(productoSelected.getIce());
+			detalleSelected.setPrecioVenta(1);
 			calcularItem(detalleSelected,true);
-			
-			if(!existe) {
-				detalleFacList.add(detalleSelected);
-			}
-			
-			totalizar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -348,18 +330,20 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		cabecerSelected.setTotalconimpuestos(BigDecimal.ZERO);
 		
 		int i= 1;
-		for (Detalle d : detalleFacList) {
-			
-			cabecerSelected.setTotalsinimpuestos(cabecerSelected.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
-			cabecerSelected.setTotaliva(cabecerSelected.getTotaliva().add(d.getValoriva()));
-			cabecerSelected.setTotalice(cabecerSelected.getTotalice().add(d.getValorice()));
-			cabecerSelected.setTotaldescuento(cabecerSelected.getTotaldescuento().add(d.getDescuento()));
-			
-			if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
-				d.setIddetalle("MM" + i);
+		if(detalleFacList!=null) {
+			for (Detalle d : detalleFacList) {
+				
+				cabecerSelected.setTotalsinimpuestos(cabecerSelected.getTotalsinimpuestos().add(d.getPreciototalsinimpuesto()));
+				cabecerSelected.setTotaliva(cabecerSelected.getTotaliva().add(d.getValoriva()));
+				cabecerSelected.setTotalice(cabecerSelected.getTotalice().add(d.getValorice()));
+				cabecerSelected.setTotaldescuento(cabecerSelected.getTotaldescuento().add(d.getDescuento()));
+				
+				if(d.getIddetalle()==null || d.getIddetalle().contains("MM")) {
+					d.setIddetalle("MM" + i);
+				}
+				
+				i++;
 			}
-			
-			i++;
 		}
 		
 		cabecerSelected.setTotaliva(cabecerSelected.getTotaliva().setScale(2, RoundingMode.HALF_UP));
@@ -395,22 +379,35 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		}
 	}
 	
-	private Detalle existeProductoLista() {
-		for (Detalle d : detalleFacList) {
-			if(d.getProducto()!=null && d.getProducto().getIdproducto().equals(productoSelected.getIdproducto())) {
-				return d;
-			}
+	public void cambiarPrecioVenta(Integer precio) {
+		switch (precio) {
+		case 1:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciouno());
+			detalleSelected.setPrecioVenta(1);
+			break;
+		case 2:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciodos());
+			detalleSelected.setPrecioVenta(2);
+			break;	
+		case 3:
+			detalleSelected.setPreciounitario(detalleSelected.getProducto().getPreciotres());
+			detalleSelected.setPrecioVenta(3);
+			break;
+		default:
+			break;
+		}
+		calcularItem(detalleSelected, true);		
+		if(detalleSelected.getProducto().getTipoventa()==2) {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvCotizacion:innCantFrm')");						
+		}else {
+			AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvCotizacion:innCantFrm2')");
 		}
 		
-		return null;
 	}
+	
 	
 	public void agregarItem() {
 		try {
-			
-			if(detalleFacList==null) {
-				detalleFacList = new ArrayList<>();
-			}
 			
 			consultarIce();
 			consultarIva();
@@ -431,16 +428,27 @@ public class CotizacionFormCtrl extends BaseCtrl {
 			if(detalleSelected.getIce()==null) {
 				AppJsfUtil.addErrorMessage("formMain","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0.");
 				return;
-			}
-			
-			detalleFacList.add(detalleSelected);
-			
+			}			
 			calcularItem(detalleSelected, false);
-			totalizar();
-			Ajax.oncomplete("PrimeFaces.focus('formMain:formulario:pvDetalleDT:" + (detalleFacList.size()-1) + ":intDetNombreProducto');");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	public void agregarDetalle() {
+		try {
+			if(detalleFacList==null) {
+				detalleFacList = new ArrayList<>();
+			}
+			if(detalleSelected.getAccion().equals("NUEVO")) {
+				detalleFacList.add(detalleSelected);				
+			}
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -486,31 +494,6 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		}
 		
 	}
-	
-	public void buscarCodigoProducto() {
-		try {
-			
-			if(criterioBusqueda!=null && criterioBusqueda.trim().length()==0) {
-				return;
-			}
-			
-			productoSelected = productoServicio.getProductoDao().getByCodigoPrincipal(criterioBusqueda, establecimientoMain.getIdestablecimiento());
-			
-			if(productoSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE : " + criterioBusqueda);
-				return;
-			}
-			productoSelected.setCantidad(1);
-			agregarProducto();
-			criterioBusqueda = null;
-//			Ajax.oncomplete("PrimeFaces.focus('formMain:intCriterioBusqueda')");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-	
 	
 	public void generarCotizacion() {
 		try {

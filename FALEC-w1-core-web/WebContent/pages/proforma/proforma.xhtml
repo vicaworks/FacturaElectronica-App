@@ -10,7 +10,7 @@
 
     <ui:define name="title">Cotizaciones</ui:define>
     
-    <ui:define name="head">
+    <ui:define name="head">    
         <style type="text/css">
 			
 			.ui-calendar .ui-inputfield{
@@ -247,6 +247,16 @@
 			
 			
         </style>
+        <script >
+			$(function () {
+			    var focusedElement;
+			    $(document).on('focus', 'input', function () {
+			        if (focusedElement == this) return; //already focused, return so user can now place cursor at specific point in input.
+			        focusedElement = this;
+			        setTimeout(function () { focusedElement.select(); }, 100); //select all text in any field on focus for easy re-entry. Delay sightly to allow focus to "stick" before selecting.
+			    });
+			});
+		</script>
     </ui:define>
 
     <ui:define name="content">
@@ -330,8 +340,8 @@
 	    <!-- Form Cliente -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
 	    
-	    <!-- Busqueda Productos -->
-	    <ui:include src="../productos/incl_listaProducto.xhtml" />
+	    <!-- pop up detalle producto -->	    
+	    <ui:include src="../common/producto/incl_common_listaproducto.xhtml" />
 	    
 	    <!-- Form Producto -->
 	    <ui:include src="../productos/incl_producto_form.xhtml" />

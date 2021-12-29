@@ -30,73 +30,64 @@
 		<h:form id="frmProductoDesc">
 			
 			<!-- OPCIONES -->
-			
-			<div class="p-grid toolBarPopUp">
+			<div class="formgroup-inline">
+				<p:commandButton 
+					value="GUARDAR" icon="fa fa-floppy-o" 
+					action="#{productoCtrl.guardar}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form #{productoCtrl.viewUpdate}"
+					/>
 				
-				<div class="p-col-12 p-md-6" style="text-align:left;">	
-						
-					<p:commandButton 
-						value="GUARDAR" icon="fa fa-floppy-o" 
-						action="#{productoCtrl.guardar}" styleClass="MRight10" update="@form #{productoCtrl.viewUpdate}"
-						/>
-					
-					<p:commandButton id="cmdListCliCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="secondary-button" 
-						onclick="PF('dlgProductoDes').hide()" immediate="true"  
-						/>
-					
-				</div>	
-				
+				<p:commandButton id="cmdListCliCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-100 ui-button-flat" 
+					onclick="PF('dlgProductoDes').hide()" immediate="true"  
+					/>
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmProductoDesc" id="msgFrmProductoDesc"
-				closable="true" >
+				closable="true" style="width:98%!important;">
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="form-ui Wid100 OvYScroll heightFrmProductoDesc contenedorFormulario">
-				
-				<div class="p-grid nested-grid p-p-1" style="width: 99.5%!important;">
+			<div class="w-full overflow-auto heightFrmProductoDesc contenedorFormulario mt-2 pr-1">
+			
+				<div class="grid" style="width: 99.5%!important;">
 					
-					<div class="p-col-12 p-md-6">
+					<div class="col-12 md:col-6">
 						
-						<div class="ui-fluid">
-						    <div class="p-field">
-						        <label for="p-codigo">CÓDIGO</label>
-						        <p:inputText id="p-codigo" value="#{productoCtrl.productoSelected.codigoprincipal}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="25" readonly="true"/>
-						    </div>
-						    
-						    <div class="p-field">
-						        <label for="p-nombre">NOMBRE *</label>
-						        <p:inputText id="p-nombre" value="#{productoCtrl.productoSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-								<p:message for="p-nombre"/>
-						    </div>
-						    
-						    <div class="p-field">
-						        <label for="p-nombre-comercial">NOMBRE COMERCIAL *</label>
-						        <p:inputText id="p-nombre-comercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-								<p:message for="p-nombre-comercial"/>
-						    </div>
-						    
-						    <div class="p-field">
-						        <label for="p-descripcion">#{msg['label.descripcion']}</label>
-						        <p:inputTextarea id="p-descripcion" value="#{productoCtrl.productoSelected.observacion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="800" converter="omnifaces.ToUpperCaseConverter" rows="7"/>
-								<p:message for="p-descripcion"/>
-						    </div>
-						    
+						<div class="field">			    	
+							<h:outputText value="Código" styleClass="text-gray-700 font-medium"/>
+					        <p:inputText id="p-codigo" value="#{productoCtrl.productoSelected.codigoprincipal}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="25" readonly="true"/>					    	
+					    </div>
+					    
+					    <div class="field">			    	
+							<h:outputText value="Nombre" styleClass="text-gray-700 font-medium"/>
+					        <p:inputText id="p-nombre" value="#{productoCtrl.productoSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+							<p:message for="p-nombre" styleClass="block"/>												    	
+					    </div>
+						
+						<div class="field">			    	
+							<h:outputText value="Nombre Comercial" styleClass="text-gray-700 font-medium"/>
+					        <p:inputText id="p-nombre-comercial" value="#{productoCtrl.productoSelected.nombregenerico}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+							<p:message for="p-nombre-comercial" styleClass="block"/>							
+						</div>
+						
+						<div class="field">			    	
+							<h:outputText value="Descripción" styleClass="text-gray-700"/>
+					        <p:inputTextarea id="p-descripcion" value="#{productoCtrl.productoSelected.observacion}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="800" converter="omnifaces.ToUpperCaseConverter" rows="7"/>
+							<p:message for="p-descripcion" styleClass="block"/>							
 						</div>
 					
 					</div>
 					
-					<div class="p-col-12 p-md-6">
-						<div class="p-field">
-					        <label class="p-mr-2">IMAGEN</label><small>(Resolución 50x50, 100x100, 150x150)</small>
+					<div class="col-12 md:col-6">
+						<div class="field">
+					        <label class="mr-2">Imagen</label><small>(Resolución 50x50, 100x100, 150x150)</small>
 					    </div>
-						<div class="p-formgroup-inline">
+						<div class="flex">
+						
 					        <p:commandButton
-									value="Limpiar" icon="fa fa-eraser" styleClass="secondary-button p-mr-1"
+									value="Limpiar" icon="fa fa-eraser" styleClass="mr-1 ui-button-outlined" style="height:23px!important;"
 									action="#{productoCtrl.limpiarImagen()}" 
 									immediate="true"  
 									update="@form"
@@ -118,22 +109,14 @@
 									previewWidth="0">
 							</p:fileUpload>
 						</div>
-					    <div class="p-field">
-					    	<h:outputText value="#{productoCtrl.productoSelected.nombreimagen}" styleClass="p-d-block p-mb-1"/>
+					    <div class="flex flex-column">
+					    	<h:outputText value="#{productoCtrl.productoSelected.nombreimagen}" styleClass="text-gray-900 mb-1"/>
 					    	<p:graphicImage value="#{productoCtrl.imageProducto}" stream="false" width="50%" height="50%" rendered="#{productoCtrl.productoSelected.imagen!=null}"/>
-					    </div>
-						
-					</div>					
-				
+					    </div>						
+					</div>	
 				</div>
-				
-				
-			</div>
-			
+			</div>			
 		</h:form>
-		
-		
-		
 	
 	</p:dialog>
 

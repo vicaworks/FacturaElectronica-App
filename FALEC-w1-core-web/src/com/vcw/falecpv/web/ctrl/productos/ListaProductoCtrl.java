@@ -11,7 +11,6 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.omnifaces.util.Ajax;
 import org.primefaces.event.TabChangeEvent;
 
 import com.servitec.common.dao.exception.DaoException;
@@ -178,6 +177,7 @@ public class ListaProductoCtrl extends BaseCtrl {
 			criterioBusqueda = null;
 			consultarCategorias();
 			
+			
 			switch (callModule) {
 			case "ADQUISICION":
 				if(accion.equals("NUEVO")) {
@@ -214,7 +214,29 @@ public class ListaProductoCtrl extends BaseCtrl {
 						tipoRegistro = 2;						
 					}
 				}
-				break;			
+				break;
+			case "COTIZACION":
+				if(accion.equals("NUEVO")) {
+					cotizacionFormCtrl.agregarItem();
+					tipoRegistro = 1;					
+				}else {
+					if(cotizacionFormCtrl.getDetalleSelected().getProducto()!=null) {
+						tipoRegistro = 1;
+						productoSelected = cotizacionFormCtrl.getDetalleSelected().getProducto();
+						// precio venta
+						cotizacionFormCtrl.getDetalleSelected().setPrecioVenta(0);
+						if(cotizacionFormCtrl.getDetalleSelected().getProducto().getPreciouno().doubleValue()==cotizacionFormCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							cotizacionFormCtrl.getDetalleSelected().setPrecioVenta(1);
+						}else if(cotizacionFormCtrl.getDetalleSelected().getProducto().getPreciodos().doubleValue()==cotizacionFormCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							cotizacionFormCtrl.getDetalleSelected().setPrecioVenta(2);
+						}else if(cotizacionFormCtrl.getDetalleSelected().getProducto().getPreciotres().doubleValue()==cotizacionFormCtrl.getDetalleSelected().getPreciounitario().doubleValue()) {
+							cotizacionFormCtrl.getDetalleSelected().setPrecioVenta(3);
+						}
+					}else {
+						tipoRegistro = 2;						
+					}
+				}
+				break;
 			case "NOTA_CREDITO":
 				if(accion.equals("NUEVO")) {
 					notaCreditoCtrl.agregarItem();
@@ -307,6 +329,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:innCantFrm2')");
 				}
 				break;
+			case "COTIZACION":
+				cotizacionFormCtrl.agregarProducto(productoSelected);
+				cotizacionFormCtrl.getDetalleSelected().setAccion(accion);
+				tabIndex = 0;
+				if(productoSelected.getTipoventa()==2) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvCotizacion:innCantFrm')");						
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvCotizacion:innCantFrm2')");
+				}
+				break;
 			case "NOTA_CREDITO":
 				notaCreditoCtrl.agregarProducto(productoSelected);
 				notaCreditoCtrl.getDetalleSelected().setAccion(accion);
@@ -361,6 +393,16 @@ public class ListaProductoCtrl extends BaseCtrl {
 				}else {
 					compFacCtrl.getDetalleSelected().setCodproducto("COD" + (compFacCtrl.getDetalleFacList()==null?1:compFacCtrl.getDetalleFacList().size()+1));
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:intFacDescripcion')");
+				}
+				break;
+			case "COTIZACION":
+				cotizacionFormCtrl.agregarItem();
+				cotizacionFormCtrl.getDetalleSelected().setAccion("NUEVO");
+				if(tipoRegistro==1) {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}else {
+					cotizacionFormCtrl.getDetalleSelected().setCodproducto("COD" + (cotizacionFormCtrl.getDetalleFacList()==null?1:cotizacionFormCtrl.getDetalleFacList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvCotizacion:intFacDescripcion')");
 				}
 				break;
 			case "NOTA_CREDITO":
@@ -418,6 +460,17 @@ public class ListaProductoCtrl extends BaseCtrl {
 				if(tipoRegistro==2) {
 					compFacCtrl.getDetalleSelected().setCodproducto("COD" + (compFacCtrl.getDetalleFacList()==null?1:compFacCtrl.getDetalleFacList().size()+1));
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvFactura:intFacDescripcion')");
+				}else {
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
+				}
+				break;
+			case "COTIZACION":
+				accion = "NUEVO";
+				cotizacionFormCtrl.agregarItem();
+				cotizacionFormCtrl.getDetalleSelected().setAccion(accion);				
+				if(tipoRegistro==2) {
+					cotizacionFormCtrl.getDetalleSelected().setCodproducto("COD" + (cotizacionFormCtrl.getDetalleFacList()==null?1:cotizacionFormCtrl.getDetalleFacList().size()+1));
+					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:tvPLmain:fsvCotizacion:intFacDescripcion')");
 				}else {
 					AppJsfUtil.executeJavaScript("PrimeFaces.focus('frmListProducto:intListProBusqueda')");
 				}
@@ -507,12 +560,12 @@ public class ListaProductoCtrl extends BaseCtrl {
 //				//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:pvDetalleDT:" + (compFacCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
 //				//AppJsfUtil.addInfoMessage("frmListProducto", "PRODUCTO AGREGADO CORRECTAMENTE");
 //				break;
-			case "COTIZACION_FORM":
-				cotizacionFormCtrl.setProductoSelected(productoSelected);
-				cotizacionFormCtrl.agregarProducto();
-				AppJsfUtil.hideModal("dlgListaProducto");
-				Ajax.oncomplete("PrimeFaces.focus('formMain:formulario:pvDetalleDT:" + (cotizacionFormCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
-				break;
+//			case "COTIZACION_FORM":
+//				cotizacionFormCtrl.setProductoSelected(productoSelected);
+//				cotizacionFormCtrl.agregarProducto();
+//				AppJsfUtil.hideModal("dlgListaProducto");
+//				Ajax.oncomplete("PrimeFaces.focus('formMain:formulario:pvDetalleDT:" + (cotizacionFormCtrl.getDetalleFacList().size()-1) + ":insDetFacCanbtidad1_input')");
+//				break;
 //			case "NOTA_CREDITO":
 //				
 //				notaCreditoCtrl.setProductoSelected(productoSelected);
