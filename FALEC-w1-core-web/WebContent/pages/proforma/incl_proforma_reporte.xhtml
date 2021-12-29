@@ -11,55 +11,65 @@
 	
 	<div class="card card-w-title" >
 		
-		<div class="p-grid p-align-top ui-fluid p-mt-1">
+		<div class="grid justify-content-between m-0">
+   			<div class="col-4 md:col-4">
+				<span class="Fs14 text-gray-700 font-medium">Cotización</span>
+   			</div>
 			
-			<div class="p-col-12 p-lg-2">
-				<h:outputText value="ESTABLECIMIENTO" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu 
-							value="#{cotizacionRepCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100"
-							disabled="#{not cotizacionCtrl.habilitarEstablecimientoMain}">
-							
-					<f:selectItems value="#{cotizacionRepCtrl.establecimientoMainList}" var="st3"
-						itemLabel="#{st3.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st3.codigoestablecimiento,3,'0'))}" itemValue="#{st3}" />
-						
-				</p:selectOneMenu>
+			<div class="col-8 md:col-4 align-self-center" style="text-align: right;">						
+				<p:selectOneMenu id="somEstablecimientoMain"
+					value="#{cotizacionCtrl.establecimientoMain}"
+					converter="omnifaces.SelectItemsConverter"
+					style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
+					disabled="#{not facEmitidaCtrl.habilitarEstablecimientoMain}">
+					
+					<f:selectItems value="#{cotizacionCtrl.establecimientoMainList}" var="st"
+						itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />
+					
+					<p:ajax event="valueChange" listener="#{facEmitidaCtrl.buscar()}" update="@form"/>								
+				</p:selectOneMenu>		                
+			</div>	                
+   		</div>
+		
+		<div class="grid">
+			<div class="col-12 md:col-6">
+				<div class="flex w-full">
+					<div class="flex flex-column flex-grow-1 mr-1">
+						<span class="text-gra-700 Fs11 block">Fechas</span>
+						<div class="flex w-full">
+							<div class="flex flex-grow-1 mr-1">
+								<p:calendar id="calDesde3" value="#{cotizacionRepCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+								</p:calendar>				
+							</div>
+							<div class="flex flex-grow-1">
+								<p:calendar id="calHasta3" value="#{cotizacionRepCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+								</p:calendar>				
+							</div>
+						</div>
+					</div>
+					<div class="flex flex-column flex-grow-0">
+						<span class="text-white Fs11">Fechas</span>
+						<div class="flex">
+							<p:commandButton 
+									icon="fa fa-search"
+									action="#{cotizacionRepCtrl.buscar()}" styleClass="ui-button-success" update="@form" value="Buscar"/>
+						</div>
+					</div>
+				</div>
 			</div>
-			
-			<div class="p-col-6 p-lg-2">
-				<h:outputText value="DESDE" styleClass="DispBlock p-mb-1"/>
-	    		<p:calendar id="calDesde3" value="#{cotizacionRepCtrl.desde}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calDesde3"/>
-			</div>
-			
-			<div class="p-col-6 p-lg-2">
-				<h:outputText value="HASTA" styleClass="DispBlock p-mb-1"/>
-	    		<p:calendar id="calHasta3" value="#{cotizacionRepCtrl.hasta}"
-					pattern="dd/MM/yyyy"
-					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
-				</p:calendar>
-				<p:message for="calHasta3"/>
-			</div>			
-			<div class="p-col-6 p-lg-2 p-as-end">
-				<p:commandButton 
-						icon="fa fa-search"
-						action="#{cotizacionRepCtrl.buscar()}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
-			</div>
-			
 		</div>
 	
 	</div>
 	
-	
-	<div class="p-grid p-align-top">
+	<div class="grid align-content-start">
 		
-		<div class="p-col-12 p-lg-6 p-mt-2">
+		<div class="col-12 lg:col-6 mt-2">
 			
 			<div class="card card-w-title" >
 				
@@ -70,8 +80,8 @@
 				</p:outputPanel>
 				
 				<p:outputPanel rendered="#{cotizacionRepCtrl.getTotal(cotizacionRepCtrl.facturadoContadorList)==0}">
-					<div class="p-grid p-ai-center p-jc-center" style="height:200px!important;">
-						<div class="p-col-12" style="text-align: center;">
+					<div class="grid align-items-center justify-content-center" style="height:200px!important;">
+						<div class="col-12" style="text-align: center;">
 							<i class="fa fa-language" style="font-size: 80px;"/>
 							
 						</div>
@@ -83,25 +93,25 @@
 		       			value="#{cotizacionRepCtrl.facturadoContadorList}"
 		       			var="v"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="Fs11 p-mt-2 p-mb-2"
+						styleClass="Fs11 mt-2 mb-2"
 						rowKey="#{v.label1}">
 					<p:column headerText="ESTADO" style="width:50%;">
-						<div class="p-grid p-mt-1 p-ml-1">
-							<div class="p-col-3">
-								<h:outputText value="A" style="background-color: rgb(255, 205, 86);color:rgb(255, 205, 86);" styleClass="DispBlock" rendered="#{v.label1=='SEGUIMIENTO'}"/>
-								<h:outputText value="A" style="background-color: rgb(255, 99, 132);color:rgb(255, 99, 132);" styleClass="DispBlock" rendered="#{v.label1=='ARCHIVADO'}"/>
-								<h:outputText value="A" style="background-color: rgb(0, 153, 51);color:rgb(0, 153, 51);" styleClass="DispBlock" rendered="#{v.label1=='FACTURADO'}"/>
+						<div class="grid mt-1 ml-1">
+							<div class="col-3">
+								<h:outputText value="A" style="background-color: rgb(195, 155, 211);color:rgb(195, 155, 211);" styleClass="DispBlock" rendered="#{v.label1=='SEGUIMIENTO'}"/>
+								<h:outputText value="A" style="background-color: rgb(127, 179, 213);color:rgb(127, 179, 213);" styleClass="DispBlock" rendered="#{v.label1=='ARCHIVADO'}"/>
+								<h:outputText value="A" style="background-color: rgb(36, 113, 163);color:rgb(36, 113, 163);" styleClass="DispBlock" rendered="#{v.label1=='FACTURADO'}"/>
 							</div>
-							<div class="p-col-9">
+							<div class="col-9">
 								<h:outputText value="#{v.label1}"/>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="CANTIDAD" style="width:50%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{v.valor1.intValue()}" style="color:#252529;"/>
+					<p:column headerText="CANTIDAD" style="width:50%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{v.valor1.intValue()}" styleClass="#{v.valor1.intValue()==0?'opacity-50':''}" style="color:#252529;"/>
 							</div>
 						</div>
 					</p:column>
@@ -114,7 +124,7 @@
 		
 		</div>
 		
-		<div class="p-col-12 p-lg-6 p-mt-2">
+		<div class="col-12 lg:col-6 mt-2">
 			<div class="card card-w-title" >
 				
 				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Valor Total de Cotizaciones</h3>
@@ -125,40 +135,37 @@
 				</p:outputPanel>
 				
 				<p:outputPanel rendered="#{cotizacionRepCtrl.getTotal(cotizacionRepCtrl.facturadoValorList)==0}">
-					<div class="p-grid p-ai-center p-jc-center" style="height:200px!important;">
-						<div class="p-col-12" style="text-align: center;">
+					<div class="grid align-items-center justify-content-center" style="height:200px!important;">
+						<div class="col-12" style="text-align: center;">
 							<i class="fa fa-language" style="font-size: 80px;"/>
 							
 						</div>
 					</div>				
 				</p:outputPanel>
 				
-				
-				
-				
 				<p:dataTable
 		       			value="#{cotizacionRepCtrl.facturadoValorList}"
 		       			var="p"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="Fs11 p-mt-2 p-mb-2"
+						styleClass="Fs11 mt-2 mb-2"
 						rowKey="#{p.label1}">
 					<p:column headerText="ESTADO" style="width:50%;">
-						<div class="p-grid p-mt-1 p-ml-1">
-							<div class="p-col-3">
-								<h:outputText value="A" style="background-color: rgb(255, 205, 86);color:rgb(255, 205, 86);" styleClass="DispBlock" rendered="#{p.label1=='SEGUIMIENTO'}"/>
-								<h:outputText value="A" style="background-color: rgb(255, 99, 132);color:rgb(255, 99, 132);" styleClass="DispBlock" rendered="#{p.label1=='ARCHIVADO'}"/>
-								<h:outputText value="A" style="background-color: rgb(0, 153, 51);color:rgb(0, 153, 51);" styleClass="DispBlock" rendered="#{p.label1=='FACTURADO'}"/>
+						<div class="grid mt-1 ml-1">
+							<div class="col-3">
+								<h:outputText value="A" style="background-color: rgb(195, 155, 211);color:rgb(195, 155, 211);" styleClass="DispBlock" rendered="#{p.label1=='SEGUIMIENTO'}"/>
+								<h:outputText value="A" style="background-color: rgb(127, 179, 213);color:rgb(127, 179, 213);" styleClass="DispBlock" rendered="#{p.label1=='ARCHIVADO'}"/>
+								<h:outputText value="A" style="background-color: rgb(36, 113, 163);color:rgb(36, 113, 163);" styleClass="DispBlock" rendered="#{p.label1=='FACTURADO'}"/>
 							</div>
-							<div class="p-col-9">
+							<div class="col-9">
 								<h:outputText value="#{p.label1}"/>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="VALOR" style="width:50%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{p.valor1.intValue()}" style="color:#252529;">
+					<p:column headerText="VALOR" style="width:50%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{p.valor1.intValue()}" styleClass="#{p.valor1.intValue()==0?'opacity-50':''}" style="color:#252529;">
 									<f:convertNumber pattern="$ #,##0.00"/>
 								</h:outputText>
 							</div>
@@ -170,7 +177,7 @@
 			</div>
 		</div>
 		
-		<div class="p-col-12">
+		<div class="col-12">
 			<div class="card card-w-title" >
 			
 				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Cantidad de cotizaciones por vendedor</h3>
@@ -180,10 +187,9 @@
 				</p:outputPanel>
 				
 				<p:outputPanel rendered="#{empty cotizacionRepCtrl.facturadoVendedorContadorList}">
-					<div class="p-grid p-ai-center p-jc-center" style="height:200px!important;">
-						<div class="p-col-12" style="text-align: center;">
-							<i class="fa fa-language" style="font-size: 80px;"/>
-							
+					<div class="grid align-items-center justify-content-center" style="height:200px!important;">
+						<div class="col-12" style="text-align: center;">
+							<i class="fa fa-language" style="font-size: 80px;"/>							
 						</div>
 					</div>				
 				</p:outputPanel>
@@ -192,37 +198,37 @@
 		       			value="#{cotizacionRepCtrl.facturadoVendedorContadorList}"
 		       			var="v1"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="Fs11 p-mt-2 p-mb-2"
+						styleClass="Fs11 mt-2 mb-2"
 						rowKey="#{v1.label1}"
 						rendered="#{not empty cotizacionRepCtrl.facturadoVendedorContadorList}">
 					<p:column headerText="VENDEDOR" style="width:40%;">
 						<h:outputText value="#{v1.label1}"/>
 					</p:column>
 					
-					<p:column headerText="FACTURADO" style="width:20%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{v1.valor1.intValue()}" style="color:#252529;">
+					<p:column headerText="FACTURADO" style="width:20%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{v1.valor1.intValue()}" styleClass="#{v1.valor1.intValue()==0?'opacity-50':''}" style="color:#252529;">
 									<f:convertNumber pattern="#,##0"/>
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="ARCHIVADO" style="width:20%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{v1.valor2.intValue()}" style="color:#252529;">
+					<p:column headerText="ARCHIVADO" style="width:20%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{v1.valor2.intValue()}" styleClass="#{v1.valor2.intValue()==0?'opacity-50':''}" style="color:#252529;">
 									<f:convertNumber pattern="#,##0"/>
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="SEGUIMIENTO" style="width:20%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{v1.valor3.intValue()}" style="color:#252529;">
+					<p:column headerText="SEGUIMIENTO" style="width:20%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{v1.valor3.intValue()}" styleClass="#{v1.valor3.intValue()==0?'opacity-50':''}" style="color:#252529;">
 									<f:convertNumber pattern="#,##0"/>
 								</h:outputText>
 							</div>
@@ -235,7 +241,7 @@
 							
 		</div>
 		
-		<div class="p-col-12">
+		<div class="col-12">
 			<div class="card card-w-title" >
 			
 				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Valor total de cotizaciones por vendedor</h3>
@@ -245,8 +251,8 @@
 				</p:outputPanel>
 				
 				<p:outputPanel rendered="#{empty cotizacionRepCtrl.facturadoVendedorValorList}">
-					<div class="p-grid p-ai-center p-jc-center" style="height:200px!important;">
-						<div class="p-col-12" style="text-align: center;">
+					<div class="grid align-items-center justify-content-center" style="height:200px!important;">
+						<div class="col-12" style="text-align: center;">
 							<i class="fa fa-language" style="font-size: 80px;"/>
 							
 						</div>
@@ -257,37 +263,37 @@
 		       			value="#{cotizacionRepCtrl.facturadoVendedorValorList}"
 		       			var="v2"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="Fs11 p-mt-2 p-mb-2"
+						styleClass="Fs11 mt-2 mb-2"
 						rowKey="#{v2.label1}"
 						rendered="#{not empty cotizacionRepCtrl.facturadoVendedorValorList}">
 					<p:column headerText="VENDEDOR" style="width:40%;">
 						<h:outputText value="#{v2.label1}"/>
 					</p:column>
 					
-					<p:column headerText="FACTURADO" style="width:20%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{v2.valor1.intValue()}" style="color:#252529;">
+					<p:column headerText="FACTURADO" style="width:20%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{v2.valor1.intValue()}" styleClass="#{v2.valor1.intValue()==0?'opacity-50':''}" style="color:#252529;">
 									<f:convertNumber pattern="$ #,##0.00"/>
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="ARCHIVADO" style="width:20%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{v2.valor2.intValue()}" style="color:#252529;">
+					<p:column headerText="ARCHIVADO" style="width:20%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{v2.valor2.intValue()}" styleClass="#{v2.valor2.intValue()==0?'opacity-50':''}" style="color:#252529;">
 									<f:convertNumber pattern="$ #,##0.00"/>
 								</h:outputText>
 							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="SEGUIMIENTO" style="width:20%;" styleClass="TexAlCenter">
-						<div class="p-grid p-mt-1">
-							<div class="p-col-12">
-								<h:outputText value="#{v2.valor3.intValue()}" style="color:#252529;">
+					<p:column headerText="SEGUIMIENTO" style="width:20%;" styleClass="text-right">
+						<div class="grid mt-1">
+							<div class="col-12">
+								<h:outputText value="#{v2.valor3.intValue()}" styleClass="#{v2.valor3.intValue()==0?'opacity-50':''}" style="color:#252529;">
 									<f:convertNumber pattern="$ #,##0.00"/>
 								</h:outputText>
 							</div>

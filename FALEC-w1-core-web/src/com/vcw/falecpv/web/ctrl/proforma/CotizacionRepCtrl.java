@@ -123,9 +123,9 @@ public class CotizacionRepCtrl extends BaseCtrl {
 		}
 		dataSet.setData(values);
 		List<String> bgColors = new ArrayList<>();
-        bgColors.add("rgb(255, 205, 86)");
-        bgColors.add("rgb(255, 99, 132)");
-        bgColors.add("rgb(0, 153, 51)");
+        bgColors.add("rgb(195, 155, 211)");
+        bgColors.add("rgb(127, 179, 213)");
+        bgColors.add("rgb(36, 113, 163)");
         dataSet.setBackgroundColor(bgColors);
         data.addChartDataSet(dataSet);
         List<String> labels = new ArrayList<>();
@@ -175,9 +175,9 @@ public class CotizacionRepCtrl extends BaseCtrl {
 		}
 		dataSet.setData(values);
 		bgColors = new ArrayList<>();
-		bgColors.add("rgb(255, 205, 86)");
-        bgColors.add("rgb(255, 99, 132)");
-        bgColors.add("rgb(0, 153, 51)");
+		bgColors.add("rgb(195, 155, 211)");
+        bgColors.add("rgb(127, 179, 213)");
+        bgColors.add("rgb(36, 113, 163)");
         dataSet.setBackgroundColor(bgColors);
         data.addChartDataSet(dataSet);
         labels = new ArrayList<>();
@@ -188,138 +188,6 @@ public class CotizacionRepCtrl extends BaseCtrl {
         pieFacturadoValor.setData(data);
 		
 	}
-	/*
-	public void consultarFacturadoVendedor()throws DaoException{
-		
-		barFacturadoVendedorContador = new BarChartModel();
-		facturadoVendedorContadorList = cotizacionServicio.getFacturadoVendedorContador(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), establecimientoMain.getIdestablecimiento(), desde, hasta);
-		ChartData data = new ChartData();
-		BarChartDataSet barDataSet = new BarChartDataSet();
-		List<Number> values = new ArrayList<>();
-		for (EstadisticoQuery e : facturadoVendedorContadorList) {
-			values.add(e.getValor1());
-		}
-		barDataSet.setData(values);
-		data.addChartDataSet(barDataSet);
-		
-		barDataSet = new BarChartDataSet();
-		values = new ArrayList<>();
-		for (EstadisticoQuery e : facturadoVendedorContadorList) {
-			values.add(e.getValor2());
-		}
-		barDataSet.setData(values);
-		data.addChartDataSet(barDataSet);
-		
-		barDataSet = new BarChartDataSet();
-		values = new ArrayList<>();
-		for (EstadisticoQuery e : facturadoVendedorContadorList) {
-			values.add(e.getValor3());
-		}
-		barDataSet.setData(values);
-		data.addChartDataSet(barDataSet);
-		List<String> labels = new ArrayList<>();
-		for (EstadisticoQuery e : facturadoVendedorContadorList) {
-			labels.add(e.getLabel1());
-		}
-		data.setLabels(labels);
-		barFacturadoVendedorContador.setData(data);
-		
-		//Options
-        BarChartOptions options = new BarChartOptions();
-        CartesianScales cScales = new CartesianScales();
-        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
-        linearAxes.setOffset(true);
-        CartesianLinearTicks ticks = new CartesianLinearTicks();
-        ticks.setBeginAtZero(true);
-        linearAxes.setTicks(ticks);
-        cScales.addYAxesData(linearAxes);
-        options.setScales(cScales);
-        
-        Legend legend = new Legend();
-        legend.setDisplay(true);
-        legend.setPosition("top");
-        LegendLabel legendLabels = new LegendLabel();
-        legendLabels.setFontStyle("bold");
-        legendLabels.setFontColor("#2980B9");
-        legendLabels.setFontSize(24);
-        legend.setLabels(legendLabels);
-        options.setLegend(legend);
-		
-        barFacturadoVendedorContador.setOptions(options);
-		
-	}*/
-	
-	/*
-	public void consultarFacturadoVendedorTemp()throws DaoException{
-		// == facturado vendedor contador
-		barFacturadoVendedorContador = new BarChartModel();
-		facturadoVendedorContadorList = cotizacionServicio.getFacturadoVendedorContador(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), establecimientoMain.getIdestablecimiento(), desde, hasta);
-		// armar chart
-		ChartSeries facturados = new ChartSeries();
-		facturados.setLabel("FACTURADO");
-		for (EstadisticoQuery e : facturadoVendedorContadorList) {
-			facturados.set(e.getLabel1(), e.getValor1());
-		}
-		
-		ChartSeries archivados = new ChartSeries();
-		archivados.setLabel("ARCHIVADO");
-		for (EstadisticoQuery e : facturadoVendedorContadorList) {
-			archivados.set(e.getLabel1(), e.getValor2());
-		}
-		
-		ChartSeries seguimiento = new ChartSeries();
-		seguimiento.setLabel("SEGUIMIENTO");
-		for (EstadisticoQuery e : facturadoVendedorContadorList) {
-			seguimiento.set(e.getLabel1(), e.getValor3());
-		}
-		barFacturadoVendedorContador.addSeries(facturados);
-		barFacturadoVendedorContador.addSeries(archivados);
-		barFacturadoVendedorContador.addSeries(seguimiento);
-		
-//		barFacturadoVendedorContador.setTitle("Cantidad de Cotizaciones por Vendedor");
-		barFacturadoVendedorContador.setLegendPosition("ne");
-
-        Axis xAxis = barFacturadoVendedorContador.getAxis(AxisType.X);
-        xAxis.setLabel("Vendedor");
-
-        Axis yAxis = barFacturadoVendedorContador.getAxis(AxisType.Y);
-        yAxis.setLabel("Cantidad");
-//        yAxis.setMin(0);
-//        yAxis.setMax(200);
-		
-		// == facturado vendedor valor
-		barFacturadoVendedorValor = new BarChartModel();
-		facturadoVendedorValorList = cotizacionServicio.getFacturadoVendedorValor(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), establecimientoMain.getIdestablecimiento(), desde, hasta);
-		// armar chart
-		facturados = new ChartSeries();
-		facturados.setLabel("FACTURADO");
-		for (EstadisticoQuery e : facturadoVendedorValorList) {
-			facturados.set(e.getLabel1(), e.getValor1());
-		}
-		
-		archivados = new ChartSeries();
-		archivados.setLabel("ARCHIVADO");
-		for (EstadisticoQuery e : facturadoVendedorValorList) {
-			archivados.set(e.getLabel1(), e.getValor1());
-		}
-		
-		seguimiento = new ChartSeries();
-		seguimiento.setLabel("SEGUIMIENTO");
-		for (EstadisticoQuery e : facturadoVendedorValorList) {
-			seguimiento.set(e.getLabel1(), e.getValor1());
-		}
-		barFacturadoVendedorValor.addSeries(facturados);
-		barFacturadoVendedorValor.addSeries(archivados);
-		barFacturadoVendedorValor.addSeries(seguimiento);
-		
-		xAxis = barFacturadoVendedorValor.getAxis(AxisType.X);
-        xAxis.setLabel("Vendedor");
-
-        yAxis = barFacturadoVendedorValor.getAxis(AxisType.Y);
-        yAxis.setLabel("Valor");
-		
-	}
-	*/
 	
 	public void consultarFacturadoVendedor()throws DaoException{
 		// == facturado vendedor contador
@@ -359,7 +227,7 @@ public class CotizacionRepCtrl extends BaseCtrl {
 //        yAxis.setMin(0);
 //        yAxis.setMax(200);
         
-        barFacturadoVendedorContador.setSeriesColors("009933,F74A4A,FFCC33");
+        barFacturadoVendedorContador.setSeriesColors("C39BD3,7FB3D5,2471A3");
         
      // == facturado vendedor valor
  		barFacturadoVendedorValor = new BarChartModel();
@@ -395,7 +263,7 @@ public class CotizacionRepCtrl extends BaseCtrl {
 
         yAxis = barFacturadoVendedorValor.getAxis(AxisType.Y);
         yAxis.setLabel("Valor");
-        barFacturadoVendedorValor.setSeriesColors("009933,F74A4A,FFCC33");
+        barFacturadoVendedorValor.setSeriesColors("C39BD3,7FB3D5,2471A3");
 	}
 	
 	public Integer getTotal(List<EstadisticoQuery> eList) {

@@ -20,315 +20,339 @@
 		.dt-descripcion{padding: 0px!important;padding-top:5px!important; ;color: rgba(0,0,0,0.7);}
     </style>
 	
-	<div class="card card-w-title" >
+	<div class="card card-w-title" >		
 		
-		<div class="EmptyBox5"/>
-		<div class="p-grid p-align-top ui-fluid">
-			<div class="p-col-6 p-lg-2">
-				<h:outputText value="ESTABLECIMIENTO" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somtareaEstablecimeinto"
-							value="#{tareaCotMainCtrl.establecimientoMain}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100"
-							disabled="#{not cotizacionCtrl.habilitarEstablecimientoMain}">
-							
-					<f:selectItems value="#{tareaCotMainCtrl.establecimientoMainList}" var="st1"
-						itemLabel="#{st1.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st1.codigoestablecimiento,3,'0'))}" itemValue="#{st1}" />
-					
-					<!-- <p:ajax event="valueChange" listener="#{cotizacionCtrl.buscar()}" update="@form"/> -->
-						
-				</p:selectOneMenu>
-			</div>
-			<div class="p-col-6 p-lg-2">
-				<h:outputText value="ESTADO" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somtareaEst"
-							value="#{tareaCotMainCtrl.estadoSeleccion}"
-							styleClass="Wid100">
-					
-					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>								
-					<f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE"/>
-					<f:selectItem itemLabel="PENDIENTE-VENCIDO" itemValue="PENDIENTE-VENCIDO"/>
-					<f:selectItem itemLabel="VENCIDO" itemValue="VENCIDO"/>
-					<f:selectItem itemLabel="CERRADO" itemValue="CERRADO"/>
-						
-				</p:selectOneMenu>
-			</div>
+		<div class="grid justify-content-between m-0">
+   			<div class="col-4 md:col-4">
+				<span class="Fs14 text-gray-700 font-medium">Cotización</span>
+   			</div>
 			
-			<div class="p-col-12 p-lg-2">
-				<h:outputText value="PRIORIDAD" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somtareaPrioridad"
-							value="#{tareaCotMainCtrl.prioridadSeleccion}"
-							styleClass="Wid100">
+			<div class="col-8 md:col-4 align-self-center" style="text-align: right;">						
+				<p:selectOneMenu id="somEstablecimientoMain"
+					value="#{cotizacionCtrl.establecimientoMain}"
+					converter="omnifaces.SelectItemsConverter"
+					style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
+					disabled="#{not facEmitidaCtrl.habilitarEstablecimientoMain}">
 					
-					<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>								
-					<f:selectItem itemLabel="IMPORTANTE" itemValue="IMPORTANTE"/>
-					<f:selectItem itemLabel="IMPORTANTE-ALTA" itemValue="IMPORTANTE-ALTA"/>
-					<f:selectItem itemLabel="ALTA" itemValue="ALTA"/>
-					<f:selectItem itemLabel="MEDIA" itemValue="MEDIA"/>
-					<f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
-						
-				</p:selectOneMenu>
+					<f:selectItems value="#{cotizacionCtrl.establecimientoMainList}" var="st"
+						itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />
+					
+					<p:ajax event="valueChange" listener="#{facEmitidaCtrl.buscar()}" update="@form"/>								
+				</p:selectOneMenu>		                
+			</div>	                
+   		</div>
+		
+		<div class="grid">
+			<div class="col-12 md:col-6">
+				<div class="flex">
+					<div class="flex flex-grow-1 mr-1" style="flex-basis: 50%!important;">
+						<div class="flex flex-column w-full">
+							<h:outputText value="Estado" styleClass="Fs11"/>
+				    		<p:selectOneMenu id="somtareaEst"
+										value="#{tareaCotMainCtrl.estadoSeleccion}"
+										styleClass="w-full">
+								
+								<f:selectItem itemLabel="Todos" itemValue="#{null}"/>								
+								<f:selectItem itemLabel="Pendiente" itemValue="PENDIENTE"/>
+								<f:selectItem itemLabel="Pendiente / Vencido" itemValue="PENDIENTE-VENCIDO"/>
+								<f:selectItem itemLabel="Vencido" itemValue="VENCIDO"/>
+								<f:selectItem itemLabel="Cerrado" itemValue="CERRADO"/>									
+							</p:selectOneMenu>							
+						</div>
+					</div>
+					<div class="flex flex-grow-1" style="flex-basis: 50%!important;">
+						<div class="flex flex-column w-full">
+							<h:outputText value="Prioridad" styleClass="Fs11"/>
+				    		<p:selectOneMenu id="somtareaPrioridad"
+										value="#{tareaCotMainCtrl.prioridadSeleccion}"
+										styleClass="w-full">								
+								<f:selectItem itemLabel="Todos" itemValue="#{null}"/>								
+								<f:selectItem itemLabel="Importante" itemValue="IMPORTANTE"/>
+								<f:selectItem itemLabel="Importante / Alta" itemValue="IMPORTANTE-ALTA"/>
+								<f:selectItem itemLabel="Alta" itemValue="ALTA"/>
+								<f:selectItem itemLabel="Media" itemValue="MEDIA"/>
+								<f:selectItem itemLabel="Baja" itemValue="BAJA"/>									
+							</p:selectOneMenu>
+						</div>
+					</div>					
+				</div>
 			</div>
-			
-			<div class="p-col-12 p-lg-6">
-				<h:outputText value="VENDEDOR" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somtareaUsuario"
+			<div class="col-12 md:col-6">
+				<div class="flex">
+					<div class="flex flex-column w-full">
+						<h:outputText value="Cliente" styleClass="Fs11"/>
+			    		<p:selectOneMenu id="somtareaCliente"
+									value="#{tareaCotMainCtrl.clienteSeleccion}"
+									converter="omnifaces.SelectItemsConverter"
+									styleClass="w-full">						
+							<f:selectItem itemLabel="Todos"
+													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{tareaCotMainCtrl.clienteList}" var="c"
+								itemLabel="#{c.razonsocial}" itemValue="#{c}" />
+						</p:selectOneMenu>		
+					</div>
+				</div>
+			</div>
+			<div class="col-12 md:col-6">
+				<div class="flex">
+					<div class="flex flex-column w-full">
+						<h:outputText value="Vendedor" styleClass="Fs11"/>
+			    		<p:selectOneMenu id="somtareaUsuario"
 							value="#{tareaCotMainCtrl.usuarioSeleccion}"
 							converter="omnifaces.SelectItemsConverter"
 							styleClass="Wid100"
 							disabled="#{tareaCotMainCtrl.disableUsuario}">
 							
-					<f:selectItem itemLabel="TODOS"
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-					<f:selectItems value="#{tareaCotMainCtrl.usuarioList}" var="u"
-						itemLabel="#{u.nombre}" itemValue="#{u}" />
-						
-				</p:selectOneMenu>
-			</div>
-			
-			<div class="p-col-12 p-lg-6">
-				<h:outputText value="CLIENTE" styleClass="DispBlock p-mb-1"/>
-	    		<p:selectOneMenu id="somtareaCliente"
-							value="#{tareaCotMainCtrl.clienteSeleccion}"
-							converter="omnifaces.SelectItemsConverter"
-							styleClass="Wid100">
-				
-					<f:selectItem itemLabel="TODOS"
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-					<f:selectItems value="#{tareaCotMainCtrl.clienteList}" var="c"
-						itemLabel="#{c.razonsocial}" itemValue="#{c}" />
-							
-					
-				</p:selectOneMenu>
-			</div>
-			
-			<div class="p-col-12 p-lg-2">
-				<h:outputText value="NUM COTIZACIÓN" styleClass="DispBlock p-mb-1"/>
-	    		<p:inputText value="#{tareaCotMainCtrl.numCotizacion}"></p:inputText>
-			</div>
-			
-			<div class="p-col-6 p-lg-2 p-as-end">
-    			<p:commandButton 
-							icon="fa fa-search"
-							action="#{tareaCotMainCtrl.buscar}" styleClass="secondary-button Wid100" update="@form" style="margin-right:5px;" value="BUSCAR"/>
-			</div>
-			
-			<div class="p-col-6 p-lg-2 p-as-end">
-			
-				<p:commandButton id="cmdGlobalExcel2"
-	  						value="EXPORTAR"
-							icon="fa fa-file-excel-o" 
-							styleClass="secondary-button Wid100" ajax="false"
-							disabled="#{empty tareaCotMainCtrl.tareacabeceraList}">
-						<p:fileDownload value="#{tareaCotMainCtrl.fileResumen}" contentDisposition="inline"/>
-				</p:commandButton>
+							<f:selectItem itemLabel="TODOS"
+													itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{tareaCotMainCtrl.usuarioList}" var="u"
+								itemLabel="#{u.nombre}" itemValue="#{u}" />
 								
+						</p:selectOneMenu>				
+					</div>
+				</div>
 			</div>
-			
-		</div>				
-	
+			<div class="col-12 md:col-6">
+				<div class="flex">
+					<div class="flex flex-grow-1 mr-1">
+						<div class="flex flex-column w-full">
+							<h:outputText value="# Cotización" styleClass="Fs11"/>
+							<p:inputText value="#{tareaCotMainCtrl.numCotizacion}"></p:inputText>	    									
+						</div>
+					</div>
+					<div class="flex flex-grow-0">
+						<div class="flex h-full align-items-end">
+							<p:commandButton 
+							icon="fa fa-search" 
+							action="#{tareaCotMainCtrl.buscar}" styleClass="ui-button-success" update="@form" value="Buscar"/>						
+						</div>
+					</div>					
+				</div>
+			</div>
+		</div>
+		<p:messages id="msgtarea" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
+			closable="true" >
+			<p:autoUpdate></p:autoUpdate>
+		</p:messages>
 	</div>
-	
 	<!-- Mensajes -->
-	<p:messages id="msgtarea" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-		closable="true" >
-		<p:autoUpdate></p:autoUpdate>
-	</p:messages>
-	<div class="EmptyBox5"/>
 	<div class="card card-w-title">
 		
-		<div class="p-d-flex p-flex-column">
-			<div class="p-order-2 p-mt-2 p-order-md-1 p-mt-md-0">
-				
-				<div class="p-grid p-jc-around">
-					<div class="p-col-6 p-md-3">
-						
-						<div class="cardContador cardContador-bgBlack">
-							<div class="cardContador-header">
-								<h:outputText value="CERRADO" />
-							</div>
-							<div class="cardContador-content">
-								<h:outputText value="#{tareaCotMainCtrl.totalCerrado}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
-							</div>
-						</div>
-						
-					</div>
-					
-					<div class="p-col-6 p-md-3">
-						
-						<div class="cardContador cardContador-borderGreen">
-							<div class="cardContador-header">
-								<h:outputText value="PENDIENTE" />
-							</div>
-							<div class="cardContador-content">
-								<h:outputText value="#{tareaCotMainCtrl.totalPendiente}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
+		<div class="grid justify-content-start md:justify-content-end">
+			<div class="col-6 lg:col-4">
+				<div class="grid grid-gutter">
+					<div class="col">
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa  fa-angle-double-up Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3 text-right">
+									<h:outputText value="#{tareaCotMainCtrl.totalCerrado}" styleClass="Fs18 text-gray-700 font-medium">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+									<span class="Fs12 text-gray-600 font-semibold">CERRADO</span>
+								</div>
 							</div>
 						</div>
-						
 					</div>
-					
-					<div class="p-col-6 p-md-3">
-						
-						<div class="cardContador cardContador-borderOrange">
-							<div class="cardContador-header">
-								<h:outputText value="VENCIDO" />
-							</div>
-							<div class="cardContador-content">
-								<h:outputText value="#{tareaCotMainCtrl.totalVencido}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-								</h:outputText>
-							</div>
-						</div>
-						
-					</div>
-					
-					
+					<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
 				</div>
-				
 			</div>
 			
-			<div class="p-order-1 p-order-md-2">
-				
-				<p:dataTable id="pvDosDT"
-		       			scrollable="true"
-		       			value="#{tareaCotMainCtrl.tareacabeceraList}"
-		       			var="t"
-		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvDosDT Fs11"
-		                paginator="true"
-		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-		                paginatorPosition="bottom"  
-						rowKey="#{t.idtareacabecera}"
-						rows="20"
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
-						
-						
-						<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
-							<p:commandLink id="cmlDttareas">
-								<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
-							</p:commandLink>
-							<p:menu overlay="true" trigger="cmlDttareas" my="left top" at="left bottom">
-								
-								<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',t.cabecera.estado)}" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_imprimir')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="#{t.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
-								</p:menuitem>
-								
-								
-								<p:menuitem value=" Agregar tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_agregar')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
-									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
-									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
-									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Cerrar tarea" action="#{tareaCotCtrl.cerrar}" icon="fa fa-times-circle" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" disabled="#{t.estado=='CERRADO'}" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_cerrar')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
-									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
-									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
-									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Editar tarea" action="#{tareaCotCtrl.editar}" icon="fa fa-edit" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_editar')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
-									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
-									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
-									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
-								</p:menuitem>
-								
-								<p:menuitem value=" Eliminar" action="#{tareaCotCtrl.eliminar}" icon="fa fa-close" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" 
-									styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_eliminar')?'ui-state-disabled':''}">
-									<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
-									<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
-									<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
-									<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
-									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-								</p:menuitem>
-							
-							</p:menu>
-						</p:column>
-						
-						<p:column headerText="FECHA" style="width:40px;">
-							<h:outputText value="#{t.fechalimite}" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="ESTADO" style="width:50px;">
-							<h:outputText value="#{t.estado}" style="#{t.estado=='VENCIDO'?'color:red;':''}">
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="PRIORIDAD" style="width:50px;">
-							<h:outputText value="#{t.prioridad}" >
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="VENDEDOR" style="width:60px;" filterBy="#{t.usuario.nombrepantalla}" filterMatchMode="contains">
-						
-							<h:outputText value="#{t.usuario.nombrepantalla}" >
-							</h:outputText>
-							
-						</p:column>
-						
-						<p:column headerText="TAREA" style="width:150px;" filterBy="#{t.etiqueta.etiqueta}" filterMatchMode="contains">
-							<div class="p-grid p-nogutter">
-								<div class="p-col-12 dt-etiqueta">
-									<h:outputText value="#{t.etiqueta.etiqueta}" />
+			<div class="col-6 lg:col-4">
+				<div class="grid grid-gutter">
+					<div class="col">
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa  fa-search Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3 text-right">
+									<h:outputText value="#{tareaCotMainCtrl.totalPendiente}" styleClass="Fs18 text-green-600 font-medium">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+									</h:outputText>
 								</div>
-								<div class="p-col-12 dt-descripcion">
-									<h:outputText value="#{t.descripcion}" />
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+									<span class="Fs12 text-gray-600 font-semibold">PENDIENTE</span>
 								</div>
 							</div>
-						</p:column>
-						
-						<p:column headerText="ESTA" style="width:20px;" filterBy="#{t.cabecera.establecimiento.codigoestablecimiento}" filterMatchMode="contains">
-							<h:outputText value="#{appSessionCtrl.formatoCadena(t.cabecera.establecimiento.codigoestablecimiento,3,'0')}" >
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="COTIZACIÓN" style="width:200px;" filterBy="#{t.cabecera.numdocumento}" filterMatchMode="contains">
-							<div class="p-grid p-nogutter">
-								<div class="p-col-12 dt-etiqueta">
-									<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(t.cabecera.numdocumento)}" >
-									</h:outputText>
-								</div>
-								<div class="p-col-12 dt-descripcion">
-									<h:outputText value="#{t.cabecera.fechaemision}" >
-										<f:convertDateTime pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</div>
-								<div class="p-col-12 dt-descripcion">
-									<h:outputText value="#{t.cabecera.estado}" >
-									</h:outputText>
-								</div>
-								<div class="p-col-12 dt-descripcion">
-									<h:outputText value="#{t.cabecera.cliente.razonsocial}" >
-									</h:outputText>
-								</div>
-							</div>
-							
-						
-						</p:column>
-						
-				</p:dataTable>
-				
-				
+						</div>
+					</div>
+					<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
+				</div>
 			</div>
-		
+			
+			<div class="col-6 lg:col-4">
+				<div class="grid grid-gutter">
+					<div class="col">
+						<div class="flex flex-inline justify-content-center">
+							<i class="opacity-60 fa  fa-angle-double-down Fs20 align-self-center mx-3"></i>
+							<div class="flex flex-column">
+								<div class="w-full py-1 pl-3 text-right">
+									<h:outputText value="#{tareaCotMainCtrl.totalVencido}" styleClass="Fs18 text-pink-400 font-medium">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+									</h:outputText>
+								</div>
+								<div class="w-full py-1 pl-2">
+									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
+									<span class="Fs12 text-gray-600 font-semibold">VENCIDO</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-fixed" style="width:20px"><p:divider layout="vertical" /></div>
+				</div>
+			</div>
+			
 		</div>
+		
+		<div class="flex mb-1 align-items-center">
+			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+			<p:commandLink id="cmdGlobalExcel" disabled="#{empty tareaCotMainCtrl.tareacabeceraList}" styleClass="min-width-80 mr-1">
+				<div class="flex w-full">
+					<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				</div>
+			</p:commandLink>
+			<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+				<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+					<p:fileDownload value="#{tareaCotMainCtrl.fileResumen}" contentDisposition="inline"/>
+				</p:menuitem>
+			</p:menu>
+		</div>
+				
+		<p:dataTable id="pvDosDT"
+	      			scrollable="true"
+	      			value="#{tareaCotMainCtrl.tareacabeceraList}"
+	      			var="t"
+	      			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+				styleClass="pvDosDT Fs11"
+	               paginator="true"
+	               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	               currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+	               paginatorPosition="bottom"  
+				rowKey="#{t.idtareacabecera}"
+				rows="20"
+				rowsPerPageTemplate="10,15,20,25,30,35,40">
+				
+				
+				<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+					<p:commandLink id="cmlDttareas">
+						<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					</p:commandLink>
+					<p:menu overlay="true" trigger="cmlDttareas" my="left top" at="left bottom">
+						
+						<p:menuitem value=" Imprimir" action="#{rideCtrl.showCotizacion()}" icon="fa fa-print" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" disabled="#{cotizacionCtrl.accesoOpciones('IMPRIMIR',t.cabecera.estado)}" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_imprimir')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="#{t.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
+						</p:menuitem>
+						
+						
+						<p:menuitem value=" Agregar tarea" action="#{tareaCotCtrl.nuevaTarea}" icon="fa fa-plus" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_agregar')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+							<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+							<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+							<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+							<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Cerrar tarea" action="#{tareaCotCtrl.cerrar}" icon="fa fa-times-circle" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" disabled="#{t.estado=='CERRADO'}" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_cerrar')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+							<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+							<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+							<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+							<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Editar tarea" action="#{tareaCotCtrl.editar}" icon="fa fa-edit" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_editar')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+							<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+							<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+							<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+							<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
+						</p:menuitem>
+						
+						<p:menuitem value=" Eliminar" action="#{tareaCotCtrl.eliminar}" icon="fa fa-close" process="pvDosDT" update="@form:tarea:pvDosDT @form:tarea:msgtarea" 
+							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_tarea_eliminar')?'ui-state-disabled':''}">
+							<f:setPropertyActionListener value="SEGUIMIENTO" target="#{tareaCotCtrl.callModule}"/>
+							<f:setPropertyActionListener value="#{t}" target="#{tareaCotCtrl.tareacabeceraSelected}"/>
+							<f:setPropertyActionListener value="formMain" target="#{tareaCotCtrl.callForm}"/>
+							<f:setPropertyActionListener value=":formMain:tarea:msgtarea :formMain:tarea:pvDosDT" target="#{tareaCotCtrl.updateView}"/>
+							<f:setPropertyActionListener value="#{t.cabecera}" target="#{tareaCotCtrl.cotizacionSelected}"/>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+						</p:menuitem>
+					
+					</p:menu>
+				</p:column>
+				
+				<p:column headerText="FECHA" style="width:40px;" styleClass="text-right">
+					<h:outputText value="#{t.fechalimite}" >
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="ESTADO" style="width:50px;">
+					<div class="flex flex-column text-right">
+						<h:outputText value="#{t.estado}" style="#{t.estado=='VENCIDO'?'color:red;':''}">
+						</h:outputText>
+						<div class="flex flex-column">
+							<div class="flex justify-content-end align-items-end">
+								<span class="Fs10 mr-1 text-gray-600">Prioridad</span>
+								<h:outputText value="#{t.prioridad}" styleClass="text-gray-600 font-medium">
+								</h:outputText>
+								
+							</div>
+						</div>
+					</div>
+				</p:column>
+				
+				<p:column headerText="VENDEDOR" style="width:60px;" filterBy="#{t.usuario.nombrepantalla}" filterMatchMode="contains" styleClass="text-right">
+				
+					<h:outputText value="#{t.usuario.nombrepantalla}" >
+					</h:outputText>
+					
+				</p:column>
+				
+				<p:column headerText="TAREA" style="width:200px;" filterBy="#{t.etiqueta.etiqueta}" filterMatchMode="contains">					
+					<div class="flex flex-column">						
+						<h:outputText value="#{t.etiqueta.etiqueta}" styleClass="Fs11 text-gray-700 font-medium"/>
+						<h:outputText value="#{t.descripcion}" styleClass="Fs10 text-gray-700"/>
+						
+					</div>
+				</p:column>
+				
+				<!-- <p:column headerText="ESTA" style="width:20px;" filterBy="#{t.cabecera.establecimiento.codigoestablecimiento}" filterMatchMode="contains">
+					<h:outputText value="#{appSessionCtrl.formatoCadena(t.cabecera.establecimiento.codigoestablecimiento,3,'0')}" >
+					</h:outputText>
+				</p:column> -->
+				
+				<p:column headerText="COTIZACIÓN" style="width:200px;" filterBy="#{t.cabecera.numdocumento}" filterMatchMode="contains">					
+					<div class="flex justify-content-between align-items-end">						
+						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(t.cabecera.numdocumento)}" styleClass="Fs12 text-gray-700 font-medium">
+						</h:outputText>
+						<div>
+							<h:outputText value="#{t.cabecera.fechaemision}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>				
+						</div>
+					</div>
+					<div class="flex flex-column">
+						<h:outputText value="#{t.cabecera.cliente.razonsocial}" styleClass="Fs10 text-gray-700">
+						</h:outputText>
+						<h:outputText value="#{t.cabecera.cliente.identificacion}" styleClass="Fs10 text-gray-700">
+						</h:outputText>
+						<h:outputText value="#{t.cabecera.resumen}" styleClass="Fs10 text-gray-700">
+						</h:outputText>
+						<h:outputText value="#{t.cabecera.estado}" styleClass="Fs10 text-blue-600">
+						</h:outputText>						
+					</div>
+				</p:column>
+				
+		</p:dataTable>
 		
 	</div>
 	<div class="EmptyBox20"/>
