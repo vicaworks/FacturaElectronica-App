@@ -74,10 +74,10 @@ public class VComprobantescreditoServicio extends AppGenericService<VComprobante
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante,String criterio)throws DaoException{
+	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante,String criterio,String criterioCliente)throws DaoException{
 		try {
 			
-			List<VComprobantescredito> cabeceralist = vComprobantescreditoDao.getByCuentasCobrar(idEstablecimiento, tipocomprobante,criterio);
+			List<VComprobantescredito> cabeceralist = vComprobantescreditoDao.getByCuentasCobrar(idEstablecimiento, tipocomprobante,criterio,criterioCliente);
 			
 			if(cabeceralist.isEmpty()) {
 				return cabeceralist;

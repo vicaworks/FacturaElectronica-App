@@ -72,10 +72,10 @@
 	    		</div>
 				
 				<div class="grid">
-	    			<div class="col-12 md:col-9">
-	    				<div class="grid grid-nogutter">
-	    					<div class="col-6  pr-1">
-    							<span class="block">Tipo Comprobante</span>
+					<div class="col-12 md:col-5">
+						<div class="flex">
+							<div class="flex flex-column flex-grow-1 mr-1">
+    							<span class="Fs11 text-gray-800">Tipo Comprobante</span>
 	    						<p:selectOneMenu id="somTipoPago"
 									value="#{cuentaCobrarCtrl.tipocomprobante}"
 									converter="omnifaces.SelectItemsConverter"
@@ -85,40 +85,48 @@
 									<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 									<f:selectItems value="#{cuentaCobrarCtrl.tipocomprobanteList}" var="u"
 													itemLabel="#{u.comprobante}" itemValue="#{u}" />	
-								</p:selectOneMenu>		
-	    					</div>
-	    					<div class="col-6 pr-1">
-	    						<h:outputText value="Num. Comprobante" styleClass="block"/>
+								</p:selectOneMenu>										
+							</div>
+							<div class="flex flex-column flex-grow-1 mr-1">				
+								<span class="Fs11 text-gray-800">Num. Comprobante</span>
 				    			<p:inputMask id="inpRtnNumFac" value="#{cuentaCobrarCtrl.criterioBusqueda}" mask="999-999-999999999" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
 									<f:converter converterId="formatoNumComprobanteConverter"/>
 								</p:inputMask>
-	    					</div>
-	    				</div>
-	    			</div>
-	    			<div class="col-12 md:col-3">
-	    				<div class="grid grid-nogutter">
-	    					<div class="col-12">
-    							<h:outputText value="OPC" styleClass="text-white hidden md:block" />
-    							
-    							<div class="flex flex-inline pr-0 md:pr-1">
-    								<p:commandButton id="cmdGlobalBuscar"
-										icon="fa fa-search"
-										action="#{cuentaCobrarCtrl.buscar()}" styleClass="ui-button-outlined mr-1" update="@form" title="Budscar"/>
-									
-									<p:menuButton value="EXPORTAR" styleClass="ui-button-outlined">
-										<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-											<p:fileDownload value="#{cuentaCobrarCtrl.fileResumen}" contentDisposition="inline"/>
-										</p:menuitem>
-										<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
-											<p:fileDownload value="#{cuentaCobrarCtrl.fileDetalle}" contentDisposition="inline"/>
-										</p:menuitem>
-									</p:menuButton>
-									
-    							</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 md:col-7">
+						<div class="flex">
+							<div class="flex flex-column flex-grow-1">
+    							<span class="Fs11 text-gray-800">Cliente</span>
+    							<div class="ui-inputgroup w-full">
+				                    <p:commandButton icon="pi pi-search" styleClass="ui-button-outlined" 
+				                    	process="@this :formMain:inpCriterioCliente" value="Identificación"
+										action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
+										<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{listaClienteCtrl.cuentaCobrarCtrl}"/>
+										<f:setPropertyActionListener value="cuentaCobrarCtrl" target="#{listaClienteCtrl.callModule}"/>
+										<f:setPropertyActionListener value=":formMain" target="#{listaClienteCtrl.viewUpdate}"/>
+										<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+									</p:commandButton>
+				                    <p:inputText id="inpCriterioCliente"
+											value="#{cuentaCobrarCtrl.criterioCliente}" required="false"
+											requiredMessage="REQUERIDO" styleClass="w-full"
+											maxlength="13" placeholder="C.I. o RUC de Búsqueda"
+											validatorMessage="SOLO NUMEROS"
+											onkeydown="if(event.keyCode==13){event.keyCode=123;return false;}">
+										<f:validateRegex pattern="^\d+$" />
+									</p:inputText>
+				                </div>
+    						</div>
+    						<div class="flex flex-column flex-grow-0">
+    							<span class="Fs11 text-white">Cliente</span>
+    							<p:commandButton id="cmdGlobalBuscar"
+										icon="fa fa-search" value="Buscar"
+										action="#{cuentaCobrarCtrl.buscar()}" styleClass="ui-button-success mx-1" update="@form" title="Buscar"/>		
     						</div>
     					</div>
-	    			</div>
-	    		</div>
+    				</div>
+				</div>
 								
 				<div class="mt-1 grid " style="height: 60px!important;">
 					<div class="col-6 border-right-3 border-gray-200 border-round" style="background-color: #F7F9F9;">
@@ -149,6 +157,24 @@
 					</div>
 				</div>
 				
+				<div class="flex mt-2 align-items-center">
+					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty cuentaCobrarCtrl.vComprobantescreditoList}" styleClass="min-width-80 mr-1">
+						<div class="flex w-full">
+							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
+							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+						</div>
+					</p:commandLink>
+					
+					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+							<p:fileDownload value="#{cuentaCobrarCtrl.fileResumen}" contentDisposition="inline"/>
+						</p:menuitem>
+						<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+							<p:fileDownload value="#{cuentaCobrarCtrl.fileDetalle}" contentDisposition="inline"/>
+						</p:menuitem>
+					</p:menu>
+				</div>
 			
 		    	<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
@@ -205,7 +231,7 @@
 						</div>
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:60px;" styleClass="text-right">
+					<p:column headerText="FECHA" style="width:60px;" filterBy="#{v.fechaemision}" filterMatchMode="contains" styleClass="text-right">
 						<h:outputText value="#{v.fechaemision}" >
 							<f:convertDateTime pattern="dd/MM/yyyy"/>
 						</h:outputText>
@@ -338,6 +364,12 @@
 	    
 	    <!-- Formulario del valor a pagar del comprobante -->
 	    <ui:include src="../common/incl_porpagar_form.xhtml"></ui:include>
+	    
+	    <!-- Form Lista cliente -->
+	    <ui:include src="../herramientas/incl_listaCliente.xhtml" />
+	    
+	    <!-- Form Cliente -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
 	    
 	    <!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />
