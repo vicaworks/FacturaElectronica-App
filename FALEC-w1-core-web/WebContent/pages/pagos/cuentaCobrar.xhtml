@@ -292,9 +292,17 @@
 													</div>						
 													<div class="flex flex-grow-1">
 														<div class="text-right pr-3 w-full">
-															<h:outputText value="#{v.totalretencion}">
-																<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-															</h:outputText>
+															<p:commandLink action="#{porPagarCtrl.cargar()}">
+																<h:outputText value="#{v.totalretencion}" styleClass="underline">
+																	<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+																</h:outputText>
+																<f:setPropertyActionListener value="MAIN_POR_COBRAR" target="#{porPagarCtrl.callModule}"/>
+																<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{porPagarCtrl.cuentaCobrarCtrl}"/>
+																<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idCabeceraSelected}"/>
+																<f:setPropertyActionListener value="formMain" target="#{porPagarCtrl.callForm}"/>
+																<f:setPropertyActionListener value=":formMain" target="#{porPagarCtrl.viewUpdate}"/>
+																<f:setPropertyActionListener value="#{null}" target="#{porPagarCtrl.pagoCtrl}"/>
+															</p:commandLink>
 														</div>
 													</div>				
 												</div>
