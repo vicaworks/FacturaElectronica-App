@@ -36,12 +36,14 @@ public class VComprobantespagarcreditoDao extends AppGenericDao<VComprobantespag
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<VComprobantespagarcredito> getByCuentasCobrar(String idEstablecimiento,String tipocomprobante,String criterio)throws DaoException{
+	public List<VComprobantespagarcredito> getByCuentasCobrar(String idEstablecimiento,String tipocomprobante,String criterio,String criterioProveedor)throws DaoException{
 		try {
 			
 			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantespagarcredito c WHERE c.idestablecimiento=:idestablecimiento  " 
 			+ (tipocomprobante!=null?" AND c.idtipocomprobante=:idtipocomprobante ":" ") 
-			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":" AND c.abono < c.totalpago ")
+			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":" ")
+			+ ((criterioProveedor!=null && criterioProveedor.trim().length()>0)?" AND c.identificacion =:identificacion ":" ")
+			+ " AND c.abono < c.totalpago "
 			+ " ORDER BY c.fechaemision");
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);
@@ -50,6 +52,9 @@ public class VComprobantespagarcreditoDao extends AppGenericDao<VComprobantespag
 			}
 			if(criterio!=null&&criterio.trim().length()>0) {
 				q.setParameter("numdocumento", criterio);
+			}
+			if(criterioProveedor!=null&&criterioProveedor.trim().length()>0) {
+				q.setParameter("identificacion", criterioProveedor);
 			}
 			
 			return q.getResultList();

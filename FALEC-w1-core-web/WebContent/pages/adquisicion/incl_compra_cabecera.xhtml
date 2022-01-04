@@ -27,7 +27,7 @@
 			</div>			
 		</div>
 		
-		<span class="block mt-1 text-gray-700 font-medium Fs11">PROVEEDOR</span>
+		<span class="block mt-1 text-gray-700 font-medium Fs11">Proveedor</span>
 		<div class="flex">
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
@@ -94,7 +94,7 @@
 		</p:outputPanel>
 		<div class="formgrid grid">
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">TIPO COMPROBANTE</label>
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Tipo de Comprobante</label>
 	            <p:selectOneMenu id="somAdqTipComprobante"
 							value="#{adquisicionFrmCtrl.adquisicionSelected.tipocomprobante}"
 							converter="omnifaces.SelectItemsConverter"
@@ -112,7 +112,7 @@
 				<p:message for="somAdqTipComprobante" styleClass="block"/>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="claAdqFechaCompra" class="text-gray-700 font-medium Fs11">FECHA</label>
+	            <label for="claAdqFechaCompra" class="text-gray-700 font-medium Fs11">Fecha de Emisión</label>
 	            <p:calendar id="claAdqFechaCompra" value="#{adquisicionFrmCtrl.adquisicionSelected.fecha}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -121,7 +121,7 @@
 				<p:message for="claAdqFechaCompra" styleClass="block"/>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="inpAdqNumFac" class="text-gray-700 font-medium Fs11">NUM. COMPROBANTE</label>
+	            <label for="inpAdqNumFac" class="text-gray-700 font-medium Fs11">Número de Comprobante</label>
 	            <p:inputMask id="inpAdqNumFac"
 					value="#{adquisicionFrmCtrl.adquisicionSelected.numfactura}"
 					mask="999-999-999999999" required="true"
@@ -133,7 +133,7 @@
 				<p:message for="inpAdqNumFac" styleClass="block"/> 	
             </div>
             <div class="field col-12 md:col-6">
-	            <label for="inpAdqNumAut" class="text-gray-700 font-medium Fs11">NUM. AUTORIZACIÓN</label>
+	            <label for="inpAdqNumAut" class="text-gray-700 font-medium Fs11">Número de Autorización</label>
 	            <p:inputText id="inpAdqNumAut" value="#{adquisicionFrmCtrl.adquisicionSelected.autorizacion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="150" placeholder="Formato: 1123411234600" validatorMessage="SOLO NUMEROS">
 					<f:validateRegex pattern="^\d+$"/>
 				</p:inputText>
@@ -162,7 +162,7 @@
 	 	<p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva" action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}"/>
 	    <div class="formgrid grid mt-1">
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">RETENCIÓN RENTA</label>	        	
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Retención Renta</label>	        	
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">        				
         				<p:commandLink id="cmlCalValorRenta" title="Calcular">
@@ -193,7 +193,7 @@
         		</div>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">RETENCIÓN I.V.A.</label>
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Retención I.V.A.</label>
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">
         				<p:commandLink id="cmlCalValorIva" title="Calcular">

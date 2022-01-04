@@ -34,11 +34,11 @@
 		    	</div>
 		    	
 		    	<p:commandButton id="cmdRefrecar"
-					title="Consultar" icon="fa fa-search" 
-					action="#{usuarioCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+					title="Consultar" icon="fa fa-search" value="Buscar" 
+					action="#{usuarioCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
 					/>
 				<p:commandButton id="cmdNuevo"
-						title="Nuevo" icon="fa fa-plus" styleClass="mr-1" 
+						title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined mr-1" value="Nuevo" 
 						action="#{usuarioCtrl.nuevo()}" inline="true" 
 						/>
 				<p:commandButton  id="cmdExcel" 
@@ -85,16 +85,16 @@
 				
 			</p:column>
 			
-			<p:column headerText="ID" style="width:15px;">
+			<p:column headerText="ID" style="width:15px;" styleClass="text-right">
 				<h:outputText value="#{u.idusuario}" />
 			</p:column>
 
-			<p:column headerText="EST" style="width:20px;">
+			<p:column headerText="EST" style="width:20px;" styleClass="text-right">
 				<h:outputText value="#{u.estado}" />
 			</p:column>
 
 			<p:column headerText="#{msg['label.identificacion']}"
-				style="width:80px;" filterBy="#{u.identificacion}" filterMatchMode="contains">
+				style="width:80px;" filterBy="#{u.identificacion}" filterMatchMode="contains" styleClass="text-right">
 				<h:outputText value="#{u.identificacion}" />
 			</p:column>
 
@@ -102,16 +102,16 @@
 				<h:outputText value="#{u.nombre}" />
 			</p:column>
 			
-			<p:column headerText="CORREO ELECTRÓNICO" style="width:100px;">
+			<p:column headerText="CORREO ELECTRÓNICO" style="width:100px;" styleClass="text-right">
 				<h:outputText value="#{u.correoelectronico}" />
 			</p:column>
 
-			<p:column headerText="ESTABLECIMIENTO" style="width:100px;" filterBy="#{u.establecimiento.nombrecomercial}" filterMatchMode="contains">
+			<p:column headerText="ESTABLECIMIENTO" style="width:100px;" filterBy="#{u.establecimiento.nombrecomercial}" filterMatchMode="contains" styleClass="text-right">
 				<h:outputText value="#{appSessionCtrl.formatoCadena(u.establecimiento.codigoestablecimiento,3,'0')}" />
 			</p:column>
 
 			<p:column headerText="#{msg['label.puntoemision']}"
-				style="width:10px;">
+				style="width:10px;" styleClass="text-right">
 				<h:outputText value="#{u.puntoemision}" />
 			</p:column>
 

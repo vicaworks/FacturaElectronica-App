@@ -45,13 +45,13 @@
 				<div style="width: 99%!important;">
 					<div class="field grid">			    	
 						
-						<h:outputText value="ID" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Id" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<h:outputText value="#{transportistaCtrl.transportistaSelected.idtransportista}" styleClass="mt-1"/>
 				    	</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="TIPO #{msg['label.identificacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Tipo de Identificación" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:selectOneMenu id="somTransportistaTipoIden"
 								value="#{transportistaCtrl.transportistaSelected.tipoIdentificacion}"
@@ -69,7 +69,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="#{msg['label.identificacion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Identificación" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intTransportistaIentifiaccion"
 								value="#{transportistaCtrl.transportistaSelected.identificacion}"
@@ -82,7 +82,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="RAZON SOCIAL" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Razón Social" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intTransportistaRazonSocial"
 								value="#{transportistaCtrl.transportistaSelected.razonsocial}"
@@ -92,7 +92,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="PLACA" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Placa Vehículo" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intTransportistaPlaca"
 								value="#{transportistaCtrl.transportistaSelected.placa}"
@@ -102,7 +102,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="#{msg['label.telefono']} : " styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+						<h:outputText value="Teléfono" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intTransportistaTelefono"
 								value="#{transportistaCtrl.transportistaSelected.telefono}"
@@ -114,7 +114,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">			    	
-						<h:outputText value="#{msg['label.correoelectronico']} : " styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
+						<h:outputText value="Email " styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intTransportistaEmail"
 								value="#{transportistaCtrl.transportistaSelected.email}"
@@ -125,7 +125,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:selectOneMenu id="somestadoTransportista" value="#{transportistaCtrl.transportistaSelected.estado}" styleClass="w-full mt-1" disabled="#{transportistaCtrl.transportistaSelected.idtransportista==null}">
 				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />

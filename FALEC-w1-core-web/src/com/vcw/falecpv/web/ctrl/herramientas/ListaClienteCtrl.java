@@ -25,6 +25,7 @@ import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.ctrl.pagos.CuentaCobrarCtrl;
+import com.vcw.falecpv.web.ctrl.pagos.CuentaPagarCtrl;
 import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -55,6 +56,7 @@ public class ListaClienteCtrl extends BaseCtrl {
 	private LiqCompraFormCtrl liqCompraFormCtrl;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
 	private CotizacionFormCtrl cotizacionFormCtrl;
+	private CuentaPagarCtrl cuentaPagarCtrl;
 	private String callModule;
 	private String formModule;
 	private String viewUpdate;
@@ -165,6 +167,10 @@ public class ListaClienteCtrl extends BaseCtrl {
 			case "cuentaCobrarCtrl":
 				cuentaCobrarCtrl.setCriterioCliente(clienteSelected.getIdentificacion());
 				cuentaCobrarCtrl.buscar();
+				break;
+			case "cuentaPagarCtrl":
+				cuentaPagarCtrl.setCriterioCliente(clienteSelected.getIdentificacion());
+				cuentaPagarCtrl.buscar();
 				break;
 			default:
 				break;
@@ -413,6 +419,20 @@ public class ListaClienteCtrl extends BaseCtrl {
 	 */
 	public void setCuentaCobrarCtrl(CuentaCobrarCtrl cuentaCobrarCtrl) {
 		this.cuentaCobrarCtrl = cuentaCobrarCtrl;
+	}
+
+	/**
+	 * @return the cuentaPagarCtrl
+	 */
+	public CuentaPagarCtrl getCuentaPagarCtrl() {
+		return cuentaPagarCtrl;
+	}
+
+	/**
+	 * @param cuentaPagarCtrl the cuentaPagarCtrl to set
+	 */
+	public void setCuentaPagarCtrl(CuentaPagarCtrl cuentaPagarCtrl) {
+		this.cuentaPagarCtrl = cuentaPagarCtrl;
 	}
 	
 	

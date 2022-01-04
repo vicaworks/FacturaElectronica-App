@@ -90,13 +90,13 @@
 		
 		<p:outputPanel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera!=null and guiaRemFormCtrl.guiaRemisionSelected.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
-				<span class="text-black mb-1 Fs11">SECUENCIAL COMPROBANTE</span>
+				<span class="text-black mb-1 Fs11">Secuencial Comprobante</span>
 				<span class="Fs16 text-black font-bold">#{guiaRemFormCtrl.getFormatoNumDocumento(guiaRemFormCtrl.guiaRemisionSelected.numdocumento)}</span>
 			</div>
 		</p:outputPanel>
 		
 		<p:outputPanel id="gridGrCabecera">
-			<span class="block mt-1 text-gray-700 font-medium Fs11">TRANSPORTISTA</span>
+			<span class="block mt-1 text-gray-700 font-medium Fs11">Transportista</span>
 			<div class="flex">
 				<div class="flex-grow-1 flex">
 					<p:selectOneMenu id="somGrTransportista"
@@ -150,27 +150,27 @@
 			</f:subview>
 			
 			<div class="field mt-2">
-				<label class="text-gray-700 font-medium Fs11">PLACA</label>
+				<label class="text-gray-700 font-medium Fs11">Placa Vehículo</label>
 				<p:inputText id="inpGrPlaca" value="#{guiaRemFormCtrl.guiaRemisionSelected.placa}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20">
 				</p:inputText>
 				<p:message for="inpGrPlaca" styleClass="block"/>				
 			</div>
 			<div class="field mt-2">
-				<label class="text-gray-700 font-medium Fs11">PUNTO DE PARTIDA</label>
+				<label class="text-gray-700 font-medium Fs11">Punto de Partida</label>
 				<p:inputTextarea rows="2" id="inpGrPuntoPartida" value="#{guiaRemFormCtrl.guiaRemisionSelected.direccionpartida}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300"></p:inputTextarea>				
 				<p:message for="inpGrPuntoPartida" styleClass="block"/>				
 			</div>
 			
 			<div class="formgrid grid">
 		        <div class="field col">
-		        	<label class="text-gray-700 font-medium Fs11">FECHA SALIDA</label>
+		        	<label class="text-gray-700 font-medium Fs11">Fecha Salida</label>
 					<p:calendar id="claGrFechaSalida" value="#{guiaRemFormCtrl.guiaRemisionSelected.fechainiciotransporte}"
 								pattern="dd/MM/yyyy"
 								locale="es" 
 								requiredMessage="REQUERIDO" required="true"/>
 		        </div>
 		        <div class="field col">
-		        	<label class="text-gray-700 font-medium Fs11">FECHA LLEGADA</label>
+		        	<label class="text-gray-700 font-medium Fs11">Fecha LLegada</label>
 					<p:calendar id="claGrFechaLlegada" value="#{guiaRemFormCtrl.guiaRemisionSelected.fechafintransporte}"
 								pattern="dd/MM/yyyy"
 								locale="es" 
@@ -200,10 +200,10 @@
 			
 			<div class="flex">
 				<div class="flex-grow-1 flex">
-					<span class="text-gray-700 font-medium Fs11">NOMBRE</span>
+					<span class="text-gray-700 font-medium Fs11">Nombre</span>
 				</div>
 				<div class="flex-grow-1 flex pl-1">
-					<span class="text-gray-700 font-medium Fs11">DESCRIPCIÓN</span>
+					<span class="text-gray-700 font-medium Fs11">Descripción</span>
 				</div>
 			</div>
 			

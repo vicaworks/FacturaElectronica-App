@@ -17,7 +17,11 @@
 				height: calc(100vh - 150px)!important;
 			}	
 			
-			body .ui-datatable thead th {text-align: left;vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
         </style>
     </ui:define>
@@ -44,7 +48,7 @@
 				
 				<div class="grid justify-content-between">
 					<div class="col-3">
-						<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> I.V.A.</h3>
+						<span class="Fs16 text-gray-900 font-medium">I.V.A.</span>
 					</div>
 					
 					<div class="col-4 align-self-center">
@@ -52,12 +56,12 @@
 							<p:commandButton id="cmdRefrecar" title="Consultar IVA"
 										icon="fa fa-search"
 										action="#{ivaCtrl.refrescar()}"
-										styleClass="ui-button-outlined mr-1" update="@form" />
+										styleClass="ui-button-success mr-1" update="@form" />
 	
 							<p:commandButton id="nuevoIva"
 								title="Nuevo"
 								 icon="fa fa-plus" 
-								 styleClass="mr-1"
+								 styleClass="mr-1 ui-button-outlined"
 								 action="#{ivaCtrl.nuevo()}" inline="true"
 								 />
 	
@@ -100,40 +104,40 @@
 					</p:column>
 					
 					<p:column headerText="ID"
-						style="width:20px; text-align: center;">
+						style="width:20px;" styleClass="text-right">
 						<h:outputText value="#{iva.idiva}" />
 					</p:column>
 
-					<p:column headerText="COD SRI" style="width:40px;">
+					<p:column headerText="COD SRI" style="width:40px;" styleClass="text-right">
 						<h:outputText value="#{iva.codigo}" />
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:40px;">
+					<p:column headerText="ESTADO" style="width:40px;" styleClass="text-right">
 						<h:outputText value="#{iva.estado=='I'?'INA':'ACT'}" styleClass="DispBlock #{iva.estado=='I'?'text-pink-500 font-bold':'text-green-700'}"/>
 					</p:column>
 
 					<p:column headerText="PORCENTAJE" priority="1"
-						style="width:70px; ">
+						style="width:70px; " styleClass="text-right">
 						<h:outputText value="#{iva.porcentaje}" />
 					</p:column>
 
 					<p:column headerText="VALOR"
-						style="width:50px; text-align: center; ">
-						<h:outputText value="#{iva.valor}" >
+						style="width:50px;" styleClass="text-right">
+						<h:outputText value="#{iva.valor}" styleClass="#{iva.valor.doubleValue()==0.0?'opacity-50':''}">
 						 <f:convertNumber pattern="#{appSessionCtrl.formatoPorcentaje}"/>
 						</h:outputText>
 					</p:column>
 					
 					<p:column headerText="DEFECTO"
-						style="width:50px; text-align: center; ">
+						style="width:50px;" styleClass="text-right">
 						<h:outputText value="#{iva.defecto==0? 'No':'Si'}" styleClass="#{iva.defecto==0?'':'markGreen'}"/>
 					</p:column>
 					
-					<p:column headerText="ETIQUETA COMPROBANTE" style="width:150px; ">
+					<p:column headerText="ETIQUETA COMPROBANTE" style="width:150px; " styleClass="text-right">
 						<h:outputText value="#{iva.labelfactura}" />
 					</p:column>
 					
-					<p:column headerText="ORDEN" style="width:30px; ">
+					<p:column headerText="ORDEN" style="width:30px; " styleClass="text-right">
 						<h:outputText value="#{iva.ordenfactura}" />
 					</p:column>
 

@@ -41,7 +41,7 @@
 				
 				<p:commandButton id="cmdGuardar"
 					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{establecimientoCtrl.guardar()}" styleClass="mr-1 min-width-110" update="@form :fsvEstablecimiento:frmEstablecimiento"
+					action="#{establecimientoCtrl.guardar()}" styleClass="mr-1 min-width-110 ui-button-outlined" update="@form :fsvEstablecimiento:frmEstablecimiento"
 					ajax="true"
 					/>
 					
@@ -60,13 +60,11 @@
 				
 				<div class="grid align-content-start" style="width: 99.5%!important;">
 					<div class="col-12 md:col-8">
-					
-						<div class="w-full titulo">
-							<i class="fa fa-check-circle Fs16"></i> Datos Generales 
-						</div>
+						
+						<span class="text-gray-900 font-medium Fs15 block mt-1 mb-2">Datos Generales</span>
 					    
 					    <div class="field">
-							<h:outputText value="#{msg['label.codigo']} " styleClass="requerido" />
+							<h:outputText value="Código " styleClass="requerido" />
 							<p:inputText id="intCodigoEst"
 								value="#{establecimientoCtrl.establecimientoSelected.codigoestablecimiento}"
 								styleClass="w-full mt-1" maxlength="3" validatorMessage="SOLO NÚMEROS">
@@ -76,7 +74,7 @@
 					    </div>
 					    
 					    <div class="field">
-							<h:outputText value="NOMBRE COMERCIAL"	styleClass="requerido" />
+							<h:outputText value="Nombre Comercial"	styleClass="requerido" />
 							<p:inputText id="intNombreComerEst"
 								value="#{establecimientoCtrl.establecimientoSelected.nombrecomercial}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -84,7 +82,7 @@
 							<p:message for="intNombreComerEst" />
 					    </div>
 					    <div class="field">
-							<h:outputText value="#{msg['label.direccion']}" styleClass="requerido" />
+							<h:outputText value="Dirección" styleClass="requerido" />
 							<p:inputText id="intDirreccionEst"
 								value="#{establecimientoCtrl.establecimientoSelected.direccionestablecimiento}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -92,7 +90,7 @@
 							<p:message for="intDirreccionEst" />	
 					    </div>
 					    <div class="field">
-							<h:outputText value="PUNTO DE #{msg['label.emision']}"	styleClass="requerido" />
+							<h:outputText value="Punto de Emisión"	styleClass="requerido" />
 							<p:inputText id="intPuntoEmisionEst"
 								value="#{establecimientoCtrl.establecimientoSelected.puntoemision}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -102,7 +100,7 @@
 							<p:message for="intPuntoEmisionEst" />	
 					    </div>
 					    <div class="field">
-							<h:outputText value="#{msg['label.telefono']}* " styleClass="requerido" />
+							<h:outputText value="Teléfono " styleClass="requerido" />
 							<p:inputText id="intTelefonoEst"
 								value="#{establecimientoCtrl.establecimientoSelected.telefono}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -112,7 +110,7 @@
 							<p:message for="intTelefonoEst" />
 					    </div>
 					    <div class="field">
-							<h:outputText value="CORREO * " styleClass="requerido" />
+							<h:outputText value="Email " styleClass="requerido" />
 							<p:inputText id="intCorreoEst"
 								value="#{establecimientoCtrl.establecimientoSelected.correo}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -124,7 +122,7 @@
 					    </div>
 					    
 					    <div class="field">
-							<h:outputText value="MATRIZ * " styleClass="requerido block" />
+							<h:outputText value="Es Matríz " styleClass="requerido block" />
 							<p:selectOneMenu id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}" required="true" requiredMessage="REQUERIDO" styleClass="mt-1">
 						            <f:selectItem itemLabel="Seleccione" itemValue="" />
 						            <f:selectItem itemLabel="SI" itemValue="S" />
@@ -133,7 +131,7 @@
 							<p:message for="intMatrizEst" style="margin:0px!important;"/>
 					    </div>
 					    <div class="field">
-							<h:outputText value="AMBIENTE * " styleClass="requerido block" />
+							<h:outputText value="Ambiente " styleClass="requerido block" />
 							<p:selectOneMenu id="intAmbienteEst" value="#{establecimientoCtrl.establecimientoSelected.ambiente}" required="true" requiredMessage="REQUERIDO" styleClass="mt-1">
 						            <f:selectItem itemLabel="Seleccione" itemValue="" />
 						            <f:selectItem itemLabel="Pruebas" itemValue="1" />
@@ -143,12 +141,10 @@
 					    	
 					    </div>
 					    
-						<div class="w-full titulo" style="margin-bottom: none!important;">
-							<i class="fa fa-check-circle Fs16"></i> Secuencias de Comprobantes 
-						</div>
+					    <span class="text-gray-900 font-medium Fs15 block my-2">Secuencias de Comprobantes</span>
 					    
 					    <div class="field">
-							<h:outputText value="SECUENCIAL FACTURA" styleClass="requerido" />
+							<h:outputText value="Secuencial Factura" styleClass="requerido" />
 							<p:inputText id="intSecFact"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialfactura}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -158,7 +154,7 @@
 							<p:message for="intSecFact" />
 					    </div>
 					    <div class="field">
-							<h:outputText value="SECUENCIAL NOTA DÉBITO" styleClass="requerido" />
+							<h:outputText value="Secuencial Nota Débito" styleClass="requerido" />
 							<p:inputText id="intSecND"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialnotadebito}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -168,7 +164,7 @@
 							<p:message for="intSecND" />
 					    </div>
 					    <div class="field">
-							<h:outputText value="SECUENCIAL NOTA #{msg['label.credito']}" styleClass="requerido" />
+							<h:outputText value="Secuencial Nota Crédito" styleClass="requerido" />
 							<p:inputText id="intSecNC"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialNotaCredito}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -178,7 +174,7 @@
 							<p:message for="intSecNC" />
 					    </div>
 					    <div class="field">
-							<h:outputText value="SECUENCIAL #{msg['label.liquidacion']} COMPRA" styleClass="requerido" />
+							<h:outputText value="Secuencial Liquidación de Compra" styleClass="requerido" />
 							<p:inputText id="intSecliqComp"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialliquidacioncompra}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -188,7 +184,7 @@
 							<p:message for="intSecliqComp" />   	
 					    </div>
 					    <div class="field">
-							<h:outputText value="SECUENCIAL GUIA #{msg['label.remision']}" styleClass="requerido" />
+							<h:outputText value="Secuencial Guía de Remisión" styleClass="requerido" />
 							<p:inputText id="intSecGuiRem"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialguiaremision}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -198,7 +194,7 @@
 							<p:message for="intSecGuiRem" />
 					    </div>
 					    <div class="field">
-							<h:outputText value="SECUENCIAL #{msg['label.retencion']}"	styleClass="requerido" />
+							<h:outputText value="Secuencial Retención"	styleClass="requerido" />
 							<p:inputText id="intSecReten"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialretencion}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -212,9 +208,8 @@
 					
 					<div class="col-12 md:col-4">
 						<p:outputPanel id="gridEstabIMG">
-							<div class="w-full titulo" style="margin-bottom: none!important;">
-								<i class="fa fa-check-circle Fs16"></i> Logotipo
-							</div>
+						
+							<span class="text-gray-900 font-medium Fs15 block mt-1 mb-2">Logotipo</span>
 							
 							<div class="field">
 								<h:outputText value="[#{msg['mensaje.imagenproducto']}]"/>

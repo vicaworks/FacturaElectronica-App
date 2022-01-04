@@ -27,7 +27,7 @@
 				<div class="p-grid">
 					
 					<div class="col-12">
-						<h:outputText value="RUC " styleClass="requerido"/>
+						<h:outputText value="Ruc " styleClass="text-gray-900 font-medium"/>
 						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="20" validatorMessage="SOLO NÚMEROS">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 						</p:inputText>
@@ -35,25 +35,25 @@
 					</div>
 					
 					<div class="col-12">
-						<h:outputText value="RAZÓN SOCIAL " styleClass="requerido"/>
+						<h:outputText value="Razón Social " styleClass="text-gray-900 font-medium"/>
 						<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" />
 						<p:message for="intRazonSocial" />
 					</div>
 					
 					<div class="col-12">
-						<h:outputText value="NOMBRE COMERCIAL " styleClass="requerido"/>
+						<h:outputText value="Nombre Comercial " styleClass="text-gray-900 font-medium"/>
 						<p:inputText id="intNombreComercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intNombreComercial" />
 					</div>
 					
 					<div class="col-12">
-						<h:outputText value="DIRECCIÓN MATRÍZ " styleClass="requerido"/>
+						<h:outputText value="Dirección Matríz " styleClass="text-gray-900 font-medium"/>
 						<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intDireccionMatriz" />
 					</div>
 					
 					<div class="col-12">
-						<h:outputText value="OBLIGADO CONTABILIDAD " styleClass="requerido block"/>
+						<h:outputText value="Oblogado a Llevar Contabilidad " styleClass="text-gray-900 font-medium block"/>
 						<p:selectOneMenu id="somObligadoContabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}" styleClass="mt-1">
 							<f:selectItem itemLabel="SI" itemValue="SI"/>
 							<f:selectItem itemLabel="NO" itemValue="NO" />
@@ -62,7 +62,7 @@
 					</div>
 					
 					<div class="col-12">
-						<h:outputText value="EXPORTADOR	 " styleClass="requerido block"/>
+						<h:outputText value="Es Exportador	 " styleClass="text-gray-900 font-medium block"/>
 						<p:selectOneMenu id="somExportador" value="#{empresaCtrl.empresaSelected.exportador}" styleClass="mt-1">
 							<f:selectItem itemLabel="SI" itemValue="SI"/>
 							<f:selectItem itemLabel="NO" itemValue="NO" />
@@ -71,7 +71,7 @@
 					</div>
 					
 					<div class="col-12">
-						<h:outputText value="EMAIL " styleClass="text-gray-700"/>
+						<h:outputText value="Email " styleClass="text-gray-700"/>
 						<p:inputText id="intEmail" value="#{empresaCtrl.empresaSelected.email}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="200" converter="omnifaces.ToUpperCaseConverter">
 							<f:validator validatorId="emailSelectItemValidator"/>
 						</p:inputText>
@@ -80,7 +80,7 @@
 					</div>
 					
 					<div class="col-12">
-						<h:outputText value="PÁGINA WEB " styleClass="text-gray-700"/>
+						<h:outputText value="Página Web " styleClass="text-gray-700"/>
 						<p:inputText id="intPaginaWeb" value="#{empresaCtrl.empresaSelected.paginaweb}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="200" converter="omnifaces.ToUpperCaseConverter"/>
 						<p:message for="intPaginaWeb" />
 						

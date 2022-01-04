@@ -31,11 +31,11 @@
 	    <h:form id="formMain">
 			
 			<div class="card card-w-title" >
-				<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> Validar XML Comprobante Electrónico</h3>
-				
+				<span class="Fs16 text-gray-900 font-medium">Validar XML Comprobante Electrónico</span>
+				<div class="EmptyBox5"/>
 				<div class="grid">
 					<div class="col-12 md:col-6 lg:col-5">
-						<h:outputText value="COMPROBANTE ELECTRÓNICO" styleClass="requerido"/>						
+						<h:outputText value="Comprobante Electrónico" styleClass="text-gray-800 Fs11"/>						
 						<div class="flex mt-1">
 							<div class="flex-grow-1 flex  flex-column mr-1">
 								<p:selectOneMenu id="somTipoComprobante" value="#{docElectrinocCtrl.tipoDocumentoIdentificador}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
@@ -59,17 +59,17 @@
 						<div class="grid grid-nogutter">
 							<div class="col-12">
 								<p:commandButton id="cmdLqCRefrecar"
-									title="Consultar comprobante electrónico" icon="fa fa-search" 
-									action="#{docElectrinocCtrl.buscar()}" styleClass="ui-button-outlined mr-1 inline" update="@form"
+									title="Consultar comprobante electrónico" icon="fa fa-search" value="Buscar"
+									action="#{docElectrinocCtrl.buscar()}" styleClass="ui-button-success mr-1 inline min-width-80" update="@form"
 								/>
 								<p:commandButton id="cmdFirmar"
-									title="Firmar comprobante electrónico" icon="fa fa-key" value="FIRMAR" 
-									action="#{docElectrinocCtrl.firmar()}" styleClass="ui-button-outlined inline mr-1 min-width-100" update="@form"
+									title="Firmar comprobante electrónico" icon="fa fa-key" value="Firmar" 
+									action="#{docElectrinocCtrl.firmar()}" styleClass="ui-button-outlined inline mr-1 min-width-80" update="@form"
 									disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
 								/>
 								<p:commandButton id="cmdValidar"
-									value="VALIDAR" icon="fa fa-check" title="Validar comprobante electrónico" 
-									action="#{docElectrinocCtrl.validar()}" styleClass="inline min-width-100" update="@form"
+									value="Validar" icon="fa fa-check" title="Validar comprobante electrónico" 
+									action="#{docElectrinocCtrl.validar()}" styleClass="ui-button-outlined inline min-width-80" update="@form"
 									disabled="#{empty docElectrinocCtrl.xmlDocElectronico}"
 								/>
 							</div>

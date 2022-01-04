@@ -18,7 +18,7 @@
 	<p:outputLabel id="oupRTDetalle" styleClass="w-full oupRTDetalle">
 		<div class="card card-w-title">
 			
-			<span class="text-gray-700 font-medium mb-1">IMPUESTO</span>
+			<span class="text-gray-700 font-medium mb-1">Impuesto</span>
 			<div class="grid mt-1">
 				<div class="col-12 md:col-4">
 					<p:selectOneMenu id="somRtnImpuesto"
@@ -63,7 +63,7 @@
 			<div class="EmptyBox5"/>
 			<div class="flex">
 				<div class="flex-grow-1 flex flex-column pr-1">
-					<span class="text-gray-700 font-medium mb-1">BASE IMPONIBLE</span>
+					<span class="text-gray-700 font-medium mb-1">Base Imponible</span>
 					<p:inputNumber id="idRtnBaseImponible" value="#{retencionFrmCtrl.retenciondetalleSelected.baseimponible}" symbol="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" 
                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
                			<p:ajax listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle"/>
@@ -71,7 +71,7 @@
                		<p:message for="idRtnBaseImponible" styleClass="block"/>
 				</div>
 				<div class="flex-grow-1 flex flex-column pr-1">
-					<span class="text-gray-700 font-medium mb-1">% RETENCIÓN</span>
+					<span class="text-gray-700 font-medium mb-1">% Retención</span>
 					<p:inputNumber id="idRtnPorcentajeRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.porcentajeretener}" symbol="%" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" 
                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
                			<p:ajax listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle"/>
@@ -79,7 +79,7 @@
                		<p:message for="idRtnPorcentajeRetencion" styleClass="block"/>
 				</div>
 				<div class="flex-grow-1 flex flex-column">
-					<span class="text-gray-700 font-medium mb-1">VALOR</span>
+					<span class="text-gray-700 font-medium mb-1">Valor</span>
 					<p:inputNumber id="idRtnValorRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.valorretenido}" symbol="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" 
                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
                		</p:inputNumber>
@@ -89,10 +89,11 @@
 					<span class="text-white mb-1">OP</span>
 					<p:commandButton  id="cmdAdqAgregarDetalle" 
 						icon="fa fa-plus"
-						value="AGREGAR"
+						value="Agregar"
 						action="#{retencionFrmCtrl.agregarDetalle()}"
 						update=":formMain:oupRTDetalle"
-						process="@this :formMain:oupRTDetalle">
+						process="@this :formMain:oupRTDetalle"
+						styleClass="ui-button-outlined">
 					</p:commandButton>
 				</div>				
 			</div>

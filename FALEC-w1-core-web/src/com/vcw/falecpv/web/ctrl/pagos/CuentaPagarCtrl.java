@@ -71,6 +71,7 @@ public class CuentaPagarCtrl extends BaseCtrl {
 	private BigDecimal totalPagar;
 	private BigDecimal totalVencido;
 	private String criterioBusqueda;
+	private String criterioCliente;
 	
 	public CuentaPagarCtrl() {
 	}
@@ -93,7 +94,7 @@ public class CuentaPagarCtrl extends BaseCtrl {
 	public void consultar()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		vComprobantespagarcreditoList = null;
-		vComprobantespagarcreditoList = vComprobantespagarcreditoServicio.getByCuentasPagar(establecimientoMain.getIdestablecimiento(), idTipocomprobante,criterioBusqueda);
+		vComprobantespagarcreditoList = vComprobantespagarcreditoServicio.getByCuentasPagar(establecimientoMain.getIdestablecimiento(), idTipocomprobante,criterioBusqueda,criterioCliente);
 		totalizar();
 	}
 	
@@ -522,6 +523,20 @@ public class CuentaPagarCtrl extends BaseCtrl {
 	 */
 	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
+	}
+
+	/**
+	 * @return the criterioCliente
+	 */
+	public String getCriterioCliente() {
+		return criterioCliente;
+	}
+
+	/**
+	 * @param criterioCliente the criterioCliente to set
+	 */
+	public void setCriterioCliente(String criterioCliente) {
+		this.criterioCliente = criterioCliente;
 	}
 
 }

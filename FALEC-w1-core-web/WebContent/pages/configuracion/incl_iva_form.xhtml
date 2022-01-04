@@ -21,7 +21,7 @@
 			<div class="formgroup-inline">				
 				<p:commandButton id="cmdGuardar"
 					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{ivaCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form :formMain"
+					action="#{ivaCtrl.guardar()}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form :formMain"
 					/>
 					
 				<p:commandButton id="cmdNuevoIvaForm"
@@ -44,12 +44,12 @@
 			<div class="w-full overflow-auto heightFrmIva contenedorFormulario mt-2">
 				<div style="width:99.5%!important;">
 					<div class="field grid">
-				    	<h:outputText value="#{msg['label.codigo']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<h:outputText value="Código" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intCodigo" value="#{ivaCtrl.ivaSelected.codigo}" 
 							required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" 
 							maxlength="1" 
-							 validatorMessage="SOLO NÚMEROS" placeholder="#{msg['label.codigo']} SRI">
+							 validatorMessage="SOLO NÚMEROS" placeholder="Código SRI">
 									<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 									</p:inputText>
 							<p:message for="intCodigo"/>
@@ -57,16 +57,16 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-				    	<h:outputText value="PORCENTAJE" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<h:outputText value="Porcentaje" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intPorcentaje" value="#{ivaCtrl.ivaSelected.porcentaje}" required="true" 
-								requiredMessage="REQUERIDO" styleClass="w-full mt-1" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']} PORCENTAJE Ejm. 14%"/>
+								requiredMessage="REQUERIDO" styleClass="w-full mt-1" converter="omnifaces.ToUpperCaseConverter" placeholder="Descripción porcentaje Ejm. 14%"/>
 							<p:message for="intPorcentaje"/>
 				    		
 				    	</div>
 				    </div>
 				    <div class="field grid">
-				    	<h:outputText value="VALOR" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<h:outputText value="Valor" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intValor" value="#{ivaCtrl.ivaSelected.valor}" required="true" 
 								requiredMessage="REQUERIDO" styleClass="w-full mt-1" 
@@ -79,20 +79,20 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-				    	<h:outputText value="ETIQUETA COMPROBANTE" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<h:outputText value="Etiqueta Comprobante" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 						<p:inputText id="intEtqComprobante" value="#{ivaCtrl.ivaSelected.labelfactura}" required="true" 
-							requiredMessage="REQUERIDO" styleClass="w-full mt-1" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']} COMPROBANTE Ejm. SUBTOTAL 12%" maxlength="150"/>
+							requiredMessage="REQUERIDO" styleClass="w-full mt-1" converter="omnifaces.ToUpperCaseConverter" placeholder="Descripción comprobante Ejm. subtotal 12%" maxlength="150"/>
 						<p:message for="intEtqComprobante"/>
 				    		
 				    	</div>
 				    </div>
 				    <div class="field grid">
-				    	<h:outputText value="ORDEN EN LA IMPRESIÓN COMPROBANTE" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<h:outputText value="Orden en la Impresión del Comprobante" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:inputText id="intOrden" value="#{ivaCtrl.ivaSelected.ordenfactura}" required="true" 
 								requiredMessage="REQUERIDO" styleClass="w-full mt-1" 
-								 converterMessage="SOLO NUMEROS" placeholder="ORDEN DE IMPRESION COMPROBANTE">
+								 converterMessage="SOLO NUMEROS" placeholder="Orden de impresión del cmprobante">
 								    <f:convertNumber locale="es_EC" pattern="0"/>
 									<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							</p:inputText>
@@ -101,7 +101,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-				    	<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<h:panelGroup>
 								<p:selectOneMenu id="somEstado"
@@ -120,7 +120,7 @@
 				    	</div>
 				    </div>
 				    <div class="field grid">
-				    	<h:outputText value="DEFECTO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+				    	<h:outputText value="Defecto" styleClass="col-12 mb-2 md:col-4 md:mb-0 text-gray-900 font-medium"/>
 				    	<div class="col-12 md:col-8">
 							<p:selectOneMenu id="intDefecto" value="#{ivaCtrl.ivaSelected.defecto}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1">
 						            <f:selectItem itemLabel="Seleccione" itemValue="" />

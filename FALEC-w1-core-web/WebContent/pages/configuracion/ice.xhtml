@@ -39,7 +39,11 @@
 				width: 100%;
 			}
 			
-			body .ui-datatable thead th {text-align: left;vertical-align: top;}
+			body .ui-datatable .ui-datatable-data > tr > td {
+				vertical-align: top;
+			}
+			
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
 			
         </style>
     </ui:define>
@@ -64,18 +68,18 @@
 			
 			<div class="grid justify-content-between">
 				<div class="col-3">
-					<h3 class="cardTitle"><i class="fa fa-arrow-circle-right"/> I.C.E.</h3>
+					<span class="Fs16 text-gray-900 font-medium">I.C.E.</span>
 				</div>
 				
 				<div class="col-4 align-self-center">
 					<div class="flex justify-content-end">
 						<p:commandButton id="cmdRefrecar"
 							title="Consultar ICE" icon="fa fa-search" 
-							action="#{iceCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
+							action="#{iceCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
 							/>
 																										
 						<p:commandButton id="cmdNuevo"
-							title="Nuevo ICE" icon="fa fa-plus" styleClass="mr-1" 
+							title="Nuevo ICE" icon="fa fa-plus" styleClass="mr-1 ui-button-outlined" 
 							action="#{iceCtrl.nuevo()}" inline="true">
 						</p:commandButton>
 						
@@ -91,7 +95,7 @@
 							title="Importar archivo ICE"
 							icon="fa fa-upload"
 							value="IMPORTAR"
-							styleClass="ui-button-success min-width-100"
+							styleClass="ui-button-outlined min-width-80"
 							onclick="PF('dlgImportIce').show()"
 							update=":frmImportIce"
 							immediate="true">
@@ -138,32 +142,31 @@
 						
 					</p:column>
 		  		
-		        <p:column headerText="ID"  filterMatchMode="contains" style="width:20px;">
+		        <p:column headerText="ID"  filterMatchMode="contains" style="width:20px;" styleClass="text-right">
 		            <h:outputText value="#{ice.idice}" />
 		        </p:column>
 		        
-		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:20px;" headerText="#{msg['label.codigo']}">
+		        <p:column  filterBy="#{ice.codigo}" filterMatchMode="contains" style="width:20px;" headerText="#{msg['label.codigo']}"  styleClass="text-right">
 					<h:outputText value="#{ice.codigo}" />
 				</p:column>
 				
-				<p:column headerText="ESTADO" style="width:40px;">
+				<p:column headerText="ESTADO" style="width:40px;" styleClass="text-right">
 					<h:outputText value="#{ice.estado=='I'?'INA':'ACT'}" styleClass="DispBlock #{ice.estado=='I'?'markRed':''}"/>
 				</p:column>
 					
-		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;">
+		         <p:column  headerText="TARIFA AD VALOREM"  filterMatchMode="contains" style="width:120px;" styleClass="text-right">
 		             <h:outputText value="#{ice.tarifaadvalorem}" />
 		        </p:column>
 		        
-		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:120px;" headerText="#{msg['label.descripcion']}">
+		        <p:column filterBy="#{ice.descripcion}"  filterMatchMode="contains" style="width:120px;" headerText="#{msg['label.descripcion']}" styleClass="text-right">
 					 <h:outputText value="#{ice.descripcion}" />
 		        </p:column>
 		        
-		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;" styleClass="TexAlRight">
-		            <h:outputText value="#{ice.valor}" >
+		        <p:column  headerText="VALOR"  filterMatchMode="contains" style="width:120px;"  styleClass="text-right">
+		            <h:outputText value="#{ice.valor}" styleClass="#{ice.valor.doubleValue()==0.0?'opacity-50':''}">
 		            	<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
 		            </h:outputText>
 		        </p:column>
-		 
 		        
            </p:dataTable>
 	    </div>

@@ -89,7 +89,7 @@
 		
 		<p:outputPanel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera!=null and notaDebitoFrmCtrl.notDebitoSelected.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
-				<span class="Fs11 text-black mb-1">SECUENCIAL COMPROBANTE</span>
+				<span class="Fs11 text-black mb-1">Secuencial Comprobante</span>
 				<span class="Fs16 text-black font-bold">#{notaDebitoFrmCtrl.getFormatoNumDocumento(notaDebitoFrmCtrl.notDebitoSelected.numdocumento)}</span>
 			</div>
 		</p:outputPanel>
@@ -110,7 +110,7 @@
 		<p:outputPanel id="oupNcDocAsociado">
 			<div class="formgrid grid">
 				<div class="field col-12">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">NÚMERO DE DOCUMENTO</label>
+		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label>
 		        	<div class="flex">
 		        		<div class="flex-grow-1 flex">
 		        			<p:inputMask id="inpNcNumFac" value="#{notaDebitoFrmCtrl.notDebitoSelected.numdocasociado}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
@@ -140,7 +140,7 @@
 		        	</div>
 		        </div>
 				<div class="field col-6">
-		        	<label for="somNcTipComprobante" class="text-gray-700 font-medium">TIPO COMPROBANTE</label>
+		        	<label for="somNcTipComprobante" class="text-gray-700 font-medium">Tipo de Comprobante</label>
 		        	<p:selectOneMenu id="somNcTipComprobante"
 								value="#{notaDebitoFrmCtrl.notDebitoSelected.tipocomprobanteretencion}"
 								converter="omnifaces.SelectItemsConverter"
@@ -158,7 +158,7 @@
 					<p:message for="somNcTipComprobante" styleClass="block"/>
 		        </div>
 		        <div class="field col-6">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">FECHA DE EMISIÓN</label>
+		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Fecha de Emisión</label>
 		        	<p:calendar id="claNcFechaEmisionAsociado" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemisiondocasociado}"
 						pattern="dd/MM/yyyy"
 						locale="es" 
@@ -171,7 +171,7 @@
 		</p:outputPanel>
 		
 		
-		<span class="block Fs11 text-gray-700 font-medium">CLIENTE</span>
+		<span class="block Fs11 text-gray-700 font-medium">Cliente</span>
 		<div class="flex mt-1">			
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
@@ -259,10 +259,10 @@
 			
 			<div class="flex">
 				<div class="flex-grow-1 flex">
-					<span class="text-gray-700 font-medium Fs11">NOMBRE</span>
+					<span class="text-gray-700 font-medium Fs11">Nombre</span>
 				</div>
 				<div class="flex-grow-1 flex pl-1">
-					<span class="text-gray-700 font-medium Fs11">DESCRIPCIÓN</span>
+					<span class="text-gray-700 font-medium Fs11">Descripción</span>
 				</div>
 			</div>
 			

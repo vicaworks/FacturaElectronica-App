@@ -27,14 +27,14 @@
 	<div class="card card-w-title mt-0">
 		
 		<div class="formgroup-inline mb-2">
-			<p:commandButton value="CONSULTAR"
+			<p:commandButton value="Buscar"
 					icon="fa fa-search"
 					action="#{establecimientoCtrl.refrescar()}"
-					styleClass="mr-1 min-width-110 ui-button-outlined" update="@form"/>
+					styleClass="mr-1 min-width-110 ui-button-success" update="@form"/>
 			
-			<p:commandButton value="NUEVO"
+			<p:commandButton value="Nuevo"
 					 icon="fa fa-plus" 
-					 styleClass="min-width-110"
+					 styleClass="min-width-110 ui-button-outlined"
 					 action="#{establecimientoCtrl.nuevo()}"
 					 />
 		</div>
@@ -65,7 +65,7 @@
 			</p:column>
 			
 			<p:column headerText="#{msg['label.codigo']}"
-				style="width:20px; text-align: center;">
+				style="width:20px;" styleClass="text-right">
 				<h:outputText value="#{appSessionCtrl.formatoCadena(estab.codigoestablecimiento,3,'0')}" />
 			</p:column>
 
@@ -83,16 +83,16 @@
 				<h:outputText value="#{estab.direccionestablecimiento}" />
 			</p:column>
 
-			<p:column headerText="#{msg['label.telefono']}" style="width:70px;">
+			<p:column headerText="#{msg['label.telefono']}" style="width:70px;" styleClass="text-right">
 				<h:outputText value="#{estab.telefono}" />
 			</p:column>
 
-			<p:column headerText="CORREO" style="width:90px;">
+			<p:column headerText="CORREO" style="width:90px;" styleClass="text-right">
 				<h:outputText value="#{estab.correo}" />
 			</p:column>
 			
 			<p:column headerText="AMBIENTE"
-				style="width:40px; text-align: center;">
+				style="width:40px; " styleClass="text-right">
 				<h:outputText value="#{estab.ambiente==1? 'Pruebas':'Produccion'}" />
 			</p:column>
 

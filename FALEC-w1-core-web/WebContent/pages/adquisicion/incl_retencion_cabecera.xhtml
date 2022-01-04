@@ -90,13 +90,13 @@
 		
 		<p:outputPanel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera!=null and retencionFrmCtrl.retencionSeleccion.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
-				<span class="text-black mb-1">SECUENCIAL COMPROBANTE</span>
+				<span class="text-black mb-1">Secuencial Comprobante</span>
 				<span class="Fs16 text-black font-bold">#{retencionFrmCtrl.getFormatoNumDocumento(retencionFrmCtrl.retencionSeleccion.numdocumento)}</span>
 			</div>
 		</p:outputPanel>
 		
 		<div class="field mt-2">
-			<h:outputText value="FECHA DE EMISIÓN" styleClass="text-gray-700 font-medium"/>
+			<h:outputText value="Fecha de Emisión" styleClass="text-gray-700 font-medium"/>
 			<p:calendar id="claFacFecha" value="#{retencionFrmCtrl.retencionSeleccion.fechaemision}"
 				pattern="dd/MM/yyyy"
 				locale="es" 
@@ -104,7 +104,7 @@
 			</p:calendar>
 		</div>
 		
-		<span class="block text-gray-700 font-medium">PROVEEDOR</span>
+		<span class="block text-gray-700 font-medium">Proveedor</span>
 		<div class="flex">
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
@@ -178,7 +178,7 @@
 		<div class="EmptyBox5"/>
 		<div class="formgrid grid">
 	        <div class="field col-6">
-	            <label for="somRtnTipComprobante" class="text-gray-700 font-medium">TIPO COMPROBANTE</label>
+	            <label for="somRtnTipComprobante" class="text-gray-700 font-medium">Tipo de Comprobante</label>
 	            <p:selectOneMenu id="somRtnTipComprobante"
 							value="#{retencionFrmCtrl.retencionSeleccion.tipocomprobanteretencion}"
 							converter="omnifaces.SelectItemsConverter"
@@ -196,14 +196,14 @@
 				<p:message for="somRtnTipComprobante" styleClass="block"/>
 	        </div>
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">NUM COMPROBANTE</label>
+	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">Número de Comprobante</label>
 				<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
 					<f:converter converterId="formatoNumComprobanteConverter"/>
 				</p:inputMask>
 				<p:message for="inpRtnNumFac" styleClass="block"/>
 	        </div>
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">FECHA DE EMISIÓN</label>
+	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">Fecha de Emisión</label>
 	        	<p:calendar id="claRtnFechaCompra" value="#{retencionFrmCtrl.retencionSeleccion.fechaemisiondocasociado}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
@@ -214,7 +214,7 @@
 				</p:calendar>
 	        </div>
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">PERIODO FISCAL</label>
+	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">Periodo Fiscal</label>
         		<div class="flex align-items-end" style="height:24px;">
 		        	<p:outputPanel id="oupPeriodoFiscal" styleClass="w-full text-right">
 							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.periodofiscal}" styleClass="Fs14"/>
@@ -241,10 +241,10 @@
 			
 			<div class="flex">
 				<div class="flex-grow-1 flex">
-					<span class="text-black Fs12">NOMBRE</span>
+					<span class="text-black Fs12">Nombre</span>
 				</div>
 				<div class="flex-grow-1 flex pl-1">
-					<span class="text-black Fs12">DESCRIPCIÓN</span>
+					<span class="text-black Fs12">Descripción</span>
 				</div>
 			</div>
 			

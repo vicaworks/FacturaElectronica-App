@@ -23,7 +23,7 @@
 			
 				<p:commandButton id="cmdGuardar"
 					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{iceCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form :formMain"
+					action="#{iceCtrl.guardar()}" styleClass="mr-1 ui-button-outlined min-width-100" update="@form :formMain"
 					/>
 				
 				<p:commandButton id="cmdNuevoIceForm"
@@ -48,41 +48,41 @@
 				
 				<div style="width: 99.5%;">
 				    <div class="field grid">
-						<h:outputText value="#{msg['label.codigo']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Código" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 						<div class="col-12 md:col-8">
 							<p:inputText id="intCodigo" value="#{iceCtrl.iceSelected.codigo}" required="true" 
 							requiredMessage="REQUERIDO" styleClass="w-full" maxlength="4" 
-							validatorMessage="SOLO NÚMEROS" placeholder="#{msg['label.codigo']} SRI">
+							validatorMessage="SOLO NÚMEROS" placeholder="Código SRI">
 									<f:validateRegex pattern="^[+-]?[0-9]*$"></f:validateRegex> 
 									</p:inputText>
 							<p:message for="intCodigo"/>
 						</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="TARIFA AD VALOREM" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Tarifa AD Valorem" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 						<div class="col-12 md:col-8">
-							<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="w-full" maxlength="10" placeholder="VALOR EN CADENA Ejm 0%" required="true" requiredMessage="REQUERIDO"/>
+							<p:inputText id="intTarifaAdValorem" value="#{iceCtrl.iceSelected.tarifaadvalorem}"  styleClass="w-full" maxlength="10" placeholder="Valor en palabras Ejm 0%" required="true" requiredMessage="REQUERIDO"/>
 							<p:message for="intTarifaAdValorem"/>
 						</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="#{msg['label.descripcion']}" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Descripción" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 						<div class="col-12 md:col-8">
-							<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" converter="omnifaces.ToUpperCaseConverter" placeholder="#{msg['label.descripcion']}"/>
+							<p:inputText id="intDescripcion" value="#{iceCtrl.iceSelected.descripcion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" converter="omnifaces.ToUpperCaseConverter" placeholder="Descripción"/>
 							<p:message for="intDescripcion"/>
 						</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="VALOR" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido" required="true" requiredMessage="REQUERIDO" />
+						<h:outputText value="Valor" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido" required="true" requiredMessage="REQUERIDO" />
 						<div class="col-12 md:col-8">
 							<p:inputText id="intValor" value="#{iceCtrl.iceSelected.valor}"  requiredMessage="REQUERIDO" styleClass="w-full" 
-								 converterMessage="SOLO NUMEROS"  placeholder="VALOR ejm: 2 o 2.75">
+								 converterMessage="SOLO NUMEROS"  placeholder="Valor ejm: 2 o 2.75">
 							</p:inputText>
 							<p:message for="intValor"/>
 						</div>
 				    </div>
 				    <div class="field grid">
-						<h:outputText value="ESTADO" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
+						<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
 						<div class="col-12 md:col-8">
 							<h:panelGroup>
 								<p:selectOneMenu id="somEstado"
