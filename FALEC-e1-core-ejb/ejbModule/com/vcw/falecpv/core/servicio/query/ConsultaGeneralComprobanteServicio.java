@@ -50,7 +50,10 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 				break;
 			case "NOTA_DEBITO":
 				identificadorComprobante = (String)parametroGenericoServicio.consultarParametro(PGVentasPopUpEnum.NOTA_DEBITO, TipoRetornoParametroGenerico.STRING);
-				break;	
+				break;
+			case "NOTA_CREDITO":
+				identificadorComprobante = (String)parametroGenericoServicio.consultarParametro(PGVentasPopUpEnum.NOTA_DEBITO, TipoRetornoParametroGenerico.STRING);
+				break;
 			default:
 				break;
 			}
@@ -87,8 +90,8 @@ public class ConsultaGeneralComprobanteServicio extends DBUtilGenericoApp {
 //							"		and tc.identificador in ('00','01')";
 			
 			if(criteria!=null && !criteria.trim().isEmpty()) {
-				sql += "   and (c.secuencial like '%" + criteria.toUpperCase()  + "%' "
-						+ " or c.numdocumento like '%" + criteria.toUpperCase()  + "%' "
+				sql += "   and (c.secuencial like '%" + criteria.replace("-", "").toUpperCase()  + "%' "
+						+ " or c.numdocumento like '%" + criteria.replace("-", "").toUpperCase()  + "%' "
 						+ " or UPPER(cl.razonsocial) like '%" + criteria.toUpperCase()  + "%' "
 						+ " or cl.identificacion like'%" + criteria.toUpperCase()  + "%') ";
 			}else {

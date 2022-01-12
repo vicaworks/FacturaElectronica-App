@@ -112,29 +112,22 @@
 				<div class="field col-12">
 		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label>
 		        	<div class="flex">
-		        		<div class="flex-grow-1 flex">
-		        			<p:inputMask id="inpNcNumFac" value="#{notaDebitoFrmCtrl.notDebitoSelected.numdocasociado}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
-								<f:converter converterId="formatoNumComprobanteConverter"/>
-							</p:inputMask>
-		        		</div>
-		        		<div class="flex-grow-0 flex pl-1">		        			
+		        		<div class="flex-grow-0 flex">
 		        			<p:commandButton id="cmdNdDocumento"
-								value="Buscar" icon="fa fa-search" 
+								value="Comprobante" icon="fa fa-search" 
 								action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="ui-button-outlined" 
 								update="@form" 
 								process="@this">
 								<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>	
 								<f:setPropertyActionListener value="NOTA_DEBITO" target="#{ventasQueryCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
-								<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente :formMain:oupNcDocAsociado :formMain:oupNcTotal" target="#{ventasQueryCtrl.viewUpdate}"/>
 							</p:commandButton>
-		        			<!-- <p:commandButton id="cmdConsultarDocu"
-		        				value="Buscar"
-								icon="fa fa-search" 
-								action="#{notaCreditoCtrl.buscarNumDocumento()}" 
-								styleClass="ui-button-outlined" 
-								update="@form:oupNcDocAsociado"
-								process="@this :formMain:oupNcDocAsociado" title="BUSCAR"/> -->
+		        		</div>
+		        		<div class="flex-grow-1 flex">
+		        			<p:inputMask id="inpNcNumFac" value="#{notaDebitoFrmCtrl.notDebitoSelected.numdocasociado}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
+								<f:converter converterId="formatoNumComprobanteConverter"/>
+							</p:inputMask>
 		        		</div>
 		        		<p:message for="inpNcNumFac" styleClass="block"/>
 		        	</div>

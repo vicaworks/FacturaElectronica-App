@@ -8,8 +8,11 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
+import org.primefaces.context.PrimeFacesContext;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
@@ -19,6 +22,7 @@ import com.vcw.falecpv.core.modelo.query.ResumenCabeceraQuery;
 import com.vcw.falecpv.core.servicio.query.ConsultaGeneralComprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
+import com.vcw.falecpv.web.ctrl.comprobantes.nc.NotaCreditoCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nd.NotaDebitoFrmCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -120,6 +124,12 @@ public class VentasQueryCtrl extends BaseCtrl {
 				NotaDebitoFrmCtrl notaDebitoFrmCtrl = (NotaDebitoFrmCtrl) AppJsfUtil.getManagedBean("notaDebitoFrmCtrl");
 				notaDebitoFrmCtrl.nuevoByFacturaEmitida(resumenCabeceraQuery.getIdcabecera());
 				AppJsfUtil.hideModal("dlgListaVentas");
+				break;
+			case "NOTA_CREDITO":
+				NotaCreditoCtrl notaCreditoCtrl = (NotaCreditoCtrl)AppJsfUtil.getManagedBean("notaCreditoCtrl");
+				notaCreditoCtrl.nuevoByFacturaEmitida(resumenCabeceraQuery.getIdcabecera());
+				AppJsfUtil.hideModal("dlgListaVentas");
+				AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:intMotivoAnulacion')");
 				break;
 			default:
 				break;

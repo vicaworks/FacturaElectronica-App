@@ -124,6 +124,63 @@
 		<div class="EmptyBox5"/>
 		<span class="Fs14 text-black font-semibold">Documento Asociado</span>
 		<div class="EmptyBox5"/>
+		<p:outputPanel id="oupNcDocAsociado">
+			<div class="formgrid grid">
+				<div class="field col-12">
+		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label>
+		        	<div class="flex">
+		        		<div class="flex-grow-0 flex pl-1">
+							<p:commandButton id="cmdNdDocumento"
+								value="Comprobante" icon="fa fa-search" 
+								action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="ui-button-outlined" 
+								update="@form" 
+								process="@this">
+								<f:setPropertyActionListener value="#{notaCreditoCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>	
+								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{ventasQueryCtrl.callModule}"/>
+								<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
+								<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente :formMain:oupNcDocAsociado" target="#{ventasQueryCtrl.viewUpdate}"/>
+							</p:commandButton>
+		        		</div>
+		        		<div class="flex-grow-1 flex">
+		        			<p:inputMask id="inpNcNumFac" value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
+								<f:converter converterId="formatoNumComprobanteConverter"/>
+							</p:inputMask>
+		        		</div>
+		        		<p:message for="inpNcNumFac" styleClass="block"/>
+		        	</div>
+		        </div>
+				<div class="field col-6">
+		        	<label for="somNcTipComprobante" class="text-gray-700 font-medium">Tipo de Comprobante</label>
+		        	<p:selectOneMenu id="somNcTipComprobante"
+								value="#{notaCreditoCtrl.notaCreditoSeleccion.tipocomprobanteretencion}"
+								converter="omnifaces.SelectItemsConverter"
+								required="true"
+								requiredMessage="REQUERIDO"
+								styleClass="w-full"
+								filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="Seleccionar ..."
+								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+	
+						<f:selectItems value="#{notaCreditoCtrl.tipocomprobanteList}" var="tp"
+							itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
+							
+					</p:selectOneMenu>
+					<p:message for="somNcTipComprobante" />
+		        </div>
+		        <div class="field col-6">
+		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Fecha de Emisión</label>
+		        	<p:calendar id="claNcFechaEmisionAsociado" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemisiondocasociado}"
+						pattern="dd/MM/yyyy"
+						locale="es" 
+						requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+						
+						<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
+						
+					</p:calendar>
+					<p:message for="claNcFechaEmisionAsociado" />
+		        </div>
+			</div>
+		</p:outputPanel>
 		<span class="block mt-1 text-gray-700 font-medium mb-1 Fs11">Cliente</span>
 		<div class="flex">
 			<div class="flex-grow-1 flex overflow-hidden">
@@ -194,69 +251,15 @@
 				</div>
 			</f:subview>
 		</p:outputPanel>
-		<p:outputPanel id="oupNcDocAsociado">
-			<div class="formgrid grid">
-				<div class="field col-6">
-		        	<label for="somNcTipComprobante" class="text-gray-700 font-medium">Tipo de Comprobante</label>
-		        	<p:selectOneMenu id="somNcTipComprobante"
-								value="#{notaCreditoCtrl.notaCreditoSeleccion.tipocomprobanteretencion}"
-								converter="omnifaces.SelectItemsConverter"
-								required="true"
-								requiredMessage="REQUERIDO"
-								styleClass="w-full"
-								filter="true" filterMatchMode="contains">
-						<f:selectItem itemLabel="Seleccionar ..."
-								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-	
-						<f:selectItems value="#{notaCreditoCtrl.tipocomprobanteList}" var="tp"
-							itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
-							
-					</p:selectOneMenu>
-					<p:message for="somNcTipComprobante" />
-		        </div>
-		        <div class="field col-6">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Fecha de Emisión</label>
-		        	<p:calendar id="claNcFechaEmisionAsociado" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemisiondocasociado}"
-						pattern="dd/MM/yyyy"
-						locale="es" 
-						requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
-						
-						<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
-						
-					</p:calendar>
-					<p:message for="claNcFechaEmisionAsociado" />
-		        </div>
-		        
-		        <div class="field col-12">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label>
-		        	<div class="flex">
-		        		<div class="flex-grow-1 flex">
-		        			<p:inputMask id="inpNcNumFac" value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
-								<f:converter converterId="formatoNumComprobanteConverter"/>
-							</p:inputMask>
-		        		</div>
-		        		<div class="flex-grow-0 flex pl-1">
-		        			<p:commandButton id="cmdConsultarDocu"
-		        				value="Buscar"
-								icon="fa fa-search" 
-								action="#{notaCreditoCtrl.buscarNumDocumento()}" 
-								styleClass="ui-button-outlined" 
-								update="@form:oupNcDocAsociado"
-								process="@this :formMain:somNcTipComprobante :formMain:inpNcNumFac" title="BUSCAR"/>
-		        		</div>
-		        		<p:message for="inpNcNumFac" styleClass="block"/>
-		        	</div>
-		        </div>
-		        
-		        <div class="field col-12">
-		        	<label for="intMotivoAnulacion" class="text-gray-700 font-medium">Motivo de Modificación</label>
-		        	<p:inputTextarea rows="2" id="intMotivoAnulacion" value="#{notaCreditoCtrl.notaCreditoSeleccion.motivo}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
-		        		<p:ajax update="@this" process="@this"/>
-		        	</p:inputTextarea>
-					<p:message for="intMotivoAnulacion" styleClass="block"/>
-		        </div>
-			</div>
-		</p:outputPanel>
+		<div class="formgrid grid">
+			<div class="field col-12">
+	        	<label for="intMotivoAnulacion" class="text-gray-700 font-medium">Motivo de Modificación</label>
+	        	<p:inputTextarea rows="2" id="intMotivoAnulacion" value="#{notaCreditoCtrl.notaCreditoSeleccion.motivo}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
+	        		<p:ajax update="@this" process="@this"/>
+	        	</p:inputTextarea>
+				<p:message for="intMotivoAnulacion" styleClass="block"/>
+	        </div>
+		</div>
 	</div>	
 	
 	<div class="card card-w-title">	

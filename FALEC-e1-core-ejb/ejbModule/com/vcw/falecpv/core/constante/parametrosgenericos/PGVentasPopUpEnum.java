@@ -10,7 +10,8 @@ package com.vcw.falecpv.core.constante.parametrosgenericos;
 public enum PGVentasPopUpEnum implements ParametroGenericoBaseEnum {
 	
 	GUIA_REMISION("1"),
-	NOTA_DEBITO("2");
+	NOTA_DEBITO("2"),
+	NOTA_CREDITO("3");
 	
 	private String id;
 	
