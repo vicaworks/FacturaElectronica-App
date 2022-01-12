@@ -41,11 +41,11 @@
 					<p:commandButton styleClass="ui-button-success mr-1" icon="fa fa-search" tabindex="1" action="#{listaProductoCtrl.refrescar()}" update="@form" process="@this :frmListProducto:intListProBusqueda" disabled="#{listaProductoCtrl.tipoRegistro==2}"/>					
    					<p:commandButton styleClass="ui-button-outlined" icon="fa fa-plus" disabled="#{listaProductoCtrl.tipoRegistro==2}" action="#{productoCtrl.nuevo()}" process="@this" update="@form">
    						<f:setPropertyActionListener value="ADQUISICION" target="#{productoCtrl.callModule}"/>
-						<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
+						<f:setPropertyActionListener value="#{listaProductoCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
+						<!-- <f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{productoCtrl.adquisicionFrmCtrl}"/> -->
 						<f:setPropertyActionListener value="frmListProducto" target="#{productoCtrl.formModule}"/>
 						<f:setPropertyActionListener value=":frmListProducto" target="#{productoCtrl.viewUpdate}"/>
 						<f:setPropertyActionListener value="#{listaProductoCtrl}" target="#{productoCtrl.listaProductoCtrl}"/>
-						<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{productoCtrl.adquisicionFrmCtrl}"/>
    					</p:commandButton>	           					
 				</div>
 			</div>

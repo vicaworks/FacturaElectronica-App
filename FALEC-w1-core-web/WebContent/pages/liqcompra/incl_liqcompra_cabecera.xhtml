@@ -29,7 +29,7 @@
 		}
 	</script>
 	<!-- consulta proveedor return keycode 13 -->
-	<p:remoteCommand name="buscarProveedor"  action="#{liqCompraFormCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridProveedor"/>
+	<p:remoteCommand name="buscarProveedor"  action="#{liqCompraFormCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridProveedor :formMain:oupPagoDT"/>
 	
 	<div class="card card-w-title">
 		
@@ -122,7 +122,7 @@
 						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
 						<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{listaClienteCtrl.liqCompraFormCtrl}"/>
 						<f:setPropertyActionListener value="LIQCOMPRA" target="#{listaClienteCtrl.callModule}"/>
-						<f:setPropertyActionListener value=":formMain:gridProveedor" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value=":formMain:gridProveedor :formMain:oupPagoDT" target="#{listaClienteCtrl.viewUpdate}"/>
 						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
 					</p:commandButton>
                 </div>

@@ -10,17 +10,28 @@
     <ui:define name="title">Compra</ui:define>
     
     <ui:define name="head">
-        <style type="text/css">
-			
+        <style type="text/css">			
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;
-			}
-			
+			}			
 			.adquisicionDetDT .ui-selectonemenu .ui-selectonemenu-label {
 				text-align: center;
 			}			
-			
-			
+			body .ui-datatable .ui-datatable-data > tr > td	{vertical-align: top;}
+			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}			
+			.card{margin-bottom: 0.25rem!important;}
+			/* file upload */
+			body .ui-fileupload .ui-fileupload-buttonbar {
+			 border: none;
+			 padding: 0px !important;
+			}
+			body .ui-fileupload .ui-fileupload-content {
+				/* display: none; */
+				border: none;
+				padding: 0px;
+				border-top: 0 none;
+				line-height: 1.5;
+			}
         </style>
         <script >
 			$(function () {

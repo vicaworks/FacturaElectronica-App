@@ -37,12 +37,15 @@
 						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
 						validatorMessage="SOLO NUMEROS"
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
-					<f:validateRegex pattern="^\d+$" />
+						<f:validateRegex pattern="^\d+$" />
 					</p:inputText>
-                    <p:commandButton icon="pi pi-search" styleClass="ui-button-success" 
-                    	process="@this :formMain:inpCriterioProveedor"
-						update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT" 
-						action="#{adquisicionFrmCtrl.buscarProveedor()}"/>
+					<p:commandButton icon="pi pi-search" styleClass="ui-button-success"
+						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
+						<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaClienteCtrl.adquisicionFrmCtrl}"/>
+						<f:setPropertyActionListener value="ADQUISICION" target="#{listaClienteCtrl.callModule}"/>
+						<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+					</p:commandButton>	
                 </div>
 			</div>
 			<div class="flex-none flex align-items-center px-1">
