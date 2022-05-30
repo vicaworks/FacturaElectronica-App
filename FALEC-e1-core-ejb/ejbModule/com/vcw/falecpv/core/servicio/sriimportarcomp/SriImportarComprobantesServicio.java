@@ -6,6 +6,7 @@ package com.vcw.falecpv.core.servicio.sriimportarcomp;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.ejb.ConcurrencyManagement;
@@ -180,6 +181,8 @@ public class SriImportarComprobantesServicio {
 			
 			c.setTotaliva(BigDecimal.ZERO);
 			c.setTotalrenta(BigDecimal.ZERO);
+			
+			if(rt.getImpuestoretencionList()==null) rt.setImpuestoretencionList(new ArrayList<>());
 			
 			for (XmlImpuestoRetencion i : rt.getImpuestoretencionList()) {
 				//renta

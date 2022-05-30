@@ -101,11 +101,15 @@ public class ComprobanteUtilServicio {
 				// consultar el codigo
 				XmlTotalImpuesto xmlTotalImpuesto =  factura.getInfoFactura().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2") && x.getValor()>0d).findFirst().orElse(null);
 				Iva iva = ivaServicio.getIvaDao().getIva(idEmpresa, xmlTotalImpuesto.getCodigoPorcentaje());
-				
-				total.setLabel("IVA " + iva.getValor().intValue() + "%");
-				total.setValor(BigDecimal.valueOf(factura.getInfoFactura().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2")).mapToDouble(x->x.getValor()).sum()));
-				// el primer sibtotal
-				totales.get(0).setLabel(totales.get(0).getLabel().replace("%", "") + iva.getValor().intValue() + "%");
+				if(iva==null) {
+					total.setLabel("IVA");
+					total.setValor(BigDecimal.ZERO);
+				}else {					
+					total.setLabel("IVA " + iva.getValor().intValue() + "%");
+					total.setValor(BigDecimal.valueOf(factura.getInfoFactura().getTotalImpuestoList().stream().filter(x->x.getCodigo().equals("2")).mapToDouble(x->x.getValor()).sum()));
+					// el primer sibtotal
+					totales.get(0).setLabel(totales.get(0).getLabel().replace("%", "") + iva.getValor().intValue() + "%");
+				}
 			}else {
 				total.setLabel("IVA");
 				total.setValor(BigDecimal.ZERO);
