@@ -705,7 +705,7 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
-		cabecerSelected.setContribuyenteespecial("5368");
+		//cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		if(cabecerSelected.getIdcabecera()==null || (cabecerSelected.getIdcabecera()!=null && (cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.BORRADOR.toString()) || cabecerSelected.getEstado().equals(ComprobanteEstadoEnum.RECHAZADO_SRI.toString()) ))) {

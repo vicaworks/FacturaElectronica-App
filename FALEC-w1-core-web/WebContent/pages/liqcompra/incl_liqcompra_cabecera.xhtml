@@ -282,7 +282,7 @@
 		    	</div>
 		    <div class="EmptyBox20"/>
 		    	<div class="col-6">
-	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{liqCompraFormCtrl.liqCompraSelected.totalpagar.doubleValue()==0 or liqCompraFormCtrl.liqCompraSelected.cliente==null}">
+	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@form" disabled="#{liqCompraFormCtrl.liqCompraSelected.totalpagar.doubleValue()==0 or liqCompraFormCtrl.liqCompraSelected.cliente==null}">
 	    				
 	    				<f:setPropertyActionListener value="LIQ_COMPRA" target="#{pagoCompCtrl.callModule}"/>
 	    				<f:setPropertyActionListener value="#{liqCompraFormCtrl}" target="#{pagoCompCtrl.liqCompraFormCtrl}"/>

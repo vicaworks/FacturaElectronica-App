@@ -88,7 +88,8 @@ public class PagoCompCtrl implements Serializable {
 	
 	public void loadPantalla() {
 		try {
-			consultarTipoPago();			
+			consultarTipoPago();
+			
 			totalPago = BigDecimal.ZERO;
 			totalSaldo = BigDecimal.ZERO;
 			switch (callModule) {

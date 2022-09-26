@@ -292,7 +292,7 @@
 		    	</div>
 		    <div class="EmptyBox20"/>
 		    	<div class="col-6">
-	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null}">
+	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@form" disabled="#{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null}">
 	    				
 	    				<f:setPropertyActionListener value="FACTURA" target="#{pagoCompCtrl.callModule}"/>
 	    				<f:setPropertyActionListener value="#{compFacCtrl}" target="#{pagoCompCtrl.compFacCtrl}"/>

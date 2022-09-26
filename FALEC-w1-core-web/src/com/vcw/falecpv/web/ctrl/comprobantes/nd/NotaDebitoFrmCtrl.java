@@ -512,7 +512,7 @@ public class NotaDebitoFrmCtrl extends BaseCtrl {
 		notDebitoSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		notDebitoSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
-		notDebitoSelected.setContribuyenteespecial("5368");
+//		notDebitoSelected.setContribuyenteespecial("5368");
 		notDebitoSelected.setMoneda("DOLAR");
 		notDebitoSelected.setPropina(BigDecimal.ZERO);
 		if(notDebitoSelected.getIdcabecera()==null || (notDebitoSelected.getIdcabecera()!=null && 

@@ -253,7 +253,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		
 		notaCreditoSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		notaCreditoSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
-		notaCreditoSeleccion.setContribuyenteespecial("5368");
+//		notaCreditoSeleccion.setContribuyenteespecial("5368");
 		determinarPeriodoFiscal();
 		notaCreditoSeleccion.setMoneda("DOLAR");
 		notaCreditoSeleccion.setPropina(BigDecimal.ZERO);

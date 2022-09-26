@@ -601,7 +601,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
-		cabecerSelected.setContribuyenteespecial("5368");
+//		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		cabecerSelected.setEstado(ComprobanteEstadoEnum.PENDIENTE.toString());

@@ -561,7 +561,7 @@ public class CotizacionFormCtrl extends BaseCtrl {
 		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
-		cabecerSelected.setContribuyenteespecial("5368");
+//		cabecerSelected.setContribuyenteespecial("5368");
 		cabecerSelected.setMoneda("DOLAR");
 		cabecerSelected.setPropina(BigDecimal.ZERO);
 		if(cabecerSelected.isAutorizacionBol()) {
