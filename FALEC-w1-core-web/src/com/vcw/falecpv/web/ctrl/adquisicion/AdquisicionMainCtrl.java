@@ -453,6 +453,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				
 				cell = row.createCell(col++);
 				cell.setCellType(CellType.STRING);
+				cell.setCellValue(adq.getAutorizacion());
+				
+				cell = row.createCell(col++);
+				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getCliente().getIdentificacion());
 				
 				cell = row.createCell(col++);
