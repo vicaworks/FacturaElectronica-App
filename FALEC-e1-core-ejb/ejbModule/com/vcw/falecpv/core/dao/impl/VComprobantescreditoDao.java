@@ -40,10 +40,10 @@ public class VComprobantescreditoDao extends AppGenericDao<VComprobantescredito,
 		try {
 			
 			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantescredito c WHERE c.idestablecimiento=:idestablecimiento  " 
-			+ (tipocomprobante!=null?" AND c.idtipocomprobante:=idtipocomprobante ":" ") 
+			+ (tipocomprobante!=null?" AND c.idtipocomprobante=:idtipocomprobante ":" ") 
 			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":"  ")
 			+ ((criterioCliente!=null && criterioCliente.trim().length()>0)?" AND c.identificacion=:identificacion ":" ")
-			+ " AND c.abono < c.totalpago "
+			+ ((criterioCliente==null || criterioCliente.trim().length()==0) && (criterio==null || criterio.trim().length()==0)?" AND c.abono < c.totalpago ":" ")
 			+ " ORDER BY c.fechaemision");
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);

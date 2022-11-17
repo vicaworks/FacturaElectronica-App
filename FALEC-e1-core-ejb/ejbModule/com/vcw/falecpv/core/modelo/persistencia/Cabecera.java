@@ -240,6 +240,9 @@ public class Cabecera implements Serializable {
     @Column(name = "secuencialcaja", length = 3)
     private String secuencialCaja;
     
+    @Column(name = "regimenrimpe")
+    private Integer regimenrimpe = 0;
+    
     @ManyToOne(optional = true)
     @JoinColumn(name = "idtipocomprobanteretencion", referencedColumnName = "idtipocomprobante", nullable = true)
     private Tipocomprobante tipocomprobanteretencion;
@@ -1583,5 +1586,19 @@ public class Cabecera implements Serializable {
 	 */
 	public void setCantidadDestinatario(int cantidadDestinatario) {
 		this.cantidadDestinatario = cantidadDestinatario;
+	}
+
+	/**
+	 * @return the regimenrimpe
+	 */
+	public Integer getRegimenrimpe() {
+		return regimenrimpe;
+	}
+
+	/**
+	 * @param regimenrimpe the regimenrimpe to set
+	 */
+	public void setRegimenrimpe(Integer regimenrimpe) {
+		this.regimenrimpe = regimenrimpe;
 	}
 }

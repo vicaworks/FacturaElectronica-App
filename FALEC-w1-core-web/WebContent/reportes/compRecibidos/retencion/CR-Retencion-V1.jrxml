@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CR-retencion-V1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f7d843e2-6466-41f0-b759-255c8af4ec1b">
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["/"]]></defaultValueExpression>
@@ -102,17 +102,17 @@
 				<text><![CDATA[NORMAL]]></text>
 			</staticText>
 			<rectangle radius="8">
-				<reportElement x="0" y="90" width="270" height="181" uuid="ac8b1c1f-2bbd-4915-a60e-7efe36f222e2"/>
+				<reportElement x="0" y="61" width="270" height="210" uuid="ac8b1c1f-2bbd-4915-a60e-7efe36f222e2"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="10" y="160" width="70" height="35" uuid="293d5457-795c-4164-9630-448e37309297"/>
+				<reportElement x="10" y="131" width="70" height="35" uuid="293d5457-795c-4164-9630-448e37309297"/>
 				<textElement>
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[DIRECCIÓN MATRIZ :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="195" width="70" height="35" uuid="ecc51f6e-15fb-4f1e-bc1b-bf76689ecfc9">
+				<reportElement x="10" y="166" width="70" height="35" uuid="ecc51f6e-15fb-4f1e-bc1b-bf76689ecfc9">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<textElement>
@@ -122,14 +122,7 @@
 				<text><![CDATA[DIRECCIÓN SUCURSAL :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="230" width="210" height="20" uuid="ed79d9b8-bd88-4c4e-9fed-1a781e3478ae"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="10"/>
-				</textElement>
-				<text><![CDATA[CONTRIBUYENTE ESPECIAL :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="250" width="210" height="20" uuid="bddd3b1c-4958-4245-b04f-5e17984e1326"/>
+				<reportElement x="10" y="201" width="210" height="20" uuid="bddd3b1c-4958-4245-b04f-5e17984e1326"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
@@ -178,21 +171,21 @@
 				<textFieldExpression><![CDATA[$F{numeroAutorizacion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="100" width="250" height="40" uuid="4c2ded57-caaf-4dbc-8d29-e24c0565f206"/>
+				<reportElement x="10" y="71" width="250" height="40" uuid="4c2ded57-caaf-4dbc-8d29-e24c0565f206"/>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getRazonSocial()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="140" width="250" height="20" uuid="49a7922d-1f48-4b0d-96f6-dfb107dfdb73"/>
+				<reportElement x="10" y="111" width="250" height="20" uuid="49a7922d-1f48-4b0d-96f6-dfb107dfdb73"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getNombreComercial()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="ContainerHeight" x="80" y="160" width="190" height="35" uuid="10005da9-cb3d-4113-b5c4-4bfb75717330">
+				<reportElement stretchType="ContainerHeight" x="80" y="131" width="190" height="35" uuid="10005da9-cb3d-4113-b5c4-4bfb75717330">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -203,7 +196,7 @@
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getDirMatriz()]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="80" y="195" width="190" height="35" uuid="effb9bbc-e4fa-498f-8ecd-b710b7b0f9bb">
+				<reportElement stretchType="RelativeToBandHeight" x="80" y="166" width="190" height="35" uuid="effb9bbc-e4fa-498f-8ecd-b710b7b0f9bb">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -213,15 +206,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoCompRetencion}.getDirEstablecimiento()]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="220" y="230" width="40" height="20" uuid="c4397904-f2e8-4b21-9c8c-8e6361fc59c9"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{infoCompRetencion}.getContribuyenteEspecial()]]></textFieldExpression>
-			</textField>
 			<textField>
-				<reportElement x="220" y="250" width="40" height="20" uuid="c010ffda-db9d-49b0-a9cc-befab925bb37"/>
+				<reportElement x="220" y="201" width="50" height="20" uuid="c010ffda-db9d-49b0-a9cc-befab925bb37"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
@@ -297,6 +283,21 @@
 					<paragraph leftIndent="20"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoCompRetencion}.getFechaEmision()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="222" width="260" height="20" uuid="8bf63b68-8a69-4f0b-aabf-d1609264bf3e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{infoCompRetencion}.getContribuyenteEspecial()!=null && $F{infoCompRetencion}.getContribuyenteEspecial().length()>0)?("CONTRIBUYENTE ESPECIAL " + $F{infoCompRetencion}.getContribuyenteEspecial()):""
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="242" width="260" height="20" uuid="f509e5cc-e778-4c32-8cf1-46f31aa0cddc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getContribuyenteRimpe()!=null?("CONTRIBUYENTE RÉGIMEN RIMPE"):""]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

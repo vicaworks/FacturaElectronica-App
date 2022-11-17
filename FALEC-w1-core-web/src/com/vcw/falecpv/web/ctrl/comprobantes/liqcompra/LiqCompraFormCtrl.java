@@ -271,6 +271,9 @@ public class LiqCompraFormCtrl extends BaseCtrl {
 		liqCompraSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 //		liqCompraSelected.setContribuyenteespecial("5368");
+		if(establecimientoMain.getEmpresa().isRegimenrimpeToBoolean()) {
+			liqCompraSelected.setRegimenrimpe(1);
+		}
 		liqCompraSelected.setMoneda("DOLAR");
 		liqCompraSelected.setPropina(BigDecimal.ZERO);
 		

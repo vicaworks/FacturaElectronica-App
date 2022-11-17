@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -134,8 +135,16 @@ public class Empresa implements Serializable {
     @Column(name = "fechaemision")
     private Date  fechaemision;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "regimenrimpe", nullable = false)
+    private Integer regimenrimpe;
+    
     @OneToMany(mappedBy = "empresa",fetch = FetchType.LAZY)
     private List<Establecimiento> establecimientoList;
+    
+    @Transient
+    private boolean regimenrimpeToBoolean;
     
     public Empresa() {
     	
@@ -429,6 +438,37 @@ public class Empresa implements Serializable {
 	 */
 	public void setFechaemision(Date fechaemision) {
 		this.fechaemision = fechaemision;
+	}
+
+	/**
+	 * @return the regimenrimpe
+	 */
+	public Integer getRegimenrimpe() {
+		return regimenrimpe;
+	}
+
+	/**
+	 * @param regimenrimpe the regimenrimpe to set
+	 */
+	public void setRegimenrimpe(Integer regimenrimpe) {
+		this.regimenrimpeToBoolean = regimenrimpe == 1?true:false;
+		this.regimenrimpe = regimenrimpe;
+	}
+
+	/**
+	 * @return the regimenrimpeToBoolean
+	 */
+	public boolean isRegimenrimpeToBoolean() {
+		regimenrimpeToBoolean = this.regimenrimpe==1?true:false;
+		return regimenrimpeToBoolean;
+	}
+
+	/**
+	 * @param regimenrimpeToBoolean the regimenrimpeToBoolean to set
+	 */
+	public void setRegimenrimpeToBoolean(boolean regimenrimpeToBoolean) {
+		this.regimenrimpe = regimenrimpeToBoolean?1:0;
+		this.regimenrimpeToBoolean = regimenrimpeToBoolean;
 	}
 
 	

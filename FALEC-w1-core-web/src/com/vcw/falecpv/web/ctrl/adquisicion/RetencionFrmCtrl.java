@@ -424,7 +424,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		retencionSeleccion.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
 		retencionSeleccion.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
-		//retencionSeleccion.setContribuyenteespecial("5368");
+		if(establecimientoMain.getEmpresa().isRegimenrimpeToBoolean()) {
+			retencionSeleccion.setRegimenrimpe(1);
+		}
+		//retencionSeleccion.setContribuyenteespecial("5368");		
 		retencionSeleccion.setMoneda("DOLAR");
 		retencionSeleccion.setPropina(BigDecimal.ZERO);
 		

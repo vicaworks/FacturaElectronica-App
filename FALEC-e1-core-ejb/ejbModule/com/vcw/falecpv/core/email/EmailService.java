@@ -11,7 +11,6 @@ import javax.activation.FileDataSource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.Address;
-import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.Multipart;
 import javax.mail.Session;
@@ -89,11 +88,15 @@ public class EmailService {
 			} else {
 				// si tiene adjuntos se debe armar un correo en varias BodyPart
 				// 1era parte del mensaje que tiene el texto
-				BodyPart messageBodyPart = new MimeBodyPart();
-				messageBodyPart.setContent(correo.getContenido(), correo.isCorreoHtml() ? "text/html" : "text/plain; charset=UTF-8");
+				//BodyPart messageBodyPart = new MimeBodyPart();		
+				
+				
+				MimeBodyPart messageBodyPart = new MimeBodyPart();
+				messageBodyPart.setContent(correo.getContenido(), correo.isCorreoHtml() ? "text/html" : "text/plain; charset=UTF-8");				
 				// se pone en multipart el mensaje en html
-				Multipart multipart = new MimeMultipart();
+				Multipart multipart = new MimeMultipart("mixed");
 				multipart.addBodyPart(messageBodyPart);
+				
 
 				if (correo.getAdjuntos() != null)
 					for (File adj : correo.getAdjuntos()) {

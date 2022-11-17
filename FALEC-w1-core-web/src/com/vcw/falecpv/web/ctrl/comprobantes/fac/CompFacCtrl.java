@@ -703,6 +703,9 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.setTipocomprobante(tipocomprobanteServicio.getByTipoDocumento(genTipoDocumentoEnum));
 		
 		cabecerSelected.setEstablecimiento(establecimientoServicio.consultarByPk(establecimientoMain.getIdestablecimiento()));
+		if(establecimientoMain.getEmpresa().isRegimenrimpeToBoolean()) {
+			cabecerSelected.setRegimenrimpe(1);
+		}
 		cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 		//cabecerSelected.setContribuyenteespecial("5368");

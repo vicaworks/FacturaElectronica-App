@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<notaDebito id="comprobante" version="1.0.0">
+<notaDebito xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/C:/borrar/xsd/3-xsd-4_V1.0.0.xsd" id="comprobante" version="version0">
     <infoTributaria>
         <ambiente>1</ambiente>
         <tipoEmision>1</tipoEmision>
@@ -12,6 +14,8 @@
         <ptoEmi>000</ptoEmi>
         <secuencial>000000000</secuencial>
         <dirMatriz>dirMatriz0</dirMatriz>
+        <agenteRetencion>0</agenteRetencion>
+        <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
     </infoTributaria>
     <infoNotaDebito>
         <fechaEmision>01/01/2000</fechaEmision>
@@ -33,6 +37,7 @@
                 <tarifa>49.50</tarifa>
                 <baseImponible>50.00</baseImponible>
                 <valor>50.00</valor>
+                <valorDevolucionIva>50.00</valorDevolucionIva>
             </impuesto>
             <impuesto>
                 <codigo>2</codigo>
@@ -40,6 +45,7 @@
                 <tarifa>49.50</tarifa>
                 <baseImponible>50.00</baseImponible>
                 <valor>50.00</valor>
+                <valorDevolucionIva>50.00</valorDevolucionIva>
             </impuesto>
         </impuestos>
         <compensaciones>
@@ -94,6 +100,11 @@
             <valor>50.00</valor>
         </motivo>
     </motivos>
+    <maquinaFiscal>
+        <marca>marca0</marca>
+        <modelo>modelo0</modelo>
+        <serie>serie0</serie>
+    </maquinaFiscal>
     <infoAdicional>
         <campoAdicional nombre="nombre0">campoAdicional0</campoAdicional>
         <campoAdicional nombre="nombre1">campoAdicional1</campoAdicional>

@@ -125,16 +125,17 @@
 		        			var="c"
 		        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
 							styleClass="pvEnvioCorreosDT Fs12"
-							rowKey="#{c.value}">
+							rowKey="#{c.value}"
+							rowIndexVar="idx">
 							<p:column headerText="EMAIL" style="width:90%;">
-								<p:inputText id="intEnCorreo" maxlength="200" value="#{c.label}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO">
+								<p:inputText id="intEnCorreo" maxlength="200" value="#{c.label}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO" placeholder="Para varios emails se debe separar por coma (,).">
 									<f:validator validatorId="emailSelectItemValidator"/>	
 									<p:ajax event="valueChange" update="@parent:@parent"/>								
 								</p:inputText>
 								<p:message for="intEnCorreo"/>
 							</p:column>
 							<p:column headerText=" " style="width:10%;" styleClass="TexAlCenter">
-								<p:commandLink  action="#{enviarDocCtrl.eliminar()}" process="@this :formEnvioDoc:pvEnvioCorreosDT" update=":formEnvioDoc:msgFormEnvioDoc :formEnvioDoc:pvEnvioCorreosDT">
+								<p:commandLink  action="#{enviarDocCtrl.eliminar(idx)}" process="@this" update=":formEnvioDoc:msgFormEnvioDoc :formEnvioDoc:pvEnvioCorreosDT">
 									<f:setPropertyActionListener value="#{c}" target="#{enviarDocCtrl.correoSelected}"/>
 									<i class="fa fa-trash-o Fs20 text-gray-600"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

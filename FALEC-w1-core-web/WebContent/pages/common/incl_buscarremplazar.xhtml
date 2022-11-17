@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightDTRemplazar {
+			
+		}
+		
+	</style>
+	
+	<p:dialog header="Buscar remplzar" widgetVar="wModalFacRemplazar" modal="true" responsive="true" width="550px" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="frmFacRemplazar">
+			
+			<div class="formgroup-inline">
+			
+				<p:commandButton id="cmdRemplazar"
+					value="REMPLAZAR" icon="fa fa-check" styleClass="ui-button-success mr-1 min-width-100" update="@form #{buscarRemplazarCtrl.updateView}"
+					action="#{buscarRemplazarCtrl.remplazar()}"
+					process="@form"/>
+					
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
+					onclick="PF('wModalFacRemplazar').hide()" immediate="true"  
+					/>
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmFacRemplazar" id="msgFacRemplazar"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="w-full overflow-auto heightDTRemplazar contenedorFormulario">
+			
+				
+				<div class="grid align-content-top " style="width:99%!important;">
+					
+					<div class="col-12 my-2 Fs12">						
+						Buscar y remplazar texto en cada descripción de de cada ítem del detalle del comprobante.
+					</div>
+					
+					<div class="col-12 field">
+				        <label class="requerido">TEXTO A BUSCAR</label>
+				        <p:inputText id="intBrCadenaBuscar" value="#{buscarRemplazarCtrl.cadenaBuscar}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" tabindex="0">
+						</p:inputText>
+						<p:message for="intBrCadenaBuscar" styleClass="block"/>
+				    </div>
+				    
+				    <div class="col-12 field">
+				        <label class="requerido">TEXTO REMPLAZAR</label>
+				        <p:inputText id="intBrCadenaRemplazar" value="#{buscarRemplazarCtrl.cadenaRemplazar}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" tabindex="1">
+						</p:inputText>
+						<p:message for="intBrCadenaRemplazar" styleClass="block"/>
+				    </div>
+					
+					<div class="col-12 flex align-items-end">
+				        <p:selectBooleanCheckbox value="#{buscarRemplazarCtrl.palabraCompleta}" styleClass="mr-1" tabindex="2"/>
+						<label class="Fs12">Palabra completa</label>
+				    </div>
+				
+				</div>	
+					
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>  
+    
+
+</ui:composition>

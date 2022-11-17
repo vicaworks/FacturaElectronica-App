@@ -53,14 +53,14 @@
 					<i class="fa fa-plus Fs16">
 					</i>
 					<f:setPropertyActionListener value="ADQUISICION" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
 				</p:commandLink>								
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(adquisicionFrmCtrl.adquisicionSelected.cliente!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
 					<i class="fa fa-edit Fs16">
 					</i>
 					<f:setPropertyActionListener value="ADQUISICION" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
 				</p:commandLink>	
 			</div>

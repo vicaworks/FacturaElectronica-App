@@ -119,7 +119,7 @@ public class ComprobanteUtilServicio {
 			if(propina) {
 				total = new XmlTotalComprobante();
 				total.setLabel("PROPINA");
-				total.setValor(BigDecimal.valueOf(factura.getInfoFactura().getPropina()));
+				total.setValor(factura.getInfoFactura().getPropina()!=null?BigDecimal.valueOf(factura.getInfoFactura().getPropina()):BigDecimal.ZERO);
 				totales.add(total);
 			}
 			

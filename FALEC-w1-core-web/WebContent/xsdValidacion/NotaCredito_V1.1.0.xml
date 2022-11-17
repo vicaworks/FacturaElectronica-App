@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<notaCredito id="comprobante" version="1.0.0">
+<notaCredito xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/C:/borrar/xsd/11-xsd-3_V1.1.0.xsd" id="comprobante" version="version0">
     <infoTributaria>
         <ambiente>1</ambiente>
         <tipoEmision>1</tipoEmision>
@@ -12,6 +14,8 @@
         <ptoEmi>000</ptoEmi>
         <secuencial>000000000</secuencial>
         <dirMatriz>dirMatriz0</dirMatriz>
+        <agenteRetencion>0</agenteRetencion>
+        <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
     </infoTributaria>
     <infoNotaCredito>
         <fechaEmision>01/01/2000</fechaEmision>
@@ -46,12 +50,14 @@
                 <codigoPorcentaje>0</codigoPorcentaje>
                 <baseImponible>50.00</baseImponible>
                 <valor>50.00</valor>
+                <valorDevolucionIva>50.00</valorDevolucionIva>
             </totalImpuesto>
             <totalImpuesto>
                 <codigo>2</codigo>
                 <codigoPorcentaje>0</codigoPorcentaje>
                 <baseImponible>50.00</baseImponible>
                 <valor>50.00</valor>
+                <valorDevolucionIva>50.00</valorDevolucionIva>
             </totalImpuesto>
         </totalConImpuestos>
         <motivo>motivo0</motivo>
@@ -61,8 +67,8 @@
             <codigoInterno>codigoInterno0</codigoInterno>
             <codigoAdicional>codigoAdicional0</codigoAdicional>
             <descripcion>descripcion0</descripcion>
-            <cantidad>50.00</cantidad>
-            <precioUnitario>50.00</precioUnitario>
+            <cantidad>50.000000</cantidad>
+            <precioUnitario>50.000000</precioUnitario>
             <descuento>50.00</descuento>
             <precioTotalSinImpuesto>50.00</precioTotalSinImpuesto>
             <detallesAdicionales>
@@ -90,8 +96,8 @@
             <codigoInterno>codigoInterno1</codigoInterno>
             <codigoAdicional>codigoAdicional1</codigoAdicional>
             <descripcion>descripcion1</descripcion>
-            <cantidad>50.00</cantidad>
-            <precioUnitario>50.00</precioUnitario>
+            <cantidad>50.000000</cantidad>
+            <precioUnitario>50.000000</precioUnitario>
             <descuento>50.00</descuento>
             <precioTotalSinImpuesto>50.00</precioTotalSinImpuesto>
             <detallesAdicionales>
@@ -116,6 +122,11 @@
             </impuestos>
         </detalle>
     </detalles>
+    <maquinaFiscal>
+        <marca>marca0</marca>
+        <modelo>modelo0</modelo>
+        <serie>serie0</serie>
+    </maquinaFiscal>
     <infoAdicional>
         <campoAdicional nombre="nombre4">campoAdicional0</campoAdicional>
         <campoAdicional nombre="nombre5">campoAdicional1</campoAdicional>

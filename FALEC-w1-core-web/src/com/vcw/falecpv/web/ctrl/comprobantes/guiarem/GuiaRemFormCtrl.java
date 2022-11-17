@@ -258,6 +258,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 		determinarPeriodoFiscal();
 //		guiaRemisionSelected.setContribuyenteespecial("5368");
+		if(establecimientoMain.getEmpresa().isRegimenrimpeToBoolean()) {
+			guiaRemisionSelected.setRegimenrimpe(1);
+		}
 		guiaRemisionSelected.setMoneda("DOLAR");
 		guiaRemisionSelected.setFechaemision(guiaRemisionSelected.getFechainiciotransporte());
 		guiaRemisionSelected.setPropina(BigDecimal.ZERO);

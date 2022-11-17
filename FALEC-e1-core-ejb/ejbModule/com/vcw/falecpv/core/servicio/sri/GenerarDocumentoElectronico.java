@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
@@ -95,6 +96,10 @@ public abstract class GenerarDocumentoElectronico {
 		infoTributaria.setPtoEmi(ComprobanteHelper.getPuntoEmision(cabecera.getNumdocumento()));
 		infoTributaria.setSecuencial(cabecera.getSecuencial());
 		infoTributaria.setDirMatriz(cabecera.getEstablecimiento().getEmpresa().getDireccionmatriz());
+		infoTributaria.setContribuyenteRimpe(null);
+		if(cabecera.getRegimenrimpe() == 1) {
+			infoTributaria.setContribuyenteRimpe(AppConfiguracion.getString("contribuyente.rimpe"));
+		}
 		
 		return infoTributaria;
 	}

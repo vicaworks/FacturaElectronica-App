@@ -14,6 +14,7 @@ import javax.inject.Named;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
@@ -91,15 +92,18 @@ public class EnviarDocCtrl extends BaseCtrl {
 		cabeceraSelected = cabeceraServicio.consultarByPk(idCabecera);
 		infoadicionalList = null;
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idCabecera);
-//		infoadicionalList.stream().forEach(i->{
-//			if(i.getValor().contains("@")) {
-//				agregarCorreoList(i.getValor());
-//			}
-//		});
 		// cliente
 		if(cabeceraSelected.getCliente()!=null && cabeceraSelected.getCliente().getCorreoelectronico()!=null) {
 			agregarCorreoList(cabeceraSelected.getCliente().getCorreoelectronico());
 		}
+		// subject por defecto
+		subject = msg.getString("label.comprobanteelectronico.subject", 
+				new Object[] {
+						cabeceraSelected.getTipocomprobante().getComprobante(),
+						getFormatoNumDocumento(cabeceraSelected.getNumdocumento()),
+						FechaUtil.formatoFecha(cabeceraSelected.getFechaemision())
+						}
+		);
 	}
 	
 	private void agregarCorreoList(String emails) {
@@ -112,10 +116,9 @@ public class EnviarDocCtrl extends BaseCtrl {
 		}
 	}
 
-	@Override
-	public void eliminar() {
+	public void eliminar(Integer idx) {
 		try {
-			correoList.remove(correoSelected);
+			emailList.remove(idx.intValue());
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
@@ -145,8 +148,6 @@ public class EnviarDocCtrl extends BaseCtrl {
 				AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "NO EXISTE EMAILS.");
 				return;
 			}
-			
-			System.out.println(emailList);
 			correoList = new ArrayList<>();
 			for (SelectItem i : emailList) {
 				String[] emails = i.getLabel().split(",");
@@ -158,7 +159,6 @@ public class EnviarDocCtrl extends BaseCtrl {
 				}
 				
 			}
-//			System.out.println(correoList);
 			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, null, correoList,false);
 			actualizarPantalla();
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "ENVIADO CORRECTAMENTE.");

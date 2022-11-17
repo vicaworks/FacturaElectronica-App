@@ -113,6 +113,7 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	public void buscar() {
 		try {
 			consultarTipoComprobante();
+			System.out.println(getTipocomprobanteList());
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();

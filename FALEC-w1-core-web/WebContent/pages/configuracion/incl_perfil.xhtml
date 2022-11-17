@@ -62,6 +62,15 @@
 					</div>
 					
 					<div class="col-12">
+						<h:outputText value="Contribuyente régimen RIMPE " styleClass="text-gray-900 font-medium block"/>
+						<p:selectOneMenu id="somRegimenRimpe" value="#{empresaCtrl.empresaSelected.regimenrimpe}" styleClass="mt-1">
+							<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+							<f:selectItem itemLabel="NO" itemValue="#{0}" />
+						</p:selectOneMenu>
+						<p:message for="somRegimenRimpe"/>
+					</div>
+					
+					<div class="col-12">
 						<h:outputText value="Es Exportador	 " styleClass="text-gray-900 font-medium block"/>
 						<p:selectOneMenu id="somExportador" value="#{empresaCtrl.empresaSelected.exportador}" styleClass="mt-1">
 							<f:selectItem itemLabel="SI" itemValue="SI"/>

@@ -44,8 +44,9 @@ public class XmlInfoTributaria implements Serializable {
 	@XmlElement
 	private String secuencial;
 	@XmlElement
-	private String dirMatriz;
-	
+	private String dirMatriz;	
+	@XmlElement
+	private String contribuyenteRimpe;
 	/**
 	 * 
 	 */
@@ -205,6 +206,20 @@ public class XmlInfoTributaria implements Serializable {
 	 */
 	public void setDirMatriz(String dirMatriz) {
 		this.dirMatriz = dirMatriz;
+	}
+
+	/**
+	 * @return the contribuyenteRimpe
+	 */
+	public String getContribuyenteRimpe() {
+		return contribuyenteRimpe;
+	}
+
+	/**
+	 * @param contribuyenteRimpe the contribuyenteRimpe to set
+	 */
+	public void setContribuyenteRimpe(String contribuyenteRimpe) {
+		this.contribuyenteRimpe = contribuyenteRimpe;
 	}
 
 }

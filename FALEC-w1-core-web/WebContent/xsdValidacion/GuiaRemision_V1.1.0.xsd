@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.1" encoding="UTF-8"?>
 <!-- edited with XMLSPY v5 rel. 3 U (http://www.xmlspy.com) by ALEJANDRO SUBIA (SERVICIO DE RENTAS INTERNAS) -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:ns1="http://www.w3.org/2000/09/xmldsig#" elementFormDefault="qualified"
@@ -167,7 +167,7 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="numAutDocSustento">
 		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[0-9]{10,37}"/>
+			<xsd:pattern value="[0-9]{10,49}"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="fechaEmisionDocSustento">
@@ -221,6 +221,23 @@
 				value="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/20[0-9][0-9]"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="cadenaTreinta">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="30"/>
+			<xsd:pattern value="[^\n]*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="maquinaFiscal">
+		<xsd:annotation>
+			<xsd:documentation>Contiene la informacion de las maquinas fiscales</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="marca"  minOccurs="1" type="cadenaTreinta"/>
+			<xsd:element name="modelo"  minOccurs="1" type="cadenaTreinta"/>
+			<xsd:element name="serie"  minOccurs="1" type="cadenaTreinta"/>
+		</xsd:sequence>
+	</xsd:complexType>
 	<xsd:complexType name="infoTributaria">
 		<xsd:annotation>
 			<xsd:documentation>Contiene la informacion tributaria generica</xsd:documentation>
@@ -237,7 +254,9 @@
 			<xsd:element name="ptoEmi" type="puntoEmision"/>
 			<xsd:element name="secuencial" type="secuencial"/>
 			<!-- <xsd:element name="docAduaneroUnico" type="numeroRucType" minOccurs="0"/> -->
-			<xsd:element name="dirMatriz" type="dirMatriz"/>
+			<xsd:element name="dirMatriz" type="dirMatriz"/>			
+			<xsd:element name="agenteRetencion" minOccurs="0"	type="agenteRetencion"/>
+			<xsd:element name="contribuyenteRimpe" minOccurs="0"	type="contribuyenteRimpe"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:simpleType name="razonSocial">
@@ -279,6 +298,17 @@
 			<xsd:enumeration value="SI"/>
 			<xsd:enumeration value="NO"/>
 		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="agenteRetencion">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]+"/>
+			<xsd:maxLength value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="contribuyenteRimpe">
+		<xsd:restriction base="xsd:string">
+		  <xsd:pattern value="CONTRIBUYENTE RÉGIMEN RIMPE"/>
+	    </xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="nombreComercial">
 		<xsd:restriction base="xsd:string">
@@ -373,8 +403,8 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="cantidad">
 		<xsd:restriction base="xsd:decimal">
-			<xsd:totalDigits value="14"/>
-			<xsd:fractionDigits value="2"/>
+			<xsd:totalDigits value="18"/>
+			<xsd:fractionDigits value="6"/>
 			<xsd:minInclusive value="0"/>
 		</xsd:restriction>
 	</xsd:simpleType>
@@ -398,7 +428,7 @@
 			<xsd:element name="razonSocialDestinatario" type="razonSocialDestinatario"/>
 			<xsd:element name="dirDestinatario" type="dirDestinatario"/>
 			<xsd:element name="motivoTraslado" type="motivoTraslado"/>
-			<xsd:element name="docAduaneroUnico" minOccurs="0" type="docAduaneroUnico"/> 
+			<xsd:element name="docAduaneroUnico" minOccurs="0" type="docAduaneroUnico"/>
 			<xsd:element name="codEstabDestino" minOccurs="0" type="codEstbDestino"/>
 			<xsd:element name="ruta" minOccurs="0" type="ruta"/>
 			<xsd:element name="codDocSustento" minOccurs="0" type="codDocSustento"/>
@@ -445,6 +475,7 @@
 						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
+				<xsd:element name="maquinaFiscal" minOccurs="0"  maxOccurs="1" type="maquinaFiscal"/>
 				<xsd:element name="infoAdicional" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence maxOccurs="1">
@@ -459,13 +490,7 @@
 							</xsd:element>
 						</xsd:sequence>
 					</xsd:complexType>
-				</xsd:element>
-				<!-- <xsd:element ref="ns1:Signature" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation xml:lang="en"> Set of data associated with the invoice which guarantee the authorship and integrity of the message. It is defined as optional to ease the validation and transmission of the file. However, this block of electronic signature must be completed in order for an electronic invoice to be considered legally valid before third parties.</xsd:documentation>
-						<xsd:documentation xml:lang="es"> Conjunto de datos asociados a la factura que garantizarán la autoría y la integridad del mensaje. Se define como opcional para facilitar la verificación y el tránsito del fichero. No obstante, debe cumplimentarse este bloque de firma electrónica para que se considere una factura electrónica válida legalmente frente a terceros.</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element> -->
+				</xsd:element>				
 			</xsd:sequence>
 			<xsd:attribute name="id" use="required">
 				<xsd:simpleType>
@@ -496,16 +521,12 @@
 										<xsd:restriction base="xsd:string">
 											<xsd:minLength value="1"/>
 											<xsd:maxLength value="300"/>
-											<xsd:pattern
-												value="[^\n]*"/>
 										</xsd:restriction>
 									</xsd:simpleType>
 								</xsd:attribute>
 								<xsd:attribute name="valor" use="required">
 									<xsd:simpleType>
 										<xsd:restriction base="xsd:string">
-											<xsd:pattern
-												value="[^\n]*"/>
 											<xsd:minLength value="1"/>
 											<xsd:maxLength value="300"/>
 										</xsd:restriction>
@@ -522,14 +543,12 @@
 		<xsd:restriction base="xsd:string">
 			<xsd:minLength value="1"/>
 			<xsd:maxLength value="300"/>
-			<xsd:pattern value="[^\n]*"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="campoAdicional">
 		<xsd:restriction base="xsd:string">
 			<xsd:minLength value="1"/>
 			<xsd:maxLength value="300"/>
-			<xsd:pattern value="[^\n]*"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="tipoIdentificacionTransportista">

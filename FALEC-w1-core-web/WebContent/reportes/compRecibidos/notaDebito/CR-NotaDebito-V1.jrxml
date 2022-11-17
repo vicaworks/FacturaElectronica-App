@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CR-NotaDebito-V1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f59a1632-7b6a-4892-ba9c-c9c03953a8d2">
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["/"]]></defaultValueExpression>
@@ -102,17 +102,17 @@
 				<text><![CDATA[NORMAL]]></text>
 			</staticText>
 			<rectangle radius="8">
-				<reportElement x="0" y="90" width="270" height="181" uuid="ad968bb7-9ab1-40a8-8ba6-53f2350f7c6f"/>
+				<reportElement x="0" y="61" width="270" height="209" uuid="ad968bb7-9ab1-40a8-8ba6-53f2350f7c6f"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="10" y="160" width="70" height="35" uuid="f99a98d7-6180-46e1-833c-f8be80b9235e"/>
+				<reportElement x="10" y="131" width="70" height="35" uuid="f99a98d7-6180-46e1-833c-f8be80b9235e"/>
 				<textElement>
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[DIRECCIÓN MATRIZ :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="195" width="70" height="35" uuid="29f290f7-e23e-41b6-8ff4-87ca3d2ffa5c">
+				<reportElement x="10" y="166" width="70" height="35" uuid="29f290f7-e23e-41b6-8ff4-87ca3d2ffa5c">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<textElement>
@@ -122,14 +122,7 @@
 				<text><![CDATA[DIRECCIÓN SUCURSAL :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="230" width="210" height="20" uuid="bd803e9a-90d6-4802-b916-59ae1b8642bb"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="10"/>
-				</textElement>
-				<text><![CDATA[CONTRIBUYENTE ESPECIAL :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="250" width="210" height="20" uuid="699b8459-2ae2-467c-9205-f333ef106468"/>
+				<reportElement x="10" y="202" width="210" height="20" uuid="699b8459-2ae2-467c-9205-f333ef106468"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
@@ -178,21 +171,21 @@
 				<textFieldExpression><![CDATA[$F{numeroAutorizacion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="100" width="250" height="40" uuid="ed561ce6-7b28-4091-8579-5984bb7d64bd"/>
+				<reportElement x="10" y="71" width="250" height="40" uuid="ed561ce6-7b28-4091-8579-5984bb7d64bd"/>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getRazonSocial()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="140" width="250" height="20" uuid="a10218ca-2f33-4d2f-b101-61c7206e4efa"/>
+				<reportElement x="10" y="111" width="250" height="20" uuid="a10218ca-2f33-4d2f-b101-61c7206e4efa"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getNombreComercial()]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement stretchType="ContainerHeight" x="80" y="160" width="190" height="35" uuid="58cdae62-34cd-4534-934c-f54a9e7411f9">
+				<reportElement stretchType="ContainerHeight" x="80" y="131" width="190" height="35" uuid="58cdae62-34cd-4534-934c-f54a9e7411f9">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -203,7 +196,7 @@
 				<textFieldExpression><![CDATA[$F{infoTributaria}.getDirMatriz()]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement stretchType="ContainerHeight" x="80" y="195" width="190" height="35" uuid="91f3015c-574b-49b5-95fc-20a99fd747cc">
+				<reportElement stretchType="ContainerHeight" x="80" y="166" width="190" height="35" uuid="91f3015c-574b-49b5-95fc-20a99fd747cc">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -213,15 +206,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{infoNotaDebito}.getDirEstablecimiento()]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="220" y="230" width="40" height="20" uuid="badd903d-1473-4f2d-aa4b-9a3d1f5feb27"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{infoNotaDebito}.getContribuyenteEspecial()]]></textFieldExpression>
-			</textField>
 			<textField>
-				<reportElement x="220" y="250" width="40" height="20" uuid="a85fff63-f02b-4a4a-80ac-772c106fba66"/>
+				<reportElement x="220" y="202" width="40" height="20" uuid="a85fff63-f02b-4a4a-80ac-772c106fba66"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
@@ -335,6 +321,21 @@
 					<jr:codeExpression><![CDATA[$F{infoTributaria}.getClaveAcceso()]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
+			<textField>
+				<reportElement x="10" y="223" width="260" height="20" uuid="4fef6a83-a40c-497b-92eb-44dae5a005b3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{infoNotaDebito}.getContribuyenteEspecial()!=null && $F{infoNotaDebito}.getContribuyenteEspecial().length()>0)?("CONTRIBUYENTE ESPECIAL " + $F{infoNotaDebito}.getContribuyenteEspecial()):""
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="243" width="260" height="20" uuid="5d2f0794-b104-4b85-9bc3-4cc1f50b86c8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infoTributaria}.getContribuyenteRimpe()!=null?("CONTRIBUYENTE RÉGIMEN RIMPE"):""]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
