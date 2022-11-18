@@ -3,14 +3,17 @@
  */
 package com.vcw.falecpv.web.common;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
+import org.primefaces.event.FileUploadEvent;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
@@ -59,13 +62,14 @@ public class EnviarDocCtrl extends BaseCtrl {
 	private String callModule;
 	private String callForm;
 	private String updateView;
-	private List<String> correoList;
 	private List<Infoadicional> infoadicionalList;
 	private String correoSelected;
 	private Map<String, byte[]> adjuntosMap;
 	private String subject;
-	private List<SelectItem> emailList;
 	private String estadoComprobante;
+	private String to;
+	private String cc;
+	private String contenido;
 	
 	
 
@@ -77,8 +81,10 @@ public class EnviarDocCtrl extends BaseCtrl {
 	
 	public void cargarFormulario() {
 		try {
-			correoList = new ArrayList<>();
-			emailList = new ArrayList<>();
+			to = null;
+			cc = null;
+			contenido = null;
+			adjuntosMap = new HashMap<>();
 			consultar();
 			AppJsfUtil.showModalRender("dlEnvioDoc", "formEnvioDoc");
 		} catch (Exception e) {
@@ -94,7 +100,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idCabecera);
 		// cliente
 		if(cabeceraSelected.getCliente()!=null && cabeceraSelected.getCliente().getCorreoelectronico()!=null) {
-			agregarCorreoList(cabeceraSelected.getCliente().getCorreoelectronico());
+			to = cabeceraSelected.getCliente().getCorreoelectronico();
 		}
 		// subject por defecto
 		subject = msg.getString("label.comprobanteelectronico.subject", 
@@ -106,60 +112,36 @@ public class EnviarDocCtrl extends BaseCtrl {
 		);
 	}
 	
-	private void agregarCorreoList(String emails) {
-		String mails[] = emails.split(",");
-		for (int i = 0; i < mails.length; i++) {
-			String valor = mails[i];
-			if(correoList.stream().filter(x->x.equals(valor)).count()==0) {
-				correoList.add(valor);
-			}
-		}
-	}
-
-	public void eliminar(Integer idx) {
-		try {
-			emailList.remove(idx.intValue());
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-
-	@Override
-	public void nuevo() {
-		try {
-			correoList.add("");
-			
-			int cont = 0; 
-			for (SelectItem i : emailList) {
-				i.setValue("M" + (cont++));
-			}
-			emailList.add(new SelectItem("M" + (emailList.size()+1), null));
-			AppJsfUtil.executeJavaScript("PrimeFaces.focus('formEnvioDoc:pvEnvioCorreosDT:" + (correoList.size()-1) + ":intEnCorreo');");
-		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
-		}
-	}
-
+	
+	
 	public void enviarCorreo() {
 		try {
-			if(emailList.size()==0) {
+			if(to==null) {
 				AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "NO EXISTE EMAILS.");
 				return;
 			}
-			correoList = new ArrayList<>();
-			for (SelectItem i : emailList) {
-				String[] emails = i.getLabel().split(",");
-				for (String e : emails) {
-					if(!correoList.contains(e)) {
-						correoList.add(e);
-					}
-					
-				}
-				
+			List<String> correoList = new ArrayList<>();
+			
+			String[] emails = to.split(",");
+			for (String e : emails) {
+				if(!correoList.contains(e)) {
+					correoList.add(e);
+				}				
 			}
-			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, null, correoList,false);
+			
+			List<String> correoCcList = new ArrayList<>();
+			if(cc != null && cc.trim().length()>0) {
+				emails = cc.split(",");
+				for (String e : emails) {
+					if(!correoCcList.contains(e)) {						
+						if(!correoCcList.contains(e)) {
+							correoCcList.add(e);							
+						}						
+					}					
+				}				
+			}
+				
+			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, contenido, correoList,false);
 			actualizarPantalla();
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "ENVIADO CORRECTAMENTE.");
 			
@@ -168,6 +150,30 @@ public class EnviarDocCtrl extends BaseCtrl {
 			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
+	
+	
+	public void handleUpload(FileUploadEvent event) throws IOException {
+		
+		if(adjuntosMap.containsKey(event.getFile().getFileName())) {
+			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "YA EXISTE EL ARCHIVO : " + event.getFile().getFileName());
+			return;			
+		}
+		// agrega el file a la lista
+		
+		adjuntosMap.put(event.getFile().getFileName(), event.getFile().getContent());		
+	}
+	
+	public void eliminarAdjuntos(String nombre) {
+		try {
+			if(!adjuntosMap.isEmpty()) {
+				adjuntosMap.remove(nombre);				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	
 	public void firmarEnviarCorreo() {
 		try {
@@ -291,20 +297,6 @@ public class EnviarDocCtrl extends BaseCtrl {
 	}
 
 	/**
-	 * @return the correoList
-	 */
-	public List<String> getCorreoList() {
-		return correoList;
-	}
-
-	/**
-	 * @param correoList the correoList to set
-	 */
-	public void setCorreoList(List<String> correoList) {
-		this.correoList = correoList;
-	}
-
-	/**
 	 * @return the infoadicionalList
 	 */
 	public List<Infoadicional> getInfoadicionalList() {
@@ -359,21 +351,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
-	/**
-	 * @return the emailList
-	 */
-	public List<SelectItem> getEmailList() {
-		return emailList;
-	}
-
-	/**
-	 * @param emailList the emailList to set
-	 */
-	public void setEmailList(List<SelectItem> emailList) {
-		this.emailList = emailList;
-	}
-
+	
 	/**
 	 * @return the estadoComprobante
 	 */
@@ -388,4 +366,46 @@ public class EnviarDocCtrl extends BaseCtrl {
 		this.estadoComprobante = estadoComprobante;
 	}
 
+	/**
+	 * @return the to
+	 */
+	public String getTo() {
+		return to;
+	}
+
+	/**
+	 * @param to the to to set
+	 */
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	/**
+	 * @return the cc
+	 */
+	public String getCc() {
+		return cc;
+	}
+
+	/**
+	 * @param cc the cc to set
+	 */
+	public void setCc(String cc) {
+		this.cc = cc;
+	}
+
+	/**
+	 * @return the contenido
+	 */
+	public String getContenido() {
+		return contenido;
+	}
+
+	/**
+	 * @param contenido the contenido to set
+	 */
+	public void setContenido(String contenido) {
+		this.contenido = contenido;
+	}
+	
 }

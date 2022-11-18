@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<style type="text/css">
+		.heightFormEnvioDoc {
+				/* height: 550px; */
+		}
+		.pvEnvioCorreosDT .ui-datatable-scrollable-body{
+			min-height: 25vh !important;
+			max-height: 25vh !important;
+		}
+		
+	</style>
+	
+	
+	<p:dialog header="Enviar Documento #{msg['label.electronico']}" widgetVar="dlEnvioDoc" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+		
+		<h:form id="formEnvioDoc">
+			
+			<div class="formgroup-inline">
+			
+				<p:commandButton id="cmdEnviarEmail"
+					value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="ui-button-outlined mr-1 min-width-100" update="@form #{enviarDocCtrl.updateView}"
+					action="#{enviarDocCtrl.enviarCorreo()}"
+					process="@form" disabled="#{appSessionCtrl.isEnviarEmail(enviarDocCtrl.estadoComprobante)}"/>
+					
+				<p:commandButton id="cmdEnviarFirmarEmail"
+					value="FIRMAR Y ENVIAR" icon="fa fa-envelope" styleClass="ui-button-outlined mr-1 min-width-100" process="@form" update="@form #{enviarDocCtrl.updateView}"
+					action="#{enviarDocCtrl.firmarEnviarCorreo()}"
+					/>
+					
+				<p:commandButton id="cmdCerrar"
+					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
+					onclick="PF('dlEnvioDoc').hide()" immediate="true"  
+					/>
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formEnvioDoc" id="msgFormEnvioDoc"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<div class="w-full overflow-auto heightFormEnvioDoc contenedorFormulario mt-2">
+				
+				<div class="grid align-content-top " style="width:99%!important;">
+					
+					<!-- datos de cabecera -->
+					<div class="col-12 md:col-5">
+						
+						<div class="Wid100 titulo">Datos Documento #{msg['label.electronico']}</div>
+						
+						
+						<div class="field">
+					        <label class="requerido">ESTABLECIMIENTO</label>
+					        <p:inputText value="#{enviarDocCtrl.cabeceraSelected.establecimiento.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+							</p:inputText>
+					    </div>
+						<div class="field">
+							<label class="requerido">TIPO COMPROBANTE</label>
+							<p:inputText value="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.comprobante}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+							</p:inputText>
+						</div>
+						<div class="field">
+							<label class="requerido">CLAVE ACCESO</label>
+							<p:inputText value="#{enviarDocCtrl.cabeceraSelected.claveacceso}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+							</p:inputText>
+						</div>
+						<div class="field">
+							<label class="requerido">FECHA #{msg['label.emision']}</label>
+							<p:inputText value="#{enviarDocCtrl.cabeceraSelected.fechaemision}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+								<f:convertDateTime pattern="ddd dd/MM/yyyy"/>
+							</p:inputText>
+						</div>
+						<div class="field">
+							<label class="requerido">R.U.C. / C.I.</label>
+							<p:inputText value="#{enviarDocCtrl.cabeceraSelected.transportista!=null?enviarDocCtrl.cabeceraSelected.transportista.identificacion:enviarDocCtrl.cabeceraSelected.cliente.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+							</p:inputText>
+						</div>
+						<div class="field">
+							<label class="requerido">#{enviarDocCtrl.cabeceraSelected.transportista!=null?'TRANSPORTISTA':appSessionCtrl.getLabelComprobante(enviarDocCtrl.cabeceraSelected.tipocomprobante.identificador)}</label>
+							<p:inputText value="#{enviarDocCtrl.cabeceraSelected.transportista!=null?enviarDocCtrl.cabeceraSelected.transportista.razonsocial:enviarDocCtrl.cabeceraSelected.cliente.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+							</p:inputText>
+						</div>
+						<div class="field">
+							<label class="requerido">ESTADO</label>
+							<p:inputText value="#{enviarDocCtrl.cabeceraSelected.estado}" required="true" requiredMessage="REQUERIDO" styleClass="disable-color Wid100" readonly="true">
+							</p:inputText>
+						</div>
+						<div class="field">
+							<label class="requerido mb-2">NÚMERO DE COMPROBANTE</label>
+							<span class="block Fs20 text-black font-bold">#{compFacCtrl.getFormatoNumDocumento(enviarDocCtrl.cabeceraSelected.numdocumento)}</span>							
+						</div>
+												
+					</div>
+					
+					<!-- emails -->
+					<div class="col-12 md:col-7">
+						
+						<div class="Wid100 titulo">Datos email</div>
+						<div class="field">
+							<label class="requerido">ASUNTO</label>
+							<p:inputText id="intAsunto" value="#{enviarDocCtrl.subject}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="500" placeholder="ASUNTO DEL EMAIL, EN CASO DE PERSONALIZAR">
+							</p:inputText>
+						</div>
+						
+						<div class="EmptyBox5"/>
+						<div class="grid grid-nogutter Fs12" style="color:#515A5A;">
+							<i class="fa fa-ellipsis-v Fs14 mr-2"></i>
+							<p:commandLink id="cmlDtFacEmitidasSeleccion" process="@this" update=":formEnvioDoc:pvEnvioCorreosDT" 
+								action="#{enviarDocCtrl.nuevo()}">
+								<i class="fa fa-plus mr-1 text-gray-800"></i>
+								<span class="text-gray-800">Agregar</span>
+							</p:commandLink>
+						</div>
+						<div class="EmptyBox5"/>												
+						<p:dataTable id="pvEnvioCorreosDT"
+		        			scrollable="true"
+		        			value="#{enviarDocCtrl.emailList}"
+		        			var="c"
+		        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="pvEnvioCorreosDT Fs12"
+							rowKey="#{c.value}"
+							rowIndexVar="idx">
+							<p:column headerText="EMAIL" style="width:90%;">
+								<p:inputText id="intEnCorreo" maxlength="200" value="#{c.label}" styleClass="Wid100" required="true" requiredMessage="REQUERIDO" placeholder="Para varios emails se debe separar por coma (,).">
+									<f:validator validatorId="emailSelectItemValidator"/>	
+									<p:ajax event="valueChange" update="@parent:@parent"/>								
+								</p:inputText>
+								<p:message for="intEnCorreo"/>
+							</p:column>
+							<p:column headerText=" " style="width:10%;" styleClass="TexAlCenter">
+								<p:commandLink  action="#{enviarDocCtrl.eliminar(idx)}" process="@this" update=":formEnvioDoc:msgFormEnvioDoc :formEnvioDoc:pvEnvioCorreosDT">
+									<f:setPropertyActionListener value="#{c}" target="#{enviarDocCtrl.correoSelected}"/>
+									<i class="fa fa-trash-o Fs20 text-gray-600"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+						
+					</div>
+					
+				</div>
+			
+			</div>			
+			
+		</h:form>
+	
+	</p:dialog>
+	
+
+</ui:composition>

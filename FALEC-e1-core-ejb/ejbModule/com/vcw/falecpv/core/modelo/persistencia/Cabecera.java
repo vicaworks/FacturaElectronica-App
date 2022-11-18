@@ -332,6 +332,11 @@ public class Cabecera implements Serializable {
     @Transient
 	private String clienteCompleto;
     
+    
+    @Transient
+    private String contenidoEmail = null;
+    
+    
     /**
 	 * 
 	 */
@@ -1600,5 +1605,19 @@ public class Cabecera implements Serializable {
 	 */
 	public void setRegimenrimpe(Integer regimenrimpe) {
 		this.regimenrimpe = regimenrimpe;
+	}
+
+	/**
+	 * @return the contenidoEmail
+	 */
+	public String getContenidoEmail() {
+		return contenidoEmail;
+	}
+
+	/**
+	 * @param contenidoEmail the contenidoEmail to set
+	 */
+	public void setContenidoEmail(String contenidoEmail) {
+		this.contenidoEmail = contenidoEmail;
 	}
 }

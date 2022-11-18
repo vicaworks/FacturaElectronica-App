@@ -1,218 +1,228 @@
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600" rel="stylesheet"/>
-	<link rel="preconnect" href="https://fonts.gstatic.com"> 
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
-    <style>
-        *{
-            margin: 0px;
-            padding: 0px;
-            box-sizing: border-box;
-        }
-
-        body{
-            background-color: #F7F9F9;
-            font-family: 'Roboto', sans-serif;
-            font-weight: thin;
-            font-size: 14px;
-        }
-
-        .contenedor{
-            width: 480px;
-            max-width: 480px;
-            margin: 40px auto;
-            min-height: 200px;
-        }
-        
-        .table-base{
-            font-family: 'Roboto', sans-serif;
-            font-weight: thin;
-            font-size: 14px;
-            width: 100%;
-            background-color: #ffffff;
-            border: none;
-            border-spacing: 0px;
-        }
-
-        .table-base th, td{
-            border: 0px solid black;            
-        }
-
-        .header{
-            
-            background-color: #fff;
-            max-height: 7vh;
-            margin: auto;
-            margin-top: 30px;
-            border-bottom: 5px solid #5499C7;
-            border-radius: 5px 5px 0px 0px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 400;
-            padding-top: 10px;
-            padding-right: 20px;
-            text-align: right;
-        }
-        .emisor{            
-            padding-top: 30px;
-            background-color: #EBF5FB;               
-        }
-        
-        .emisor p{
-            display: block!important;
-            text-align: center;
-            padding: 0px;
-            margin: 5px 0px;
-            line-height: 25px;
-            font-size: 16px;
-            color: #2E4053;
-            font-weight: 200;
-        }
-
-        .comp-electronico-header{         
-            padding-top: 30px;
-            background-color: #fff;   
-        }
-
-        .raya{
-            padding: 0px;
-            margin: 30px 40px 30px 40px;
-            border-bottom: 1px solid rgba(128, 139, 150, 0.25);
-        }
-        .comp-electronico-header .ce-uno{
-            font-size: 16px;
-            color: #2E4053;
-            font-weight: 300;
-            text-align: center;
-        }
-
-        .comp-electronico-header .ce-dos{
-            padding-top: 10px;
-            font-weight: 100;
-            text-align: center;
-        }
-
-        .comp-electronico-header .ce-tres{
-	       font-size: 20px;
-	       font-weight: 300;
-	       color: #2C3E50;
-           text-align: center;
-           padding-bottom: 30px;
-	    }      
-        
-        .fecha-emision{
-            background-color: #EBF5FB;   
-            padding:20px 0px;
-            text-align: center;
-            font-size: 18px;
-            color: #2E4053;
-        }
-        
-        .detalle-comprobante{
-            background-color: #ffffff;
-        }
-
-        .detalle-comprobante .dc-uno{
-            margin-top: 30px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 100;
-        }
-        .detalle-comprobante .dc-dos{
-            margin-top: 20px;
-            text-align: center;
-            font-size: 30px;
-            font-weight: 300;
-            color: #2C3E50;
-        }
-        .firma-comprobante{
-            background-color: #ffffff;
-            padding-bottom: 30px;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 100;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        .firma-comprobante > p{
-            padding: 0px;
-            margin: 10px 0px;
-        }
-        .footer{
-            background-color: #EAEDED;   
-            color: #2E4053;
-            font-size: 12px !important;
-            padding: 10px;
-            line-height: 18px;
-	    font-weight: 300;
-        }
-
-        .footer > p{
-            text-align: center;
-        }
-
-        .footer a {
-            text-decoration: none;
-            color: #5D6D7E;
-        }
-        
-        .footer a:hover{
-            color: #283747;
-        }
-
-    </style>
-</head>
-<body>
-    
-    <div class="contenedor">
-        
-        <table class="table-base" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td class="header">
-                    mako&reg;
-                </td>
-            </tr>
-            <tr>
-                <td class="emisor">
-                    <p style="font-weight:400 ;font-size: 20px;">$emisorNombreComercial</p>
-                    <p>$emisorRazonSocial</p>
-                    <p style="font-weight:400 ;font-size: 20px;">RUC : $emisorRuc</p> 
-                    <p>$emisorDireccion</p>                    
-                </td>
-            </tr>
-            <tr>
-                <td class="comp-electronico-header">
-                    <p class="ce-uno">$receptorRazonSocial</p>
-                    <p class="ce-dos">Ha recibido un comprobante Electr&oacute;nico :</p>
-                    <p class="raya"></p>
-                    <p class="ce-tres">$receptorNumComprobante</p>                    
-                </td>
-            </tr>
-            <tr>
-                <td class="fecha-emision">
-                    <p>FECHA : $compFecha</p>
-                </td>
-            </tr>
-            <tr>
-                <td class="detalle-comprobante">
-                    <p class="dc-uno">Valor total del comprobante</p>
-                    <p class="dc-dos">$compValor</p>
-                    <p class="raya"></p>
-                </td>
-            </tr>
-            <tr>
-                <td class="firma-comprobante">
-                    <p>Favor no responder este correo, el mismo es generado autom&aacute;ticamente.</p>
-                    <p>Atentamente.</p>
-                    <p>$emisorRazonSocial</p>
-                </td>
-            </tr>
-            <tr>
-                <td class="footer">
-                    <p>Documento Electr&oacute;nico emitido por: <span style="font-family: 'Orbitron', sans-serif;">mako&reg;</span></p> 
-                    <p>Contacto: (+593) 0985688861 / 02-3310 115</p> 
-                    <p>Email : <a href="mailto:cvillarreal@vicaworks.com">info@vicaworks.com</a></p> 
-                    <p>power by <a href="www.vicaworks.com">vicaworks</a> - derechos reservados $vcwAnio</p> 
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div style="width: 100%;display: block;height: 150px;"></div>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600" rel="stylesheet"/>
+		<link rel="preconnect" href="https://fonts.gstatic.com"> 
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+	    <style>
+	        *{
+	            margin: 0px;
+	            padding: 0px;
+	            box-sizing: border-box;
+	        }
+	
+	        body{
+	            background-color: #F7F9F9;
+	            font-family: 'Roboto', sans-serif;
+	            font-weight: thin;
+	            font-size: 14px;
+	        }
+	
+	        .contenedor{
+	            width: 480px;
+	            max-width: 480px;
+	            margin: 40px auto;
+	            min-height: 200px;
+	        }
+	        
+	        .table-base{
+	            font-family: 'Roboto', sans-serif;
+	            font-weight: thin;
+	            font-size: 14px;
+	            width: 100%;
+	            background-color: #ffffff;
+	            border: none;
+	            border-spacing: 0px;
+	        }
+	
+	        .table-base th, td{
+	            border: 0px solid black;            
+	        }
+	
+	        .header{
+	            
+	            background-color: #fff;
+	            max-height: 7vh;
+	            margin: auto;
+	            margin-top: 30px;
+	            border-bottom: 5px solid #5499C7;
+	            border-radius: 5px 5px 0px 0px;
+	            font-family: 'Orbitron', sans-serif;
+	            font-weight: 400;
+	            padding-top: 10px;
+	            padding-right: 20px;
+	            text-align: right;
+	        }
+	        .emisor{            
+	            padding-top: 30px;
+	            background-color: #EBF5FB;               
+	        }
+	        
+	        .emisor p{
+	            display: block!important;
+	            text-align: center;
+	            padding: 0px;
+	            margin: 5px 0px;
+	            line-height: 25px;
+	            font-size: 16px;
+	            color: #2E4053;
+	            font-weight: 200;
+	        }
+	
+	        .comp-electronico-header{         
+	            padding-top: 30px;
+	            background-color: #fff;   
+	        }
+	
+	        .raya{
+	            padding: 0px;
+	            margin: 30px 40px 30px 40px;
+	            border-bottom: 1px solid rgba(128, 139, 150, 0.25);
+	        }
+	        .comp-electronico-header .ce-uno{
+	            font-size: 16px;
+	            color: #2E4053;
+	            font-weight: 300;
+	            text-align: center;
+	        }
+	
+	        .comp-electronico-header .ce-dos{
+	            padding-top: 10px;
+	            font-weight: 100;
+	            text-align: center;
+	        }
+	
+	        .comp-electronico-header .ce-tres{
+		       font-size: 20px;
+		       font-weight: 300;
+		       color: #2C3E50;
+	           text-align: center;
+	           padding-bottom: 30px;
+		    }      
+	        
+	        .fecha-emision{
+	            background-color: #EBF5FB;   
+	            padding:20px 0px;
+	            text-align: center;
+	            font-size: 18px;
+	            color: #2E4053;
+	        }
+	        
+	        .detalle-comprobante{
+	            background-color: #ffffff;
+	        }
+	
+	        .detalle-comprobante .dc-uno{
+	            margin-top: 30px;
+	            text-align: center;
+	            font-size: 16px;
+	            font-weight: 100;
+	        }
+	        .detalle-comprobante .dc-dos{
+	            margin-top: 20px;
+	            text-align: center;
+	            font-size: 30px;
+	            font-weight: 300;
+	            color: #2C3E50;
+	        }
+	        .firma-comprobante{
+	            background-color: #ffffff;
+	            padding-bottom: 30px;
+	            text-align: left;
+	            font-size: 14px;
+	            font-weight: 100;
+	            padding-left: 20px;
+	            padding-right: 20px;
+	        }
+	        .firma-comprobante > p{
+	            padding: 0px;
+	            margin: 10px 0px;
+	        }
+	        .footer{
+	            background-color: #EAEDED;   
+	            color: #2E4053;
+	            font-size: 12px !important;
+	            padding: 10px;
+	            line-height: 18px;
+		    font-weight: 300;
+	        }
+	
+	        .footer > p{
+	            text-align: center;
+	        }
+	
+	        .footer a {
+	            text-decoration: none;
+	            color: #5D6D7E;
+	        }
+	        
+	        .footer a:hover{
+	            color: #283747;
+	        }
+	
+	    </style>
+	</head>
+	<body>
+	    
+	    <div class="contenedor">
+	    
+	    	#if ($contenidoEmail != "")
+	    		<div style="margin:20px 0px;font-size: 16px!important;">
+	    			$contenidoEmail
+	    		</div>
+	    	#end
+	        
+	        <table class="table-base" border="0" cellspacing="0" cellpadding="0">
+	            <tr>
+	                <td class="header">
+	                    mako&reg;
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="emisor">
+	                    <p style="font-weight:400 ;font-size: 20px;">$emisorNombreComercial</p>
+	                    <p>$emisorRazonSocial</p>
+	                    <p style="font-weight:400 ;font-size: 20px;">RUC : $emisorRuc</p> 
+	                    <p>$emisorDireccion</p>                    
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="comp-electronico-header">
+	                    <p class="ce-uno">$receptorRazonSocial</p>
+	                    <p class="ce-dos">Ha recibido un comprobante Electr&oacute;nico :</p>
+	                    <p class="raya"></p>
+	                    <p class="ce-tres">$receptorNumComprobante</p>                    
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="fecha-emision">
+	                    <p>FECHA : $compFecha</p>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="detalle-comprobante">
+	                    <p class="dc-uno">Valor total del comprobante</p>
+	                    <p class="dc-dos">$compValor</p>
+	                    <p class="raya"></p>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="firma-comprobante">
+	                    <p>Favor no responder este correo, el mismo es generado autom&aacute;ticamente.</p>
+	                    <p>Atentamente.</p>
+	                    <p>$emisorRazonSocial</p>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="footer">
+	                    <p>Documento Electr&oacute;nico emitido por: <span style="font-family: 'Orbitron', sans-serif;">mako&reg;</span></p> 
+	                    <p>Contacto: (+593) 0985688861 / 02-3310 115</p> 
+	                    <p>Email : <a href="mailto:cvillarreal@vicaworks.com">info@vicaworks.com</a></p> 
+	                    <p>power by <a href="www.vicaworks.com">vicaworks</a> - derechos reservados $vcwAnio</p> 
+	                </td>
+	            </tr>
+	        </table>
+	    </div>
+	    <div style="width: 100%;display: block;height: 150px;"></div>
+	</body>
+</html>

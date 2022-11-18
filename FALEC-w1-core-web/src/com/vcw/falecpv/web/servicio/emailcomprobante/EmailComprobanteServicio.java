@@ -85,6 +85,10 @@ public class EmailComprobanteServicio {
 				cabecera = cabeceraServicio.consultarByPk(idCabecera);
 			}
 			
+			if(content!=null && content.trim().length() > 0) {
+				cabecera.setContenidoEmail(content);
+			}
+			
 			
 			if(xmlDocElectronico==null) {
 				// consultar documento xml
@@ -223,6 +227,7 @@ public class EmailComprobanteServicio {
 		template= VelocityTemplateUtil.obtenerContext(nombrePLantilla);
 		VelocityContext context = new VelocityContext();
 		// todos los datos a la plantilla
+		context.put("contenidoEmail", cabecera.getContenidoEmail()==null?"":cabecera.getContenidoEmail());
 		context.put("emisorRazonSocial", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getEmpresa().getRazonsocial()));
 		context.put("emisorNombreComercial", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getNombrecomercial()));
 		context.put("emisorRuc", cabecera.getEstablecimiento().getEmpresa().getRuc());
