@@ -97,7 +97,7 @@ public abstract class GenerarDocumentoElectronico {
 		infoTributaria.setSecuencial(cabecera.getSecuencial());
 		infoTributaria.setDirMatriz(cabecera.getEstablecimiento().getEmpresa().getDireccionmatriz());
 		infoTributaria.setContribuyenteRimpe(null);
-		if(cabecera.getRegimenrimpe() == 1) {
+		if(cabecera.getRegimenrimpe() == 1 && !cabecera.getTipocomprobante().getIdentificador().equals("07")) {
 			infoTributaria.setContribuyenteRimpe(AppConfiguracion.getString("contribuyente.rimpe"));
 		}
 		

@@ -94,8 +94,8 @@
 										
 									</div>
 								</div>
-							</div>
-							<div class="col-12 md:col-6 mt-0 md:mt-1">
+							</div>							
+							<p:outputPanel styleClass="col-12 md:col-6 mt-0 md:mt-1" rendered="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.identificador!='06'}">
 								<div class="flex align-self-center">
 									<div class="flex flex-column">
 										<span class="Fs16 font-bold text-blue-600 mb-1 block">
@@ -119,7 +119,33 @@
 										
 									</div>
 								</div>
-							</div>
+							</p:outputPanel>
+							
+							<p:outputPanel styleClass="col-12 md:col-6 mt-0 md:mt-1" rendered="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.identificador=='06'}">
+								<div class="flex align-self-center">
+									<div class="flex flex-column">
+										<span class="Fs16 font-bold text-blue-600 mb-1 block">
+											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.razonsocial}" />
+										</span>
+										<div class="flex align-items-end">
+											<span class="Fs12 text-gray-400 mr-2">RUC. / C.I.</span>
+											<span class="Fs16 font-bold text-gray-600 ">#{enviarDocCtrl.cabeceraSelected.transportista.identificacion}</span>
+										</div>										
+										<span class="Fs11 mb-1 block">
+											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.direccion}" />
+										</span>
+										<span class="Fs11 mb-1 block">
+											<i class="pi pi-phone mr-1"></i>
+											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.telefono!=null?enviarDocCtrl.cabeceraSelected.transportista.telefono:'-'}" />
+										</span>
+										<span class="Fs11 mb-1 block">
+											<i class="fa fa-envelope-o mr-1 Fs11"></i>
+											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.email!=null?enviarDocCtrl.cabeceraSelected.transportista.email:'-'}" />
+										</span>
+										
+									</div>
+								</div>
+							</p:outputPanel>
 							
 							<div class="col-12">									
 								<div class="field">

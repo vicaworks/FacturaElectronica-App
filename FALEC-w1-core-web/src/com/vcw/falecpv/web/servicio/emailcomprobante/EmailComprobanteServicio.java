@@ -232,7 +232,7 @@ public class EmailComprobanteServicio {
 		context.put("emisorNombreComercial", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getNombrecomercial()));
 		context.put("emisorRuc", cabecera.getEstablecimiento().getEmpresa().getRuc());
 		context.put("emisorDireccion", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getDireccionestablecimiento()));
-		context.put("receptorNumComprobante", cabecera.getTipocomprobante().getComprobante() + " : " + ComprobanteHelper.formatNumDocumento(cabecera.getNumdocumento()));
+		context.put("receptorNumComprobante", sustituirCaracteres(cabecera.getTipocomprobante().getComprobante()) + " : " + ComprobanteHelper.formatNumDocumento(cabecera.getNumdocumento()));
 		context.put("compFecha",(new SimpleDateFormat("dd/MM/yyyy")).format(cabecera.getFechaemision()));
 		
 		NumberFormat df = DecimalFormat.getCurrencyInstance(new Locale("es", "EC"));
@@ -259,6 +259,19 @@ public class EmailComprobanteServicio {
 		template.merge(context, writer);
 		
 		return writer.toString();
+	}
+	
+	private String sustituirCaracteres(String cadena) {
+		if(cadena!=null) {
+			
+			String[] mayusculasTile = msg.getString("mayuscula.tile").split(",");
+			String[] mayusculasTileRemplazar = msg.getString("mayuscula.remplazar").split(",");
+			
+			for (int i = 0; i < 5; i++) {
+				cadena = cadena.replace(mayusculasTile[i],mayusculasTileRemplazar[i]);
+			}
+		}
+		return cadena;
 	}
 	
 }

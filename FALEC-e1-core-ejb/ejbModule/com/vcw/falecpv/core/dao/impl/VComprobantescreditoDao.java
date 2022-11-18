@@ -44,7 +44,7 @@ public class VComprobantescreditoDao extends AppGenericDao<VComprobantescredito,
 			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":"  ")
 			+ ((criterioCliente!=null && criterioCliente.trim().length()>0)?" AND c.identificacion=:identificacion ":" ")
 			+ ((criterioCliente==null || criterioCliente.trim().length()==0) && (criterio==null || criterio.trim().length()==0)?" AND c.abono < c.totalpago ":" ")
-			+ " ORDER BY c.fechaemision");
+			+ " ORDER BY c.fechaemision " + ((criterioCliente!=null && criterioCliente.trim().length()>0)?" DESC ":" "));
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);
 			if(tipocomprobante!=null) {

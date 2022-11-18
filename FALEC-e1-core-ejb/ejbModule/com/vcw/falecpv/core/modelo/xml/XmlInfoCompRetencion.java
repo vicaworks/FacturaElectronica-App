@@ -38,6 +38,10 @@ public class XmlInfoCompRetencion implements Serializable {
 	private String obligadoContabilidad;
 	@XmlElement
 	private String tipoIdentificacionSujetoRetenido;
+//	@XmlElement
+//	private String tipoSujetoRetenido = "01";
+//	@XmlElement
+//	private String parteRel = "SI";
 	@XmlElement
 	private String razonSocialSujetoRetenido;
 	@XmlElement
@@ -162,5 +166,5 @@ public class XmlInfoCompRetencion implements Serializable {
 	public void setPeriodoFiscal(String periodoFiscal) {
 		this.periodoFiscal = periodoFiscal;
 	}
-
+	
 }

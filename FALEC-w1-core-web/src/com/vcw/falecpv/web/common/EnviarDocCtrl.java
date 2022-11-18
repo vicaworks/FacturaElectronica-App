@@ -99,10 +99,17 @@ public class EnviarDocCtrl extends BaseCtrl {
 		infoadicionalList = null;
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idCabecera);
 		// cliente
-		if(cabeceraSelected.getCliente()!=null && cabeceraSelected.getCliente().getCorreoelectronico()!=null) {
-			to = cabeceraSelected.getCliente().getCorreoelectronico();
+		if(!cabeceraSelected.getTipocomprobante().getIdentificador().equals("06")) {
+			if(cabeceraSelected.getCliente()!=null && cabeceraSelected.getCliente().getCorreoelectronico()!=null) {
+				to = cabeceraSelected.getCliente().getCorreoelectronico();
+			}
+		}else {
+			if(cabeceraSelected.getTransportista()!=null && cabeceraSelected.getTransportista().getEmail()!=null) {
+				to = cabeceraSelected.getTransportista().getEmail();
+			}
 		}
 		// subject por defecto
+			
 		subject = msg.getString("label.comprobanteelectronico.subject", 
 				new Object[] {
 						cabeceraSelected.getTipocomprobante().getComprobante(),
