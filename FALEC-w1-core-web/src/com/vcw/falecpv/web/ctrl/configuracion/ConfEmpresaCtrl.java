@@ -221,7 +221,7 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			if(!(boolean)parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PERMISO_MODIFICACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento())) {
 				AppJsfUtil.addErrorMessage("frmEstEmailpl", "ERROR", msg.getString("error.permiso"));
 				consultarConfiguracionEstablecimiento();
-				AppJsfUtil.updateComponente("fsvConfiguracion:TabConfEstablecimiento:frmEstEmailpl");
+				AppJsfUtil.updateComponente("fsvConfiguracion:tabEnviEmailPl:frmEstEmailpl");
 				return;
 			}
 			
@@ -230,6 +230,26 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();			
 			AppJsfUtil.addErrorMessage("frmEstEmailpl", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
+	
+	public void guardarEstablecimiento() {
+		try {
+			
+			if(!(boolean)parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PERMISO_MODIFICACION, TipoRetornoParametroGenerico.BOOLEAN, establecimientoMain.getIdestablecimiento())) {
+				AppJsfUtil.addErrorMessage("frmEnvEmail", "ERROR", msg.getString("error.permiso"));
+				consultarConfiguracionEstablecimiento();
+				AppJsfUtil.updateComponente("fsvConfiguracion:TabConfEstablecimiento:frmEnvEmail");
+				return;
+			}
+			
+			establecimientoServicio.actualizar(establecimientoMain);
+			AppJsfUtil.addInfoMessage("frmEnvEmail", "OK", "Datos actualizados correctamente.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+			AppJsfUtil.addErrorMessage("frmEnvEmail", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	

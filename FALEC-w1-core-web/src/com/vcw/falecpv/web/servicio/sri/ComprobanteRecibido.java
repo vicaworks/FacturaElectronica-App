@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.ComprobanteEstadoEnum;
+import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
+import com.vcw.falecpv.core.constante.contadores.TipoComprobanteEnum;
 import com.vcw.falecpv.core.exception.EnviarComprobanteSRIException;
 import com.vcw.falecpv.core.helper.SriAccesoHelper;
 import com.vcw.falecpv.core.modelo.dto.SriAccesoDto;
@@ -90,7 +92,9 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 					c.setNumeroautorizacion(autorizacion.getNumeroAutorizacion());
 					c.setEstadoautorizacion("SI");
 					// envar email
-					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, c.getIdcabecera(), c, null, null, null,true);
+					if(enviarEmail(c)) {
+						emailComprobanteServicio.enviarComprobanteFacade(null, null, null, c.getIdcabecera(), c, null, null, null,true);						
+					}
 				}else {
 					// RECHAZADO
 					c.setEstado(ComprobanteEstadoEnum.RECHAZADO_SRI.toString());
@@ -179,6 +183,47 @@ public class ComprobanteRecibido extends EnviarComprobanteSRIDecorador {
 		
 	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private boolean enviarEmail(Cabecera c) {
+		if(c == null) return false;
+		
+		Integer enviar = 0;
+		
+		switch (GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador())) {
+		case FACTURA:
+			enviar = c.getEstablecimiento().getEnviaremailfactura();
+			break;
+			
+		case RETENCION:
+			enviar = c.getEstablecimiento().getEnviaremailretencion();
+			break;
+			
+		case NOTA_CREDITO:
+			enviar = c.getEstablecimiento().getEnviaremailnotacredito();
+			break;
+			
+		case NOTA_DEBITO:
+			enviar = c.getEstablecimiento().getEnviaremailnotadebito();
+			break;
+		case GUIA_REMISION:
+			enviar = c.getEstablecimiento().getEnviaremailguiaremision();
+			break;
+		case LIQUIDACION_COMPRA:
+			enviar = c.getEstablecimiento().getEnviaremailliqcompra();
+			break;
+
+		default:
+			break;
+		}
+		
+		return enviar==1;
+		
+	}
 	
 
 }

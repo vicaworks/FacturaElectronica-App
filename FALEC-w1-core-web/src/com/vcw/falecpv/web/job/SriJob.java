@@ -35,9 +35,10 @@ public class SriJob {
 	@EJB
 	private ParametroGenericoServicio parametroGenericoServicio;
 	
-	@Timeout
-	@Schedule(second = "0", minute = "0", hour = "*/4", dayOfMonth = "*", month = "*", dayOfWeek = "*", year = "*")
+	//@Schedule(second = "0", minute = "0", hour = "*/4", dayOfMonth = "*", month = "*", dayOfWeek = "*", year = "*")
 	//@Schedule(second = "0", minute = "*/2", hour = "*", dayOfMonth = "*", month = "*", dayOfWeek = "*", year = "*")
+	@Timeout
+	@Schedule(second = "0", minute = "0", hour = "*/1", dayOfMonth = "*", month = "*", dayOfWeek = "*", year = "*")
 	public void processViaTimeout(final Timer timer) {
 		try {
 			

@@ -506,6 +506,78 @@
 	                	</h:form>
                 </p:tab>
                 
+                <p:tab title="Enviar Email Automáticamente" id="tabEnviEmailPl">
+	                <p class="my-2 text-justify">
+	                	Configurar el envío automático de los comprobantes electrónicos.
+	                </p>
+	                	<h:form id="frmEnvEmail">
+	                		
+	                		<div class="flex align-items-end mb-1">
+	                			<span class="requerido" style="min-width:200px;">Enviar email Factura </span>
+	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailfactura}" style="min-width:55px;">
+	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
+	                			</p:selectOneMenu>
+	                		</div>
+	                		
+	                		<div class="flex align-items-end mb-1">
+	                			<span class="requerido" style="min-width:200px;">Enviar email Retención </span>
+	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailretencion}" style="min-width:55px;">
+	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
+	                			</p:selectOneMenu>
+	                		</div>
+	                		
+	                		<div class="flex align-items-end mb-1">
+	                			<span class="requerido" style="min-width:200px;">Enviar email Nota de Crédito </span>
+	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailnotacredito}" style="min-width:55px;">
+	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
+	                			</p:selectOneMenu>
+	                		</div>
+	                		
+	                		<div class="flex align-items-end mb-1">
+	                			<span class="requerido" style="min-width:200px;">Enviar email Nota de Débito </span>
+	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailnotadebito}" style="min-width:55px;">
+	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
+	                			</p:selectOneMenu>
+	                		</div>
+	                		
+	                		<div class="flex align-items-end mb-1">
+	                			<span class="requerido" style="min-width:200px;">Enviar email Guía de Remisión </span>
+	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailguiaremision}" style="min-width:55px;">
+	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
+	                			</p:selectOneMenu>
+	                		</div>
+	                		
+	                		<div class="flex align-items-end mb-1">
+	                			<span class="requerido" style="min-width:200px;">Enviar email Liquidación de Compra </span>
+	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailliqcompra}" style="min-width:55px;">
+	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
+	                			</p:selectOneMenu>
+	                		</div>
+	                		
+		                    
+							
+		                    <div class="flex my-2">
+									
+								<p:commandButton 
+										value="GUARDAR" icon="fa fa-floppy-o"
+										disabled="#{not confEmpresaCtrl.confEstablecimientoDto.permisoModificacion}" 
+										action="#{confEmpresaCtrl.guardarEstablecimiento()}" styleClass="ui-button-outlined min-width-110" update="@form" 
+									/>
+							</div>
+							
+	                		<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEnvEmail"
+								closable="true" >
+								<p:autoUpdate></p:autoUpdate>
+							</p:messages>	
+	                	</h:form>
+	            </p:tab>
+                
                  <p:tab title="Plantilla Correco Electrónico" id="tabEmailPl">
 	                <p class="my-1 text-justify">
 	                	Configurar la plantilla del contedido del Email de los comprobantes electrónicos.

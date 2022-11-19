@@ -109,7 +109,15 @@ public class EmailComprobanteServicio {
 			if(subject!=null) {
 				emailDto.setAsunto(subject);
 			}else {
-				emailDto.setAsunto(msg.getString("label.comprobanteelectronico.subject", new Object[] {cabecera.getEstablecimiento().getNombrecomercial()}) );
+				emailDto.setAsunto(
+						subject = msg.getString("label.comprobanteelectronico.subject", 
+								new Object[] {
+										cabecera.getTipocomprobante().getComprobante(),
+										ComprobanteHelper.formatNumDocumento(cabecera.getNumdocumento()),
+										FechaUtil.formatoFecha(cabecera.getFechaemision())
+										}
+						)
+					);
 			}
 			
 			// email del cliente
@@ -263,9 +271,8 @@ public class EmailComprobanteServicio {
 	
 	private String sustituirCaracteres(String cadena) {
 		if(cadena!=null) {
-			
 			String[] mayusculasTile = msg.getString("mayuscula.tile").split(",");
-			String[] mayusculasTileRemplazar = msg.getString("mayuscula.remplazar").split(",");
+			String[] mayusculasTileRemplazar = new String[] {"&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;"};
 			
 			for (int i = 0; i < 5; i++) {
 				cadena = cadena.replace(mayusculasTile[i],mayusculasTileRemplazar[i]);

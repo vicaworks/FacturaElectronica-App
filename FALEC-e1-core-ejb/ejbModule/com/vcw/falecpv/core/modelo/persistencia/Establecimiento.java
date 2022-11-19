@@ -155,6 +155,37 @@ public class Establecimiento implements Serializable {
     @Column(name = "ambiente", nullable = false, length = 1)
     private String ambiente;
     
+    @Basic(optional = false)
+    @NotNull    
+    @Column(name = "enviaremailfactura", nullable = false)
+    private Integer enviaremailfactura = 1;
+    
+    @Basic(optional = false)
+    @NotNull    
+    @Column(name = "enviaremailretencion", nullable = false)
+    private Integer enviaremailretencion = 1;
+    
+    @Basic(optional = false)
+    @NotNull    
+    @Column(name = "enviaremailnotacredito", nullable = false)
+    private Integer enviaremailnotacredito = 1;
+    
+    @Basic(optional = false)
+    @NotNull    
+    @Column(name = "enviaremailnotadebito", nullable = false)
+    private Integer enviaremailnotadebito = 1;
+    
+    @Basic(optional = false)
+    @NotNull    
+    @Column(name = "enviaremailguiaremision", nullable = false)
+    private Integer enviaremailguiaremision = 1;
+    
+    @Basic(optional = false)
+    @NotNull    
+    @Column(name = "enviaremailliqcompra", nullable = false)
+    private Integer enviaremailliqcompra = 1;
+    
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "idempresa",referencedColumnName = "idempresa")
     private Empresa empresa;
@@ -530,6 +561,90 @@ public class Establecimiento implements Serializable {
 	 */
 	public void setSecuencialborrador(int secuencialborrador) {
 		this.secuencialborrador = secuencialborrador;
+	}
+
+	/**
+	 * @return the enviaremailfactura
+	 */
+	public Integer getEnviaremailfactura() {
+		return enviaremailfactura;
+	}
+
+	/**
+	 * @param enviaremailfactura the enviaremailfactura to set
+	 */
+	public void setEnviaremailfactura(Integer enviaremailfactura) {
+		this.enviaremailfactura = enviaremailfactura;
+	}
+
+	/**
+	 * @return the enviaremailretencion
+	 */
+	public Integer getEnviaremailretencion() {
+		return enviaremailretencion;
+	}
+
+	/**
+	 * @param enviaremailretencion the enviaremailretencion to set
+	 */
+	public void setEnviaremailretencion(Integer enviaremailretencion) {
+		this.enviaremailretencion = enviaremailretencion;
+	}
+
+	/**
+	 * @return the enviaremailnotacredito
+	 */
+	public Integer getEnviaremailnotacredito() {
+		return enviaremailnotacredito;
+	}
+
+	/**
+	 * @param enviaremailnotacredito the enviaremailnotacredito to set
+	 */
+	public void setEnviaremailnotacredito(Integer enviaremailnotacredito) {
+		this.enviaremailnotacredito = enviaremailnotacredito;
+	}
+
+	/**
+	 * @return the enviaremailnotadebito
+	 */
+	public Integer getEnviaremailnotadebito() {
+		return enviaremailnotadebito;
+	}
+
+	/**
+	 * @param enviaremailnotadebito the enviaremailnotadebito to set
+	 */
+	public void setEnviaremailnotadebito(Integer enviaremailnotadebito) {
+		this.enviaremailnotadebito = enviaremailnotadebito;
+	}
+
+	/**
+	 * @return the enviaremailguiaremision
+	 */
+	public Integer getEnviaremailguiaremision() {
+		return enviaremailguiaremision;
+	}
+
+	/**
+	 * @param enviaremailguiaremision the enviaremailguiaremision to set
+	 */
+	public void setEnviaremailguiaremision(Integer enviaremailguiaremision) {
+		this.enviaremailguiaremision = enviaremailguiaremision;
+	}
+
+	/**
+	 * @return the enviaremailliqcompra
+	 */
+	public Integer getEnviaremailliqcompra() {
+		return enviaremailliqcompra;
+	}
+
+	/**
+	 * @param enviaremailliqcompra the enviaremailliqcompra to set
+	 */
+	public void setEnviaremailliqcompra(Integer enviaremailliqcompra) {
+		this.enviaremailliqcompra = enviaremailliqcompra;
 	}		
 	
 	
