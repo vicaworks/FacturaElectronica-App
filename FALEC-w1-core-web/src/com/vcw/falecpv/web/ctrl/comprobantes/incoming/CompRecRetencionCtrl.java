@@ -42,6 +42,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Retencionimpuestodet;
 import com.vcw.falecpv.core.modelo.xml.XmlComprobanteRetencion;
 import com.vcw.falecpv.core.modelo.xml.XmlImpuestoRetencion;
 import com.vcw.falecpv.core.servicio.ComprobanteUtilServicio;
+import com.vcw.falecpv.core.servicio.ComprobanterecibidoServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestoServicio;
 import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
@@ -74,7 +75,9 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 	@EJB
 	private ComprobanteUtilServicio comprobanteUtilServicio;
 	@EJB
-	private EstablecimientoServicio establecimientoServicio;
+	private EstablecimientoServicio establecimientoServicio;	
+	@EJB
+	private ComprobanterecibidoServicio comprobanterecibidoServicio;
 
 	private Date desde;
 	private Date hasta;
@@ -187,6 +190,9 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 				
 				Document document = XmlCommonsUtil.stringToDocument(c.getValorXml());
 				List<Node> nodoList = XmlCommonsUtil.aplicarXpath(document, "//impuestos/impuesto");
+				if(nodoList==null || nodoList.isEmpty()) {
+					nodoList = XmlCommonsUtil.aplicarXpath(document, "//docsSustento/docSustento");
+				}
 				List<String> tipDocAsociado = new ArrayList<>();
 				List<String> numDocAsociado = new ArrayList<>();
 				for (Node node : nodoList) {
@@ -329,6 +335,9 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 				
 				Document document = XmlCommonsUtil.stringToDocument(c.getValorXml());
 				List<Node> nodoList = XmlCommonsUtil.aplicarXpath(document, "//impuestos/impuesto");
+				if(nodoList==null || nodoList.isEmpty()) {
+					nodoList = XmlCommonsUtil.aplicarXpath(document, "//docsSustento/docSustento");
+				}
 				List<String> tipDocAsociado = new ArrayList<>();
 				List<String> numDocAsociado = new ArrayList<>();
 				for (Node node : nodoList) {
@@ -494,6 +503,12 @@ public class CompRecRetencionCtrl extends BaseCtrl {
 			
 			
 			XmlComprobanteRetencion f = XmlCommonsUtil.jaxbunmarshall(cr.getValorXml(), new XmlComprobanteRetencion(),"UTF-8");
+			
+			if(f.getDocSustentoList()!=null && f.getImpuestoretencionList() == null) {
+				// es la version 2 de retenciones cambiar de la v2 a la v1
+				comprobanterecibidoServicio.conerterV2ToV1(f);
+			}
+			
 			
 			for (XmlImpuestoRetencion c : f.getImpuestoretencionList()) {
 				comprobanteUtilServicio.populateImpuestoRetencion(c);

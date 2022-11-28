@@ -52,6 +52,13 @@ public class XmlComprobanteRetencion implements Serializable {
 	@XmlElementWrapper(name = "impuestos")
 	private List<XmlImpuestoRetencion> impuestoretencionList;
 	
+	
+	@XmlElementRef
+	@XmlElementWrapper(name = "docsSustento")
+	private List<XmlDocSustento> docSustentoList = null; 
+	
+	
+	
 	@XmlElementRef
 	@XmlElementWrapper(name = "infoAdicional")
 	private List<XmlCampoAdicional> campoAdicionalList;
@@ -241,6 +248,20 @@ public class XmlComprobanteRetencion implements Serializable {
 	 */
 	public void setTotalretencion(BigDecimal totalretencion) {
 		this.totalretencion = totalretencion;
+	}
+
+	/**
+	 * @return the docSustentoList
+	 */
+	public List<XmlDocSustento> getDocSustentoList() {
+		return docSustentoList;
+	}
+
+	/**
+	 * @param docSustentoList the docSustentoList to set
+	 */
+	public void setDocSustentoList(List<XmlDocSustento> docSustentoList) {
+		this.docSustentoList = docSustentoList;
 	}
 
 }

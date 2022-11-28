@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.core.servicio;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,8 +92,9 @@ public class VComprobantescreditoServicio extends AppGenericService<VComprobante
 				x.setPagoOtrosList(pagoList.stream().filter(p->(!p.getTipopago().getIdtipopago().equals("6") && p.getCabecera().getIdcabecera().equals(x.getIdcabecera()))).collect(Collectors.toList()));
 			});
 			
-			if(criterioCliente==null || criterioCliente.trim().length()==0) {
-				cabeceralist = cabeceralist.stream().sorted(Comparator.comparing(VComprobantescredito::getFechaemision).thenComparing(VComprobantescredito::getRazonsocial)).collect(Collectors.toList());				
+			cabeceralist = cabeceralist.stream().sorted(Comparator.comparing(VComprobantescredito::getFechaemision).thenComparing(VComprobantescredito::getRazonsocial)).collect(Collectors.toList());				
+			if(criterioCliente!=null && criterioCliente.trim().length()>0) {
+				Collections.reverse(cabeceralist);
 			}
 			
 			return cabeceralist;

@@ -179,6 +179,11 @@ public class SriImportarComprobantesServicio {
 		case RETENCION:
 			XmlComprobanteRetencion rt = XmlCommonsUtil.jaxbunmarshall(xmlComprobante, new XmlComprobanteRetencion());
 			
+			if(rt.getDocSustentoList()!=null) {
+				// convierte v2 a v1
+				comprobanterecibidoServicio.conerterV2ToV1(rt);				
+			}
+			
 			c.setTotaliva(BigDecimal.ZERO);
 			c.setTotalrenta(BigDecimal.ZERO);
 			
