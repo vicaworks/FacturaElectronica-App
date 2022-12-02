@@ -49,20 +49,20 @@
 					
 					<div class="col-12 field">
 				        <label class="requerido">TEXTO A BUSCAR</label>
-				        <p:inputText id="intBrCadenaBuscar" value="#{buscarRemplazarCtrl.cadenaBuscar}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" tabindex="0">
+				        <p:inputText id="intBrCadenaBuscar" value="#{buscarRemplazarCtrl.cadenaBuscar}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" tabindex="1">
 						</p:inputText>
 						<p:message for="intBrCadenaBuscar" styleClass="block"/>
 				    </div>
 				    
 				    <div class="col-12 field">
 				        <label class="requerido">TEXTO REMPLAZAR</label>
-				        <p:inputText id="intBrCadenaRemplazar" value="#{buscarRemplazarCtrl.cadenaRemplazar}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" tabindex="1">
+				        <p:inputText id="intBrCadenaRemplazar" value="#{buscarRemplazarCtrl.cadenaRemplazar}" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="100" tabindex="2">
 						</p:inputText>
 						<p:message for="intBrCadenaRemplazar" styleClass="block"/>
 				    </div>
 					
 					<div class="col-12 flex align-items-end">
-				        <p:selectBooleanCheckbox value="#{buscarRemplazarCtrl.palabraCompleta}" styleClass="mr-1" tabindex="2"/>
+				        <p:selectBooleanCheckbox value="#{buscarRemplazarCtrl.palabraCompleta}" styleClass="mr-1" tabindex="3"/>
 						<label class="Fs12">Palabra completa</label>
 				    </div>
 				

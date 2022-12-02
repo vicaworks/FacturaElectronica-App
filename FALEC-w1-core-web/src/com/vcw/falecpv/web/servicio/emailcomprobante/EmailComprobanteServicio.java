@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.sri.DocElectronicoProxy;
+import com.vcw.falecpv.core.util.HtmlUtil;
 import com.vcw.falecpv.web.servicio.RideServicio;
 import com.vcw.falecpv.web.util.MessageWebUtil;
 import com.vcw.falecpv.web.util.VelocityTemplateUtil;
@@ -120,28 +121,29 @@ public class EmailComprobanteServicio {
 					);
 			}
 			
-			// email del cliente
-			if(cabecera.getCliente()!=null && cabecera.getCliente().getCorreoelectronico()!=null && cabecera.getCliente().getCorreoelectronico().trim().length()>0 && mailReceptor) {
-				String em[] = cabecera.getCliente().getCorreoelectronico().split(",");
-				for (String email : em) {
-					emailDto.getCorreosTo().add(email);
-				}
-			}
-			
-			// email del transportista
-			if(cabecera.getTransportista()!=null && cabecera.getTransportista().getEmail()!=null && cabecera.getTransportista().getEmail().trim().length()>0 && mailReceptor) {
-				String em[] = cabecera.getTransportista().getEmail().split(",");
-				for (String email : em) {
-					emailDto.getCorreosTo().add(email);
-				}
-			}
-			
 			// emails extras
 			if(toList!=null && !toList.isEmpty()) {
 				for (String email : toList) {
 					emailDto.getCorreosTo().add(email);
 				}
+			}else {				
+				// email del cliente
+				if(cabecera.getCliente()!=null && cabecera.getCliente().getCorreoelectronico()!=null && cabecera.getCliente().getCorreoelectronico().trim().length()>0 && mailReceptor) {
+					String em[] = cabecera.getCliente().getCorreoelectronico().split(",");
+					for (String email : em) {
+						emailDto.getCorreosTo().add(email);
+					}
+				}
+				
+				// email del transportista
+				if(cabecera.getTransportista()!=null && cabecera.getTransportista().getEmail()!=null && cabecera.getTransportista().getEmail().trim().length()>0 && mailReceptor) {
+					String em[] = cabecera.getTransportista().getEmail().split(",");
+					for (String email : em) {
+						emailDto.getCorreosTo().add(email);
+					}
+				}
 			}
+			
 			
 			// adjuntos
 			
@@ -240,7 +242,7 @@ public class EmailComprobanteServicio {
 		context.put("emisorNombreComercial", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getNombrecomercial()));
 		context.put("emisorRuc", cabecera.getEstablecimiento().getEmpresa().getRuc());
 		context.put("emisorDireccion", TextoUtil.stringToHTMLString(cabecera.getEstablecimiento().getDireccionestablecimiento()));
-		context.put("receptorNumComprobante", sustituirCaracteres(cabecera.getTipocomprobante().getComprobante()) + " : " + ComprobanteHelper.formatNumDocumento(cabecera.getNumdocumento()));
+		context.put("receptorNumComprobante", HtmlUtil.sustituirCaracteres(cabecera.getTipocomprobante().getComprobante()) + " : " + ComprobanteHelper.formatNumDocumento(cabecera.getNumdocumento()));
 		context.put("compFecha",(new SimpleDateFormat("dd/MM/yyyy")).format(cabecera.getFechaemision()));
 		
 		NumberFormat df = DecimalFormat.getCurrencyInstance(new Locale("es", "EC"));
@@ -269,16 +271,6 @@ public class EmailComprobanteServicio {
 		return writer.toString();
 	}
 	
-	private String sustituirCaracteres(String cadena) {
-		if(cadena!=null) {
-			String[] mayusculasTile = msg.getString("mayuscula.tile").split(",");
-			String[] mayusculasTileRemplazar = new String[] {"&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;"};
-			
-			for (int i = 0; i < 5; i++) {
-				cadena = cadena.replace(mayusculasTile[i],mayusculasTileRemplazar[i]);
-			}
-		}
-		return cadena;
-	}
+	
 	
 }

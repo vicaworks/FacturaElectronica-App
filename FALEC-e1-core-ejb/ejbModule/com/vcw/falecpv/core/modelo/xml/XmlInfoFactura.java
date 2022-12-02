@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.vcw.falecpv.core.modelo.xml.adapter.XmlAdapterSriDate;
@@ -135,6 +136,9 @@ public class XmlInfoFactura implements Serializable {
     @XmlElement
 	@XmlJavaTypeAdapter(XmlAdapterSriNumero.class)
     private Double valorRetRenta;
+    
+    @XmlTransient
+    private String telefonocomprador;
 
 	/**
 	 * 
@@ -672,6 +676,20 @@ public class XmlInfoFactura implements Serializable {
 	 */
 	public void setValorRetRenta(Double valorRetRenta) {
 		this.valorRetRenta = valorRetRenta;
+	}
+
+	/**
+	 * @return the telefonocomprador
+	 */
+	public String getTelefonocomprador() {
+		return telefonocomprador;
+	}
+
+	/**
+	 * @param telefonocomprador the telefonocomprador to set
+	 */
+	public void setTelefonocomprador(String telefonocomprador) {
+		this.telefonocomprador = telefonocomprador;
 	}
 
 }

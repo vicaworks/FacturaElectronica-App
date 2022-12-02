@@ -23,6 +23,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
+import com.vcw.falecpv.core.util.HtmlUtil;
 import com.vcw.falecpv.web.ctrl.adquisicion.RetencionMainCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraCtrl;
@@ -147,7 +148,9 @@ public class EnviarDocCtrl extends BaseCtrl {
 					}					
 				}				
 			}
-				
+			
+			contenido = contenido!=null?HtmlUtil.sustituirCaracteres(contenido):null;
+			
 			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, contenido, correoList,false);
 			actualizarPantalla();
 			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "ENVIADO CORRECTAMENTE.");

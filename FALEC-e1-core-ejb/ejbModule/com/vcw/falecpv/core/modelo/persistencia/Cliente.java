@@ -52,8 +52,8 @@ public class Cliente implements Serializable{
 	@Column(name = "direccion", length = 300)
 	private String direccion;
 	
-	@Size(max = 50)
-	@Column(name = "correoelectronico", length = 50)
+	@Size(max = 300)
+	@Column(name = "correoelectronico", length = 300)
 	private String correoelectronico;
 	
 	@Size(max = 20)

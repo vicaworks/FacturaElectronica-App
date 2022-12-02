@@ -96,12 +96,11 @@
 							
 					<p:commandButton id="cmdfacTools"
 							value="Opciones" icon="fa fa-sort-down Fs11"
-							styleClass="ui-button-outlined min-width-70"
-							disabled="#{compFacCtrl.cabecerSelected.idcabecera==null}"/>
+							styleClass="ui-button-outlined min-width-70"/>
 							
 					<p:menu overlay="true" trigger="cmdfacTools" my="left top" at="left bottom" style="min-width:200px!important;">
 					
-						<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-copy" update="@form">
+						<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-copy" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null}">
 						</p:menuitem>
 						
 						<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}">

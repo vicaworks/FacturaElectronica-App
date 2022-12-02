@@ -248,6 +248,7 @@ public class RideServicio {
 		
 		// totalizar el comprobante
 		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteFactura(f, cabecera.getEstablecimiento().getEmpresa().getIdempresa(), true));
+		f.getInfoFactura().setTelefonocomprador(cabecera.getCliente().getTelefono()!=null?cabecera.getCliente().getTelefono():"-");
 		
 		// genera el reporte
 		FileUtilApp fileUtilApp = new FileUtilApp();

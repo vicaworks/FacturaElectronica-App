@@ -110,9 +110,10 @@
 					    </div>
 					    <div class="field">							
 							<h:outputText value="Email" styleClass="text-gray-700 mb-1" />
-							<p:inputText id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" styleClass="w-full mt-1" maxlength="50" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
+							
+							<p:inputTextarea id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" maxlength="300" styleClass="w-full mt-1" rows="3" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
 								<f:validator validatorId="emailValidator"/>
-							</p:inputText>
+							</p:inputTextarea>
 							<p:message for="intCorreo" styleClass="block"/>
 					    </div>
 					    <div class="field">							
