@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.core.servicio.sri;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,8 +49,11 @@ public class DocElectronicoFactura extends GenerarDocumentoElectronico {
 		factura.setDetalleList(getDetalleList(cabecera, detalleList));
 		// infoadicional
 		factura.setCampoAdicionalList(getInfoAdicinal(infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idDocumento)));
-		
-		return XmlCommonsUtil.jaxbMarshall(factura, true, false,encode);
+		String xml = new String(XmlCommonsUtil.jaxbMarshall(factura, true, false,encode).getBytes(), StandardCharsets.UTF_8);
+		System.out.println("---------------------------------------------------------");
+		System.out.println(factura.getInfoTributaria().getContribuyenteRimpe());
+		System.out.println(xml);
+		return xml;
 	}
 	
 	

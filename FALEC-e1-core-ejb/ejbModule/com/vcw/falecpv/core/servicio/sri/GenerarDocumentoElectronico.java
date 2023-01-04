@@ -46,7 +46,7 @@ import com.vcw.falecpv.core.servicio.TotalimpuestoServicio;
  */
 public abstract class GenerarDocumentoElectronico {
 
-//	protected static final String encode = "ISO-8859-1";
+	//protected static final String encode = "ISO-8859-1";
 	protected static final String encode = "UTF-8";
 	
 	
@@ -98,6 +98,7 @@ public abstract class GenerarDocumentoElectronico {
 		infoTributaria.setDirMatriz(cabecera.getEstablecimiento().getEmpresa().getDireccionmatriz());
 		infoTributaria.setContribuyenteRimpe(null);
 		if(cabecera.getRegimenrimpe() == 1 && !cabecera.getTipocomprobante().getIdentificador().equals("07")) {
+			//System.out.println(Charset.defaultCharset());
 			infoTributaria.setContribuyenteRimpe(AppConfiguracion.getString("contribuyente.rimpe"));
 		}
 		

@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.servicio.sri;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -102,6 +103,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			xmlDocElectronico = docElectronicoProxy.getDocElectronicoFacade(c.getIdcabecera(),
 					c.getEstablecimiento().getIdestablecimiento(),
 					GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador()));
+			
 		} catch (Exception e) {
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
@@ -126,6 +128,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 		// 2. validar 
 		try {
 			validar(xmlDocElectronico, c.getNumdocumento(), c.getTipocomprobante().getIdentificador());
+			
 		} catch (Exception e) {
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
@@ -150,7 +153,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 		// 3. firmar
 		
 		try {
-			xmlDocElectronico = firmaElectronicaServicio.firmarXmlFacade(c.getEstablecimiento().getEmpresa().getIdempresa(), xmlDocElectronico);
+			xmlDocElectronico = firmaElectronicaServicio.firmarXmlFacade(c.getEstablecimiento().getEmpresa().getIdempresa(), xmlDocElectronico);			
 		} catch (FirmaElectronicaException e) {
 			c.setEstado(ComprobanteEstadoEnum.ERROR.toString());
 			try {
@@ -198,7 +201,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
 			Establecimiento e = establecimientoServicio.consultarByPk(c.getEstablecimiento().getIdestablecimiento());
 			SriAccesoDto sriAccesoDto = sriAccesoHelper.consultarDatosAcceso("RECEPCION", e.getAmbiente().equals("2"));
 			ClienteWsSriServicio wsAutorizacion = new ClienteWsSriServicio(sriAccesoDto.getWsdl());
-			FileUtils.writeStringToFile(new File("/app/docElectronicos/example1.xml"), xmlDocElectronico);
+			//FileUtils.writeStringToFile(new File("/app/docElectronicos/example1.xml"), xmlDocElectronico);
 			//xmlDocElectronico = FileUtils.readFileToString(new File("/app/docElectronicos/example1.xml"));
 			rs = wsAutorizacion.validarComprobanteFacade(xmlDocElectronico);
 			
@@ -321,7 +324,7 @@ public class ComprobantePendiente extends EnviarComprobanteSRIDecorador {
         Schema schema = factory.newSchema(new File(xsdPath));
         Validator validator = schema.newValidator();
         File tempXls = File.createTempFile("xml-" + numDoc, ".xml");
-        FileUtils.copyInputStreamToFile(IOUtils.toInputStream(xml), tempXls);
+        FileUtils.copyInputStreamToFile(IOUtils.toInputStream(xml,StandardCharsets.UTF_8), tempXls);
         validator.validate(new StreamSource(tempXls));
 	}	
 

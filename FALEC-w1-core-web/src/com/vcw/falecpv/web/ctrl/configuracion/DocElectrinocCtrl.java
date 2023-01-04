@@ -5,6 +5,7 @@ package com.vcw.falecpv.web.ctrl.configuracion;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -192,10 +193,12 @@ public class DocElectrinocCtrl extends BaseCtrl {
 	private void validarXml(String xsdPath,String xml,String numDoc) throws SAXException, IOException {
 		SchemaFactory factory = 
                 SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");//(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		
         Schema schema = factory.newSchema(new File(xsdPath));
+        
         Validator validator = schema.newValidator();
         File tempXls = File.createTempFile("xml-" + numDoc, ".xml");
-        FileUtils.copyInputStreamToFile(IOUtils.toInputStream(xml), tempXls);
+        FileUtils.copyInputStreamToFile(IOUtils.toInputStream(xml,StandardCharsets.UTF_8), tempXls);
         validator.validate(new StreamSource(tempXls));
 	}
 
