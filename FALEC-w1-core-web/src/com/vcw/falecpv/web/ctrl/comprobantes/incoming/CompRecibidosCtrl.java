@@ -150,16 +150,23 @@ public class CompRecibidosCtrl extends BaseCtrl {
 		fileSriDtoList = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new FileReader(fileComprobantes));
 		String line = reader.readLine();
-		int fila = 1;
+		int fila = 0;
 		String importe = null;
 		String anterior = null;
 		while(line!=null) {
-			if(fila>2 && (fila%2)!=0) {
-				anterior = line;
-			}else if(fila>2 && (fila%2)==0){
-				importe = line;				
-				fileSriDtoList.add(populateFileSriDto(anterior.concat("\t").concat(importe), fila+1));
+			System.out.println("++++++ " + fila + " " + line);
+			if(fila > 0) {
+				importe = line;
+				fileSriDtoList.add(populateFileSriDto(importe, fila));
 			}
+//			if(fila>2 && (fila%2)!=0) {
+//				anterior = line;
+//			}else if(fila>2 && (fila%2)==0){
+//				System.out.println("++++++ " + fila + " " + line);
+//				importe = line;			
+//				if(importe != null)
+//				fileSriDtoList.add(populateFileSriDto(anterior.concat("\t").concat(importe), fila+1));
+//			}
 			fila++;
 			line = reader.readLine();
 		}
