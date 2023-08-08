@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>FALEC-e1-core-ejb</name>
+	<name>Mako-e1-core-ejb</name>
 	<comment></comment>
 	<projects>
 		<project>ServitecCommonDao</project>

@@ -1,53 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                
+                    
     
     
-    <wb-module deploy-name="FALEC">
-                                
+    
+    <wb-module deploy-name="Mako">
+                                        
+        
         
         
         <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
-                                
-        
-        
-        <dependent-module archiveName="FALEC-w1-core-web.war" deploy-path="/" handle="module:/resource/FALEC-w1-core-web/FALEC-w1-core-web">
-                                                
-            
-            
-            <dependent-object/>
-                                                
-            
-            
-            <dependency-type>uses</dependency-type>
-                                            
-        
-        
-        </dependent-module>
-                                
-        
-        
-        <dependent-module archiveName="FALEC-e1-core-ejb.jar" deploy-path="/" handle="module:/resource/FALEC-e1-core-ejb/FALEC-e1-core-ejb">
-                                                
-            
-            
-            <dependent-object/>
-                                                
-            
-            
-            <dependency-type>uses</dependency-type>
-                                            
-        
-        
-        </dependent-module>
+                
         <dependent-module archiveName="SRI-ws-cliente.war" deploy-path="/" handle="module:/resource/SRI-ws-cliente/SRI-ws-cliente">
+                        
+            <dependent-object/>
+                        
+            <dependency-type>uses</dependency-type>
+                    
+        </dependent-module>
+        <dependent-module archiveName="Mako-e1-core-ejb.jar" deploy-path="/" handle="module:/resource/Mako-e1-core-ejb/Mako-e1-core-ejb">
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
-                            
+        <dependent-module archiveName="Mako-w1-core-web.war" deploy-path="/" handle="module:/resource/Mako-w1-core-web/Mako-w1-core-web">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+                                    
+    
     
     
     </wb-module>
-            
+                
+
 
 
 </project-modules>

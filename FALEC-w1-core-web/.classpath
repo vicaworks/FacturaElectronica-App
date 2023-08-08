@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ServitecCommonUtil"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ServitecCommonJsf"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/FALEC-e1-core-ejb"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Mako-e1-core-ejb"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ServitecCommonDao"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>

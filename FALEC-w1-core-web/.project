@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>FALEC-w1-core-web</name>
+	<name>Mako-w1-core-web</name>
 	<comment></comment>
 	<projects>
 		<project>FALEC-e1-core-ejb</project>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>FALEC</name>
+	<name>Mako</name>
 	<comment></comment>
 	<projects>
-		<project>FALEC-e1-core-ejb</project>
-		<project>FALEC-w1-core-web</project>
+		<project>Mako-e1-core-ejb</project>
+		<project>Mako-w1-core-web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

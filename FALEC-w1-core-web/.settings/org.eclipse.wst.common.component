@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                
+                    
     
     
-    <wb-module deploy-name="FALEC-w1-core-web">
-                                
+    
+    <wb-module deploy-name="Mako-w1-core-web">
+                                        
+        
         
         
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-                                
+                                        
+        
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-                                
+                                        
         
         
-        <property name="context-root" value="FALEC-w1-core-web"/>
-                                
         
-        
-        <property name="java-output-path" value="/FALEC-w1-core-web/build/classes"/>
-                            
+        <property name="java-output-path" value="/Mako-w1-core-web/build/classes"/>
+        <property name="context-root" value="Mako-w1-core-web"/>
+                                    
+    
     
     
     </wb-module>
-            
+                
+
 
 
 </project-modules>
