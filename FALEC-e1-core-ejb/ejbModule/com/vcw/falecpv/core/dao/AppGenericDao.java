@@ -23,13 +23,13 @@ public class AppGenericDao<T extends Serializable,PK extends Serializable> exten
 	/**
 	 * Unidad de persistencia
 	 */
-	@PersistenceContext(unitName = "falecpvPU")
+	@PersistenceContext(unitName = "makoPU")
 	private EntityManager em;
 	
 	/**
 	 * datasource inyectado, se obtiene del contenedor EJB
 	 */
-	@Resource(mappedName = "java:jboss/datasources/falecpvDS")
+	@Resource(mappedName = "java:jboss/datasources/makoDS")
 	private DataSource dataSource;
 	
 	public AppGenericDao(Class<T> type) {

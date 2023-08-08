@@ -3,6 +3,6 @@
 	<!-- contexto -->
 	<context-root>mako</context-root>
 	
-	<security-domain>DBAutenticacionFalecpv</security-domain>
+	<security-domain>DBAutenticacionMako</security-domain>
 	
 </jboss-web>

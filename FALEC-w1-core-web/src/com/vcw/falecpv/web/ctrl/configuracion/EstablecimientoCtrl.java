@@ -28,7 +28,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.file.UploadedFile;
-import org.primefaces.shaded.commons.io.IOUtils;
+import org.primefaces.util.IOUtils;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
@@ -220,7 +220,8 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				String nombreLogo = establecimientoSelected.getEmpresa().getRuc() + establecimientoSelected.getCodigoestablecimiento() + establecimientoSelected.getNombreimagen().substring(establecimientoSelected.getNombreimagen().lastIndexOf("."),establecimientoSelected.getNombreimagen().length());
 				String pathLogo = parametroGenericoServicio.consultarParametro(PGPlantillasEnum.PATH_LOGO, TipoRetornoParametroGenerico.STRING);
 				FileOutputStream output = new FileOutputStream(new File(pathLogo + nombreLogo));
-				IOUtils.write(establecimientoSelected.getLogo(), output);
+				//IOUtils.write(establecimientoSelected.getLogo(), output);
+				IOUtils.copyLarge(new ByteArrayInputStream(establecimientoSelected.getLogo()), output);				
 				establecimientoSelected.setNombreimagen(nombreLogo);
 				establecimientoSelected = establecimientoServicio.actualizar(establecimientoSelected);
 			}

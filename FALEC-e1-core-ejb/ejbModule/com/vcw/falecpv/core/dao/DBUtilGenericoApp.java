@@ -15,7 +15,7 @@ import com.servitec.common.dao.DBUtilGenerico;
 public class DBUtilGenericoApp extends DBUtilGenerico {
 
 	
-	@Resource(mappedName = "java:jboss/datasources/falecpvDS")
+	@Resource(mappedName = "java:jboss/datasources/makoDS")
 	protected DataSource dataSourceJndi;
 	
 	/**

@@ -7,7 +7,7 @@
   <module>
     <web>
       <web-uri>Mako-w1-core-web.war</web-uri>
-      <context-root>Mako-w1-core-web</context-root>
+      <context-root>mako</context-root>
     </web>
   </module>
   <library-directory>lib</library-directory>

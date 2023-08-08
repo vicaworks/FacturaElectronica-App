@@ -14,7 +14,7 @@ import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
-import org.primefaces.shaded.commons.io.IOUtils;
+import org.primefaces.util.IOUtils;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;

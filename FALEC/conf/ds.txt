@@ -1,4 +1,4 @@
-<datasource jta="true" jndi-name="java:jboss/datasources/falecpvDS" pool-name="falecDS" enabled="true" use-java-context="true" use-ccm="true">
+<datasource jta="true" jndi-name="java:jboss/datasources/makoDS" pool-name="falecDS" enabled="true" use-java-context="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://127.0.0.1:5432/falecpv</connection-url>
                     <driver>postgresql-42.2.10.jar</driver>
                     <pool>
