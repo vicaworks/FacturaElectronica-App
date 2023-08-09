@@ -64,7 +64,7 @@
 	    	<!-- 
 	        <div class="layout-wrapper #{guestPreferences.menuMode} #{guestPreferences.menuColor} #{guestPreferences.topBarColor} #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
 	    	 -->
-	    	 <div class="layout-wrapper layout-overlay layout-menu-light layout-topbar-light #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
+	    	 <div class="layout-wrapper layout-menu-dark layout-topbar-light layout-overlay #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
 	            <ui:include src="./topbar.xhtml"></ui:include>
 	            <ui:include src="./menu.xhtml"></ui:include>
 	            <ui:include src="./right-panel.xhtml" />
@@ -100,11 +100,12 @@
 	            <ui:include src="../../pages/common/incl_message.xhtml" />
 	        </div>
 	       
-	        <h:outputStylesheet name="primeflex-2.css" library="css" />
 	        <h:outputStylesheet name="css/primeicons.css" library="roma-layout" />
 	        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="roma-layout" />
-	        <h:outputStylesheet name="css/demo.css" library="demo" />
+	        <h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />
 	        <h:outputStylesheet name="farlecpv_v6_7.css" library="css" />
+	        
+	        <h:outputStylesheet name="css/demo.css" library="demo" />
 	        <!-- Fontawsome -->
 	        <h:outputStylesheet library="webjars" name="font-awesome/6.4.0/css/all.min-jsf.css" />
 	        <h:outputStylesheet library="webjars" name="font-awesome/6.4.0/css/v5-font-face.min-jsf.css" />

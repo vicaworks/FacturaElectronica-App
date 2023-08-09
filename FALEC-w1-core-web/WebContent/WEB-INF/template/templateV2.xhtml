@@ -65,11 +65,8 @@
     </h:head>
 	<f:view locale="en_US">
 	    <h:body>
-	    	<!-- 
-	        <div class="layout-wrapper #{guestPreferences.menuMode} #{guestPreferences.menuColor} #{guestPreferences.topBarColor} #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
-	        <div class="layout-wrapper layout-overlay layout-menu-light layout-topbar-light #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
-	    	 -->
-	    	 <div class="layout-wrapper layout-overlay layout-menu-light layout-topbar-light #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
+	    	
+	    	 <div class="layout-wrapper layout-menu-dark layout-topbar-light layout-overlay #{guestPreferences.orientationRTL ? 'layout-rtl' : null}" >
 	            <ui:include src="./topbar.xhtml"></ui:include>
 	            <ui:include src="./menu.xhtml"></ui:include>
 	            <ui:include src="./right-panel.xhtml" />
@@ -105,8 +102,7 @@
 	            <ui:include src="../../pages/common/incl_message.xhtml" />
 	        </div>
 	       
-			<!-- PrimeFlex Personalizado -->
-			<h:outputStylesheet name="css/primeflexV3.0-vicaworks-v1.0.css" library="roma-layout" />
+			<h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />			
 	        <h:outputStylesheet name="css/primeicons.css" library="roma-layout" />
 	        <h:outputStylesheet name="primeflex-saga.css" library="css" />
 	        <h:outputStylesheet name="prism.css" library="css" />
@@ -116,7 +112,6 @@
 		    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/themes/vela-blue.css"/>
 		    <!-- Roma Layout -->
 	        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="roma-layout" />
-	        <h:outputStylesheet name="css/demo.css" library="demo" />
 	        <!-- Style mako -->
 	        <h:outputStylesheet name="mako_v1_1.css" library="css" />
 	        <!-- Fontawsome -->

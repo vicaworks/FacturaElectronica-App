@@ -1973,7 +1973,7 @@ a {
   text-align: center;
   border: 30px solid #0f97c7;
   border-left-color: #1cb9d7;
-  border-top-color: #0772b3;
+  border-tocolor: #0772b3;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
@@ -2905,7 +2905,7 @@ a {
 .live-support ul li {
   padding: 12px;
 }
-.live-support ul li .p-col-fixed {
+.live-support ul li .col-fixed {
   width: 48px;
 }
 .live-support ul li img {
@@ -2977,10 +2977,10 @@ a {
   color: #65686a;
   font-family: "Inter UI", sans-serif;
 }
-.live-support .new-message .p-col-fixed {
+.live-support .new-message .col-fixed {
   width: 100px;
 }
-.live-support .new-message .p-col-fixed button {
+.live-support .new-message .col-fixed button {
   width: 100%;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
@@ -3657,11 +3657,30 @@ a {
 }
 
 @media print {
-  .invoice {
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice-content * {
+    visibility: visible;
+  }
+
+  #invoice-content {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
     padding: 0;
     margin: 0;
     background: #ffffff;
-    color: #424242;
+    color: #252529;
+  }
+
+  .invoice .invoice-to {
+    border-top: 1px solid #ebedef;
+  }
+  .invoice .invoice-items table tr {
+    border-bottom: 1px solid #ebedef;
   }
 }
 .layout-config {
@@ -3781,7 +3800,7 @@ a {
   padding: 0 10px;
   margin-top: 3px;
 }
-.layout-config .layout-config-content .layout-config-section.colors .layout-config-colors .p-col-fixed {
+.layout-config .layout-config-content .layout-config-section.colors .layout-config-colors .col-fixed {
   padding: 0.5em;
 }
 .layout-config .layout-config-content .layout-config-section.options .layout-config-options {
@@ -3895,7 +3914,7 @@ a {
   }
 }
 @media (max-width: 640px) {
-  .layout-config .ui-tabs.ui-tabs-top .ui-tabs-panels .p-grid {
+  .layout-config .ui-tabs.ui-tabs-top .ui-tabs-panels .grid {
     -ms-flex-pack: center;
     justify-content: center;
   }

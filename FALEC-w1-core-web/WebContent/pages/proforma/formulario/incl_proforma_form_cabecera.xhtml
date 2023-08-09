@@ -163,16 +163,32 @@
 		
 		<p:accordionPanel>
 	        <p:tab title="Comentarios antes del detalle">
-				<pe:ckEditor id="edtComentario1" value="#{cotizacionFormCtrl.cabecerSelected.contenido1}" enterMode="CKEDITOR.ENTER_BR" width="100%">
-				</pe:ckEditor>
+	        	<pe:sunEditor id="edtComentario1" widgetVar="wedtComentario1" value="#{cotizacionFormCtrl.cabecerSelected.contenido1}"
+                  mode="inline" dir="ltr" locale="es"
+                  toolbar="[['font','fontSize','formatBlock'],['paragraphStyle','blockquote'], ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript', 'removeFormat'],
+                  '/'
+                  ,['fontColor', 'hiliteColor', 'outdent', 'indent', 'align', 'horizontalRule', 'list', 'table'],
+                   ['link', 'image', 'audio', 'video', 'fullScreen', 'showBlocks', 'codeView', 'preview', 'print', 'save']]">
+                </pe:sunEditor>
+				
 	        </p:tab>
 	        <p:tab title="Comentarios después del detalle">
-				<pe:ckEditor id="edtComentario2" value="#{cotizacionFormCtrl.cabecerSelected.contenido2}" enterMode="CKEDITOR.ENTER_BR" width="100%">
-				</pe:ckEditor>	        	
+	        	<pe:sunEditor id="edtComentario2" widgetVar="wedtComentario2" value="#{cotizacionFormCtrl.cabecerSelected.contenido2}"
+                  mode="inline" dir="ltr" locale="es"
+                  toolbar="[['font','fontSize','formatBlock'],['paragraphStyle','blockquote'], ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript', 'removeFormat'],
+                  '/'
+                  ,['fontColor', 'hiliteColor', 'outdent', 'indent', 'align', 'horizontalRule', 'list', 'table'],
+                   ['link', 'image', 'audio', 'video', 'fullScreen', 'showBlocks', 'codeView', 'preview', 'print', 'save']]">
+                </pe:sunEditor>	        	
 	        </p:tab>
 	        <p:tab title="Pie de página">
-				<pe:ckEditor id="edtComentario3" value="#{cotizacionFormCtrl.cabecerSelected.contenido3}" enterMode="CKEDITOR.ENTER_BR" width="100%" >
-				</pe:ckEditor>	        	
+	        	<pe:sunEditor id="edtComentario3" widgetVar="wedtComentario3" value="#{cotizacionFormCtrl.cabecerSelected.contenido3}"
+                  mode="inline" dir="ltr" locale="es"
+                  toolbar="[['font','fontSize','formatBlock'],['paragraphStyle','blockquote'], ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript', 'removeFormat'],
+                  '/'
+                  ,['fontColor', 'hiliteColor', 'outdent', 'indent', 'align', 'horizontalRule', 'list', 'table'],
+                   ['link', 'image', 'audio', 'video', 'fullScreen', 'showBlocks', 'codeView', 'preview', 'print', 'save']]">
+                </pe:sunEditor>                
 	        </p:tab>
         </p:accordionPanel>
 		

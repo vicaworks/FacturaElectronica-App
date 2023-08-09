@@ -24,11 +24,11 @@ public class GuestPreferences implements Serializable {
 	 */
 	private static final long serialVersionUID = 28715271998980081L;
 
-	private String menuMode = "layout-slim";//"layout-static";//"layout-slim";
+	private String menuMode = "layout-overlay";//"layout-static";//"layout-slim";
 
     private String theme = "blue";//"blue";bluegrey
 
-    private String menuColor = "layout-menu-light"; // "layout-menu-light"; layout-menu-dark
+    private String menuColor = "layout-menu-dark"; // "layout-menu-light"; layout-menu-dark
 
     private String topBarColor = "layout-topbar-blue";//"layout-topbar-blue"; layout-topbar-bluegrey
 
@@ -83,7 +83,7 @@ public class GuestPreferences implements Serializable {
 
     public String getTheme() {
     	//theme = "rose";
-    	theme = "blue";
+    	//theme = "blue";
 //    	theme = "bluegrey";
     	//theme = "myblue";
     	//theme = "indigo";
@@ -107,7 +107,7 @@ public class GuestPreferences implements Serializable {
     }
 
     public String getMenuColor() {
-    	menuColor = "layout-menu-light";
+    	//menuColor = "layout-menu-dark";
         return this.menuColor;
     }
 
@@ -116,7 +116,7 @@ public class GuestPreferences implements Serializable {
     }
 
     public String getTopBarColor() {
-    	topBarColor = "layout-topbar-blue";
+    	//topBarColor = "layout-topbar-blue";
         return this.topBarColor;
     }
 
