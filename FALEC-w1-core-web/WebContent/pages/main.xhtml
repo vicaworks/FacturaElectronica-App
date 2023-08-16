@@ -3,6 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">Mako</ui:define>
@@ -10,8 +11,12 @@
     
     <ui:define name="head">
     
-        <style type="text/css">
-			
+        <style type="text/css">			
+			.twoDT .ui-datatable-scrollable-body{
+				/* min-height: 50vh !important; */
+				/* height: calc(100vh - 260px); */
+				height: 300px;
+			}
         </style>
         
         <script>
@@ -23,96 +28,263 @@
     </ui:define>
 
     <ui:define name="content">
+    	<div style="margin-top: -1.5rem;margin-left: -1.5rem;margin-right: -1.5rem;">
+    		
+    		<header class="panel">
+		        <div class="panel__grid contenedor">
+		            <div class="card-forma-1">
+		                <h3 class="card-forma-1__heading-1">Inicie con Mako <i class="fa-solid fa-power-off"></i> </h3>
+		                <h4 class="card-forma-1__heading-2">Configura el sistema para emitir comprobantes electrónicos.</h4>
+		                <nav class="card-forma-1__accesos">
+		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_conf')?'disable-link':''}" href="#{request.contextPath}/pages/configuracion/configuracion.jsf">
+		                        <i class="fa-solid fa-signature"></i>
+		                        <span>Configurar certificado de firma electrónica.</span>
+		                    </a>
+		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_conf')?'disable-link':''}" href="#{request.contextPath}/pages/configuracion/configuracion.jsf">
+		                        <i class="fa-solid fa-house-medical"></i>
+		                        <span>Administrar establecimientos.</span>
+		                    </a>
+		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_conf')?'disable-link':''}" href="#{request.contextPath}/pages/configuracion/configuracion.jsf">
+		                        <i class="fa-solid fa-user-gear"></i>
+		                        <span>Crear usuarios, y asignar perfiles.</span>
+		                    </a>
+		                </nav>
+		            </div>
+		            <div class="card-forma-1">
+		                <h3 class="card-forma-1__heading-1">Reportes <i class="fa-brands fa-buromobelexperte"></i> </h3>
+		                <h4 class="card-forma-1__heading-2">Toda la información de tu negocio, en reportes consolidados..</h4>
+		                <nav class="card-forma-1__accesos">
+		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_panel_repventas')?'disable-link':''}" href="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf">
+		                        <i class="fa-solid fa-table"></i>
+		                        <span>Reporte de ventas.</span>
+		                    </a>
+		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_panel_repinventario')?'disable-link':''}" href="#{request.contextPath}/pages/productos/inventario.jsf">
+		                        <i class="fa-solid fa-table"></i>
+		                        <span>Inventario.</span>
+		                    </a>
+		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_panel_repprodvendidos')?'disable-link':''}" href="#{request.contextPath}/pages/reportes/rep_ventaproducto.jsf">
+		                        <i class="fa-solid fa-table"></i>
+		                        <span>Productos más vendidos.</span>
+		                    </a>
+		                </nav>
+		            </div>
+		        </div>
+		    </header>
+		
+		    <section class="resumen-valor contenedor">
+		        <div class="card-format-2 card-format-2-bg-blue">
+		            <h2 class="card-format-2__header">Total de ventas</h2>
+		            <div class="card-format-2__contenido">
+		                <span class="card-format-2__valor card-format-2__valor-blue">
+		                	<h:outputText value="#{mainCtrl.totalVentas.totalconimpuestos == null ? 0 : mainCtrl.totalVentas.totalconimpuestos}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+		                </span>
+		                <span class="card-format-2__descripcion card-format-2__descripcion-blue">Ventas al día de hoy</span>
+		            </div>
+		            <div class="card-format-2__footer card-format-2__footer-blue">
+		                <i class="fa-solid fa-calendar-days"></i>
+		                <span class="card-format-2__footer-heading">
+		                	<h:outputText value="#{mainCtrl.fechaActual}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+		                </span>
+		            </div>
+		        </div>
+		        <div class="card-format-2 card-format-2-bg-gray">
+		            <h2 class="card-format-2__header-black">Forma de pago</h2>
+		            <div class="card-format-2__contenido-grid">
+		                <div class="card-format-2__campo">
+		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
+		                        <h:outputText value="#{mainCtrl.pagoEfectivo}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+		                    </span>
+		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Efectivo</span>
+		                </div>
+		                <div class="card-format-2__campo">
+		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
+		                        <h:outputText value="#{mainCtrl.pagoTransferencia}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+		                    </span>
+		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Transferencia</span>
+		                </div>
+		                <div class="card-format-2__campo">
+		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
+		                    	<h:outputText value="#{mainCtrl.pagoTarjetas}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+		                    </span>
+		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Tarjetas</span>
+		                </div>
+		                <div class="card-format-2__campo">
+		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
+		                    	<h:outputText value="#{mainCtrl.pagoCredito}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+		                    </span>
+		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Crédito</span>
+		                </div>
+		            </div>
+		            <div class="card-format-2__footer card-format-2__footer-black">
+		                <i class="fa-solid fa-calendar-days"></i>
+		                <span class="card-format-2__footer-heading">
+		                	<h:outputText value="#{mainCtrl.fechaActual}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+		                </span>
+		            </div>
+		        </div>
+		        <div class="card-format-2 card-format-2-bg-lila">
+		            <h2 class="card-format-2__header">Caja chica</h2>
+		            <div class="card-format-2__contenido">
+		                <span class="card-format-2__valor card-format-2__valor-lila">
+		                	<h:outputText value="#{mainCtrl.totalCajaChica}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+		                </span>
+		                <span class="card-format-2__descripcion card-format-2__descripcion-lila">Saldo al día de hoy</span>
+		            </div>
+		            <div class="card-format-2__footer card-format-2__footer-lila">
+		                <i class="fa-solid fa-calendar-days"></i>
+		                <span class="card-format-2__footer-heading">
+		                	<h:outputText value="#{mainCtrl.fechaActual}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+		                </span>
+		            </div>
+		        </div>
+		    </section>
+		    
+		    <main>
+		        <div class="panel-resumen contenedor">
+		        
+		            <div class="card h-full">
+		                <h2 class="card__heading card__heading--noBorder">Facturas emitidas</h2>
+		                
+		                
+		                <p:dataTable id="twoDT" var="c"
+							value="#{mainCtrl.resumenVentas}" scrollable="true"
+							emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="twoDT mt-1"  
+							rowKey="#{c.idcabecera}"
+							paginator="true"
+			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+			                paginatorPosition="bottom"  
+							rows="10"
+							rowsPerPageTemplate="10,15,20,25,30,35,40">
+							
+							<p:column headerText="NUM" style="width:200px">
+								<div class="pr-2">
+									<div class="flex justify-content-between">
+										<div class="flex align-items-baseline" style="gap: .5rem;">
+											<h:outputText value="#{mainCtrl.getFormatoNumDocumento(c.numdocumento)}" 
+												styleClass="font-semibold" style="color:black;"/>
+											<span class="fs-9 text-gray-400">Factura</span>
+										</div>
+										<div class="flex align-items-baseline" style="gap: .5rem;">
+											<i class="fa-regular fa-clock"></i>
+											<h:outputText value="#{c.updated}" style="width:3rem;" styleClass="text-right">
+												<f:convertDateTime pattern="HH:mm"/>
+											</h:outputText>
+										</div>
+									</div>
+									<div class="mt-1 flex justify-content-between">
+										<span class="font-semibold fs-14 font-italic">SR<span class="text-pink-500">I</span></span>
+										<span class="#{utilsMakoCtrl.getComprobanteStyle(c.estado)} fs-9 py-1" style="width: 10rem;">#{c.estado}</span>
+									</div>
+								</div>
+							</p:column>
+							
+							<p:column headerText="CLIENTE" style="width:25rem;">
+								<div class="flex flex-column justify-content-between" style="height: 3.1rem;">
+									<span class="text-blue-600 font-normal">#{c.identificador}</span>
+									<span class="font-normal">#{c.razonsocial}</span>
+								</div>
+							</p:column>
+							
+							<p:column headerText="TOTAL"
+								styleClass="text-right" 
+								style="width:8rem;vertical-align: middle;">
+								<h:outputText value="#{c.totalconimpuestos}" 
+									styleClass="text-xl font-semibold">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</p:column>
+							
+						</p:dataTable>
+		                
+		                
+		                <div class="card__footer card__footer--noBorder">
+		                    <div class="text-3xl flex justify-content-between font-normal">
+		                        <i class="fa-solid fa-calendar-days"></i>
+		                        <span>
+		                        	<h:outputText value="#{mainCtrl.fechaActual}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+		                        </span>
+		                    </div>
+		                </div>
+		
+		            </div>
+		            
+		            
+		            <div class="card h-full">
+		                <h2 class="card__heading card__heading--noBorder">Productos más vendidos</h2>
+		                
+		                
+		                <p:dataTable id="oneDT" var="c"
+							value="#{mainCtrl.productosMasVendidos}" scrollable="true"
+							emptyMessage="#{msg['mensaje.noexistenDatos']}"
+							styleClass="twoDT mt-1"  
+							rowKey="#{c.idproducto}"
+							paginator="true"
+			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+			                paginatorPosition="bottom"  
+							rows="20"
+							rowsPerPageTemplate="10,15,20,25,30,35,40">
+							
+							<p:column headerText="ITEM">
+								<div class="flex flex-column" style="gap: .5rem;">
+									<div class="flex align-items-baseline" style="gap: .5rem;">
+										<i class="fa-solid fa-barcode font-normal text-primary-600"></i>
+										<span class="text-base">#{c.codigoprincipal}</span>
+									</div>
+									<h:outputText value="#{c.nombregenerico}" styleClass="font-medium"/>
+								</div>
+							</p:column>
+							
+							<p:column headerText="CANTIDAD" style="width:150px;vertical-align: middle;">
+								<div class="text-center">
+									<h:outputText value="#{c.cantidad}" 
+										styleClass="text-2xl font-bold text-primary-600">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+									</h:outputText>									
+								</div>
+							</p:column>
+							
+							
+						</p:dataTable>	                
+		                
+		                <div class="card__footer card__footer--noBorder">
+		                    <div class="text-3xl flex justify-content-between font-normal">
+		                        <i class="fa-solid fa-calendar-days"></i>
+		                        <span>Últimos 21 días</span>
+		                    </div>
+		                </div>
+		
+		            </div>
+		            
+		        </div>
+		    </main>
     	
-    	<header class="panel">
-	        <div class="panel__grid contenedor">
-	            <div class="card-forma-1">
-	                <h3 class="card-forma-1__heading-1">Inicie con Mako <i class="fa-solid fa-power-off"></i> </h3>
-	                <h4 class="card-forma-1__heading-2">Configura el sistema para emitir comprobantes electrónicos.</h4>
-	                <nav class="card-forma-1__accesos">
-	                    <a class="card-forma-1__acceso" href="#">
-	                        <i class="fa-solid fa-signature"></i>
-	                        <span>Configurar certificado de firma electrónica.</span>
-	                    </a>
-	                    <a class="card-forma-1__acceso" href="#">
-	                        <i class="fa-solid fa-house-medical"></i>
-	                        <span>Administrar establecimientos.</span>
-	                    </a>
-	                    <a class="card-forma-1__acceso" href="#">
-	                        <i class="fa-solid fa-user-gear"></i>
-	                        <span>Crear usuarios, y asignar perfiles.</span>
-	                    </a>
-	                </nav>
-	            </div>
-	            <div class="card-forma-1">
-	                <h3 class="card-forma-1__heading-1">Reportes <i class="fa-brands fa-buromobelexperte"></i> </h3>
-	                <h4 class="card-forma-1__heading-2">Toda la información de tu negocio, en reportes consolidados..</h4>
-	                <nav class="card-forma-1__accesos">
-	                    <a class="card-forma-1__acceso" href="#">
-	                        <i class="fa-solid fa-table"></i>
-	                        <span>Reporte de ventas.</span>
-	                    </a>
-	                    <a class="card-forma-1__acceso" href="#">
-	                        <i class="fa-solid fa-table"></i>
-	                        <span>Inventario.</span>
-	                    </a>
-	                    <a class="card-forma-1__acceso" href="#">
-	                        <i class="fa-solid fa-table"></i>
-	                        <span>Productos más vendidos.</span>
-	                    </a>
-	                </nav>
-	            </div>
-	        </div>
-	    </header>
-	
-	    <section class="resumen-valor contenedor">
-	        <div class="card-format-2 card-format-2-bg-blue">
-	            <h2 class="card-format-2__header">Total de ventas</h2>
-	            <div class="card-format-2__contenido">
-	                <span class="card-format-2__valor card-format-2__valor-blue">$ 1,313.31</span>
-	                <span class="card-format-2__descripcion card-format-2__descripcion-blue">Ventas al día de hoy</span>
-	            </div>
-	            <div class="card-format-2__footer card-format-2__footer-blue">
-	                <i class="fa-solid fa-calendar-days"></i>
-	                <span class="card-format-2__footer-heading">09/08/2023</span>
-	            </div>
-	        </div>
-	        <div class="card-format-2 card-format-2-bg-gray">
-	            <h2 class="card-format-2__header-black">Forma de pago</h2>
-	            <div class="card-format-2__contenido-grid">
-	                <div class="card-format-2__campo">
-	                    <span class="card-format-2__valor card-format-2__valor--campo card-format-2__valor-green">$
-	                        1,000.31</span>
-	                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Efectivo</span>
-	                </div>
-	                <div class="card-format-2__campo">
-	                    <span class="card-format-2__valor card-format-2__valor--campo card-format-2__valor-primary">$
-	                        313.31</span>
-	                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Tarjetas</span>
-	                </div>
-	                <div class="card-format-2__campo">
-	                    <span class="card-format-2__valor card-format-2__valor--campo card-format-2__valor-orange">$
-	                        2,500.31</span>
-	                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Crédito</span>
-	                </div>
-	            </div>
-	            <div class="card-format-2__footer card-format-2__footer-black">
-	                <i class="fa-solid fa-calendar-days"></i>
-	                <span class="card-format-2__footer-heading">09/08/2023</span>
-	            </div>
-	        </div>
-	        <div class="card-format-2 card-format-2-bg-lila">
-	            <h2 class="card-format-2__header">Caja chica</h2>
-	            <div class="card-format-2__contenido">
-	                <span class="card-format-2__valor card-format-2__valor-lila">$ 313.31</span>
-	                <span class="card-format-2__descripcion card-format-2__descripcion-lila">Saldo al día de hoy</span>
-	            </div>
-	            <div class="card-format-2__footer card-format-2__footer-lila">
-	                <i class="fa-solid fa-calendar-days"></i>
-	                <span class="card-format-2__footer-heading">09/08/2023</span>
-	            </div>
-	        </div>
-	    </section>
+    	
+    	</div>
+    	
+	    
         
     </ui:define>
 

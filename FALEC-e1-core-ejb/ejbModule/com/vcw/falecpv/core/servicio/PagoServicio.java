@@ -3,8 +3,11 @@
  */
 package com.vcw.falecpv.core.servicio;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -201,6 +204,50 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 			}
 			
 			return pagoList;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param fecha
+	 * @param noEstados
+	 * @param idTipoCompobantes
+	 * @param tipoPagoSplit
+	 * @return
+	 * @throws DaoException
+	 */
+	public BigDecimal getTotalPago(Date fecha, List<String> noEstados, List<String> idTipoCompobantes, String tipoPagoSplit)throws DaoException{
+		try {
+			
+			String noEstadosSplit = noEstados == null || noEstados.isEmpty() ? null : 
+				noEstados.stream().collect(Collectors.joining("','", "'", "'"));
+			
+			String comprobantesSplit = idTipoCompobantes == null || idTipoCompobantes.isEmpty() ? null : 
+				idTipoCompobantes.stream().collect(Collectors.joining("','", "'", "'"));
+			
+			String sql = "select " + 	
+						"		c.fechaemision, " +
+						"		sum(p.valorpago) as total " +
+						"	from cabecera c inner join pago p on c.idcabecera = p.idcabecera " + 
+						"	where  " +
+						(noEstadosSplit != null ? "		c.estado not in (" + noEstadosSplit + ") " : " ") +
+						"		and c.fechaemision = '"  + formatoFecha(fecha) + "' " +
+						(tipoPagoSplit !=null ? "		and p.idtipopago in (" + tipoPagoSplit + ") " : " " ) +
+						(comprobantesSplit != null ? "		and c.idtipocomprobante in (" + comprobantesSplit + ") " : " " ) +
+						"	group by " +
+						"		c.fechaemision ";
+			
+			Map<String, Object> r = singleResultMap(sql);
+			
+			if(r != null && !r.isEmpty()) {
+				return (BigDecimal)r.get("total");
+			}
+			
+			return BigDecimal.ZERO;
+			
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}

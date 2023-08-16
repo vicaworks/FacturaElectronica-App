@@ -3,17 +3,17 @@
 
     <div class="layout-topbar">
     	
-        <a class="layout-right-panel-button layout-topbar-icon" href="#">
+        <!-- <a class="layout-right-panel-button layout-topbar-icon" href="#">
             <i class="fa fa-ellipsis-v" />
-        </a>
+        </a> -->
 
-        <a class="layout-menu-button layout-topbar-icon" href="#">
+        <a class="layout-menu-button layout-topbar-icon menu-icon" href="#">
             <i class="fa fa-bars" />
         </a>
 
-        <h:link id="logo-link" styleClass="layout-topbar-logo">            
+        <h:link id="logo-link" styleClass="layout-topbar-logo sucursal-topbar-logo">            
             <!-- <p:graphicImage name="images/logo-roma.svg" library="roma-layout" /> -->
-            <span class="fs-25 fw-4 text-primary-400">
+            <span class="sucursal-topbar-nombre" style="font-family: 'Bruno Ace', cursive;color: black;">
             	#{appSessionCtrl.nombreEstablecimiento}
             </span>
         </h:link>
@@ -35,7 +35,7 @@
                         <li>
                             <a href="#">
                                 <i class="fa fa-fw fa-user"></i>
-                                <span>Configuración</span>
+                                <span>Usuario</span>
                             </a>
                         </li>
                         <li>

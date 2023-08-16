@@ -497,7 +497,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('01') " +
 			"		and c.fechaemision = '" + formatoFecha(fecha) + "'  " +
-			"		and c.estado not in ('ANULADO','BORRADOR') " +
+			"		and c.estado not in ('ANULADO') " +
 			"	group by " +
 			"		tc.identificador " +
 			"	union " +
@@ -514,7 +514,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
 			"		and tc.identificador in ('00') " +
 			"		and c.fechaemision = '" + formatoFecha(fecha) + "'  " +
-			"		and c.estado not in ('ANULADO','BORRADOR') " +
+			"		and c.estado not in ('ANULADO') " +
 			"	group by " +
 			"		tc.identificador ";
 			
@@ -615,7 +615,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			
 			String sql = "select " + 
 			"		c.idcabecera, " +
-			"		tc.identificador, " +
+			"		cl.identificacion as identificador, " +
 			"		c.numdocumento, " +
 			"		c.idcliente, " +
 			"		cl.razonsocial, " +
@@ -624,15 +624,16 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 			"		c.totalice, " +
 			"		c.totaliva, " +
 			"		c.totalconimpuestos, " +
-			"		c.updated " +
+			"		c.updated, " +
+			"		c.estado " +
 			"	from  " +
 			"		cabecera c inner join cliente cl on c.idcliente = cl.idcliente " + 
 			"		inner join tipocomprobante tc on tc.idtipocomprobante = c.idtipocomprobante " + 
 			"	where  " +
 			"		c.idestablecimiento = '" + idEstablecimiento + "' " +
-			"		and tc.identificador in ('01','00') " +
+			"		and tc.identificador in ('01') " +
 			"		and c.fechaemision = '" + formatoFecha(fecha) + "' " +
-			"		and c.estado not in ('ANULADO','BORRADOR') " +
+			"		and c.estado not in ('ANULADO') " +
 			"	order by " +
 			"		c.fechaemision, " +
 			"		c.updated ";

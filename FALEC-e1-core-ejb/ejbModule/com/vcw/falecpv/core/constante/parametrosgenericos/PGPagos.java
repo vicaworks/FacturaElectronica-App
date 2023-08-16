@@ -9,7 +9,11 @@ package com.vcw.falecpv.core.constante.parametrosgenericos;
  */
 public enum PGPagos implements ParametroGenericoBaseEnum {
 	
-	REPORTE_PAGOS_NOINCLUIR("9");
+	REPORTE_PAGOS_NOINCLUIR("9"),
+	PAGOS_TRANSFERENCIA("44"),
+	PAGOS_EFECTIVO("43"),
+	PAGOS_TARJETA("45"),
+	PAGOS_CREDITO("46");
 	
 	private String id;
 	

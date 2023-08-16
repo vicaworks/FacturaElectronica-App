@@ -755,6 +755,7 @@ ul {
 }
 
 .panel {
+  background: linear-gradient(to bottom, #f3f3f3 40%, white 80%, transparent 100%);
   padding: 1rem 0;
 }
 .panel__grid {
@@ -806,7 +807,7 @@ ul {
 .card-forma-1__acceso {
   gap: 0.5rem;
   text-decoration: none;
-  color: #188adb;
+  color: #07283f;
   padding: 0.5rem 0.5rem;
   transition: all 0.4s;
   font-size: 1.35rem;
@@ -838,10 +839,10 @@ ul {
   border-bottom: none;
 }
 .card-forma-1__acceso:visited {
-  color: #11629b;
+  color: #07283f;
 }
 .card-forma-1__acceso:hover {
-  color: #093656;
+  color: #167fc9;
 }
 
 .resumen-valor {
@@ -931,14 +932,15 @@ ul {
   font-size: 2rem;
 }
 .card-format-2__contenido-grid {
-  display: flex;
+  display: grid;
   gap: 1rem;
-  padding: 2.5rem 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 0.029rem 0.5rem;
 }
 .card-format-2__campo {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: baseline;
   gap: 0.3rem;
   align-items: center;
 }
@@ -1003,6 +1005,136 @@ ul {
   color: #f0f5f5;
 }
 
+.disable-link {
+  pointer-events: none;
+  cursor: default;
+  opacity: 50%;
+}
+
+.panel-resumen {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+@media (min-width: 768px) {
+  .panel-resumen {
+    flex-direction: row;
+  }
+}
+
+.card {
+  padding: 0.8rem;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+@media (min-width: 768px) {
+  .card {
+    padding: 1.2rem;
+  }
+}
+.card__heading {
+  font-size: 1.8rem;
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.card__heading::after {
+  content: "";
+  border-bottom: 1px solid #ebeef2;
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  margin-top: 0.6rem;
+}
+@media (min-width: 768px) {
+  .card__heading::after {
+    width: 90%;
+  }
+}
+.card__heading--noBorder::after {
+  content: "";
+  border-bottom: 1px solid transparent;
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  margin-top: 0.6rem;
+}
+@media (min-width: 768px) {
+  .card__heading--noBorder::after {
+    width: 90%;
+  }
+}
+.card__footer::before {
+  content: "";
+  border-bottom: 1px solid #ebeef2;
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.6rem;
+}
+@media (min-width: 768px) {
+  .card__footer::before {
+    width: 90%;
+  }
+}
+.card__footer--noBorder::before {
+  content: "";
+  border-bottom: 1px solid transparent;
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.6rem;
+}
+@media (min-width: 768px) {
+  .card__footer--noBorder::before {
+    width: 90%;
+  }
+}
+
+.label-message {
+  margin: 0;
+  padding: 0.3rem 1rem;
+  font-weight: 200;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2rem;
+  border-radius: 0.3rem;
+  text-align: center;
+}
+
+.label-message--success {
+  border: 1px solid #9fdf9f;
+  background-color: #d9f2d9;
+  color: #2d862d;
+}
+
+.label-message--info {
+  border: 1px solid #99ccff;
+  background-color: #e6f2ff;
+  color: #004d99;
+}
+
+.label-message--warning {
+  border: 1px solid #ffd480;
+  background-color: #ffeecc;
+  color: #cc8800;
+}
+
+.label-message--error {
+  border: 1px solid #ff8080;
+  background-color: #ffe6e6;
+  color: #e60000;
+}
+
+.label-message--disable {
+  border: 1px solid #bfbfbf;
+  background-color: #f2f2f2;
+  color: #666666;
+}
+
 .layout-wrapper.layout-topbar-light .layout-topbar {
   border-bottom: 0;
 }
@@ -1027,6 +1159,27 @@ ul {
 @media screen and (max-width: 991px) {
   .layout-wrapper .layout-menu-container {
     top: 70px;
+  }
+}
+body .ui-datatable .ui-datatable-data > tr > td {
+  vertical-align: super;
+}
+
+.layout-topbar-icon.menu-icon i {
+  font-size: 20px !important;
+}
+@media (min-width: 768px) {
+  .layout-topbar-icon.menu-icon i {
+    font-size: 30px !important;
+  }
+}
+
+.layout-topbar-logo.sucursal-topbar-logo .sucursal-topbar-nombre {
+  font-size: 1.7rem;
+}
+@media (min-width: 768px) {
+  .layout-topbar-logo.sucursal-topbar-logo .sucursal-topbar-nombre {
+    font-size: 2.5rem;
   }
 }
 /*# sourceMappingURL=app.css.map */
