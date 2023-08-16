@@ -492,14 +492,19 @@ ul {
   }
 }
 
-.login {
-  color: rgb(0, 0, 0);
-  background: linear-gradient(45deg, #e6fff6, #ccffec, #ccecff);
+body {
+  background: rgb(153, 204, 255);
+  background: radial-gradient(circle, rgba(153, 204, 255, 0.5914740896) 47%, rgba(217, 242, 230, 0.8603816527) 82%);
 }
 @media (min-width: 768px) {
-  .login {
-    background: linear-gradient(40deg, #00cc81, #ccecff);
+  body {
+    background: rgb(153, 204, 255);
+    background: radial-gradient(circle, rgba(153, 204, 255, 0.6839110644) 1%, rgba(217, 242, 230, 0.8603816527) 82%);
   }
+}
+
+.login {
+  color: rgb(0, 0, 0);
 }
 .login__contenedor {
   padding: 0 2rem;
@@ -522,7 +527,7 @@ ul {
   gap: 2rem;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 7rem);
+  height: calc(100vh - 15rem);
 }
 @media (min-width: 768px) {
   .login__grid {
@@ -1181,5 +1186,10 @@ body .ui-datatable .ui-datatable-data > tr > td {
   .layout-topbar-logo.sucursal-topbar-logo .sucursal-topbar-nombre {
     font-size: 2.5rem;
   }
+}
+
+body .ui-commandlink:hover,
+body .ui-link:hover {
+  text-decoration: none;
 }
 /*# sourceMappingURL=app.css.map */

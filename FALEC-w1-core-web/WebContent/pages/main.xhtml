@@ -28,12 +28,32 @@
     </ui:define>
 
     <ui:define name="content">
-    	<div style="margin-top: -1.5rem;margin-left: -1.5rem;margin-right: -1.5rem;">
-    		
+    	<div style="margin-top: -1.5rem;margin-left: -1.5rem;margin-right: -1.5rem;">	
     		<header class="panel">
+    			<h:form class="flex justify-content-end contenedor mb-2" style="gap: .5rem;">
+		   			<p:selectOneMenu id="somEstablecimientoMain"
+						value="#{mainCtrl.establecimientoMain}"
+						converter="omnifaces.SelectItemsConverter"
+						style="background-color: transparent;"
+						disabled="#{not mainCtrl.habilitarEstablecimientoMain}">
+						
+						<f:selectItems value="#{mainCtrl.establecimientoMainList}" var="st"
+							itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
+						
+						<p:ajax event="valueChange" listener="#{mainCtrl.buscar()}" update="@form"/>
+							
+					</p:selectOneMenu>
+	    			<p:commandLink action="#{mainCtrl.buscar}"
+	    				styleClass="flex align-items-baseline text-gray-800" 
+	    				style="gap:.4rem"
+	    				update="@all">
+	    				<i class="fa-solid fa-arrow-rotate-right fs-15"></i>
+	    				<span class="font-semibold">Refrescar</span>
+	    			</p:commandLink>
+	    		</h:form>
 		        <div class="panel__grid contenedor">
 		            <div class="card-forma-1">
-		                <h3 class="card-forma-1__heading-1">Inicie con Mako <i class="fa-solid fa-power-off"></i> </h3>
+		                <h3 class="card-forma-1__heading-1">Inicie con Mako <i class="fa-solid fa-screwdriver-wrench"></i> </h3>
 		                <h4 class="card-forma-1__heading-2">Configura el sistema para emitir comprobantes electrónicos.</h4>
 		                <nav class="card-forma-1__accesos">
 		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_conf')?'disable-link':''}" href="#{request.contextPath}/pages/configuracion/configuracion.jsf">
@@ -51,7 +71,7 @@
 		                </nav>
 		            </div>
 		            <div class="card-forma-1">
-		                <h3 class="card-forma-1__heading-1">Reportes <i class="fa-brands fa-buromobelexperte"></i> </h3>
+		                <h3 class="card-forma-1__heading-1">Reportes <i class="fa-solid fa-file-waveform"></i> </h3>
 		                <h4 class="card-forma-1__heading-2">Toda la información de tu negocio, en reportes consolidados..</h4>
 		                <nav class="card-forma-1__accesos">
 		                    <a class="card-forma-1__acceso #{appSessionCtrl.accesoDisable('mn_panel_repventas')?'disable-link':''}" href="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf">
@@ -250,6 +270,7 @@
 							<p:column headerText="ITEM">
 								<div class="flex flex-column" style="gap: .5rem;">
 									<div class="flex align-items-baseline" style="gap: .5rem;">
+										<i class="fa-solid fa-barcode"></i>
 										<i class="fa-solid fa-barcode font-normal text-primary-600"></i>
 										<span class="text-base">#{c.codigoprincipal}</span>
 									</div>
