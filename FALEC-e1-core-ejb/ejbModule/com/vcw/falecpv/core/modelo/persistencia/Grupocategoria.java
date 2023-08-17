@@ -4,6 +4,8 @@
 package com.vcw.falecpv.core.modelo.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -12,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -47,10 +52,24 @@ public class Grupocategoria implements Serializable {
 	@Column(name = "estado", nullable = false, length = 1)
 	private String estado;
 	
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 40)
+	@Column(name = "idusuario", nullable = false, length = 40)
+	private String idusuario;
+	
+	@Basic(optional = false)
+    @NotNull
+    @Column(name = "updated", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+	
 	@ManyToOne
     @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
     private Empresa empresa;
 	
+	@Transient
+	private List<Categoria> categoriaList;
 
 	/**
 	 * 
@@ -142,6 +161,48 @@ public class Grupocategoria implements Serializable {
 	 */
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	/**
+	 * @return the categoriaList
+	 */
+	public List<Categoria> getCategoriaList() {
+		return categoriaList;
+	}
+
+	/**
+	 * @param categoriaList the categoriaList to set
+	 */
+	public void setCategoriaList(List<Categoria> categoriaList) {
+		this.categoriaList = categoriaList;
 	}
     
     

@@ -5,13 +5,12 @@ package com.vcw.falecpv.core.servicio;
 
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
-import com.vcw.falecpv.core.constante.contadores.TCCategoria;
+import com.vcw.falecpv.core.constante.contadores.TCGrupoCategoria;
 import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
@@ -27,7 +26,7 @@ public class CategoriaServicio extends AppGenericService<Categoria, String> {
 	@Inject
 	private CategoriaDao categoriaDao;
 	
-	@EJB
+	@Inject
 	private ContadorPkServicio contadorPkServicio;
 	
 	/**
@@ -97,13 +96,35 @@ public class CategoriaServicio extends AppGenericService<Categoria, String> {
 		try {
 			
 			if(categoria.getIdcategoria()==null) {
-				categoria.setIdcategoria(contadorPkServicio.generarContadorTabla(TCCategoria.CATEGORIA, idEstablecimiento));
+				categoria.setIdcategoria(contadorPkServicio.generarContadorTabla(TCGrupoCategoria.GRUPO_CATEGORIA, idEstablecimiento));
 				crear(categoria);
 			}else {
 				actualizar(categoria);
 			}
 			
 			return categoria;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idgrupocategoria
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Categoria> getByGrupoCategoria(String idgrupocategoria)throws DaoException{
+		try {
+			
+			QueryBuilder q = new QueryBuilder(categoriaDao.getEntityManager());
+			
+			return q.select("c")
+				.from(Categoria.class,"c")
+				.equals("c.grupocategoria.idgrupocategoria",idgrupocategoria).getResultList();
+			
+			
 		} catch (Exception e) {
 			throw new DaoException(e);
 		}
