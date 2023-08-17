@@ -87,20 +87,21 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
 	@Override
 	public void refrescar() {
 		try {
-//			grupocategoriaSelected = null;
-//			consultar();
-			getMessageCommonCtrl().crearMensaje("Importante", "TODO EL MENSJE EN ESTA SECCION", Message.WARNING);
+			grupocategoriaSelected = null;
+			consultar();		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -124,7 +125,9 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 		try {
 			
 			if(grupocategoriaSelected == null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen registros seleccionados.", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -132,7 +135,9 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			if (grupocategoriaServicio.tieneDependencias(grupocategoriaSelected.getIdgrupocategoria(),
 					grupocategoriaSelected.getEmpresa().getIdempresa())) {
 				
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR TIENE DEPENDENCIAS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No se puede eliminar, tiene referencias.", 
+						Message.ERROR);
 				return;
 				
 			}
@@ -140,11 +145,16 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			grupocategoriaServicio.eliminar(grupocategoriaSelected);
 			grupocategoriaSelected = null;
 			consultar();
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Regstro eliminado correctamente.", 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -157,8 +167,8 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 					grupocategoriaSelected.getGrupo(), 
 					grupocategoriaSelected.getIdgrupocategoria(),
 					AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())){
-				AppJsfUtil.addErrorMessage("frmCategoria", "ERROR","EL NOMBRE DEL GRUPO YA EXISTE.");
-				AppJsfUtil.addErrorMessage("frmGrupoCategoria:intCategoria","YA EXISTE.");
+				AppJsfUtil.addErrorMessage("frmGrupoCategoria", "Error","Error en el formulario");				
+				AppJsfUtil.addErrorMessage("frmGrupoCategoria:intGrupoCategoria","Ya existe.");
 				return;
 			}
 			
@@ -185,11 +195,14 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("frmCategoria","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage("frmGrupoCategoria","OK", "Registro guardado correctamente.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmCategoria", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -201,7 +214,10 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -214,7 +230,10 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -229,7 +248,10 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			nuevoCategoria();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}	
 	}
 	
@@ -237,7 +259,9 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 		try {
 			
 			if(grupocategoriaList==null || grupocategoriaList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -316,7 +340,10 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
