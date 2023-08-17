@@ -17,6 +17,7 @@ import javax.xml.bind.JAXBException;
 import org.primefaces.event.ToggleSelectEvent;
 
 import com.servitec.common.dao.exception.DaoException;
+import com.servitec.common.jsf.FacesUtil;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
 import com.servitec.common.util.XmlCommonsUtil;
@@ -38,6 +39,7 @@ import com.vcw.falecpv.core.modelo.xml.XmlNotaDebito;
 import com.vcw.falecpv.core.servicio.ComprobanterecibidoServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl;
 import com.vcw.falecpv.web.ctrl.common.MessageCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.MessageWebUtil;
@@ -78,6 +80,9 @@ public abstract class BaseCtrl implements Serializable {
 	protected boolean habilitarEstablecimientoMain;
 	protected List<Establecimiento> establecimientoMainList;
 	protected Establecimiento establecimientoMain;
+	
+	protected MessageCommonCtrl messageCommonCtrl;
+	
 	/**
 	 * 
 	 */
@@ -601,6 +606,21 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setEstablecimientoMain(Establecimiento establecimientoMain) {
 		this.establecimientoMain = establecimientoMain;
+	}
+
+	/**
+	 * @return the messageCommonCtrl
+	 */
+	public MessageCommonCtrl getMessageCommonCtrl() {
+		messageCommonCtrl = (MessageCommonCtrl)FacesUtil.getManagedBean("messageCommonCtrl");
+		return messageCommonCtrl;
+	}
+
+	/**
+	 * @param messageCommonCtrl the messageCommonCtrl to set
+	 */
+	public void setMessageCommonCtrl(MessageCommonCtrl messageCommonCtrl) {
+		this.messageCommonCtrl = messageCommonCtrl;
 	}
 
 	

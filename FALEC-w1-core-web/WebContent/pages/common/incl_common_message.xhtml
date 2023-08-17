@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://xmlns.jcp.org/jsf/composite/utils"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	
+	<p:dialog widgetVar="dlgCommonMessage" showEffect="fade" modal="true" closeOnEscape="true" showHeader="flase" width="95%" height="250" style="max-width: 550px;">
+		<p:outputPanel styleClass="message__grid" id="dlgCommonMessage_main">
+              <i class="message__icono #{messageCommonCtrl.icono}"></i>
+              <div class="message__contenido">
+                  <h3 class="message__heading">
+                  		<h:outputText value="#{messageCommonCtrl.titulo}" />
+                  </h3>
+                  <p class="message__descripcion">
+                      <h:outputText value="#{messageCommonCtrl.mensaje}" />
+                  </p>
+              </div>
+		</p:outputPanel>   		
+        <div class="message__footer">
+            <a class="message__close" onclick="PF('dlgCommonMessage').hide();">Cerrar</a>
+        </div>
+	</p:dialog>
+
+
+</ui:composition>

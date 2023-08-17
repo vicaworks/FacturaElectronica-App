@@ -492,12 +492,12 @@ ul {
   }
 }
 
-body {
+body.gradient {
   background: rgb(153, 204, 255);
   background: radial-gradient(circle, rgba(153, 204, 255, 0.5914740896) 47%, rgba(217, 242, 230, 0.8603816527) 82%);
 }
 @media (min-width: 768px) {
-  body {
+  body.gradient {
     background: rgb(153, 204, 255);
     background: radial-gradient(circle, rgba(153, 204, 255, 0.6839110644) 1%, rgba(217, 242, 230, 0.8603816527) 82%);
   }
@@ -1138,6 +1138,83 @@ body {
   border: 1px solid #bfbfbf;
   background-color: #f2f2f2;
   color: #666666;
+}
+
+.pf-message {
+  width: 95%;
+  height: 25rem;
+  margin: 4rem auto;
+  padding: 0;
+  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+  border: 0 none;
+  border-radius: 4px;
+}
+@media (min-width: 768px) {
+  .pf-message {
+    width: 50rem;
+  }
+}
+
+.message__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  background-color: #f0f2f5;
+  align-items: flex-start;
+  height: 19rem;
+  margin: 0 -0.7rem;
+  padding-top: 1.5rem;
+}
+.message__icono {
+  grid-column: 1/2;
+  margin: 2rem auto;
+  font-size: 5.5rem;
+}
+.message__contenido {
+  grid-column: 2/6;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.message__heading {
+  text-align: left;
+  margin: 2rem 0 0 0;
+  font-family: "Roboto", sans-serif;
+  text-transform: none;
+}
+.message__descripcion {
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  color: #4d4d4d;
+  font-weight: 400;
+  overflow-y: auto;
+  height: 14.5rem;
+}
+.message__footer {
+  display: flex;
+  align-items: center;
+  height: 6rem;
+  justify-content: flex-end;
+  padding-right: 2rem;
+}
+.message__close {
+  border: 1px solid #1c1e21;
+  font-size: 1.5rem;
+  padding: 0.8rem 3rem;
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  display: inline-block;
+  text-align: center;
+  color: #1c1e21;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  border-radius: 0.5rem;
+}
+.message__close:hover {
+  cursor: pointer;
+  background-color: #f0f2f5;
 }
 
 .layout-wrapper.layout-topbar-light .layout-topbar {

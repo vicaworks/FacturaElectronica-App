@@ -35,6 +35,7 @@ import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.GrupocategoriaServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -93,8 +94,10 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 	@Override
 	public void refrescar() {
 		try {
-			grupocategoriaSelected = null;
-			consultar();
+//			grupocategoriaSelected = null;
+//			consultar();
+			getMessageCommonCtrl().crearMensaje("Importante", "TODO EL MENSJE EN ESTA SECCION", Message.WARNING);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
