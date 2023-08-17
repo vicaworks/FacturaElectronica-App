@@ -66,6 +66,10 @@ public class Categoria implements Serializable {
 	@ManyToOne
     @JoinColumn(name = "idempresa", referencedColumnName = "idempresa", nullable = false)
     private Empresa empresa;
+	
+	@ManyToOne
+    @JoinColumn(name = "idgrupocategoria", referencedColumnName = "idgrupocategoria", nullable = true)
+    private Grupocategoria grupocategoria;
 
 	/**
 	 * 
@@ -199,6 +203,20 @@ public class Categoria implements Serializable {
 	 */
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the grupocategoria
+	 */
+	public Grupocategoria getGrupocategoria() {
+		return grupocategoria;
+	}
+
+	/**
+	 * @param grupocategoria the grupocategoria to set
+	 */
+	public void setGrupocategoria(Grupocategoria grupocategoria) {
+		this.grupocategoria = grupocategoria;
 	}
 
 }

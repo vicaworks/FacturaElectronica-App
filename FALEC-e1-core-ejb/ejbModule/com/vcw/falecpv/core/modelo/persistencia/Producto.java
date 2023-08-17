@@ -182,6 +182,10 @@ public class Producto implements Serializable {
     @JoinColumn(name = "idestablecimiento", referencedColumnName = "idestablecimiento", nullable = false)
     private Establecimiento establecimiento;
     
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idproveedor", referencedColumnName = "idcliente", nullable = true)
+    private Cliente proveedor;
+    
     
     @Transient
     private BigDecimal costototal;
@@ -790,4 +794,18 @@ public class Producto implements Serializable {
 		this.filterNombre = filterNombre;
 	}
 
+	/**
+	 * @return the proveedor
+	 */
+	public Cliente getProveedor() {
+		return proveedor;
+	}
+
+	/**
+	 * @param proveedor the proveedor to set
+	 */
+	public void setProveedor(Cliente proveedor) {
+		this.proveedor = proveedor;
+	}
+	
 }
