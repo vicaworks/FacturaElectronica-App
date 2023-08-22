@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -30,8 +30,10 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
+import com.vcw.falecpv.core.modelo.persistencia.Grupocategoria;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
+import com.vcw.falecpv.core.servicio.GrupocategoriaServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
@@ -51,12 +53,14 @@ public class CategoriaCtrl extends BaseCtrl {
 	 */
 	private static final long serialVersionUID = -8788719067123516137L;
 	
-	@EJB
+	@Inject
 	private CategoriaServicio categoriaServicio;
-	@EJB
+	@Inject
 	private UsuarioServicio usuarioServicio;
-	@EJB
+	@Inject
 	private EstablecimientoServicio establecimientoServicio;
+	@Inject
+	private GrupocategoriaServicio grupocategoriaServicio;
 	
 	private List<Categoria> categoriaList;
 	private Categoria categoriaSelected;
@@ -64,6 +68,9 @@ public class CategoriaCtrl extends BaseCtrl {
 	private String moduloCall;
 	private String updateView;
 	private ProductoCtrl productoCtrl;
+	
+	private List<Grupocategoria> grupocategoriaList;
+	private GrupocategoriaCtrl grupocategoriaCtrl;
 
 	/**
 	 * 
@@ -167,7 +174,15 @@ public class CategoriaCtrl extends BaseCtrl {
 				//AppJsfUtil.ajaxUpdate("frmProducto:somFrmProductoCategoria");
 				AppJsfUtil.ajaxUpdate(updateView);
 				break;
-
+			case "GRUPO_CATEGORIA":
+				
+				grupocategoriaCtrl.consultarCategoriasGrupo(
+						grupocategoriaCtrl.getGrupocategoriaSelected(), 
+						grupocategoriaCtrl.getGrupocategoriaSelected().getIdgrupocategoria());
+				AppJsfUtil.executeJavaScript("updateCategorias");				
+				
+				break;	
+				
 			default:
 				consultar();
 				break;
@@ -187,7 +202,7 @@ public class CategoriaCtrl extends BaseCtrl {
 	@Override
 	public void editar() {
 		try {
-			
+			populateGrupocategoria();
 			AppJsfUtil.showModalRender("dlgCategoria", "frmCategoria");
 			
 		} catch (Exception e) {
@@ -204,6 +219,7 @@ public class CategoriaCtrl extends BaseCtrl {
 		try {
 			
 			nuevoCategoria();
+			populateGrupocategoria();
 			AppJsfUtil.showModalRender("dlgCategoria", "frmCategoria");
 			
 		} catch (Exception e) {
@@ -215,10 +231,17 @@ public class CategoriaCtrl extends BaseCtrl {
 		}
 	}
 	
-	private void nuevoCategoria() {
+	public void populateGrupocategoria() throws DaoException {
+		grupocategoriaList = null;
+		grupocategoriaList = grupocategoriaServicio.getGrupocategoriaDao().getByEstado(
+				EstadoRegistroEnum.getByInicial(estadoRegBusqueda),
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+	}
+	
+	private void nuevoCategoria() throws DaoException {
 		categoriaSelected = new Categoria();
 		categoriaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-		categoriaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
+		categoriaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());		
 	}
 	
 	public void nuevoForm() {
@@ -408,6 +431,34 @@ public class CategoriaCtrl extends BaseCtrl {
 	 */
 	public void setProductoCtrl(ProductoCtrl productoCtrl) {
 		this.productoCtrl = productoCtrl;
+	}
+
+	/**
+	 * @return the grupocategoriaList
+	 */
+	public List<Grupocategoria> getGrupocategoriaList() {
+		return grupocategoriaList;
+	}
+
+	/**
+	 * @param grupocategoriaList the grupocategoriaList to set
+	 */
+	public void setGrupocategoriaList(List<Grupocategoria> grupocategoriaList) {
+		this.grupocategoriaList = grupocategoriaList;
+	}
+
+	/**
+	 * @return the grupocategoriaCtrl
+	 */
+	public GrupocategoriaCtrl getGrupocategoriaCtrl() {
+		return grupocategoriaCtrl;
+	}
+
+	/**
+	 * @param grupocategoriaCtrl the grupocategoriaCtrl to set
+	 */
+	public void setGrupocategoriaCtrl(GrupocategoriaCtrl grupocategoriaCtrl) {
+		this.grupocategoriaCtrl = grupocategoriaCtrl;
 	}	
 
 }

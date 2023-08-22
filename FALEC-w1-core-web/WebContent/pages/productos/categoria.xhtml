@@ -12,7 +12,7 @@
     <ui:define name="head">
         <style type="text/css">
 			.categoriaDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 220px)!important;
+				height: calc(100vh - 200px)!important;
 			}
         </style>
     </ui:define>
@@ -105,7 +105,7 @@
 							<h:outputText value="Categoría" />							
 						</f:facet>
 						<div class="flex flex-column" style="gap: .4rem;">
-							<h:outputText value="#{c.categoria}" styleClass="text-gray-700 font-semibold"/>							
+							<h:outputText value="#{c.categoria}" styleClass="text-primary-700 fw-5"/>							
 							<h:outputText value="#{c.descripcion != null ? c.descripcion : '-'}" styleClass="text-gray-700 fs-10"/>
 						</div>						
 					</p:column>
@@ -114,7 +114,7 @@
 						<f:facet name="header">
 							<h:outputText value="Grupo categoría" />							
 						</f:facet>
-						<h:outputText value="#{c.grupocategoria != null ? c.grupocategoria.grupo : '-'}" styleClass="text-gray-700 font-semibold"/>
+						<h:outputText value="#{c.grupocategoria != null ? c.grupocategoria.grupo : '-'}" styleClass="text-gray-800 fw-4"/>
 					</p:column>
 					
 				</p:dataTable>
@@ -124,7 +124,10 @@
 			
 	    </h:form>
 		
+		<!-- categoria form  -->
 		<ui:include src="incl_categoria_form.xhtml" />
+		<!-- Grupo categoria FORM -->		
+		<ui:include src="/pages/productos/incl_grupocategoria_form.xhtml" />
         
     </ui:define>
 

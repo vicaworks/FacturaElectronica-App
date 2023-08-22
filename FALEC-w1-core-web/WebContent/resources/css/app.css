@@ -1122,6 +1122,7 @@ body.gradient {
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
+  text-transform: none;
 }
 .card__heading::after {
   content: "";
@@ -1135,6 +1136,9 @@ body.gradient {
   .card__heading::after {
     width: 90%;
   }
+}
+.card__heading--noBorder {
+  text-transform: none;
 }
 .card__heading--noBorder::after {
   content: "";
@@ -1227,6 +1231,11 @@ body.gradient {
   font-size: 1.3rem;
 }
 
+@media screen and (max-height: 42em) {
+  .modalResponsivo .contenedorFormulario {
+    height: 75vh !important;
+  }
+}
 .pf-message {
   width: 95%;
   height: 25rem;

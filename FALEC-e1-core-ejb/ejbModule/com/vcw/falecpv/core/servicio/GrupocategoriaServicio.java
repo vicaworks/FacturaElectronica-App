@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
-import com.vcw.falecpv.core.constante.contadores.TCCategoria;
+import com.vcw.falecpv.core.constante.contadores.TCGrupoCategoria;
 import com.vcw.falecpv.core.dao.impl.GrupocategoriaDao;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Grupocategoria;
@@ -76,7 +76,7 @@ public class GrupocategoriaServicio extends AppGenericService<Grupocategoria, St
 		try {
 			grupocategoria.setUpdated(new Date());
 			if(grupocategoria.getIdgrupocategoria() == null) {
-				grupocategoria.setIdgrupocategoria(contadorPkServicio.generarContadorTabla(TCCategoria.CATEGORIA, idEstablecimiento));
+				grupocategoria.setIdgrupocategoria(contadorPkServicio.generarContadorTabla(TCGrupoCategoria.GRUPO_CATEGORIA, idEstablecimiento));
 				crear(grupocategoria);
 			}else {
 				actualizar(grupocategoria);

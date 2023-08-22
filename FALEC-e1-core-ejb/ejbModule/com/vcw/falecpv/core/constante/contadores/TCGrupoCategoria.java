@@ -9,7 +9,7 @@ package com.vcw.falecpv.core.constante.contadores;
  */
 public enum TCGrupoCategoria implements TablaContadorBaseEnum {
 	
-	GRUPO_CATEGORIA("GRUPO_CATEGORIA");
+	GRUPO_CATEGORIA("GRUPOCATEGORIA");
 	
 	private String nombreTabla;
 

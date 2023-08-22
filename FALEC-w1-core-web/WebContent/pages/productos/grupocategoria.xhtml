@@ -12,15 +12,16 @@
     <ui:define name="head">
         <style type="text/css">
 			.grupocategoriaDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 220px)!important;
+				height: calc(100vh - 200px)!important;
 			}
         </style>
     </ui:define>
 
     <ui:define name="content">
-    	<!-- <h:form>
-    		<p:commandButton styleClass="ui-button-outlined " action="#{grupocategoriaCtrl.refrescar()}" value="Message"></p:commandButton>
-    	</h:form> -->
+    	<h:form>
+    		<p:remoteCommand name="updateCategorias" update="@(.ui-outputpanel)">
+    		</p:remoteCommand>
+    	</h:form>
     	
     	<!-- CONSTANTES -->
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
@@ -34,7 +35,7 @@
 			
 			<div class="card h-full">		                
 				<div class="flex justify-content-between">
-					<h3 class="card__heading card__heading--noBorder fw-4">GRUPO #{msg['card.categoria']}</h3>
+					<h3 class="card__heading card__heading--noBorder fw-4">Grupo #{msg['card.categoria']}</h3>
 					
 					<div>
 						<div class="flex justify-content-end" style="gap: .4rem;">
@@ -110,12 +111,12 @@
 							<h:outputText value="Grupo categoría" />							
 						</f:facet>
 						<div class="flex flex-column mb-1" style="gap: .4rem;">
-							<h:outputText value="#{c.grupo}" styleClass="text-gray-900 fs-11"/>
+							<h:outputText value="#{c.grupo}" styleClass="text-gray-900 fw-3 fs-12"/>
 							<div class="flex align-items-baseline" style="gap: .4rem;">
 								<i class="fa-solid fa-ellipsis-vertical text-gray-700"></i>
 								<p:commandLink action="#{grupocategoriaCtrl.load_asignarCategorias}"
 									styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
-									<span class="text-blue-700 fw-3 fs-11">Asignar categorías</span>
+									<span class="text-primary-700 fw-5 fs-12">Asignar categorías</span>
 									<f:setPropertyActionListener value="#{c}" target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
 								</p:commandLink>
 							</div>
@@ -133,8 +134,10 @@
 										<p:commandLink action="#{categoriaCtrl.editar()}" 
 											styleClass="text-gray-900 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
 											<i class="fa-regular fa-pen-to-square fs-14"></i>
+											<f:setPropertyActionListener value="#{c}" target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
 											<f:setPropertyActionListener value="#{cat}" target="#{categoriaCtrl.categoriaSelected}"/>
-											<f:setPropertyActionListener value="GRUPO-CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>										
+											<f:setPropertyActionListener value="GRUPO_CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
+											<f:setPropertyActionListener value="#{grupocategoriaCtrl}" target="#{categoriaCtrl.grupocategoriaCtrl}"/>										
 										</p:commandLink>
 										
 										<p:commandLink action="#{grupocategoriaCtrl.desasignarGrupocategoria}" 
@@ -163,6 +166,9 @@
     	
     	<!-- Grupo categoria FORM -->		
 		<ui:include src="/pages/productos/incl_grupocategoria_form.xhtml" />
+		
+		<!-- categoria form  -->
+		<ui:include src="/pages/productos/incl_categoria_form.xhtml" />
 		
 		<!-- Asignar categorias -->
 		<ui:include src="/pages/productos/incl_listacategoria_form.xhtml" />

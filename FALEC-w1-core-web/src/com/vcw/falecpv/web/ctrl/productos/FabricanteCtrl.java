@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -30,9 +30,11 @@ import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -49,10 +51,11 @@ public class FabricanteCtrl extends BaseCtrl {
 	 */
 	private static final long serialVersionUID = -8788719067123516137L;
 	
-	@EJB
+	@Inject
 	private FabricanteServicio fabricanteServicio;
-	
-	@EJB
+	@Inject
+	private EstablecimientoServicio establecimientoServicio;
+	@Inject
 	private UsuarioServicio usuarioServicio;
 	
 	private List<Fabricante> fabricanteList;
@@ -71,6 +74,7 @@ public class FabricanteCtrl extends BaseCtrl {
 	@PostConstruct
 	private void init() {
 		try {
+			establecimientoFacade(establecimientoServicio, false);
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +105,9 @@ public class FabricanteCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 
@@ -110,13 +116,17 @@ public class FabricanteCtrl extends BaseCtrl {
 		try {
 			
 			if(fabricanteSelected == null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.registros.noexiste"), 
+						Message.ERROR);
 				return;
 			}
 			
 			// si tiene dependencias
 			if(fabricanteServicio.tieneDependencias(fabricanteSelected.getIdfabricante(),fabricanteSelected.getEmpresa().getIdempresa())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR TIENE DEPENDENCIAS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.tienedependencias"), 
+						Message.ERROR);
 				return;
 			}
 			
@@ -124,11 +134,15 @@ public class FabricanteCtrl extends BaseCtrl {
 			fabricanteSelected = null;
 			consultar();
 			
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					msg.getString("mensaje.eliminado.ok"), 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 
@@ -138,8 +152,8 @@ public class FabricanteCtrl extends BaseCtrl {
 			
 			// validar si existe el nombre
 			if(fabricanteServicio.getFabricanteDao().existeNombre(fabricanteSelected.getNombrecomercial(), fabricanteSelected.getIdfabricante(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
-				AppJsfUtil.addErrorMessage("frmFabricante", "ERROR","EL NOMBRE DE LA CATEGORIA YA EXISTE.");
-				AppJsfUtil.addErrorMessage("frmFabricante:intNombre","YA EXISTE.");
+				AppJsfUtil.addErrorMessage("frmFabricante", "ERROR","El nombre del Fabricante ya existe.");
+				AppJsfUtil.addErrorMessage("frmFabricante:intNombre","Ya existe.");
 				return;
 			}
 			
@@ -163,11 +177,13 @@ public class FabricanteCtrl extends BaseCtrl {
 					
 			}
 			
-			AppJsfUtil.addInfoMessage("frmFabricante","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage("frmFabricante","OK", msg.getString("mensaje.guardado.correctamente"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmFabricante", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -177,7 +193,9 @@ public class FabricanteCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgFabricante", "frmFabricante");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -188,7 +206,9 @@ public class FabricanteCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgFabricante", "frmFabricante");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}	
 	}
 	
@@ -203,7 +223,9 @@ public class FabricanteCtrl extends BaseCtrl {
 			nuevoFabricante();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}	
 	}
 	
@@ -286,7 +308,9 @@ public class FabricanteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 		return null;
 	}

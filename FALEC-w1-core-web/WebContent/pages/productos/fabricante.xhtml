@@ -13,13 +13,8 @@
         <style type="text/css">
 			.fabricanteDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 220px)!important;
+				height: calc(100vh - 200px)!important;
 			}
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
         </style>
     </ui:define>
 
@@ -30,38 +25,33 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Fabricante" url="#{request.contextPath}/pages/productos/fabricante.jsf"/>
+		    <p:menuitem value="Catálogo" url="#{request.contextPath}/pages/productos/fabricante.jsf"/>
 		</p:breadCrumb>
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 			
-			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px!important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
 			<!-- Lista fabricantes -->
-			<div class="card card-w-title mt-1">
-				<div class="grid justify-content-between">
-					<div class="col-3">
-						<h3 class="cardTitle">Fabricante</h3>
-					</div>
-					<div class="col-6 align-self-center">
-						<div class="flex justify-content-end">
-							<p:selectOneMenu id="somCategoria" value="#{fabricanteCtrl.estadoRegBusqueda}" styleClass="mr-1">
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
+			<div class="card h-full">		                
+				<div class="flex justify-content-between">
+					<h3 class="card__heading card__heading--noBorder fw-4">Fabricante</h3>
+					
+					<div>
+						<div class="flex justify-content-end" style="gap: .4rem;">
+							<p:selectOneMenu id="somEstadoFabricante" 
+								value="#{fabricanteCtrl.estadoRegBusqueda}">
+				    			<f:selectItem itemLabel="Activo" itemValue="A" />
+				    			<f:selectItem itemLabel="Inactivo" itemValue="I" />
+				    			<f:selectItem itemLabel="Todos" itemValue="T" />
 				    		</p:selectOneMenu>
-					    		
-							<p:commandButton id="cmdRefrecar"
+				    		
+							<p:commandButton id="cmdFabricanteRefrecar"
 								title="Consultar" icon="fa fa-search" 
-								action="#{fabricanteCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
+								action="#{fabricanteCtrl.refrescar()}" styleClass="ui-button-success" update="@form"
 								/>
+								
 							<p:commandButton id="cmdNuevo"
-								title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}" 
+								title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined #{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}" 
 								action="#{fabricanteCtrl.nuevo()}" inline="true">
 								<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
 							</p:commandButton>
@@ -76,25 +66,26 @@
 						</div>
 					</div>
 				</div>
+				
 				<p:dataTable id="fabricanteDT" var="f"
 					value="#{fabricanteCtrl.fabricanteList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="fabricanteDT"  
+					styleClass="fabricanteDT fs-12"  
 					rowKey="#{f.idfabricante}">
 					
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="OPC" style="width:2.5rem;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtFabricante">
-							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down fs-18 text-gray-800"/>
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtFabricante" my="left top" at="left bottom">
-							<p:menuitem value="Editar" action="#{fabricanteCtrl.editar()}" icon="fa fa-edit" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Editar" action="#{fabricanteCtrl.editar()}" icon="fa fa-edit" styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
 								<f:setPropertyActionListener value="FABRICANTE" target="#{fabricanteCtrl.moduloCall}"/>
 							</p:menuitem>
-							<p:menuitem value="Eliminar" action="#{fabricanteCtrl.eliminar()}" icon="fa fa-close"  styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Eliminar" action="#{fabricanteCtrl.eliminar()}" icon="fa fa-close"  styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_catalogo_fabricante_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{f}" target="#{fabricanteCtrl.fabricanteSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
@@ -103,12 +94,12 @@
 					</p:column>
 					
 					<p:column headerText="ID" style="width:50px;">
-						<h:outputText value="#{f.idfabricante}" />
+						<h:outputText value="#{f.idfabricante}" styleClass="text-gray-800 fw-5"/>
 					</p:column>
 					
 					
 					<p:column headerText="EST" style="width:50px;">
-						<h:outputText value="#{f.estado == 'A'?'ACT':'INA'}" styleClass="#{f.estado == 'A'?'text-green-700':'font-bold text-pink-500'}"/>
+						<h:outputText value="#{f.estado == 'A'?'Activo':'Inactivo'}" styleClass="text-gray-900"/>
 					</p:column>
 					
 					<p:column filterBy="#{f.nombrecomercial}" filterMatchMode="contains">
@@ -116,11 +107,11 @@
 							<h:outputText value="NOMBRE" />
 							
 						</f:facet>
-						<h:outputText value="#{f.nombrecomercial}" />
+						<h:outputText value="#{f.nombrecomercial}" styleClass="text-primary-700 fw-5"/>
 					</p:column>
 					
 				</p:dataTable>
-				<div class="EmptyBox20"/>
+				
 			</div>
 	    	
 	    </h:form>

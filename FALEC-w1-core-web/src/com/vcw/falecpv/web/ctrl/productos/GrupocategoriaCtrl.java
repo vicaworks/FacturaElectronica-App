@@ -34,6 +34,7 @@ import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Grupocategoria;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.GrupocategoriaServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -55,11 +56,11 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 	private static final long serialVersionUID = -8788719067123516137L;
 	
 	@Inject
+	private EstablecimientoServicio establecimientoServicio;
+	@Inject
 	private GrupocategoriaServicio grupocategoriaServicio;
-	
 	@Inject
 	private CategoriaServicio categoriaServicio;
-	
 	@Inject
 	private UsuarioServicio usuarioServicio;
 	
@@ -91,6 +92,7 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			estadoRegBusqueda = EstadoRegistroEnum.ACTIVO.getInicial();
+			establecimientoFacade(establecimientoServicio, false);
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -195,6 +197,14 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 				consultar();
 				AppJsfUtil.ajaxUpdate(updateView);
 				break;
+			
+			case "CATEGORIA":
+				
+				categoriaCtrl.populateGrupocategoria();
+				System.out.println(categoriaCtrl.getGrupocategoriaList());
+				categoriaCtrl.getCategoriaSelected().setGrupocategoria(grupocategoriaSelected);				
+				AppJsfUtil.ajaxUpdate(updateView);
+				break;	
 			default:
 				consultar();
 				break;
@@ -213,6 +223,10 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 	@Override
 	public void editar() {
 		try {
+			
+			if(grupocategoriaSelected == null) {
+				nuevoForm();
+			}
 			
 			AppJsfUtil.showModalRender("dlgGrupoCategoria", "frmGrupoCategoria");
 			
@@ -299,10 +313,8 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			
 			for (String idGrupoCategoria : idGrupoCategiaChange) {
 				Grupocategoria g = grupocategoriaList.stream().filter(x->x.getIdgrupocategoria().equals(idGrupoCategoria)).findFirst().orElse(null);
-				if(g != null) {					
-					g.setCategoriaList(
-						categoriaServicio.getByGrupoCategoria(idGrupoCategoria)
-						);
+				if(g != null) {			
+					consultarCategoriasGrupo(g, idGrupoCategoria);
 				}
 			}			
 			
@@ -318,6 +330,12 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 							AppConfiguracion.getInteger("stacktrace.length")), 
 					Message.ERROR);
 		}
+	}
+	
+	public void consultarCategoriasGrupo(Grupocategoria grupocategoria,String idGrupoCategoria) throws DaoException {
+		grupocategoria.setCategoriaList(
+				categoriaServicio.getByGrupoCategoria(idGrupoCategoria)
+				);
 	}
 	
 	public void desasignarGrupocategoria() {
@@ -384,25 +402,25 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 				cell = row.createCell(0);
 				cell.setCellValue(c.getIdgrupocategoria());
 				
-				cell = row.createCell(2);
+				cell = row.createCell(1);
 				cell.setCellValue(c.getGrupo());
 				
 				
-				cell = row.createCell(3);
+				cell = row.createCell(2);
 				cell.setCellValue(
 						c.getCategoriaList() == null || c.getCategoriaList().isEmpty() ? "" : 
-							c.getCategoriaList().stream().map(x->x.getCategoria()).collect(Collectors.joining(" ,")));
+							c.getCategoriaList().stream().map(x->x.getCategoria()).collect(Collectors.joining(", ")));
 				
 				
-				cell = row.createCell(4);
+				cell = row.createCell(3);
 				cell.setCellValue(c.getEstado());
 				
 				
-				cell = row.createCell(5);
+				cell = row.createCell(4);
 				cell.setCellValue(usuarioServicio.getUsuarioDao().cargar(c.getIdusuario()).getNombre());
 				
 				
-				cell = row.createCell(6);
+				cell = row.createCell(5);
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFechaHora(c.getUpdated()));
 				

@@ -14,7 +14,14 @@
 		
 	</style>
 	
-	<p:dialog header="Categoría" widgetVar="dlgCategoria" modal="true" responsive="true" width="500px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Categoría" 
+		widgetVar="dlgCategoria" 
+		modal="true" 
+		responsive="true" 
+		width="99%" 
+		style="max-width:50rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmCategoria">
 			
@@ -23,7 +30,8 @@
 				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton id="cmdGuardar"
 					value="Guardar" icon="fa-regular fa-floppy-disk fs-13" 
-					action="#{categoriaCtrl.guardar()}" styleClass="ui-button ui-button-success min-width-100 fs-13" update="@form :formMain"
+					action="#{categoriaCtrl.guardar()}" 
+					styleClass="ui-button ui-button-success min-width-100 fs-13" update="@form :formMain"
 					/>
 				
 				<p:commandButton id="cmdNuevo"
@@ -44,20 +52,71 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightFrmUsuario contenedorFormulario mt-2 pr-1 ui-fluid">
+			<div class="w-full overflow-auto heightFrmUsuario contenedorFormulario mt-2 pr-1 ui-fluid fs-12">
 				
 				<div class="field">
-				    <h:outputText value="Identificador" styleClass="text-gray-900"/>				    
+				    <h:outputText value="Identificador" styleClass="text-gray-900 fw-5"/>				    
 				    <p:inputText id="idcategoria" 
 				    	value="#{categoriaCtrl.categoriaSelected.idcategoria}" 
 				    	required="true" 
 				    	requiredMessage="Requerido" 
 				    	maxlength="300"
-				    	readonly="true"/>
+				    	readonly="true"
+				    	placeholder="Por asignar al guardar"/>
 				</div>
 			    
 			    <div class="field">		
-					<h:outputText value="Nombre" styleClass="text-gray-900"/>
+					<h:outputText value="Grupo categoría"/>					
+					<p:outputPanel id="oupsomcategoriaGrupoCategoria" styleClass="flex">
+						<p:selectOneMenu id="somcategoriaGrupoCategoria"
+							value="#{categoriaCtrl.categoriaSelected.grupocategoria}"
+							converter="omnifaces.SelectItemsConverter"
+							required="false"
+							requiredMessage="Requerido"
+							filter="true" filterMatchMode="contains"
+							style="flex: 1;">
+							<f:selectItem itemLabel="Sin grupo"
+									itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+	
+							<f:selectItems value="#{categoriaCtrl.grupocategoriaList}" var="g"
+								itemLabel="#{g.grupo}" itemValue="#{g}" />
+						</p:selectOneMenu>
+						<div class="flex justify-content-end align-items-center" style="gap: .6rem;flex:0; flex-basis: 4rem;">
+							
+							<p:commandLink action="#{grupocategoriaCtrl.nuevo()}" 
+								styleClass="text-gray-900 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}"
+								process="@this :frmCategoria:somcategoriaGrupoCategoria" partialSubmit="true"
+								title="Nuevo">
+								<i class="fa-solid fa-file fs-16"></i>																
+								<f:setPropertyActionListener value="CATEGORIA" 
+									target="#{grupocategoriaCtrl.moduloCall}"/>
+								<f:setPropertyActionListener value="#{categoriaCtrl}" 
+									target="#{grupocategoriaCtrl.categoriaCtrl}"/>										
+								<f:setPropertyActionListener value="frmCategoria:oupsomcategoriaGrupoCategoria" 
+									target="#{grupocategoriaCtrl.updateView}"/>
+							</p:commandLink>
+							
+							<p:commandLink action="#{grupocategoriaCtrl.editar()}" 
+								styleClass="text-gray-900 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}"
+								process="@this  :frmCategoria:somcategoriaGrupoCategoria" partialSubmit="true"
+								title="Editar">
+								<i class="fa-regular fa-pen-to-square fs-16"></i>
+								<f:setPropertyActionListener value="#{categoriaCtrl.categoriaSelected.grupocategoria}" 
+									target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
+								<f:setPropertyActionListener value="CATEGORIA" 
+									target="#{grupocategoriaCtrl.moduloCall}"/>
+								<f:setPropertyActionListener value="#{categoriaCtrl}" 
+									target="#{grupocategoriaCtrl.categoriaCtrl}"/>										
+								<f:setPropertyActionListener value="frmCategoria:oupsomcategoriaGrupoCategoria" 
+									target="#{grupocategoriaCtrl.updateView}"/>
+							</p:commandLink>
+							
+						</div>
+					</p:outputPanel>					
+			    </div>
+			    
+			    <div class="field">		
+					<h:outputText value="Nombre" styleClass="text-gray-900 fw-5"/>
 					<p:inputText id="intCategoria" 
 						value="#{categoriaCtrl.categoriaSelected.categoria}" 
 						required="true" 
@@ -75,11 +134,10 @@
 						requiredMessage="REQUERIDO" 
 						maxlength="300" 
 						converter="omnifaces.ToUpperCaseConverter"/>
-					<!-- <p:message for="intDscripcion"/> -->
 			    </div>
 			    
 			    <div class="field">		
-					<h:outputText value="Estado" styleClass="text-gray-900"/>
+					<h:outputText value="Estado" styleClass="ttext-gray-900 fw-5"/>
 					<p:selectOneMenu id="somEstado"
 						value="#{categoriaCtrl.categoriaSelected.estado}"
 						required="true"

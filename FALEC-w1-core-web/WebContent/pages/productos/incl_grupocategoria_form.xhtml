@@ -18,7 +18,8 @@
 		widgetVar="dlgGrupoCategoria" 
 		modal="true" 
 		responsive="true" 
-		width="500px" 
+		width="99%" 
+		style="max-width:50rem;" 
 		closeOnEscape="true" 
 		styleClass="modalResponsivo">
 		
@@ -50,20 +51,21 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightFrmGrupoCategoria contenedorFormulario mt-2 pr-1 ui-fluid">
+			<div class="w-full overflow-auto heightFrmGrupoCategoria contenedorFormulario mt-2 pr-1 ui-fluid fs-12">
 				
 				<div class="field">
-				    <h:outputText value="Identificador" styleClass="text-gray-900"/>				    
+				    <h:outputText value="Identificador" styleClass="text-gray-900 fw-5"/>				    
 				    <p:inputText id="idgrupocategoria" 
 				    	value="#{grupocategoriaCtrl.grupocategoriaSelected.idgrupocategoria}" 
 				    	required="true" 
 				    	requiredMessage="Requerido" 
 				    	maxlength="300"
-				    	readonly="true"/>
+				    	readonly="true"
+				    	placeholder="Por asignar al guardar"/>
 				</div>
 			    
 			    <div class="field">		
-					<h:outputText value="Nombre" styleClass="text-gray-900"/>
+					<h:outputText value="Nombre" styleClass="text-gray-900 fw-5"/>
 					<p:inputText id="intGrupoCategoria" 
 						value="#{grupocategoriaCtrl.grupocategoriaSelected.grupo}" 
 						required="true" 
@@ -74,7 +76,7 @@
 			    </div>
 			    
 			    <div class="field">		
-					<h:outputText value="Estado" styleClass="text-gray-900"/>
+					<h:outputText value="Estado" styleClass="text-gray-900 fw-5"/>
 					<p:selectOneMenu id="somGrupocategoriaEstado"
 						value="#{grupocategoriaCtrl.grupocategoriaSelected.estado}"
 						required="true"

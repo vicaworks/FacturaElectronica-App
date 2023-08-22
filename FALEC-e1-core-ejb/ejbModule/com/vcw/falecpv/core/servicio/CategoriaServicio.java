@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
-import com.vcw.falecpv.core.constante.contadores.TCGrupoCategoria;
+import com.vcw.falecpv.core.constante.contadores.TCCategoria;
 import com.vcw.falecpv.core.dao.impl.CategoriaDao;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
@@ -96,7 +96,7 @@ public class CategoriaServicio extends AppGenericService<Categoria, String> {
 		try {
 			
 			if(categoria.getIdcategoria()==null) {
-				categoria.setIdcategoria(contadorPkServicio.generarContadorTabla(TCGrupoCategoria.GRUPO_CATEGORIA, idEstablecimiento));
+				categoria.setIdcategoria(contadorPkServicio.generarContadorTabla(TCCategoria.CATEGORIA, idEstablecimiento));
 				crear(categoria);
 			}else {
 				actualizar(categoria);
