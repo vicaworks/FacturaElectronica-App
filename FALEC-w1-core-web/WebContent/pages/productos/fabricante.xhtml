@@ -74,7 +74,7 @@
 					rowKey="#{f.idfabricante}">
 					
 					
-					<p:column headerText="OPC" style="width:2.5rem;" styleClass="TexAlCenter">
+					<p:column headerText="Opc" style="width:2.5rem;" styleClass="TexAlCenter">
 						
 						<p:commandLink id="cmlDtFabricante">
 							<i class="fa fa-chevron-circle-down fs-18 text-gray-800"/>
@@ -93,18 +93,18 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:50px;">
+					<p:column headerText="Id" style="width:50px;">
 						<h:outputText value="#{f.idfabricante}" styleClass="text-gray-800 fw-5"/>
 					</p:column>
 					
 					
-					<p:column headerText="EST" style="width:50px;">
+					<p:column headerText="Estado" style="width:50px;">
 						<h:outputText value="#{f.estado == 'A'?'Activo':'Inactivo'}" styleClass="text-gray-900"/>
 					</p:column>
 					
 					<p:column filterBy="#{f.nombrecomercial}" filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="NOMBRE" />
+							<h:outputText value="Fabricante" />
 							
 						</f:facet>
 						<h:outputText value="#{f.nombrecomercial}" styleClass="text-primary-700 fw-5"/>

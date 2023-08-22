@@ -20,6 +20,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Transportista;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -60,7 +61,6 @@ public class TransportistaCtrl extends BaseCtrl {
 			consultarTipoIdentificacion();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmTransportista", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 	
@@ -74,14 +74,14 @@ public class TransportistaCtrl extends BaseCtrl {
 		try {
 			
 			if(transportistaServicio.existeCampo(transportistaSelected.getIdtransportista(), transportistaSelected.getEmpresa().getIdempresa(), "RS", transportistaSelected.getRazonsocial())) {
-				AppJsfUtil.addErrorMessage("frmTransportista","ERROR" ,"YA EXISTE UN TRANSPORTISTA CON LA MISMA RAZON SOCIAL");
-				AppJsfUtil.addErrorMessage("frmTransportista:intTransportistaRazonSocial","YA EXISTE");
+				AppJsfUtil.addErrorMessage("frmTransportista","ERROR" ,msg.getString("error.transportista.razonsocial.yaexiste"));
+				AppJsfUtil.addErrorMessage("frmTransportista:intTransportistaRazonSocial","Ya existe");
 				return;
 			}
 			
 			if(transportistaServicio.existeCampo(transportistaSelected.getIdtransportista(), transportistaSelected.getEmpresa().getIdempresa(), "ID", transportistaSelected.getIdentificacion())) {
-				AppJsfUtil.addErrorMessage("frmTransportista","ERROR" ,"YA EXISTE UN TRANSPORTISTA CON LA MISMA IDENTIFICACION");
-				AppJsfUtil.addErrorMessage("frmTransportista:intTransportistaIentifiaccion","YA EXISTE");
+				AppJsfUtil.addErrorMessage("frmTransportista","ERROR" , msg.getString("error.transportista.identificacion.yaexiste"));
+				AppJsfUtil.addErrorMessage("frmTransportista:intTransportistaIentifiaccion","Ya existe");
 				return;
 			}
 			
@@ -101,7 +101,7 @@ public class TransportistaCtrl extends BaseCtrl {
 				break;
 			case "TRANSPORTISTA":
 				transportistaMainCtrl.consultar();
-				AppJsfUtil.addInfoMessage("frmTransportista", "OK", "REGISTRO GUARDADO CORRECTAMENTE.");
+				AppJsfUtil.addInfoMessage("frmTransportista", "OK", msg.getString("mensaje.guardado.correctamente"));
 				break;
 			default:
 				break;
@@ -110,7 +110,10 @@ public class TransportistaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmTransportista", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -129,7 +132,10 @@ public class TransportistaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -143,7 +149,10 @@ public class TransportistaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -164,7 +173,10 @@ public class TransportistaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -172,15 +184,14 @@ public class TransportistaCtrl extends BaseCtrl {
 	public void editar() {
 		try {
 			
-//			transportistaSelected = new Transportista();
-//			transportistaSelected.setEmpresa(AppJsfUtil.getEstablecimiento().getEmpresa());
-//			transportistaSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
-			
 			AppJsfUtil.showModalRender("dlgTransportista", "frmTransportista");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
