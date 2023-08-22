@@ -291,4 +291,8 @@ public class Transportista implements Serializable {
 		this.direccion = direccion;
 	}
 	
+	public String getFiltroRazonSocial() {
+		return this.identificacion + this.razonsocial;
+	}
+	
 }
