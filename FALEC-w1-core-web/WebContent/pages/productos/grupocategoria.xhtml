@@ -23,9 +23,17 @@
     </ui:define>
 
     <ui:define name="content">
-    	<h:form>
+    	<!-- <h:form>
     		<p:commandButton styleClass="ui-button-outlined " action="#{grupocategoriaCtrl.refrescar()}" value="Message"></p:commandButton>
-    	</h:form>
+    	</h:form> -->
+    	
+    	<!-- CONSTANTES -->
+    	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
+    
+    	<p:breadCrumb>
+		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
+		    <p:menuitem value="#{msg['menu.categoria']}" url="#{request.contextPath}/pages/productos/categoria.jsf"/>
+		</p:breadCrumb>
     			
 		<ui:include src="/pages/common/incl_common_message.xhtml" />
         

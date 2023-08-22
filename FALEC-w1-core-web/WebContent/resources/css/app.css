@@ -428,6 +428,82 @@ template {
   font-weight: 900 !important;
 }
 
+.min-width-20 {
+  min-width: 2rem;
+}
+
+.min-width-30 {
+  min-width: 3rem;
+}
+
+.min-width-40 {
+  min-width: 4rem;
+}
+
+.min-width-50 {
+  min-width: 5rem;
+}
+
+.min-width-60 {
+  min-width: 6rem;
+}
+
+.min-width-70 {
+  min-width: 7rem;
+}
+
+.min-width-80 {
+  min-width: 8rem;
+}
+
+.min-width-90 {
+  min-width: 9rem;
+}
+
+.min-width-100 {
+  min-width: 10rem;
+}
+
+.min-width-110 {
+  min-width: 11rem;
+}
+
+.min-width-120 {
+  min-width: 12rem;
+}
+
+.min-width-130 {
+  min-width: 13rem;
+}
+
+.min-width-140 {
+  min-width: 14rem;
+}
+
+.min-width-150 {
+  min-width: 15rem;
+}
+
+.min-width-160 {
+  min-width: 16rem;
+}
+
+.min-width-170 {
+  min-width: 17rem;
+}
+
+.min-width-180 {
+  min-width: 18rem;
+}
+
+.min-width-190 {
+  min-width: 19rem;
+}
+
+.min-width-200 {
+  min-width: 20rem;
+}
+
 /** Media Queries **/
 html {
   font-size: 62.5%;
@@ -1140,6 +1216,17 @@ body.gradient {
   color: #666666;
 }
 
+.tool-bar {
+  border: 0.1rem solid #cccccc;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 1.3rem;
+}
+
 .pf-message {
   width: 95%;
   height: 25rem;
@@ -1268,5 +1355,48 @@ body .ui-datatable .ui-datatable-data > tr > td {
 body .ui-commandlink:hover,
 body .ui-link:hover {
   text-decoration: none;
+}
+
+body .ui-datatable .ui-datatable-data > tr.ui-state-highlight,
+body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-state-highlight,
+body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight,
+body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content.ui-state-highlight {
+  background: #cce5ff;
+  color: #000;
+}
+
+body .ui-inputfield.ui-state-hover,
+body .ui-inputfield.ui-state-focus {
+  border-color: #b6bfc8;
+}
+
+body .ui-messages .ui-messages-error .ui-messages-close,
+body .ui-messages .ui-messages-fatal .ui-messages-close,
+body .ui-messages .ui-messages-warn .ui-messages-close,
+body .ui-messages .ui-messages-info .ui-messages-close {
+  display: none;
+}
+
+.field {
+  margin-bottom: 0.4rem !important;
+}
+
+body .ui-datatable thead th {
+  vertical-align: top;
+}
+
+body .ui-datatable .ui-datatable-data > tr > td {
+  vertical-align: top;
+}
+
+.field .ui-message.ui-message-error,
+.field .ui-message.ui-message-fatal,
+.field .ui-message.ui-message-info,
+.field .ui-message.ui-message-warn {
+  border: none;
+}
+
+.field .ui-message-error-icon {
+  display: none !important;
 }
 /*# sourceMappingURL=app.css.map */

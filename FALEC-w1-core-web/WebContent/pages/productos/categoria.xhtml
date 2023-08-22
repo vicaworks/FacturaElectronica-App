@@ -14,11 +14,6 @@
 			.categoriaDT .ui-datatable-scrollable-body{
 				height: calc(100vh - 220px)!important;
 			}
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
         </style>
     </ui:define>
 
@@ -37,30 +32,26 @@
 		
 	    <h:form id="formMain">
 	    
-			<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px!important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
 			<!-- Lista categorias -->			
-			<div class="card card-w-title mt-1">
-				<div class="grid justify-content-between">
-					<div class="col-3">
-						<h3 class="cardTitle">#{msg['card.categoria']}</h3>
-					</div>
-					<div class="col-8 align-self-center">
-						<div class="flex justify-content-end">
-							<p:selectOneMenu id="somCategoria" value="#{categoriaCtrl.estadoRegBusqueda}" styleClass="mr-1">
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
+			<div class="card h-full">		                
+				<div class="flex justify-content-between">
+					<h3 class="card__heading card__heading--noBorder fw-4">#{msg['card.categoria']}</h3>
+					
+					<div>
+						<div class="flex justify-content-end" style="gap: .4rem;">
+							<p:selectOneMenu id="somCategoria" value="#{categoriaCtrl.estadoRegBusqueda}" styleClass="capitalize">
+				    			<f:selectItem itemLabel="Activo" itemValue="A" />
+				    			<f:selectItem itemLabel="Inactivo" itemValue="I" />
+				    			<f:selectItem itemLabel="Todos" itemValue="T" />
 				    		</p:selectOneMenu>
+				    		
 							<p:commandButton id="cmdRefrecar"
 								title="Consultar" icon="fa fa-search" 
-								action="#{categoriaCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
+								action="#{categoriaCtrl.refrescar()}" styleClass="ui-button-success" update="@form"
 								/>
+								
 							<p:commandButton id="cmdNuevo"
-								title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined mr-1 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}" 
+								title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}" 
 								action="#{categoriaCtrl.nuevo()}" inline="true">
 								<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
 							</p:commandButton>
@@ -75,23 +66,24 @@
 						</div>
 					</div>
 				</div>
+				
 				<p:dataTable id="categoiaDT" var="c"
 					value="#{categoriaCtrl.categoriaList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="categoriaDT"  
+					styleClass="categoriaDT fs-12"  
 					rowKey="#{c.idcategoria}">
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="Opc" style="width:1.5rem;" styleClass="TexAlCenter">
 						<p:commandLink id="cmlDtCategoria">
-							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down fs-18 text-primary-600" />
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtCategoria" my="left top" at="left bottom">
-							<p:menuitem value="Editar" action="#{categoriaCtrl.editar()}" icon="fa fa-edit" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Editar" action="#{categoriaCtrl.editar()}" icon="fa fa-edit" styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
-							<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
+								<f:setPropertyActionListener value="CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>
 							</p:menuitem>
-							<p:menuitem value="Eliminar" action="#{categoriaCtrl.eliminar()}" icon="fa fa-close" styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
+							<p:menuitem value="Eliminar" action="#{categoriaCtrl.eliminar()}" icon="fa-regular fa-trash-can" styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{c}" target="#{categoriaCtrl.categoriaSelected}"/>
 							</p:menuitem>
@@ -99,28 +91,36 @@
 						
 					</p:column>
 					
-					<p:column headerText="ID" style="width:30px;">
-						<h:outputText value="#{c.idcategoria}" />
+					<p:column headerText="Id" style="width:4rem;">
+						<div class="flex flex-column" style="gap: .4rem;">
+							<div class="flex align-items-baseline" style="gap: .4rem;">
+								<span class="fs-10">Id</span>
+								<h:outputText value="#{c.idcategoria}" styleClass="text-gray-700 font-semibold"/>
+							</div>
+							<h:outputText value="#{c.estado == 'A'?'Activo':'Inactivo'}" styleClass="text-gray-900"/>
+						</div>
 					</p:column>
 					
-					<p:column headerText="EST" style="width:40px;">
-						<h:outputText value="#{c.estado == 'A'?'ACT':'INA'}" styleClass="#{c.estado == 'A'?'text-green-700':'font-bold text-pink-500'}"/>
-					</p:column>
 					
-					<p:column style="width:160px;" filterBy="#{c.categoria}" filterMatchMode="contains">
+					<p:column style="width:20rem;" filterBy="#{c.categoria}" filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="NOMBRE" />
-							
+							<h:outputText value="Categoría" />							
 						</f:facet>
-						<h:outputText value="#{c.categoria}" />
+						<div class="flex flex-column" style="gap: .4rem;">
+							<h:outputText value="#{c.categoria}" styleClass="text-gray-700 font-semibold"/>							
+							<h:outputText value="#{c.descripcion != null ? c.descripcion : '-'}" styleClass="text-gray-700 fs-10"/>
+						</div>						
 					</p:column>
 					
-					<p:column headerText="DESCRIPCION" style="width:250px;">
-						<h:outputText value="#{c.descripcion}" styleClass="Fs9" />
+					<p:column style="width:20rem;" filterBy="#{c.grupocategoria.grupo}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Grupo categoría" />							
+						</f:facet>
+						<h:outputText value="#{c.grupocategoria != null ? c.grupocategoria.grupo : '-'}" styleClass="text-gray-700 font-semibold"/>
 					</p:column>
 					
 				</p:dataTable>
-				<div class="EmptyBox20"/>
+				
 			</div>
 			
 			

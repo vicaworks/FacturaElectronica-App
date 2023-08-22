@@ -31,8 +31,10 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
+import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -51,9 +53,10 @@ public class CategoriaCtrl extends BaseCtrl {
 	
 	@EJB
 	private CategoriaServicio categoriaServicio;
-	
 	@EJB
 	private UsuarioServicio usuarioServicio;
+	@EJB
+	private EstablecimientoServicio establecimientoServicio;
 	
 	private List<Categoria> categoriaList;
 	private Categoria categoriaSelected;
@@ -77,10 +80,10 @@ public class CategoriaCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			estadoRegBusqueda = EstadoRegistroEnum.ACTIVO.getInicial();
+			establecimientoFacade(establecimientoServicio, false);
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
@@ -91,7 +94,10 @@ public class CategoriaCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -106,15 +112,18 @@ public class CategoriaCtrl extends BaseCtrl {
 		try {
 			
 			if(categoriaSelected == null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.registros.noexiste"), 
+						Message.ERROR);
 				return;
 			}
 			
 			// si tiene dependencias
 			if (categoriaServicio.tieneDependencias(categoriaSelected.getIdcategoria(),
 					categoriaSelected.getEmpresa().getIdempresa())) {
-				
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINNAR TIENE DEPENDENCIAS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.tienedependencias"), 
+						Message.ERROR);
 				return;
 				
 			}
@@ -122,11 +131,16 @@ public class CategoriaCtrl extends BaseCtrl {
 			categoriaServicio.eliminar(categoriaSelected);
 			categoriaSelected = null;
 			consultar();
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					msg.getString("mensaje.eliminado.ok"), 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -136,8 +150,8 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 			// validar si existe el nombre de la categoria
 			if(categoriaServicio.getCategoriaDao().existeCategoria(categoriaSelected.getCategoria(), categoriaSelected.getIdcategoria(),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())){
-				AppJsfUtil.addErrorMessage("frmCategoria", "ERROR","EL NOMBRE DE LA CATEGORIA YA EXISTE.");
-				AppJsfUtil.addErrorMessage("frmCategoria:intCategoria","YA EXISTE.");
+				AppJsfUtil.addErrorMessage("frmCategoria", "ERROR", msg.getString("error.categoria.existe"));
+				AppJsfUtil.addErrorMessage("frmCategoria:intCategoria","Ya existe.");
 				return;
 			}
 			
@@ -159,11 +173,14 @@ public class CategoriaCtrl extends BaseCtrl {
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("frmCategoria","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage("frmCategoria","OK" ,msg.getString("mensaje.guardado.correctamente"));
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmCategoria", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -175,7 +192,10 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -188,7 +208,10 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -203,7 +226,10 @@ public class CategoriaCtrl extends BaseCtrl {
 			nuevoCategoria();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}	
 	}
 	
@@ -223,7 +249,6 @@ public class CategoriaCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));
 			// llenaa hoja 1 del archivo
 			HSSFSheet sheet=wb.getSheetAt(0);
@@ -250,6 +275,9 @@ public class CategoriaCtrl extends BaseCtrl {
 				
 				cell = row.createCell(0);
 				cell.setCellValue(c.getIdcategoria());
+				
+				cell = row.createCell(1);
+				cell.setCellValue(c.getGrupocategoria() != null ? c.getGrupocategoria().getGrupo() :  "-");
 				
 				cell = row.createCell(2);
 				cell.setCellValue(c.getCategoria());
@@ -289,7 +317,10 @@ public class CategoriaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
