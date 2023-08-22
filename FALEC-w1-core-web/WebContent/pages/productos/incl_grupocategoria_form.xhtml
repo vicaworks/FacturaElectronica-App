@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightFrmGrupoCategoria {
+			height: 200px;
+		}
+		
+	</style>
+	
+	<p:dialog header="Grupo categoría" 
+		widgetVar="dlgGrupoCategoria" 
+		modal="true" 
+		responsive="true" 
+		width="500px" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
+		
+		<h:form id="frmGrupoCategoria">
+			
+			<!-- OPCIONES -->
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
+				<p:commandButton id="cmdGrupoCategoriaGuardar"
+					value="Guardar" icon="fa-regular fa-floppy-disk fs-13" 
+					action="#{grupocategoriaCtrl.guardar()}" styleClass="ui-button ui-button-success min-width-100 fs-13" update="@form :formMain"
+					/>
+				
+				<p:commandButton id="cmdGrupoCategoriaNuevo"
+					value="Nuevo" icon="fa fa-plus fs-13" 
+					action="#{grupocategoriaCtrl.nuevoForm()}" styleClass="ui-button-outlined min-width-100 fs-13" update="@form :formMain" process="@this"
+					/>
+					
+				<p:commandButton id="cmdGrupoCategoriaCerrar"
+					value="Cerrar" styleClass="min-width-100 ui-button-outlined ui-button-secondary fs-13" 
+					onclick="PF('dlgGrupoCategoria').hide()" immediate="true"  
+					/>			
+			</div>
+			
+			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmGrupoCategoria"
+				closable="true" >
+				<p:autoUpdate></p:autoUpdate>
+			</p:messages>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="w-full overflow-auto heightFrmGrupoCategoria contenedorFormulario mt-2 pr-1 ui-fluid">
+				
+				<div class="field">
+				    <h:outputText value="Identificador" styleClass="text-gray-900"/>				    
+				    <p:inputText id="idgrupocategoria" 
+				    	value="#{grupocategoriaCtrl.grupocategoriaSelected.idgrupocategoria}" 
+				    	required="true" 
+				    	requiredMessage="Requerido" 
+				    	maxlength="300"
+				    	readonly="true"/>
+				</div>
+			    
+			    <div class="field">		
+					<h:outputText value="Nombre" styleClass="text-gray-900"/>
+					<p:inputText id="intGrupoCategoria" 
+						value="#{grupocategoriaCtrl.grupocategoriaSelected.grupo}" 
+						required="true" 
+						requiredMessage="Requerido" 
+						maxlength="300" 
+						converter="omnifaces.ToUpperCaseConverter"/>
+					<p:message for="intGrupoCategoria" styleClass="block m-0 p-0"/>
+			    </div>
+			    
+			    <div class="field">		
+					<h:outputText value="Estado" styleClass="text-gray-900"/>
+					<p:selectOneMenu id="somGrupocategoriaEstado"
+						value="#{grupocategoriaCtrl.grupocategoriaSelected.estado}"
+						required="true"
+						requiredMessage="Requerido"
+						disabled="#{grupocategoriaCtrl.grupocategoriaSelected.idgrupocategoria==null}">						
+						<f:selectItem itemLabel="Activo" itemValue="A" />
+		    			<f:selectItem itemLabel="Inactivo" itemValue="I" />		    			
+					</p:selectOneMenu>
+			    </div>
+								
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>      
+
+</ui:composition>

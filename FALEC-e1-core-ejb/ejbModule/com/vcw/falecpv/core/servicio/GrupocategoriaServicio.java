@@ -100,7 +100,7 @@ public class GrupocategoriaServicio extends AppGenericService<Grupocategoria, St
 
 	@Override
 	public DaoGenerico<Grupocategoria, String> getDao() {
-		return null;
+		return grupocategoriaDao;
 	}
 
 }

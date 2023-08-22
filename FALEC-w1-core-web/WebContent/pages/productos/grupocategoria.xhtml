@@ -11,14 +11,9 @@
     
     <ui:define name="head">
         <style type="text/css">
-			.categoriaDT .ui-datatable-scrollable-body{
+			.grupocategoriaDT .ui-datatable-scrollable-body{
 				height: calc(100vh - 220px)!important;
 			}
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
         </style>
     </ui:define>
 
@@ -32,10 +27,145 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="#{msg['menu.categoria']}" url="#{request.contextPath}/pages/productos/categoria.jsf"/>
+		    <p:menuitem value="Catálogo" url="#{request.contextPath}/pages/productos/categoria.jsf"/>
 		</p:breadCrumb>
-    			
-		<ui:include src="/pages/common/incl_common_message.xhtml" />
+		
+		<h:form id="formMain">
+			
+			<div class="card h-full">		                
+				<div class="flex justify-content-between">
+					<h3 class="card__heading card__heading--noBorder fw-4">GRUPO #{msg['card.categoria']}</h3>
+					
+					<div>
+						<div class="flex justify-content-end" style="gap: .4rem;">
+							<p:selectOneMenu id="somGrupoCategoria" value="#{grupocategoriaCtrl.estadoRegBusqueda}" styleClass="capitalize">
+				    			<f:selectItem itemLabel="Activo" itemValue="A" />
+				    			<f:selectItem itemLabel="Inactivo" itemValue="I" />
+				    			<f:selectItem itemLabel="Todos" itemValue="T" />
+				    		</p:selectOneMenu>
+				    		
+							<p:commandButton id="cmdGrupoCategoriaRefrecar"
+								title="Consultar" icon="fa fa-search" 
+								action="#{grupocategoriaCtrl.refrescar()}" styleClass="ui-button-success" update="@form"
+								/>
+								
+							<p:commandButton id="cmdGrupocateoriaNuevo"
+								title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}" 
+								action="#{grupocategoriaCtrl.nuevo()}" inline="true">
+								<f:setPropertyActionListener value="GRUPO_CATEGORIA" target="#{grupocategoriaCtrl.moduloCall}"/>
+								<f:setPropertyActionListener value="formMain" target="#{grupocategoriaCtrl.updateView}"/>
+							</p:commandButton>
+									
+							<p:commandButton  id="cmdGrupoCategoriaExcel" 
+								title="Exportar excel"
+								icon="fa fa-download"
+								ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+								styleClass="ui-button-outlined">
+								<p:fileDownload value="#{grupocategoriaCtrl.fileCategoria}"/>
+							</p:commandButton>
+						</div>
+					</div>
+				</div>
+				
+				<p:dataTable id="grupocategoriaDT" var="c"
+					value="#{grupocategoriaCtrl.grupocategoriaList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="grupocategoriaDT fs-12"  
+					rowKey="#{c.idgrupocategoria}">
+					
+					<p:column headerText="Opc" style="width:2.5rem;" styleClass="TexAlCenter">
+						<p:commandLink id="cmlDtGrupoCategoria">
+							<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
+						</p:commandLink>
+						<p:menu overlay="true" trigger="cmlDtGrupoCategoria" my="left top" at="left bottom">
+							<p:menuitem value="Editar" action="#{grupocategoriaCtrl.editar}" icon="fa fa-edit" styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
+								<f:setPropertyActionListener value="#{c}" target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
+								<f:setPropertyActionListener value="GRUPO_CATEGORIA" target="#{grupocategoriaCtrl.moduloCall}"/>
+								<f:setPropertyActionListener value="formMain" target="#{grupocategoriaCtrl.updateView}"/>
+							</p:menuitem>
+							<p:menuitem value="Eliminar" 
+								action="#{grupocategoriaCtrl.eliminar()}" 
+								icon="fa-regular fa-trash-can" 
+								styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}"
+								update="@form">
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								<f:setPropertyActionListener value="#{c}" target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
+							</p:menuitem>
+						</p:menu>	
+					</p:column>
+					
+					<p:column headerText="Id" style="width:6rem;">
+						<div class="flex flex-column" style="gap: .4rem;">
+							<div class="flex align-items-baseline" style="gap: .4rem;">
+								<span class="fs-10">Id</span>
+								<h:outputText value="#{c.idgrupocategoria}" styleClass="text-gray-700 font-semibold"/>
+							</div>
+							<h:outputText value="#{c.estado == 'A'?'Activo':'Inactivo'}" styleClass="text-gray-900"/>
+						</div>
+					</p:column>
+					
+					
+					<p:column style="width:20rem;" filterBy="#{c.grupo}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Grupo categoría" />							
+						</f:facet>
+						<div class="flex flex-column mb-1" style="gap: .4rem;">
+							<h:outputText value="#{c.grupo}" styleClass="text-gray-900 fs-11"/>
+							<div class="flex align-items-baseline" style="gap: .4rem;">
+								<i class="fa-solid fa-ellipsis-vertical text-gray-700"></i>
+								<p:commandLink action="#{grupocategoriaCtrl.load_asignarCategorias}"
+									styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
+									<span class="text-blue-700 fw-3 fs-11">Asignar categorías</span>
+									<f:setPropertyActionListener value="#{c}" target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
+								</p:commandLink>
+							</div>
+						</div>						
+					</p:column>
+					
+					<p:column style="width:20rem;">
+						<f:facet name="header">
+							<h:outputText value="Categorías" />							
+						</f:facet>
+						<p:outputPanel styleClass=".update__grupo-categoria">
+							<ui:repeat var="cat" value="#{c.categoriaList}">
+								<div class="mb-2 flex align-items-baseline">
+									<div class="flex" style="flex: 0; flex-basis: 4rem;gap: .4rem;">
+										<p:commandLink action="#{categoriaCtrl.editar()}" 
+											styleClass="text-gray-900 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
+											<i class="fa-regular fa-pen-to-square fs-14"></i>
+											<f:setPropertyActionListener value="#{cat}" target="#{categoriaCtrl.categoriaSelected}"/>
+											<f:setPropertyActionListener value="GRUPO-CATEGORIA" target="#{categoriaCtrl.moduloCall}"/>										
+										</p:commandLink>
+										
+										<p:commandLink action="#{grupocategoriaCtrl.desasignarGrupocategoria}" 
+											styleClass="text-gray-900 #{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}"
+											update="@(.ui-outputpanel)">
+											<i class="fa-regular fa-trash-can fs-14"></i>
+											<f:setPropertyActionListener value="#{cat}" target="#{grupocategoriaCtrl.categoriaSelected}"/>
+											<f:setPropertyActionListener value="#{c}" target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
+											<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />																													
+										</p:commandLink>
+										
+									</div>
+									<div style="flex: 1;">
+										<span class="text-gray-900 fs-11">#{cat.categoria}</span>
+									</div>
+								</div>
+							</ui:repeat>
+						</p:outputPanel>
+					</p:column>
+					
+				</p:dataTable>
+				
+			</div>
+		
+		</h:form>
+    	
+    	<!-- Grupo categoria FORM -->		
+		<ui:include src="/pages/productos/incl_grupocategoria_form.xhtml" />
+		
+		<!-- Asignar categorias -->
+		<ui:include src="/pages/productos/incl_listacategoria_form.xhtml" />
         
     </ui:define>
 

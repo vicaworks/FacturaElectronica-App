@@ -6,6 +6,7 @@ package com.vcw.falecpv.web.ctrl.productos;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
+import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Grupocategoria;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.GrupocategoriaServicio;
@@ -61,6 +63,7 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 	@Inject
 	private UsuarioServicio usuarioServicio;
 	
+	
 	private List<Grupocategoria> grupocategoriaList;
 	private Grupocategoria grupocategoriaSelected;
 	private String estadoRegBusqueda = EstadoRegistroEnum.ACTIVO.getInicial();
@@ -68,6 +71,10 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 	private String updateView;
 	private CategoriaCtrl categoriaCtrl;
 	private ProductoCtrl productoCtrl;
+	
+	private List<Categoria> categoriaList;
+	private List<Categoria> categoriaSelectedList;
+	private Categoria categoriaSelected;
 
 	/**
 	 * 
@@ -146,7 +153,7 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 			grupocategoriaSelected = null;
 			consultar();
 			getMessageCommonCtrl().crearMensaje("Ok", 
-					"Regstro eliminado correctamente.", 
+					msg.getString("mensaje.eliminado.ok"), 
 					Message.OK);
 			
 		} catch (Exception e) {
@@ -183,11 +190,9 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 				//AppJsfUtil.ajaxUpdate("frmProducto:somFrmProductoCategoria");
 				AppJsfUtil.ajaxUpdate(updateView);
 				break;
-			case "CATEGORIA":
+			case "GRUPO_CATEGORIA":
 				
-				categoriaCtrl.buscar();
-				//productoCtrl.getProductoSelected().setCategoria(categoriaSelected);
-				//AppJsfUtil.ajaxUpdate("frmProducto:somFrmProductoCategoria");
+				consultar();
 				AppJsfUtil.ajaxUpdate(updateView);
 				break;
 			default:
@@ -200,8 +205,7 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			e.printStackTrace();			
 			getMessageCommonCtrl().crearMensaje("Error", 
-					TextoUtil.imprimirStackTrace(e, 
-							AppConfiguracion.getInteger("stacktrace.length")), 
+					TextoUtil.imprimirStackTrace(e), 
 					Message.ERROR);
 		}
 	}
@@ -210,7 +214,7 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 	public void editar() {
 		try {
 			
-			AppJsfUtil.showModalRender("dlgCategoria", "frmCategoria");
+			AppJsfUtil.showModalRender("dlgGrupoCategoria", "frmGrupoCategoria");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -226,7 +230,7 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 		try {
 			
 			nuevoCategoria();
-			AppJsfUtil.showModalRender("dlgCategoria", "frmCategoria");
+			AppJsfUtil.showModalRender("dlgGrupoCategoria", "frmGrupoCategoria");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -253,6 +257,86 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 							AppConfiguracion.getInteger("stacktrace.length")), 
 					Message.ERROR);
 		}	
+	}
+	
+	public void load_asignarCategorias() {
+		try {
+			
+			categoriaList = null;
+			categoriaSelectedList = null;
+			categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.getByInicial(estadoRegBusqueda),AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+			AppJsfUtil.limpiarFiltrosDataTable(":frmListaCategoria:listacategoriaDT");
+			AppJsfUtil.showModalRender("dlgListaCategoria", "frmListaCategoria");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+		}
+	}
+	
+	public void asignarCategorias() {
+		try {
+			
+			if(categoriaSelectedList == null || categoriaSelectedList.isEmpty()) {
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen registros seleccionados.", 
+						Message.ERROR);
+				return;
+			}
+			
+			List<String> idGrupoCategiaChange = new ArrayList<>();			
+			idGrupoCategiaChange.add(grupocategoriaSelected.getIdgrupocategoria());
+			for (Categoria categoria : categoriaSelectedList) {
+				if(categoria.getGrupocategoria() != null && !idGrupoCategiaChange.contains(categoria.getGrupocategoria().getIdgrupocategoria())) {
+					idGrupoCategiaChange.add(categoria.getGrupocategoria().getIdgrupocategoria());
+				}
+				categoria.setGrupocategoria(grupocategoriaSelected);
+				categoriaServicio.actualizar(categoria);
+			}
+			
+			for (String idGrupoCategoria : idGrupoCategiaChange) {
+				Grupocategoria g = grupocategoriaList.stream().filter(x->x.getIdgrupocategoria().equals(idGrupoCategoria)).findFirst().orElse(null);
+				if(g != null) {					
+					g.setCategoriaList(
+						categoriaServicio.getByGrupoCategoria(idGrupoCategoria)
+						);
+				}
+			}			
+			
+			AppJsfUtil.hideModal("dlgListaCategoria");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					msg.getString("mensaje.categoria.asignadas"), 
+					Message.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+		}
+	}
+	
+	public void desasignarGrupocategoria() {
+		try {
+			
+			categoriaSelected.setGrupocategoria(null);
+			categoriaServicio.actualizar(categoriaSelected);
+			
+			grupocategoriaSelected.setCategoriaList(
+					categoriaServicio.getByGrupoCategoria(grupocategoriaSelected.getIdgrupocategoria())
+					);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+		}
 	}
 	
 	public StreamedContent getFileCategoria() {
@@ -347,6 +431,146 @@ public class GrupocategoriaCtrl extends BaseCtrl {
 		}
 		
 		return null;
+	}
+
+	/**
+	 * @return the grupocategoriaList
+	 */
+	public List<Grupocategoria> getGrupocategoriaList() {
+		return grupocategoriaList;
+	}
+
+	/**
+	 * @param grupocategoriaList the grupocategoriaList to set
+	 */
+	public void setGrupocategoriaList(List<Grupocategoria> grupocategoriaList) {
+		this.grupocategoriaList = grupocategoriaList;
+	}
+
+	/**
+	 * @return the grupocategoriaSelected
+	 */
+	public Grupocategoria getGrupocategoriaSelected() {
+		return grupocategoriaSelected;
+	}
+
+	/**
+	 * @param grupocategoriaSelected the grupocategoriaSelected to set
+	 */
+	public void setGrupocategoriaSelected(Grupocategoria grupocategoriaSelected) {
+		this.grupocategoriaSelected = grupocategoriaSelected;
+	}
+
+	/**
+	 * @return the estadoRegBusqueda
+	 */
+	public String getEstadoRegBusqueda() {
+		return estadoRegBusqueda;
+	}
+
+	/**
+	 * @param estadoRegBusqueda the estadoRegBusqueda to set
+	 */
+	public void setEstadoRegBusqueda(String estadoRegBusqueda) {
+		this.estadoRegBusqueda = estadoRegBusqueda;
+	}
+
+	/**
+	 * @return the moduloCall
+	 */
+	public String getModuloCall() {
+		return moduloCall;
+	}
+
+	/**
+	 * @param moduloCall the moduloCall to set
+	 */
+	public void setModuloCall(String moduloCall) {
+		this.moduloCall = moduloCall;
+	}
+
+	/**
+	 * @return the updateView
+	 */
+	public String getUpdateView() {
+		return updateView;
+	}
+
+	/**
+	 * @param updateView the updateView to set
+	 */
+	public void setUpdateView(String updateView) {
+		this.updateView = updateView;
+	}
+
+	/**
+	 * @return the categoriaCtrl
+	 */
+	public CategoriaCtrl getCategoriaCtrl() {
+		return categoriaCtrl;
+	}
+
+	/**
+	 * @param categoriaCtrl the categoriaCtrl to set
+	 */
+	public void setCategoriaCtrl(CategoriaCtrl categoriaCtrl) {
+		this.categoriaCtrl = categoriaCtrl;
+	}
+
+	/**
+	 * @return the productoCtrl
+	 */
+	public ProductoCtrl getProductoCtrl() {
+		return productoCtrl;
+	}
+
+	/**
+	 * @param productoCtrl the productoCtrl to set
+	 */
+	public void setProductoCtrl(ProductoCtrl productoCtrl) {
+		this.productoCtrl = productoCtrl;
+	}
+
+	/**
+	 * @return the categoriaList
+	 */
+	public List<Categoria> getCategoriaList() {
+		return categoriaList;
+	}
+
+	/**
+	 * @param categoriaList the categoriaList to set
+	 */
+	public void setCategoriaList(List<Categoria> categoriaList) {
+		this.categoriaList = categoriaList;
+	}
+
+	/**
+	 * @return the categoriaSelectedList
+	 */
+	public List<Categoria> getCategoriaSelectedList() {
+		return categoriaSelectedList;
+	}
+
+	/**
+	 * @param categoriaSelectedList the categoriaSelectedList to set
+	 */
+	public void setCategoriaSelectedList(List<Categoria> categoriaSelectedList) {
+		this.categoriaSelectedList = categoriaSelectedList;
+	}
+
+	/**
+	 * @return the categoriaSelected
+	 */
+	public Categoria getCategoriaSelected() {
+		return categoriaSelected;
+	}
+
+	/**
+	 * @param categoriaSelected the categoriaSelected to set
+	 */
+	public void setCategoriaSelected(Categoria categoriaSelected) {
+		this.categoriaSelected = categoriaSelected;
 	}	
 
 }

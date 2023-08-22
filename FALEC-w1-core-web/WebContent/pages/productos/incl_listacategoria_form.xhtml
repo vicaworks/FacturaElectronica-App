@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions">
+	
+	<style type="text/css">
+		
+		.heightlistaCategoria {
+			height: 40rem;
+		}
+		
+		.listacategoriaDT .ui-datatable-scrollable-body{
+			height: 30rem;
+		}
+		
+	</style>
+	
+	<p:dialog header="Lista de categorías" 
+		widgetVar="dlgListaCategoria" 
+		modal="true" 
+		responsive="true" 
+		width="550px" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
+		
+		<h:form id="frmListaCategoria">
+			
+			<!-- OPCIONES -->
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
+				<p:commandButton id="cmdListaCategoriaGuardar"
+					value="Guardar" icon="fa-regular fa-floppy-disk fs-13" 
+					action="#{grupocategoriaCtrl.asignarCategorias()}" 
+					styleClass="ui-button ui-button-success min-width-100 fs-13" 
+					update="@form @(.ui-outputpanel)"
+					/>
+					
+				<p:commandButton id="cmdGrupoCategoriaCerrar"
+					value="Cerrar" styleClass="min-width-100 ui-button-outlined ui-button-secondary fs-13" 
+					onclick="PF('dlgListaCategoria').hide()" immediate="true"  
+					/>			
+			</div>
+			
+			<!--  wraper del formulario para responsive -->
+			
+			<div class="w-full overflow-auto heightlistaCategoria contenedorFormulario mt-2 pr-1 ui-fluid">
+				
+				<p:dataTable id="listacategoriaDT" var="c"
+					value="#{grupocategoriaCtrl.categoriaList}" scrollable="true"
+					emptyMessage="#{msg['mensaje.noexistenDatos']}"
+					styleClass="listacategoriaDT fs-12"  
+					rowKey="#{c.idcategoria}"
+					selection="#{grupocategoriaCtrl.categoriaSelectedList}"
+					selectionPageOnly="false" rowSelectMode="none">
+					
+					<p:column selectionMode="multiple" style="width:2.5rem;text-align:center"/>
+					
+					<p:column style="width:20rem;" filterBy="#{c.categoria}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Categoría" />							
+						</f:facet>
+						<div class="flex flex-column" style="gap: .4rem;">
+							<h:outputText value="#{c.categoria}" styleClass="text-gray-700 font-semibold"/>							
+							<h:outputText value="#{c.descripcion != null ? c.descripcion : '-'}" styleClass="text-gray-700 fs-10"/>
+						</div>						
+					</p:column>
+					
+					<p:column style="width:20rem;" filterBy="#{c.grupocategoria.grupo}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Grupo categoría" />							
+						</f:facet>
+						<h:outputText value="#{c.grupocategoria != null ? c.grupocategoria.grupo : '-'}" styleClass="text-gray-700 fw-4"/>
+					</p:column>
+					
+				</p:dataTable>
+				
+								
+			</div>
+			
+		</h:form>
+		
+   </p:dialog>      
+
+</ui:composition>
