@@ -36,7 +36,10 @@
 					<h3>Pasos a Seguir...</h3>
 					<span class="block text-justify"><strong>1. </strong>Llenar los datos con el formato adjunto.</span>
 					<div class="block m-0">
-						<p:commandButton ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" value="Descargar" icon="fa fa-download" styleClass="ui-button-flat min-width-120 my-1 Fs14">
+						<p:commandButton ajax="false" 
+							onclick="PrimeFaces.monitorDownload(start, stop);" 
+							value="Descargar" icon="fa fa-download fs-14" 
+							styleClass="ui-button-outlined min-width-150 my-1 fs-14">
 							<p:fileDownload value="#{clienteCtrl.plantillaImportarCliente}" />
 						</p:commandButton>
 					</div>
@@ -60,9 +63,9 @@
 						</p:fileUpload>
 						<p:outputPanel rendered="#{not empty clienteCtrl.nombreFileCliente}">
 							
-							<div class="flex flex-row my-1">
-								<strong class="mr-2">Archivo Seleccionado :</strong>
-								<h:outputText value="#{clienteCtrl.nombreFileCliente}" styleClass="inline"/>
+							<div class="flex flex-row my-1 align-items-baseline">
+								<span class="mr-2 text-gray-900 fw-5 fs-14">Archivo Seleccionado :</span>
+								<h:outputText value="#{clienteCtrl.nombreFileCliente}" styleClass="text-gray-900 fs-12"/>
 							</div>
 							
 						</p:outputPanel>
@@ -70,10 +73,11 @@
 					<span class="block text-justify"><strong>4. </strong> El sistema informará si no existe novedades en la importación, en caso de existir novedades en el mismo archivo seleccionado se indicará las novedades existentes.</span>
 					<div class="min-width-100 my-1">
 						<p:commandButton id="cmdImportIce"
-							value="Importar Clientes" icon="fa fa-upload" styleClass="ui-button-flat min-width-120 Fs14"
+							value="Importar Clientes" 
+							icon="fa fa-upload fs-14" 
+							styleClass="ui-button-outlined min-width-150 fs-14 #{clienteCtrl.fileClientes == null ? 'ui-state-disabled' : ''}"
 							action="#{clienteCtrl.importarClientes}"  
 							update="@form, formMain"
-							disabled="#{clienteCtrl.fileCliente==null}"
 						/>
 						<div class="block"/>
 						<p:outputPanel rendered="#{clienteCtrl.renderResultadoImportCliente and clienteCtrl.existenNovedades}">
@@ -83,7 +87,7 @@
 							<p class="text-justify">Debe descargar el archivo, y en cada fila de color rojo, al final de la fila en la columna 7 está descrita la novedad.</p>
 							
 							<p:commandButton id="cmdImportICeNovedades"
-								value="Archivo Novedades" icon="fa fa-download" styleClass="ui-button-flat ui-button-danger min-width-120 Fs14"
+								value="Archivo Novedades" icon="fa fa-download fs-14" styleClass="ui-button-outlined ui-button-danger min-width-150 fs-14"
 								ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" disabled="#{clienteCtrl.fileCliente==null}">
 								<p:fileDownload value="#{clienteCtrl.plantillaImportarClienteNovedades}" />
 							</p:commandButton>
