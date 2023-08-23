@@ -38,28 +38,37 @@
 
 	</style>
 	
-	<p:dialog header="Cliente" widgetVar="dlgCliente" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Cliente" 
+		widgetVar="dlgCliente" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width: 80rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmCliente">
 			
 			<!-- OPCIONES -->
-			<div class="formgroup-inline">
+			
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton id="cmdGuardarCli"
-					value="GUARDAR" icon="fa fa-floppy-o" ajax="true"
-					action="#{clienteCtrl.guardar()}" styleClass="min-width-100 mr-1" update="@form #{clienteCtrl.updateView}"
-					 inline="true" 
-					/>
+					value="Guardar" icon="fa-regular fa-floppy-disk fs-13"
+					action="#{clienteCtrl.guardar()}" 
+					styleClass="ui-button ui-button-success min-width-100 fs-13" update="@form #{clienteCtrl.updateView}"
+					disabled="#{clienteCtrl.opcionVer}"/>
 				<p:commandButton id="cmdMdlNuevoCli"
-					value="NUEVO" icon="fa fa-plus" styleClass="mr-1 ui-button-outlined min-width-100" 
+					value="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined min-width-100 fs-13" 
 					action="#{clienteCtrl.nuevoModal()}" update="@form" inline="true" immediate="true" 
-					/>
-				
+					disabled="#{clienteCtrl.opcionVer}"/>				
 					
 				<p:commandButton id="cmdCerrarCli"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
+					value="Cerrar" styleClass="min-width-100 ui-button-outlined ui-button-secondary fs-13" 
 					onclick="PF('dlgCliente').hide()" immediate="true"
 					 inline="true"  
 					/>				
+				
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmCliente"
@@ -69,128 +78,178 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightFrmCliente contenedorFormulario mt-2">
-				
-				
-				<div class="grid" style="width:99.5%!important;">
+			<div class="w-full overflow-auto heightFrmCliente contenedorFormulario mt-2 pr-1 ui-fluid fs-12">
 					
+				<div class="grid" style="width:99.5%!important;">	
 					<!-- Datos del cliente -->	
 					<div class="col-12 md:col-6">
-						
-						<span class="text-black font-medium Fs16 my-2">Datos de Cliente</span>
-						
+						<span class="text-primary-700 fw-5 fs-16 my-2 block">Información requerida</span>
 						<div class="field">							
-							<h:outputText value="Tipo Identificación" styleClass="text-gray-800 font-medium mb-1"/>
-							<p:selectOneMenu id="somTipoIdentificacion" value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" 
-											 styleClass="w-full mt-1" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="REQUERIDO">
+							<h:outputText value="Tipo Identificación" styleClass="text-gray-900 fw-5"/>
+							<p:selectOneMenu id="somTipoIdentificacion" 
+								value="#{clienteCtrl.clienteSelected.tipoIdentificacion}" 
+							    converter="omnifaces.SelectItemsConverter" 
+							    required="true" 
+							    requiredMessage="Requerido">
 								<f:selectItem itemLabel="TIPO IDENTIFICACIÓN [seleccionar] ..."
 										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 		
 								<f:selectItems value="#{tipoIdentificacionCtrl.tipoIdentificacionList}" var="ident"
 									itemLabel="#{ident.tipoidentificacion}" itemValue="#{ident}" />
 							</p:selectOneMenu>
-							<p:message for="somTipoIdentificacion" styleClass="block"/>							
+							<p:message for="somTipoIdentificacion" styleClass="block m-0 p-0"/>							
 					    </div>
 					    <div class="field">							
-							<h:outputText value="Identificación" styleClass="text-gray-800 font-medium mb-1"/>
-							<p:inputText id="intIdentificacion" value="#{clienteCtrl.clienteSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+							<h:outputText value="Identificación" styleClass="text-gray-900 fw-5"/>
+							<p:inputText id="intIdentificacion" 
+								value="#{clienteCtrl.clienteSelected.identificacion}" 
+								required="true" 
+								requiredMessage="Requerido" 
+								maxlength="20" 
+								validatorMessage="#{msg['converter.solonumeros']}">
 								<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 							</p:inputText>
-							<p:message for="intIdentificacion" styleClass="block"/>
+							<p:message for="intIdentificacion" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">							
-							<h:outputText value="Razón Social" styleClass="text-gray-800 font-medium mb-1"/>
-							<p:inputText id="intRazonSocial" value="#{clienteCtrl.clienteSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-							<p:message for="intRazonSocial" styleClass="block"/>
+							<h:outputText value="Razón Social" styleClass="text-gray-900 fw-5"/>
+							<p:inputText id="intRazonSocial" 
+								value="#{clienteCtrl.clienteSelected.razonsocial}" 
+								required="true" 
+								requiredMessage="Requerido" 
+								maxlength="300" 
+								converter="omnifaces.ToUpperCaseConverter"/>
+							<p:message for="intRazonSocial" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">							
-							<h:outputText value="Dirección" styleClass="text-gray-800 font-medium mb-1"/>
-							<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter" required="true" requiredMessage="REQUERIDO"/>							
-							<p:message for="intDireccion" styleClass="block"/>
+							<h:outputText value="Dirección" styleClass="text-gray-900 fw-5"/>
+							<p:inputText id="intDireccion" value="#{clienteCtrl.clienteSelected.direccion}" 
+								maxlength="300" 
+								converter="omnifaces.ToUpperCaseConverter" 
+								required="true" 
+								requiredMessage="Requerido"/>							
+							<p:message for="intDireccion" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">							
-							<h:outputText value="Email" styleClass="text-gray-700 mb-1" />
-							
-							<p:inputTextarea id="intCorreo" value="#{clienteCtrl.clienteSelected.correoelectronico}" maxlength="300" styleClass="w-full mt-1" rows="3" validatorMessage="EMAIL INVALIDO" required="false" requiredMessage="REQUERIDO">
+							<h:outputText value="Email" styleClass="text-gray-900" />
+							<p:inputTextarea id="intCorreo" 
+								value="#{clienteCtrl.clienteSelected.correoelectronico}" 
+								maxlength="300" 
+								rows="3" 
+								validatorMessage="Email incorrecto" 
+								required="false" 
+								requiredMessage="Requerido">
 								<f:validator validatorId="emailValidator"/>
 							</p:inputTextarea>
-							<p:message for="intCorreo" styleClass="block"/>
+							<p:message for="intCorreo" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">							
-							<h:outputText value="Teléfono" styleClass="text-gray-700 mb-1"/>
-							<p:inputText id="intTelefono" value="#{clienteCtrl.clienteSelected.telefono}" styleClass="w-full" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+							<h:outputText value="Teléfono" styleClass="text-gray-900"/>
+							<p:inputText id="intTelefono" 
+								value="#{clienteCtrl.clienteSelected.telefono}" 
+								maxlength="20" 
+								validatorMessage="#{msg['converter.solonumeros']}">
 								<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 							</p:inputText>
-							<p:message for="intTelefono" styleClass="block"/>
+							<p:message for="intTelefono" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">							
-							<h:outputText value="Estado" styleClass="text-gray-700 mb-1 font-medium"/>
+							<h:outputText value="Estado" styleClass="text-gray-900 fw-5"/>
 							<p:selectOneMenu id="somEstado" value="#{clienteCtrl.clienteSelected.estado}" 
-											 styleClass="w-full mt-1" 
 											 required="true" requiredMessage="REQUERIDO"
 											 disabled="#{clienteCtrl.clienteSelected.idcliente==null}">
 								
-								<f:selectItem itemLabel="ACTIVO" itemValue="A" />
-								<f:selectItem itemLabel="INACTIVO" itemValue="I" />
+								<f:selectItem itemLabel="Activo" itemValue="A" />
+								<f:selectItem itemLabel="Inactivo" itemValue="I" />
 							</p:selectOneMenu>
-							<p:message for="somEstado" styleClass="block"/>
+							<p:message for="somEstado" styleClass="block m-0 p-0"/>
 					    </div>
 					</div>
 					<div class="col-12 md:col-6">
 						
 						<div class="grid grid-nogutter">
 							<div class="col-12">
-								<span class="text-black font-medium Fs16 my-2">Contacto 1</span>
+								<span class="text-primary-700 fw-5 fs-16 my-2 block">Contacto 1</span>
 							    <div class="field">
-									<h:outputText value="Nombre" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intNomGar1" value="#{clienteCtrl.clienteSelected.nombregarante1}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+									<h:outputText value="Nombre" styleClass="text-gray-900"/>
+									<p:inputText id="intNomGar1" 
+										value="#{clienteCtrl.clienteSelected.nombregarante1}" 
+										maxlength="300" 
+										converter="omnifaces.ToUpperCaseConverter"/>
 							    </div>
 							    <div class="field">
-									<h:outputText value="Identificación" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intCedGar1" value="#{clienteCtrl.clienteSelected.cedulagarante1}" styleClass="w-full mt-1" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<h:outputText value="Identificación" styleClass="text-gray-900"/>
+									<p:inputText id="intCedGar1" 
+										value="#{clienteCtrl.clienteSelected.cedulagarante1}" 
+										maxlength="20" 
+										validatorMessage="#{msg['converter.solonumeros']}">
 										<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 									</p:inputText>
 							    </div>
 							    <div class="field">							
-									<h:outputText value="Dirección" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intDirGar1" value="#{clienteCtrl.clienteSelected.direcciongarante1}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+									<h:outputText value="Dirección" styleClass="text-gray-900"/>
+									<p:inputText id="intDirGar1" 
+										value="#{clienteCtrl.clienteSelected.direcciongarante1}" 
+										maxlength="300" 
+										converter="omnifaces.ToUpperCaseConverter"/>
 							    </div>
 							    <div class="field">							
-									<h:outputText value="Teléfono" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intTelGar1" value="#{clienteCtrl.clienteSelected.telefonogarante1}" styleClass="w-full mt-1" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<h:outputText value="Teléfono" styleClass="text-gray-900"/>
+									<p:inputText id="intTelGar1" 
+										value="#{clienteCtrl.clienteSelected.telefonogarante1}" 
+										maxlength="20" 
+										validatorMessage="#{msg['converter.solonumeros']}">
 										<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 									</p:inputText>
 							    </div>
 							    <div class="field">							
-									<h:outputText value="Cargo" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intOcupGar1" value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" styleClass="w-full mt-1" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
+									<h:outputText value="Cargo" styleClass="text-gray-900"/>
+									<p:inputText id="intOcupGar1" 
+										value="#{clienteCtrl.clienteSelected.ocupaciongarante1}" 
+										maxlength="50" 
+										converter="omnifaces.ToUpperCaseConverter"/>
 							    </div>
 						    
-								<span class="text-black font-medium Fs16">Contacto 2</span>
+								<span class="text-primary-700 fw-5 fs-16 my-2 block">Contacto 2</span>
 							
 							    <div class="field">							
-									<h:outputText value="Nombre" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intNomGar2" value="#{clienteCtrl.clienteSelected.nombregarante2}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+									<h:outputText value="Nombre" styleClass="text-gray-900"/>
+									<p:inputText id="intNomGar2" 
+										value="#{clienteCtrl.clienteSelected.nombregarante2}" 
+										maxlength="300" 
+										converter="omnifaces.ToUpperCaseConverter"/>
 							    </div>
 							    <div class="field">							
-									<h:outputText value="Identificación" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intCedGar2" value="#{clienteCtrl.clienteSelected.cedulagarante2}" styleClass="w-full mt-1" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<h:outputText value="Identificación" styleClass="text-gray-900"/>
+									<p:inputText id="intCedGar2" 
+										value="#{clienteCtrl.clienteSelected.cedulagarante2}" 
+										maxlength="20" 
+										validatorMessage="#{msg['converter.solonumeros']}">
 										<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 									</p:inputText>
 							    </div>
 							    <div class="field">
-									<h:outputText value="Dirección" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intDirGar2" value="#{clienteCtrl.clienteSelected.direcciongarante2}" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>							
+									<h:outputText value="Dirección" styleClass="text-gray-900"/>
+									<p:inputText id="intDirGar2" 
+										value="#{clienteCtrl.clienteSelected.direcciongarante2}" 
+										maxlength="300" 
+										converter="omnifaces.ToUpperCaseConverter"/>							
 							    </div>
 							    <div class="field">
-									<h:outputText value="Teléfono" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intTelGar2" value="#{clienteCtrl.clienteSelected.telefonogarante2}" styleClass="w-full" maxlength="20" validatorMessage="#{msg['converter.solonumeros']}">
+									<h:outputText value="Teléfono" styleClass="text-gray-900"/>
+									<p:inputText id="intTelGar2" 
+										value="#{clienteCtrl.clienteSelected.telefonogarante2}" 
+										maxlength="20" 
+										validatorMessage="#{msg['converter.solonumeros']}">
 										<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 									</p:inputText>
 							    </div>
 							    <div class="field">
-									<h:outputText value="Cargo" styleClass="text-gray-700 mb-1"/>
-									<p:inputText id="intOcupGar2" value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" styleClass="w-full mt-1" maxlength="50" converter="omnifaces.ToUpperCaseConverter"/>
+									<h:outputText value="Cargo" styleClass="text-gray-900"/>
+									<p:inputText id="intOcupGar2" 
+										value="#{clienteCtrl.clienteSelected.ocupaciongarante2}" 
+										maxlength="50" 
+										converter="omnifaces.ToUpperCaseConverter"/>
 							    </div>							
 							</div>
 						</div>

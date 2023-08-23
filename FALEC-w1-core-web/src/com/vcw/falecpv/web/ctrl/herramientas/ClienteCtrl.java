@@ -44,6 +44,7 @@ import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.RetencionFrmCtrl;
 import com.vcw.falecpv.web.ctrl.cajachica.CajaChicaCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.comprobantes.fac.CompFacCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemFormCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraFormCtrl;
@@ -84,6 +85,8 @@ public class ClienteCtrl extends BaseCtrl {
 	private CajaChicaCtrl cajaChicaCtrl;
 	private LiqCompraFormCtrl liqCompraFormCtrl;
 	
+	private boolean opcionVer = false;
+	
 	
 	public ClienteCtrl() {
 	}
@@ -94,8 +97,7 @@ public class ClienteCtrl extends BaseCtrl {
 		try {
 			consultarClientes();
 		} catch (Exception e) {
-			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();			
 		}
 	}
 	
@@ -106,7 +108,9 @@ public class ClienteCtrl extends BaseCtrl {
 			consultarClientes();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -118,7 +122,7 @@ public class ClienteCtrl extends BaseCtrl {
 			// 1. Identificacion
 			if(clienteServicio.getClienteDao().existeIdentificacion(clienteSelected.getIdcliente(),clienteSelected.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 				AppJsfUtil.addErrorMessage("frmCliente", "ERROR", msg.getString("mensaje.identificacionexiste"));
-				AppJsfUtil.addErrorMessage("frmCliente:intIdentificacion","YA EXISTE.");
+				AppJsfUtil.addErrorMessage("frmCliente:intIdentificacion","Ya existe.");
 				return;
 			}
 			clienteSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
@@ -199,7 +203,9 @@ public class ClienteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 		
 	}
@@ -219,7 +225,9 @@ public class ClienteCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgCliente", "frmCliente");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -230,7 +238,9 @@ public class ClienteCtrl extends BaseCtrl {
 			clienteSelected.setEstado(EstadoRegistroEnum.ACTIVO.getInicial());
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -244,7 +254,9 @@ public class ClienteCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgCliente", "frmCliente");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -253,7 +265,9 @@ public class ClienteCtrl extends BaseCtrl {
 		try {
 			
 			if(clienteSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe registro seleccionado", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -264,7 +278,9 @@ public class ClienteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -277,7 +293,9 @@ public class ClienteCtrl extends BaseCtrl {
 	public void verCliente(String id) {
 		try {
 			if(id==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe registro seleccionado", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -285,14 +303,19 @@ public class ClienteCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgVerCliente", "frmVerCliente");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
 	public void editarCliente(String id) {
 		try {
 			if(id==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe registro seleccionado", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -301,7 +324,9 @@ public class ClienteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 	}
 	
@@ -321,7 +346,9 @@ public class ClienteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -341,7 +368,9 @@ public class ClienteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 		
 	}
@@ -353,7 +382,6 @@ public class ClienteCtrl extends BaseCtrl {
 			existenNovedades = false;
 			renderResultadoImportCliente = false;
 			
-			@SuppressWarnings("resource")
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(fileClientes));
 			HSSFSheet sheet=wb.getSheetAt(0);
 			
@@ -376,7 +404,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdTipoIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO ID TIPO IDENTIFICACION ERROR");
+						c.setNovedad("Formato id tipo identificación error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -391,7 +419,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setIdentificacion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO IDENTIFICACION ERROR");
+						c.setNovedad("Formato identificación error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -406,7 +434,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setRazonSocial(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO RAZON SOCIAL ERROR");
+						c.setNovedad("Formato razón social error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -421,7 +449,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccion(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCION ERROR");
+						c.setNovedad("Formato dirección error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -437,7 +465,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCorreoElectronico(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CORREO ELECTRONICO ERROR");
+						c.setNovedad("Formato correo electrónico error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -452,7 +480,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefono(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TELOFONO ERROR");
+						c.setNovedad("Formato teléfono error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -467,7 +495,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setNombreGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO NOMBRE GARANTE 1 ERROR");
+						c.setNovedad("Formato nombre garante 1 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -482,7 +510,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CODULA GARANTE 1 ERROR");
+						c.setNovedad("Formato cédula garante 1 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -497,7 +525,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCION GARANTE 1 ERROR");
+						c.setNovedad("Formato dirección garante 1 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -512,7 +540,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TELOFONO GARANTE 1 ERROR");
+						c.setNovedad("Formato teléfono garante 1 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -527,7 +555,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante1(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACION GARANTE 1 ERROR");
+						c.setNovedad("Formato ocupación garante 1 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -542,7 +570,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setNombreGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO NOMBRE GARANTE 2 ERROR");
+						c.setNovedad("Formato nombre garante 2 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -557,7 +585,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setCedulaGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO CODULA GARANTE 2 ERROR");
+						c.setNovedad("Formato cédula garante 2 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -572,7 +600,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setDireccionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO DIRECCION GARANTE 2 ERROR");
+						c.setNovedad("Formato dirección garante 2 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -587,7 +615,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setTelefonoGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO TELOFONO GARANTE 2 ERROR");
+						c.setNovedad("Formato teléfono garante 2 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -602,7 +630,7 @@ public class ClienteCtrl extends BaseCtrl {
 						c.setOcupacionGarante2(cell.getStringCellValue());
 					} catch (Exception e) {
 						c.setError(true);
-						c.setNovedad("FORMATO OCUPACION GARANTE 2 ERROR");
+						c.setNovedad("Formato ocupación garante 2 error");
 						importClienteDtoList.add(c);
 						e.printStackTrace();
 						fila++;
@@ -667,7 +695,9 @@ public class ClienteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 		
 	}
@@ -680,31 +710,31 @@ public class ClienteCtrl extends BaseCtrl {
 			// datos obligatorios
 			if(c.getIdTipoIdentificacion()==null || c.getIdTipoIdentificacion().compareTo("") == 0) {
 				c.setError(true);
-				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO ID TIPO IDENTIFICACION OBLIGATORIO"):"CAMPO ID TIPO IDENTIFICACION OBLIGATORIO");
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo id tipo identificación obligatorio"):"campo id tipo identificación obligatorio");
 			}
 			if(c.getIdentificacion()==null || c.getIdentificacion().compareTo("") == 0) {
 				c.setError(true);
-				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION OBLIGATORIO"):"CAMPO IDENTIFICACION OBLIGATORIO");
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo identificación obligatorio"):"campo identificación obligatorio");
 			} else {
 				if (clienteServicio.getClienteDao().existeIdentificacion(c.getIdCliente(),c.getIdentificacion(), AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa())) {
 					c.setError(true);
-					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION YA EXISTE"):"CAMPO IDENTIFICACION YA EXISTE");
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo identificación ya existe"):"campo identificación ya existe");
 				}
 				if (!isNumeric(c.getIdentificacion())) {
 					c.setError(true);
-					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO IDENTIFICACION FORMATO INCORRECTO"):"CAMPO IDENTIFICACION FORMATO INCORRECTO");
+					c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo identificación formato incorrecto"):"campo identificación formato incorrecto");
 				}
 			}
 			if(c.getRazonSocial()==null || c.getRazonSocial().compareTo("") == 0) {
 				c.setError(true);
-				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO RAZON SOCIAL OBLIGATORIO"):"CAMPO RAZON SOCIAL OBLIGATORIO");
+				c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo razón social obligatorio"):"Campo razón social obligatorio");
 			}
 			
 			if(c.getTelefono()!=null) {
 				if(c.getTelefono().compareTo("") != 0) {
 					if (!isNumeric(c.getTelefono())) {
 						c.setError(true);
-						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO FORMATO INCORRECTO"):"CAMPO TELEFONO FORMATO INCORRECTO");
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo teléfono formato incorrecto"):"Campo teléfono formato incorrecto");
 					}
 				}
 			}
@@ -713,7 +743,7 @@ public class ClienteCtrl extends BaseCtrl {
 				if(c.getCedulaGarante1().compareTo("") != 0) {
 					if (!isNumeric(c.getCedulaGarante1())) {
 						c.setError(true);
-						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 1 FORMATO INCORRECTO");
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo cédula garante 1 formato incorrecto"):"Campo cédula garante 1 formato incorrecto");
 					}
 				}
 			}
@@ -722,7 +752,7 @@ public class ClienteCtrl extends BaseCtrl {
 				if(c.getTelefonoGarante1().compareTo("") != 0) {
 					if (!isNumeric(c.getTelefonoGarante1())) {
 						c.setError(true);
-						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 1 FORMATO INCORRECTO");
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo teléfono garante 1 formato incorrecto"):"Campo telefono garante 1 formato incorrecto");
 					}
 				}
 			}
@@ -731,7 +761,7 @@ public class ClienteCtrl extends BaseCtrl {
 				if(c.getCedulaGarante2().compareTo("") != 0) {
 					if (!isNumeric(c.getCedulaGarante2())) {
 						c.setError(true);
-						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO"):"CAMPO CEDULA GARANTE 2 FORMATO INCORRECTO");
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo cédula garante 2 formato incorrecto"):"Campo cedula garante 2 formato incorrecto");
 					}
 				}
 			}
@@ -740,7 +770,7 @@ public class ClienteCtrl extends BaseCtrl {
 				if(c.getTelefonoGarante2().compareTo("") != 0) {
 					if (!isNumeric(c.getTelefonoGarante2())) {
 						c.setError(true);
-						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO"):"CAMPO TELEFONO GARANTE 2 FORMATO INCORRECTO");
+						c.setNovedad(c.getNovedad()!=null?c.getNovedad().concat(", Campo telefono garante 2 formato incorrecto"):"Campo telefono garante 2 formato incorrecto");
 					}
 				}
 			}
@@ -749,7 +779,7 @@ public class ClienteCtrl extends BaseCtrl {
 				ExpresionRegularValidador.validarEmail(c.getCorreoElectronico());
 			} catch (ValidarExpresionException e) {
 				c.setError(true);
-				c.setNovedad("CAMPO CORREO ELECTRONICO, FORMATO INCORRECTO "+e.getMessage());
+				c.setNovedad("Campo correo electrónico, formato incorrecto "+e.getMessage());
 			}
 			
 		}
@@ -772,7 +802,9 @@ public class ClienteCtrl extends BaseCtrl {
 		try {
 			
 			if(clienteList == null || clienteList.size() == 0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			String path = FacesUtil.getServletContext().getRealPath(AppConfiguracion.getString("dir.base.reporte") + "FALECPV-clienteList.xls");
@@ -781,7 +813,6 @@ public class ClienteCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));
 			// llena hoja 1 del archivo
 			HSSFSheet sheet = wb.getSheetAt(0);
@@ -882,7 +913,9 @@ public class ClienteCtrl extends BaseCtrl {
 		} catch (Exception e) {
 			
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		
 		}
 		
@@ -896,7 +929,9 @@ public class ClienteCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportCliente", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -1081,5 +1116,19 @@ public class ClienteCtrl extends BaseCtrl {
 	 */
 	public void setLiqCompraFormCtrl(LiqCompraFormCtrl liqCompraFormCtrl) {
 		this.liqCompraFormCtrl = liqCompraFormCtrl;
+	}
+
+	/**
+	 * @return the opcionVer
+	 */
+	public boolean isOpcionVer() {
+		return opcionVer;
+	}
+
+	/**
+	 * @param opcionVer the opcionVer to set
+	 */
+	public void setOpcionVer(boolean opcionVer) {
+		this.opcionVer = opcionVer;
 	}
 }
