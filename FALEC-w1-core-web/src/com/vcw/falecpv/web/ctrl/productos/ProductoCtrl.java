@@ -61,6 +61,7 @@ import com.vcw.falecpv.core.servicio.TipoProductoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.ctrl.adquisicion.AdquisicionFrmCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.proforma.CotizacionFormCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -137,7 +138,6 @@ public class ProductoCtrl extends BaseCtrl {
 			consultarProducto();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
 		}
 	}
 
@@ -148,7 +148,10 @@ public class ProductoCtrl extends BaseCtrl {
 			consultarProducto();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -157,13 +160,17 @@ public class ProductoCtrl extends BaseCtrl {
 		try {
 			
 			if(productoSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.registros.noexiste"), 
+						Message.ERROR);
 				return;
 			}
 			
 			// existe refrencias
 			if(productoServicio.tieneReferencias(productoSelected.getIdproducto(), productoSelected.getEstablecimiento().getIdestablecimiento())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR EXISTE REFERENCIAS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.tienedependencias"), 
+						Message.ERROR);
 				return;
 			}
 			
@@ -174,7 +181,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -194,7 +204,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -216,7 +229,9 @@ public class ProductoCtrl extends BaseCtrl {
 		productoSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 		// valida
 		if(productoSelected.getIva()==null) {
-			AppJsfUtil.addErrorMessage("frmProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+			getMessageCommonCtrl().crearMensaje("Error", 
+					msg.getString("No existe IVA por defecto, ir a configuarción / IVA y seleccionar por defecto"), 
+					Message.ERROR);
 			return;
 		}
 		productoSelected.setConversionmedida(BigDecimal.ZERO);
@@ -234,7 +249,10 @@ public class ProductoCtrl extends BaseCtrl {
 			nuevoProducto();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -334,22 +352,22 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			//1. nombre comercial
 			if(productoServicio.getProductoDao().existeNombreGenerico(productoSelected.getNombregenerico(), productoSelected.getIdproducto(), establecimientoMain.getIdestablecimiento())) {
-				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","EL NOMBRE COMERCIAL YA EXISTE.");
-				AppJsfUtil.addErrorMessage("frmProducto:intNombreProductoComercial","YA EXISTE.");
+				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","El nombre comercial ya existe.");
+				AppJsfUtil.addErrorMessage("frmProducto:intNombreProductoComercial","Ya existe.");
 				return;
 			}
 			//2. nombre
 			if(productoServicio.getProductoDao().existeNombre(productoSelected.getNombre(), productoSelected.getIdproducto(), establecimientoMain.getIdestablecimiento())) {
-				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","EL NOMBRE YA EXISTE.");
-				AppJsfUtil.addErrorMessage("frmProducto:intNombreProducto","YA EXISTE.");
+				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","El nombre ya existe.");
+				AppJsfUtil.addErrorMessage("frmProducto:intNombreProducto","Ya existe.");
 				return;
 			}
 			
 			//3. codigo no se repita
 			if(productoSelected.getCodigoprincipal()!=null && productoSelected.getCodigoprincipal().trim().length()>0) {
 				if(productoServicio.getProductoDao().existeCodigoProducto(productoSelected.getCodigoprincipal(), productoSelected.getIdproducto(), establecimientoMain.getIdestablecimiento())) {
-					AppJsfUtil.addErrorMessage("frmProducto", "ERROR",msg.getString("label.codigo") +   " DEL PRODUCTO YA EXISTE.");
-					AppJsfUtil.addErrorMessage("frmProducto:intCodigoProducto","YA EXISTE.");
+					AppJsfUtil.addErrorMessage("frmProducto", "ERROR",msg.getString("label.codigo") +   " del producto ya existe.");
+					AppJsfUtil.addErrorMessage("frmProducto:intCodigoProducto","Ya existe.");
 					return;
 				}
 			}
@@ -362,8 +380,8 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			//4. si existe medida de conversion
 			if(productoSelected.getMedida()!=null && productoSelected.getConversionmedida().floatValue()<0.001f) {
-				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","AL EXISTIR MEDIDA DE " + msg.getString("label.conversion") +   " DEBE EXISTIR UN VALOR > 0.");
-				AppJsfUtil.addErrorMessage("frmProducto:intUniConversionProducto","MAYOR A 0.");
+				AppJsfUtil.addErrorMessage("frmProducto", "ERROR","Al existir medida de " + msg.getString("label.conversion") +   " debe existir un valor > 0.");
+				AppJsfUtil.addErrorMessage("frmProducto:intUniConversionProducto","Mayor a 0.");
 				return;
 			}
 			if(productoSelected.getNombregenerico()==null || productoSelected.getNombregenerico().trim().length()==0) {
@@ -378,7 +396,6 @@ public class ProductoCtrl extends BaseCtrl {
 			
 			// lista del combo popup
 			consultarProductoForm();
-			String form="frmProducto";			
 			switch (callModule) {
 			case "PRODUCTO":
 				// lista principal
@@ -399,17 +416,19 @@ public class ProductoCtrl extends BaseCtrl {
 			case "PROFORMA":
 				CotizacionFormCtrl cotizacionFormCtrl = (CotizacionFormCtrl)AppJsfUtil.getManagedBean("cotizacionFormCtrl");
 				cotizacionFormCtrl.getDetalleSelected().setProducto(productoSelected);
-				form="frmProductoDesc";
 				break;
 			default:
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage(form,"OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage("frmCategoria","OK" ,msg.getString("mensaje.guardado.correctamente"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -418,7 +437,9 @@ public class ProductoCtrl extends BaseCtrl {
 		try {
 			
 			if(id==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.registros.noexiste"), 
+						Message.ERROR);
 				return;
 			}
 			
@@ -427,7 +448,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -435,7 +459,9 @@ public class ProductoCtrl extends BaseCtrl {
 		try {
 			
 			if(id==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.registros.noexiste"), 
+						Message.ERROR);
 				return;
 			}
 			
@@ -444,7 +470,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -452,7 +481,9 @@ public class ProductoCtrl extends BaseCtrl {
 		try {
 			
 			if(productoFormSelected==null) {
-				AppJsfUtil.addErrorMessage("frmProducto", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						msg.getString("error.registros.noexiste"), 
+						Message.ERROR);
 				return;
 			}
 			
@@ -460,7 +491,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -483,7 +517,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -497,7 +534,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -517,7 +557,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -529,7 +572,6 @@ public class ProductoCtrl extends BaseCtrl {
 			existeNovedades = false;
 			renderResultadoImportProducto = false;
 			
-			@SuppressWarnings("resource")
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(fileProductos));
 			HSSFSheet sheet=wb.getSheetAt(0);
 			
@@ -960,7 +1002,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -1014,7 +1059,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmImportProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -1044,7 +1092,9 @@ public class ProductoCtrl extends BaseCtrl {
 		try {
 			
 			if(productoList==null  || productoList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -1057,7 +1107,6 @@ public class ProductoCtrl extends BaseCtrl {
 			FileUtils.copyFile(template, tempXls);
 			
 			
-			@SuppressWarnings("resource")
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));
 			// llenaa hoja 1 del archivo
 			HSSFSheet sheet=wb.getSheetAt(0);
@@ -1148,7 +1197,10 @@ public class ProductoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 		

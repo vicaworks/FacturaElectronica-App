@@ -234,7 +234,9 @@ public class FabricanteCtrl extends BaseCtrl {
 		try {
 			
 			if(fabricanteList==null || fabricanteList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe datos", 
+						Message.ERROR);
 				return null;
 			}
 			

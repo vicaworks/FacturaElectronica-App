@@ -260,7 +260,9 @@ public class CategoriaCtrl extends BaseCtrl {
 		try {
 			
 			if(categoriaList==null || categoriaList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe datos", 
+						Message.ERROR);
 				return null;
 			}
 			
