@@ -756,7 +756,7 @@ public class Producto implements Serializable {
 	}
 
 	public String getMarkStock() {
-		return (stock.doubleValue()<stockminimo.doubleValue())?"markRed":"markGreen";
+		return (stock.doubleValue()<stockminimo.doubleValue()) ? "ui-tag ui-widget ui-tag-danger" : "";
 	}
 
 	/**

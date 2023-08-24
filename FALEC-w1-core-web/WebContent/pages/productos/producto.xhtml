@@ -17,9 +17,10 @@
 			}
 			
 			.product-image {
-				width: 100px;
-				padding: 5px;
-				box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+				width: 10rem;
+				padding: .5rem;
+				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+				margin: .3rem;
 			}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
@@ -231,48 +232,47 @@
 					</p:column>
 					
 					
-					<p:column headerText="STOCK" style="width:30px;">
-					
-						<h:outputText value="#{p.stock}" styleClass="#{p.markStock} mt-1">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
-						</h:outputText>
+					<p:column headerText="Stock" style="width:3.5rem;">
+						<div class="#{p.markStock} fs-13 block text-right fw-5 mx-1">
+							<h:outputText value="#{p.stock}">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
+							</h:outputText>
+						</div>
 						
 					</p:column>
 					
-					<p:column headerText="P. VENTA" style="width:90px;" styleClass="text-right">
-						<div class="flex flex-column">
-							<div class="flex justify-content-end">
-								<h:outputText value="PV-1:" styleClass="Fs8 mr-1"/>
-								<h:outputText value="#{p.preciouno}" styleClass="font-bold">
+					<p:column headerText="Precio venta" style="width:90px;">
+						<div class="flex flex-column gap-1 fs-13">
+							<div class="flex justify-content-end gap-1 align-items-baseline">
+								<h:outputText value="#{p.preciouno}" styleClass="#{p.preciouno > 0 ? 'text-primary-600 fw-5' : 'text-primary-300'}">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
-								
+								<h:outputText value="pv-1" styleClass="fs-10"/>								
 							</div>
-							<div class="flex justify-content-end">
-								<h:outputText value="PV-2:" styleClass="Fs8 mr-1"/>
-								<h:outputText value="#{p.preciodos}" >
+							<div class="flex justify-content-end gap-1 align-items-baseline">
+								<h:outputText value="#{p.preciodos}" styleClass="#{p.preciodos > 0 ? 'text-gray-800' : 'text-gray-300'}">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>								
+								<h:outputText value="pv-2" styleClass="fs-10"/>
 							</div>
-							<div class="flex justify-content-end">
-								<h:outputText value="PV-3:" styleClass="Fs8 mr-1"/>
-								<h:outputText value="#{p.preciotres}" >
+							<div class="flex justify-content-end gap-1 align-items-baseline">
+								<h:outputText value="#{p.preciotres}" styleClass="#{p.preciotres > 0 ? 'text-gray-800' : 'text-gray-300'}">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
-								
+								<h:outputText value="pv-3" styleClass="fs-10"/>
 							</div>
-							<div class="flex justify-content-end">
+							<!-- <div class="flex justify-content-end">
 								<h:outputText value="C.U." styleClass="Fs8 mr-1"/>
 								<h:outputText value="#{p.preciounitario}" styleClass="costo-unitario Fs11">
 									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 								
-							</div>
+							</div> -->
 						</div>	
 					</p:column>
-					<p:column headerText="IMAGEN" style="width:60px;" styleClass="text-center">
+					<p:column headerText="Imagen" style="width:60px;" styleClass="text-center">
 						<p:outputPanel rendered="#{p.imagen==null}">
-							<i class="fa fa-5x fa-image opacity-30 product-image text-center"></i>
+							<i class="fa fa-5x fa-image opacity-70 product-image text-center"></i>
 						</p:outputPanel>
 						<p:outputPanel rendered="#{p.imagen!=null}">
 							<p:commandLink id="images">
