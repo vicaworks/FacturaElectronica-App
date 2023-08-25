@@ -123,7 +123,7 @@ public class ProductoCtrl extends BaseCtrl {
 	private InventarioCtrl inventarioCtrl;
 	private ListaProductoCtrl listaProductoCtrl;
 	private AdquisicionFrmCtrl adquisicionFrmCtrl;
-
+	private int tabSelected = 0;
 	/**
 	 * 
 	 */
@@ -212,6 +212,7 @@ public class ProductoCtrl extends BaseCtrl {
 	}
 	
 	private void nuevoProducto() throws DaoException {
+		tabSelected = 0;
 		productoFormSelected = new Producto();
 		productoSelected = new Producto();
 		productoSelected.setEstablecimiento(establecimientoMain);
@@ -479,7 +480,7 @@ public class ProductoCtrl extends BaseCtrl {
 	
 	public void editarProductoForm() {
 		try {
-			
+			tabSelected = 1;
 			if(productoFormSelected==null) {
 				getMessageCommonCtrl().crearMensaje("Error", 
 						msg.getString("error.registros.noexiste"), 
@@ -499,7 +500,7 @@ public class ProductoCtrl extends BaseCtrl {
 	}
 	
 	private void editarFacade(String id) throws DaoException, IOException {
-		
+		tabSelected = 0;
 		productoSelected = productoServicio.getProductoDao().cargar(id);
 		consultarFabrica();
 		consultarCategoria();
@@ -1509,6 +1510,20 @@ public class ProductoCtrl extends BaseCtrl {
 	 */
 	public void setListaProductoCtrl(ListaProductoCtrl listaProductoCtrl) {
 		this.listaProductoCtrl = listaProductoCtrl;
+	}
+
+	/**
+	 * @return the tabSelected
+	 */
+	public int getTabSelected() {
+		return tabSelected;
+	}
+
+	/**
+	 * @param tabSelected the tabSelected to set
+	 */
+	public void setTabSelected(int tabSelected) {
+		this.tabSelected = tabSelected;
 	}
 
 }

@@ -196,7 +196,7 @@
 					</p:column>
 					
 					<p:column headerText="#{msg['label.codigo']}" 
-						style="width:60px;" 
+						style="width:12rem;" 
 						filterBy="#{p.codigoprincipal}" 
 						filterMatchMode="contains"
 						styleClass="pr-2">
@@ -232,16 +232,45 @@
 					</p:column>
 					
 					
-					<p:column headerText="Stock" style="width:3.5rem;">
-						<div class="#{p.markStock} fs-13 block text-right fw-5 mx-1">
+					<p:column headerText="Stock" style="width:7rem;">
+						<div class="#{p.markStock} fs-16 block text-right fw-5 mx-1">
 							<h:outputText value="#{p.stock}">
 								<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 							</h:outputText>
 						</div>
 						
+						<div class="flex align-items-center justify-content-center gap-4" style="height: 4rem;">
+							<p:commandLink action="#{kardexCtrl.nuevo()}" 
+								disabled="#{p.tipoProducto.nombre=='SERVICIO'}" 
+								styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+								<i class="pi pi-plus-circle fs-20 text-green-700"></i>
+								<f:setPropertyActionListener value="#{productoCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
+				            	<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
+				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+				            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
+							</p:commandLink>
+							<p:commandLink action="#{kardexCtrl.nuevo()}"
+								disabled="#{p.tipoProducto.nombre=='SERVICIO'}"
+								styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+								<i class="pi pi-minus-circle fs-20 text-pink-400"></i>
+								<f:setPropertyActionListener value="#{productoCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
+								<f:setPropertyActionListener value="#{p}" target="#{kardexCtrl.productoSelected}"/>
+				            	<f:setPropertyActionListener value="#{p.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+								<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="PRODUCTO" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
+								<f:setPropertyActionListener value="#{productoCtrl}" target="#{kardexCtrl.productoCtrl}"/>
+							</p:commandLink>
+						</div>
+						
 					</p:column>
 					
-					<p:column headerText="Precio venta" style="width:90px;">
+					<p:column headerText="Precio venta" style="width:11rem;">
 						<div class="flex flex-column gap-1 fs-13">
 							<div class="flex justify-content-end gap-1 align-items-baseline">
 								<h:outputText value="#{p.preciouno}" styleClass="#{p.preciouno > 0 ? 'text-primary-600 fw-5' : 'text-primary-300'}">
@@ -270,7 +299,7 @@
 							</div> -->
 						</div>	
 					</p:column>
-					<p:column headerText="Imagen" style="width:60px;" styleClass="text-center">
+					<p:column headerText="Imagen" style="width:8rem;" styleClass="text-center">
 						<p:outputPanel rendered="#{p.imagen==null}">
 							<i class="fa fa-5x fa-image opacity-70 product-image text-center"></i>
 						</p:outputPanel>
@@ -300,6 +329,8 @@
 	    
 	    <!-- Form Categoria -->
 	    <ui:include src="incl_categoria_form.xhtml" />
+	    <!-- Grupo categoria FORM -->		
+		<ui:include src="/pages/productos/incl_grupocategoria_form.xhtml" />
 	    
 	    <!-- Form carga productos -->
 	    <ui:include src="incl_cargarproducto_form.xhtml" />

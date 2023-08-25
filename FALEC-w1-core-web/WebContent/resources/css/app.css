@@ -1236,6 +1236,11 @@ body.gradient {
     height: 75vh !important;
   }
 }
+.select-input-overflow .ui-selectonemenu label.ui-selectonemenu-label,
+.heightFrmProducto .ui-selectonemenu label.ui-selectonemenu-label {
+  text-overflow: ellipsis !important;
+}
+
 .pf-message {
   width: 95%;
   height: 25rem;
@@ -1407,5 +1412,22 @@ body .ui-datatable .ui-datatable-data > tr > td {
 
 .field .ui-message-error-icon {
   display: none !important;
+}
+
+.field > label {
+  margin-bottom: 0.2rem;
+}
+
+body .ui-tabs .ui-tabs-nav li.ui-tabs-header.ui-state-active a,
+body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
+  font-weight: 400;
+}
+
+body .ui-tabs .ui-tabs-nav li.ui-tabs-header.ui-state-active a {
+  color: #0063cc;
+}
+
+body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
+  color: #3b4044;
 }
 /*# sourceMappingURL=app.css.map */

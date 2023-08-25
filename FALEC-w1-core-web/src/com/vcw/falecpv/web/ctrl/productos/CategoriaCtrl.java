@@ -203,6 +203,9 @@ public class CategoriaCtrl extends BaseCtrl {
 	public void editar() {
 		try {
 			populateGrupocategoria();
+			if(categoriaSelected == null) {
+				nuevoCategoria();
+			}
 			AppJsfUtil.showModalRender("dlgCategoria", "frmCategoria");
 			
 		} catch (Exception e) {

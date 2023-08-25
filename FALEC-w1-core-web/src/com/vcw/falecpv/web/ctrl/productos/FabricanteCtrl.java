@@ -190,6 +190,9 @@ public class FabricanteCtrl extends BaseCtrl {
 	@Override
 	public void editar() {
 		try {
+			if(fabricanteSelected == null) {
+				nuevoFabricante();
+			}
 			AppJsfUtil.showModalRender("dlgFabricante", "frmFabricante");
 		} catch (Exception e) {
 			e.printStackTrace();
