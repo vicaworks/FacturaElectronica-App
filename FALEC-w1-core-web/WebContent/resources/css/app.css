@@ -1123,6 +1123,7 @@ body.gradient {
   margin: 0;
   padding: 0;
   text-transform: none;
+  line-height: 0;
 }
 .card__heading::after {
   content: "";
@@ -1415,7 +1416,8 @@ body .ui-datatable .ui-datatable-data > tr > td {
 }
 
 .field > label {
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.12rem;
+  font-size: 1.1rem;
 }
 
 body .ui-tabs .ui-tabs-nav li.ui-tabs-header.ui-state-active a,

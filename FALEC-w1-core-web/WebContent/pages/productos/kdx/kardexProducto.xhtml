@@ -13,20 +13,11 @@
         <style type="text/css">
 			
 			.kardexDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 320px)!important;
+				height: calc(100vh - 270px)!important;
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
-			
-			.field {margin-bottom: 0.25rem;}
-			.ui-menu {width: 190px;}
-			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
+			.grid.main__opciones .col-12 {
+			    padding: 0.1rem 0.5rem;
 			}
 			
         </style>
@@ -47,20 +38,11 @@
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
-	    	<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px!important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-						
-			<div class="card card-w-title mt-1">
-				
-				<div class="grid justify-content-between">
-	    			<div class="col-4 md:col-4">
-						<h3 class="cardTitle">Kardex</h3>
-	    			</div>					
-					<div class="col-8 md:col-4 align-self-center" style="text-align: right;">						
-						<p:selectOneMenu id="somEstablecimientoMain"
+	    	<div class="card h-full">		                
+				<div class="flex justify-content-between align-items-baseline">
+					<h3 class="card__heading card__heading--noBorder fw-4">Kardex</h3>
+					<div class="flex justify-content-end" style="gap: .4rem;">							
+		                <p:selectOneMenu id="somEstablecimientoMain"
 							value="#{kardexCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
 							style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
@@ -69,117 +51,114 @@
 							<f:selectItems value="#{kardexCtrl.establecimientoMainList}" var="st"
 								itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />							
 							<p:ajax event="valueChange" listener="#{kardexCtrl.limpiar()}" update="@form"/> 								
-						</p:selectOneMenu>		                
-					</div>	                
-	    		</div>
-	    		
-	    		<div class="grid">
-	    			<div class="col-12 md:col-7">
-	    				<div class="formgrid grid">
-					        <div class="field col-12">
-					            <h:outputText value="Fechas"/>
-					            <div class="flex">
-					            	<div class="flex flex-grow-1 pr-1">
-					            		<p:calendar id="claKardexFechaDesde" value="#{kardexCtrl.fechaInicial}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full">
-										</p:calendar>
-					            	</div>
-					            	<div class="flex flex-grow-1">
-					            		<p:calendar id="claKardexFechaHasta" value="#{kardexCtrl.fechaFinal}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full">
-										</p:calendar>
-					            	</div>
-					            </div>
-					        </div>
-					        <div class="field col-12 overflow-x-hidden">
-								<p:selectOneMenu id="somFrmListaProducto"
-											value="#{kardexCtrl.productoSelected}"
-											converter="omnifaces.SelectItemsConverter"
-											required="false"
-											requiredMessage="REQUERIDO"
-											styleClass="w-full"
-											style="text-overflow: ellipsis;"
-											filter="true" filterMatchMode="contains">
-									<f:selectItem itemLabel="Seleccionar Producto  "
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-									<f:selectItems value="#{kardexCtrl.productoList}" var="prof"
-										itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
-									<p:ajax event="change" listener="#{kardexCtrl.cambioProducto}"></p:ajax>
-								</p:selectOneMenu>
-								<p:message for="somFrmListaProducto" styleClass="block"/>    	
-					        </div>
-					        <div class="field col-12">
-					        	<p:inputText id="intCodProducto" value="#{kardexCtrl.codProducto}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="1000" placeholder="Código Producto"/>
-								<p:message for="intCodProducto" />	
-							</div>
-					    </div>
-	    			</div>
-	    			<div class="col-12 md:col-5">
-	    				<div class="formgrid grid">
-					        <div class="field col-12">
-					            <h:outputText value="PCS" styleClass="text-white hidden md:block" />
-					            <div class="flex">
-					            	<p:commandButton id="cmdRefrecar"
-											title="Consultar" icon="fa fa-search" value="Buscar" 
-											action="#{kardexCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"/>
-								</div>
-					        </div>
-					     </div>
-	    			</div>
-	    		</div>
+						</p:selectOneMenu>
+					</div>
+				</div>
 				
-				<div class="flex my-1 align-items-center">
-					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-					<p:commandLink id="cmlDtInventario" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Inventario</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				<div class="grid ui-fluid main__opciones">
+					<div class="col-12 md:col-4">
+						<div class="field">
+							<label class="text-gray-800 fw-6">Fechas</label>
+							<div class="flex gap-2">
+								<p:calendar id="claKardexFechaDesde" value="#{kardexCtrl.fechaInicial}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true">
+								</p:calendar>
+								<p:calendar id="claKardexFechaHasta" value="#{kardexCtrl.fechaFinal}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true">
+								</p:calendar>
+							</div>
 						</div>
-					</p:commandLink>
-					<p:menu overlay="true" trigger="cmlDtInventario" my="left top" at="left bottom">
-						<p:menuitem value="Entrada Inventario" icon="fa fa-sign-in" 
-							action="#{kardexCtrl.nuevo()}"
-							disabled="#{kardexCtrl.productoSelected==null}">
-							<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
-							<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
-							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-							<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>	
-						</p:menuitem>
-  						<p:menuitem value="Salida Inventario" icon="fa fa-sign-out" 
+					</div>
+					<div class="col-12 md:col-6">
+						<div class="field">
+							<label class="text-gray-800 fw-6">Producto</label>
+							<p:selectOneMenu id="somFrmListaProducto"
+										value="#{kardexCtrl.productoSelected}"
+										converter="omnifaces.SelectItemsConverter"
+										required="false"
+										requiredMessage="Requerido"
+										styleClass="overflow-x-hidden"
+										style="width: calc(100% - .01rem)"
+										filter="true" 
+										filterMatchMode="contains">
+								<f:selectItem itemLabel="Seleccionar Producto  "
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+								<f:selectItems value="#{kardexCtrl.productoList}" var="prof"
+									itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
+								<p:ajax event="change" listener="#{kardexCtrl.cambioProducto}"></p:ajax>
+							</p:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="col-12 md:col-2">
+						<div class="field">
+							<label class="text-gray-800 fw-6">Código</label>
+							<p:inputText id="intCodProducto" 
+								value="#{kardexCtrl.codProducto}" 
+								required="false" 
+								requiredMessage="Requerido" 
+								styleClass="w-full" />
+							<!-- <small>Código de barras</small> -->
+						</div>
+					</div>
+					
+				</div>
+				
+				<div class="flex justify-content-between mb-2">
+					<div class="flex gap-2">
+						<p:commandButton id="cmdRefrecar"
+								title="Consultar" icon="fa fa-search" value="Buscar" 
+								action="#{kardexCtrl.refrescar()}" styleClass="ui-button-success" update="@form"/>
+						<p:commandButton id="cmdKarEntrada"
+								icon="fa-solid fa-plus" value="Entrada"
+								styleClass="ui-button-secondary ui-button-outlined" 
 								action="#{kardexCtrl.nuevo()}"
 								disabled="#{kardexCtrl.productoSelected==null}">
-							<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
-							<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
-							<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
-							<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>            								
-						</p:menuitem>
-					</p:menu>
-					<p:commandLink id="cmdGlobalExcel" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
-						</div>
-					</p:commandLink>
-					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-						<p:menuitem value="Exportar Producto" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-							disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
-							<p:fileDownload value="#{kardexCtrl.fileKardex}"/>											
-						</p:menuitem>
-						<p:menuitem value="Exportar Todos los Productos" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
-							<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>											
-						</p:menuitem>
-					</p:menu>	
-					
+								<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+						</p:commandButton>
+						<p:commandButton id="cmdKarSalida"
+								icon="fa-solid fa-minus" value="Salida"
+								styleClass="ui-button-secondary ui-button-outlined" 
+								action="#{kardexCtrl.nuevo()}"
+								disabled="#{kardexCtrl.productoSelected==null}">
+								<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+								<f:setPropertyActionListener value="KARDEX" target="#{kardexCtrl.callMOdule}"/>
+								<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+								<f:setPropertyActionListener value="frmKardexSalida" target="#{kardexCtrl.formView}"/>
+						</p:commandButton>
+					</div>
+					<div class="flex align-items-end gap-2">
+						<i class="fa fa-ellipsis-v fs-14"/>					
+						<p:commandLink id="cmdGlobalExcel">
+							<div class="flex align-items-center gap-1">
+								<span class="text-gray-900 fs-12">Exportar</span>
+								<i class="fa fa-angle-down fs-16 text-gray-900" />
+							</div>
+						</p:commandLink>
+						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar producto" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
+								disabled="#{kardexCtrl.kardexProductoList==null or empty kardexCtrl.kardexProductoList}">
+								<p:fileDownload value="#{kardexCtrl.fileKardex}"/>											
+							</p:menuitem>
+							<p:menuitem value="Exportar todos los productos" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+								<p:fileDownload value="#{kardexCtrl.fileKardexAll}"/>											
+							</p:menuitem>
+						</p:menu>	
+						
+					</div>
 				</div>
 				
 				<p:dataTable id="kardexDT" var="k"
 					value="#{kardexCtrl.kardexProductoList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="kardexDT Fs11"  
+					styleClass="kardexDT fs-11"  
 					rowKey="#{k.idkardexproducto}"
 					paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -188,111 +167,114 @@
 					rows="10"
 					rowsPerPageTemplate="10,15,20,25,30,35,40">
 	                
-	                <p:column headerText="FECHA PROD" style="width:80px;">						
-						<div class="flex flex-column">
-							<h:outputText value="Fecha Compra" styleClass="Fs9 block font-bold"/>
-							<h:outputText value="#{k.fechacompra}" styleClass="block">
-								<f:convertDateTime  pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						
-							<h:outputText value="Fecha Fabricación" styleClass="Fs9 block mt-1"/>
-							<h:outputText value="#{k.fechafabricacion}" styleClass="block mt-1" rendered="#{k.fechafabricacion!=null}">
-								<f:convertDateTime  pattern="dd/MM/yyyy"/>
-							</h:outputText>
-							<h:outputText value="-" styleClass="block mt-1" rendered="#{k.fechafabricacion==null}">
-							</h:outputText>
+	                <p:column headerText="Fechas" style="width:14rem;">
+	                	<div class="flex flex-column gap-1">
+	                		<div class="flex gap-2 align-items-baseline">
+		                		<small class="min-width-70">Registro</small>
+								<h:outputText value="#{k.updated}" styleClass="text-gray-900">
+									<f:convertDateTime  pattern="dd/MM/yyyy HH:mm"/>
+								</h:outputText>
+	                		</div>
 							
-							<h:outputText value="Fecha Vencimiento" styleClass="Fs9 block mt-1"/>
-							<h:outputText value="#{k.fechavencimiento}" styleClass="Fs9 block" rendered="#{k.fechavencimiento!=null}">
-								<f:convertDateTime  pattern="dd/MM/yyyy"/>
-							</h:outputText>
-							<h:outputText value="-" styleClass="Fs9 block" rendered="#{k.fechavencimiento==null}">
-							</h:outputText>
+							<div class="flex gap-2 align-items-baseline">
+								<small class="min-width-70">Compra</small>
+								<h:outputText value="#{k.fechacompra}" styleClass="text-primary-700">
+									<f:convertDateTime  pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
+							
+							<div class="flex gap-2 align-items-baseline">
+								<small class="min-width-70">Fabricación</small>
+								<h:outputText value="#{k.fechafabricacion != null ? k.fechafabricacion : '-'}"
+									styleClass="text-gray-900">
+									<f:convertDateTime  pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</div>
+							
+							<div class="flex gap-2 align-items-baseline">
+								<small class="min-width-70">Vencimiento</small>
+								<h:outputText value="#{k.fechavencimiento != null ? k.fechavencimiento : '-'}"
+									styleClass="text-gray-900">
+									<f:convertDateTime  pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
 						</div>					
 					</p:column>
 					
-					<p:column headerText="#{msg['label.descripcion']}" style="width:120px;">
-						<h:outputText value="#{k.observacion}" styleClass="Fs10" >
-						</h:outputText>
-					</p:column>
-	                
-	                <p:column headerText="TIPO" style="width:45px;" >
-						<h:outputText value="ENTRADA" rendered="#{k.tiporegistro=='E'}" styleClass="markGreen">
-						</h:outputText>
-						<h:outputText value="SALIDA" rendered="#{k.tiporegistro=='S'}" styleClass="markRed">
+					<p:column headerText="#{msg['label.descripcion']}" style="width:20rem;">
+						<h:outputText value="#{k.observacion}" styleClass="block mr-1">
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="CANT." style="width:40px;" styleClass="TexAlCenter">
-						<h:outputText value="#{k.cantidad}" >
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="PRE. UNIT." style="width:60px;" styleClass="TexAlRight">
-						<h:outputText value="#{k.costounitario}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="PREC TOT" style="width:70px;" styleClass="TexAlRight">
-						<h:outputText value="#{k.costototal}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="PREC VENTA" style="width:80px;">
+					<p:column headerText="Cantidad" style="width:16rem;">
 						
-						<div class="flex flex-column text-right">
-							<div class="block">
-								<span class="Fs9 font-bold mr-1">Pv1</span>
-								<h:outputText value="#{k.producto.preciouno}" >
-									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+						<div class="flex gap-2 pr-2">
+							<div class="flex-1">
+								<small class="block mb-1">Fecha inventario</small>
+								<h:outputText value="#{k.fecharegistro}"
+									styleClass="text-primary-700">
+									<f:convertDateTime  pattern="dd/MM/yyyy" />
 								</h:outputText>
 							</div>
-							<div class="block">
-								<span class="Fs9 mr-1">Pv2</span>
-								<h:outputText value="#{k.producto.preciodos}" >
-									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+							<div class="flex-1 flex gap-2 justify-content-end align-items-center">
+								<h:outputText value="#{k.cantidad}" styleClass="fs-16 text-gray-900 fw-5">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 								</h:outputText>
-							</div>
-							<div class="block">
-								<span class="Fs9 mr-1">Pv3</span>
-								<h:outputText value="#{k.producto.preciotres}" >
-									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
+								<p:avatar label="#{k.tiporegistro}" styleClass="#{k.tiporegistro == 'E' ? 'bg-green-700' :  'bg-pink-500'} fw-6 fs-14" style="color:#fff;" shape="circle"  />
+								<!-- <i class="fs-18 #{k.tiporegistro=='E' ? 'pi pi-plus-circle fs-20 text-green-700' : 'pi pi-minus-circle fs-20 text-pink-400'}"></i> -->								
 							</div>
 						</div>
-						
+						<div class="flex gap-2 pr-2">
+							<div class="flex-1">
+								<small class="block mb-1">Precio compra</small>
+								<h:outputText value="#{k.costounitario}" styleClass="fs-12 text-gray-900">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>		
+							</div>
+							<div class="flex-1">
+								<div class="text-center">
+									<small class="block mb-1">Precio total</small>
+									<h:outputText value="#{k.costototal}" styleClass="fs-12 text-gray-900">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>		
+								</div>
+							</div>
+						</div>
 					</p:column>
 					
-					<p:column headerText="EXISTENCIA" style="width:50px;" styleClass="TexAlCenter">
-						<h:outputText value="#{k.saldo}" styleClass="Fs14 font-bold opacity-80 #{kardexCtrl.getCompararValoresDouble(k.saldo.doubleValue(),0)?'text-pink-700':'text-gray-900'}">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
-						</h:outputText>
-					</p:column>
-	                
-	                <p:column headerText="FECHAS" style="width:80px;" styleClass="TexAlCenter">						
-						<div class="flex flex-column text-left">
-							<span class="block Fs9 font-bold">Fecha inventario</span>
-							<h:outputText value="#{k.fecharegistro}" >
-								<f:convertDateTime  pattern="dd/MM/yyyy"/>
+					<p:column headerText="Existencia" style="width:6rem;">
+						<div class="flex justify-content-end pr-2 mt-1">
+							<h:outputText value="#{k.saldo}" styleClass="fs-16 fw-5 #{kardexCtrl.getCompararValoresDouble(k.saldo.doubleValue(),0) ? 'text-pink-500' : 'text-gray-900'}">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 							</h:outputText>
-							<span class="block Fs9 mt-1">Fecha registro</span>
-							<div class="block mt-1">
-								<h:outputText value="#{k.updated}" styleClass="mr-1 inline">
-									<f:convertDateTime  pattern="dd/MM/yyyy"/>
-								</h:outputText>
-								<h:outputText value="#{k.updated}" styleClass="block mt-1 Fs9 inline">
-									<f:convertDateTime  pattern="HH:mm"/>
-								</h:outputText>
-							</div>							
 						</div>
+					</p:column>
+	                
+	                <p:column headerText="Precio de venta" style="width:9rem;">						
+						<div class="flex flex-column gap-1 fs-12">
+							<div class="flex justify-content-end gap-1 align-items-baseline">
+								<h:outputText value="#{k.producto.preciouno}" styleClass="#{k.producto.preciouno > 0 ? 'text-primary-600 fw-5' : 'text-primary-300'}">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								<h:outputText value="pv-1" styleClass="fs-10"/>								
+							</div>
+							<div class="flex justify-content-end gap-1 align-items-baseline">
+								<h:outputText value="#{k.producto.preciodos}" styleClass="#{k.producto.preciodos > 0 ? 'text-gray-800' : 'text-gray-300'}">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>								
+								<h:outputText value="pv-2" styleClass="fs-10"/>
+							</div>
+							<div class="flex justify-content-end gap-1 align-items-baseline">
+								<h:outputText value="#{k.producto.preciotres}" styleClass="#{k.producto.preciotres > 0 ? 'text-gray-800' : 'text-gray-300'}">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								<h:outputText value="pv-3" styleClass="fs-10"/>
+							</div>
+						</div>	
 					</p:column>
 	                
 	                
 				</p:dataTable>
-				<div class="EmptyBox20"/>
 			</div>
 	    	
 	    </h:form>
