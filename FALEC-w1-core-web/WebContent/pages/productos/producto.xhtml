@@ -17,9 +17,12 @@
 			}
 			
 			.product-image {
-				width: 10rem;
-				padding: .5rem;
-				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+				max-width: 9rem;
+				max-height: 9rem;
+				object-fit: cover;
+				object-position: center top;
+				/* padding: .5rem;
+				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); */
 				margin: .3rem;
 			}
 			
@@ -232,14 +235,14 @@
 					</p:column>
 					
 					
-					<p:column headerText="Stock" style="width:7rem;">
+					<p:column headerText="Stock" style="width:5rem;">
 						<div class="#{p.markStock} fs-16 block text-right fw-5 mx-1">
 							<h:outputText value="#{p.stock}">
 								<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 							</h:outputText>
 						</div>
 						
-						<div class="flex align-items-center justify-content-center gap-4" style="height: 4rem;">
+						<div class="flex align-items-end justify-content-center gap-4" style="height: 4rem;">
 							<p:commandLink action="#{kardexCtrl.nuevo()}" 
 								disabled="#{p.tipoProducto.nombre=='SERVICIO'}" 
 								styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
@@ -299,15 +302,17 @@
 							</div> -->
 						</div>	
 					</p:column>
-					<p:column headerText="Imagen" style="width:8rem;" styleClass="text-center">
-						<p:outputPanel rendered="#{p.imagen==null}">
-							<i class="fa fa-5x fa-image opacity-70 product-image text-center"></i>
+					<p:column headerText="Imagen" style="width:8rem;" >
+						<p:outputPanel rendered="#{p.imagen==null}" styleClass="flex justify-content-center">
+							<i class="fa fa-5x fa-image opacity-40 product-image text-center"></i>
 						</p:outputPanel>
-						<p:outputPanel rendered="#{p.imagen!=null}">
+						<p:outputPanel rendered="#{p.imagen!=null}" styleClass="flex justify-content-center">
 							<p:commandLink id="images">
-								<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false" styleClass="product-image"/>
+								<p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" 
+									stream="false" 
+									styleClass="product-image"/>
 							</p:commandLink>
-							<p:overlayPanel for="images" dismissable="false" showCloseIcon="true">
+							<p:overlayPanel for="images" showCloseIcon="true" >
 					            <p:imageSwitch effect="fade">
 				                    <p:graphicImage value="#{productoCtrl.getImageToStream(p.imagen)}" stream="false"/>
 					            </p:imageSwitch>

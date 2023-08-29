@@ -9,29 +9,39 @@
 	<style type="text/css">
 		
 		.heightFrmKdxSalida {
-				height: 250px;
+				height: 270px;
 		}
 		
 	</style>
 	
-	<p:dialog header="Salida Inventario" widgetVar="dlgSalidaInventario" modal="true" responsive="true" width="500px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Salida de inventario" 
+		widgetVar="dlgSalidaInventario" 
+		modal="true" 
+		responsive="true" 
+		width="99%" 
+		style="max-width:50rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmKardexSalida">
 			
 			<!-- OPCIONES -->
-			
-			<div class="formgroup-inline">
-			
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton id="cmdKrxSalidaGuardar"
-					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{kardexCtrl.guardar()}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form #{kardexCtrl.updateView}"
+					value="Guardar" icon="fa-regular fa-floppy-disk fs-13" 
+					action="#{kardexCtrl.guardar()}" 
+					styleClass="ui-button ui-button-success min-width-100 fs-13" 
+					update="@form #{kardexCtrl.updateView}"
 					/>
 					
 				<p:commandButton id="cmdKrxSalidaCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
-					onclick="PF('dlgSalidaInventario').hide()" immediate="true"  
+					value="Cerrar" 
+					styleClass="ui-button-outlined min-width-100 fs-13" 
+					onclick="PF('dlgSalidaInventario').hide()" 
+					immediate="true"  
 					/>
-					
+				
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmKardexSalida"
@@ -41,76 +51,85 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightFrmKdxSalida contenedorFormulario mt-2 pr-1">
+			<div class="w-full overflow-auto heightFrmKdxSalida contenedorFormulario mt-2 pr-1 ui-fluid">
 				
-				<div class="field grid">
-					<h:outputText value="Establecimiento" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-					<div class="col-12 md:col-8">
-						<h:outputText value="#{appSessionCtrl.formatoCadena(kardexCtrl.establecimientoMain.codigoestablecimiento,3,'0')}" styleClass="mt-1"/>
-					</div>
+				
+				<div class="field">
+					<label class="text-gray-800 fw-5">Establecimiento</label>
+					<p:inputText readonly="true"
+						value="#{appSessionCtrl.formatoCadena(kardexCtrl.establecimientoMain.codigoestablecimiento,3,'0')}">
+					</p:inputText>
 			    </div>
-			    <div class="field grid">
-					<h:outputText value="Id Producto" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-					<h:outputText value="#{kardexCtrl.productoSelected.idproducto}" styleClass="mt-1"/>
-					<div class="col-12 md:col-8">
-					</div>
+				
+				<div class="field">
+					<label class="text-gray-800 fw-5">Producto</label>
+					<p:inputText readonly="true"
+						value="#{kardexCtrl.productoSelected.nombregenerico}">
+					</p:inputText>
 			    </div>
-			    <div class="field grid">
-					<h:outputText value="Producto" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-					<h:outputText value="#{kardexCtrl.productoSelected.nombregenerico}" styleClass="mt-1"/>
-					<div class="col-12 md:col-8">
-					</div>
-			    </div>
-			    <div class="field grid">					
-					<h:outputText value="Código Barra" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-					<h:outputText value="#{kardexCtrl.productoSelected.codigoprincipal}" styleClass="mt-1"/>
-					<div class="col-12 md:col-8">
-					</div>
-			    </div>
-			    <div class="field grid">
-					<h:outputText value="Stock" styleClass="col-12 mb-2 md:col-4 md:mb-0"/>
-					<div class="col-12 md:col-8">
-						<h:outputText value="#{kardexCtrl.productoSelected.stock}" styleClass="mt-1">
-							<f:convertNumber pattern="0.##"/>
-						</h:outputText>
-					</div>
-			    </div>
-			    <div class="field grid">
-					
-					<h:outputText value="Cantidad" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-					<div class="col-12 md:col-8">
-						<p:inputText id="intKrxSalidaCantidad"
-							value="#{kardexCtrl.kardexProductoSelected.cantidad}"
-							required="true" requiredMessage="REQUERIDO"
-							styleClass="w-full mt-1" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
-							<f:convertNumber pattern="0.##"/>
-							<f:validateDoubleRange minimum="0.01" />
+			    
+			    <div class="flex gap-2">
+			    	<div class="field flex-1">
+						<label class="text-gray-900">Id Producto</label>
+						<p:inputText readonly="true"
+							value="#{kardexCtrl.productoSelected.idproducto}">
 						</p:inputText>
-						<p:message for="intKrxSalidaCantidad"/>
-					</div>
+				    </div>
+				    <div class="field flex-1">
+						<label class="text-gray-900">Código interno</label>
+						<p:inputText readonly="true"
+							value="#{kardexCtrl.productoSelected.codigoauxiliar}">
+						</p:inputText>
+				    </div>
+				    <div class="field flex-1">
+						<label class="text-gray-900">Cod barra</label>
+						<p:inputText readonly="true"
+							value="#{kardexCtrl.productoSelected.codigoprincipal}">
+						</p:inputText>
+				    </div>
 			    </div>
-			    <div class="field grid">					
-					<h:outputText value="Fecha Registro" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-					<div class="col-12 md:col-8">
-						<p:calendar id="claKrxSalidaFechaRegistro" value="#{kardexCtrl.kardexProductoSelected.fecharegistro}"
-										pattern="dd/MM/yyyy"
-										locale="es" 
-										requiredMessage="REQUERIDO" required="true" styleClass="w-full mt-1">
-						</p:calendar>
-						<p:message for="claKrxSalidaFechaRegistro"/>
-					</div>
+				
+				<div class="field">
+					<label class="text-gray-900 fw-5">Fecha de registro</label>
+					<p:calendar id="claKardexSalidaFechaRegistro" 
+						value="#{kardexCtrl.kardexProductoSelected.fecharegistro}"
+						pattern="dd/MM/yyyy"
+						locale="es" 
+						requiredMessage="Requerido" required="true">
+					</p:calendar>
 			    </div>
-			    <div class="field grid">
-					<h:outputText value="Observación" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-					<div class="col-12 md:col-8">
-						<p:inputTextarea id="intKrxSalidaObservacion"
-							value="#{kardexCtrl.kardexProductoSelected.observacion}"
-							required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
-							maxlength="800" converter="omnifaces.ToUpperCaseConverter"
-							style="height:30px;" />
-						<p:message for="intKrxSalidaObservacion"/>
-					</div>
-			    </div>				
+			    
+			    <div class="flex gap-2">
+			    	<div class="field flex-1">
+			    		<label class="text-gray-800 fw-5">Stock actual</label>
+			    		<p:inputText readonly="true" 
+			    			value="#{kardexCtrl.productoSelected.stock}" 
+			    			styleClass="text-right fs-18"/>
+			    	</div>
+			    	<div class="field flex-1">
+			    		<label class="text-gray-800 fw-5">Cantidad de salida</label>
+			    		<p:inputText id="intKardexSalidaCantidad"
+							value="#{kardexCtrl.kardexProductoSelected.cantidad}"
+							required="true" requiredMessage="Requerido"
+							styleClass="text-right fs-18" converterMessage="#{msg['converter.solonumeros']}" validatorMessage="Valor > 0">
+							<f:convertNumber pattern="0.##"/>
+							<f:validateDoubleRange minimum="0.1"/>
+						</p:inputText>
+						<p:message for="intKardexSalidaCantidad" styleClass="block p-0 m-0"/>
+			    	</div>
+			    </div>
+			    
+			    
+			    <div class="field">					
+					<label class="text-gray-800 fw-5">Observación</label>
+					<p:inputTextarea id="intKardexObservacion"
+						value="#{kardexCtrl.kardexProductoSelected.observacion}"
+						required="true" requiredMessage="Requerido"
+						maxlength="800" converter="omnifaces.ToUpperCaseConverter"
+						rows="3" 
+						styleClass="fs-13"/>
+			    </div>
+			    				
 			</div>			
 		</h:form>		
    </p:dialog>      
