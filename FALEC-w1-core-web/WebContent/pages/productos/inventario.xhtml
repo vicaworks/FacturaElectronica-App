@@ -342,7 +342,7 @@
 					
 					<p:column headerText="#{msg['label.codigo']}, grupo categoría" 
 						style="width:12rem;" 
-						filterBy="#{i.codigoprincipal}" 
+						filterBy="#{i.filterIds}" 
 						filterMatchMode="contains">
 						
 						<div class="flex justify-content-between">
@@ -364,7 +364,7 @@
 					
 					<p:column headerText="Stock por producto y categoría" 
 						style="width:27rem;"  
-						filterBy="#{i.nombregenerico}" 
+						filterBy="#{i.filterNombresCategoria}" 
 						filterMatchMode="contains">
 						<div class="flex gap-2 pr-1">
 							<div class="flex-1 flex flex-column gap-1">

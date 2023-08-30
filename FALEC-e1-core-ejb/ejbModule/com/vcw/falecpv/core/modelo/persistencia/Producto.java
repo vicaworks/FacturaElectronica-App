@@ -808,4 +808,43 @@ public class Producto implements Serializable {
 		this.proveedor = proveedor;
 	}
 	
+	/**
+	 * @return
+	 */
+	public String getFilterIds() {
+		String filter = idproducto;
+		if(codigoauxiliar != null) {
+			filter += codigoauxiliar;
+		}
+		if(codigoprincipal != null) {
+			filter += codigoprincipal;
+		}
+		
+		if(categoria != null ) {
+			if(categoria.getGrupocategoria() != null) {
+				filter += categoria.getGrupocategoria().getGrupo();
+			}
+		}
+		
+		return filter;
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getFilterNombresCategoria() {
+		String filter = nombre != null ? nombre : "";
+		if(nombregenerico != null) {
+			filter += nombregenerico;
+		}
+		if(categoria != null) {
+			filter += categoria.getCategoria();
+			if(categoria.getGrupocategoria() != null) {
+				filter += categoria.getGrupocategoria().getGrupo();
+			}
+		}
+		
+		return filter;
+	}
+	
 }
