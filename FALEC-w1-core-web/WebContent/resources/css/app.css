@@ -1121,7 +1121,7 @@ body.gradient {
   font-weight: 300;
   font-family: "Roboto", sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 1rem 0 0 0;
   text-transform: none;
   line-height: 0;
 }
@@ -1431,5 +1431,31 @@ body .ui-tabs .ui-tabs-nav li.ui-tabs-header.ui-state-active a {
 
 body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
   color: #3b4044;
+}
+
+.grid.main__opciones .col,
+.grid.main__opciones .col-2,
+.grid.main__opciones .col-3,
+.grid.main__opciones .col-4,
+.grid.main__opciones .col-5,
+.grid.main__opciones .col-6,
+.grid.main__opciones .col-7,
+.grid.main__opciones .col-8,
+.grid.main__opciones .col-9,
+.grid.main__opciones .col-10,
+.grid.main__opciones .col-11 {
+  padding: 0rem 0.2rem 0 0;
+}
+
+.grid.main__opciones .col-12 {
+  padding: 0rem 0.2rem 0 0;
+}
+
+.grid.main__opciones .field {
+  margin-bottom: 0 !important;
+}
+
+.grid.main__opciones .field > label {
+  margin-bottom: 0rem !important;
 }
 /*# sourceMappingURL=app.css.map */

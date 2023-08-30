@@ -12,13 +12,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -33,14 +32,16 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.constante.EstadoRegistroEnum;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
+import com.vcw.falecpv.core.modelo.persistencia.Grupocategoria;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
+import com.vcw.falecpv.core.servicio.GrupocategoriaServicio;
 import com.vcw.falecpv.core.servicio.InventarioServicio;
-import com.vcw.falecpv.core.servicio.KardexProductoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -57,24 +58,23 @@ public class InventarioCtrl extends BaseCtrl {
 	 */
 	private static final long serialVersionUID = -2989264243074360358L;
 
-	@EJB
+	@Inject
 	private CategoriaServicio categoriaServicio;
 	
-	@EJB
+	@Inject
 	private FabricanteServicio fabricanteServicio;
 	
-	@EJB
-	private KardexProductoServicio kardexProductoServicio;
-	
-	@EJB
+	@Inject
 	private ProductoServicio productoServicio;
 	
-	@EJB
+	@Inject
 	private InventarioServicio inventarioServicio;
 	
-	@EJB
+	@Inject
 	private EstablecimientoServicio establecimientoServicio;
 	
+	@Inject
+	private GrupocategoriaServicio grupocategoriaServicio;
 	
 	private List<Categoria> categoriaList;
 	private Categoria categoriaSelected;
@@ -87,6 +87,9 @@ public class InventarioCtrl extends BaseCtrl {
 	private String codProducto;
 	private BigDecimal stock;
 	private Date fechaCaducidad;
+	private List<Grupocategoria> grupocategoriaList;
+	private Grupocategoria grupocategoriaSelected;
+	
 	
 	/**
 	 * 
@@ -104,10 +107,14 @@ public class InventarioCtrl extends BaseCtrl {
 			consultarCategoriasList();
 			consultarProductoList();
 			consultarFabricanteList();
+			consultarGrupoCategoriaList();
 			buscarDispacher();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);			
 		}
 	}
 	
@@ -125,6 +132,11 @@ public class InventarioCtrl extends BaseCtrl {
 		productoFormList = null;
 		productoFormList = productoServicio.getProductoDao().getByEstado("PRODUCTO",EstadoRegistroEnum.ACTIVO, establecimientoMain.getIdestablecimiento());
 	}
+	
+	public void consultarGrupoCategoriaList()throws DaoException{
+		grupocategoriaList = null;
+		grupocategoriaList = grupocategoriaServicio.getGrupocategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+	}
 
 	@Override
 	public void refrescar() {
@@ -135,7 +147,10 @@ public class InventarioCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -149,11 +164,15 @@ public class InventarioCtrl extends BaseCtrl {
 			consultarCategoriasList();
 			consultarProductoList();
 			consultarFabricanteList();
+			consultarGrupoCategoriaList();
 			buscarDispacher();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -168,7 +187,10 @@ public class InventarioCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -211,6 +233,11 @@ public class InventarioCtrl extends BaseCtrl {
 				productoList = inventarioServicio.getByCategoria(categoriaSelected.getIdcategoria(), establecimientoMain.getIdestablecimiento());
 			}
 			break;
+		case "GRUPOCATEGORIA":
+			if(grupocategoriaSelected!=null) {
+				productoList = inventarioServicio.getByGrupoCategoria(grupocategoriaSelected.getIdgrupocategoria(), establecimientoMain.getIdestablecimiento());
+			}
+			break;
 		case "FABRICANTE":
 			if(fabricanteSelected!=null) {
 				productoList = inventarioServicio.getByFabricante(fabricanteSelected.getIdfabricante(), establecimientoMain.getIdestablecimiento());
@@ -225,7 +252,9 @@ public class InventarioCtrl extends BaseCtrl {
 		try {
 			
 			if(productoList==null || productoList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -237,7 +266,6 @@ public class InventarioCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -262,47 +290,36 @@ public class InventarioCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getCategoria().getCategoria());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getFabricante().getNombrecomercial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getCodigoprincipal());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getNombregenerico());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getIva().getValor().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getStock().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getPreciounitario().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getPreciouno().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getPreciodos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getPreciotres().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				if(p.getFechavencimiento()!=null) {
 					cell.setCellValue(FechaUtil.formatoFecha(p.getFechavencimiento()));
 				}
@@ -355,7 +372,10 @@ public class InventarioCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -513,6 +533,34 @@ public class InventarioCtrl extends BaseCtrl {
 	 */
 	public void setProductoFormSelected(Producto productoFormSelected) {
 		this.productoFormSelected = productoFormSelected;
+	}
+
+	/**
+	 * @return the grupocategoriaList
+	 */
+	public List<Grupocategoria> getGrupocategoriaList() {
+		return grupocategoriaList;
+	}
+
+	/**
+	 * @param grupocategoriaList the grupocategoriaList to set
+	 */
+	public void setGrupocategoriaList(List<Grupocategoria> grupocategoriaList) {
+		this.grupocategoriaList = grupocategoriaList;
+	}
+
+	/**
+	 * @return the grupocategoriaSelected
+	 */
+	public Grupocategoria getGrupocategoriaSelected() {
+		return grupocategoriaSelected;
+	}
+
+	/**
+	 * @param grupocategoriaSelected the grupocategoriaSelected to set
+	 */
+	public void setGrupocategoriaSelected(Grupocategoria grupocategoriaSelected) {
+		this.grupocategoriaSelected = grupocategoriaSelected;
 	}
 
 }

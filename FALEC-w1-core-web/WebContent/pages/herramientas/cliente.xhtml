@@ -13,7 +13,7 @@
         <style type="text/css">
 			
 			.clienteDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 235px)!important;
+				height: calc(100vh - 215px)!important;
 			}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
@@ -105,7 +105,7 @@
 				<p:dataTable id="clienteDT" var="c"
 					value="#{clienteCtrl.clienteList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="clienteDT Fs11"  
+					styleClass="clienteDT Fs11 mt-2"  
 					rowKey="#{c.idcliente}"
 	                paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -155,7 +155,7 @@
 						</f:facet>
 						<div class="flex flex-column" style="gap: .4rem;">
 							<h:outputText value="#{c.identificacion}" styleClass="block"/>
-							<h:outputText value="#{c.razonsocial}" styleClass="block text-primary-700 fw-5"/>
+							<h:outputText value="#{c.razonsocial}" styleClass="block text-primary-600 fw-3"/>
 						</div>
 					</p:column>
 										

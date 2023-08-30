@@ -13,17 +13,8 @@
         <style type="text/css">
 			
 			.inventarioDT .ui-datatable-scrollable-body{				
-				height: calc(100vh - 310px)!important;
+				height: calc(100vh - 345px)!important;
 			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
-			
-			.frm-producto-wrapper .ui-selectonemenu label.ui-selectonemenu-label {text-overflow: ellipsis;}
-			.frm-producto-wrapper .ui-calendar .ui-inputfield{width: 100%;}
 			
 			body .ui-fileupload .ui-fileupload-buttonbar {
 			 border: none;
@@ -65,23 +56,13 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain" styleClass="frm-producto-wrapper">	
-	    	<!-- Mensajes -->
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px !important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<div class="card card-w-title mt-1">
-			
-				
-				<div class="grid justify-content-between">
-	    			<div class="col-4 md:col-4">
-						<h3 class="cardTitle">Inventario</h3>
-	    			</div>
-					
-					<div class="col-8 md:col-4 align-self-center" style="text-align: right;">
-						
-						<p:selectOneMenu id="somEstablecimientoMain"
+	    	
+	    	
+	    	<div class="card h-full">		                
+				<div class="flex justify-content-between align-items-baseline">
+					<h3 class="card__heading card__heading--noBorder fw-4">Inventario</h3>
+					<div class="flex justify-content-end" style="gap: .4rem;">							
+		                <p:selectOneMenu id="somEstablecimientoMain"
 							value="#{inventarioCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
 							style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
@@ -93,197 +74,220 @@
 							<p:ajax event="valueChange" listener="#{inventarioCtrl.limpiar()}" update="@form"/> 
 								
 						</p:selectOneMenu>
-		                
-					</div>	                
-	    		</div>
-	    		
-	    		<div class="grid">
-					<div class="col-12 lg:col-5 overflow-x-hidden">
-						<span>Opciones de Búsqueda</span>
-						<div class="flex mt-1">
-							<div class="flex-grow-1 flex  flex-column mr-1">
-								<p:selectOneMenu id="somInvOpcionBusqueda"
+					</div>
+				</div>
+				
+				<div class="grid ui-fluid main__opciones px-2">
+					<div class="col-12 md:col-4">
+						<div class="field">
+							<label class="text-gray-800 fw-6">Opciones de búsqueda</label>
+							<p:selectOneMenu id="somInvOpcionBusqueda"
 											value="#{inventarioCtrl.opcionBusqueda}"
 											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="w-full">
+											requiredMessage="Requerido">
 											
-									<f:selectItem itemLabel="TODO EL INVENTARIO"
-											itemValue="INVENTARIO"/>
-									
-									<f:selectItem itemLabel="STOCK MAYOR A 0"
-											itemValue="STOCKMAYORZERO"/>
-											
-									<f:selectItem itemLabel="STOCK MENOR O IGUAL"
-											itemValue="STOCKMENORIGUAL"/>
-											
-									<f:selectItem itemLabel="FECHA DE CADUCIDAD MENOR O IGUAL"
-											itemValue="FECHACADUCIDAD"/>
-									
-									<f:selectItem itemLabel="POR PRODUCTO"
-											itemValue="PRODUCTO"/>
-									
-									<f:selectItem itemLabel="POR CODIGO PRODUCTO"
-											itemValue="CODPRODUCTO"/>
-									
-									<f:selectItem itemLabel="POR #{msg['label.categoria']}"
-											itemValue="CATEGORIA"/>
-									
-									<f:selectItem itemLabel="POR FABRICANTE"
-											itemValue="FABRICANTE"/>											
-									<p:ajax event="change" update="@form" process="@this :formMain:somInvOpcionBusqueda" listener="#{inventarioCtrl.limpiarConsulta()}"/>
-								</p:selectOneMenu>	
-							</div>
-						</div>
-					</div>
-					<div class="col-12 md:col-4 align-self-end">
-						<div class="grid grid-nogutter">
-							<div class="col-12">
-								<p:commandButton id="cmdInvRefrecar"
-									title="Consultar" icon="fa fa-search" value="Buscar" 
-									action="#{inventarioCtrl.refrescar()}" styleClass="ui-button-outlined mr-1" update="@form"
-								/>
+								<f:selectItem itemLabel="Buscar por nombre de producto"
+										itemValue="PRODUCTO"/>
+										
+								<f:selectItem itemLabel="Buscar por código de producto"
+										itemValue="CODPRODUCTO"/>
+										
+								<f:selectItem itemLabel="Stock menor o igual a ?"
+										itemValue="STOCKMENORIGUAL"/>
+										
+								<f:selectItem itemLabel="Fecha de caducidad menor o igual a ?"
+										itemValue="FECHACADUCIDAD"/>
+										
+								<f:selectItem itemLabel="Buscar por fabricante"
+										itemValue="FABRICANTE"/>
 								
-								<p:commandButton id="cmdInvNuevoProducto"
-									title="PRODUCTO" icon="fa fa-plus" value="Producto"
-									action="#{productoCtrl.nuevo()}" styleClass="mr-1 #{appSessionCtrl.accesoDisable('mn_inventario_nuevo_producto')?'ui-state-disabled':''} ui-button-success" update="@form" process="@this">
-									<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
-									<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
-									<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
-									<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
-									<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{productoCtrl.inventarioCtrl}"/>
-								</p:commandButton>										
-							</div>
+								<f:selectItem itemLabel="Buscar por grupo categoría"
+										itemValue="GRUPOCATEGORIA"/>
+																													
+								<f:selectItem itemLabel="Buscar por categoría"
+										itemValue="CATEGORIA"/>
+										
+								<f:selectItem itemLabel="Todo el inventario"
+										itemValue="INVENTARIO"/>
+								
+								<f:selectItem itemLabel="Stock mayor a 0"
+										itemValue="STOCKMAYORZERO"/>
+										
+								<p:ajax event="change" update="@form" process="@this :formMain:somInvOpcionBusqueda" listener="#{inventarioCtrl.limpiarConsulta()}"/>
+							</p:selectOneMenu>
 						</div>
 					</div>
-					<div class="col-8 lg:col-5">
-						<f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'STOCKMENORIGUAL'}">								
-							<div class="field grid grid-nogutter">
-								<h:outputText value="Valor :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
-								<div class="col-12 md:col-8 pr-1">
-									<p:inputText id="intinvStock" value="#{inventarioCtrl.stock}"
-										required="true" requiredMessage="REQUERIDO"
-										styleClass="w-full" maxlength="1000"
-										placeholder="STOCK MENOR O IGUAL A ..."
-										converterMessage="#{msg['converter.solonumeros']}" />
-									<p:message for="intinvStock" />
-								</div>
-						    </div>
-						</f:subview>	    
-							    
-					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'FECHACADUCIDAD'}">	    							
-						    <div class="field grid grid-nogutter">
-								<h:outputText value="Fecha Caducidad :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
-								<div class="col-12 md:col-8 pr-1">
-	    							<p:calendar id="claInvFechaCaducidad" value="#{inventarioCtrl.fechaCaducidad}"
-										pattern="dd/MM/yyyy"
-										locale="es" 
-										requiredMessage="REQUERIDO" required="true" styleClass="w-full">
-									</p:calendar>
-									<p:message for="claInvFechaCaducidad" style="padding:0em;"/>
-								</div>
-						    </div>	    							
-   						</f:subview>					    
-					    
-					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'PRODUCTO'}">
-						    <div class="field grid grid-nogutter">
-								<h:outputText value="Producto" styleClass="col-12"/> 
-								<div class="col-12 pr-1 overflow-x-hidden">
-	    							<p:selectOneMenu id="somInvListaProducto"
-											value="#{inventarioCtrl.productoFormSelected}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="w-full"
-											filter="true" filterMatchMode="contains">
-										<f:selectItem itemLabel="Seleccionar Producto ... "
-												itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-										<f:selectItems value="#{inventarioCtrl.productoFormList}" var="prof"
-											itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
-									</p:selectOneMenu>
-									<p:message for="somInvListaProducto" />
-								</div>
-						    </div>
-   						</f:subview>
-					    
-					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'CODPRODUCTO'}">
-						    <div class="field grid grid-nogutter">
-								<h:outputText value="Código de Barra :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
-								<div class="col-12 md:col-8 pr-1">
-	    							<p:inputText id="intInvCodProducto" value="#{inventarioCtrl.codProducto}"
-										required="true" requiredMessage="REQUERIDO"
-										styleClass="w-full" maxlength="1000"
-										placeholder="CODIGO DEL PRODUCTO .."/>
-									<p:message for="intInvCodProducto" />
-								</div>
-						    </div>
-   						</f:subview>
-					    
-					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'CATEGORIA'}">   						
-						    <div class="field grid grid-nogutter">
-								<h:outputText value="Categoría :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
-								<div class="col-12 md:col-8 pr-1">
-	    							<p:selectOneMenu id="somInvListaCategoria"
-											value="#{inventarioCtrl.categoriaSelected}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="w-full"
-											filter="true" filterMatchMode="contains">
-										<f:selectItem itemLabel="Seleccionar Categoria ... "
-												itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-										<f:selectItems value="#{inventarioCtrl.categoriaList}" var="c"
-											itemLabel="#{c.categoria}" itemValue="#{c}" />
-									</p:selectOneMenu>
-									<p:message for="somInvListaCategoria" />
-								</div>
-						    </div>							
-   						</f:subview>
-					    
-					    
-					    <f:subview rendered="#{inventarioCtrl.opcionBusqueda == 'FABRICANTE'}">   							
-						    <div class="field grid grid-nogutter">
-								<h:outputText value="Fabricante :" styleClass="col-12 mb-2 md:col-4 md:mb-0"/> 
-								<div class="col-12 md:col-8 pr-1">
-	    							<p:selectOneMenu id="somInvListaFabricante"
-											value="#{inventarioCtrl.fabricanteSelected}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="w-full"
-											filter="true" filterMatchMode="contains">
-										<f:selectItem itemLabel="Seleccionar Fabricante ... "
-												itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-										<f:selectItems value="#{inventarioCtrl.fabricanteList}" var="f"
-											itemLabel="#{f.nombrecomercial}" itemValue="#{f}" />
-									</p:selectOneMenu>
-									<p:message for="somInvListaFabricante" />
-								</div>
-						    </div>   							
-   						</f:subview>
+					
+					<div class="col-12 md:col-8">
+						<div class="field">
+							<label class="#{inventarioCtrl.opcionBusqueda != 'PRODUCTO' ? 'text-gray-300' : 'text-gray-800 fw-6'}">Producto</label>
+							<p:selectOneMenu id="somInvListaProducto"
+									value="#{inventarioCtrl.productoFormSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="Requerido"
+									styleClass="overflow-x-hidden"
+									style="width: calc(100% - .01rem)"
+									filter="true" filterMatchMode="contains"
+									disabled="#{inventarioCtrl.opcionBusqueda != 'PRODUCTO'}">
+								<f:selectItem itemLabel="Seleccionar producto ... "
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+								<f:selectItems value="#{inventarioCtrl.productoFormList}" var="prof"
+									itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="col-4 md:col-2">
+						<div class="field">
+							<label class="#{inventarioCtrl.opcionBusqueda != 'CODPRODUCTO' ? 'text-gray-300' : 'text-gray-800 fw-6'}">Código producto</label>
+							<p:inputText id="intInvCodProducto" value="#{inventarioCtrl.codProducto}"
+										required="true" 
+										requiredMessage="Requerido"
+										maxlength="1000"
+										disabled="#{inventarioCtrl.opcionBusqueda != 'CODPRODUCTO'}"/>
+						</div>
+					</div>
+					
+					<div class="col-4 md:col-2">
+						<div class="field">
+							<label class="#{inventarioCtrl.opcionBusqueda != 'STOCKMENORIGUAL' ? 'text-gray-300' : 'text-gray-800 fw-6'}">Stock menor a</label> 
+							<p:inputText id="intinvStock" value="#{inventarioCtrl.stock}"
+								required="true" 
+								requiredMessage="Requerido"								
+								maxlength="1000" 
+								converterMessage="#{msg['converter.solonumeros']}" 
+								disabled="#{inventarioCtrl.opcionBusqueda != 'STOCKMENORIGUAL'}"/>
+					    </div>
+					</div>
+					
+					<div class="col-4 md:col-2">
+						<div class="field">
+							<label class="#{inventarioCtrl.opcionBusqueda != 'FECHACADUCIDAD' ? 'text-gray-300' : 'text-gray-800 fw-6'}">Fecha de caducidad</label> 
+							<p:calendar id="claInvFechaCaducidad" value="#{inventarioCtrl.fechaCaducidad}"
+								pattern="dd/MM/yyyy"
+								locale="es" 
+								requiredMessage="REQUERIDO" 
+								required="true"
+								disabled="#{inventarioCtrl.opcionBusqueda != 'FECHACADUCIDAD'}">
+							</p:calendar>
+					    </div>
+					</div>
+					
+					<div class="col-12 md:col-6">
+						<div class="field">
+							<label class="#{inventarioCtrl.opcionBusqueda != 'FABRICANTE' ? 'text-gray-300' : 'text-gray-800 fw-6'}">Fabricante</label>
+							<p:selectOneMenu id="somInvListaFabricante"
+									value="#{inventarioCtrl.fabricanteSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="Requerido"
+									styleClass="overflow-x-hidden"
+									style="width: calc(100% - .01rem)"
+									filter="true" filterMatchMode="contains"
+									disabled="#{inventarioCtrl.opcionBusqueda != 'FABRICANTE'}">
+								<f:selectItem itemLabel="Seleccionar fabricante ... "
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+								<f:selectItems value="#{inventarioCtrl.fabricanteList}" var="f"
+									itemLabel="#{f.nombrecomercial}" itemValue="#{f}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="col-12 md:col-6">
+						<div class="field">
+							<label class="#{inventarioCtrl.opcionBusqueda != 'GRUPOCATEGORIA' ? 'text-gray-300' : 'text-gray-800 fw-6'}">Grupo categoría</label>
+							<p:selectOneMenu id="somInvListaGrupoCategoria"
+									value="#{inventarioCtrl.grupocategoriaSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="Requerido"
+									styleClass="overflow-x-hidden"
+									style="width: calc(100% - .01rem)"
+									filter="true" filterMatchMode="contains"
+									disabled="#{inventarioCtrl.opcionBusqueda != 'GRUPOCATEGORIA'}">
+								<f:selectItem itemLabel="Seleccionar grupo categoria ... "
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+								<f:selectItems value="#{inventarioCtrl.grupocategoriaList}" var="g"
+									itemLabel="#{g.grupo}" itemValue="#{g}" />
+							</p:selectOneMenu>
+						</div>	
+					</div>
+										
+					<div class="col-12 md:col-6">
+						<div class="field">
+							<label class="#{inventarioCtrl.opcionBusqueda != 'CATEGORIA' ? 'text-gray-300' : 'text-gray-800 fw-6'}">Categoría</label>
+							<p:selectOneMenu id="somInvListaCategoria"
+									value="#{inventarioCtrl.categoriaSelected}"
+									converter="omnifaces.SelectItemsConverter"
+									required="true"
+									requiredMessage="Requerido"
+									styleClass="overflow-x-hidden"
+									style="width: calc(100% - .01rem)"
+									filter="true" filterMatchMode="contains"
+									disabled="#{inventarioCtrl.opcionBusqueda != 'CATEGORIA'}">
+								<f:selectItem itemLabel="Seleccionar categoria ... "
+										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+								<f:selectItems value="#{inventarioCtrl.categoriaList}" var="c"
+									itemLabel="#{c.categoria}" itemValue="#{c}" />
+							</p:selectOneMenu>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="flex justify-content-between my-2">
+					<div class="flex gap-2">
+						<p:commandButton id="cmdInvRefrecar"
+							title="Consultar" 
+							icon="fa fa-search" 
+							value="Buscar" 
+							action="#{inventarioCtrl.refrescar()}" 
+							styleClass="min-width-80 ui-button-success" update="@form"
+						/>
+						
+						<p:commandButton id="cmdInvNuevoProducto"
+							title="PRODUCTO" 
+							icon="fa fa-plus" 
+							value="Producto"
+							action="#{productoCtrl.nuevo()}" 
+							styleClass="min-width-80 #{appSessionCtrl.accesoDisable('mn_inventario_nuevo_producto')?'ui-state-disabled':''} ui-button-outlined" 
+							update="@form" 
+							process="@this">
+							<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
+							<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
+							<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{productoCtrl.inventarioCtrl}"/>
+						</p:commandButton>
+					</div>
+					<div class="flex align-items-baseline gap-2">
+						<i class="fa fa-ellipsis-v fs-14"/>
+						<p:commandLink id="cmdGlobalExcel" 
+							disabled="#{empty inventarioCtrl.productoList}" 
+							styleClass="min-width-80 flex align-items-end gap-2">
+							<span class="text-gray-900 fs-12">Exportar</span>
+							<i class="fa fa-angle-down fs-12 text-gray-900" />
+						</p:commandLink>
+						
+						<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
+							<p:menuitem value="Exportar excel" icon="fa-regular fa-file-excel" ajax="false">
+								<p:fileDownload value="#{inventarioCtrl.fileInventario}"/>
+							</p:menuitem>
+							<p:menuitem value="Exportar excel / detalle" icon="fa-regular fa-file-excel" ajax="false">
+								<p:fileDownload value="#{facEmitidaCtrl.fileDetalle}" contentDisposition="inline"/>
+							</p:menuitem>
+						</p:menu>
 						
 					</div>
 				</div>
 				
-				<div class="flex my-1 align-items-center">
-					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-					<p:commandLink id="cmdGlobalExcel" disabled="#{empty inventarioCtrl.productoList}" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
-						</div>
-					</p:commandLink>
-					
-					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
-							<p:fileDownload value="#{inventarioCtrl.fileInventario}"/>
-						</p:menuitem>
-						<p:menuitem value="Exportar excel / detalle" icon="fa fa-list" ajax="false">
-							<p:fileDownload value="#{facEmitidaCtrl.fileDetalle}" contentDisposition="inline"/>
-						</p:menuitem>
-					</p:menu>
-					
-				</div>
+				<!-- <div class="flex gap-2 align-items-end mt-2">
+					 <div class="flex gap-2 align-items-end mt-2 md:mt-0"> 
+					<label style="color: white;font-size: 11px;" class="hidden md:block">Opc</label>
+					<div style="display: inline-flex;" class="gap-2 mt-2 md:mt-0">
+					<div class="flex flex-none">
+				</div> -->
+				
 				
 				<p:dataTable id="inventarioDT" var="i"
 					value="#{inventarioCtrl.productoList}" scrollable="true"
@@ -294,26 +298,25 @@
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"
-	                rows="15"
-					rowsPerPageTemplate="15,20,25,30,35,40">
+	                rows="10"
+					rowsPerPageTemplate="10,15,20,25">
 					
-					<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
+					<p:column headerText="Opc" style="width:2rem;">
 						
 						<p:commandLink id="cmlDtInventario">
-							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
 						</p:commandLink>
 						
-						
-						<p:menu overlay="true" trigger="cmlDtInventario" my="left top" at="left bottom">
+						<p:menu overlay="true" trigger="cmlDtInventario" my="left top" at="left bottom" style="width:17rem;">
 							
-							<p:menuitem value="Editar Producto" action="#{productoCtrl.editarProducto(i.idproducto)}" icon="fa fa-edit" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_editar')?'ui-state-disabled':''}">
+							<p:menuitem value="Editar" action="#{productoCtrl.editarProducto(i.idproducto)}" icon="fa fa-edit" styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_inventario_editar')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="INVENTARIO" target="#{productoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{productoCtrl.formModule}"/>
 								<f:setPropertyActionListener value=":formMain" target="#{productoCtrl.viewUpdate}"/>
 								<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{productoCtrl.inventarioCtrl}"/>
 							</p:menuitem>
-							<p:menuitem value="Entrada Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-in" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_entrada')?'ui-state-disabled':''}">
+							<p:menuitem value="Entrada de inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-plus" styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_inventario_entrada')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
 				            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
@@ -323,7 +326,7 @@
 								<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
 								<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
 							</p:menuitem>
-							<p:menuitem value="Salida Inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-sign-out" styleClass="#{appSessionCtrl.accesoDisable('mn_inventario_salida')?'ui-state-disabled':''}">
+							<p:menuitem value="Salida de inventario" action="#{kardexCtrl.nuevo()}" icon="fa fa-minus" styleClass="fs-12 #{appSessionCtrl.accesoDisable('mn_inventario_salida')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
 				            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
@@ -337,47 +340,131 @@
 						
 					</p:column>
 					
-					<!-- <p:column headerText="ID" style="width:20px;">
-						<h:outputText value="#{i.idproducto}" />
-					</p:column> -->
-					
-					<p:column headerText="#{msg['label.codigo']}" style="width:30px;" filterBy="#{i.codigoprincipal}" filterMatchMode="contains" styleClass="text-right">
-						<h:outputText value="#{i.codigoprincipal}" styleClass="text-gray-600 font-medium"/>
+					<p:column headerText="#{msg['label.codigo']}, grupo categoría" 
+						style="width:12rem;" 
+						filterBy="#{i.codigoprincipal}" 
+						filterMatchMode="contains">
+						
+						<div class="flex justify-content-between">
+							<div class="flex gap-1 align-items-baseline">
+								<span class="text-gray-600 fs-10">Id</span>
+								<h:outputText value="#{i.codigoauxiliar == null ? i.idproducto : i.codigoauxiliar}" 
+									styleClass="text-gray-800 fw-5"/>								
+							</div>
+							<div class="flex gap-1 align-items-baseline">
+								<h:outputText value="#{i.codigoprincipal}" styleClass="text-gray-800 fw-5">
+								</h:outputText>								
+								<i class="fa fa-small fa-barcode"></i>
+							</div>
+							
+						</div>						
+						<h:outputText value="#{i.categoria.grupocategoria !=null ? i.categoria.grupocategoria.grupo : '-'}" 
+							styleClass="text-gray-800 fw-3 mt-1 block"/>
 					</p:column>
 					
-					<p:column headerText="NOMBRE" style="width:200px;"  filterBy="#{i.nombregenerico}" filterMatchMode="contains">
-						<h:outputText value="#{i.nombregenerico}" />
+					<p:column headerText="Stock por producto y categoría" 
+						style="width:27rem;"  
+						filterBy="#{i.nombregenerico}" 
+						filterMatchMode="contains">
+						<div class="flex gap-2 pr-1">
+							<div class="flex-1 flex flex-column gap-1">
+								<h:outputText value="#{i.nombregenerico}" styleClass="text-primary-600 fw-3 fs-12"/>
+								<div class="flex gap-2 align-items-baseline">
+									<small>Fecha caducidad</small>
+									<h:outputText value="#{i.fechavencimiento != null ? i.fechavencimiento : '-'}" 
+										styleClass="#{i.fechavencimiento!=null ? 'text-pink-500 fw-4':''} ">
+										<f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</div>
+								<h:outputText value="#{i.categoria.categoria}" styleClass="text-primary-800 fw-5 fs-10"/>
+							</div>
+							<div class="flex-0 flex flex-column gap-1" style="flex-basis: 9rem;">
+								<div class="#{i.markStock} fs-16 block text-right fw-5">
+									<h:outputText value="#{i.stock}">
+										<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
+									</h:outputText>
+								</div>
+								<div class="flex align-items-end justify-content-center gap-4">
+									<p:commandLink action="#{kardexCtrl.nuevo()}" 
+										disabled="#{i.tipoProducto.nombre=='SERVICIO'}" 
+										styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+										<i class="pi pi-plus-circle fs-18 text-green-700"></i>
+										<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
+										<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
+						            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+						            	<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
+										<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
+										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+										<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+										<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
+									</p:commandLink>
+									<p:commandLink action="#{kardexCtrl.nuevo()}"
+										disabled="#{i.tipoProducto.nombre=='SERVICIO'}"
+										styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">
+										<i class="pi pi-minus-circle fs-18 text-pink-400"></i>
+										<f:setPropertyActionListener value="#{inventarioCtrl.establecimientoMain}" target="#{kardexCtrl.establecimientoMain}"/>
+										<f:setPropertyActionListener value="#{i}" target="#{kardexCtrl.productoSelected}"/>
+						            	<f:setPropertyActionListener value="#{i.codigoprincipal}" target="#{kardexCtrl.codProducto}"/>
+						            	<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>
+										<f:setPropertyActionListener value="INVENTARIO" target="#{kardexCtrl.callMOdule}"/>
+										<f:setPropertyActionListener value=":formMain" target="#{kardexCtrl.updateView}"/>
+										<f:setPropertyActionListener value="frmKardex" target="#{kardexCtrl.formView}"/>
+										<f:setPropertyActionListener value="#{inventarioCtrl}" target="#{kardexCtrl.inventarioCtrl}"/>
+									</p:commandLink>
+								</div>
+							</div>
+						</div>
 					</p:column>
 					
-					<p:column headerText="FECHA VENCIMIENTO" style="width:60px;" styleClass="text-right" rendered="#{inventarioCtrl.opcionBusqueda=='FECHACADUCIDAD'}">
-						<h:outputText value="#{i.fechavencimiento}" styleClass="#{i.fechavencimiento!=null?'markRed':''} ">
-							<f:convertDateTime  pattern="dd/MM/yyyy"/>
-						</h:outputText>
+					<p:column headerText="Compra" style="width:15rem;">
+						
+						<div class="flex gap-2" style="margin-top: .7rem;">
+							
+							<div class="flex-1 flex flex-column gap-2 align-items-center">
+								<small>Unitario</small>
+								<h:outputText value="#{i.preciounitario}" styleClass="text-gray-800 fw-3 fs-13">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								
+							</div>
+							
+							<div class="flex-1 flex flex-column gap-2 align-items-center">
+								<small>Total</small>
+								<h:outputText value="#{i.costototal}" styleClass="text-gray-800 fw-3 fs-13">
+									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								
+							</div>
+							
+						</div>
+						
 					</p:column>
 					
-					<p:column headerText="STOCK" style="width:30px;" styleClass="text-right">
-						<h:outputText value="#{i.stock}" styleClass="#{i.markStock}">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="COST. UNIT." style="width:30px;" styleClass="text-right">
-						<h:outputText value="#{i.preciounitario}" >
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="COST. TOTAL." style="width:30px;" styleClass="text-right">
-						<h:outputText value="#{i.costototal}" styleClass="text-gray-6800 font-medium">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+					<p:column headerText="Venta" style="width:10rem;">
+						<div class="flex justify-content-end gap-1 align-items-baseline">
+							<h:outputText value="#{i.preciouno}" styleClass="#{i.preciouno > 0 ? 'text-primary-600 fw-5' : 'text-primary-300'}">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<h:outputText value="pv-1" styleClass="fs-10"/>								
+						</div>
+						<div class="flex justify-content-end gap-1 align-items-baseline">
+							<h:outputText value="#{i.preciodos}" styleClass="#{i.preciodos > 0 ? 'text-gray-800' : 'text-gray-300'}">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>								
+							<h:outputText value="pv-2" styleClass="fs-10"/>
+						</div>
+						<div class="flex justify-content-end gap-1 align-items-baseline">
+							<h:outputText value="#{i.preciotres}" styleClass="#{i.preciotres > 0 ? 'text-gray-800' : 'text-gray-300'}">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<h:outputText value="pv-3" styleClass="fs-10"/>
+						</div>
 					</p:column>
 					
 					
 				</p:dataTable>
+				
 			</div>
-			
-			<div class="EmptyBox20"/>
 			
 	    </h:form>
 	    

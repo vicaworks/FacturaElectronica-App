@@ -13,11 +13,7 @@
         <style type="text/css">
 			
 			.kardexDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 270px)!important;
-			}
-			
-			.grid.main__opciones .col-12 {
-			    padding: 0.1rem 0.5rem;
+				height: calc(100vh - 255px)!important;
 			}
 			
         </style>
@@ -55,7 +51,7 @@
 					</div>
 				</div>
 				
-				<div class="grid ui-fluid main__opciones">
+				<div class="grid ui-fluid main__opciones px-2 mt-1">
 					<div class="col-12 md:col-4">
 						<div class="field">
 							<label class="text-gray-800 fw-6">Fechas</label>
@@ -82,7 +78,7 @@
 										required="false"
 										requiredMessage="Requerido"
 										styleClass="overflow-x-hidden"
-										style="width: calc(100% - .01rem)"
+										style="width: calc(100% - .01rem); margin-top:.2rem;"
 										filter="true" 
 										filterMatchMode="contains">
 								<f:selectItem itemLabel="Seleccionar Producto  "
@@ -102,20 +98,20 @@
 								required="false" 
 								requiredMessage="Requerido" 
 								styleClass="w-full" />
-							<!-- <small>Código de barras</small> -->
 						</div>
 					</div>
 					
 				</div>
 				
-				<div class="flex justify-content-between mb-2">
+				<div class="flex justify-content-between my-2">
 					<div class="flex gap-2">
 						<p:commandButton id="cmdRefrecar"
 								title="Consultar" icon="fa fa-search" value="Buscar" 
-								action="#{kardexCtrl.refrescar()}" styleClass="ui-button-success" update="@form"/>
+								action="#{kardexCtrl.refrescar()}" 
+								styleClass="min-width-70 ui-button-success" update="@form"/>
 						<p:commandButton id="cmdKarEntrada"
 								icon="fa-solid fa-plus" value="Entrada"
-								styleClass="ui-button-secondary ui-button-outlined" 
+								styleClass="min-width-70 ui-button-secondary ui-button-outlined" 
 								action="#{kardexCtrl.nuevo()}"
 								disabled="#{kardexCtrl.productoSelected==null}">
 								<f:setPropertyActionListener value="E" target="#{kardexCtrl.tipoRegistro}"/>
@@ -125,7 +121,7 @@
 						</p:commandButton>
 						<p:commandButton id="cmdKarSalida"
 								icon="fa-solid fa-minus" value="Salida"
-								styleClass="ui-button-secondary ui-button-outlined" 
+								styleClass="min-width-70 ui-button-secondary ui-button-outlined" 
 								action="#{kardexCtrl.nuevo()}"
 								disabled="#{kardexCtrl.productoSelected==null}">
 								<f:setPropertyActionListener value="S" target="#{kardexCtrl.tipoRegistro}"/>

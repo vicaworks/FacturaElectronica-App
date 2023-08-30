@@ -12,7 +12,7 @@
     <ui:define name="head">
         <style type="text/css">
 			.grupocategoriaDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 200px)!important;
+				height: calc(100vh - 190px)!important;
 			}
         </style>
     </ui:define>
@@ -71,7 +71,7 @@
 				<p:dataTable id="grupocategoriaDT" var="c"
 					value="#{grupocategoriaCtrl.grupocategoriaList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="grupocategoriaDT fs-12"  
+					styleClass="grupocategoriaDT fs-12 mt-2"  
 					rowKey="#{c.idgrupocategoria}">
 					
 					<p:column headerText="Opc" style="width:2.5rem;" styleClass="TexAlCenter">
@@ -111,12 +111,12 @@
 							<h:outputText value="Grupo categoría" />							
 						</f:facet>
 						<div class="flex flex-column mb-1" style="gap: .4rem;">
-							<h:outputText value="#{c.grupo}" styleClass="text-gray-900 fw-3 fs-12"/>
+							<h:outputText value="#{c.grupo}" styleClass="text-primary-600 fw-3 fs-12"/>
 							<div class="flex align-items-baseline" style="gap: .4rem;">
 								<i class="fa-solid fa-ellipsis-vertical text-gray-700"></i>
 								<p:commandLink action="#{grupocategoriaCtrl.load_asignarCategorias}"
 									styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_categoria_admin')?'ui-state-disabled':''}">
-									<span class="text-primary-700 fw-5 fs-12">Asignar categorías</span>
+									<span class="text-gray-900 fs-12">Asignar categorías</span>
 									<f:setPropertyActionListener value="#{c}" target="#{grupocategoriaCtrl.grupocategoriaSelected}"/>
 								</p:commandLink>
 							</div>

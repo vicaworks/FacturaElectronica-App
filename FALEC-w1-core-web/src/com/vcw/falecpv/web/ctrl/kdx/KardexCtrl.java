@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.servicio.KardexProductoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.productos.InventarioCtrl;
 import com.vcw.falecpv.web.ctrl.productos.ProductoCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -106,7 +107,10 @@ public class KardexCtrl extends BaseCtrl {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -130,7 +134,10 @@ public class KardexCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -146,7 +153,10 @@ public class KardexCtrl extends BaseCtrl {
 			AppJsfUtil.updateComponente("formMain:pngKardexOpciones");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -164,7 +174,9 @@ public class KardexCtrl extends BaseCtrl {
 		}
 		if(productoSelected==null) {
 			AppJsfUtil.addErrorMessage("formMain:somFrmListaProducto", "REQUERIDO");
-			AppJsfUtil.addErrorMessage("formMain", "ERROR",codProducto!=null?("NO EXISTE PRODUCTO o CODIGO SELECCIONADO : " + codProducto):"NO EXISTE COD PRODUCTO.");
+			getMessageCommonCtrl().crearMensaje("Error",
+					codProducto!=null?("No existe producto : " + codProducto):"No existe código de producto.", 
+					Message.ERROR);
 			return;
 		}
 	}
@@ -180,7 +192,10 @@ public class KardexCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -193,7 +208,10 @@ public class KardexCtrl extends BaseCtrl {
 			productoSelected = null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -208,7 +226,9 @@ public class KardexCtrl extends BaseCtrl {
 			
 			// valida si existe saldo
 			if(productoSelected.getStock().doubleValue()<kardexProductoSelected.getCantidad().doubleValue() && kardexProductoSelected.getTiporegistro().equals("S")) {
-				AppJsfUtil.addErrorMessage(formView, "ERROR", "NO EXISTE SALDO PARA EL EGRESO, SALDO ACTUAL : " + productoSelected.getStock());
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe stock para el egreso, el staock actual es : " + productoSelected.getStock(), 
+						Message.ERROR);
 				return;
 			}
 			
@@ -242,11 +262,16 @@ public class KardexCtrl extends BaseCtrl {
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("formMain","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					msg.getString("mensaje.guardado.correctamente"), 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(formView, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -288,7 +313,9 @@ public class KardexCtrl extends BaseCtrl {
 				
 				break;
 			default:
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE MODULE CALL");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe call module", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -305,7 +332,10 @@ public class KardexCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -313,7 +343,9 @@ public class KardexCtrl extends BaseCtrl {
 		try {
 			
 			if(kardexProductoList==null || kardexProductoList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -437,7 +469,10 @@ public class KardexCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -567,7 +602,10 @@ public class KardexCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}

@@ -256,6 +256,30 @@ public class InventarioServicio {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param idGrupoCategoria
+	 * @param idEstablecimiento
+	 * @return
+	 * @throws DaoException
+	 */
+	public List<Producto> getByGrupoCategoria(String idGrupoCategoria,String idEstablecimiento)throws DaoException{
+		try {
+			QueryBuilder q = new QueryBuilder(productoDao.getEntityManager());
+			
+			return q.select("p")
+				.from(Producto.class,"p")	
+				.equals("p.establecimiento.idestablecimiento", idEstablecimiento)
+				.equals("p.categoria.grupocategoria.idgrupocategoria", idGrupoCategoria)
+				.equals("p.estado","A")
+				.equals("p.tipoProducto.nombre","PRODUCTO")
+				.orderBy("p.nombregenerico").getResultList();
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param idFabricante
 	 * @param idEstablecimiento
 	 * @return

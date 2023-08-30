@@ -13,7 +13,7 @@
         <style type="text/css">
 			.fabricanteDT .ui-datatable-scrollable-body{
 				min-height: 30vh !important;
-				height: calc(100vh - 200px)!important;
+				height: calc(100vh - 190px)!important;
 			}
         </style>
     </ui:define>
@@ -70,7 +70,7 @@
 				<p:dataTable id="fabricanteDT" var="f"
 					value="#{fabricanteCtrl.fabricanteList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="fabricanteDT fs-12"  
+					styleClass="fabricanteDT fs-12 mt-2"  
 					rowKey="#{f.idfabricante}">
 					
 					
@@ -107,7 +107,7 @@
 							<h:outputText value="Fabricante" />
 							
 						</f:facet>
-						<h:outputText value="#{f.nombrecomercial}" styleClass="text-primary-700 fw-5"/>
+						<h:outputText value="#{f.nombrecomercial}" styleClass="text-primary-600 fw-3"/>
 					</p:column>
 					
 				</p:dataTable>

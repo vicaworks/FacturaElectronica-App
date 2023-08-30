@@ -13,7 +13,7 @@
         <style type="text/css">
 			
 			.productoDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 260px)!important;
+				height: calc(100vh - 245px)!important;
 			}
 			
 			.product-image {
@@ -71,7 +71,7 @@
 	    	
 	    	<div class="card h-full">		                
 				<div class="flex justify-content-between">
-					<h3 class="card__heading card__heading--noBorder fw-4">#{msg['card.categoria']}</h3>
+					<h3 class="card__heading card__heading--noBorder fw-4">Producto</h3>
 					<div>
 						<div class="flex justify-content-end" style="gap: .4rem;">							
 			                <p:selectOneMenu id="somEstablecimientoMain"
@@ -91,7 +91,7 @@
 					</div>
 				</div>
 				
-				<div class="grid align-items-baseline">
+				<div class="grid align-items-baseline mt-1">
 					<div class="col-12 md:col-4 ui-fluid">
 						<div class="ui-inputgroup">
 		                    <span class="ui-inputgroup-addon"><i class="fa fa-search fs-10"></i></span>
@@ -242,7 +242,7 @@
 							</h:outputText>
 						</div>
 						
-						<div class="flex align-items-end justify-content-center gap-4" style="height: 4rem;">
+						<div class="flex align-items-end justify-content-center gap-4" style="height: 3rem;">
 							<p:commandLink action="#{kardexCtrl.nuevo()}" 
 								disabled="#{p.tipoProducto.nombre=='SERVICIO'}" 
 								styleClass="#{appSessionCtrl.accesoDisable('mn_catalogo_producto_admin')?'ui-state-disabled':''}">

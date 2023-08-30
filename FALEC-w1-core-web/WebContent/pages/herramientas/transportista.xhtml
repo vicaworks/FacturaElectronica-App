@@ -13,7 +13,7 @@
         <style type="text/css">
 			
 			.transportistaDT .ui-datatable-scrollable-body{
-				height: calc(100vh - 235px)!important;
+				height: calc(100vh - 210px)!important;
 			}			
 			
         </style>
@@ -73,7 +73,7 @@
 				<p:dataTable id="transportistaDT" var="c"
 					value="#{transportistaMainCtrl.transportistaList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="transportistaDT Fs11"  
+					styleClass="transportistaDT Fs11 mt-2"  
 					rowKey="#{c.idtransportista}"
 					rows="20"
 	                paginator="true"
@@ -127,7 +127,7 @@
 						</f:facet>
 						<div class="flex flex-column" style="gap: .4rem;">
 							<h:outputText value="#{c.identificacion}" styleClass="block"/>
-							<h:outputText value="#{c.razonsocial}" styleClass="block text-primary-700 fw-5"/>
+							<h:outputText value="#{c.razonsocial}" styleClass="block text-primary-600 fw-3"/>
 						</div>
 						
 					</p:column>
