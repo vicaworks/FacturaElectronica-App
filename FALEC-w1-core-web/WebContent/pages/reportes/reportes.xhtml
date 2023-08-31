@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/templateV2.xhtml">
+
+    <ui:define name="title">Reportes</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<div class="menu-main my-2 md:my-3">
+    	
+	        <div class="menu-main__grid contenedor">
+	
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_reportes_ventas')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-line-chart"></i>
+	                    <h3 class="menu-card__heading-title">Ventas</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Reporte de ventas, por producto, por vendedor, por categorías, rango de fechas.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_reportes_masvendidos')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/reportes/rep_ventaproducto.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-square-poll-vertical"></i>
+	                    <h3 class="menu-card__heading-title">Más vendidos</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Reporte de productos más vendidos por rango de fechas.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_reportes_clienteproducto')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/reportes/rep_clienteproducto.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-hand-pointer"></i>
+	                    <h3 class="menu-card__heading-title">Por Cliente</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Reporte de productos vendidos por cliente, y rango de fechas.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	         </div>
+	         
+        </div>
+    </ui:define>
+
+</ui:composition>

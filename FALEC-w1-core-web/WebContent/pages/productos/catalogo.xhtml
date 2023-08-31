@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/templateV2.xhtml">
+
+    <ui:define name="title">Catálogo</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<div class="menu-main my-2 md:my-3">
+    	
+	        <div class="menu-main__grid contenedor">
+	
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_catalogo_fabricante')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/productos/fabricante.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-industry"></i>
+	                    <h3 class="menu-card__heading-title">Fabricante</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Administración de los datos de fabricante de productos y servicios
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_catalogo_grupocategoria')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/productos/grupocategoria.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-layer-group"></i>
+	                    <h3 class="menu-card__heading-title">Grupo categoría</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Clasificación de la familia de categorías, para la clasificación de las mismas con similares características.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_catalogo_categoria')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/productos/categoria.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-sitemap"></i>
+	                    <h3 class="menu-card__heading-title">Categoría</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Las categorías de producto son la principal forma de agrupar productos con características similares.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_catalogo_producto')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/productos/producto.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-puzzle-piece"></i>
+	                    <h3 class="menu-card__heading-title">Producto</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    El Producto o Servicio es el medio a través del cual una empresa puede satisfacer las necesidades del cliente.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_catalogo_cliente')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/herramientas/cliente.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-user"></i>
+	                    <h3 class="menu-card__heading-title">Cliente</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Administración de los datos personales y contactos, con el rol de cliente o proveedor.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_catalogo_transportista')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/herramientas/transportista.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-truck"></i>
+	                    <h3 class="menu-card__heading-title">Transportista</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Administración de los datos personales para los transportistas de entrega de productos.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	         </div>
+	         
+        </div>
+    </ui:define>
+
+</ui:composition>

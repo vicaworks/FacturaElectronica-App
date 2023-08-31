@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/template/templateV2.xhtml">
+
+    <ui:define name="title">Pagos</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+			
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+    	<div class="menu-main my-2 md:my-3">
+    	
+	        <div class="menu-main__grid contenedor">
+	
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_pagos_pagos')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/pagos/pagoEmitido.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-money-check-dollar"></i>
+	                    <h3 class="menu-card__heading-title">Pagos</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Lista de pagos efectuados por el cliente, útil para cierre de caja, efectivo, tarjetas, transferencias, crédito.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_pagos_porcobrar')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/pagos/cuentaCobrar.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-calendar-check"></i>
+	                    <h3 class="menu-card__heading-title">Por cobrar</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Administración de cuentas por cobrar, abonos, saldos.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	            <a class="menu-card #{appSessionCtrl.accesoDisable('mn_pagos_porpagar')?'menu-card--disabled':''}" href="#{request.contextPath}/pages/pagos/cuentaPagar.jsf">
+	                <div class=" menu-card__heading">
+	                    <i class="menu-card__heading-icon fa-solid fa-comments-dollar"></i>
+	                    <h3 class="menu-card__heading-title">Por pagar</h3>
+	                </div>
+	                <p class="menu-card__resumen">
+	                    Administre, y planifique los pagos a sus proveedores, posteriormente del registro de sus compras.
+	                </p>
+	                <div class="menu-card__footer">
+	                    <i class="menu-card__footer-icon fa-solid fa-arrow-right"></i>
+	                </div>
+	            </a>
+	            
+	         </div>
+	         
+        </div>
+    </ui:define>
+
+</ui:composition>

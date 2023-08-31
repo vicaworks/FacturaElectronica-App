@@ -16,13 +16,6 @@
 				width: 100% !important;
 			}
 			
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
-			
 			.ui-selectonemenu .ui-selectonemenu-label{text-overflow: ellipsis!important;}
 			
         </style>
@@ -35,9 +28,8 @@
     	
 	  	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Reporte De Ventas" url="#{request.contextPath}/pages/facturacion/rep/repVentas.jsf"/>
+		    <p:menuitem value="Reportes" url="#{request.contextPath}/pages/reportes/reportes.jsf"/>
 		</p:breadCrumb>
-    	<div class="EmptyBox5"/>
     	<!-- Reporte global -->
 	    <h:form id="formMain">
 	    	
@@ -49,24 +41,12 @@
 			    <f:viewAction action="#{repRecibAnuCtrl.initEvent(repMainCtrl)}" />
 			</f:metadata>
 	    	
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<ui:include src="incl_rep-ventas-1.xhtml" />	    	
+	    	<ui:include src="incl_rep-ventas-1.xhtml" />	    	
 	    	
 	    </h:form>
 	    
 	    <!-- Facturas emitidas -->
-	    <h:form id="formMain2">
-	    
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain2" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain2"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
+	    <h:form id="formMain2">	
 			
 			<ui:include src="incl_rep-ventas-2.xhtml" />  	
 	    	
@@ -75,57 +55,31 @@
 	    <!-- Facturas anuladas -->
 	    <h:form id="formMain3">
 	    
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain3" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain3"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<ui:include src="incl_rep-ventas-3.xhtml" />	    	
+	    	<ui:include src="incl_rep-ventas-3.xhtml" />	    	
 	    	
 	    </h:form>
 	    
 	    <!-- Recibos -->
 	    <h:form id="formMain4">
 	    
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain4" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain4"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<!-- <ui:include src="incl_rep-ventas-4.xhtml" />  -->	
+	    	<!-- <ui:include src="incl_rep-ventas-4.xhtml" />  -->	
 	    	
 	    </h:form>
 	    
 	    <!-- Recibos anuladas -->
 	    <h:form id="formMain5">
 	    
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain5" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain5"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<!-- <ui:include src="incl_rep-ventas-5.xhtml" /> -->  	
+	    	<!-- <ui:include src="incl_rep-ventas-5.xhtml" /> -->  	
 	    	
 	    </h:form>
 	    
 	    <!-- Estadistico -->
-	    <div class="EmptyBox10"/>
+	    
 	    <h:form id="formMain6">
 	    
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain6" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain6"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<!-- <ui:include src="incl_rep-ventas-6.xhtml" /> -->	    	
+	    	<!-- <ui:include src="incl_rep-ventas-6.xhtml" /> -->	    	
 	    	
 	    </h:form>
-	    
-	    <div class="EmptyBox20"/>
 	    
     </ui:define>
 
