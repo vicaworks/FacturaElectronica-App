@@ -17,6 +17,7 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.dao.DBUtilGenericoApp;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
+import com.vcw.falecpv.core.modelo.persistencia.Grupocategoria;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
@@ -187,7 +188,13 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 	 * @throws DaoException
 	 */
 	public List<VentasQuery> getVentasDetalleCriterio(Usuario usuario, Tipopago tipopago, Fabricante fabricante,
-			Categoria categoria, String idEstablecimiento, String idEmpresa, String criterio, Date desde, Date hasta)
+			Grupocategoria grupocategoriaSelected,
+			Categoria categoria, 
+			String idEstablecimiento, 
+			String idEmpresa, 
+			String criterio, 
+			Date desde, 
+			Date hasta)
 			throws DaoException {
 		try {
 			
@@ -231,6 +238,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"		left join producto p on p.idproducto = d.idproducto " +
 						"       left join fabricante f on p.idfabricante = f.idfabricante " + 
 						"       left join categoria ca on ca.idcategoria = p.idcategoria " +
+						"       left join grupocategoria gc on gc.idgrupocategoria = ca.idgrupocategoria  " +
 						"		inner join iva on iva.idiva = d.idiva  " +
 						"		inner join ice on ice.idice  = d.idice  " +
 						"	where " +

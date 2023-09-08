@@ -15,22 +15,18 @@
 		
 	</style>
 	
-	<div class="card card-w-title">
-		
-		<div class="grid justify-content-between">
-   			<div class="col-5 md:col-4">
-				<h3 class="cardTitle">Reportes</h3>
-   			</div>					
-			<div class="col-7 md:col-4 align-self-center" style="text-align: right;">
-				
-				
-				<p:selectOneMenu id="somEstablecimientoMain"
+	
+	<div class="card h-full mb-2">		                
+		<div class="flex justify-content-between align-items-baseline">
+			<h3 class="card__heading card__heading--noBorder fw-4">Reportes</h3>
+			<div class="flex justify-content-end" style="gap: .4rem;">							
+                <p:selectOneMenu id="somEstablecimientoMain"
 					value="#{repMainCtrl.establecimientoMain}"
 					converter="omnifaces.SelectItemsConverter"
 					style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
 					disabled="#{not repMainCtrl.habilitarEstablecimientoMain}">
 					
-					<f:selectItem itemLabel="ESTABLECIMIENTO - TODOS" itemValue="#{null}"/>
+					<f:selectItem itemLabel="Todos establecimientos" itemValue="#{null}"/>
 					
 					<f:selectItems value="#{repMainCtrl.establecimientoMainList}" var="st"
 						itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />
@@ -40,127 +36,146 @@
 					</p:ajax>
 							
 				</p:selectOneMenu>
-				
-				
-			</div>	                
-   		</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="card mt-1">
 		
-		
-		<div class="grid">
+		<div class="grid ui-fluid main__opciones px-2">
 			<div class="col-12 md:col-4">
-				<div class="flex flex-column">
-	    			<h:outputText value="Vendedor" styleClass="w-full"/>
-	    			<p:selectOneMenu id="somVendedor"
+				<div class="field">
+					<label class="text-gray-800">Fechas</label>
+					<div class="flex gap-2">
+						<p:calendar id="calRep1" value="#{repVentaCtrl.desde}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						<p:calendar id="calRep2" value="#{repVentaCtrl.hasta}"
+							pattern="dd/MM/yyyy"
+							locale="es" 
+							requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+						</p:calendar>
+						
+					</div>
+				</div>
+			</div>	
+			
+			<div class="col-12 md:col-4">
+				<div class="field">
+					<label class="text-gray-800">Tipo pago</label>
+					<p:selectOneMenu id="somTipoPago"
+							value="#{repVentaCtrl.tipopagoSelected}"
+							converter="omnifaces.SelectItemsConverter"
+							required="false"
+							requiredMessage="Requerido"
+							styleClass="overflow-x-hidden"
+							style="width: calc(100% - 0.1rem)"
+							filter="true"
+							filterMatchMode="contains">
+						<f:selectItem itemLabel="Todos" itemValue="#{null}"/>
+						<f:selectItems value="#{repVentaCtrl.tipopagoList}" var="tp"
+										itemLabel="#{tp.nombre}" itemValue="#{tp}" />	
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<div class="col-12 md:col-4">
+				<div class="field">
+					<label class="text-gray-800">Vendedores</label>
+					<p:selectOneMenu id="somVendedor"
 								value="#{repVentaCtrl.usuarioSelected}"
 								converter="omnifaces.SelectItemsConverter"
 								required="false"
-								requiredMessage="REQUERIDO"
-								styleClass="w-full"
+								requiredMessage="Requerido"
+								styleClass="overflow-x-hidden"
+								style="width: calc(100% - 0.1rem)"
 								filter="true"
 								filterMatchMode="contains">
 						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 						<f:selectItems value="#{repVentaCtrl.usuarioList}" var="u"
 										itemLabel="#{u.nombre}" itemValue="#{u}" />	
 					</p:selectOneMenu>
-					
 				</div>
 			</div>
-			<div class="col-12 md:col-4">
-				<div class="flex flex-column">
-	    			<h:outputText value="Tipo de Pago" styleClass="w-full"/>
-					<p:selectOneMenu id="somTipoPago"
-							value="#{repVentaCtrl.tipopagoSelected}"
+			<div class="col-12 md:col-6">
+				<div class="field">
+					<label class="text-gray-800">Grupo categoría</label>
+					<p:selectOneMenu id="somInvListaGrupoCategoria"
+							value="#{repVentaCtrl.grupocategoriaSelected}"
+							converter="omnifaces.SelectItemsConverter"
+							required="true"
+							requiredMessage="Requerido"
+							styleClass="overflow-x-hidden"
+							style="width: calc(100% - 0.1rem)"
+							filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="Todos ... "
+								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
+						<f:selectItems value="#{repVentaCtrl.grupocategoriaList}" var="g"
+							itemLabel="#{g.grupo}" itemValue="#{g}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<div class="col-12 md:col-6">
+				<div class="field">
+					<label class="text-gray-800">Categoría</label>
+					<p:selectOneMenu id="somCategoria"
+							value="#{repVentaCtrl.categoriaSelected}"
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
-							requiredMessage="REQUERIDO"
-							styleClass="w-full"
+							requiredMessage="Requerido"
+							styleClass="overflow-x-hidden"
+							style="width: calc(100% - 0.1rem)"
 							filter="true"
 							filterMatchMode="contains">
-						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-						<f:selectItems value="#{repVentaCtrl.tipopagoList}" var="tp"
-										itemLabel="#{tp.nombre}" itemValue="#{tp}" />	
-					</p:selectOneMenu>	
-				</div>				
+						<f:selectItem itemLabel="Todos" itemValue="#{null}"/>
+						<f:selectItems value="#{repVentaCtrl.categoriaList}" var="ca"
+										itemLabel="#{ca.categoria}" itemValue="#{ca}" />	
+					</p:selectOneMenu>
+				</div>
 			</div>
-			<div class="col-12 md:col-4">
-				<div class="flex flex-column">
-					<h:outputText value="Fabricante" styleClass="w-full"/>
+			<div class="col-12 md:col-6">
+				<div class="field">
+					<label class="text-gray-800">Fabricante</label>
 					<p:selectOneMenu id="somFabricante"
 							value="#{repVentaCtrl.fabricanteSelected}"
 							converter="omnifaces.SelectItemsConverter"
 							required="false"
-							requiredMessage="REQUERIDO"
-							styleClass="w-full"
+							requiredMessage="Requerido"
+							styleClass="overflow-x-hidden"
+							style="width: calc(100% - 0.1rem)"
 							filter="true"
 							filterMatchMode="contains">
 						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
 						<f:selectItems value="#{repVentaCtrl.fabricanteList}" var="fa"
 										itemLabel="#{fa.nombrecomercial}" itemValue="#{fa}" />	
-					</p:selectOneMenu>		
+					</p:selectOneMenu>
 				</div>
 			</div>
-			<div class="col-12 md:col-4">
-				<div class="flex flex-column">
-					<h:outputText value="Categoría" styleClass="w-full"/>
-					<p:selectOneMenu id="somCategoria"
-							value="#{repVentaCtrl.categoriaSelected}"
-							converter="omnifaces.SelectItemsConverter"
-							required="false"
-							requiredMessage="REQUERIDO"
-							styleClass="w-full"
-							filter="true"
-							filterMatchMode="contains">
-						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-						<f:selectItems value="#{repVentaCtrl.categoriaList}" var="ca"
-										itemLabel="#{ca.categoria}" itemValue="#{ca}" />	
-					</p:selectOneMenu>		
+			<div class="col-12 md:col-6">
+				<div class="field">
+					<label class="text-gray-800">Criterio búsqueda</label>
+					<p:inputText value="#{repVentaCtrl.criterioBusqueda}" placeholder="#Factura, Cliente, Cod barra, producto"/>
 				</div>
 			</div>
-			<div class="col-12 md:col-8">
-				<div class="flex flex-column">
-					<h:outputText value="Fechas" styleClass="w-full"/>
-					<div class="flex">
-						<div class="flex-grow-1 flex pr-1">
-							<p:calendar id="calRep1" value="#{repVentaCtrl.desde}"
-								pattern="dd/MM/yyyy"
-								locale="es" 
-								requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-							</p:calendar>
-						</div>
-						<div class="flex-grow-1 flex">
-							<p:calendar id="calRep2" value="#{repVentaCtrl.hasta}"
-								pattern="dd/MM/yyyy"
-								locale="es" 
-								requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-							</p:calendar>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-10 md:col-8">
-				<div class="flex flex-column">
-					<h:outputText value="Criterio" styleClass="w-full"/>
-					<p:inputText value="#{repVentaCtrl.criterioBusqueda}" placeholder="#Factura, Cliente, Cod barra, producto" styleClass="w-full"/>		
-				</div>
-			</div>
-			<div class="col-2 md:col-4">
-				<div class="flex flex-column">
-					<h:outputText value="Criterio" styleClass="text-white"/>
-					<div class="flex flex-inline">
-						<p:commandButton id="cmdGlobalBuscar"
-							icon="fa fa-search" 
-							action="#{repVentaCtrl.buscar()}" styleClass="mr-1 ui-button-success" update="@form">
-							<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repVentaCtrl.establecimientoMain}"/>
-						</p:commandButton>
-						
-	  					<p:commandButton id="cmdGlobalExcel"
-							icon="fa fa-download" 
-							styleClass="ui-button-outlined"
-							ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
-							<p:fileDownload value="#{repVentaCtrl.file}"/>
-						</p:commandButton>			
-					</div>		
-				</div>
+		</div>
+		
+		<div class="flex justify-content-between my-2">
+			<div class="flex gap-2">
+				<p:commandButton id="cmdGlobalBuscar"
+					icon="fa fa-search" 
+					action="#{repVentaCtrl.buscar()}"
+					value="Buscar" 
+					styleClass="ui-button-success" update="@form">
+					<f:setPropertyActionListener value="#{repMainCtrl.establecimientoMain}" target="#{repVentaCtrl.establecimientoMain}"/>
+				</p:commandButton>
+				
+ 					<p:commandButton id="cmdGlobalExcel"
+					icon="fa fa-download" 
+					styleClass="ui-button-outlined"
+					ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)">
+					<p:fileDownload value="#{repVentaCtrl.file}"/>
+				</p:commandButton>
 			</div>
 		</div>
 

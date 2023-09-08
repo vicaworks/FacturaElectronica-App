@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -35,12 +35,14 @@ import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.dto.TotalesDto;
 import com.vcw.falecpv.core.modelo.persistencia.Categoria;
 import com.vcw.falecpv.core.modelo.persistencia.Fabricante;
+import com.vcw.falecpv.core.modelo.persistencia.Grupocategoria;
 import com.vcw.falecpv.core.modelo.persistencia.Tipopago;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.modelo.query.VentasQuery;
 import com.vcw.falecpv.core.servicio.CategoriaServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
 import com.vcw.falecpv.core.servicio.FabricanteServicio;
+import com.vcw.falecpv.core.servicio.GrupocategoriaServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -61,20 +63,18 @@ public class RepVentaCtrl extends BaseCtrl {
 	 */
 	private static final long serialVersionUID = 5541322574433690245L;
 	
-	@EJB
+	@Inject
 	private ConsultaVentaServicio consultaVentaServicio;
-	
-	@EJB
+	@Inject
 	private UsuarioServicio usuarioServicio;
-	
-	@EJB
+	@Inject
 	private TipopagoServicio tipopagoServicio;
-	
-	@EJB
+	@Inject
 	private FabricanteServicio fabricanteServicio;
-	
-	@EJB
+	@Inject
 	private CategoriaServicio categoriaServicio;
+	@Inject
+	private GrupocategoriaServicio grupocategoriaServicio;
 
 	private List<Usuario> usuarioList;
 	private Usuario usuarioSelected;
@@ -90,6 +90,9 @@ public class RepVentaCtrl extends BaseCtrl {
 	private List<VentasQuery> ventasQueryList;
 	private TotalesDto totalesDto = new TotalesDto();
 	private RepMainCtrl repMainCtrl;
+	
+	private List<Grupocategoria> grupocategoriaList;
+	private Grupocategoria grupocategoriaSelected;
 	
 	/**
 	 * 
@@ -109,6 +112,7 @@ public class RepVentaCtrl extends BaseCtrl {
 			consultarUsuario();
 			consultarTipoPago();
 			consultarFabricante();
+			consultarGrupoCategoriaList();
 			consultarCategoria();
 			hasta = new Date();
 			desde = FechaUtil.agregarMeses(hasta, -1);
@@ -141,6 +145,11 @@ public class RepVentaCtrl extends BaseCtrl {
 		fabricanteList = fabricanteServicio.getFabricanteDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
 	}
 	
+	public void consultarGrupoCategoriaList()throws DaoException{
+		grupocategoriaList = null;
+		grupocategoriaList = grupocategoriaServicio.getGrupocategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+	}
+	
 	private void consultarCategoria()throws DaoException{
 		categoriaList = null;
 		categoriaList = categoriaServicio.getCategoriaDao().getByEstado(EstadoRegistroEnum.ACTIVO, AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
@@ -151,6 +160,7 @@ public class RepVentaCtrl extends BaseCtrl {
 		ventasQueryList = consultaVentaServicio.getVentasDetalleCriterio(usuarioSelected, 
 				tipopagoSelected,
 				fabricanteSelected, 
+				grupocategoriaSelected,
 				categoriaSelected, 
 				establecimientoMain!=null?establecimientoMain.getIdestablecimiento():null,
 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),		
@@ -166,6 +176,7 @@ public class RepVentaCtrl extends BaseCtrl {
 			consultarUsuario();
 			consultarTipoPago();
 			consultarFabricante();
+			consultarGrupoCategoriaList();
 			consultarCategoria();
 			totalizar();
 		} catch (Exception e) {
@@ -521,6 +532,34 @@ public class RepVentaCtrl extends BaseCtrl {
 	 */
 	public void setRepMainCtrl(RepMainCtrl repMainCtrl) {
 		this.repMainCtrl = repMainCtrl;
+	}
+
+	/**
+	 * @return the grupocategoriaList
+	 */
+	public List<Grupocategoria> getGrupocategoriaList() {
+		return grupocategoriaList;
+	}
+
+	/**
+	 * @param grupocategoriaList the grupocategoriaList to set
+	 */
+	public void setGrupocategoriaList(List<Grupocategoria> grupocategoriaList) {
+		this.grupocategoriaList = grupocategoriaList;
+	}
+
+	/**
+	 * @return the grupocategoriaSelected
+	 */
+	public Grupocategoria getGrupocategoriaSelected() {
+		return grupocategoriaSelected;
+	}
+
+	/**
+	 * @param grupocategoriaSelected the grupocategoriaSelected to set
+	 */
+	public void setGrupocategoriaSelected(Grupocategoria grupocategoriaSelected) {
+		this.grupocategoriaSelected = grupocategoriaSelected;
 	}
 
 }
