@@ -1486,6 +1486,7 @@ body .ui-messages .ui-messages-info .ui-messages-close {
 
 body .ui-datatable thead th {
   vertical-align: top;
+  padding: 0.5rem 0rem;
 }
 
 body .ui-datatable .ui-datatable-data > tr > td {

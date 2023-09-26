@@ -126,6 +126,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 						"	c.idcliente, " +
 						"	cl.razonsocial, " +
 						"	u.nombrepantalla, " +
+						"	tc.identificador, " +
 						"	(select SUM(d.cantidad) from detalle d where d.idcabecera = c.idcabecera ) as cantidad, " +
 						"	c.totalsinimpuestos, " +
 						"	c.totaliva iva, " +
@@ -209,6 +210,7 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 							"	c.secuencial, " +
 							"	c.fechaemision, " +
 							"	c.idcliente, " +
+							"	cl.identificacion, " +
 							"	cl.razonsocial, " +
 							"	d.idproducto, " +
 							"   p.codigoprincipal, " +
@@ -259,6 +261,11 @@ public class ConsultaVentaServicio extends DBUtilGenericoApp {
 				
 				if(fabricante!=null) {
 					sql += "		and p.idfabricante = '" + fabricante.getIdfabricante() + "' ";
+				}
+				
+				if(grupocategoriaSelected != null) {
+					sql += "		and gc.idgrupocategoria = '" + grupocategoriaSelected.getIdgrupocategoria() + "' ";
+					
 				}
 				
 				if(categoria!=null) {
