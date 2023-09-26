@@ -91,7 +91,7 @@
 								style="width: calc(100% - 0.1rem)"
 								filter="true"
 								filterMatchMode="contains">
-						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+						<f:selectItem itemLabel="Todos" itemValue="#{null}"/>
 						<f:selectItems value="#{repVentaCtrl.usuarioList}" var="u"
 										itemLabel="#{u.nombre}" itemValue="#{u}" />	
 					</p:selectOneMenu>
@@ -108,7 +108,7 @@
 							styleClass="overflow-x-hidden"
 							style="width: calc(100% - 0.1rem)"
 							filter="true" filterMatchMode="contains">
-						<f:selectItem itemLabel="Todos ... "
+						<f:selectItem itemLabel="Todos"
 								itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 						<f:selectItems value="#{repVentaCtrl.grupocategoriaList}" var="g"
 							itemLabel="#{g.grupo}" itemValue="#{g}" />
@@ -145,7 +145,7 @@
 							style="width: calc(100% - 0.1rem)"
 							filter="true"
 							filterMatchMode="contains">
-						<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+						<f:selectItem itemLabel="Todos" itemValue="#{null}"/>
 						<f:selectItems value="#{repVentaCtrl.fabricanteList}" var="fa"
 										itemLabel="#{fa.nombrecomercial}" itemValue="#{fa}" />	
 					</p:selectOneMenu>
