@@ -17,16 +17,6 @@
 				height: calc(100vh - 795px)!important;				
 			}
 			
-			.ui-selectonemenu .ui-selectonemenu-label{text-overflow: ellipsis!important;}
-						
-			.ui-calendar .ui-inputfield{width: 100% !important;}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
-			
         </style>
     </ui:define>
 
@@ -39,19 +29,18 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Reportes" url="#{request.contextPath}/pages/reportes/reportes.jsf"/>
-		    <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
+		    <!-- <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/> -->
 		</p:breadCrumb>
     	
     	<!-- Reporte global -->
 	    <h:form id="formMain">
 	    	<p:remoteCommand name="limpiar" actionListener="#{repProductosCtrl.limpiarBefore}" update="@form"/>
 	    	
-	    	<div class="card card-w-title">
-		    	<div class="grid justify-content-between">
-	    			<div class="col-5 md:col-4">
-						<h3 class="cardTitle">Productos más Vendidos</h3>
-	    			</div>					
-					<div class="col-7 md:col-4 align-self-center" style="text-align: right;">					
+	    	<div class="card my-1">              
+				<div class="flex justify-content-between align-items-baseline">
+					<h3 class="card__heading card__heading--noBorder fw-4">Más vendidos</h3>
+					<div class="flex justify-content-end" style="gap: .4rem;">
+						
 						<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{repProductosCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
@@ -63,134 +52,125 @@
 							<f:selectItems value="#{repProductosCtrl.establecimientoMainList}" var="st"
 								itemLabel="#{st.nombrecomercial.concat(' - ').concat(appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0'))}" itemValue="#{st}" />
 							
-							<p:ajax event="valueChange" listener="#{repProductosCtrl.limpiarFormulario(true)}" update="@form"/>
+							<p:ajax event="valueChange" listener="#{repProductosCtrl.limpiarFormulario(true)}" update="@form"/>								
+						</p:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="grid ui-fluid main__opciones px-2 mt-1">
+					<div class="col-12 md:col-3">
+						<div class="field">
+							<label class="text-gray-800">Fechas</label>
+							<div class="flex gap-2">
+								<p:calendar id="calRep1" value="#{repProductosCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								<p:calendar id="calRep2" value="#{repProductosCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
 								
-						</p:selectOneMenu>						
-					</div>	                
-	    		</div>
-	    		
-	    		<div class="grid">
-	    			<div class="col-12 overflow-x-hidden">
-	    				<div class="flex flex-column">
-	    					<h:outputText value="Producto" styleClass="w-full"/>
-	    					<p:selectOneMenu id="somInvListaProducto"
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-12 md:col-7">
+						<div class="field">
+							<label class="text-gray-800">Producto</label>
+							<p:selectOneMenu id="somInvListaProducto"
 								value="#{repProductosCtrl.productoSelected}"
 								converter="omnifaces.SelectItemsConverter"
 								required="false"
 								requiredMessage="REQUERIDO"
-									styleClass="w-full"
-									filter="true" filterMatchMode="contains">
+								styleClass="overflow-x-hidden"
+								style="width: calc(100% - 0.1rem)"
+								filter="true" filterMatchMode="contains">
 								<f:selectItem itemLabel="TODOS "
 										itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 								<f:selectItems value="#{repProductosCtrl.productoList}" var="prof"
 									itemLabel="#{prof.nombregenerico}" itemValue="#{prof}" />
 								<p:ajax event="valueChange" listener="#{repProductosCtrl.limpiarFormulario(false)}" update="@form"/>	
-							</p:selectOneMenu>	
-	    				</div>
-	    			</div>
-	    			<div class="col-10 md:col-6">
-	    				<div class="flex flex-column">
-	    					<h:outputText value="Fechas" styleClass="w-full"/>
-	    					<div class="flex">
-	    						<div class="flex-grow-1 flex pr-1">
-	    							<p:calendar id="calDesde" value="#{repProductosCtrl.desde}"
-										pattern="dd/MM/yyyy"
-										locale="es" 
-										requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										<p:ajax event="dateSelect" listener="#{repProductosCtrl.limpiarFormulario(false)}" update="@form"/>
-									</p:calendar>
-	    						</div>
-	    						<div class="flex-grow-1 flex pr-1">
-	    							<p:calendar id="calHasta" value="#{repProductosCtrl.hasta}"
-										pattern="dd/MM/yyyy"
-										locale="es" 
-										requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										<p:ajax event="dateSelect" listener="#{repProductosCtrl.limpiarFormulario(false)}" update="@form"/>
-									</p:calendar>
-	    						</div>
-	    					</div>
-	    				</div>
-	    			</div>
-	    			<div class="col-2">
-	    				<div class="flex flex-column">
-	    					<h:outputText value="fechas" styleClass="w-full text-white"/>
-	    					<div class="flex flex-inline">
-	    						<p:commandButton id="cmdRefrecar"
-									title="Consultar" icon="fa fa-search" onclick="limpiar()"
-									action="#{repProductosCtrl.buscar()}" styleClass="ui-button-success mr-1" update="@form">
-								</p:commandButton>
-								<p:commandButton id="cmdGlobalExcel"
-			  						title="EXPORTAR"
-									icon="fa fa-download" 
-									styleClass="ui-button-outlined"
-									disabled="#{empty repProductosCtrl.ventasQuerieList}"
-									ajax="false">
-								<p:fileDownload value="#{repProductosCtrl.fileResumen}" contentDisposition="inline"/>
-							</p:commandButton>		
-								
-	    					</div>
-	    				</div>
-	    			</div>
-	    		</div>
-	    	</div>
-		   	
-		   	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
+							</p:selectOneMenu>
+						</div>
+					</div>
+						
+					<div class="mt-2 col-12 md:col-2 md:mt-0">
+						<div class="inline-flex gap-2 h-full align-items-end">
+							<p:commandButton id="cmdRefrecar"
+								title="Buscar" icon="fa fa-search" onclick="limpiar()"
+								value="Buscar"
+								action="#{repProductosCtrl.buscar()}" styleClass="ui-button-success" update="@form">
+							</p:commandButton>
+							<p:commandButton id="cmdGlobalExcel"
+		  						title="Exportar excel"
+								icon="fa fa-download" 
+								styleClass="ui-button-outlined"
+								disabled="#{empty repProductosCtrl.ventasQuerieList}"
+								ajax="false">
+							<p:fileDownload value="#{repProductosCtrl.fileResumen}" contentDisposition="inline"/>
+							</p:commandButton>
+						</div>
+					</div>
+					
+				</div>
+				
+				
+			</div>
 			
-			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repProductosCtrl.ventasQuerieList}" styleClass="mt-1">
-				<p:chart type="bar" model="#{repProductosCtrl.barChartModel}" style="height:400px; width:100%" rendered="#{not empty repProductosCtrl.ventasQuerieList}"/>
+			<p:panelGrid columns="1" layout="grid" rendered="#{not empty repProductosCtrl.ventasQuerieList}" styleClass="mb-1">
+				<p:barChart model="#{repProductosCtrl.barChartModel}" style="width: 100%; height: 400px;" rendered="#{not empty repProductosCtrl.ventasQuerieList}" />
 			</p:panelGrid>
-			<div class="EmptyBox5"/>
 			
-			<div class="card card-w-title">
 			
+			<div class="card">
 				<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
 		       			value="#{repProductosCtrl.ventasQuerieList}"
 		       			var="v"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvUnoDT Fs11"
+						styleClass="pvUnoDT fs-12"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idproducto}"
-						rows="17"
-						rowsPerPageTemplate="17,20,25,30,35,40">
+						rows="20"
+						rowsPerPageTemplate="20,25,30,35,40">
 					
-					<p:column headerText="CODIGO" style="width:40px;">
-						<div class="flex align-items-center justify-content-end">
-							<i class="Fs10 text-gray-700 fa fa-barcode mr-1"/>
-							<h:outputText value="#{v.codigoprincipal}" styleClass="text-gray-700 font-medium">
+					<p:column headerText="Código de barra" style="width:40px;">
+						<div class="flex align-items-baseline justify-content-end gap-1 pr-2">
+							<h:outputText value="#{v.codigoprincipal}" styleClass="text-gray-800 fw-5">
+							</h:outputText>
+							<i class="fs-10 text-gray-600 fa fa-barcode"/>
+						</div>
+					</p:column>
+					
+					<p:column headerText="Producto" style="width:200px;">
+						<h:outputText value="#{v.nombregenerico}" styleClass="text-primary-600 fw-3">
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Cantidad" style="width:50px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.cantidad}" >
+								<f:convertNumber pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 							</h:outputText>
 						</div>
 					</p:column>
 					
-					<p:column headerText="ITEM" style="width:200px;">
-						<h:outputText value="#{v.nombregenerico}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="CANTIDAD" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.cantidad}" >
-							<f:convertNumber pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="VALOR" style="width:70px;" styleClass="TexAlRight">
-						<h:outputText value="#{v.preciototalsinimpuesto}" styleClass="text-gray-700 font-medium">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+					<p:column headerText="Valor vendido" style="width:70px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.preciototalsinimpuesto}" styleClass="text-gray-800 fw-5">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
 					</p:column>
 							
 						
 				</p:dataTable>
-				
-				<div class="EmptyBox20"/>
-			
 			</div>
 	    	
 	    	

@@ -10,30 +10,47 @@
 		
 	</style>
 	
-	<p:dialog header="Concepto" widgetVar="dlgTrxConcepto" modal="true" responsive="true" width="500px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Tipo de transacción" 
+		widgetVar="dlgTrxConcepto" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width: 40rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmTrxConcepto">
 			
 			<!-- OPCIONES -->
 			
-			
-			<div class="formgroup-inline">
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton id="cmdGuardar"
-					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{tranConceptoCtrl.guardar()}" styleClass="mr-1 min-width-100" update="@form #{tranConceptoCtrl.updateView}"
+					value="Guardar" 
+					icon="fa-regular fa-floppy-disk fs-13" 
+					action="#{tranConceptoCtrl.guardar()}" 
+					styleClass="ui-button ui-button-success min-width-100 fs-13" 
+					update="@form #{tranConceptoCtrl.updateView}"
 					/>
 				
 				<p:commandButton id="cmdNuevo"
-					value="NUEVO" icon="fa fa-plus" 
-					action="#{tranConceptoCtrl.nuevo()}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form :formMain" process="@this"
+					value="Nuevo" 
+					icon="fa fa-plus" 
+					action="#{tranConceptoCtrl.nuevo()}" 
+					styleClass="ui-button-outlined min-width-100 fs-13" 
+					update="@form :formMain" 
+					process="@this"
 					/>
 					
 				<p:commandButton id="cmdCerrar"
-					value="CERRAR" icon="fa fa-close" styleClass="ui-button-flat" 
-					onclick="PF('dlgTrxConcepto').hide()" immediate="true"  
-					/>			
-			</div>			
-			
+					value="CERRAR" 
+					icon="fa fa-sign-out" 
+					styleClass="min-width-100 ui-button-outlined ui-button-secondary fs-13" 
+					onclick="PF('dlgTrxConcepto').hide()" 
+					immediate="true"  
+					/>							
+				
+			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmTrxConcepto"
 				closable="true" >
@@ -42,34 +59,38 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto contenedorFormulario mt-2">
-				
+			<div class="w-full overflow-auto contenedorFormulario mt-2 pr-1 ui-fluid fs-12">
+			
 				<div style="width: 99.5%;">
-					<div class="field grid">						
-						<h:outputText value="Nombre" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-						<div class="col-12 md:col-8">
-							<p:inputText id="intTrxConcento" value="#{tranConceptoCtrl.transaccionconcepto.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="200" converter="omnifaces.ToUpperCaseConverter"/>
-							<p:message for="intTrxConcento"></p:message>
-						</div>
+					<div class="field ">
+						<label class="text-gray-800 fw-5">Nombre</label>
+						<p:inputText id="intTrxConcento" 
+							value="#{tranConceptoCtrl.transaccionconcepto.nombre}" 
+							required="true" 
+							requiredMessage="Requerido" 
+							styleClass="w-full" 
+							maxlength="200" 
+							converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intTrxConcento" styleClass="block m-0 p-0"/>
 				    </div>
-				    <div class="field grid">						
-						<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-						<div class="col-12 md:col-8">
-							<p:selectOneMenu id="somEstado"
-								value="#{tranConceptoCtrl.transaccionconcepto.estado}"
-								required="true"
-								requiredMessage="REQUERIDO"
-								styleClass="w-full" disabled="#{tranConceptoCtrl.transaccionconcepto.idtransaccionconcepto==null}">
-								
-								<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
-				    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
-				    			
-							</p:selectOneMenu>
-							<p:message for="somEstado" />
-						</div>
+				    <div class="field">						
+				    	<label class="text-gray-800 fw-5">Estado</label>
+						<p:selectOneMenu id="somEstado"
+							value="#{tranConceptoCtrl.transaccionconcepto.estado}"
+							required="true"
+							requiredMessage="Requerido"
+							styleClass="w-full" 
+							disabled="#{tranConceptoCtrl.transaccionconcepto.idtransaccionconcepto==null}">							
+							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
+			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
+			    			
+						</p:selectOneMenu>
+						<p:message for="somEstado" styleClass="block m-0 p-0"/>
 				    </div>				
-				</div>				
-			</div>			
+				</div>
+								
+			</div>
+						
 		</h:form>		
    </p:dialog>      
 

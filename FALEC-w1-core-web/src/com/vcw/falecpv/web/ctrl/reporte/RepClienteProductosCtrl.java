@@ -18,14 +18,11 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.jsf.FacesUtil;
@@ -38,6 +35,7 @@ import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ConsultaVentaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -68,7 +66,6 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 	private Date desde;
 	private Date hasta;
 	private List<VentasQuery> ventasQuerieList;
-	private BarChartModel barChartModel = new BarChartModel();
 	
 	/**
 	 * 
@@ -84,7 +81,10 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 			desde = FechaUtil.agregarDias(hasta, -180);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -92,10 +92,13 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 	public void buscar() {
 		try {
 			consultar();
-			populateChart();
+			//populateChart();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -105,24 +108,6 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 				desde, 
 				hasta, 
 				criterioBusqueda);
-	}
-	
-	private void populateChart() {
-		barChartModel = new BarChartModel();
-		ChartSeries productos = new ChartSeries();
-		productos.setLabel("CANTIDAD");
-		int cant = 0;
-		for (VentasQuery v : ventasQuerieList) {
-			if(cant<10) {
-				productos.set(v.getNombregenerico().length()>20?v.getNombregenerico().substring(0, 20):v.getNombregenerico(),v.getCantidad());
-			}
-			cant++;
-		}
-		barChartModel.addSeries(productos);
-		barChartModel.setTitle("PRODUCTO-CLIENTE");
-		barChartModel.setZoom(true);
-		barChartModel.setShowPointLabels(true);
-		
 	}
 	
 	public List<String> completeClienteCriterio(String query) {
@@ -157,7 +142,6 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -184,19 +168,15 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCodigoprincipal());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getNombregenerico());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getCantidad().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getPreciototalsinimpuesto().doubleValue());
 				
 				fila++;
@@ -214,7 +194,10 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -274,20 +257,5 @@ public class RepClienteProductosCtrl extends BaseCtrl {
 	 */
 	public void setVentasQuerieList(List<VentasQuery> ventasQuerieList) {
 		this.ventasQuerieList = ventasQuerieList;
-	}
-
-	/**
-	 * @return the barChartModel
-	 */
-	public BarChartModel getBarChartModel() {
-		return barChartModel;
-	}
-
-	/**
-	 * @param barChartModel the barChartModel to set
-	 */
-	public void setBarChartModel(BarChartModel barChartModel) {
-		this.barChartModel = barChartModel;
-	}
-	
+	}		
 }
