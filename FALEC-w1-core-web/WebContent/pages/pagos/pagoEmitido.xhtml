@@ -13,23 +13,8 @@
         <style type="text/css">
         
         	.pvUnoDT .ui-datatable-scrollable-body{
-        		min-height: 20vh !important;
-				max-height: 50vh !important;
-				/* height: calc(100vh - 500px)!important; */				
-			}
-			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			
-			.field {margin-bottom: 0.25rem;}
-			
-			body .ui-datatable .ui-datatable-data > tr > td{vertical-align: top;}
-			
-			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}
-			
-			.menuDt .ui-button.ui-button-icon-only .ui-button-text {
-				padding: 0.2em !important;
+        		min-height: 40vh !important;
+				max-height: 60vh !important;				
 			}
 			
         </style>
@@ -43,26 +28,20 @@
     	
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Pagos menú" url="#{request.contextPath}/pages/pagos/pagos.jsf"/>
+		    <p:menuitem value="Pagos" url="#{request.contextPath}/pages/pagos/pagos.jsf"/>
 		    <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf"/>
 		</p:breadCrumb>
     	
     	<!-- Reporte global -->
 	    <h:form id="formMain">
 	    
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<div class="card card-w-title mt-1">
-				
-				<div class="grid justify-content-between">
-	    			<div class="col-4 md:col-4">
-						<h3 class="cardTitle">Pagos</h3>
-	    			</div>					
-					<div class="col-8 md:col-4 align-self-center" style="text-align: right;">						
+	    	
+	    	
+	    	<div class="card mt-1">              
+				<div class="flex justify-content-between align-items-baseline">
+					<h3 class="card__heading card__heading--noBorder fw-4">Pagos</h3>
+					<div class="flex justify-content-end" style="gap: .4rem;">
+						
 						<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{pagosMainCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
@@ -72,143 +51,154 @@
 							<f:selectItems value="#{pagosMainCtrl.establecimientoMainList}" var="st"
 								itemLabel="#{appSessionCtrl.formatoCadena(st.codigoestablecimiento,3,'0').concat(' - ').concat(st.nombrecomercial)}" itemValue="#{st}" />							
 							<p:ajax event="valueChange" listener="#{pagosMainCtrl.limpiar()}" update="@form"/> 								
-						</p:selectOneMenu>        
-					</div>	                
-	    		</div>
-	    		
-	    		<div class="grid">
-	    			<div class="col-12 md:col-10">
-	    				<div class="grid grid-nogutter">
-	    					<div class="col-12 md:col-6">
-    							<span class="block">Fechas</span>
-	    						<div class="flex">
-	    							<div class="flex flex-grow-1 pr-1">
-					            		<p:calendar id="calDesde" value="#{pagosMainCtrl.desde}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										</p:calendar>
-					            	</div>
-					            	<div class="flex flex-grow-1 pr-1">
-					            		<p:calendar id="calHasta" value="#{pagosMainCtrl.hasta}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										</p:calendar>
-					            	</div>
-	    						</div>
-	    					</div>
-	    					<div class="col-12 md:col-6 overflow-x-hidden">
-	    						<span class="block">Tipo Pago</span>
-	    						<div class="flex">
-	    							<div class="flex flex-grow-1 pr-1">
-	    								<p:selectOneMenu id="somTipoPago"
-													value="#{pagosMainCtrl.tipopagoSelected}"
-													converter="omnifaces.SelectItemsConverter"
-													required="false"
-													requiredMessage="REQUERIDO"
-													styleClass="w-full"
-													filter="true" 
-													filterMatchMode="contains">
-											<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
-											<f:selectItems value="#{pagosMainCtrl.tipopagoList}" var="u"
-															itemLabel="#{u.nombre}" itemValue="#{u}" />	
-										</p:selectOneMenu>
-	    							</div>
-	    						</div>
-	    					</div>
-	    					
-	    				</div>
-	    			</div>
-	    			<div class="col-12 md:col-2">
-	    				<div class="grid grid-nogutter">
-	    					<div class="col-12 md:col-6">
-    							<h:outputText value="OPC" styleClass="text-white hidden md:block" />
-    							<div class="flex flex-inline pr-0 md:pr-1">
-    								<p:commandButton id="cmdGlobalBuscar"
-										icon="fa fa-search" value="Buscar"
-										action="#{pagosMainCtrl.buscar()}" styleClass="ui-button-success mr-1" update="@form" title="Buscar"/>
-									
-				  					<p:commandButton id="cmdGlobalExcel"
-				  						title="Exportar excel"
-										icon="fa fa-download" 
-										styleClass="ui-button-outlined"
-										disabled="#{empty pagosMainCtrl.pagosQuerieList}"
-										ajax="false">
-										<p:fileDownload value="#{pagosMainCtrl.fileResumen}" contentDisposition="inline"/>
-									</p:commandButton>			
-    							</div>
-   							</div>
-   						</div>
-	    			</div>
-	    		</div>
-	    		
+						</p:selectOneMenu>
+						
+					</div>
+				</div>
 				
+				<div class="grid ui-fluid main__opciones px-2 mt-1 mb-2">
+					<div class="col-12 md:col-3">
+						<div class="field">
+							<label class="text-gray-800">Fechas</label>
+							<div class="flex gap-2">
+								<p:calendar id="calRep1" value="#{pagosMainCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								<p:calendar id="calRep2" value="#{pagosMainCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-12 md:col-7">
+						<div class="field">
+							<label class="text-gray-800">Tipos de pago</label>
+							<p:selectOneMenu id="somTipoPago"
+										value="#{pagosMainCtrl.tipopagoSelected}"
+										converter="omnifaces.SelectItemsConverter"
+										required="false"
+										requiredMessage="Requerido"
+										styleClass="overflow-x-hidden"
+										style="width: calc(100% - 0.1rem)"
+										filter="true" 
+										filterMatchMode="contains">
+								<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+								<f:selectItems value="#{pagosMainCtrl.tipopagoList}" var="u"
+												itemLabel="#{u.nombre}" itemValue="#{u}" />	
+							</p:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="mt-2 col-12 md:col-2 md:mt-0">
+						<div class="inline-flex gap-2 h-full align-items-end">
+							
+							<p:commandButton id="cmdGlobalBuscar"
+										icon="fa fa-search" 
+										value="Buscar"
+										action="#{pagosMainCtrl.buscar()}" 
+										styleClass="ui-button-success" 
+										update="@form" 
+										title="Buscar"/>
+									
+		  					<p:commandButton id="cmdGlobalExcel"
+		  						title="Exportar excel"
+								icon="fa fa-download" 
+								styleClass="ui-button-outlined px-2"
+								disabled="#{empty pagosMainCtrl.pagosQuerieList}"
+								ajax="false">
+								<p:fileDownload value="#{pagosMainCtrl.fileResumen}" contentDisposition="inline"/>
+							</p:commandButton>
+							
+						</div>
+					</div>
+						
+					
+				</div>
 			
 		    	<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
 		       			value="#{pagosMainCtrl.pagosQuerieList}"
 		       			var="v"
 		       			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvUnoDT Fs11"
+						styleClass="pvUnoDT fs-11"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
 						rowKey="#{v.idpago}"
-						rows="20"
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
+						rows="15"
+						rowsPerPageTemplate="15,20,25,30,35,40">
 					
-					
-					<p:column headerText="#{msg['label.identificacion']}" style="width:90px;" filterBy="#{v.identificacion}" filterMatchMode="contains" styleClass="text-right">
-						<h:outputText value="#{v.identificacion}"/>
-					</p:column>
-					
-					<p:column headerText="CLIENTE" style="width:150px;" filterBy="#{v.razonsocial}" filterMatchMode="contains">
-						<h:outputText value="#{v.razonsocial}" />
-					</p:column>
-					
-					<p:column headerText="COMPROBANTE" style="width:150px;" filterBy="#{v.numdocumento}" filterMatchMode="contains">
-						<div class="flex flex-column">
-							<h:outputText value="#{v.comprobante}" styleClass="text-gray-700 Fs10"/>							
-							<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="Fs11 text-gray-700 font-semibold"/>
+					<p:column headerText="Comprobante" style="width:120px;" filterBy="#{v.filterComprobante}" filterMatchMode="contains">
+						<div class="flex flex-column gap-1">
+							<h:outputText value="#{v.comprobante}" styleClass="text-gray-700"/>							
+							<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="text-gray-800 fw-5"/>
 						</div>
 					</p:column>
 					
-					<p:column headerText="TIPO PAGO" style="width:100px;">
-						<h:outputText value="#{v.nombre}" styleClass="Fs9">
+					<p:column headerText="Cliente" style="width:150px;" filterBy="#{v.filterReceptor}" filterMatchMode="contains">
+						<div class="flex flex-column gap-1">
+							<h:outputText value="#{v.identificacion}" styleClass="text-gray-900 fw-3"/>							
+							<h:outputText value="#{v.razonsocial}" styleClass="text-gray-700"/>
+						</div>
+					</p:column>
+										
+					<p:column headerText="Tipo de pago" style="width:100px;">
+						<h:outputText value="#{v.nombre}" styleClass="text-primary-600 fw-3">
 						</h:outputText>
 					</p:column>
 					
-					<p:column headerText="TOTAL" style="width:70px;" styleClass="text-right">
-						<h:outputText value="#{v.totalconimpuestos}" >
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="A PAGAR" style="width:70px;" styleClass="text-right">
-						<h:outputText value="#{v.valorapagar}" styleClass="text-black font-medium Fs11">
-							<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="IMPORTE" style="width:60px;" styleClass="text-right">
-						<h:outputText value="#{v.valorentrega}" styleClass="#{v.valorentrega>0?'text-gray-800 font-medium':'opacity-60'}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="CAMBIO" style="width:60px;" styleClass="text-right">
-						<h:outputText value="#{v.cambio}" styleClass="#{v.cambio>0?'text-pink-400':'opacity-60'}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="DOCUMENTO" style="width:120px;" filterBy="#{v.filterDocumento}" filterMatchMode="contains">						
-						<div class="flex flex-column pl-1">							
-							<h:outputText value="#{v.nombrebanco!=null?v.nombrebanco:'N/A'}" styleClass="Fs10 text-gray-600 #{v.nombrebanco!=null?'uppercase':'opacity-60'}">
+					<p:column headerText="Total" style="width:80px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.totalconimpuestos}" styleClass="text-gray-800 fw-5">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
-							<h:outputText value="#{v.numerodocumento!=null?v.numerodocumento:'--------'}" styleClass="Fs12 text-gray-600 font-medium #{v.numerodocumento!=null?'':'opacity-60'}">
+						</div>
+					</p:column>
+					
+					<p:column headerText="Retención" style="width:80px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.valorretenido}" styleClass="#{v.valorretenido > 0 ? 'text-gray-900' : 'opacity-60'}">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+					</p:column>
+					
+					<p:column headerText="A pagar" style="width:80px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.valorapagar}" styleClass="text-primary-600 fw-5">
+								<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+					</p:column>
+					
+					<p:column headerText="Importe" style="width:80px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.valorentrega}" styleClass="#{v.valorentrega>0?'text-gray-900':'opacity-60'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+					</p:column>
+					
+					<p:column headerText="Cambio" style="width:80px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.cambio}" styleClass="#{v.cambio > 0 ? 'text-pink-400' : 'opacity-60'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+					</p:column>
+					
+					<p:column headerText="Documento" style="width:120px;" filterBy="#{v.filterDocumento}" filterMatchMode="contains">						
+						<div class="flex flex-column pl-1 gap-1">							
+							<h:outputText value="#{v.nombrebanco != null ? v.nombrebanco:'N/A'}" styleClass="text-gray-700 #{v.nombrebanco != null ? 'uppercase' : 'opacity-60'}">
+							</h:outputText>
+							<h:outputText value="#{v.numerodocumento != null ? v.numerodocumento : '--------'}" styleClass="#{v.numerodocumento != null ? 'text-gray-900' : 'text-gray-300'}">
 							</h:outputText>
 						</div>
 					</p:column>
@@ -219,39 +209,37 @@
 			<div class="card card-w-title mt-1">
 				<div class="grid justify-content-end">
 					<div class="col-12 md:col-5">
-						<div class="grid grid-nogutter justify-content-between">
+						<div class="grid grid-nogutter justify-content-between align-items-baseline">
 							<div class="col-8 py-2">
 								<div class="w-full">
-									<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTALES</span>
-									<span class="Fs14 text-blue-600 font-medium">TIPO DE PAGO</span>
+									<span class="fs-11 mr-1 text-gray-700 font-semibold">TOTALES</span>
+									<span class="fs-14 text-blue-600 font-medium">TIPO DE PAGO</span>
 								</div>
 							</div>
 							<div class="col-1 text-center align-self-center">
-								<i class="fa fa-angle-down Fs14"></i>
+								<i class="fa fa-angle-down fs-14"></i>
 							</div>
 							<div class="col-12 mt-1">
 								<p:repeat var="t" value="#{pagosMainCtrl.pagosQueryTotal}">
-									<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-										<div class="flex flex-grow-1 Fs9">
+									<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+										<div class="flex flex-grow-1 fs-10">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="#{t.nombre}" /></span>
 										</div>						
 										<div class="flex flex-grow-1">
 											<div class="text-right pr-3 w-full">
-												<h:outputText value="#{t.total}" styleClass="Fs14 text-gray-600 font-medium">
+												<h:outputText value="#{t.total}" styleClass="fs-14 text-gray-600 font-medium">
 								   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								   				</h:outputText>
 											</div>
 										</div>				
 									</div>
 								</p:repeat>
-								<div class="EmptyBox10"/>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>			
-	   		<div class="EmptyBox20"/>
+			</div>
 	    </h:form>
 	    
     </ui:define>

@@ -377,5 +377,37 @@ public class PagosQuery implements Serializable {
 		this.filterDocumento = filterDocumento;
 	}
 
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 */
+	public String getFilterComprobante() {
+		String filterComprobante = "";
+		if (comprobante != null) {
+			filterComprobante += comprobante;
+		}
+		if(numdocumento != null) {
+			filterComprobante += numdocumento;
+		}
+		return filterComprobante;
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @return
+	 */
+	public String getFilterReceptor() {
+		String filterReceptor = "";
+		if (identificacion != null) {
+			filterReceptor += identificacion;
+		}
+		if(razonsocial != null) {
+			filterReceptor += razonsocial;
+		}
+		return filterReceptor;
+	}
 
 }

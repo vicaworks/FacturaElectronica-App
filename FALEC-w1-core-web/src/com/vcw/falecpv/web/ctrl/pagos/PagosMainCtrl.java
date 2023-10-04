@@ -16,7 +16,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -35,6 +34,7 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -84,7 +84,10 @@ public class PagosMainCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -96,7 +99,10 @@ public class PagosMainCtrl extends BaseCtrl {
 			populateTipoPago();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -111,7 +117,9 @@ public class PagosMainCtrl extends BaseCtrl {
 		try {
 			
 			if(pagosQuerieList==null || pagosQuerieList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -123,7 +131,6 @@ public class PagosMainCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -144,63 +151,48 @@ public class PagosMainCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(p.getUpdated()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(p.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getComprobante());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(p.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getNombre());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getValorretenido().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getValorapagar().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotal().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getValorentrega().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getCambio().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getNumerodocumento());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getNombrebanco());
 				
 				fila++;
@@ -215,11 +207,9 @@ public class PagosMainCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getNombre());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotal().doubleValue());
 				
 				fila++;
@@ -236,7 +226,10 @@ public class PagosMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
