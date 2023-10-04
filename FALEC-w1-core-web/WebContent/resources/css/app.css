@@ -1638,10 +1638,30 @@ body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
 }
 
 .main__opciones .ui-selectonemenu {
-  margin: 2px 0 0 0 !important;
+  margin: 0px 0 0 0 !important;
 }
 
 .ui-inputnumber .ui-inputtext {
   text-align: right !important;
+}
+
+.ui-inputfield {
+  padding: 0.26rem 0.25rem !important;
+}
+
+.ui-inputgroup .ui-inputtext {
+  padding: 0.2rem !important;
+}
+
+.ui-inputgroup .ui-button.ui-button-text-icon-left .ui-button-text {
+  padding: 0.22rem 1rem;
+}
+
+.ui-inputgroup .ui-button.ui-button-icon-only .ui-button-text {
+  padding: 0.22rem;
+}
+
+.field .ui-inputgroup {
+  margin-top: 0rem !important;
 }
 /*# sourceMappingURL=app.css.map */

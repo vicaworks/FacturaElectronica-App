@@ -4,6 +4,7 @@
 package com.vcw.falecpv.core.servicio;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,10 +62,10 @@ public class VComprobantespagarcreditoServicio extends AppGenericService<VCompro
 	 * @return
 	 * @throws DaoException
 	 */
-	public List<VComprobantespagarcredito> getByCuentasPagar(String idEstablecimiento,String tipocomprobante,String criterio,String criterioCliente)throws DaoException{
+	public List<VComprobantespagarcredito> getByCuentasPagar(String idEstablecimiento,Date desde, Date hasta, String tipocomprobante,String criterio,String criterioCliente)throws DaoException{
 		try {
 			
-			List<VComprobantespagarcredito> cabeceralist = vComprobantespagarcreditoDao.getByCuentasCobrar(idEstablecimiento, tipocomprobante,criterio,criterioCliente);
+			List<VComprobantespagarcredito> cabeceralist = vComprobantespagarcreditoDao.getByCuentasCobrar(idEstablecimiento, desde, hasta, tipocomprobante,criterio,criterioCliente);
 			
 			if(cabeceralist.isEmpty()) {
 				return cabeceralist;

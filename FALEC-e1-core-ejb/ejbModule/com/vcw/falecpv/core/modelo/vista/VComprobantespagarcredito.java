@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.PojoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -89,6 +90,12 @@ public class VComprobantespagarcredito implements Serializable {
     
     @Transient
     private List<Pago> pagoOtrosList;
+    
+    @Transient
+    private String filtroComprobante;
+    
+    @Transient
+    private String filtroProveedor;
     
     public VComprobantespagarcredito() {
     }
@@ -438,6 +445,51 @@ public class VComprobantespagarcredito implements Serializable {
 	 */
 	public void setIdcliente(String idcliente) {
 		this.idcliente = idcliente;
+	}
+
+	/**
+	 * @return the filtroComprobante
+	 */
+	public String getFiltroComprobante() {
+		filtroComprobante = "";
+		if(numdocumento != null) {
+			filtroComprobante += numdocumento;
+		}
+		if(comprobante != null) {
+			filtroComprobante += comprobante;
+		}
+		if(fechaemision != null) {
+			filtroComprobante += FechaUtil.formatoFecha(fechaemision);
+		}
+		return filtroComprobante;
+	}
+
+	/**
+	 * @param filtroComprobante the filtroComprobante to set
+	 */
+	public void setFiltroComprobante(String filtroComprobante) {
+		this.filtroComprobante = filtroComprobante;
+	}
+
+	/**
+	 * @return the filtroProveedor
+	 */
+	public String getFiltroProveedor() {
+		filtroProveedor = "";
+		if(identificacion != null) {
+			filtroProveedor += identificacion;
+		}
+		if(razonsocial != null) {
+			filtroProveedor += razonsocial;
+		}
+		return filtroProveedor;
+	}
+
+	/**
+	 * @param filtroProveedor the filtroProveedor to set
+	 */
+	public void setFiltroProveedor(String filtroProveedor) {
+		this.filtroProveedor = filtroProveedor;
 	}
 
 }
