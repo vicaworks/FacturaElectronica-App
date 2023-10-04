@@ -18,7 +18,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -42,6 +41,7 @@ import com.vcw.falecpv.core.servicio.TransaccionServicio;
 import com.vcw.falecpv.core.servicio.TransaccionconceptoServicio;
 import com.vcw.falecpv.core.servicio.TransacciontipoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -104,7 +104,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -128,7 +131,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -137,14 +143,16 @@ public class CajaChicaCtrl extends BaseCtrl {
 		try {
 			
 			if (transaccionSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGSTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error","No existe un registro seleccionado", 
+						Message.ERROR);
 				return;
 			}
 			
 			if (transaccionSelected.getValoregreso().doubleValue() > 0d) {
 				transaccionSelected.setValoringreso(transaccionSelected.getValoregreso());
 				transaccionSelected.setValoregreso(BigDecimal.ZERO);
-				transaccionSelected.setNota("ANULAR EGRESO DOC REFERENCIA : " + (transaccionSelected.getNumdocumento()!=null?transaccionSelected.getNumdocumento():" ")
+				transaccionSelected.setNota("ANULAR EGRESO DOC REFERENCIA : " 
+						+ (transaccionSelected.getNumdocumento() != null ? transaccionSelected.getNumdocumento() : " ")
 						+ " / " + transaccionSelected.getNota());
 			} else {
 				if (transaccionSelected.getValoringreso().doubleValue() > 0d) {
@@ -174,7 +182,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -193,19 +204,20 @@ public class CajaChicaCtrl extends BaseCtrl {
 			// validar saldo si es egreso
 			if(transaccionSelected.getTipoTransaccion().equals("EGRESO")) {
 				if(transaccionSelected.getValoregreso().doubleValue()>saldoActual.doubleValue()) {
-					AppJsfUtil.addErrorMessage("formCC", "ERROR", "NO EXISTE SALDO SUFICIENTE.");
+					getMessageCommonCtrl().crearMensaje("Error","No existe saldo suficiente", 
+							Message.ERROR);
 					return;
 				}
 			}
 			
 			if(transaccionSelected.getTipoTransaccion().equals("EGRESO")) {
 				if(transaccionSelected.getValoregreso().doubleValue()==0d) {
-					AppJsfUtil.addErrorMessage("formCC:ipsCCValorEgreso", "ERROR", "MAYOR A 0");
+					AppJsfUtil.addErrorMessage("formCC:ipsCCValor", "ERROR", "Mayor a 0");
 					return;
 				}
 			}else{
 				if(transaccionSelected.getValoringreso().doubleValue()==0d) {
-					AppJsfUtil.addErrorMessage("formCC:ipsCCValorIngreso", "ERROR", "MAYOR A 0");
+					AppJsfUtil.addErrorMessage("formCC:ipsCCValor", "ERROR", "Mayor a 0");
 					return;
 				}
 			}
@@ -213,13 +225,15 @@ public class CajaChicaCtrl extends BaseCtrl {
 			transaccionServicio.guardarFacade(transaccionSelected);
 			consultar();
 			totalizar();
-//			transaccionSelected = null;
 			flagGuardar = false;
-			AppJsfUtil.addInfoMessage("formCC", "OK", "REGISTRO GUARDADO.");
+			AppJsfUtil.addInfoMessage("formCC", "OK", "Registro guardado correctamente.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formCC", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -230,7 +244,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 			nuevaTransaccion();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formCC", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -240,7 +257,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgcajaChica", "formCC");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -277,7 +297,8 @@ public class CajaChicaCtrl extends BaseCtrl {
 		try {
 			
 			if(transaccionList==null || transaccionList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error","No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -289,7 +310,6 @@ public class CajaChicaCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -316,47 +336,36 @@ public class CajaChicaCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(t.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(t.getTransaccionconcepto().getNombre());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(t.getCliente()!=null?t.getCliente().getIdentificacion():"");
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(t.getCliente()!=null?t.getCliente().getRazonsocial():"");
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(t.getNumdocumento()!=null?t.getNumdocumento():"");
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(t.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(t.getNota()!=null?t.getNota():"");
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(t.getValoringreso().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(t.getValoregreso().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(t.getUsuario().getNombre());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFechaHora(t.getUpdated()));
 				
 				fila++;
@@ -375,7 +384,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -386,7 +398,7 @@ public class CajaChicaCtrl extends BaseCtrl {
 			if(transaccionSelected==null) return;
 			
 			if(criterioProveedor==null || criterioProveedor.trim().length()==0) {
-				AppJsfUtil.addErrorMessage("formCC:inpCriterioProveedor", "ERROR", "REQUERIDO");
+				AppJsfUtil.addErrorMessage("formCC:inpCriterioProveedor", "Error", "Requerido");
 				return;
 			}
 			
@@ -394,7 +406,10 @@ public class CajaChicaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
