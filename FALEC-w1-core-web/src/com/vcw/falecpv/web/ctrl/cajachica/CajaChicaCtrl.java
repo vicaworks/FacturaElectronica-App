@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
@@ -50,7 +50,7 @@ import com.vcw.falecpv.web.util.UtilExcel;
  *
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class CajaChicaCtrl extends BaseCtrl {
 
 	/**
@@ -284,12 +284,11 @@ public class CajaChicaCtrl extends BaseCtrl {
 		totalEgreso = BigDecimal.ZERO;
 		totalIngreso = BigDecimal.ZERO;
 		saldoActual = BigDecimal.ZERO;
-		if(transaccionList==null || transaccionList.isEmpty()) {
-			return;
+		if(transaccionList!=null && !transaccionList.isEmpty()) {
+			totalEgreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())).mapToDouble(x->x.getValoregreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
+			totalIngreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString()) && x.getAjuste()==0).mapToDouble(x->x.getValoringreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 		}
 		
-		totalEgreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString())).mapToDouble(x->x.getValoregreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
-		totalIngreso = BigDecimal.valueOf(transaccionList.stream().filter(x->!x.getEstado().equals(ComprobanteEstadoEnum.ANULADO.toString()) && x.getAjuste()==0).mapToDouble(x->x.getValoringreso().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP);
 		saldoActual = transaccionServicio.getTransaccionDao().getSaldoActual(establecimientoMain.getIdestablecimiento(), TransaccionTipoEnum.CAJA_CHICA);
 	}
 	

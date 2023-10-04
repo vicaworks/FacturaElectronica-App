@@ -55,59 +55,6 @@
 					</div>
 				</div>
 				
-				<div class="contenedor">
-		    		<div class="cards_resumen_grid">
-			            <div class="card_resumen_f1 card_resumen_f1--green">
-			                <div class="card_resumen_f1__aside">
-			                    <i class="fa-solid fa-circle-plus"></i>
-			                </div>
-			                <div class="card_resumen_f1__content">
-			                    <div class="card_resumen_f1__value">
-			                        <h:outputText value="#{cajaChicaCtrl.totalIngreso}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-			                    </div>
-			                    <div class="card_resumen_f1__footer">
-			                        Total<span>INGRESOS</span>
-			                    </div>
-			                </div>
-			            </div>
-			
-			            <div class="card_resumen_f1 card_resumen_f1--red">
-			                <div class="card_resumen_f1__aside">
-			                    <i class="fa-solid fa-circle-minus"></i>
-			                </div>
-			                <div class="card_resumen_f1__content">
-			                    <div class="card_resumen_f1__value">
-			                        <h:outputText value="#{cajaChicaCtrl.totalEgreso}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-			                    </div>
-			                    <div class="card_resumen_f1__footer">
-			                        Total<span>EGRESOS</span>
-			                    </div>
-			                </div>
-			            </div>
-			
-			            <div class="card_resumen_f1 card_resumen_f1--primary">
-			                <div class="card_resumen_f1__aside">
-			                    <i class="fa-solid fa-calculator"></i>
-			                </div>
-			                <div class="card_resumen_f1__content">
-			                    <div class="card_resumen_f1__value">
-			                        <h:outputText value="#{cajaChicaCtrl.saldoActual}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-			                    </div>
-			                    <div class="card_resumen_f1__footer">
-			                        Saldo <span>ACTUAL</span>
-			                    </div>
-			                </div>
-			            </div>
-			
-			        </div>
-	    		</div>
-				
 				<div class="grid ui-fluid main__opciones px-2">
 					<div class="col-12 md:col-3">
 						<div class="field">
@@ -171,6 +118,59 @@
 					</div>
 					
 				</div>
+				
+				<div class="contenedor">
+		    		<div class="cards_resumen_grid">
+			            <div class="card_resumen_f1 card_resumen_f1--green">
+			                <div class="card_resumen_f1__aside">
+			                    <i class="fa-solid fa-circle-plus"></i>
+			                </div>
+			                <div class="card_resumen_f1__content">
+			                    <div class="card_resumen_f1__value">
+			                        <h:outputText value="#{cajaChicaCtrl.totalIngreso}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			                    </div>
+			                    <div class="card_resumen_f1__footer">
+			                        Total<span>INGRESOS</span>
+			                    </div>
+			                </div>
+			            </div>
+			
+			            <div class="card_resumen_f1 card_resumen_f1--red">
+			                <div class="card_resumen_f1__aside">
+			                    <i class="fa-solid fa-circle-minus"></i>
+			                </div>
+			                <div class="card_resumen_f1__content">
+			                    <div class="card_resumen_f1__value">
+			                        <h:outputText value="#{cajaChicaCtrl.totalEgreso}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			                    </div>
+			                    <div class="card_resumen_f1__footer">
+			                        Total<span>EGRESOS</span>
+			                    </div>
+			                </div>
+			            </div>
+			
+			            <div class="card_resumen_f1 card_resumen_f1--primary">
+			                <div class="card_resumen_f1__aside">
+			                    <i class="fa-solid fa-calculator"></i>
+			                </div>
+			                <div class="card_resumen_f1__content">
+			                    <div class="card_resumen_f1__value">
+			                        <h:outputText value="#{cajaChicaCtrl.saldoActual}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			                    </div>
+			                    <div class="card_resumen_f1__footer">
+			                        Saldo <span>ACTUAL</span>
+			                    </div>
+			                </div>
+			            </div>
+			
+			        </div>
+	    		</div>
 				
 				<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
