@@ -82,6 +82,7 @@ public abstract class BaseCtrl implements Serializable {
 	protected Establecimiento establecimientoMain;
 	
 	protected MessageCommonCtrl messageCommonCtrl;
+	protected boolean flagError = false; 
 	
 	/**
 	 * 
@@ -621,6 +622,20 @@ public abstract class BaseCtrl implements Serializable {
 	 */
 	public void setMessageCommonCtrl(MessageCommonCtrl messageCommonCtrl) {
 		this.messageCommonCtrl = messageCommonCtrl;
+	}
+
+	/**
+	 * @return the flagError
+	 */
+	public boolean isFlagError() {
+		return flagError;
+	}
+
+	/**
+	 * @param flagError the flagError to set
+	 */
+	public void setFlagError(boolean flagError) {
+		this.flagError = flagError;
 	}
 
 	

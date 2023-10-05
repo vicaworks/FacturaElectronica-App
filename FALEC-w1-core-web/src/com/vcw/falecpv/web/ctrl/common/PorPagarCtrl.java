@@ -22,6 +22,7 @@ import com.vcw.falecpv.core.servicio.AdquisicionServicio;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.pagos.CuentaCobrarCtrl;
 import com.vcw.falecpv.web.ctrl.pagos.CuentaPagarCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -59,6 +60,8 @@ public class PorPagarCtrl extends BaseCtrl {
 	private CuentaPagarCtrl cuentaPagarCtrl;
 	private Adquisicion adquisicionSelected;
 	private String idAdquisicionSelected;
+	private BigDecimal porcentajeRetRenta;
+	private BigDecimal porcentajeRetIva;
 
 	/**
 	 * 
@@ -72,7 +75,10 @@ public class PorPagarCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -82,6 +88,9 @@ public class PorPagarCtrl extends BaseCtrl {
 	
 	public void cargar() {
 		try {
+			
+			porcentajeRetIva = BigDecimal.ZERO;
+			porcentajeRetRenta = BigDecimal.ZERO;
 			
 			switch (callModule) {
 			case "MAIN_POR_COBRAR":
@@ -106,7 +115,10 @@ public class PorPagarCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -115,21 +127,28 @@ public class PorPagarCtrl extends BaseCtrl {
 			
 			if(cabeceraSelected.getValorretenidoiva().doubleValue()<0 || cabeceraSelected.getValorretenidoiva().doubleValue()>cabeceraSelected.getTotaliva().doubleValue()) {
 				cabeceraSelected.setValorretenidoiva(BigDecimal.ZERO);
-				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetIva", "ERROR", "NO PUEDE SER MAYOR AL VALOR DEL IVA, O MENOR A 0.");
+				AppJsfUtil.addErrorMessage("frmPorPagar", "Error", "No puede ser mayor al valor del iva, o menor a 0.");
+				flagError = true;
+				return;
 			}
 			
 			if(cabeceraSelected.getValorretenidorenta().doubleValue()<0 || cabeceraSelected.getValorretenidorenta().doubleValue()>cabeceraSelected.getTotalsinimpuestos().doubleValue()) {
 				cabeceraSelected.setValorretenidorenta(BigDecimal.ZERO);
-				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetRenta", "ERROR", "NO PUEDE SER MAYOR MENOR AL VALOR TOTAl SIN IMPUESTOS, O MENOR A 0.");
+				AppJsfUtil.addErrorMessage("frmPorPagar", "Error", "No puede ser mayor menor al valor total sin impuestos, o menor a 0.");
+				flagError = true;
+				return;
 			}
 			cabeceraSelected.setValorretenido(cabeceraSelected.getValorretenidoiva().add(cabeceraSelected.getValorretenidorenta()));
 			cabeceraSelected.setValorapagar(
 					cabeceraSelected.getTotalconimpuestos().add(cabeceraSelected.getValorretenidoiva().negate())
 							.add(cabeceraSelected.getValorretenidorenta().negate()).setScale(2, RoundingMode.HALF_UP));
-			
+			flagError = false;
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmPorPagar", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -138,22 +157,29 @@ public class PorPagarCtrl extends BaseCtrl {
 			
 			if(adquisicionSelected.getValorretenidoiva().doubleValue()<0 || adquisicionSelected.getValorretenidoiva().doubleValue()>adquisicionSelected.getTotaliva().doubleValue()) {
 				adquisicionSelected.setValorretenidoiva(BigDecimal.ZERO);
-				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetIva", "ERROR", "NO PUEDE SER MAYOR AL VALOR DEL IVA, O MENOR A 0.");
+				AppJsfUtil.addErrorMessage("frmPorPagar", "Error", "No puede ser mayor al valor del iva, o menor a 0.");
+				flagError = true;
+				return;
 			}
 			
 			if(adquisicionSelected.getValorretenidorenta().doubleValue()<0 || adquisicionSelected.getValorretenidorenta().doubleValue()>adquisicionSelected.getSubtotal().doubleValue()) {
 				adquisicionSelected.setValorretenidorenta(BigDecimal.ZERO);
-				AppJsfUtil.addErrorMessage("frmPorPagar:intValRetRenta", "ERROR", "NO PUEDE SER MAYOR MENOR AL VALOR TOTAl SIN IMPUESTOS, O MENOR A 0.");
+				AppJsfUtil.addErrorMessage("frmPorPagar", "Error", "No puede ser mayor menor al valor total sin impuestos, o menor a 0.");
+				flagError = true;
+				return;
 			}
 			
 			adquisicionSelected.setTotalretencion(adquisicionSelected.getValorretenidoiva().add(adquisicionSelected.getValorretenidorenta()));
 			adquisicionSelected.setTotalpagar(
 					adquisicionSelected.getTotalfactura().add(adquisicionSelected.getValorretenidoiva().negate())
 							.add(adquisicionSelected.getValorretenidorenta().negate()).setScale(2, RoundingMode.HALF_UP));
-			
+			flagError = false;
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmPorPagar", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -164,7 +190,10 @@ public class PorPagarCtrl extends BaseCtrl {
 			consultar(idCabeceraSelected);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmPorPagar", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -176,6 +205,10 @@ public class PorPagarCtrl extends BaseCtrl {
 			Pago p = null;
 			switch (callModule) {
 			case "MAIN_POR_COBRAR" :
+				calcular();
+				if(flagError) {
+					return;
+				}
 				cabeceraServicio.actualizar(cabeceraSelected);
 				pagoList = pagoServicio.getPagoDao().getByIdCabecera(cabeceraSelected.getIdcabecera());
 				// como es credito solo dejar un valor de pago
@@ -186,6 +219,10 @@ public class PorPagarCtrl extends BaseCtrl {
 				p.setTotal(cabeceraSelected.getValorapagar());
 				break;
 			case "MAIN_POR_PAGAR" :
+				calcularAdquisicion();
+				if(flagError) {
+					return;
+				}
 				adquisicionServicio.actualizar(adquisicionSelected);
 				pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(adquisicionSelected.getIdadquisicion());
 				// como es credito solo dejar un valor de pago
@@ -226,7 +263,10 @@ public class PorPagarCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmPorPagar", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -382,6 +422,34 @@ public class PorPagarCtrl extends BaseCtrl {
 	 */
 	public void setCuentaPagarCtrl(CuentaPagarCtrl cuentaPagarCtrl) {
 		this.cuentaPagarCtrl = cuentaPagarCtrl;
+	}
+
+	/**
+	 * @return the porcentajeRetRenta
+	 */
+	public BigDecimal getPorcentajeRetRenta() {
+		return porcentajeRetRenta;
+	}
+
+	/**
+	 * @param porcentajeRetRenta the porcentajeRetRenta to set
+	 */
+	public void setPorcentajeRetRenta(BigDecimal porcentajeRetRenta) {
+		this.porcentajeRetRenta = porcentajeRetRenta;
+	}
+
+	/**
+	 * @return the porcentajeRetIva
+	 */
+	public BigDecimal getPorcentajeRetIva() {
+		return porcentajeRetIva;
+	}
+
+	/**
+	 * @param porcentajeRetIva the porcentajeRetIva to set
+	 */
+	public void setPorcentajeRetIva(BigDecimal porcentajeRetIva) {
+		this.porcentajeRetIva = porcentajeRetIva;
 	}
 
 }
