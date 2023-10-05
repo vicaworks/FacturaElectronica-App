@@ -8,39 +8,64 @@
 	
 	<style type="text/css">
 		
-		.otrosPagosDT2 .ui-datatable-scrollable-body{
-			min-height: 5vh !important;
-			max-height: 20vh !important;
+		.pagosDT .ui-datatable-scrollable-body{
+			min-height: 15vh !important;
+			max-height: 25vh !important;
 		}
 		
-		.pagosDT .ui-datatable-scrollable-body{
-			min-height: 20vh !important;
-			max-height: 20vh !important;
+		.otrosPagosDT .ui-datatable-scrollable-body{
+			min-height: 5vh !important;
+			max-height: 10vh !important;
 		}
 		
 		.heightFrmPagos{
-			height: calc(100vh - 135px)!important;
+			height: calc(100vh - 300px)!important;
 		}
 		
 	</style>
 	
-	<p:dialog header="Pagos" widgetVar="dlgPagosForm" modal="true" responsive="true" width="95%" closeOnEscape="true" styleClass="modalResponsivo" >
+	<p:dialog 
+		header="Pagos" 
+		widgetVar="dlgPagosForm" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:900px;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo" >
 		
 		<h:form id="formPagos">
 		
 			<!-- OPCIONES -->
-			<div class="formgroup-inline">
-				
+			
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton id="cmdCCRefrescar"
-					value="REFRESCAR" icon="fa fa-repeat" styleClass="ui-button-outlined mr-1 min-width-100" 
-					action="#{pagoCtrl.refrescarPagosForm()}" process="@this" update="@form" 
+					value="Refrescar" 
+					icon="fa fa-repeat fs-12" 
+					styleClass="ui-button-outlined min-width-100 fs-12" 
+					action="#{pagoCtrl.refrescarPagosForm()}" 
+					process="@this" 
+					update="@form" 
 					/>
+					
 				<p:commandButton id="cmdCCGuardar"
-					value="GUARDAR" icon="fa fa-floppy-o" action="#{pagoCtrl.guardar()}" update="@form :formMain" styleClass=" mr-1 min-width-100"/>
+					value="Guardar" 
+					icon="fa fa-floppy-disk fs-12" 
+					action="#{pagoCtrl.guardar()}" 
+					update="@form :formMain" 
+					styleClass="ui-button-success min-width-100 fs-12"/>
+					
 				<p:commandButton id="cmdCCCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
+					value="Cerrar" 
+					icon="fa fa-sign-out fs-12" 
+					styleClass="ui-button-outlined ui-button-secondary min-width-100 fs-12" 
 					onclick="PF('dlgPagosForm').hide()" immediate="true"  
 					/>
+			</div>
+			
+			<div class="formgroup-inline">
+				
 			</div>
 			
 			<!-- Mensajes -->
@@ -51,133 +76,26 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightFrmPagos contenedorFormulario" style="padding: 5px;">
+			<div class="w-full overflow-auto heightFrmCajaChica contenedorFormulario mt-2 pr-1 ui-fluid fs-12">
 				
-				<div class="w-full mt-1">
-					<span class="block Fs14 font-bold">Otros Pagos</span>
-					<p:dataTable id="otrosPagosDT"
-	        			scrollable="true"
-	        			value="#{pagoCtrl.pagoOtrosList}"
-	        			var="p"
-	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="otrosPagosDT mt-2"  
-						rowKey="#{p.idpago}">
-						
-						<p:column headerText="TIPO PAGO" style="width:50px;">
-							<h:outputText value="#{p.tipopago.nombre}" />
-						</p:column>
-						
-						<p:column headerText="VALOR" style="width:40px;" styleClass="text-right">
-							<h:outputText value="#{p.total}" styleClass="text-gray-700 font-medium">
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="IMPORTE" style="width:40px;" styleClass="text-right">
-							<h:outputText value="#{p.valorentrega}" styleClass="#{p.valorentrega.doubleValue()>0.0?' text-green-700':' opacity-60'}">
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="CAMBIO" style="width:40px;" styleClass="text-right">
-							<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0.0?' text-pink-400':' opacity-60'}">
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="BANCO" style="width:80px;">
-							<h:outputText value="#{p.nombrebanco}" >
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="NUM. DOCUMENTO" style="width:80px;" styleClass="text-right">
-							<h:outputText value="#{p.numerodocumento}" >
-							</h:outputText>
-						</p:column>
-						
-						
-					</p:dataTable>
+				<div style="width: 99.5%!important;">
 					
-					<span class="block Fs14 font-bold my-2">Adeudado</span>
-					<div class="flex">
-						<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-						<p:commandLink action="#{pagoCtrl.nuevoPago()}" styleClass="text-gray-700">
-							<i class="fa fa-plus Fs14 mr-1"/>
-							<span class="Fs12">Agregar Pago</span>
-						</p:commandLink>
-					</div>
-					
-					<p:dataTable id="pagosDT"
-	        			scrollable="true"
-	        			value="#{pagoCtrl.pagoList}"
-	        			var="f"
-	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pagosDT mt-1"  
-						rowKey="#{f.idpago}">
-						
-						<p:column headerText="OPC" style="width:30px;" styleClass="TexAlCenter">
-							
-							<div class="flex flex-inline justify-content-center">
-								<p:commandLink action="#{pagoCtrl.eliminarCredito()}" process="@this :formPagos:pagosDT" update=":formPagos" styleClass="mr-2">
-									<i class="fa fa-trash-o Fs14" style="color:#2f2f2f;"></i>
-									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-									<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
-								</p:commandLink>
-								<p:commandLink process="@this" update=":formPagoRegistro" oncomplete="PF('dlgFormPago').show();">
-									<i class="fa fa-edit Fs14" style="color:#2f2f2f;"></i>
-									<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
-								</p:commandLink>
+					<span class="text-2xl text-gray-900 my-1 block">Valor a pagar</span>
+					<div class="flex justify-content-center gap-2 align-items-center">
+						<div class="flex flex-column gap-1 align-items-center">
+							<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="fs-14 text-gray-800 fw-5">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<div class="flex gap-1 fs-12 text-gray-600 align-items-baseline">
+								Valor a <span class="fs-14 fw-5 text-gray-900">pagar</span>
 							</div>
-							
-						</p:column>
+						</div>
 						
-						<p:column headerText="FECHA PAGO" style="width:70px;">
-							<h:outputText value="#{f.fechapago}" styleClass="#{pagoCtrl.isPagoVencimiento(f)?'markRed':''}">
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="PLAZO" style="width:40px;" styleClass="text-right">
-							<h:outputText value="#{f.plazo}" >
-								<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="VALOR PAGO" style="width:80px;" styleClass="text-right">
-							<h:outputText value="#{f.total}" styleClass="text-gray-600 font-bold">
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="" style="width:25px;" styleClass="TexAlCenter">
-							<p:commandLink update="@form" action="#{pagoCtrl.aplicarAbonoAction()}">
-								<i class="Fs18 text-gray-800 fa fa-hand-o-right"/>
-								<f:setPropertyActionListener value="#{f.total}" target="#{f.valorpago}"/>
-							</p:commandLink>
-						</p:column>
-						
-						<p:column headerText="ABONO" style="width:70px;" styleClass="dt-spinner">
-							<p:spinner id="insDetpagValPago" value="#{f.valorpago}" min="0" max="#{f.total}" decimalPlaces="2" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" styleClass="w-full" >
-								<p:ajax listener="#{pagoCtrl.aplicarAbonoAction()}" update="@form" process="@this :formPagos:pagosDT"/>
-							</p:spinner>
-							<p:message for="insDetpagValPago"/>
-						</p:column>
-						
-						<p:column headerText="NOTAS" style="width:150px;">
-							
-							<p:inputTextarea value="#{f.notas}" maxlength="500" styleClass="w-full" rows="1" style="padding:0.2em !important;height:22px!important;max-height:66px!important;">
-							</p:inputTextarea>
-							
-						</p:column>
-						
-					</p:dataTable>	
-					
-					<span class="block Fs14 font-bold my-2">Valor a Pagar</span>
-					<div class="flex">
-						<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-						<p:commandLink action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_COBRAR'}" styleClass="min-width-100 text-gray-800">
-							<i class="fa fa-edit Fs14 mr-1"/>
-							<span class="Fs12">Editar</span>
+						<p:commandLink action="#{porPagarCtrl.cargar()}" 
+							rendered="#{pagoCtrl.callModule=='CUENTAS_COBRAR'}" 
+							styleClass="flex px-3" 
+							style="border-right: 1px solid #adb5bd;">
+							<i class="fa fa-edit fs-20"></i>
 							<f:setPropertyActionListener value="MAIN_POR_COBRAR" target="#{porPagarCtrl.callModule}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idCabeceraSelected}"/>
@@ -186,9 +104,11 @@
 							<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
 						</p:commandLink>
 						
-						<p:commandLink action="#{porPagarCtrl.cargar()}" rendered="#{pagoCtrl.callModule=='CUENTAS_PAGAR'}" styleClass="min-width-100 text-gray-800">
-							<i class="fa fa-edit Fs14 mr-1"/>
-							<span class="Fs12">Editar</span>
+						<p:commandLink action="#{porPagarCtrl.cargar()}" 
+							rendered="#{pagoCtrl.callModule=='CUENTAS_PAGAR'}" 
+							styleClass="flex px-3" 
+							style="border-right: 1px solid #adb5bd;">
+							<i class="fa fa-edit fs-20"></i>
 							<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl}" target="#{porPagarCtrl.pagoCtrl}"/>
 							<f:setPropertyActionListener value="#{pagoCtrl.idComprobante}" target="#{porPagarCtrl.idAdquisicionSelected}"/>
@@ -197,46 +117,155 @@
 							<f:setPropertyActionListener value="formPagos" target="#{porPagarCtrl.viewUpdate}"/>
 						</p:commandLink>
 						
+						<div class="flex flex-column gap-1 align-items-center pl-3">
+							<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="fs-14 #{cuentaCobrarCtrl.totalVencido > 0 ? 'fw-5 text-pink-400':''}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<div class="flex gap-1 fs-12 text-gray-600 align-items-baseline">
+								Saldo <span class="fs-14 fw-5 text-gray-900">pendiente</span>
+							</div>
+						</div>
 					</div>
+					
+					<span class="text-2xl text-gray-900 my-1 block">Otros pagos</span>
+					<p:dataTable id="otrosPagosDT"
+	        			scrollable="true"
+	        			value="#{pagoCtrl.pagoOtrosList}"
+	        			var="p"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="otrosPagosDT fs-11"  
+						rowKey="#{p.idpago}">
+						
+						<p:column headerText="Tipo pago" style="width:50px;">
+							<h:outputText value="#{p.tipopago.nombre}" />
+						</p:column>
+						
+						<p:column headerText="Valor" style="width:40px;" styleClass="text-center">
+							<div class="flex justify-content-end">
+								<h:outputText value="#{p.total}" styleClass="text-gray-900">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+						</p:column>
+						
+						<p:column headerText="Importe" style="width:40px;" styleClass="text-center">
+							<div class="flex justify-content-end">
+								<h:outputText value="#{p.valorentrega}" styleClass="#{p.valorentrega.doubleValue()>0.0?' text-green-900':' opacity-60'}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+						</p:column>
+						
+						<p:column headerText="cambio" style="width:40px;" styleClass="text-center">
+							<div class="flex justify-content-end">
+								<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0.0?' text-gray-900':' opacity-60'}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+						</p:column>
+						
+						<p:column headerText="Banco" style="width:80px;">
+							<h:outputText value="#{p.nombrebanco}" >
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="Documento" style="width:80px;">						
+							<h:outputText value="#{p.numerodocumento}" >
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+					
+					<span class="text-2xl text-gray-900 my-1 block">Crédito</span>
+					<div class="tool-bar">
+						<i class="fa-solid fa-ellipsis-vertical"></i>
+						<p:commandButton
+							value="Agregar" icon="fa fa-plus fs-13" 
+							action="#{pagoCtrl.nuevoPago()}" 
+							styleClass="ui-button-outlined fs-13 "
+							style="max-width:100px;"
+						/>
+					</div>
+					<p:dataTable id="pagosDT"
+	        			scrollable="true"
+	        			value="#{pagoCtrl.pagoList}"
+	        			var="f"
+	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
+						styleClass="pagosDT mt-1 fs-12"  
+						rowKey="#{f.idpago}">
+						
+						<p:column headerText="Opc" style="width:20px;">
+							
+							<div class="flex justify-content-start">
+								<p:commandLink action="#{pagoCtrl.eliminarCredito()}" 
+									process="@this :formPagos:pagosDT" 
+									update=":formPagos">
+									<i class="fa fa-trash-o fs-14 text-gray-900"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+									<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
+								</p:commandLink>
+								<p:commandLink process="@this" 
+									update=":formPagoRegistro" 
+									oncomplete="PF('dlgFormPago').show();">
+									<i class="fa fa-edit fs-14 text-gray-900"></i>
+									<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
+								</p:commandLink>
+							</div>
+							
+						</p:column>
+						
+						<p:column headerText="Fecha de pago" style="width:80px;">
+							<h:outputText value="#{f.fechapago}" styleClass="fs-10 #{pagoCtrl.isPagoVencimiento(f) ? 'ui-tag ui-widget ui-tag-danger' : ''}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="Plazo" style="width:40px;" styleClass="text-center">
+							<div class="flex justify-content-end">
+								<h:outputText value="#{f.plazo}" >
+									<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+								</h:outputText>
+							</div>
+						</p:column>
+						
+						<p:column headerText="Valor" style="width:80px;" styleClass="text-center">
+							<div class="flex justify-content-end">
+								<h:outputText value="#{f.total}" styleClass="text-gray-800 fw-5">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+							</div>
+						</p:column>
+						
+						<p:column headerText="" style="width:25px;" >
+							<p:commandLink update="@form" 
+								action="#{pagoCtrl.aplicarAbonoAction()}"
+								styleClass="flex justify-content-center"
+								title="Pagar todo">
+								<i class="fa-solid fa-circle-chevron-right fs-16"></i>
+								<f:setPropertyActionListener value="#{f.total}" target="#{f.valorpago}"/>
+							</p:commandLink>
+						</p:column>
+						
+						<p:column headerText="Pago" style="width:70px;">
+							
+							<p:inputNumber id="insDetpagValPago" value="#{f.valorpago}" 
+                                minValue="0" maxValue="#{f.total}" required="true">
+								<p:ajax listener="#{pagoCtrl.aplicarAbonoAction()}" update="@form" process="@this :formPagos:pagosDT"/>
+                            </p:inputNumber>
+                            
+						</p:column>
+						
+						<p:column headerText="NOTAS" style="width:150px;">
+							
+							<p:inputTextarea value="#{f.notas}" maxlength="500" rows="1" style="padding:0.2em !important;max-height:66px!important;">
+							</p:inputTextarea>
+							
+						</p:column>
+						
+					</p:dataTable>
 					
 					<div class="grid">
 						
 						<div class="col-12 md:col-6 align-self-center">
-							
-							<div class="grid grid-nogutter">
-								<div class="col-6 border-round border-right-2 border-gray-200" style="background-color: #F5F9F9;">
-									<div class="flex justify-content-center">
-										<div class="flex flex-column">
-											<div class="w-full py-2 pl-3 text-center">
-												<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="Fs18 text-gray-700 font-bold">
-													<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-												</h:outputText>
-											</div>
-											<div class="w-full py-1 pl-2">
-												<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-												<span class="Fs12 text-gray-600 font-semibold">VALOR A PAGAR</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-6">
-									<div class="flex justify-content-center">
-										<div class="flex flex-column">
-											<div class="w-full py-2 pl-3 text-center">
-												<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="Fs18 #{cuentaCobrarCtrl.totalVencido>0?'font-bold text-pink-600':''}">
-													<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-												</h:outputText>
-											</div>
-											<div class="w-full py-1 pl-2">
-												<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-												<span class="Fs12 text-gray-600 font-semibold">ADEUDADO</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								
-							</div>
 							
 						</div>
 						
@@ -245,23 +274,23 @@
 							<div class="grid grid-nogutter justify-content-between">
 								<div class="col-8 py-2">
 									<div class="w-full">
-										<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
-										<span class="Fs14 text-blue-600 font-medium">RESUMEN</span>
+										<span class="fs-10 mr-1 text-gray-900">TOTAL</span>
+										<span class="fs-14 text-blue-600 font-medium">RESUMEN</span>
 									</div>
 								</div>
 								<div class="col-1 text-center align-self-center">
-									<i class="fa fa-angle-down Fs14"></i>
+									<i class="fa fa-angle-down fs-14"></i>
 								</div>
 								<div class="col-12 mt-1">
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs10">
+										<div class="flex flex-grow-1 fs-11 align-items-center">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="Otros pagos" /></span>
 										</div>						
-										<div class="flex flex-grow-1">
+										<div class="flex flex-grow-1 fs-10 ">
 											<div class="text-right pr-3 w-full">
-												<h:outputText value="#{pagoCtrl.totalOtrosPago}" styleClass="Fs14 text-gray-600 font-medium">
+												<h:outputText value="#{pagoCtrl.totalOtrosPago}" styleClass="fs-14 text-gray-900">
 								   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								   				</h:outputText>
 											</div>
@@ -269,13 +298,13 @@
 									</div>
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs10">
+										<div class="flex flex-grow-1 fs-11 align-items-center">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="Adeudado" /></span>
 										</div>						
 										<div class="flex flex-grow-1">
 											<div class="text-right pr-3 w-full">
-												<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="Fs14 text-gray-600 font-medium">
+												<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="fs-14 text-gray-900">
 								   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								   				</h:outputText>
 											</div>
@@ -283,13 +312,13 @@
 									</div>
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs10">
+										<div class="flex flex-grow-1 fs-11 align-items-center">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
-											<span class="text-gray-800"><h:outputText value="Abono" /></span>
+											<span class="text-gray-800"><h:outputText value="Pagos crédito" /></span>
 										</div>						
 										<div class="flex flex-grow-1">
 											<div class="text-right pr-3 w-full">
-												<h:outputText value="#{pagoCtrl.totalAbono}" styleClass="Fs14 text-gray-600 font-medium">
+												<h:outputText value="#{pagoCtrl.totalAbono}" styleClass="fs-14 text-gray-900">
 								   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								   				</h:outputText>
 											</div>
@@ -297,26 +326,24 @@
 									</div>
 									
 									<div class="flex mt-1 border-bottom-1 border-gray-100 py-2">
-										<div class="flex flex-grow-1 Fs10">
+										<div class="flex flex-grow-1 fs-11 align-items-center">
 											<i class="fa fa-angle-right mr-1 font-bold"></i>
 											<span class="text-gray-800"><h:outputText value="Saldo" /></span>
 										</div>						
 										<div class="flex flex-grow-1">
 											<div class="text-right pr-3 w-full">
-												<h:outputText value="#{pagoCtrl.totalPago}" styleClass="Fs14 text-gray-600 font-medium">
+												<h:outputText value="#{pagoCtrl.totalAdeudado}" styleClass="fs-14 text-gray-900">
 								   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								   				</h:outputText>
 											</div>
 										</div>				
 									</div>
-										
-									<div class="EmptyBox10"/>
 								</div>
 							</div>
 							
 						</div>
 						
-					</div>
+					</div><!-- Totales -->
 					
 				</div>
 				
