@@ -82,9 +82,9 @@ public class CuentaPagarCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			establecimientoFacade(establecimientoServicio, false);
-			idTipocomprobante = "T";
 			totalPagar = BigDecimal.ZERO;
 			totalVencido = BigDecimal.ZERO;
+			idTipocomprobante = "T";
 			hasta = new Date();
 			desde = FechaUtil.agregarDias(hasta, -31);
 			consultar();

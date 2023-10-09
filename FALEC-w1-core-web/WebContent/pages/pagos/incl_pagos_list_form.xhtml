@@ -193,13 +193,13 @@
 						styleClass="pagosDT mt-1 fs-12"  
 						rowKey="#{f.idpago}">
 						
-						<p:column headerText="Opc" style="width:20px;">
+						<p:column headerText="Opc" style="width:30px;">
 							
-							<div class="flex justify-content-start">
+							<div class="flex justify-content-start gap-2">
 								<p:commandLink action="#{pagoCtrl.eliminarCredito()}" 
 									process="@this :formPagos:pagosDT" 
 									update=":formPagos">
-									<i class="fa fa-trash-o fs-14 text-gray-900"></i>
+									<i class="fa-regular fa-trash-can fs-14 text-gray-900"></i>
 									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 									<f:setPropertyActionListener value="#{f}" target="#{pagoCtrl.pagoSelected}"/>
 								</p:commandLink>

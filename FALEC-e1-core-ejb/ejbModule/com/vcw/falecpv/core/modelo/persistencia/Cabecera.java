@@ -288,6 +288,9 @@ public class Cabecera implements Serializable {
     private BigDecimal total = BigDecimal.ZERO;
     
     @Transient
+    private BigDecimal otrosPagos = BigDecimal.ZERO;
+    
+    @Transient
     private int cantidadDestinatario = 0;
     
     @Transient
@@ -335,6 +338,9 @@ public class Cabecera implements Serializable {
     
     @Transient
     private String contenidoEmail = null;
+    
+    @Transient
+    private BigDecimal totalCredito = BigDecimal.ZERO;
     
     
     /**
@@ -1619,5 +1625,33 @@ public class Cabecera implements Serializable {
 	 */
 	public void setContenidoEmail(String contenidoEmail) {
 		this.contenidoEmail = contenidoEmail;
+	}
+
+	/**
+	 * @return the otrosPagos
+	 */
+	public BigDecimal getOtrosPagos() {
+		return otrosPagos;
+	}
+
+	/**
+	 * @param otrosPagos the otrosPagos to set
+	 */
+	public void setOtrosPagos(BigDecimal otrosPagos) {
+		this.otrosPagos = otrosPagos;
+	}
+
+	/**
+	 * @return the totalCredito
+	 */
+	public BigDecimal getTotalCredito() {
+		return totalCredito;
+	}
+
+	/**
+	 * @param totalCredito the totalCredito to set
+	 */
+	public void setTotalCredito(BigDecimal totalCredito) {
+		this.totalCredito = totalCredito;
 	}
 }

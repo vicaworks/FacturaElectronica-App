@@ -3,7 +3,10 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -36,19 +39,45 @@ public class VComprobantescreditoDao extends AppGenericDao<VComprobantescredito,
 	 * @throws DaoException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,Tipocomprobante tipocomprobante,String criterio,String criterioCliente)throws DaoException{
+	public List<VComprobantescredito> getByCuentasCobrar(String idEstablecimiento,
+			String idTipoComprobante,
+			List<Tipocomprobante> tipocomprobanteList,
+			String criterio,
+			String criterioCliente,
+			Date desde,
+			Date hasta)throws DaoException{
 		try {
-			
+			List<String> comprobantes = new ArrayList<>();
 			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantescredito c WHERE c.idestablecimiento=:idestablecimiento  " 
-			+ (tipocomprobante!=null?" AND c.idtipocomprobante=:idtipocomprobante ":" ") 
+			+ (idTipoComprobante!=null?" AND c.idtipocomprobante in (:idtipocomprobante) ":" ") 
 			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":"  ")
 			+ ((criterioCliente!=null && criterioCliente.trim().length()>0)?" AND c.identificacion=:identificacion ":" ")
-			+ ((criterioCliente==null || criterioCliente.trim().length()==0) && (criterio==null || criterio.trim().length()==0)?" AND c.abono < c.totalpago ":" ")
-			+ " ORDER BY c.fechaemision " + ((criterioCliente!=null && criterioCliente.trim().length()>0)?" DESC ":" "));
+			//+ ((criterioCliente==null || criterioCliente.trim().length()==0) && (criterio==null || criterio.trim().length()==0) ? " " )
+			+ (!idTipoComprobante.equals("H") ? " AND c.abono < c.totalpago " : " ")
+			+ (desde != null && idTipoComprobante.equals("H") ? " AND c.fechaemision BETWEEN :desde AND :hasta " : " ")
+			+ " ORDER BY c.fechaemision ");
+			//+ " ORDER BY c.fechaemision " + ((criterioCliente!=null && criterioCliente.trim().length()>0)?" DESC ":" "));
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);
-			if(tipocomprobante!=null) {
-				q.setParameter("idtipocomprobante", tipocomprobante.getIdtipocomprobante());
+			if(idTipoComprobante!=null) {
+				switch (idTipoComprobante) {
+				case "H":
+					comprobantes.addAll(tipocomprobanteList.stream().map(x->x.getIdtipocomprobante()).collect(Collectors.toList()));
+					break;
+					
+				case "T":
+					comprobantes.addAll(tipocomprobanteList.stream().map(x->x.getIdtipocomprobante()).collect(Collectors.toList()));
+					break;
+
+				default:
+					comprobantes.add(idTipoComprobante);
+					break;
+				}
+				q.setParameter("idtipocomprobante", comprobantes);
+			}
+			if(desde != null && idTipoComprobante.equals("H")) {
+				q.setParameter("desde", desde);
+				q.setParameter("hasta", hasta);
 			}
 			if(criterio!=null&&criterio.trim().length()>0) {
 				q.setParameter("numdocumento", criterio);

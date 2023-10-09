@@ -97,6 +97,7 @@ public class PorPagarCtrl extends BaseCtrl {
 				
 				if(idCabeceraSelected!=null) {
 					consultar(idCabeceraSelected);
+					calcular();
 				}
 					
 				break;
@@ -104,6 +105,7 @@ public class PorPagarCtrl extends BaseCtrl {
 			case "MAIN_POR_PAGAR":
 				
 				adquisicionSelected = adquisicionServicio.consultarByPk(idAdquisicionSelected);
+				calcularAdquisicion();
 				
 				break;	
 			default:
@@ -142,6 +144,14 @@ public class PorPagarCtrl extends BaseCtrl {
 			cabeceraSelected.setValorapagar(
 					cabeceraSelected.getTotalconimpuestos().add(cabeceraSelected.getValorretenidoiva().negate())
 							.add(cabeceraSelected.getValorretenidorenta().negate()).setScale(2, RoundingMode.HALF_UP));
+			
+			cabeceraSelected.setOtrosPagos(pagoServicio.getPagoDao().getByCabeceraOtrosPagos(cabeceraSelected.getIdcabecera()));
+			
+			cabeceraSelected.setTotalCredito(
+					cabeceraSelected.getValorapagar().add(cabeceraSelected.getOtrosPagos().negate())
+						.setScale(2, RoundingMode.HALF_UP)
+					);
+			
 			flagError = false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -173,6 +183,13 @@ public class PorPagarCtrl extends BaseCtrl {
 			adquisicionSelected.setTotalpagar(
 					adquisicionSelected.getTotalfactura().add(adquisicionSelected.getValorretenidoiva().negate())
 							.add(adquisicionSelected.getValorretenidorenta().negate()).setScale(2, RoundingMode.HALF_UP));
+			adquisicionSelected.setOtrosPagos(
+					pagoServicio.getPagoDao().getByIdAdquisiscionOtrospagos(adquisicionSelected.getIdadquisicion())
+					);
+			adquisicionSelected.setTotalCredito(
+					adquisicionSelected.getTotalpagar().add(adquisicionSelected.getOtrosPagos().negate())
+						.setScale(2, RoundingMode.HALF_UP)
+					);
 			flagError = false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,13 +227,13 @@ public class PorPagarCtrl extends BaseCtrl {
 					return;
 				}
 				cabeceraServicio.actualizar(cabeceraSelected);
-				pagoList = pagoServicio.getPagoDao().getByIdCabecera(cabeceraSelected.getIdcabecera());
+				pagoList = pagoServicio.getPagoDao().getByIdCabecera(cabeceraSelected.getIdcabecera(), "6");
 				// como es credito solo dejar un valor de pago
-				pagoServicio.getPagoDao().eliminarByCabecera(cabeceraSelected.getIdcabecera());
+				pagoServicio.getPagoDao().eliminarByCabecera(cabeceraSelected.getIdcabecera(), "6");
 				// todos los valores 
 				p = pagoList.get(0);
 				p.setNotas("");
-				p.setTotal(cabeceraSelected.getValorapagar());
+				p.setTotal(cabeceraSelected.getTotalCredito());
 				break;
 			case "MAIN_POR_PAGAR" :
 				calcularAdquisicion();
@@ -224,13 +241,13 @@ public class PorPagarCtrl extends BaseCtrl {
 					return;
 				}
 				adquisicionServicio.actualizar(adquisicionSelected);
-				pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(adquisicionSelected.getIdadquisicion());
+				pagoList = pagoServicio.getPagoDao().getByIdAdquisicion(adquisicionSelected.getIdadquisicion(),"6");
 				// como es credito solo dejar un valor de pago
-				pagoServicio.getPagoDao().eliminarByAdquisicion(adquisicionSelected.getIdadquisicion());
+				pagoServicio.getPagoDao().eliminarByAdquisicion(adquisicionSelected.getIdadquisicion(), "6");
 				// todos los valores 
 				p = pagoList.get(0);
 				p.setNotas("");
-				p.setTotal(adquisicionSelected.getTotalpagar());
+				p.setTotal(adquisicionSelected.getTotalCredito());
 				break;
 			default:
 				break;

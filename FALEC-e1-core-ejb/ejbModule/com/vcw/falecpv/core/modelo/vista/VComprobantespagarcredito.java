@@ -97,6 +97,9 @@ public class VComprobantespagarcredito implements Serializable {
     @Transient
     private String filtroProveedor;
     
+    @Transient
+    private BigDecimal totalOtrosPagos;
+    
     public VComprobantespagarcredito() {
     }
     
@@ -490,6 +493,23 @@ public class VComprobantespagarcredito implements Serializable {
 	 */
 	public void setFiltroProveedor(String filtroProveedor) {
 		this.filtroProveedor = filtroProveedor;
+	}
+
+	/**
+	 * @return the totalOtrosPagos
+	 */
+	public BigDecimal getTotalOtrosPagos() {
+		totalOtrosPagos = (getPagoOtrosList() != null && !getPagoOtrosList().isEmpty()) ?
+				BigDecimal.valueOf(getPagoOtrosList().stream().mapToDouble(x -> x.getTotal().doubleValue()).sum()) :
+				BigDecimal.ZERO;
+		return totalOtrosPagos;
+	}
+
+	/**
+	 * @param totalOtrosPagos the totalOtrosPagos to set
+	 */
+	public void setTotalOtrosPagos(BigDecimal totalOtrosPagos) {
+		this.totalOtrosPagos = totalOtrosPagos;
 	}
 
 }

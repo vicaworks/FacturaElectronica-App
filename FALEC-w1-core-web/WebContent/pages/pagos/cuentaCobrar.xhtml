@@ -14,17 +14,8 @@
         
         	.pvUnoDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 340px)!important;				
+				height: calc(100vh - 380px)!important;				
 			}
-			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			.ui-menu {width: 190px;}
-			
-			body .ui-datatable .ui-datatable-data > tr > td	{vertical-align: top;}
-			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}
-			
 			
         </style>
     </ui:define>
@@ -38,24 +29,19 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Pagos menú" url="#{request.contextPath}/pages/pagos/pagos.jsf"/>
-		    <p:menuitem value="Pagos" url="#{request.contextPath}/pages/pagos/pagoEmitido.jsf"/>
+		    <!-- <p:menuitem value="Pagos" url="#{request.contextPath}/pages/pagos/pagoEmitido.jsf"/> -->
 		</p:breadCrumb>
     	
     	<!-- Reporte global -->
 	    <h:form id="formMain">		   	
-		   	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<div class="card card-w-title">
-			
-				<div class="grid justify-content-between">
-	    			<div class="col-5 md:col-4">
-						<h3 class="cardTitle">Cuentas x Cobrar</h3>
-	    			</div>					
-					<div class="col-7 md:col-4 align-self-center" style="text-align: right;">
+		   	
+		   	
+		   	<div class="card mt-1">
+		   	              
+				<div class="flex justify-content-between align-items-baseline">
+					<h3 class="card__heading card__heading--noBorder fw-4">Cuentas x cobrar</h3>
+					<div class="flex justify-content-end" style="gap: .4rem;">
+						
 						<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{cuentaCobrarCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
@@ -68,115 +54,159 @@
 							<p:ajax event="valueChange" listener="#{cuentaCobrarCtrl.buscar()}" update="@form"/>
 								
 						</p:selectOneMenu>
-					</div>	                
-	    		</div>
+						
+					</div>
+				</div>
 				
-				<div class="grid">
-					<div class="col-12 md:col-5">
-						<div class="flex">
-							<div class="flex flex-column flex-grow-1 mr-1">
-    							<span class="Fs11 text-gray-800">Tipo Comprobante</span>
-	    						<p:selectOneMenu id="somTipoPago"
-									value="#{cuentaCobrarCtrl.tipocomprobante}"
+				
+				<p:outputPanel id="oupOpcBusqueda" class="grid ui-fluid main__opciones px-2 mt-2">
+					
+					<div class="col-12 md:col-4">
+						<div class="flex gap-1">
+							<div class="flex-1 field">
+								<label class="text-gray-800">Opción de consulta</label>	   							
+								<p:selectOneMenu id="somTipoPago"
+									value="#{cuentaCobrarCtrl.idTipocomprobante}"
 									converter="omnifaces.SelectItemsConverter"
 									required="false"
-									requiredMessage="REQUERIDO"
-									styleClass="w-full">
-									<f:selectItem itemLabel="TODOS" itemValue="#{null}"/>
+									requiredMessage="Requerido">
+									<f:selectItem itemLabel="CUENTAS POR COBRAR ACTIVAS" itemValue="T"/>
 									<f:selectItems value="#{cuentaCobrarCtrl.tipocomprobanteList}" var="u"
-													itemLabel="#{u.comprobante}" itemValue="#{u}" />	
-								</p:selectOneMenu>										
+													itemLabel="#{u.comprobante}" itemValue="#{u.idtipocomprobante}" />	
+									<f:selectItem itemLabel="CONSULTA HISTORIAL DE COBROS" itemValue="H"/>
+									<p:ajax listener="#{cuentaCobrarCtrl.seleccionarOpcion}" process="@this @form:somTipoPago" update="@form:oupOpcBusqueda"/>
+								</p:selectOneMenu>									
+								
 							</div>
-							<div class="flex flex-column flex-grow-1 mr-1">				
-								<span class="Fs11 text-gray-800">Num. Comprobante</span>
-				    			<p:inputMask id="inpRtnNumFac" value="#{cuentaCobrarCtrl.criterioBusqueda}" mask="999-999-999999999" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
+							<div class="flex-1 field">
+								<label class="text-gray-800">Número de comprobante</label>
+								<p:inputMask id="inpRtnNumFac" value="#{cuentaCobrarCtrl.criterioBusqueda}" mask="999-999-999999999" required="false" requiredMessage="Requerido" styleClass="w-full" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
 									<f:converter converterId="formatoNumComprobanteConverter"/>
 								</p:inputMask>
 							</div>
 						</div>
 					</div>
-					<div class="col-12 md:col-7">
-						<div class="flex">
-							<div class="flex flex-column flex-grow-1">
-    							<span class="Fs11 text-gray-800">Cliente</span>
-    							<div class="ui-inputgroup w-full">
-				                    <p:commandButton icon="pi pi-search" styleClass="ui-button-outlined" 
-				                    	process="@this :formMain:inpCriterioCliente" value="Identificación"
-										action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
-										<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{listaClienteCtrl.cuentaCobrarCtrl}"/>
-										<f:setPropertyActionListener value="cuentaCobrarCtrl" target="#{listaClienteCtrl.callModule}"/>
-										<f:setPropertyActionListener value=":formMain" target="#{listaClienteCtrl.viewUpdate}"/>
-										<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
-									</p:commandButton>
-				                    <p:inputText id="inpCriterioCliente"
-											value="#{cuentaCobrarCtrl.criterioCliente}" required="false"
-											requiredMessage="REQUERIDO" styleClass="w-full"
-											maxlength="13" placeholder="C.I. o RUC de Búsqueda"
-											validatorMessage="SOLO NUMEROS"
-											onkeydown="if(event.keyCode==13){event.keyCode=123;return false;}">
-										<f:validateRegex pattern="^\d+$" />
-									</p:inputText>
-				                </div>
-    						</div>
-    						<div class="flex flex-column flex-grow-0">
-    							<span class="Fs11 text-white">Cliente</span>
-    							<p:commandButton id="cmdGlobalBuscar"
-										icon="fa fa-search" value="Buscar"
-										action="#{cuentaCobrarCtrl.buscar()}" styleClass="ui-button-success mx-1" update="@form" title="Buscar"/>		
-    						</div>
-    					</div>
-    				</div>
-				</div>
-								
-				<div class="mt-1 grid " style="height: 60px!important;">
-					<div class="col-6 border-right-3 border-gray-200 border-round" style="background-color: #F7F9F9;">
-						<div class="flex justify-content-center h-full">
-							<div class="flex flex-column h-full justify-content-center">
-								<h:outputText value="#{cuentaCobrarCtrl.totalCobrar}" styleClass="Fs18 text-black font-bold text-center">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-								<div>
-									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-									<span class="Fs12 text-gray-600 font-semibold">ADEUDADO</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-6" >
-						<div class="flex justify-content-center h-full">
-							<div class="flex flex-column h-full justify-content-center">
-								<h:outputText value="#{cuentaCobrarCtrl.totalVencido}" styleClass="Fs18 text-black font-bold text-center #{cuentaCobrarCtrl.totalVencido>0?'font-bold text-pink-400':''}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-								<div>
-									<span class="Fs9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-									<span class="Fs12 text-gray-600 font-semibold">VENCIDO</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+					
 				
-				<div class="flex mt-2 align-items-center">
-					<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-					<p:commandLink id="cmdGlobalExcel" disabled="#{empty cuentaCobrarCtrl.vComprobantescreditoList}" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				
+					<div class="col-12 md:col-3">
+						<div class="field">
+							<label class="#{cuentaCobrarCtrl.idTipocomprobante == 'H' ? 'text-gray-800' : 'opacity-50'}">Fechas</label>
+							<div class="flex gap-1">
+								<p:calendar id="calRep1" value="#{cuentaCobrarCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy"
+									disabled="#{cuentaCobrarCtrl.idTipocomprobante != 'H'}">
+								</p:calendar>
+								<p:calendar id="calRep2" value="#{cuentaCobrarCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy"
+									disabled="#{cuentaCobrarCtrl.idTipocomprobante != 'H'}">
+								</p:calendar>
+								
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-12 md:col-3">
+						<div class="field">
+							<label class="text-gray-800">Cliente</label>
+							<div class="ui-inputgroup">
+			                    <p:commandButton icon="pi pi-search" styleClass="ui-button-success" 
+			                    	process="@this :formMain:inpCriterioCliente" 
+									action="#{listaClienteCtrl.cargarPantalla()}" 
+									immediate="true">
+									<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{listaClienteCtrl.cuentaCobrarCtrl}"/>
+									<f:setPropertyActionListener value="cuentaCobrarCtrl" target="#{listaClienteCtrl.callModule}"/>
+									<f:setPropertyActionListener value=":formMain" target="#{listaClienteCtrl.viewUpdate}"/>
+									<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
+								</p:commandButton> 
+			                    <p:inputText id="inpCriterioCliente"
+										value="#{cuentaCobrarCtrl.criterioCliente}" required="false"
+										requiredMessage="Requerido"
+										maxlength="13" 
+										placeholder="C.I. o RUC de Búsqueda"
+										validatorMessage="Solo números"
+										onkeydown="if(event.keyCode==13){event.keyCode=123;return false;}">
+									<f:validateRegex pattern="^\d+$" />
+								</p:inputText>
+			                </div>		
+						</div>
+					</div>
+					
+					<div class="mt-2 col-12 md:col-2 md:mt-0">
+						<div class="inline-flex gap-2 h-full align-items-end">
+							<p:commandButton id="cmdGlobalBuscar"
+								icon="fa fa-search" 
+								value="Buscar"
+								action="#{cuentaCobrarCtrl.buscar()}" 
+								styleClass="ui-button-success" 
+								update="@form" 
+								title="Buscar"/>							
+						</div>
+					</div>
+				
+				</p:outputPanel>
+				
+				<div class="contenedor">
+		    		<div class="cards_resumen_grid">
+			            <div class="card_resumen_f1 card_resumen_f1--red">
+			                <div class="card_resumen_f1__aside">
+			                    <i class="fa-solid fa-circle-minus"></i>
+			                </div>
+			                <div class="card_resumen_f1__content">
+			                    <div class="card_resumen_f1__value">
+			                        <h:outputText value="#{cuentaCobrarCtrl.totalVencido}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			                    </div>
+			                    <div class="card_resumen_f1__footer">
+			                        Total<span>VENCIDO</span>
+			                    </div>
+			                </div>
+			            </div>
+			
+			            <div class="card_resumen_f1 card_resumen_f1--primary">
+			                <div class="card_resumen_f1__aside">
+			                    <i class="fa-brands fa-paypal"></i>
+			                </div>
+			                <div class="card_resumen_f1__content">
+			                    <div class="card_resumen_f1__value">
+			                        <h:outputText value="#{cuentaCobrarCtrl.totalCobrar}">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+			                    </div>
+			                    <div class="card_resumen_f1__footer">
+			                        Total <span>POR COBRAR</span>
+			                    </div>
+			                </div>
+			            </div>
+			
+			        </div>
+	    		</div>
+				
+				<div class="flex mt-2 align-items-baseline gap-1">
+					<i class="fa fa-ellipsis-v fs-14 mr-2"/>
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty cuentaCobrarCtrl.vComprobantescreditoList}" styleClass="min-width-80" process="@this">
+						<div class="flex text-gray-900 gap-1">
+							<span class="text-black Fs12 font-light">Exportar</span>
+							<i class="fa fa-angle-down fs-14" />
 						</div>
 					</p:commandLink>
 					
 					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+						<p:menuitem value="Exportar excel" icon="fa-regular fa-file-excel fs-12" ajax="false">
 							<p:fileDownload value="#{cuentaCobrarCtrl.fileResumen}" contentDisposition="inline"/>
 						</p:menuitem>
-						<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+						<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list fs-12" ajax="false">
 							<p:fileDownload value="#{cuentaCobrarCtrl.fileDetalle}" contentDisposition="inline"/>
 						</p:menuitem>
 					</p:menu>
 				</div>
-			
-		    	<p:dataTable id="pvUnoDT"
+				
+				<p:dataTable id="pvUnoDT"
 		       			scrollable="true"
 		       			value="#{cuentaCobrarCtrl.vComprobantescreditoList}"
 		       			var="v"
@@ -190,21 +220,21 @@
 						rows="20"
 						rowsPerPageTemplate="10,15,20,25,30,35,40">
 					
-					<p:column headerText="OPC" style="width:10px;" styleClass="TexAlCenter">
+					<p:column headerText="Opc" style="width:2.5rem;">
 					
 						<p:commandLink id="cmlDtFacEmitidas">
-							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
 							
-							<p:menuitem value=" RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o">
+							<p:menuitem value="Ride" action="#{rideCtrl.showRide()}" icon="fa-regular fa-file-pdf fs-14">
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="COMP-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value=" Valor a Pagar" action="#{porPagarCtrl.cargar()}" icon="fa fa-edit">
+							<p:menuitem value="Valor a Cobrar" action="#{porPagarCtrl.cargar()}" icon="fa fa-edit fs-14">
 								<f:setPropertyActionListener value="MAIN_POR_COBRAR" target="#{porPagarCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{porPagarCtrl.cuentaCobrarCtrl}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idCabeceraSelected}"/>
@@ -213,7 +243,7 @@
 								<f:setPropertyActionListener value="#{null}" target="#{porPagarCtrl.pagoCtrl}"/>
 							</p:menuitem>
 							
-							<p:menuitem value=" Detalle de Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-external-link">
+							<p:menuitem value="Detalle de Pagos" action="#{pagoCtrl.cargarPagosForm()}" process="@this" icon="fa fa-external-link fs-12">
 								<f:setPropertyActionListener value="CUENTAS_COBRAR" target="#{pagoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{v.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
@@ -223,146 +253,95 @@
 						
 					</p:column>	
 					
-					<p:column headerText="COMPOBANTE" style="width:100px;" filterBy="#{v.comprobante}" filterMatchMode="contains">
-						<div class="flex flex-column">
-							<h:outputText value="#{v.comprobante}" styleClass="Fs10 text-gray-700"/>
-							<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="text-gray-700 font-medium Fs11">
-							</h:outputText>
+					
+					<p:column headerText="Comprobante" style="width:180px;" filterBy="#{v.filtroComprobante}" filterMatchMode="contains">
+						<div class="flex flex-column gap-1">
+							<h:outputText value="#{v.comprobante}" styleClass="text-gray-700"/>
+							<div class="flex justify-content-between">
+								<h:outputText value="#{compFacCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="text-gray-700 font-medium Fs11">
+								</h:outputText>
+								<h:outputText value="#{v.fechaemision}" >
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
+								
+							</div>
 						</div>
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:60px;" filterBy="#{v.fechaemision}" filterMatchMode="contains" styleClass="text-right">
-						<h:outputText value="#{v.fechaemision}" >
-							<f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="#{msg['label.identificacion']}" style="width:80px;" filterBy="#{v.identificacion}" filterMatchMode="contains" styleClass="text-right">
-						<h:outputText value="#{v.identificacion}" >
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="CLIENTE" style="width:230px;"  filterBy="#{v.razonsocial}" filterMatchMode="contains">
-						<h:outputText value="#{v.razonsocial}" styleClass="uppercase">
-						</h:outputText>
+					<p:column headerText="Cliente" style="width:20rem;"  filterBy="#{v.razonsocial}" filterMatchMode="contains">
+						<div class="flex flex-column gap-1">
+							<h:outputText value="#{v.identificacion}" styleClass="text-gray-900">
+							</h:outputText>
+							<h:outputText value="#{v.razonsocial}" styleClass="uppercase text-primary-600 fw-3">
+							</h:outputText>
+						</div>
 					</p:column>	
 					
-					<p:column headerText="ADEUDADO" style="width:90px;" styleClass="text-right">
-						<div class="flex flex-inline justify-content-end">
-							<h:outputText value="#{v.totalpago}" styleClass="text-gray-600 font-semibold mr-2" style="width:80px;">
+					<p:column headerText="#{msg['label.credito']}" style="width:150px;">
+						<div class="flex justify-content-between align-items-end mb-1">
+							<span class="text-gray-800 fw-5">Total con impuestos</span>
+							<h:outputText value="#{v.totalconimpuestos}" styleClass="text-gray-800 fw-5">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
-							<p:commandLink process="@this" id="cc_valComprobante">
-								<i class="fa fa-external-link Fs12" style="color:#2f2f2f;"/>
-							</p:commandLink>
-							<p:overlayPanel for="cc_valComprobante" style="width:250px">
-					            
-					            
-					            <div class="grid">
-									<div class="col-12">
-										<div class="grid grid-nogutter justify-content-between">
-											<div class="col-8 py-2">
-												<div class="w-full text-left">
-													<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
-													<span class="Fs14 text-blue-600 font-medium">COMPROBANTE</span>
-												</div>
-											</div>
-											<div class="col-1 text-center align-self-center">
-												<i class="fa fa-angle-down Fs14"></i>
-											</div>
-											<div class="col-12 mt-1">
-												<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-													<div class="flex flex-grow-1 Fs9">
-														<i class="fa fa-angle-right mr-1 font-bold"></i>
-														<span class="text-gray-800"><h:outputText value="TOTAL" /></span>
-													</div>						
-													<div class="flex flex-grow-1">
-														<div class="text-right pr-3 w-full">
-															<h:outputText value="#{v.totalconimpuestos}">
-																<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-															</h:outputText>
-														</div>
-													</div>				
-												</div>
-												
-												<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-													<div class="flex flex-grow-1 Fs9">
-														<i class="fa fa-angle-right mr-1 font-bold"></i>
-														<span class="text-gray-800"><h:outputText value="TOTAL RETENCIÓN" /></span>
-													</div>						
-													<div class="flex flex-grow-1">
-														<div class="text-right pr-3 w-full">
-															<p:commandLink action="#{porPagarCtrl.cargar()}">
-																<h:outputText value="#{v.totalretencion}" styleClass="underline">
-																	<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-																</h:outputText>
-																<f:setPropertyActionListener value="MAIN_POR_COBRAR" target="#{porPagarCtrl.callModule}"/>
-																<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{porPagarCtrl.cuentaCobrarCtrl}"/>
-																<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idCabeceraSelected}"/>
-																<f:setPropertyActionListener value="formMain" target="#{porPagarCtrl.callForm}"/>
-																<f:setPropertyActionListener value=":formMain" target="#{porPagarCtrl.viewUpdate}"/>
-																<f:setPropertyActionListener value="#{null}" target="#{porPagarCtrl.pagoCtrl}"/>
-															</p:commandLink>
-														</div>
-													</div>				
-												</div>
-												
-												<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-													<div class="flex flex-grow-1 Fs9">
-														<i class="fa fa-angle-right mr-1 font-bold"></i>
-														<span class="text-gray-800"><h:outputText value="A PAGAR" /></span>
-													</div>						
-													<div class="flex flex-grow-1">
-														<div class="text-right pr-3 w-full">
-															<h:outputText value="#{v.valorapagar}" styleClass="text-gray-600 font-semibold">
-																<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-															</h:outputText>
-														</div>
-													</div>				
-												</div>
-												
-												<div class="EmptyBox10"/>
-											</div>
-										</div>
-									</div>
-								</div>					            
-					        </p:overlayPanel>
 						</div>
-					</p:column>	
-					
-					<p:column headerText="ABONO" style="width:70px;" styleClass="text-right">
-						<h:outputText value="#{v.abono}" styleClass="#{v.abono>0?'text-gray-800 ':' opacity-60'}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+						<div class="flex justify-content-between align-items-end mb-1">
+							<span class="text-gray-900">Retención</span>
+							<h:outputText value="#{v.totalretencion}" styleClass="text-gray-900">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						<div class="flex justify-content-between align-items-end mb-1">
+							<span class="text-gray-900">Otros pagos</span>
+							<h:outputText value="#{v.totalOtrosPagos}" styleClass="text-gray-900">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						<div class="flex justify-content-between align-items-end">
+							<span class="text-primary-600 fw-5">Total crédito</span>
+							<h:outputText value="#{v.totalpago}" styleClass="text-primary-600 fw-5">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
 					</p:column>
 					
-					<p:column headerText="SALDO" style="width:70px;" styleClass="text-right">
-						<h:outputText value="#{v.totalpago-v.abono}" styleClass="#{(v.totalpago-v.abono)>0 and cuentaCobrarCtrl.isFechaVencida(v.fechapago)?' text-pink-400':' text-geen-600'}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+					
+					<p:column headerText="Abono" style="width:70px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.abono}" styleClass="#{v.abono>0?'text-gray-900 ':' opacity-60'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
 					</p:column>
 					
-					<p:column headerText="VENCIMIENTO" style="width:90px;" styleClass="text-right">
+					<p:column headerText="Saldo" style="width:70px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{v.totalpago-v.abono}" styleClass="#{(v.totalpago-v.abono)>0 and cuentaCobrarCtrl.isFechaVencida(v.fechapago)?' text-pink-400':' text-gray-900'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+					</p:column>
+					
+					<p:column headerText="Vencimiento" style="width:90px;" styleClass="text-right">
 						
-						<div class="flex flex-inline justify-content-end">
-							<h:outputText value="#{v.fechapago}" styleClass="#{cuentaCobrarCtrl.isFechaVencida(v.fechapago)?'markRed':''} mr-1" style="width:75px;">
+						<div class="flex flex-inline justify-content-end gap-1">
+							<h:outputText value="#{v.fechapago}" 
+								styleClass="fs-12 #{cuentaCobrarCtrl.isFechaVencida(v.fechapago) ? 'ui-tag ui-widget ui-tag-danger' : ''}" style="width:75px;">
 								<f:convertDateTime pattern="dd/MM/yyyy"/>
 							</h:outputText>							
-							<p:commandLink action="#{pagoCtrl.cargarPagosForm()}" process="@this">
-								<i class="fa fa-external-link Fs12" style="color:#2f2f2f;"/>
+							<p:commandLink action="#{pagoCtrl.cargarPagosForm()}" process="@this" styleClass="text-gray-900">
+								<i class="fa fa-external-link fs-14"/>
 								<f:setPropertyActionListener value="CUENTAS_COBRAR" target="#{pagoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{v.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
 								<f:setPropertyActionListener value="#{cuentaCobrarCtrl}" target="#{pagoCtrl.cuentaCobrarCtrl}"/>
 							</p:commandLink>
-						</div>						
+						</div>
+												
 					</p:column>
 						
 				</p:dataTable>
 				
-				<div class="EmptyBox20"/>
-				
-			</div>
+			</div>	
 	    	
 	    </h:form>
 	    <!-- Formulario de pagos -->

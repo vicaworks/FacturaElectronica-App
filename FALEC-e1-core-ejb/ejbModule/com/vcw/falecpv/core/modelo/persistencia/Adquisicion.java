@@ -147,6 +147,12 @@ public class Adquisicion implements Serializable {
     @Transient
     private boolean esGastoBol;
     
+    @Transient
+    private BigDecimal otrosPagos = BigDecimal.ZERO;
+    
+    @Transient
+    private BigDecimal totalCredito = BigDecimal.ZERO;
+    
 	/**
 	 * 
 	 */
@@ -522,6 +528,34 @@ public class Adquisicion implements Serializable {
 	public void setEsGastoBol(boolean esGastoBol) {
 		this.esGastoBol = esGastoBol;
 		this.esgasto = esGastoBol?1:0;
+	}
+
+	/**
+	 * @return the otrosPagos
+	 */
+	public BigDecimal getOtrosPagos() {
+		return otrosPagos;
+	}
+
+	/**
+	 * @param otrosPagos the otrosPagos to set
+	 */
+	public void setOtrosPagos(BigDecimal otrosPagos) {
+		this.otrosPagos = otrosPagos;
+	}
+
+	/**
+	 * @return the totalCredito
+	 */
+	public BigDecimal getTotalCredito() {
+		return totalCredito;
+	}
+
+	/**
+	 * @param totalCredito the totalCredito to set
+	 */
+	public void setTotalCredito(BigDecimal totalCredito) {
+		this.totalCredito = totalCredito;
 	}
 	
 }

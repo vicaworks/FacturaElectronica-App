@@ -70,10 +70,10 @@
 									required="false"
 									requiredMessage="Requerido"
 									styleClass="w-full">
-									<f:selectItem itemLabel="Todas las cuentas por pagar" itemValue="T"/>
-									<f:selectItem itemLabel="Compras" itemValue="C"/>
-									<f:selectItem itemLabel="#{msg['label.liquidacion']} de compra" itemValue="L"/>	
-									<f:selectItem itemLabel="Consulta de historial" itemValue="H"/>
+									<f:selectItem itemLabel="Cuentas por pagar activas" itemValue="T"/>
+									<f:selectItem itemLabel="Compras por pagar" itemValue="C"/>
+									<f:selectItem itemLabel="#{msg['label.liquidacion']} de compra por pagar" itemValue="L"/>	
+									<f:selectItem itemLabel="Consulta de historial de pagos" itemValue="H"/>
 									<p:ajax listener="#{cuentaPagarCtrl.seleccionarOpcion}" process="@this @form:somTipoPago" update="@form:oupOpcBusqueda"/>
 								</p:selectOneMenu>									
 								
@@ -185,20 +185,20 @@
 			        </div>
 	    		</div>
 	    		
-	    		<div class="flex align-items-center">
+	    		<div class="flex align-items-center gap-1">
 					<i class="fa fa-ellipsis-v fs-14 mr-2"/>
-					<p:commandLink id="cmdGlobalExcel" disabled="#{empty cuentaPagarCtrl.vComprobantespagarcreditoList}" styleClass="min-width-80 mr-1">
-						<div class="flex text-gray-900 ">
-							<span class="mr-1 fs-12 ">Exportar</span>
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty cuentaPagarCtrl.vComprobantespagarcreditoList}" styleClass="min-width-80">
+						<div class="flex text-gray-900 gap-1">
+							<span class="fs-12 ">Exportar</span>
 							<i class="fa fa-angle-down fs-14 " />
 						</div>
 					</p:commandLink>
 					
 					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+						<p:menuitem value="Exportar excel" icon="fa-regular fa-file-excel fs-12" ajax="false">
 							<p:fileDownload value="#{cuentaPagarCtrl.fileResumen}" contentDisposition="inline"/>
 						</p:menuitem>
-						<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+						<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list fs-12" ajax="false">
 							<p:fileDownload value="#{cuentaPagarCtrl.fileDetalle}" contentDisposition="inline"/>
 						</p:menuitem>
 					</p:menu>
@@ -225,7 +225,7 @@
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-							<p:menuitem value=" Valor a pagar" action="#{porPagarCtrl.cargar()}" icon="fa fa-edit fs-12">
+							<p:menuitem value=" Valor a pagar" action="#{porPagarCtrl.cargar()}" icon="fa fa-edit fs-14">
 								<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
 								<f:setPropertyActionListener value="#{cuentaPagarCtrl}" target="#{porPagarCtrl.cuentaPagarCtrl}"/>
 								<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idAdquisicionSelected}"/>
@@ -271,86 +271,30 @@
 						</div>
 					</p:column>
 					
-					<p:column headerText="#{msg['label.credito']}" style="width:90px;" styleClass="text-center">
-						<div class="flex flex-inline justify-content-end">
-							<h:outputText value="#{v.totalpago}" styleClass="text-primary-600 fw-3 mr-2" style="width:60px;">
+					<p:column headerText="#{msg['label.credito']}" style="width:150px;">
+						<div class="flex justify-content-between align-items-end mb-1">
+							<span class="text-gray-800 fw-5">Total con impuestos</span>
+							<h:outputText value="#{v.totalconimpuestos}" styleClass="text-gray-800 fw-5">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
-							<p:commandLink process="@this" id="cc_valComprobante">
-								<i class="fa fa-external-link fs-14 text-gray-900"/>
-							</p:commandLink>
-							<p:overlayPanel for="cc_valComprobante" style="width:250px">
-					            
-					            
-					            <div class="grid">
-									<div class="col-12">
-										<div class="grid grid-nogutter justify-content-between">
-											<div class="col-8 py-2">
-												<div class="w-full text-left">
-													<span class="fs-11 mr-1 text-gray-700 font-semibold">TOTAL</span>
-													<span class="fs-14 text-blue-600 font-medium">COMPROBANTE</span>
-												</div>
-											</div>
-											<div class="col-1 text-center align-self-center">
-												<i class="fa fa-angle-down fs-14"></i>
-											</div>
-											<div class="col-12 mt-1">
-												<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-													<div class="flex flex-grow-1 fs-9">
-														<i class="fa fa-angle-right mr-1 font-bold"></i>
-														<span class="text-gray-800"><h:outputText value="Total" /></span>
-													</div>						
-													<div class="flex flex-grow-1">
-														<div class="text-right pr-3 w-full">
-															<h:outputText value="#{v.totalconimpuestos}">
-																<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-															</h:outputText>
-														</div>
-													</div>				
-												</div>
-												
-												<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-													<div class="flex flex-grow-1 fs-9">
-														<i class="fa fa-angle-right mr-1 font-bold"></i>
-														<span class="text-gray-800"><h:outputText value="Total retención" /></span>
-													</div>						
-													<div class="flex flex-grow-1">
-														<div class="text-right pr-3 w-full">
-															<p:commandLink action="#{porPagarCtrl.cargar()}">
-																<h:outputText value="#{v.totalretencion}" styleClass="underline">
-																	<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-																</h:outputText>
-																<f:setPropertyActionListener value="MAIN_POR_PAGAR" target="#{porPagarCtrl.callModule}"/>
-																<f:setPropertyActionListener value="#{cuentaPagarCtrl}" target="#{porPagarCtrl.cuentaPagarCtrl}"/>
-																<f:setPropertyActionListener value="#{v.idcabecera}" target="#{porPagarCtrl.idAdquisicionSelected}"/>
-																<f:setPropertyActionListener value="formMain" target="#{porPagarCtrl.callForm}"/>
-																<f:setPropertyActionListener value=":formMain" target="#{porPagarCtrl.viewUpdate}"/>
-																<f:setPropertyActionListener value="#{null}" target="#{porPagarCtrl.pagoCtrl}"/>
-															</p:commandLink>
-															
-														</div>
-													</div>				
-												</div>
-												
-												<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
-													<div class="flex flex-grow-1 fs-9">
-														<i class="fa fa-angle-right mr-1 font-bold"></i>
-														<span class="text-gray-800"><h:outputText value="A pagar" /></span>
-													</div>						
-													<div class="flex flex-grow-1">
-														<div class="text-right pr-3 w-full">
-															<h:outputText value="#{v.valorapagar}" styleClass="text-gray-600 font-semibold">
-																<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-															</h:outputText>
-														</div>
-													</div>				
-												</div>
-												
-											</div>
-										</div>
-									</div>
-								</div>					            
-					        </p:overlayPanel>
+						</div>
+						<div class="flex justify-content-between align-items-end mb-1">
+							<span class="text-gray-900">Retención</span>
+							<h:outputText value="#{v.totalretencion}" styleClass="text-gray-900">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						<div class="flex justify-content-between align-items-end mb-1">
+							<span class="text-gray-900">Otros pagos</span>
+							<h:outputText value="#{v.totalOtrosPagos}" styleClass="text-gray-900">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						<div class="flex justify-content-between align-items-end">
+							<span class="text-primary-600 fw-5">Total crédito</span>
+							<h:outputText value="#{v.totalpago}" styleClass="text-primary-600 fw-5">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
 						</div>
 					</p:column>	
 					

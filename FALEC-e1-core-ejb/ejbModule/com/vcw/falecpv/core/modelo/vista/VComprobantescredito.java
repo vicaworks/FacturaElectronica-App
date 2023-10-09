@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import com.servitec.common.util.FechaUtil;
 import com.servitec.common.util.PojoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Pago;
@@ -96,6 +97,15 @@ public class VComprobantescredito implements Serializable {
     
     @Transient
     private List<Pago> pagoOtrosList;
+    
+    @Transient
+    private String filtroComprobante;
+    
+    @Transient
+    private String filtroCliente;
+    
+    @Transient
+    private BigDecimal totalOtrosPagos;
 	
 	/**
 	 * 
@@ -447,6 +457,68 @@ public class VComprobantescredito implements Serializable {
 	 */
 	public void setPagoOtrosList(List<Pago> pagoOtrosList) {
 		this.pagoOtrosList = pagoOtrosList;
+	}
+
+	/**
+	 * @return the filtroComprobante
+	 */
+	public String getFiltroComprobante() {
+		filtroComprobante = "";
+		if(numdocumento != null) {
+			filtroComprobante += numdocumento;
+		}
+		if(comprobante != null) {
+			filtroComprobante += comprobante;
+		}
+		if(fechaemision != null) {
+			filtroComprobante += FechaUtil.formatoFecha(fechaemision);
+		}
+		return filtroComprobante;
+	}
+
+	/**
+	 * @param filtroComprobante the filtroComprobante to set
+	 */
+	public void setFiltroComprobante(String filtroComprobante) {
+		this.filtroComprobante = filtroComprobante;
+	}
+
+	/**
+	 * @return the filtroCliente
+	 */
+	public String getFiltroCliente() {
+		filtroCliente = "";
+		if(identificacion != null) {
+			filtroCliente += identificacion;
+		}
+		if(razonsocial != null) {
+			filtroCliente += razonsocial;
+		}
+		return filtroCliente;
+	}
+
+	/**
+	 * @param filtroCliente the filtroCliente to set
+	 */
+	public void setFiltroCliente(String filtroCliente) {
+		this.filtroCliente = filtroCliente;
+	}
+
+	/**
+	 * @return the totalOtrosPagos
+	 */
+	public BigDecimal getTotalOtrosPagos() {
+		totalOtrosPagos = (getPagoOtrosList() != null && !getPagoOtrosList().isEmpty()) ?
+				BigDecimal.valueOf(getPagoOtrosList().stream().mapToDouble(x -> x.getTotal().doubleValue()).sum()) :
+				BigDecimal.ZERO;
+		return totalOtrosPagos;
+	}
+
+	/**
+	 * @param totalOtrosPagos the totalOtrosPagos to set
+	 */
+	public void setTotalOtrosPagos(BigDecimal totalOtrosPagos) {
+		this.totalOtrosPagos = totalOtrosPagos;
 	}
 
 }

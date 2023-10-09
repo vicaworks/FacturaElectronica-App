@@ -41,17 +41,17 @@ public class VComprobantespagarcreditoDao extends AppGenericDao<VComprobantespag
 	public List<VComprobantespagarcredito> getByCuentasCobrar(String idEstablecimiento,Date desde, Date hasta, String tipocomprobante,String criterio,String criterioProveedor)throws DaoException{
 		try {
 			
+			List<String> comprobantes = new ArrayList<>();
 			Query q = getEntityManager().createQuery("SELECT c FROM VComprobantespagarcredito c WHERE c.idestablecimiento=:idestablecimiento  " 
 			+ (tipocomprobante!=null?" AND c.idtipocomprobante in (:idtipocomprobante) ":" ") 
 			+ ((criterio!=null && criterio.trim().length()>0)?" AND c.numdocumento =:numdocumento ":" ")
 			+ ((criterioProveedor!=null && criterioProveedor.trim().length()>0)?" AND c.identificacion =:identificacion ":" ")
-			+ (tipocomprobante != "H" ? " AND c.abono < c.totalpago " : " ")
+			+ (!tipocomprobante.equals("H") ? " AND c.abono < c.totalpago " : " ")
 			+ (desde != null && tipocomprobante.equals("H") ? " AND c.fechaemision BETWEEN :desde AND :hasta " : " ")
 			+ " ORDER BY c.fechaemision");
 			
 			q.setParameter("idestablecimiento", idEstablecimiento);
 			if(tipocomprobante!=null) {
-				List<String> comprobantes = new ArrayList<>();
 				switch (tipocomprobante) {
 				case "T":
 					comprobantes.add("C");

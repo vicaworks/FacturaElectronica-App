@@ -21,7 +21,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -42,6 +41,7 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.VComprobantescreditoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -70,12 +70,15 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	private List<VComprobantescredito> vComprobantescreditoList;
 	private VComprobantescredito vComprobantescreditoSelected;
 	private List<Tipocomprobante> tipocomprobanteList;
+	private String idTipocomprobante = "T";
 	private Tipocomprobante tipocomprobante;
 	private BigDecimal totalCobrar;
 	private BigDecimal totalVencido;
 	private BigDecimal totalProximo;
 	private String criterioBusqueda;
 	private String criterioCliente;
+	private Date desde;
+	private Date hasta;
 	
 	public CuentaCobrarCtrl() {
 	}
@@ -89,19 +92,44 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			totalCobrar = BigDecimal.ZERO;
 			totalVencido = BigDecimal.ZERO;
 			totalProximo = BigDecimal.ZERO;
+			idTipocomprobante = "T";
+			hasta = new Date();
+			desde = FechaUtil.agregarDias(hasta, -31);
 			consultar();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
 	public void consultar()throws DaoException{
 		AppJsfUtil.limpiarFiltrosDataTable("formMain:pvUnoDT");
 		vComprobantescreditoList = null;
-		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(establecimientoMain.getIdestablecimiento(), tipocomprobante,criterioBusqueda,criterioCliente);
+		vComprobantescreditoList = vComprobantescreditoServicio.getByCuentasCobrar(
+				establecimientoMain.getIdestablecimiento(), 
+				idTipocomprobante, 
+				tipocomprobanteList,
+				criterioBusqueda,
+				criterioCliente,
+				desde,
+				hasta);
 		totalizar();
+	}
+	
+	public void seleccionarOpcion() {
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+		}
 	}
 	
 	public void consultarTipoComprobante()throws DaoException{
@@ -116,7 +144,10 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -128,7 +159,10 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return false;
 	}
@@ -159,7 +193,9 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 		try {
 			
 			if(vComprobantescreditoList==null || vComprobantescreditoList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -171,7 +207,6 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -196,51 +231,39 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getComprobante());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(p.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(p.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalretencion().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getValorapagar().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalpago().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getAbono().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalpago().add(p.getAbono().negate()).setScale(2, RoundingMode.HALF_UP).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getFechapago()!=null?FechaUtil.formatoFecha(p.getFechapago()):"");
 				
 				fila++;
@@ -259,7 +282,10 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -268,7 +294,9 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 		try {
 			
 			if(vComprobantescreditoList==null || vComprobantescreditoList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -280,7 +308,6 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -307,51 +334,39 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getComprobante());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(p.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(p.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(p.getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalretencion().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getValorapagar().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalpago().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getAbono().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getTotalpago().add(p.getAbono().negate()).setScale(2, RoundingMode.HALF_UP).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(p.getFechapago()!=null?FechaUtil.formatoFecha(p.getFechapago()):"");
 				
 				// credito
@@ -368,23 +383,18 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(FechaUtil.formatoFecha(pa.getFechapago()));
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(pa.getPlazo().intValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(pa.getTotal().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(pa.getValorpago().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(pa.getNotas());
 					
 					filaCredito++;
@@ -400,27 +410,21 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(pa.getTipopago().getNombre());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(pa.getTotal().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(pa.getValorentrega().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(pa.getCambio().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(pa.getNumerodocumento());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(pa.getNombrebanco());
 					
 					filaOtros++;
@@ -448,7 +452,10 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -577,6 +584,48 @@ public class CuentaCobrarCtrl extends BaseCtrl {
 	 */
 	public void setCriterioCliente(String criterioCliente) {
 		this.criterioCliente = criterioCliente;
+	}
+
+	/**
+	 * @return the desde
+	 */
+	public Date getDesde() {
+		return desde;
+	}
+
+	/**
+	 * @param desde the desde to set
+	 */
+	public void setDesde(Date desde) {
+		this.desde = desde;
+	}
+
+	/**
+	 * @return the hasta
+	 */
+	public Date getHasta() {
+		return hasta;
+	}
+
+	/**
+	 * @param hasta the hasta to set
+	 */
+	public void setHasta(Date hasta) {
+		this.hasta = hasta;
+	}
+
+	/**
+	 * @return the idTipocomprobante
+	 */
+	public String getIdTipocomprobante() {
+		return idTipocomprobante;
+	}
+
+	/**
+	 * @param idTipocomprobante the idTipocomprobante to set
+	 */
+	public void setIdTipocomprobante(String idTipocomprobante) {
+		this.idTipocomprobante = idTipocomprobante;
 	}
 
 }

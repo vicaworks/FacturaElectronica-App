@@ -33,10 +33,10 @@
 		style="max-width:400px;" 
 		closeOnEscape="true" 
 		styleClass="modalResponsivo" >
-		
+				
 		<h:form id="frmPorPagar">
-			<p:remoteCommand name="calcularValorPagar" action="#{porPagarCtrl.calcularAdquisicion}" update="@form"/>
-			<p:remoteCommand name="calcularValorPagarComprobante" action="#{porPagarCtrl.calcular}" update="@form"/>
+			<p:remoteCommand name="calcularValorPagar" action="#{porPagarCtrl.calcularAdquisicion}" update="@form" process="@form"/>
+			<p:remoteCommand name="calcularValorPagarComprobante" action="#{porPagarCtrl.calcular}" update="@form" process="@form"/>
 			<!-- OPCIONES -->
 			<div class="tool-bar">
 				<i class="fa-solid fa-ellipsis-vertical"></i>
@@ -140,18 +140,12 @@
 			    <div class="field grid">			        
 			        <h:outputText value="Total " styleClass="text-gray-900 col-12 mb-1 md:col-5 md:mb-0"/>
 			        <div class="col-12 md:col-7">
-						<h:outputText value="#{porPagarCtrl.cabeceraSelected.total}" styleClass="fw-5">
+						<h:outputText value="#{porPagarCtrl.cabeceraSelected.totalconimpuestos}" styleClass="fw-5">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 			        </div>
 			    </div>
-			    <div class="field grid">			        
-			        <!-- <h:outputText value="Valor Retenido Renta " styleClass="text-gray-700 font-medium col-12 mb-1 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intValRetRenta" value="#{porPagarCtrl.cabeceraSelected.valorretenidorenta}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" converterMessage="SOLO NÚMEROS">
-							<p:ajax event="change" listener="#{porPagarCtrl.calcular()}" update="@form"/>
-						</p:inputText>
-			        </div> -->
+			    <div class="field grid">
 			        <h:outputText value="Valor Retenido Renta" styleClass="text-gray-800 fw-5 col-12 mb-1 md:col-5 md:mb-0"/>
 			        <div class="col-12 md:col-7">
 			        	<div class="inline-flex gap-2">
@@ -171,17 +165,8 @@
 			        		
 			        	</div>
 			        </div>
-			        
-			        
 			    </div>
 			    <div class="field grid">			        
-			        <!-- <h:outputText value="Valor Retenido I.V.A." styleClass="text-gray-700 font-medium col-12 mb-1 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intValRetIva" value="#{porPagarCtrl.cabeceraSelected.valorretenidoiva}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" converterMessage="SOLO NÚMEROS">
-							<p:ajax event="change" listener="#{porPagarCtrl.calcular()}" update="@form"/>
-						</p:inputText>
-			        </div> -->
-			        
 			        <h:outputText value="Valor Retenido I.V.A." styleClass="text-gray-800 fw-5 col-12 mb-1 md:col-5 md:mb-0"/>
 			        <div class="col-12 md:col-7">
 			        	<div class="inline-flex gap-2">
@@ -191,7 +176,7 @@
                                	onkeyup="calcularValorRetencion(event, 'frmPorPagar:intValRetIva', #{porPagarCtrl.cabeceraSelected.totaliva});calcularValorPagarComprobante();"/>
 			        		<span>=</span>
 			        		<p:inputText id="intValRetIva" 
-			        			value="#{porPagarCtrl.cabeceraSelected.valorretenidorenta}" 
+			        			value="#{porPagarCtrl.cabeceraSelected.valorretenidoiva}" 
 			        			required="true" 
 			        			requiredMessage="Requerido"
 			        			styleClass="text-right">
@@ -206,6 +191,26 @@
 			        <h:outputText value="Valor a pagar" styleClass="text-gray-800 fw-5 col-12 mb-1 md:col-5 md:mb-0"/>
 			        <div class="col-12 md:col-7">
 	        			<h:outputText value="#{porPagarCtrl.cabeceraSelected.valorapagar}" styleClass="fs-18 text-primary-600 fw-3">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+			        </div>
+			        
+			    </div>
+			    
+			    <div class="field grid">
+			        <h:outputText value="Otros pagos" styleClass="text-gray-800 fw-5 col-12 mb-1 md:col-5 md:mb-0"/>
+			        <div class="col-12 md:col-7">
+	        			<h:outputText value="#{porPagarCtrl.cabeceraSelected.otrosPagos}" styleClass="text-gray-900">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+			        </div>
+			        
+			    </div>
+			    
+			    <div class="field grid">
+			        <h:outputText value="Valor crédito" styleClass="text-gray-800 fw-5 col-12 mb-1 md:col-5 md:mb-0"/>
+			        <div class="col-12 md:col-7">
+	        			<h:outputText value="#{porPagarCtrl.cabeceraSelected.totalCredito}" styleClass="fs-18 text-primary-600 fw-3">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 			        </div>
@@ -336,7 +341,25 @@
 						</h:outputText>
 			        </div>
 			    </div>
-				
+				<div class="field grid">
+			        <h:outputText value="Otros pagos" styleClass="text-gray-800 fw-5 col-12 mb-1 md:col-5 md:mb-0"/>
+			        <div class="col-12 md:col-7">
+	        			<h:outputText value="#{porPagarCtrl.adquisicionSelected.otrosPagos}" styleClass="text-gray-900">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+			        </div>
+			        
+			    </div>
+			    
+			    <div class="field grid">
+			        <h:outputText value="Valor crédito" styleClass="text-gray-800 fw-5 col-12 mb-1 md:col-5 md:mb-0"/>
+			        <div class="col-12 md:col-7">
+	        			<h:outputText value="#{porPagarCtrl.adquisicionSelected.totalCredito}" styleClass="fs-18 text-primary-600 fw-3">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+			        </div>
+			        
+			    </div>
 			</p:outputPanel>			
 			
 		</h:form>

@@ -3,6 +3,8 @@
  */
 package com.vcw.falecpv.core.dao.impl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -49,6 +51,28 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 	/**
 	 * @author cristianvillarreal
 	 * 
+	 * @param idCabecera
+	 * @param idTipoPago
+	 * @return
+	 * @throws DaoException
+	 */
+	public int eliminarByCabecera(String idCabecera, String idTipoPago)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createNativeQuery("DELETE FROM pago WHERE idcabecera=:id AND idtipopago=:idtipopago");
+			q.setParameter("id", idCabecera);
+			q.setParameter("idtipopago", idTipoPago);
+			
+			return q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
 	 * @param idAdquisicion
 	 * @return
 	 * @throws DaoException
@@ -58,6 +82,29 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 			
 			Query q = getEntityManager().createNativeQuery("DELETE FROM pago WHERE idadquisicion=:id");
 			q.setParameter("id", idAdquisicion);
+			
+			return q.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idAdquisicion
+	 * @param idTipoPago
+	 * @return
+	 * @throws DaoException
+	 */
+	public int eliminarByAdquisicion(String idAdquisicion, String idTipoPago)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createNativeQuery("DELETE FROM pago WHERE idadquisicion=:id AND idtipopago=:idtipopago");
+			q.setParameter("id", idAdquisicion);
+			q.setParameter("idtipopago", idTipoPago);
 			
 			return q.executeUpdate();
 			
@@ -79,6 +126,53 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 			q.setParameter("idCabecera", idCabecera);
 			
 			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @param idTipoPago
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Pago> getByIdCabecera(String idCabecera, String idTipoPago)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.cabecera.idcabecera=:idCabecera AND p.tipopago.idtipopago=:idTipoPago ORDER BY p.idpago");
+			q.setParameter("idCabecera", idCabecera);
+			q.setParameter("idTipoPago", idTipoPago);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public BigDecimal getByCabeceraOtrosPagos(String idCabecera)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.cabecera.idcabecera=:idCabecera AND p.tipopago.idtipopago<>'6' ORDER BY p.idpago");
+			q.setParameter("idCabecera", idCabecera);
+			
+			return BigDecimal.valueOf(
+					((List<Pago>)q.getResultList()).stream().mapToDouble(x->x.getTotal().doubleValue()).sum()
+					).setScale(2, RoundingMode.HALF_UP);
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
@@ -120,6 +214,52 @@ public class PagoDao extends AppGenericDao<Pago, String> {
 			q.setParameter("idCabecera", idAdquisicion);
 			
 			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idAdquisicion
+	 * @param idTipoPago
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Pago> getByIdAdquisicion(String idAdquisicion, String idTipoPago)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.adquisicion.idadquisicion=:idCabecera AND p.tipopago.idtipopago=:idtipopago ORDER BY p.idpago");
+			q.setParameter("idCabecera", idAdquisicion);
+			q.setParameter("idtipopago", idTipoPago);
+			
+			return q.getResultList();
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idAdquisicion
+	 * @return
+	 * @throws DaoException
+	 */
+	@SuppressWarnings("unchecked")
+	public BigDecimal getByIdAdquisiscionOtrospagos(String idAdquisicion)throws DaoException{
+		try {
+			
+			Query q = getEntityManager().createQuery("SELECT p FROM Pago p WHERE p.adquisicion.idadquisicion=:idCabecera AND p.tipopago.idtipopago <> '6' ORDER BY p.idpago");
+			q.setParameter("idCabecera", idAdquisicion);
+			
+			return BigDecimal.valueOf(
+					((List<Pago>)q.getResultList()).stream().mapToDouble(x->x.getTotal().doubleValue()).sum()
+					).setScale(2, RoundingMode.HALF_UP);
 			
 		} catch (Exception e) {
 			throw new DaoException(e);
