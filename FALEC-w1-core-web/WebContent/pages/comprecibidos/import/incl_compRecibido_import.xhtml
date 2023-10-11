@@ -10,71 +10,90 @@
      <style type="text/css">
      	
      	.compSriDT .ui-datatable-scrollable-body{
-				min-height: 35vh !important;
-				height: calc(100vh - 255px)!important;
+				min-height: 40vh !important;
+				height: calc(100vh - 240px)!important;
 			}
      	
      </style>
 	
-	<div class="card card-w-title">
+	<div class="card mt-2">  
 		
-		<div class="flex justify-content-between">
-			<span class="text-black Fs16 font-semibold">Importar Comprobantes</span>
-			<div style="min-width: 200px;max-width: 400px;">
-				<p:progressBar widgetVar="pbAjax" ajax="true" value="#{compRecibidosCtrl.progress}" labelTemplate="{value}%" styleClass="animated" global="false" interval="250" >
-						<p:ajax event="complete" update="@form" oncomplete="PF('w_cmdCRGuardar').enable();PF('w_cmdCRSeleccionarFile').enable();"/>
-			    </p:progressBar>
-			</div>
+		
+		<div class="flex justify-content-between align-items-baseline">
+			<h3 class="card__heading card__heading--noBorder fw-4">Importar comprobantes</h3>
+			<p:progressBar widgetVar="pbAjax" ajax="true" value="#{compRecibidosCtrl.progress}" labelTemplate="{value}%" styleClass="animated" global="false" interval="250" style="width:30rem">
+				<p:ajax event="complete" update="@form" oncomplete="PF('w_cmdCRGuardar').enable();PF('w_cmdCRSeleccionarFile').enable();"/>
+		    </p:progressBar>
+		</div>
+			
+		<div class="flex gap-2 my-2">
+		
+			<p:commandButton id="cmdCRSeleccionarFile" 
+				widgetVar="w_cmdCRSeleccionarFile"
+				icon="fa fa-search"
+				process="@this"
+				action="#{compRecibidosCtrl.showUploadFile()}" 
+				styleClass="ui-button-success min-width-60  #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" 
+				update="@form" 
+				value="Archivo SRI"
+				title="Seleccionar archivo de comprobantes SRI"/>
+				
+			<p:commandButton id="cmdCRGuardar" widgetVar="w_cmdCRGuardar"
+				icon="fa fa-floppy-disk"
+				process="@this"
+				onclick="PF('w_cmdCRlimpiar').disable();PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
+				action="#{compRecibidosCtrl.cargarComprobantes()}" 
+				styleClass="ui-button-primary #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" 
+				update="@form"
+				value="Guardar" 
+				disabled="#{compRecibidosCtrl.fileComprobantes==null}"
+				title="Guarda los comprobantes"/>
+						
+		    <p:commandButton id="cmdCRlimpiar" 
+		    	widgetVar="w_cmdCRlimpiar"
+				icon="fa fa-eraser"
+				process="@this"
+				styleClass="ui-button-outlined ui-button-secondary min-width-60" 
+				update="@form"
+				value="Limpiar" 
+				action="#{compRecibidosCtrl.limpiar()}"
+				title="Limpia los datos de pantalla">
+			</p:commandButton>
+			
+						
+						
+			<p:linkButton value="Ayuda" 
+				styleClass="min-width-60 ui-button-outlined ui-button-success" 
+				icon="pi pi-tags" 
+				target="_black" 
+				href="#{request.contextPath}/manuales/importComprobante.html" 
+				title="Manual de Usuario">
+		    </p:linkButton>
 			
 		</div>
-		<div class="flex mt-1">
-			<p:linkButton value="Ayuda" styleClass="min-width-60 mr-1 ui-button-outlined" icon="pi pi-tags" target="_black" href="#{request.contextPath}/manuales/importComprobante.html" title="Manual de Usuario">
-		    </p:linkButton>
-		    <p:commandButton id="cmdCRlimpiar" widgetVar="w_cmdCRlimpiar"
-						icon="fa fa-eraser"
-						process="@this"
-						styleClass="mr-1 ui-button-outlined min-width-60" update="@form" style="margin-right:5px;" value="Limpiar" action="#{compRecibidosCtrl.limpiar()}"
-						title="Limpia los datos de pantalla">
-			</p:commandButton>
-			<p:commandButton id="cmdCRSeleccionarFile" widgetVar="w_cmdCRSeleccionarFile"
-						icon="fa fa-search"
-						process="@this"
-						action="#{compRecibidosCtrl.showUploadFile()}" styleClass="ui-button-success mr-1 min-width-60  #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" update="@form" style="margin-right:5px;" value="Archivo SRI"
-						title="Seleccionar archivo de comprobantes SRI"/>
-			<p:commandButton id="cmdCRGuardar" widgetVar="w_cmdCRGuardar"
-						icon="fa fa-upload"
-						process="@this"
-						onclick="PF('w_cmdCRlimpiar').disable();PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
-						action="#{compRecibidosCtrl.cargarComprobantes()}" styleClass="ui-button-outlined #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" update="@form" style="margin-right:5px;" value="Cargar" disabled="#{compRecibidosCtrl.fileComprobantes==null}"
-						title="Guarda los comprobantes"/>
-		</div>
-		<div class="EmptyBox10"/>
+		
 		<p:dataTable id="compSriDT" var="f"
 						value="#{compRecibidosCtrl.fileSriDtoList}" 
 						scrollable="true"
 						emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="compSriDT Fs11"  
+						styleClass="compSriDT fs-12"  
 						rowKey="#{f.id}"
 						rows="30"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
-						rowsPerPageTemplate="10,15,20,25,30,35,40">
+						rowsPerPageTemplate="20,30,35,40">    
 		    
-		    <!-- <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
-		    	
-		    </p:column> -->    
-		    
-		    <p:column headerText="ESTADO" style="width:90px;">
+		    <p:column headerText="Estado" style="width:90px;">
 		    	<p:outputPanel id="oupestado">		    		
 		    		<div class="flex">
 		    			<div class="flex-grow-1 flex">
-							<h:outputText value="#{f.estado}" styleClass="block w-full p-1 text-black border-round #{f.styleEstado}"/>
+							<h:outputText value="#{f.estado}" styleClass="block w-full p-1 text-gray-900 border-round #{f.styleEstado}"/>
 		    			</div>
 		    			<div class="flex-grow-0 flex px-1 align-self-center">
 			    			<f:subview rendered="#{f.desplegarInfo}">
-				    			<i class="fa fa-comments Fs14"></i>
+				    			<i class="fa fa-comments fs-14"></i>
 			    			</f:subview>
 		    				
 		    			</div>
@@ -83,50 +102,53 @@
 		    	<p:tooltip id="toolTipEstado" for="oupestado" value="#{f.mensaje}" position="top" rendered="#{f.desplegarInfo}"/>
 			</p:column>
 		    
-		    <p:column headerText="COMPROBANTE" style="width:120px;">
-		    	<div class="flex flex-column">
-					<h:outputText value="#{f.comprobante}" styleClass="text-gray-700"/>
-					<h:outputText value="#{f.serieComprobante}" styleClass="text-black font-semibold"/>
+		    <p:column headerText="Comprobante" style="width:120px;">
+		    	<div class="flex flex-column gap-1">
+					<h:outputText value="#{f.comprobante}" styleClass="text-gray-800"/>
+					<h:outputText value="#{f.serieComprobante}" styleClass="text-gray-900 fw-5"/>
 		    	</div>
 			</p:column>        
 			
-			<p:column headerText="RUC" style="width:150px;">
-				<div class="flex flex-column">
-					<h:outputText value="#{f.rucEmisor}" styleClass="text-black font-semibold"/>
-					<h:outputText value="#{f.emisor}" />
+			<p:column headerText="Identificación" style="width:150px;">
+				<div class="flex flex-column gap-1">
+					<h:outputText value="#{f.rucEmisor}" styleClass="text-gray-900"/>
+					<h:outputText value="#{f.emisor}" styleClass="text-primary-600 fw-4"/>
 				</div>
 			</p:column>
 			
 			<p:column headerText="#{msg['label.emision']}" style="width:60px;">
-				<h:outputText value="#{f.fechaEmision}" styleClass="Fs10">
+				<h:outputText value="#{f.fechaEmision}" styleClass="text-gray-900">
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="#{msg['label.autorizacion']}" style="width:80px;">
-				<h:outputText value="#{f.fechaAutorizacion}" styleClass="Fs10">
+				<h:outputText value="#{f.fechaAutorizacion}" styleClass="text-gray-900">
 					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="TIP #{msg['label.emision']}" style="width:50px;">
-				<h:outputText value="#{f.tipoEmision}" styleClass="Fs10">
+			<p:column headerText="Tipo #{msg['label.emision']}" style="width:50px;">
+				<h:outputText value="#{f.tipoEmision}" styleClass="text-gray-900">
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="RECEPTOR" style="width:70px;">
-				<h:outputText value="#{f.identificacionReceptor}" styleClass="Fs10">
+			<p:column headerText="Receptor" style="width:70px;">
+				<h:outputText value="#{f.identificacionReceptor}" styleClass="text-gray-900">
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="IMPORTE TOTAL" styleClass="TexAlRight" style="width:70px;">
-				<h:outputText value="#{f.importeTotal}"  styleClass="text-black font-semibold">
-					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-				</h:outputText>
+			<p:column headerText="Importe total" styleClass="text-center" style="width:70px;">
+				<div class="flex justify-content-end">
+					<h:outputText value="#{f.importeTotal}"  styleClass="text-gray-800 fw-5">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
 			</p:column>
 		                
 		</p:dataTable>
-		<div class="EmptyBox20"/>
+	
 	</div>
+	
 
 </ui:composition>

@@ -34,6 +34,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Comprobanterecibido;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.sriimportarcomp.SriImportarComprobantesServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.sri.ws.exception.AccesoWsdlSriException;
 
@@ -91,7 +92,10 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formCRFile", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -107,7 +111,10 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -120,7 +127,10 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -139,10 +149,15 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			
 		} catch (FormatoArchivoException e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formCRFile", "ERROR", e.getMessage());
+			getMessageCommonCtrl().crearMensaje("Error", 
+					e.getMessage(), 
+					Message.ERROR);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formCRFile", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -152,21 +167,12 @@ public class CompRecibidosCtrl extends BaseCtrl {
 		String line = reader.readLine();
 		int fila = 0;
 		String importe = null;
-		String anterior = null;
 		while(line!=null) {
 			System.out.println("++++++ " + fila + " " + line);
 			if(fila > 0) {
 				importe = line;
 				fileSriDtoList.add(populateFileSriDto(importe, fila));
 			}
-//			if(fila>2 && (fila%2)!=0) {
-//				anterior = line;
-//			}else if(fila>2 && (fila%2)==0){
-//				System.out.println("++++++ " + fila + " " + line);
-//				importe = line;			
-//				if(importe != null)
-//				fileSriDtoList.add(populateFileSriDto(anterior.concat("\t").concat(importe), fila+1));
-//			}
 			fila++;
 			line = reader.readLine();
 		}
@@ -250,17 +256,26 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			fileSriDtoList = listaErrores;
 			
 			if(errores>0) {
-				messageCtrl.cargarMenssage("WARNING", "EXISTEN ERRORES :" + errores  + " EN LA CARGA DE COMPROBANTES.", "WARNING");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"existen errores :" + errores  + " en la carga de comprobantes.", 
+						Message.WARNING);
 			}else {
-				messageCtrl.cargarMenssage("OK", "TODOS LOS COMPROBANTES FUERON GUARDADOS CORRECTAMENTE.", "OK");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Todos los comprobantes fueron guardados correctamente.", 
+						Message.OK);
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (e instanceof AccesoWsdlSriException || e instanceof WebServiceException) {
-				messageCtrl.cargarMenssage("ERROR", e.getMessage(), "ERROR");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						e.getMessage(), 
+						Message.ERROR);
 			}else {
-				messageCtrl.cargarMenssage("ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")), "ERROR");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						TextoUtil.imprimirStackTrace(e, 
+								AppConfiguracion.getInteger("stacktrace.length")), 
+						Message.ERROR);
 			}
 		}finally {
 			progress = 0;

@@ -15,54 +15,72 @@
  	</style>
 	
 	
-	<p:dialog header="Comprobantes Recibidos" widgetVar="dlgCRImportFile" modal="true" responsive="true" width="60%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Archivo SRI" 
+		widgetVar="dlgCRImportFile" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:45rem" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="formCRFile">
 			
-			<div class="formgroup-inline">
-				
-				<p:linkButton value="Ayuda" styleClass="min-width-60 mr-1 ui-button-outlined" icon="pi pi-tags" target="_black" href="#{request.contextPath}/manuales/importComprobante.html" title="Manual de Usuario">
-		    	</p:linkButton>
+			
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton id="cmdAceptar"
-					value="ACEPTAR" icon="fa fa-check" styleClass="min-width-60 mr-1" update="@form"
+					value="Aceptar" 
+					icon="fa fa-check fs-12" 
+					styleClass="min-width-80 fs-12 ui" 
+					update="@form"
 					action="#{compRecibidosCtrl.aceptarFile()}"  
 					/>
+					
+				<p:linkButton 
+					value="Ayuda" 
+					styleClass="min-width-80 ui-button-outlined ui-button-secondary fs-12" 
+					icon="pi pi-tags fs-12" 
+					target="_black" 
+					href="#{request.contextPath}/manuales/importComprobante.html" 
+					title="Manual de Usuario">
+		    	</p:linkButton>
+		    	
 				<p:commandButton id="cmdCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-60 mr-1 ui-button-flat" 
+					value="Cerrar" 
+					icon="fa fa-sign-out fs-12" 
+					styleClass="min-width-80 ui-button-outlined ui-button-secondary fs-12" 
 					onclick="PF('dlgCRImportFile').hide()" immediate="true"  
 					/>
+					
 			</div>
-		
 			
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formCRFile"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
+			<span class="m-0 my-1 text-gray-900 fs-18 text-center block">
+				<i class="fa fa-warning fs-18 text-yellow-500"></i> Seleccionar o arrastrar el archivo descargado de la página web del SRI *.txt
+			</span>
+			<p:outputPanel rendered="#{compRecibidosCtrl.nombreFile!=null}"
+				styleClass="mb-1 flex gap-2 fs-14">
+					<h:outputText value="Archivo Seleccionado" styleClass="text-gray-900"/>
+					<h:outputText value=":" styleClass="text-gray-900"/>
+					<h:outputText value="#{compRecibidosCtrl.nombreFile}" styleClass="text-gray-900 fw-5"/>
+			</p:outputPanel>
 			
-			<h3>
-				<i class="fa fa-warning Fs18 text-black text-yellow-500"></i> Seleccionar o arrastrar el archivo descargado de la página web del SRI *.txt
-			</h3>
-			<div>
-				<f:subview rendered="#{compRecibidosCtrl.nombreFile!=null}">
-					<h:outputText value="Archivo Seleccionado :" />
-					<p:tag styleClass="p-mr-2" severity="success" value="#{compRecibidosCtrl.nombreFile}" rounded="false"></p:tag>
-					<div class="EmptyBox10"/>
-				</f:subview>
-			</div>
 			<p:fileUpload id="recImportupload"
 					listener="#{compRecibidosCtrl.handleUpload}"
 					allowTypes="/(\.|\/)(txt)$/"
 					required="true"
-					requiredMessage="REQUERIDO" 
+					requiredMessage="Requerido" 
 					label="Seleccionar Archivo *.txt" 
 					sizeLimit="25242880"
-					invalidFileMessage="SOLO FORMATOS [.txt]" 
+					invalidFileMessage="Solo formatos [.txt]" 
 					invalidSizeMessage="#{msg['file.size']} 2MB" 
 					mode="advanced" 
 					dragDropSupport="true" 
 					auto="true"
 					update="@form"
-					previewWidth="0" styleClass="ui-button-outlined">
+					previewWidth="0" 
+					chooseButtonStyleClass="ui-button-success fs-14"
+					>
 			</p:fileUpload>
 			
 		</h:form>
