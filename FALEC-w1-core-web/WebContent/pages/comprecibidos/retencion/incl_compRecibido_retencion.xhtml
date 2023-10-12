@@ -16,95 +16,92 @@
     	
     </style>
 	
-	<div class="card card-w-title mt-1">
-		
-		<span class="Fs16 my-1 text-black font-semibold">Retención</span>
-		
-		<div class="grid">
-			<div class="col-12 md:col-6">
-				<div class="mb-1">
-					<span class="text-black font-light">Fechas</span>
-				</div>
-				<div  class="flex">
-					<div class="flex-grow-1 flex pr-1">
-						<p:calendar id="calDesde" value="#{compRecRetencionCtrl.desde}" 
+	
+	<div class="card">
+	
+		<div class="grid ui-fluid main__opciones px-2">
+			<div class="col-12 md:col-3">
+				<div class="field">
+					<label class="text-gray-800">Fechas</label>
+					<div class="flex gap-2">
+						<p:calendar id="calDesde" value="#{compRecRetencionCtrl.desde}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+							requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
 						</p:calendar>
-					</div>
-					<div class="flex-grow-1 flex">
 						<p:calendar id="calHasta" value="#{compRecRetencionCtrl.hasta}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+							requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
 						</p:calendar>
+						
 					</div>
 				</div>
 			</div>
 			<div class="col-12 md:col-6">
-				<div class="flex mb-1">
-					<p:selectBooleanCheckbox value="#{compRecRetencionCtrl.aplicarFechas}" styleClass="mr-1"/>
-					<h:outputText value=" Aplicar Rango de Fechas" styleClass="FontBold"/>
-				</div>
-				<div  class="flex">
-					<div class="flex-grow-1 flex pr-1">
-						<p:inputText value="#{compRecRetencionCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Emisor" styleClass="w-full"/>
-					</div>
-					<div class="flex-grow-0 flex">
-						<p:commandButton 
-							icon="fa fa-search"
-							action="#{compRecRetencionCtrl.buscar()}" styleClass="ui-button-success" update="@form" style="margin-right:5px;" value="Buscar"/>		
-					</div>
+				<div class="field">
+					<label class="text-gray-800">Criterio de búsqueda</label>
+					<p:inputText value="#{compRecRetencionCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Nombre emisor"/>
 				</div>
 			</div>
+			
+			<div class="mt-2 col-12 md:col-3 md:mt-0">
+				<div class="inline-flex gap-2 h-full align-items-end">
+					<p:commandButton 
+						icon="fa fa-search"
+						action="#{compRecRetencionCtrl.buscar()}" 
+						styleClass="ui-button-success" 
+						update="@form" 
+						value="Buscar"/>
+				</div>
+			</div>
+			
 		</div>
 		
-		
-		<div class="flex mt-2 align-items-center">
-			<i class="fa fa-ellipsis-v Fs14 mr-2"/> 
-			<p:commandLink id="cmdGlobalRTExcelSeleccion" disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}" styleClass="min-width-80 mr-1">
-				<div class="flex w-full">
-					<span class="mr-1 text-black Fs12 font-light">Selección</span>
-					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+		<div class="flex my-2 align-items-center gap-2">
+			<i class="fa fa-ellipsis-v fs-14"/> 
+			<p:commandLink id="cmdGlobalRTExcelSeleccion" disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}" styleClass="min-width-80">
+				<div class="flex gap-1">
+					<span class="text-gray-900 fs-12">Selección</span>
+					<i class="fa fa-angle-down fs-14 text-gray-900" />
 				</div>
 			</p:commandLink>
 			<p:menu overlay="true" trigger="cmdGlobalRTExcelSeleccion" my="left top" at="left bottom" style="width:250px !important;" >
-				<p:menuitem value="Exportar Comprobante PDF" icon="fa fa-file-pdf-o" ajax="false">
+				<p:menuitem value="Exportar comprobantes PDF" icon="fa-regular fa-file-pdf fs-12" ajax="false">
 					<p:fileDownload value="#{compRecRetencionCtrl.descargarSeleccion}" contentDisposition="inline"/>
 				</p:menuitem>				
 			</p:menu>
 			
 			
-			<p:commandLink id="cmdGlobalExcel" disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}" styleClass="min-width-80 mr-1">
-				<div class="flex w-full">
-					<span class="mr-1 text-black Fs12 font-light">Exportar</span>
-					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+			<p:commandLink id="cmdGlobalExcel" disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}" styleClass="min-width-80">
+				<div class="flex gap-1">
+					<span class="text-gray-900 fs-12">Exportar</span>
+					<i class="fa fa-angle-down fs-14 text-gray-900" />
 				</div>
 			</p:commandLink>
 			<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-				<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+				<p:menuitem value="Exportar excel" icon="fa-regular fa-file-excel fs-12" ajax="false">
 					<p:fileDownload value="#{compRecRetencionCtrl.fileResumen}" contentDisposition="inline"/>
 				</p:menuitem>
-				<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+				<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list fs-12" ajax="false">
 					<p:fileDownload value="#{compRecRetencionCtrl.fileDetalle}" contentDisposition="inline"/>
 				</p:menuitem>
 			</p:menu>
 			
-			<p:link href="#divTotales" styleClass="min-width-80 mr-1" disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}">
-				<div class="flex w-full">
-					<span class="mr-1 text-black Fs12 font-semibold">Ver Totales</span>
-					<i class="fa fa-angle-down Fs18 text-white font-semibold" />
+			<p:link href="#divTotales" styleClass="min-width-80" disabled="#{empty compRecRetencionCtrl.comprobanteRecibidoList}">
+				<div class="flex gap-1">
+					<span class="text-primary-600 fs-12">Ver Totales</span>
+					<!-- <i class="fa fa-angle-down fs-18 text-white font-semibold" /> -->
 				</div>
 		    </p:link>
 			
 		</div>
-		<div class="EmptyBox5"/>
+		
 		<p:dataTable id="compRetSriDT" var="ret"
 						value="#{compRecRetencionCtrl.comprobanteRecibidoList}" 
 						scrollable="true"
 						emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="compRetSriDT Fs11"  
+						styleClass="compRetSriDT fs-11 text-gray-900"  
 						rowKey="#{ret.idcomprobanterecibido}"
 						rows="30"
 		                paginator="true"
@@ -116,25 +113,25 @@
 		    
 		    <p:ajax  event="toggleSelect" listener="#{compRecRetencionCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvRetencion:compRetSriDT"/>
 		    
-		    <p:column selectionMode="multiple" style="width:10px" styleClass="text-center"/>
+		    <p:column selectionMode="multiple" style="width:20px" styleClass="text-center"/>
 		    
-		    <p:column headerText="OPC" style="width:15px;" styleClass="TexAlCenter">
+		    <p:column headerText="Opc" style="width:15px;">
 		    	<p:commandLink id="cmlDtFacEmitidas">
-					<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
 				</p:commandLink>
 				
 				<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-					<p:menuitem value="RIDE" action="#{compRecRetencionCtrl.showRide()}" icon="fa fa-file-pdf-o">
+					<p:menuitem value="RIDE" action="#{compRecRetencionCtrl.showRide()}" icon="fa-regular fa-file-pdf fs-14">
 						<f:setPropertyActionListener value="#{ret}" target="#{compRecRetencionCtrl.comprobanteRecibidoSelected}"/>
 						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compRecRetencionCtrl.rideCtrl}"/>
 					</p:menuitem>
-					<p:menuitem value="Ver XML formato" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
+					<p:menuitem value="Ver XML formato" icon="fa fa-eye fs-14" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
 						<f:setPropertyActionListener value="#{ret}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>
 						<f:setPropertyActionListener value="#{ret.valorXml}" target="#{compRecibidosCtrl.xml}"/>
 						<f:setPropertyActionListener value="#{true}" target="#{compRecibidosCtrl.formatoXml}"/>
 					</p:menuitem>
 					
-					<p:menuitem value="Ver XML original" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
+					<p:menuitem value="Ver XML original" icon="fa fa-eye fs-14" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
 						<f:setPropertyActionListener value="#{ret}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>
 						<f:setPropertyActionListener value="#{ret.valorXml}" target="#{compRecibidosCtrl.xml}"/>
 						<f:setPropertyActionListener value="#{false}" target="#{compRecibidosCtrl.formatoXml}"/>
@@ -142,72 +139,78 @@
 				</p:menu>	
 		    </p:column>    
 		    
-		    <p:column headerText="COMPROBANTE" style="width:110px;" styleClass="text-right">
+		    <p:column headerText="Comprobante" style="width:120px;">
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(ret.serieComprobante)}" />
 			</p:column>
 			
-			<p:column headerText="FECHA #{msg['label.emision']}" style="width:60px;" styleClass="text-right">
+			<p:column headerText="#{msg['label.emision']}" style="width:70px;">
 				<h:outputText value="#{ret.fechaEmision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA AUTOR." style="width:60px;" styleClass="text-right">
+			<p:column headerText="Autorización" style="width:70px;">
 				<h:outputText value="#{ret.fechaAutorizacion}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="RUC / CI EMISOR" style="width:90px;" filterBy="#{ret.rucEmisor}" filterMatchMode="contains" styleClass="text-right">
+			<p:column headerText="Emisor Id" style="width:90px;" filterBy="#{ret.rucEmisor}" filterMatchMode="contains">
 				<h:outputText value="#{ret.rucEmisor}" />
 			</p:column>
 			
-			<p:column headerText="EMISOR" style="width:200px;" filterBy="#{ret.razonSocialEmisor}" filterMatchMode="contains">
-				<h:outputText value="#{ret.razonSocialEmisor}" styleClass="uppercase">
+			<p:column headerText="Emisor" style="width:200px;" filterBy="#{ret.razonSocialEmisor}" filterMatchMode="contains">
+				<h:outputText value="#{ret.razonSocialEmisor}" styleClass="uppercase text-primary-600 fw-3">
 				</h:outputText>
 			</p:column>
 					
-			<p:column headerText="RENTA" style="width:60px;" styleClass="TexAlRight">
-				<h:outputText value="#{ret.totalrenta}" styleClass="#{ret.totalrenta.doubleValue()==0.0?'opacity-60':''}">
-					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-				</h:outputText>
+			<p:column headerText="Renta" style="width:80px;" styleClass="text-center">
+				<div class="flex justify-content-end">
+					<h:outputText value="#{ret.totalrenta}" styleClass="#{ret.totalrenta.doubleValue()==0.0?'opacity-60':''}">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
 			</p:column>
 			
-			<p:column headerText="IVA" style="width:60px;" styleClass="TexAlRight">
-				<h:outputText value="#{ret.totaliva}" styleClass="#{ret.totaliva.doubleValue()==0.0?'opacity-60':''}">
-					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-				</h:outputText>
+			<p:column headerText="Iva" style="width:80px;" styleClass="text-center">
+				<div class="flex justify-content-end">
+					<h:outputText value="#{ret.totaliva}" styleClass="#{ret.totaliva.doubleValue()==0.0?'opacity-60':''}">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
 			</p:column>
 			
-			<p:column headerText="TOTAL" style="width:60px;" styleClass="TexAlRight">
-				<h:outputText value="#{ret.totalretencion}" styleClass="text-black font-semibold">
-					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-				</h:outputText>
+			<p:column headerText="Total" style="width:80px;" styleClass="text-center">
+				<div class="flex justify-content-end">
+					<h:outputText value="#{ret.totalretencion}" styleClass="text-gray-800 fw-5">
+						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+					</h:outputText>
+				</div>
 			</p:column>
 					
 		
 		</p:dataTable>
-		<div class="EmptyBox5"/>
+		
 		<div class="grid justify-content-end" id="divTotales">
 			<div class="col-12 md:col-5 lg:col-4">
 				<div class="grid grid-nogutter justify-content-between">
 					<div class="col-7 py-2">
 						<div class="w-full text-left">
-							<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
-							<span class="Fs14 text-blue-600 font-medium">RESUMEN</span>
+							<span class="fs-12 mr-1 text-gray-700 font-semibold">Total</span>
+							<span class="fs-14 text-blue-600 font-medium">RESUMEN</span>
 						</div>
 					</div>
 					<div class="col-1 text-center align-self-center">
-						<i class="fa fa-angle-down Fs14"></i>
+						<i class="fa fa-angle-down fs-14"></i>
 					</div>
 					<div class="col-12 mt-1">
-						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-							<div class="flex flex-grow-1 Fs12">
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+							<div class="flex flex-grow-1 fs-12">
 								<i class="fa fa-angle-right mr-1 font-bold"></i>
-								<span class="text-gray-800"><h:outputText value="IMPUESTO A LA RENTA" /></span>
+								<span class="text-gray-800"><h:outputText value="Impuesto a la renta" /></span>
 							</div>						
 							<div class="flex flex-grow-1">
-								<div class="text-right pr-3 w-full Fs16">
+								<div class="text-right pr-3 w-full fs-14">
 									<h:outputText value="#{compRecRetencionCtrl.comprobanteRecibidoTotal.totalrenta}">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
@@ -215,27 +218,13 @@
 							</div>				
 						</div>
 						
-						<!-- <div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-							<div class="flex flex-grow-1 Fs12">
-								<i class="fa fa-angle-right mr-1 font-bold"></i>
-								<span class="text-gray-800"><h:outputText value="DESCUENTO" /></span>
-							</div>						
-							<div class="flex flex-grow-1">
-								<div class="text-right pr-3 w-full Fs16">
-									<h:outputText value="#{compRecFacturaCtrl.comprobanteRecibidoTotal.totaldescuento}">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-								</div>
-							</div>				
-						</div> -->
-						
-						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-							<div class="flex flex-grow-1 Fs12">
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+							<div class="flex flex-grow-1 fs-12">
 								<i class="fa fa-angle-right mr-1 font-bold"></i>
 								<span class="text-gray-800"><h:outputText value="I.V.A." /></span>
 							</div>						
 							<div class="flex flex-grow-1">
-								<div class="text-right pr-3 w-full Fs16">
+								<div class="text-right pr-3 w-full fs-14">
 									<h:outputText value="#{compRecRetencionCtrl.comprobanteRecibidoTotal.totaliva}">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
@@ -243,13 +232,13 @@
 							</div>				
 						</div>
 						
-						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-							<div class="flex flex-grow-1 Fs12">
+						<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+							<div class="flex flex-grow-1 fs-12">
 								<i class="fa fa-angle-right mr-1 font-bold"></i>
-								<span class="text-gray-800"><h:outputText value="TOTAL RETENIDO" /></span>
+								<span class="text-gray-800"><h:outputText value="Total retenido" /></span>
 							</div>						
 							<div class="flex flex-grow-1">
-								<div class="text-right pr-3 w-full Fs16">
+								<div class="text-right pr-3 w-full fs-14">
 									<h:outputText value="#{compRecRetencionCtrl.comprobanteRecibidoTotal.totalretencion}">
 										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
@@ -259,8 +248,8 @@
 					</div>
 				</div>
 			</div>
-		</div>		
-		<div class="EmptyBox20"/>		
+		</div>
+		
 	</div>
 
 </ui:composition>

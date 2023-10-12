@@ -60,7 +60,7 @@
 		
 		<div class="flex my-2 align-items-center gap-2">
 			<i class="fa fa-ellipsis-v fs-14"/> 
-			<p:commandLink id="cmdGlobalExcelSeleccion" disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}" styleClass="min-width-80 mr-1">
+			<p:commandLink id="cmdGlobalExcelSeleccion" disabled="#{empty compRecFacturaCtrl.comprobanteRecibidoList}" styleClass="min-width-80">
 				<div class="flex gap-1">
 					<span class="fs-12 text-gray-900">Selección</span>
 					<i class="fa fa-angle-down fs-14 text-gray-900" />
@@ -115,7 +115,7 @@
 		    
 		    <p:column selectionMode="multiple" style="width:20px" styleClass="text-center"/>
 		    
-		    <p:column headerText="Opc" style="width:20px;" styleClass="TexAlCenter">
+		    <p:column headerText="Opc" style="width:20px;">
 		    	<p:commandLink id="cmlDtFacEmitidas">
 					<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
 				</p:commandLink>
