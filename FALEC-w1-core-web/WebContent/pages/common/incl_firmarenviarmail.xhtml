@@ -16,216 +16,183 @@
 			max-height: 25vh !important;
 		}
 		
-		.p-field,
-        	.p-field > label,
-        	.p-field-checkbox, 
-        	.p-field-radiobutton {
-				margin-bottom: 0.15rem !important;
-		}
-		
-		.p-field > small{margin-top: 0px !important;}
-		
-		@media screen and (max-height: 1024px){
+		/* @media screen and (max-height: 1024px){
 			.heightFormEnvioDoc {
 				max-height: 800px;
 			}
+		} */
+		
+		.divisor:after {
+		  content: "";
+		    display: block;
+		    width: 80%;
+		    height: 1px;
+		    background: #e6e6e6;
+		    margin: 0.5rem auto;
+		}
+		
+		.div-upload .ui-fileupload .ui-fileupload-content{
+			display: none;
 		}
 		
 	</style>
 	
 	
-	<p:dialog header="Enviar Documento #{msg['label.electronico']}" widgetVar="dlEnvioDoc" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Enviar Documento #{msg['label.electronico']}" 
+		widgetVar="dlEnvioDoc" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:800px;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="formEnvioDoc">
 			
-			<div class="formgroup-inline">
-			
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton id="cmdEnviarEmail"
-					value="ENVIAR EMAIL" icon="fa fa-envelope-o" styleClass="ui-button-outlined mr-1 min-width-100" update="@form #{enviarDocCtrl.updateView}"
+					value="Enviar email" 
+					icon="fa-regular fa-envelope fs-12" 
+					styleClass="ui-button-outlined min-width-100 fs-12" 
+					update="@form #{enviarDocCtrl.updateView}"
 					action="#{enviarDocCtrl.enviarCorreo()}"
 					process="@form" disabled="#{appSessionCtrl.isEnviarEmail(enviarDocCtrl.estadoComprobante)}"/>
 					
 				<p:commandButton id="cmdEnviarFirmarEmail"
-					value="FIRMAR Y ENVIAR" icon="fa fa-envelope" styleClass="ui-button-outlined mr-1 min-width-100" process="@form" update="@form #{enviarDocCtrl.updateView}"
+					value="Firmar y enviar" 
+					icon="fa-solid fa-envelope fs-12" 
+					styleClass="ui-button-outlined min-width-100 fs-12" 
+					process="@form" 
+					update="@form #{enviarDocCtrl.updateView}"
 					action="#{enviarDocCtrl.firmarEnviarCorreo()}"
 					/>
 					
 				<p:commandButton id="cmdCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="ui-button-flat min-width-100" 
+					value="Cerrar" icon="fa fa-sign-out fs-12" 
+					styleClass="ui-button-outlined ui-button-secondary min-width-100 fs-12" 
 					onclick="PF('dlEnvioDoc').hide()" immediate="true"  
 					/>
+				
 			</div>
 			
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formEnvioDoc" id="msgFormEnvioDoc"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<div class="w-full overflow-auto heightFormEnvioDoc contenedorFormulario mt-2">
-				
-				<div class="grid align-content-top " style="width:99%!important;">
+			<div class="w-full overflow-auto heightFormEnvioDoc contenedorFormulario mt-2 pr-1 ui-fluid fs-12">
+				<div style="width:99.8%!important;">
 					
-					<!-- datos de cabecera -->
-					<div class="col-12 md:col-7">
-						
-						<div class="Wid100 titulo">Datos Documento #{msg['label.electronico']}</div>
-						
-						<div class="grid">
-							<div class="col-12 md:col-6">
-								<div class="flex align-self-center">
-									<div class="flex flex-column">
-										<span class="Fs16 font-bold text-blue-600 mb-1 block">
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.establecimiento.nombrecomercial}" />
-										</span>
-										<div class="flex align-items-end">
-											<span class="Fs12 text-gray-400 mr-2">#{enviarDocCtrl.cabeceraSelected.tipocomprobante.comprobante}</span>
-											<span class="Fs16 font-bold text-gray-600 ">#{compFacCtrl.getFormatoNumDocumento(enviarDocCtrl.cabeceraSelected.numdocumento)}</span>
-										</div>
-										
-										<span class="Fs11 text-gray-400 mb-1 block">
-											#{enviarDocCtrl.cabeceraSelected.claveacceso}
-										</span>
-										<span class="Fs11 mb-1 block">
-											<i class="fa fa-calendar mr-1"></i>
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.fechaemision}" >												
-												<f:convertDateTime pattern="dd/MM/yyyy"/>
-											</h:outputText>
-										</span>
-										
-									</div>
-								</div>
+					<div class="grid align-content-top " >
+					
+						<div class="col-12 md:col-6">
+							
+							<div class="flex justify-content-between align-items-baseline mb-1">
+								<!-- <span class="fs-12 text-gray-700 inline-block">#{enviarDocCtrl.cabeceraSelected.tipocomprobante.comprobante}</span> -->
+								<span class="fs-14 text-gray-800 fw-5">#{compFacCtrl.getFormatoNumDocumento(enviarDocCtrl.cabeceraSelected.numdocumento)}</span>
+								<h:outputText value="#{enviarDocCtrl.cabeceraSelected.fechaemision}" styleClass="fs-14">												
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</h:outputText>
 							</div>							
-							<p:outputPanel styleClass="col-12 md:col-6 mt-0 md:mt-1" rendered="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.identificador!='06'}">
-								<div class="flex align-self-center">
-									<div class="flex flex-column">
-										<span class="Fs16 font-bold text-blue-600 mb-1 block">
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.razonsocial}" />
-										</span>
-										<div class="flex align-items-end">
-											<span class="Fs12 text-gray-400 mr-2">RUC. / C.I.</span>
-											<span class="Fs16 font-bold text-gray-600 ">#{enviarDocCtrl.cabeceraSelected.cliente.identificacion}</span>
-										</div>										
-										<span class="Fs11 mb-1 block">
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.direccion}" />
-										</span>
-										<span class="Fs11 mb-1 block">
-											<i class="pi pi-phone mr-1"></i>
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.telefono!=null?enviarDocCtrl.cabeceraSelected.cliente.telefono:'-'}" />
-										</span>
-										<span class="Fs11 mb-1 block">
-											<i class="fa fa-envelope-o mr-1 Fs11"></i>
-											<!-- <h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.correoelectronico!=null?enviarDocCtrl.cabeceraSelected.cliente.correoelectronico:'-'}" /> -->
-											<span>-</span>
-										</span>
-										
-									</div>
-								</div>
+							<span class="block fs-16 text-gray-800 fw-5 mb-1">#{enviarDocCtrl.cabeceraSelected.establecimiento.nombrecomercial}</span>
+							<span class="block fs-12 text-gray-900 mb-2 divisor">#{enviarDocCtrl.cabeceraSelected.claveacceso}</span>
+							
+							<p:outputPanel class="flex flex-column gap-1 divisor" rendered="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.identificador!='06'}">
+								<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.razonsocial}" styleClass="fs-16 text-primary-600 font-semibold block"/>
+								<span class="fs-14 text-gray-800 fw-5 block">#{enviarDocCtrl.cabeceraSelected.cliente.identificacion}</span>
+								<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.direccion}" styleClass="block text-gray-800"/>
+								<span class="fs-11 block flex gap-2">
+									<i class="pi pi-phone"></i>
+									<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.telefono!=null?enviarDocCtrl.cabeceraSelected.cliente.telefono:'-'}" />
+								</span>
+								<span class="fs-11 block flex gap-2">
+									<i class="fa-regular fa-envelope fs-11"></i>
+									<h:outputText value="#{enviarDocCtrl.cabeceraSelected.cliente.correoelectronico!=null?enviarDocCtrl.cabeceraSelected.cliente.correoelectronico:'-'}" />
+								</span>
+								
 							</p:outputPanel>
 							
-							<p:outputPanel styleClass="col-12 md:col-6 mt-0 md:mt-1" rendered="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.identificador=='06'}">
-								<div class="flex align-self-center">
-									<div class="flex flex-column">
-										<span class="Fs16 font-bold text-blue-600 mb-1 block">
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.razonsocial}" />
-										</span>
-										<div class="flex align-items-end">
-											<span class="Fs12 text-gray-400 mr-2">RUC. / C.I.</span>
-											<span class="Fs16 font-bold text-gray-600 ">#{enviarDocCtrl.cabeceraSelected.transportista.identificacion}</span>
-										</div>										
-										<span class="Fs11 mb-1 block">
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.direccion}" />
-										</span>
-										<span class="Fs11 mb-1 block">
-											<i class="pi pi-phone mr-1"></i>
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.telefono!=null?enviarDocCtrl.cabeceraSelected.transportista.telefono:'-'}" />
-										</span>
-										<span class="Fs11 mb-1 block">
-											<i class="fa fa-envelope-o mr-1 Fs11"></i>
-											<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.email!=null?enviarDocCtrl.cabeceraSelected.transportista.email:'-'}" />
-										</span>
-										
-									</div>
-								</div>
+							<p:outputPanel class="flex flex-column gap-1 divisor" rendered="#{enviarDocCtrl.cabeceraSelected.tipocomprobante.identificador=='06'}">
+								<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.razonsocial}" styleClass="fs-16 text-primary-600 font-semibold block"/>
+								<span class="fs-14 text-gray-800 fw-5 block">#{enviarDocCtrl.cabeceraSelected.transportista.identificacion}</span>
+								<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.direccion}" styleClass="block text-gray-800"/>
+								<span class="fs-11 block flex gap-2">
+									<i class="pi pi-phone"></i>
+									<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.telefono!=null?enviarDocCtrl.cabeceraSelected.transportista.telefono:'-'}" />
+								</span>
+								<span class="fs-11 block flex gap-2">
+									<i class="fa-regular fa-envelope fs-11"></i>
+									<h:outputText value="#{enviarDocCtrl.cabeceraSelected.transportista.email!=null?enviarDocCtrl.cabeceraSelected.transportista.email:'-'}" />
+								</span>
+								
 							</p:outputPanel>
 							
-							<div class="col-12">									
-								<div class="field">
-									<label for="to" class="text-gray-700 font-medium">Destinatarios To</label>
-			            			<p:inputText id="to" value="#{enviarDocCtrl.to}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
-			            				<f:validator validatorId="emailValidator"/>
-			            			</p:inputText>
-			            			<p:message for="to" styleClass="block"/>
-			            			<small>Varios correos separar con coma (,)</small>
-								</div>
-								<div class="field">
-									<label for="cc" class="text-gray-700">Con copia Cc </label>
-			            			<p:inputText id="cc" value="#{enviarDocCtrl.cc}" styleClass="w-full">
-			            				<f:validator validatorId="emailValidator"/>
-			            			</p:inputText>
-			            			<p:message for="cc" styleClass="block"/>
-			            			<small>Varios correos separar con coma (,)</small>
-								</div>
-								<div class="field">
-									<label for="subject" class="text-gray-700 font-medium">Asunto</label>
-			            			<p:inputText id="subject" value="#{enviarDocCtrl.subject}" required="true" requiredMessage="REQUERIDO" styleClass="w-full"></p:inputText> 
-			            			<p:message for="subject" styleClass="block"/>
-								</div>
-								<div class="field">
-									<p:textEditor secure="false" widgetVar="editor1" value="#{enviarDocCtrl.contenido}" height="200"  allowFormatting="true" allowBlocks="true" allowImages="true" allowLinks="true" allowStyles="true" />
+							<div class="field">
+								<label class="text-gray-800 fw-5">Destinatarios</label>
+		            			<p:inputText id="to" value="#{enviarDocCtrl.to}" required="true" requiredMessage="Requerido">
+		            				<f:validator validatorId="emailValidator"/>
+		            			</p:inputText>
+		            			<small>Varios correos separar con coma (,)</small>
+							</div>
+							
+							<div class="field">
+								<label class="text-gray-900">Con copia a</label>
+		            			<p:inputText id="cc" value="#{enviarDocCtrl.cc}" required="false" requiredMessage="Requerido">
+		            				<f:validator validatorId="emailValidator"/>
+		            			</p:inputText>
+		            			<small>Varios correos separar con coma (,)</small>
+							</div>
+							
+							<div class="field">
+								<label class="text-gray-800 fw-5">Asunto</label>
+		            			<p:inputText id="asunto" value="#{enviarDocCtrl.subject}" required="true" requiredMessage="Requerido">
+		            			</p:inputText>
+							</div>
+							
+							<div class="field">
+								<label class="text-gray-900">Adjuntos</label>
+								<div class="div-upload">
+									<p:fileUpload id="fileUploadComponent"
+										listener="#{enviarDocCtrl.handleUpload}"
+										label="Agregar Archivo" 
+										sizeLimit="50485760"
+										invalidSizeMessage="#{msg['file.size']} 4MB" 
+										mode="advanced" 
+										dragDropSupport="true" 
+										auto="true"
+										update="@form:pnlAdjuntos"
+										previewWidth="0"
+										chooseButtonStyleClass="ui-button-outlined ui-button-success fs-11"
+										dropZone="formEnvioDoc:pnlAdjuntos">
+									</p:fileUpload>
+									<p:panel header="Adjuntos" id="pnlAdjuntos">
+								        <div class="grid m-1 align-items-start">
+								        	<p:repeat var="f" value="#{enviarDocCtrl.adjuntosMap}">
+								        		
+								        		<div class="col-2 text-center" >
+								        			<p:commandLink action="#{enviarDocCtrl.eliminarAdjuntos(f.key)}" process="@this @form:pnlAdjuntos" update="@form:pnlAdjuntos">
+								        				<i class="fa-regular fa-trash-can fs-14 text-gray-900" ></i>
+								        			</p:commandLink>
+								        		</div>
+								        		
+								        		<div class="col-10" >
+								        			<h:outputText value="#{f.key}" styleClass="text-gray-900"/>
+								        		</div>
+								        		
+								        	</p:repeat>
+								        </div>
+								    </p:panel>
 								</div>
 							</div>
 							
+						</div>
+						
+						<div class="col-12 md:col-6">
+							
+							<p:textEditor secure="false" widgetVar="editor1" value="#{enviarDocCtrl.contenido}" height="295"  allowFormatting="true" allowBlocks="true" allowImages="true" allowLinks="true" allowStyles="true" />
 							
 						</div>
 						
-						
-						
-						
-						
-												
 					</div>
-					
-					<!-- emails -->
-					<div class="col-12 md:col-5">
-						
-						<div class="w-full titulo">Archivos adjuntos</div>
-						
-						<div class="field mt-2">
-							<p:fileUpload id="fileUploadComponent"
-									listener="#{enviarDocCtrl.handleUpload}"
-									label="Agregar Archivo" 
-									sizeLimit="50485760"
-									invalidSizeMessage="#{msg['file.size']} 4MB" 
-									mode="advanced" 
-									dragDropSupport="true" 
-									auto="true"
-									update="@form:pnlAdjuntos"
-									previewWidth="0">
-								</p:fileUpload>
-						</div>
-						<div class="field">
-							<p:panel header="Adjuntos" id="pnlAdjuntos">
-						        <div class="grid m-0 align-items-start">
-						        	<p:repeat var="f" value="#{enviarDocCtrl.adjuntosMap}">
-						        		
-						        		<div class="col-2 TexAlCenter" >
-						        			<p:commandLink action="#{enviarDocCtrl.eliminarAdjuntos(f.key)}" process="@this @form:pnlAdjuntos" update="@form:pnlAdjuntos @form:msgFormEnvioDoc">
-						        				<i class="fa fa-trash-o Fs14" style="color:#252529;"></i>
-						        			</p:commandLink>
-						        		</div>
-						        		
-						        		<div class="col-10" >
-						        			<h:outputText value="#{f.key}" />
-						        		</div>
-						        		
-						        	</p:repeat>
-						        </div>
-						    </p:panel>
-						</div>
-						
-					</div>
-					
+				
 				</div>
+				
 			
 			</div>			
 			

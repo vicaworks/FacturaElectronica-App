@@ -25,6 +25,7 @@ import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.util.HtmlUtil;
 import com.vcw.falecpv.web.ctrl.adquisicion.RetencionMainCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.comprobantes.guiarem.GuiaRemCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.liqcompra.LiqCompraCtrl;
 import com.vcw.falecpv.web.ctrl.comprobantes.nc.CompNcCtrl;
@@ -90,7 +91,10 @@ public class EnviarDocCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlEnvioDoc", "formEnvioDoc");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -125,7 +129,9 @@ public class EnviarDocCtrl extends BaseCtrl {
 	public void enviarCorreo() {
 		try {
 			if(to==null) {
-				AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "NO EXISTE EMAILS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe emails", 
+						Message.ERROR);
 				return;
 			}
 			List<String> correoList = new ArrayList<>();
@@ -153,11 +159,15 @@ public class EnviarDocCtrl extends BaseCtrl {
 			
 			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, contenido, correoList,false);
 			actualizarPantalla();
-			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "ENVIADO CORRECTAMENTE.");
-			
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Enviado correctamente", 
+					Message.INFO);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -165,7 +175,9 @@ public class EnviarDocCtrl extends BaseCtrl {
 	public void handleUpload(FileUploadEvent event) throws IOException {
 		
 		if(adjuntosMap.containsKey(event.getFile().getFileName())) {
-			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", "YA EXISTE EL ARCHIVO : " + event.getFile().getFileName());
+			getMessageCommonCtrl().crearMensaje("Error", 
+					"Ya existe el archivo : " + event.getFile().getFileName(), 
+					Message.ERROR);
 			return;			
 		}
 		// agrega el file a la lista
@@ -180,7 +192,10 @@ public class EnviarDocCtrl extends BaseCtrl {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -192,10 +207,15 @@ public class EnviarDocCtrl extends BaseCtrl {
 			c.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
 			sriDispacher.queue_comprobanteSriDispacher(c);
 			actualizarPantalla();
-			AppJsfUtil.addInfoMessage("formEnvioDoc", "OK", "DOCUMENTO FIRMADO Y ENVIADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Documento firmado y enviado correctamente", 
+					Message.INFO);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formEnvioDoc", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
