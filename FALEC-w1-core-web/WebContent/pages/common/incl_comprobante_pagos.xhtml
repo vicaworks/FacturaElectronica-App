@@ -19,7 +19,13 @@
 		
 	</style>
 	
-	<p:dialog header="Resumen de pagos" widgetVar="dlgResumenPagos" modal="true" responsive="true" width="550px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Resumen de pagos" 
+		widgetVar="dlgResumenPagos" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:50rem;" 
+		closeOnEscape="true" styleClass="modalResponsivo">
 		
 		<h:form id="frmResPagos">
 			
@@ -32,7 +38,7 @@
 					
 					<f:subview rendered="#{empty pagoCtrl.pagoList}">
 						<div class="col-12 mt-1">
-							<span class="Fs12 text-gray-600">NO EXISTEN PAGOS REGISTRADOS</span>
+							<span class="fs-12 text-gray-600">No existen pagos registrados</span>
 						</div>
 					</f:subview>
 					
@@ -40,82 +46,74 @@
 						<div class="col-12 mt-1">
 							<div class="flex flex-inline">
 								<div class="align-self-center text-center" style="width: 70px;">
-									<i class="fa fa-angle-double-right Fs30"></i>
+									<i class="fa fa-angle-double-right fs-30 text-primary-600 font-semibold"></i>
 								</div>
 								<div class="flex flex-column w-full">
 									<div class="block my-1">
-										<span class="Fs9 font-bold mr-1">TIPO PAGO</span>
-										<span class="Fs16 text-gray-800 font-bold">
+										<span class="fs-11 text-gray-900 mr-1">Tipo de pago</span>
+										<span class="fs-16 text-gray-800 font-semibold">
 											<h:outputText value="#{p.tipopago.nombre}"/>
 										</span>
 									</div>
 									<!-- Banco -->
 									<f:subview rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
-										<div class="block mb-1">
-											<span class="Fs9 mr-1">BANCO</span>
-											<span class="Fs12">
+										<div class="block mb-1 ">
+											<span class="fs-9 mr-1 inline-block min-width-90">BANCO</span>
+											<span class="fs-12">
 												<h:outputText value="#{p.nombrebanco!=null?p.nombrebanco:'-'}" styleClass="text-gray-900 text-semibold"/>
 											</span>
 										</div>
 									</f:subview>
 									<f:subview rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}">
 										<div class="block mb-1">
-											<span class="Fs9 mr-1">DOC. REFERENCIA</span>
-											<span class="Fs12">
+											<span class="fs-9 mr-1 inline-block min-width-90">DOC. REFERENCIA</span>
+											<span class="fs-12">
 												<h:outputText value="#{p.numerodocumento!=null?p.numerodocumento:'-'}" styleClass="text-gray-900 text-semibold"/>
 											</span>
 										</div>
 									</f:subview>
 									<!-- Fecha pago plazo -->
-									<div class="block mb-1">
-										<span class="mr-1">
-											<span class="Fs12">
-												<h:outputText value="#{p.plazo}">
-													<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-												</h:outputText>
-											</span>
-										</span>
-										<span class="">Días</span>
-									</div>
-									<div class="block mb-1">
-										<h:outputText value="#{p.fechapago}" styleClass="text-gray-800 font-bold">
+									<div class="flex justify-content-between fs-12">
+										<div class="flex gap-2 aling-items-baseline">
+											<h:outputText value="#{p.plazo}" styleClass="text-gray-900">
+												<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+											</h:outputText>
+											<span class="text-gray-700">Días</span>
+										</div>
+										
+										<h:outputText value="#{p.fechapago}" styleClass="text-gray-900 font-semibold">
 											<f:convertDateTime  pattern="dd/MM/yyyy"/>
 										</h:outputText>
 									</div>
+									
 									<!-- valores -->
-									<div class="block mb-1">
+									<div class="my-2">
 										<div class="flex">
-											<div class="flex-grow-1 flex flex-column">
-												<div class="py-1">
-													<h:outputText value="#{p.total}" styleClass="Fs16 font-bold">
-														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-													</h:outputText>
-												</div>
-												<div class="py-1">
-													<span class="Fs9 mr-1">VALOR A </span>
-													<span class="Fs12 font-bold">PAGAR</span>
+											<div class="flex-grow-1 flex flex-column align-items-center gap-1">
+												<h:outputText value="#{p.total}" styleClass="fs-16 font-bold">
+													<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+												</h:outputText>
+												<div class="flex gap-1 align-items-baseline">
+													<span class="fs-9">Valor a </span>
+													<span class="fs-12 font-bold">PAGAR</span>
 												</div>
 											</div>
-											<div class="flex-grow-1 flex flex-column">
-												<div class="py-1">
-													<h:outputText value="#{p.valorentrega}" styleClass="#{p.cambio>0?'text-green-600 font-semibold':''} Fs16">
-														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-													</h:outputText>
-												</div>
-												<div class="py-1">
-													<span class="Fs9 mr-1">VALOR </span>
-													<span class="Fs12 font-bold">IMPORTE</span>
+											<div class="flex-grow-1 flex flex-column align-items-center gap-1">
+												<h:outputText value="#{p.valorentrega}" styleClass="#{p.cambio>0?'text-green-600 font-semibold':''} fs-16">
+													<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+												</h:outputText>
+												<div class="flex gap-1 align-items-baseline">
+													<span class="fs-9 mr-1">Valor </span>
+													<span class="fs-12 font-bold">IMPORTE</span>
 												</div>
 											</div>
-											<div class="flex-grow-1 flex flex-column">
-												<div class="py-1">
-													<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0?'text-pink-400 font-semibold':''} Fs16">
-														<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-													</h:outputText>
-												</div>
-												<div class="py-1">
-													<span class="Fs9 mr-1">VALOR </span>
-													<span class="Fs12 font-bold">CAMBIO</span>
+											<div class="flex-grow-1 flex flex-column align-items-center gap-1">
+												<h:outputText value="#{p.cambio}" styleClass="#{p.cambio>0?'text-pink-400 font-semibold':''} fs-16">
+													<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+												</h:outputText>
+												<div class="flex gap-1 align-items-baseline">
+													<span class="fs-9 mr-1">Valor </span>
+													<span class="fs-12 font-bold">CAMBIO</span>
 												</div>
 											</div>
 										</div>
@@ -123,7 +121,7 @@
 									<!-- Notas  -->
 									<div class="block mb-1">
 										<div class="flex flex-column">
-											<span class="Fs9 font-bold">Notas</span>
+											<span class="fs-9 font-bold">Notas</span>
 											<p:skeleton width="w-full" height="2rem"/>
 										</div>
 									</div>
@@ -139,27 +137,27 @@
 				<div class="col-6 md:col-3 mt-1">
 					<div class="flex flex-column text-center">
 						<span class="font-bold text-black py-1">
-							<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="Fs20">
+							<h:outputText value="#{pagoCtrl.valorPagar}" styleClass="fs-20">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</span>
 						<div class="py-1">
-							<span class="Fs10 mr-1">TOTAL</span>
-							<span class="Fs14 font-bold text-black">A PAGAR</span>
+							<span class="fs-12 mr-1">Total</span>
+							<span class="fs-14 font-bold text-black">A PAGAR</span>
 							
 						</div>
 					</div>
 				</div>
 				<div class="col-6 md:col-3 mt-1">
 					<div class="flex flex-column text-center">
-						<span class="font-bold text-blue-600 py-1">
-							<h:outputText value="#{pagoCtrl.totalPago}" styleClass="Fs20">
+						<span class="text-primary-600 font-semibold py-1">
+							<h:outputText value="#{pagoCtrl.totalPago}" styleClass="fs-20">
 								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 							</h:outputText>
 						</span>
 						<div class="py-1">
-							<span class="Fs10 mr-1">TOTAL</span>
-							<span class="Fs14 font-bold text-black">PAGO</span>
+							<span class="fs-12 mr-1">Total</span>
+							<span class="fs-14 font-bold text-black">PAGO</span>
 							
 						</div>
 					</div>

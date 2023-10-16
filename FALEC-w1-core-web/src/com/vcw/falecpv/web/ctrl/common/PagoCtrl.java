@@ -364,7 +364,7 @@ public class PagoCtrl extends BaseCtrl {
 			default:
 				break;
 			}
-			AppJsfUtil.addInfoMessage("formPagos", "OK", "REGISTROS GUARDADOS CORRECTAMENTE.");
+			AppJsfUtil.addInfoMessage("formPagos", "OK", "Registros guardados correctamente.");			
 		} catch (Exception e) {
 			e.printStackTrace();
 			getMessageCommonCtrl().crearMensaje("Error", 
