@@ -257,6 +257,7 @@
 									
 									<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(v.idcabecera)}" icon="fa fa-truck fs-14" disabled="#{appSessionCtrl.isComprobantes(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_guiarem')?'ui-state-disabled':''}">
 										<f:setPropertyActionListener value="#{facEmitidaCtrl.establecimientoMain}" target="#{guiaRemFormCtrl.establecimientoMain}"/>
+										<f:setPropertyActionListener value="#{null}" target="#{guiaRemFormCtrl.criterioCliente}"/>
 										<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 									</p:menuitem>
 									
@@ -547,6 +548,9 @@
 			</div>
 	    	
 	    </h:form>
+	    
+	    <!-- PROVEEDOR FORM -->
+	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
 	    
 	    <!-- GUIA REMISION DESTINATARIO FORMULARIO -->
 		<ui:include src="../guiarem/incl_gr_destinatarioForm.xhtml" />

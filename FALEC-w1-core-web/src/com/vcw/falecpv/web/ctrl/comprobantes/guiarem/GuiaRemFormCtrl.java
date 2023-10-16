@@ -143,6 +143,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 	}
 	
 	public void nuevaGuiaRemision() throws DaoException, NumberFormatException, ParametroRequeridoException {
+		
 		destinatarioSelected = null;
 		detalledestinatarioSeleted = null;
 		consultarTransportista();
