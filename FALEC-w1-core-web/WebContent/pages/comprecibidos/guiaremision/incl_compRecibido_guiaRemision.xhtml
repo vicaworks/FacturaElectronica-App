@@ -11,90 +11,87 @@
     	
     	.compGRSriDT .ui-datatable-scrollable-body{
 			min-height: 35vh !important;
-			height: calc(100vh - 320px)!important;
+			height: calc(100vh - 290px)!important;
 		}
     	
     </style>
     
-	<div class="card card-w-title mt-1">
-		
-		<span class="Fs16 my-1 text-black font-semibold">Guía de Remisión</span>
-		
-		<div class="grid">
-			<div class="col-12 md:col-6">
-				<div class="mb-1">
-					<span class="text-black font-light">Fechas</span>
-				</div>
-				<div  class="flex">
-					<div class="flex-grow-1 flex pr-1">
-						<p:calendar id="calDesde" value="#{compRecGuiaRemCtrl.desde}" 
+    <div class="card">
+	
+		<div class="grid ui-fluid main__opciones px-2">
+			<div class="col-12 md:col-3">
+				<div class="field">
+					<label class="text-gray-800">Fechas</label>
+					<div class="flex gap-2">
+						<p:calendar id="calDesde" value="#{compRecGuiaRemCtrl.desde}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+							requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
 						</p:calendar>
-					</div>
-					<div class="flex-grow-1 flex">
 						<p:calendar id="calHasta" value="#{compRecGuiaRemCtrl.hasta}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+							requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
 						</p:calendar>
+						
 					</div>
 				</div>
 			</div>
 			<div class="col-12 md:col-6">
-				<div class="flex mb-1">
-					<p:selectBooleanCheckbox value="#{compRecGuiaRemCtrl.aplicarFechas}" styleClass="mr-1"/>
-					<h:outputText value=" Aplicar Rango de Fechas" styleClass="FontBold"/>
-				</div>
-				<div  class="flex">
-					<div class="flex-grow-1 flex pr-1">
-						<p:inputText value="#{compRecGuiaRemCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Nombre Emisor" styleClass="w-full"/>
-					</div>
-					<div class="flex-grow-0 flex">
-						<p:commandButton 
-							icon="fa fa-search"
-							action="#{compRecGuiaRemCtrl.buscar()}" styleClass="ui-button-success" update="@form" style="margin-right:5px;" value="Buscar"/>		
-					</div>
+				<div class="field">
+					<label class="text-gray-800">Criterio de búsqueda</label>
+					<p:inputText value="#{compRecGuiaRemCtrl.criterioBusqueda}" placeholder="# Factura, R.U.C., Nombre emisor"/>
 				</div>
 			</div>
+			
+			<div class="mt-2 col-12 md:col-3 md:mt-0">
+				<div class="inline-flex gap-2 h-full align-items-end">
+					<p:commandButton 
+						icon="fa fa-search"
+						action="#{compRecGuiaRemCtrl.buscar()}" 
+						styleClass="ui-button-success" 
+						update="@form" 
+						value="Buscar"/>
+				</div>
+			</div>
+			
 		</div>
 		
-		<div class="flex mt-2 align-items-center">
-			<i class="fa fa-ellipsis-v Fs14 mr-2"/> 
-			<p:commandLink id="cmdGlobalExcelSeleccion" disabled="#{empty compRecGuiaRemCtrl.comprobanteRecibidoList}" styleClass="min-width-80 mr-1">
-				<div class="flex w-full">
-					<span class="mr-1 text-black Fs12 font-light">Selección</span>
-					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+		<div class="flex my-2 align-items-center gap-2">
+			<i class="fa fa-ellipsis-v fs-14"/> 
+			<p:commandLink id="cmdGlobalExcelSeleccion" disabled="#{empty compRecGuiaRemCtrl.comprobanteRecibidoList}" styleClass="min-width-80">
+				<div class="flex gap-1">
+					<span class="text-gray-900 fs-12">Selección</span>
+					<i class="fa fa-angle-down fs-14 text-gray-900" />
 				</div>
 			</p:commandLink>
 			<p:menu overlay="true" trigger="cmdGlobalExcelSeleccion" my="left top" at="left bottom" style="width:250px !important;" >
-				<p:menuitem value="Exportar Comprobante PDF" icon="fa fa-file-pdf-o" ajax="false">
+				<p:menuitem value="Exportar comprobantes PDF" icon="fa-regular fa-file-pdf fs-12" ajax="false">
 					<p:fileDownload value="#{compRecGuiaRemCtrl.descargarSeleccion}" contentDisposition="inline"/>
 				</p:menuitem>				
 			</p:menu>			
 			
-			<p:commandLink id="cmdGlobalExcel" disabled="#{empty compRecGuiaRemCtrl.comprobanteRecibidoList}" styleClass="min-width-80 mr-1">
-				<div class="flex w-full">
-					<span class="mr-1 text-black Fs12 font-light">Exportar</span>
-					<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+			<p:commandLink id="cmdGlobalExcel" disabled="#{empty compRecGuiaRemCtrl.comprobanteRecibidoList}" styleClass="min-width-80">
+				<div class="flex gap-1">
+					<span class="text-gray-900 fs-12">Exportar</span>
+					<i class="fa fa-angle-down fs-14 text-gray-900" />
 				</div>
 			</p:commandLink>
 			<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-				<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+				<p:menuitem value="Exportar excel" icon="fa-regular fa-file-excel fs-12" ajax="false">
 					<p:fileDownload value="#{compRecGuiaRemCtrl.fileResumen}" contentDisposition="inline"/>
 				</p:menuitem>
-				<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+				<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list fs-12" ajax="false">
 					<p:fileDownload value="#{compRecGuiaRemCtrl.fileDetalle}" contentDisposition="inline"/>
 				</p:menuitem>
 			</p:menu>			
 		</div>
-		<div class="EmptyBox5"/>
+		
 		<p:dataTable id="compGRSriDT" var="gr"
 						value="#{compRecGuiaRemCtrl.comprobanteRecibidoList}" 
 						scrollable="true"
 						emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="compGRSriDT Fs11"  
+						styleClass="compGRSriDT fs-11"  
 						rowKey="#{gr.idcomprobanterecibido}"
 						rows="30"
 		                paginator="true"
@@ -106,25 +103,25 @@
 		    
 		    <p:ajax  event="toggleSelect" listener="#{compRecGuiaRemCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
 		    
-		    <p:column selectionMode="multiple" style="width:10px" styleClass="text-center"/>
+		    <p:column selectionMode="multiple" style="width:20px" styleClass="text-center"/>
 		    
-		    <p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+		    <p:column headerText="Opc" style="width:20px;">
 		    	<p:commandLink id="cmlDtFacEmitidas">
-					<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
 				</p:commandLink>
 				
 				<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom">
-					<p:menuitem value="RIDE" action="#{compRecGuiaRemCtrl.showRide()}" icon="fa fa-file-pdf-o">
+					<p:menuitem value="RIDE" action="#{compRecGuiaRemCtrl.showRide()}" icon="fa-regular fa-file-pdf fs-14">
 						<f:setPropertyActionListener value="#{gr}" target="#{compRecGuiaRemCtrl.comprobanteRecibidoSelected}"/>
 						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compRecGuiaRemCtrl.rideCtrl}"/>
 					</p:menuitem>
-					<p:menuitem value="Ver XML formato" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
+					<p:menuitem value="Ver XML formato" icon="fa fa-eye fs-14" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
 						<f:setPropertyActionListener value="#{gr}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>
 						<f:setPropertyActionListener value="#{gr.valorXml}" target="#{compRecibidosCtrl.xml}"/>
 						<f:setPropertyActionListener value="#{true}" target="#{compRecibidosCtrl.formatoXml}"/>
 					</p:menuitem>
 					
-					<p:menuitem value="Ver XML original" icon="fa fa-eye" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
+					<p:menuitem value="Ver XML original" icon="fa fa-eye fs-14" oncomplete="PF('dlgCRImportXml').show();" update=":formCRXml" action="#{compRecibidosCtrl.formatoValorXml()}">
 						<f:setPropertyActionListener value="#{gr}" target="#{compRecibidosCtrl.comprobanteRecibidoSelected}"/>
 						<f:setPropertyActionListener value="#{gr.valorXml}" target="#{compRecibidosCtrl.xml}"/>
 						<f:setPropertyActionListener value="#{false}" target="#{compRecibidosCtrl.formatoXml}"/>
@@ -132,53 +129,54 @@
 				</p:menu>	
 		    </p:column>    
 		    
-		    <p:column headerText="COMPROBANTE" style="width:110px;" styleClass="text-right">
+		    <p:column headerText="Comprobante" style="width:120px;">
 				<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(gr.serieComprobante)}" />
 			</p:column>
 			
-			<p:column headerText="FECHA #{msg['label.emision']}" style="width:60px;" styleClass="text-right">
+			<p:column headerText="#{msg['label.emision']}" style="width:80px;">
 				<h:outputText value="#{gr.fechaEmision}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA AUTOR." style="width:60px;" styleClass="text-right">
+			<p:column headerText="Autorización" style="width:80px;">
 				<h:outputText value="#{gr.fechaAutorizacion}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="RUC / CI TRANSPORTISTA" style="width:90px;" filterBy="#{gr.rucEmisor}" filterMatchMode="contains" styleClass="text-right">
+			<p:column headerText="Transportista Id" style="width:90px;" filterBy="#{gr.rucEmisor}" filterMatchMode="contains">
 				<h:outputText value="#{gr.rucEmisor}" />
 			</p:column>
 			
-			<p:column headerText="TRANSPORTISTA" style="width:150px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains">
-				<h:outputText value="#{gr.razonSocialEmisor}" styleClass="uppercase">
+			<p:column headerText="Transportista" style="width:150px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains">
+				<h:outputText value="#{gr.razonSocialEmisor}" styleClass="uppercase text-primary-600 fw-3">
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="PLACA" style="width:50px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains" styleClass="text-right">
+			<p:column headerText="Placa" style="width:50px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains">
 				<h:outputText value="#{gr.placa}" >
 				</h:outputText>
 			</p:column>
-			<p:column headerText="DIR PARTIDA" style="width:100px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains">
+			<p:column headerText="Dirección partida" style="width:100px;" filterBy="#{gr.razonSocialEmisor}" filterMatchMode="contains">
 				<h:outputText value="#{gr.direccionPartida}" >
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA INICIAL" style="width:60px;" styleClass="text-right">
+			<p:column headerText="Salida" style="width:80px;">
 				<h:outputText value="#{gr.fechaPartida}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 			
-			<p:column headerText="FECHA LLEGADA" style="width:60px;" styleClass="text-right">
+			<p:column headerText="Llegada" style="width:80px;">
 				<h:outputText value="#{gr.fechaLlegada}" >
 					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</h:outputText>
 			</p:column>
 		
-		</p:dataTable>		
-		<div class="EmptyBox20"/>	
+		</p:dataTable>
+		
 	</div>
+	
 </ui:composition>
