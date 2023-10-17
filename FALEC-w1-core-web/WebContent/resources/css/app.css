@@ -1215,6 +1215,12 @@ body.gradient {
   color: #e60000;
 }
 
+.label-message--anulado {
+  border: 1px solid #a6a6a6;
+  background-color: #e6e6e6;
+  color: #262626;
+}
+
 .label-message--disable {
   border: 1px solid #bfbfbf;
   background-color: #f2f2f2;
@@ -1725,5 +1731,18 @@ body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
 
 .field .ui-inputgroup {
   margin-top: 0rem !important;
+}
+
+.divisor:after {
+  content: "";
+  display: block;
+  width: 80%;
+  height: 1px;
+  background: #e6e6e6;
+  margin: 0.5rem auto;
+}
+
+.div-upload .ui-fileupload .ui-fileupload-content {
+  display: none;
 }
 /*# sourceMappingURL=app.css.map */

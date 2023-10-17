@@ -188,7 +188,7 @@ public abstract class BaseCtrl implements Serializable {
 	public String getEstado() {
 		return estado;
 	}
-
+	
 	/**
 	 * @param estado the estado to set
 	 */

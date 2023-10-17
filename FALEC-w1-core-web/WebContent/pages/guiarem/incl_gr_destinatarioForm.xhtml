@@ -34,17 +34,17 @@
 				<i class="fa-solid fa-ellipsis-vertical"></i>
 				
 				<p:commandButton id="cmdGuardarTransportista"
-					value="Continuar" icon="fa fa-check" 
+					value="Continuar" icon="fa fa-check fs-12" 
 					action="#{guiaRemFormCtrl.guardarDestinatario()}" 
-					styleClass="min-width-100 ui-button-success" 
+					styleClass="min-width-100 ui-button-success fs-12" 
 					update="@form :formMain" 
 					rendered="#{guiaRemFormCtrl.callModule=='GUIA_REMISION'}">
 				</p:commandButton>
 				
 				<p:commandButton id="cmdGuardarTransportista2"
-					value="Continuar" icon="fa fa-check" 
+					value="Continuar" icon="fa fa-check fs-12" 
 					action="#{guiaRemFormCtrl.guardarDestinatarioByOtros()}" 
-					styleClass="min-width-100 ui-button-success" 
+					styleClass="min-width-100 ui-button-success fs-12" 
 					update="@form :formMain" 
 					rendered="#{guiaRemFormCtrl.callModule=='FACTURA'}">
 				</p:commandButton>
@@ -52,7 +52,7 @@
 					
 				<p:commandButton id="cmdCerrar"
 					value="Cerrar" 
-					icon="fa fa-sign-out" styleClass="min-width-100 ui-button-outlined ui-button-secondary" 
+					icon="fa fa-sign-out fs-12" styleClass="min-width-100 ui-button-outlined ui-button-secondary fs-12" 
 					onclick="PF('dlgDestinatario').hide()" immediate="true"/>
 				
 			</div>

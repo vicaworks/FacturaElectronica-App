@@ -60,10 +60,11 @@
 								 styleClass="overflow-x-hidden"
 								 style="width: calc(100% - 0.1rem)"			  
 								 required="false" requiredMessage="Requerido">
+								 <f:selectItem itemLabel="TODOS NO ANULADOS" itemValue="TODOS_NO_ANULADOS" />
 								 <f:selectItem itemLabel="TODOS" itemValue="#{null}" />
 								<f:selectItem itemLabel="VÁLIDOS" itemValue="VALIDOS" />
 								<f:selectItem itemLabel="BORRADOR" itemValue="BORRADOR" />
-								<f:selectItem itemLabel="ERROR" itemValue="VALIDOS" />
+								<f:selectItem itemLabel="ERROR" itemValue="ERROR" />
 								<f:selectItem itemLabel="ANULADO" itemValue="ANULADO" />
 								<!-- 
 								<f:selectItem itemLabel="TODOS" itemValue="#{null}" />
@@ -181,7 +182,7 @@
 			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 			                paginatorPosition="bottom"  
 							rowKey="#{v.idcabecera}"
-							rows="20"
+							rows="15"
 							rowsPerPageTemplate="10,15,20,25,30,35,40">
 						
 						<p:column style="width:20px;" styleClass="text-center">
