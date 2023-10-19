@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.servitec.common.util.PojoUtil;
@@ -125,6 +126,10 @@ public class Cliente implements Serializable{
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "idtipoidentificacion", referencedColumnName = "idtipoidentificacion", nullable = false)
     private TipoIdentificacion tipoIdentificacion;
+	
+	
+	@Transient
+	private String filterRazonSocial;
 	
 	/**
 	 * 
@@ -452,5 +457,26 @@ public class Cliente implements Serializable{
 	 */
 	public void setOcupaciongarante2(String ocupaciongarante2) {
 		this.ocupaciongarante2 = ocupaciongarante2;
+	}
+
+	/**
+	 * @return the filterRazonSocial
+	 */
+	public String getFilterRazonSocial() {
+		filterRazonSocial = "";
+		if(identificacion != null) {
+			filterRazonSocial += identificacion;
+		}
+		if(razonsocial != null) {
+			filterRazonSocial += razonsocial;
+		}
+		return filterRazonSocial;
+	}
+
+	/**
+	 * @param filterRazonSocial the filterRazonSocial to set
+	 */
+	public void setFilterRazonSocial(String filterRazonSocial) {
+		this.filterRazonSocial = filterRazonSocial;
 	}
 }
