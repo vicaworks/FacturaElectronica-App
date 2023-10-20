@@ -20,7 +20,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -44,6 +43,7 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.NotaDebitoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -104,7 +104,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -122,7 +125,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -143,13 +149,17 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		try {
 
 			if(notDebitoSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen registros seleccionados", 
+						Message.ERROR);
 				return;
 			}
 			
 			String analisis = cabeceraServicio.analizarEstadoComprobante(notDebitoSelected.getIdcabecera(), "ANULAR");
 			if(analisis!=null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
+				getMessageCommonCtrl().crearMensaje("Error", 
+						analisis, 
+						Message.ERROR);
 				return;
 			}
 			
@@ -159,7 +169,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -174,7 +187,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -183,7 +199,9 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		try {
 			
 			if(notDebitoList==null || notDebitoList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -195,7 +213,6 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -222,47 +239,36 @@ public class NotaDebitoCtrl extends BaseCtrl {
 				
 				// datos de la cabecera
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getTipocomprobanteretencion().getComprobante());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocasociado()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemisiondocasociado()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotaliva().doubleValue());
 
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalconimpuestos().doubleValue());
 				
 				filaDetalle = fila;
@@ -276,11 +282,9 @@ public class NotaDebitoCtrl extends BaseCtrl {
 					}
 
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getRazon());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getValor().doubleValue());
 
 					filaDetalle++;
@@ -293,27 +297,21 @@ public class NotaDebitoCtrl extends BaseCtrl {
 						rowCliente = sheet.createRow(filaPago);
 					}
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getTipopago().getNombre());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getTotal().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getValorentrega().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getCambio().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNumerodocumento());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNombrebanco());
 					
 					filaPago++;
@@ -342,7 +340,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -352,7 +353,9 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		try {
 			
 			if(notDebitoList==null || notDebitoList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -364,7 +367,6 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -389,47 +391,36 @@ public class NotaDebitoCtrl extends BaseCtrl {
 				
 				// datos de la cabecera
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getTipocomprobanteretencion().getComprobante());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocasociado()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemisiondocasociado()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotaliva().doubleValue());
 
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalconimpuestos().doubleValue());
 				
 				fila++;
@@ -449,7 +440,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -466,11 +460,16 @@ public class NotaDebitoCtrl extends BaseCtrl {
  				return "./notaDebitoForm.jsf?faces-redirect=true";
  			}
 			
- 			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
+			getMessageCommonCtrl().crearMensaje("Error", 
+					editar, 
+					Message.ERROR);
  			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -489,7 +488,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -497,7 +499,9 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		try {
 			
 			if(notDebitoList==null || notDebitoList.stream().filter(x->x.isSeleccion()).count()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen comprobantes selecciondos", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -518,7 +522,10 @@ public class NotaDebitoCtrl extends BaseCtrl {
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -526,7 +533,9 @@ public class NotaDebitoCtrl extends BaseCtrl {
 		try {
 			
 			if(notDebitoList==null || notDebitoList.stream().filter(x->x.isSeleccion()).count()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen comprobantes seleccionados", 
+						Message.ERROR);
 				return;
 			}
 			for (Cabecera cabecera : notDebitoList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
@@ -535,12 +544,17 @@ public class NotaDebitoCtrl extends BaseCtrl {
 					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, cabecera.getIdcabecera(), null, null, null, null,true);
 				}
 			}
-			AppJsfUtil.addInfoMessage("formMain", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE, SOLO LOS COMPROBANTES QUE ESTAN EN ESTADO AUTORIZADO.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Los correos han sido enviados correctamente, únicamente los comprobantes que no están ANULADOS", 
+					Message.OK);
 	        consultar();
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
