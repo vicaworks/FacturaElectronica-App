@@ -17,17 +17,6 @@
 				height: calc(100vh - 310px);
 			}
 			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
-			
-			
         </style>
     </ui:define>
 
@@ -44,22 +33,11 @@
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-			
-			<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px!important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>	    	
-	    	
-			<div class="card card-w-title mt-1">
-				
-				<div class="grid justify-content-between">
-	    			<div class="col-4 md:col-4">
-						<h3 class="cardTitle">Liquidación de Compra</h3>
-	    			</div>
-					
-					<div class="col-8 md:col-4 align-self-center" style="text-align: right;">
-						
+	    
+	    	<div class="card mt-1">              
+				<div class="flex justify-content-between align-items-baseline">
+					<h3 class="card__heading card__heading--noBorder fw-4">Liquidación de Compra</h3>
+					<div class="flex justify-content-end" style="gap: .4rem;">
 						<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{liqCompraCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
@@ -71,19 +49,18 @@
 							
 							<p:ajax event="valueChange" listener="#{liqCompraCtrl.buscar()}" update="@form"/>
 								
-						</p:selectOneMenu>		                
-					</div>	                
-	    		</div>
+						</p:selectOneMenu>
+					</div>
+				</div>
 				
-				
-				<div class="grid">
-					<div class="col-12 md:col-6">
-						<div class="flex">
-							<div class="flex-grow-0 flex flex-column min-width-130 pr-1">
-								<span>Estado</span>
-								<p:selectOneMenu  value="#{liqCompraCtrl.estado}" 
-												 styleClass="w-full" 
-												 required="false" requiredMessage="REQUERIDO">
+				<div class="grid ui-fluid main__opciones px-2">
+					<div class="col-12 md:col-2">
+						<div class="field">
+							<label class="text-gray-800">Estado</label>
+							<p:selectOneMenu  value="#{liqCompraCtrl.estado}" 
+									 styleClass="overflow-x-hidden"
+								 	 style="width: calc(100% - 0.1rem)"
+									 required="false" requiredMessage="Requerido">
 									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />
 									<f:selectItem itemLabel="BORRADOR" itemValue="BORRADOR" />			 
 									<f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE" />
@@ -94,114 +71,115 @@
 									<f:selectItem itemLabel="ERROR" itemValue="ERROR" />
 									<f:selectItem itemLabel="ANULADO" itemValue="ANULADO" />
 								</p:selectOneMenu>
-							</div>
-							<div class="flex-grow-1 flex flex-column min-width-150">
-								<span>Fechas</span>
-								<div class="flex">
-									<div class="flex-grow-1 flex pr-1">
-										<p:calendar id="calDesde" value="#{liqCompraCtrl.desde}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										</p:calendar>
-									</div>
-									<div class="flex-grow-1 flex">
-										<p:calendar id="calHasta" value="#{liqCompraCtrl.hasta}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										</p:calendar>
-									</div>
-								</div>
+						</div>
+					</div>
+					
+					<div class="col-12 md:col-3">
+						<div class="field">
+							<label class="text-gray-800">Fechas</label>
+							<div class="flex gap-2">
+								<p:calendar id="calDesde" value="#{liqCompraCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								<p:calendar id="calHasta" value="#{liqCompraCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								
 							</div>
 						</div>
 					</div>
 					
-					<div class="col-12 md:col-6">
-						<div class="flex">
-							<div class="flex-grow-1 flex flex-column pr-1">
-								<span>Criterio</span>
-								<p:inputText value="#{liqCompraCtrl.criterioBusqueda}" placeholder="# Comprovante,RUC, Proveedor" styleClass="w-full"/>
-							</div>
-							<div class="flex-grow-0 flex flex-column">
-								<span class="text-white">OP</span>
-								<div>
-									
-									<p:commandButton id="cmdLqCRefrecar"
-										value="Buscar" icon="fa fa-search" 
-										action="#{liqCompraCtrl.buscar()}" styleClass="ui-button-outlined mr-1" update="@form"
-									/>
-				   				
-				   					<p:commandButton id="cmdLqCNuevo"
-										value="Nuevo" icon="fa fa-plus" title="Nueva liquidación de compra" 
-										action="#{liqCompraCtrl.nuevaLiqCompra()}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_nuevo')?'ui-state-disabled':''} ui-button-success" update="@form" process="@this">
-				   					</p:commandButton>								
-									
-								</div>
-							</div>
-							
+					<div class="col-12 md:col-4">
+						<div class="field">
+							<label class="text-gray-800">Criterio de búsqueda</label>
+							<p:inputText value="#{liqCompraCtrl.criterioBusqueda}" placeholder="# Comprovante,RUC, Proveedor"/>
 						</div>
 					</div>
 					
-				</div>
+					<div class="mt-2 col-12 md:col-3 md:mt-0">
+						<div class="inline-flex gap-2 h-full align-items-end">
+							<p:commandButton id="cmdLqCRefrecar"
+								value="Buscar" icon="fa fa-search" 
+								action="#{liqCompraCtrl.buscar()}" 
+								styleClass="ui-button-outlined" 
+								update="@form"
+							/>
+		   				
+		   					<p:commandButton id="cmdLqCNuevo"
+								value="Nuevo" 
+								icon="fa fa-plus" 
+								title="Nueva liquidación de compra" 
+								action="#{liqCompraCtrl.nuevaLiqCompra()}" 
+								styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_nuevo')?'ui-state-disabled':''} ui-button-success" 
+								update="@form" 
+								process="@this">
+		   					</p:commandButton>
+		   					
+						</div>
+					</div>
+					
+				</div><!-- Fin opciones de busqueda -->
 				
-				<div class="flex mt-2 align-items-center">
-					<i class="fa fa-ellipsis-v Fs14 mr-2"/> 
-					<p:commandLink id="cmlDtLCEmitidasSeleccion" disabled="#{empty liqCompraCtrl.liqCompraList}" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Selección</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				<div class="flex my-2 align-items-baseline gap-2">
+					<i class="fa fa-ellipsis-v fs-14"/> 
+					<p:commandLink id="cmlDtLCEmitidasSeleccion" disabled="#{empty liqCompraCtrl.liqCompraList}" styleClass="min-width-80">
+						<div class="flex gap-1">
+							<span class="text-gray-900 fs-12">Selección</span>
+							<i class="fa fa-angle-down fs-14 text-gray-900" />
 						</div>
 					</p:commandLink>
 					<p:menu overlay="true" trigger="cmlDtLCEmitidasSeleccion" my="left top" at="left bottom">								
-						<p:menuitem value="Enviar Email" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa fa-envelope-o" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_email')?'ui-state-disabled':''}">							
+						<p:menuitem value="Enviar Email" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa-regular fa-envelope fs-12" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_email')?'ui-state-disabled':''}">							
 						</p:menuitem>						
-						<p:menuitem value="Firmar y enviar" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_emailfirma')?'ui-state-disabled':''}">
+						<p:menuitem value="Firmar y enviar" action="#{liqCompraCtrl.firmarEnviar()}" icon="fa fa-envelope fs-12" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_emailfirma')?'ui-state-disabled':''}">
 						</p:menuitem>						
 					</p:menu>
 					
 					
-					<p:commandLink id="cmdLqCExcel" disabled="#{empty liqCompraCtrl.liqCompraList}" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+					<p:commandLink id="cmdLqCExcel" disabled="#{empty liqCompraCtrl.liqCompraList}" styleClass="min-width-80">
+						<div class="flex gap-1">
+							<span class="text-gray-900 fs-12">Exportar</span>
+							<i class="fa fa-angle-down fs-14 text-gray-900" />
 						</div>
 					</p:commandLink>
 					<p:menu overlay="true" trigger="cmdLqCExcel" my="left top" at="left bottom" style="width:250px !important;">
-						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+						<p:menuitem value="Exportar excel" icon="fa-regular fa-file-excel fs-12" ajax="false">
 							<p:fileDownload value="#{liqCompraCtrl.fileLC}" contentDisposition="inline"/>
 						</p:menuitem>
-						<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list" ajax="false">
+						<p:menuitem value="Exportar excel(detalle)" icon="fa fa-list fs-12" ajax="false">
 							<p:fileDownload value="#{liqCompraCtrl.fileLCDetalle}" contentDisposition="inline"/>
 						</p:menuitem>
 					</p:menu>
 					
-					<p:link href="#divTotales" styleClass="min-width-80 mr-1" disabled="#{empty liqCompraCtrl.liqCompraList}">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-semibold">Ver Totales</span>
-							<i class="fa fa-angle-down Fs18 text-white font-semibold" />
+					<p:link href="#divTotales" styleClass="min-width-80" disabled="#{empty liqCompraCtrl.liqCompraList}">
+						<div class="flex gap-1">
+							<span class="text-primary-600 fs-12 font-semibold">Ver Totales</span>
+							<!-- <i class="fa fa-angle-down fs-18 text-primary-600 font-semibold" /> -->
 						</div>
 				    </p:link>
 					
 				</div>
-				<div class="EmptyBox5"/>
 				
 				<p:dataTable id="liqCompraDT" var="r"
 					value="#{liqCompraCtrl.liqCompraList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="liqCompraDT Fs11"  
+					styleClass="liqCompraDT fs-11"  
 					rowKey="#{r.idcabecera}"
 					paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 	                paginatorPosition="bottom"  
-					rows="20"
+					rows="15"
 					rowsPerPageTemplate="15,20,25,30,35,40">
 					
-					<p:column style="width:10px;" styleClass="text-center">
+					<p:column style="width:20px;" styleClass="text-center">
 						<f:facet name="header">
 							<p:selectBooleanCheckbox value="#{liqCompraCtrl.seleccion}">
-								<p:ajax event="change" listener="#{liqCompraCtrl.changeSeleccion()}" update="@form:msgFormMain @form:liqCompraDT"/>
+								<p:ajax event="change" listener="#{liqCompraCtrl.changeSeleccion()}" update="@form:liqCompraDT"/>
 							</p:selectBooleanCheckbox>
 						</f:facet>
 						<p:selectBooleanCheckbox value="#{r.seleccion}" rendered="#{r.estado!='ANULADO' and r.estado!='BORRADOR'}">
@@ -209,42 +187,42 @@
 						</p:selectBooleanCheckbox>
 					</p:column>
 					
-					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+					<p:column headerText="Opc" style="width:20px;">
 					
 						<p:commandLink id="cmlDtLiqCompra">
-							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtLiqCompra" my="left top" at="left bottom">
 							
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_ver')?'ui-state-disabled':''}">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye fs-14" rendered="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_ver')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_ride')?'ui-state-disabled':''}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa-regular fa-file-pdf fs-14" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_ride')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="LIQC-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(r.numdocumento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_email')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa-regular fa-envelope fs-14" disabled="#{appSessionCtrl.isEnviarEmail(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_email')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
 								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="LIQ_COMPRA" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:liqCompraDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_emailfirma')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope fs-14" disabled="#{appSessionCtrl.isEnviarSri(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_emailfirma')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
 								<f:setPropertyActionListener value="#{r.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="LIQ_COMPRA" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:liqCompraDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>
 							</p:menuitem>
-							<p:menuitem value="Editar" action="#{liqCompraCtrl.editarLiqCompra(r.idcabecera)}" icon="fa fa-edit" process="liqCompraDT" update="@form" disabled="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_editar')?'ui-state-disabled':''}">
+							<p:menuitem value="Editar" action="#{liqCompraCtrl.editarLiqCompra(r.idcabecera)}" icon="fa fa-edit fs-14" process="liqCompraDT" update="@form" disabled="#{r.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_editar')?'ui-state-disabled':''}">
 							</p:menuitem>
 							
-							<p:menuitem value="Anular" action="#{liqCompraCtrl.eliminar()}" icon="fa fa-trash-o" process="liqCompraDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_anular')?'ui-state-disabled':''}">
+							<p:menuitem value="Anular" action="#{liqCompraCtrl.eliminar()}" icon="fa-regular fa-trash-can fs-14" process="liqCompraDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(r.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_liqcompra_anular')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r}" target="#{liqCompraCtrl.liqCompraSelected}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							</p:menuitem>
@@ -253,20 +231,27 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.numdocumento}" filterMatchMode="contains" styleClass="text-right">
-						<h:outputText value="#{liqCompraCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>
+					<p:column headerText="Comprobante" style="width:120px;" filterBy="#{r.numdocumento}" filterMatchMode="contains">
+						
+						<div class="flex flex-column gap-1">
+							<h:outputText value="#{r.fechaemision}" styleClass="text-gray-900 font-semibold">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>	
+							<h:outputText value="#{liqCompraCtrl.getFormatoNumDocumento(r.numdocumento)}" rendered="#{r.estado!='BORRADOR'}"/>							
+						</div>
+						
 					</p:column>
 					
-					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{r.estado}" filterMatchMode="contains">
+					<p:column headerText="Estado" style="width:120px;" filterBy="#{r.estado}" filterMatchMode="contains">
 						
-						<div class="flex">
+						<div class="flex gap-1 align-items-center">
 							<div class="flex-grow-1 flex">
 								<h:outputText value="#{r.estado}" styleClass="#{r.estadoStyle} p-1 border-round block w-full text-center">
 								</h:outputText>
 							</div>
 							<div class="flex-grow-0 flex px-1 align-items-center">
 								<p:commandLink action="#{logTransferCtrl.cargarFormulario(r.idcabecera)}" process="@this" disabled="#{r.estado=='BORRADOR'}">
-									<i class="fa fa-external-link text-gray-800 Fs14"/>
+									<i class="fa fa-external-link text-gray-800 fs-16"/>
 									<f:setPropertyActionListener value="LIQ_COMPRA" target="#{logTransferCtrl.callModule}"/>
 									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.callForm}"/>
 									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.updateView}"/>
@@ -276,113 +261,126 @@
 						
 					</p:column>
 					
-					<p:column headerText="FECHA" style="width:55px;" styleClass="text-right">
-						<h:outputText value="#{r.fechaemision}" >
-							<f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
-					</p:column>
 					
-					<p:column headerText="PROVEEDOR" style="width:140px;" filterBy="#{r.clienteCompleto}" filterMatchMode="contains">
-						<div class="flex flex-column">
-							<h:outputText value="#{r.cliente.razonsocial}" styleClass="Fs11 text-gray-800">
+					<p:column headerText="Proveedor" style="width:140px;" filterBy="#{r.clienteCompleto}" filterMatchMode="contains">
+						<div class="flex flex-column gap-1">
+							<h:outputText value="#{r.cliente.identificacion}" styleClass="text-gray-900"/>
+							<h:outputText value="#{r.cliente.razonsocial}" styleClass="text-gray-900 fw-5">
 							</h:outputText>
-							<h:outputText value="#{r.cliente.identificacion}" styleClass="Fs10 text-gray-700 font-semibold"/>
 						</div>
 					</p:column>
 					
-					<p:column style="width:10px;" styleClass="TexAlCenter">
+					<p:column style="width:2.5rem;" styleClass="text-center">
 						<f:facet name="header">
 							<p:spacer width="3px"/>
-							<i class="fa fa-envelope Fs14"/>
+							<i class="fa fa-envelope fs-14"/>
 						</f:facet>
 						<f:subview rendered="#{r.envioemail==1}">
-							<i class="fa fa-check Fs14" style="color:black;"/>
+							<i class="fa fa-check fs-14" style="color:black;"/>
 						</f:subview>
 						<f:subview rendered="#{r.envioemail==0}">
-							<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+							<i class="fa fa-minus fs-14" style="color:#ccc;"/>
 						</f:subview>
 					</p:column>
 					
-					<p:column headerText="SUBTOTAL" style="width:60px;" styleClass="TexAlRight">
-						<h:outputText value="#{r.totalsinimpuestos}" styleClass="Fs10">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+					<p:column headerText="Sin impuesto" style="width:80px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{r.totalsinimpuestos}" styleClass="fs-10">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
 					</p:column>
 					
-					<p:column headerText="DESC" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{r.totaldescuento}" styleClass="Fs10 #{r.totaldescuento.doubleValue()==0?'opacity-60':''}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+					<p:column headerText="Descuento" style="width:80px;" styleClass="text-center">
+						<div class="flex justify-content-end">
+							<h:outputText value="#{r.totaldescuento}" styleClass="fs-10 #{r.totaldescuento.doubleValue()==0?'opacity-60':''}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
 					</p:column>
 					
-					<p:column headerText="I.V.A." style="width:50px;" styleClass="TexAlRight">
+					<p:column headerText="Impuestos" style="width:10rem;" styleClass="text-center">
 						
-						<h:outputText value="#{r.totaliva}" styleClass="Fs10 #{r.totaliva.doubleValue()==0?'opacity-60':''}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					
-					</p:column>
-					
-					<p:column headerText="TOTAL" style="width:70px;" styleClass="TexAlRight">
-						<h:outputText value="#{r.totalconimpuestos}" styleClass="block w-full text-black font-semibold">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="#{msg['label.retencion']}" style="width:50px;" styleClass="TexAlRight">
-						<h:outputText value="#{r.valorretenido}" styleClass="Fs10 #{r.valorretenido.doubleValue()==0?'opacity-60':''}">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="A PAGAR" style="width:60px;" styleClass="TexAlRight">
-						<h:outputText value="#{r.valorapagar}" styleClass="Fs10 text-black font-semibold">
-							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
-					</p:column>
-					
-					<p:column headerText="PAGO" style="width:60px;" styleClass="TexAlRight">
+						<div class="flex justify-content-end gap-1 align-items-baseline">
+							<h:outputText value="#{r.totalice}"  styleClass="fs-10 #{r.totalice.doubleValue()==0.0?'opacity-70':'text-gray-900'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<span class="fs-9 text-gray-700">ICE</span>
+						</div>
 						
+						<div class="flex justify-content-end gap-1 align-items-baseline">
+							<h:outputText value="#{r.totaliva}"  styleClass="fs-10 #{r.totaliva.doubleValue()==0.0?'opacity-70':'text-gray-900'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+							<span class="fs-9 text-gray-700">IVA</span>
+						</div>
 						
-						<div class="flex">
-							<div class="flex-grow-1 flex">
-								<h:outputText value="#{r.totalPagadoSum}" styleClass="#{r.totalPagadoSum.doubleValue()!=r.valorapagar.doubleValue() and r.estado!='ANULADO' ?'border-round block w-full text-black p-1 bg-pink-200':'block w-full'}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</div>
-							<div class="flex-grow-0 flex mx-1">
+					</p:column>
+					
+					<p:column headerText="Total" style="width:80px;" styleClass="text-center">
+						<h:outputText value="#{r.totalconimpuestos}" styleClass="text-gray-900 font-semibold">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="A pagar" style="width:120px;" styleClass="text-center pl-2">
+							
+						<div class="flex justify-content-between">
+							<span class="fs-10 text-gray-700">Retención</span>
+							<h:outputText value="#{r.valorretenido}" styleClass="fs-10 #{r.valorretenido.doubleValue()==0.0?'opacity-70':'text-gray-900'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						
+						<div class="flex justify-content-between">
+							<span class="fs-10 text-gray-700">A pagar</span>
+							<h:outputText value="#{r.valorapagar}" styleClass="#{r.valorapagar.doubleValue()==0.0?'opacity-70':'text-gray-900'}">
+								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
+						
+						<div class="flex justify-content-between">
+							<div class="flex gap-2">
 								<p:commandLink action="#{pagoCtrl.cargarPagosById()}" process="@this">
-									<i class="fa fa-external-link text-gray-800 Fs14"/>
+									<i class="fa fa-eye text-primary-600 font-semibold fs-12"/>
 									<f:setPropertyActionListener value="#{r.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
 									<f:setPropertyActionListener value="#{r.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
 								</p:commandLink>
+								<span class="fs-10 text-gray-700">Pago</span>
 							</div>
+							<p:commandLink action="#{pagoCtrl.cargarPagosById()}" process="@this">
+								<h:outputText value="#{r.totalPagadoSum}" styleClass="fs-11 #{r.totalPagadoSum.doubleValue()!=r.totalPagadoSum.doubleValue() and v.estado!='ANULADO' ?'text-gray-900':'text-primary-600 font-semibold'}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								<f:setPropertyActionListener value="#{r.idcabecera}" target="#{pagoCtrl.idComprobante}"/>
+								<f:setPropertyActionListener value="#{r.valorapagar}" target="#{pagoCtrl.valorPagar}"/>
+							</p:commandLink>
 						</div>
 						
 					</p:column>
 					
-				</p:dataTable>
-				<div class="EmptyBox5"/>
+				</p:dataTable>				
+				
 				<div class="grid justify-content-end" id="divTotales">
 					<div class="col-12 md:col-5 lg:col-4">
 						<div class="grid grid-nogutter justify-content-between">
 							<div class="col-7 py-2">
 								<div class="w-full text-left">
-									<span class="Fs10 mr-1 text-gray-700 font-semibold">TOTAL</span>
-									<span class="Fs14 text-blue-600 font-medium">RESUMEN</span>
+									<span class="fs-10 mr-1 text-gray-700 font-semibold">Total</span>
+									<span class="fs-14 text-blue-600 font-medium">RESUMEN</span>
 								</div>
 							</div>
 							<div class="col-1 text-center align-self-center">
-								<i class="fa fa-angle-down Fs14"></i>
+								<i class="fa fa-angle-down fs-14"></i>
 							</div>
 							<div class="col-12 mt-1">
-								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-									<div class="flex flex-grow-1 Fs12">
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
 										<i class="fa fa-angle-right mr-1 font-bold"></i>
-										<span class="text-gray-800"><h:outputText value="SUBTOTAL" /></span>
+										<span class="text-gray-800"><h:outputText value="Sin impuestos" /></span>
 									</div>						
 									<div class="flex flex-grow-1">
-										<div class="text-right pr-3 w-full Fs16">
+										<div class="text-right pr-3 w-full fs-14">
 											<h:outputText value="#{liqCompraCtrl.totalesDto.subtotal}">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -390,13 +388,13 @@
 									</div>				
 								</div>
 								
-								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-									<div class="flex flex-grow-1 Fs12">
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
 										<i class="fa fa-angle-right mr-1 font-bold"></i>
-										<span class="text-gray-800"><h:outputText value="DESCUENTO" /></span>
+										<span class="text-gray-800"><h:outputText value="Descuento" /></span>
 									</div>						
 									<div class="flex flex-grow-1">
-										<div class="text-right pr-3 w-full Fs16">
+										<div class="text-right pr-3 w-full fs-14">
 											<h:outputText value="#{liqCompraCtrl.totalesDto.descuento}">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -404,13 +402,27 @@
 									</div>				
 								</div>
 								
-								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-									<div class="flex flex-grow-1 Fs12">
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800"><h:outputText value="I.C.E." /></span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full fs-14">
+											<h:outputText value="#{liqCompraCtrl.totalesDto.ice}">
+												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+											</h:outputText>
+										</div>
+									</div>				
+								</div>
+								
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
 										<i class="fa fa-angle-right mr-1 font-bold"></i>
 										<span class="text-gray-800"><h:outputText value="I.V.A." /></span>
 									</div>						
 									<div class="flex flex-grow-1">
-										<div class="text-right pr-3 w-full Fs16">
+										<div class="text-right pr-3 w-full fs-14">
 											<h:outputText value="#{liqCompraCtrl.totalesDto.iva}">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -418,13 +430,13 @@
 									</div>				
 								</div>
 								
-								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-									<div class="flex flex-grow-1 Fs12">
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
 										<i class="fa fa-angle-right mr-1 font-bold"></i>
-										<span class="text-gray-800"><h:outputText value="TOTAL" /></span>
+										<span class="text-gray-800"><h:outputText value="Total" /></span>
 									</div>						
 									<div class="flex flex-grow-1">
-										<div class="text-right pr-3 w-full Fs16">
+										<div class="text-right pr-3 w-full fs-14">
 											<h:outputText value="#{liqCompraCtrl.totalesDto.total}">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -432,13 +444,13 @@
 									</div>				
 								</div>
 								
-								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-									<div class="flex flex-grow-1 Fs12">
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
 										<i class="fa fa-angle-right mr-1 font-bold"></i>
-										<span class="text-gray-800"><h:outputText value="RETENCIÓN" /></span>
+										<span class="text-gray-800"><h:outputText value="Retención" /></span>
 									</div>						
 									<div class="flex flex-grow-1">
-										<div class="text-right pr-3 w-full Fs16">
+										<div class="text-right pr-3 w-full fs-14">
 											<h:outputText value="#{liqCompraCtrl.totalesDto.retencion}">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -446,13 +458,13 @@
 									</div>				
 								</div>
 								
-								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-									<div class="flex flex-grow-1 Fs12">
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
 										<i class="fa fa-angle-right mr-1 font-bold"></i>
-										<span class="text-gray-800"><h:outputText value="A PAGAR" /></span>
+										<span class="text-gray-800"><h:outputText value="A pagar" /></span>
 									</div>						
 									<div class="flex flex-grow-1">
-										<div class="text-right pr-3 w-full Fs16">
+										<div class="text-right pr-3 w-full fs-14">
 											<h:outputText value="#{liqCompraCtrl.totalesDto.apagar}">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -460,13 +472,13 @@
 									</div>				
 								</div>								
 								
-								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2">
-									<div class="flex flex-grow-1 Fs12">
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-12">
 										<i class="fa fa-angle-right mr-1 font-bold"></i>
-										<span class="text-gray-800"><h:outputText value="PAGO" /></span>
+										<span class="text-gray-800"><h:outputText value="Pago" /></span>
 									</div>						
 									<div class="flex flex-grow-1">
-										<div class="text-right pr-3 w-full Fs16">
+										<div class="text-right pr-3 w-full fs-14">
 											<h:outputText value="#{liqCompraCtrl.totalesDto.pago}">
 												<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
@@ -478,7 +490,7 @@
 						</div>
 					</div>
 				</div>
-		    	<div class="EmptyBox20"/>				
+				
 			</div>
 				    
 	    </h:form>

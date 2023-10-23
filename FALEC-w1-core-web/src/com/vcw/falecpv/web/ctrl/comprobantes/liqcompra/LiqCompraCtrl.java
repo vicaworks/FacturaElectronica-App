@@ -20,7 +20,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -46,6 +45,7 @@ import com.vcw.falecpv.core.servicio.LiqCompraServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -112,7 +112,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -130,7 +133,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -143,7 +149,7 @@ public class LiqCompraCtrl extends BaseCtrl {
 			totalesDto.setTotalsinimpuestos(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalsinimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIva(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotaliva().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setIce(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalice().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
-			totalesDto.setTotal(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotal().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
+			totalesDto.setTotal(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalconimpuestos().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setRetencion(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getValorretenido().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setApagar(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getValorapagar().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
 			totalesDto.setPago(BigDecimal.valueOf(liqCompraList.stream().filter(x->!x.getEstado().equals("ANULADO")).mapToDouble(x->x.getTotalPagadoSum().doubleValue()).sum()).setScale(2, RoundingMode.HALF_UP));
@@ -156,13 +162,17 @@ public class LiqCompraCtrl extends BaseCtrl {
 		try {
 			
 			if(liqCompraSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen registros seleccionados", 
+						Message.ERROR);
 				return;
 			}
 			
 			String analisis = cabeceraServicio.analizarEstadoComprobante(liqCompraSelected.getIdcabecera(), "ANULAR");
 			if(analisis!=null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
+				getMessageCommonCtrl().crearMensaje("Error", 
+						analisis, 
+						Message.ERROR);
 				return;
 			}
 			
@@ -172,7 +182,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -182,7 +195,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -198,7 +214,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -215,11 +234,16 @@ public class LiqCompraCtrl extends BaseCtrl {
 				return "./liqCompraForm.jsf?faces-redirect=true";
 			}
 			
-			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
+			getMessageCommonCtrl().crearMensaje("Error", 
+					editar, 
+					Message.ERROR);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -229,7 +253,9 @@ public class LiqCompraCtrl extends BaseCtrl {
 		try {
 			
 			if(liqCompraList==null || liqCompraList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -241,7 +267,6 @@ public class LiqCompraCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -268,55 +293,42 @@ public class LiqCompraCtrl extends BaseCtrl {
 				
 				// datos de la cabecera
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalsinimpuestos().add(lc.getTotaldescuento()).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotaliva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getValorretenido().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getValorapagar().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalPagadoSum().doubleValue());
 				
 				// detalle de compra
@@ -332,31 +344,24 @@ public class LiqCompraCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getDescripcion());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getCantidad().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciounitario().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getDescuento().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciototalsinimpuesto().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getValoriva().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciototal().doubleValue());
 					
 					filaDetalle++;
@@ -370,27 +375,21 @@ public class LiqCompraCtrl extends BaseCtrl {
 						rowCliente = sheet.createRow(filaPago);
 					}
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getTipopago().getNombre());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getTotal().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getValorentrega().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getCambio().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNumerodocumento());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNombrebanco());
 					
 					filaPago++;
@@ -417,7 +416,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -426,7 +428,9 @@ public class LiqCompraCtrl extends BaseCtrl {
 		try {
 			
 			if(liqCompraList==null || liqCompraList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -438,7 +442,6 @@ public class LiqCompraCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -463,55 +466,42 @@ public class LiqCompraCtrl extends BaseCtrl {
 				
 				// datos de la cabecera
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(lc.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(lc.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(lc.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalsinimpuestos().add(lc.getTotaldescuento()).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotaliva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalconimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getValorretenido().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getValorapagar().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(lc.getTotalPagadoSum().doubleValue());
 				
 				fila++;
@@ -529,7 +519,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -548,7 +541,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -556,7 +552,9 @@ public class LiqCompraCtrl extends BaseCtrl {
 		try {
 			
 			if(liqCompraList==null || liqCompraList.stream().filter(x->x.isSeleccion()).count()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen comprobantes seleccionados", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -577,7 +575,10 @@ public class LiqCompraCtrl extends BaseCtrl {
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -585,7 +586,9 @@ public class LiqCompraCtrl extends BaseCtrl {
 		try {
 			
 			if(liqCompraList==null || liqCompraList.stream().filter(x->x.isSeleccion()).count()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen comprobantes seleccionados", 
+						Message.ERROR);
 				return;
 			}
 			for (Cabecera cabecera : liqCompraList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
@@ -594,12 +597,17 @@ public class LiqCompraCtrl extends BaseCtrl {
 					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, cabecera.getIdcabecera(), null, null, null, null,true);
 				}
 			}
-			AppJsfUtil.addInfoMessage("formMain", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE, SOLO LOS COMPROBANTES QUE ESTAN EN ESTADO AUTORIZADO.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Los correos han sido enviados correctamente, únicamente los comprobantes en estado AUTOTIZADO", 
+					Message.OK);
 	        consultar();
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
