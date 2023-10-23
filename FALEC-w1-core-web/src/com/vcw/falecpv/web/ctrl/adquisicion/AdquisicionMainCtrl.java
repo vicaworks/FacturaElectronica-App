@@ -17,7 +17,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -38,6 +37,7 @@ import com.vcw.falecpv.core.servicio.AdquisiciondetalleServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -91,7 +91,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -107,7 +110,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			consultarAdquisiciones();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -120,7 +126,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 			return null;
 		}
 		
@@ -135,7 +144,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 			return null;
 		}
 		
@@ -146,7 +158,9 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			
 			Adquisicion a = adquisicionServicio.consultarByPk(idadquisicion);
 			if(a==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE LA FACTURA.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe la Factura", 
+						Message.ERROR);
 				consultarAdquisiciones();
 				return;
 			}
@@ -154,7 +168,9 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			String analisisEstado = adquisicionServicio.analizarEstado(a.getIdadquisicion(), a.getEstablecimiento().getIdestablecimiento(), "ANULAR"); 
 			
 			if(analisisEstado!=null) {
-				AppJsfUtil.addErrorMessage("formMain", analisisEstado);
+				getMessageCommonCtrl().crearMensaje("Error", 
+						analisisEstado, 
+						Message.ERROR);
 				consultarAdquisiciones();
 				return;
 				
@@ -165,7 +181,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -173,7 +192,9 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 		try {
 			
 			if(adquisicionList==null || adquisicionList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -184,7 +205,6 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -216,63 +236,48 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				int col =0;
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(adq.getFecha()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getEstado());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getTipocomprobante().getComprobante());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(adq.getNumfactura()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getCliente().getIdentificacion());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getCliente().getRazonsocial());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getEsGastoBol()?"S":"N");
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getSubtotal().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotaldescuento().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalice().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotaliva().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalfactura().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalretencion().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalpagar().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalPagoSum().doubleValue());
 				
 				// detalle de pago
@@ -288,35 +293,27 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 					}
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(ad.getProducto()!=null?ad.getProducto().getCodigoprincipal():"");
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(ad.getDescripcion());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ad.getCantidad().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ad.getPreciounitario().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ad.getDescuento().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ad.getValorice().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ad.getValoriva().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(ad.getPreciototal().doubleValue());
 					
 					filaDt++;
@@ -330,31 +327,24 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 						row = sheet.createRow(filaPago);
 					}
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getTipopago().getNombre());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getTotal().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getValorentrega().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(p.getCambio().doubleValue());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(FechaUtil.formatoFecha(p.getFechapago()));
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNumerodocumento());
 					
 					cell = row.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(p.getNombrebanco());
 					
 					filaPago++;
@@ -385,7 +375,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -394,7 +387,9 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 		try {
 			
 			if(adquisicionList==null || adquisicionList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -405,7 +400,6 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -436,67 +430,51 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 				
 				// datos de la cabecera
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(adq.getFecha()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getEstado());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getTipocomprobante().getComprobante());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(adq.getNumfactura()));
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getAutorizacion());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getCliente().getIdentificacion());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getCliente().getRazonsocial());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(adq.getEsGastoBol()?"S":"N");
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getSubtotal().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotaldescuento().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalice().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotaliva().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalfactura().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalretencion().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalpagar().doubleValue());
 				
 				cell = row.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(adq.getTotalPagoSum().doubleValue());
 				
 				fila++;
@@ -519,7 +497,10 @@ public class AdquisicionMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
