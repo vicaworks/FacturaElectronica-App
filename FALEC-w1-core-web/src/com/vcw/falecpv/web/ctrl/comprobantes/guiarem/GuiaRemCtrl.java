@@ -40,6 +40,7 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.GuiaRemisionServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.servicio.emailcomprobante.EmailComprobanteServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -104,7 +105,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -122,7 +126,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 			consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -131,13 +138,17 @@ public class GuiaRemCtrl extends BaseCtrl {
 		try {
 			
 			if(guiaRemisionSelected==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen registros seleccionados", 
+						Message.ERROR);
 				return;
 			}
 			
 			String analisis = cabeceraServicio.analizarEstadoComprobante(guiaRemisionSelected.getIdcabecera(), "ANULAR");
 			if(analisis!=null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", analisis);
+				getMessageCommonCtrl().crearMensaje("Error", 
+						analisis, 
+						Message.ERROR);
 				return;
 			}
 			
@@ -147,7 +158,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -162,7 +176,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -178,11 +195,16 @@ public class GuiaRemCtrl extends BaseCtrl {
 				return "./guiaRemForm.jsf?faces-redirect=true";
 			}
 			
-			AppJsfUtil.addErrorMessage("formMain","ERROR",editar);
+			getMessageCommonCtrl().crearMensaje("Error", 
+					editar, 
+					Message.ERROR);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -192,7 +214,9 @@ public class GuiaRemCtrl extends BaseCtrl {
 		try {
 			
 			if(destinatarioList==null || destinatarioList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -203,7 +227,6 @@ public class GuiaRemCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -350,7 +373,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -370,7 +396,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -378,7 +407,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 		try {
 			
 			if(destinatarioList==null ||  destinatarioList.stream().filter(x->x.isSeleccion()).count()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen comprobantes seleccionados", 
+						Message.ERROR);
+				
 				return;
 			}
 			
@@ -399,7 +431,10 @@ public class GuiaRemCtrl extends BaseCtrl {
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -407,7 +442,9 @@ public class GuiaRemCtrl extends BaseCtrl {
 		try {
 			
 			if(destinatarioList==null || destinatarioList.stream().filter(x->x.isSeleccion()).count()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN COMPROBANTES SELECCIONADOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen comprobantes seleccionados", 
+						Message.ERROR);
 				return;
 			}
 			for (Destinatario destinatario : destinatarioList.stream().filter(x->x.isSeleccion()).collect(Collectors.toList())) {
@@ -416,12 +453,16 @@ public class GuiaRemCtrl extends BaseCtrl {
 					emailComprobanteServicio.enviarComprobanteFacade(null, null, null, destinatario.getCabecera().getIdcabecera(), null, null, null, null,true);
 				}
 			}
-			AppJsfUtil.addInfoMessage("formMain", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE, SOLO LOS COMPROBANTES QUE ESTAN EN ESTADO AUTORIZADO.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Los correos han sido enviados correctamente, solo los comprobantes que están en estado AUTORIZADO", 
+					Message.OK);
 	        consultar();
-	        
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	

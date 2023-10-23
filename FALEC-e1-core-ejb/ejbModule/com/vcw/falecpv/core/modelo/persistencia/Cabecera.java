@@ -342,6 +342,9 @@ public class Cabecera implements Serializable {
     @Transient
     private BigDecimal totalCredito = BigDecimal.ZERO;
     
+    @Transient
+    private String filterComprobanteTransportista;
+    
     
     /**
 	 * 
@@ -1653,5 +1656,27 @@ public class Cabecera implements Serializable {
 	 */
 	public void setTotalCredito(BigDecimal totalCredito) {
 		this.totalCredito = totalCredito;
+	}
+
+	/**
+	 * @return the filterComprobanteTransportista
+	 */
+	public String getFilterComprobanteTransportista() {
+		filterComprobanteTransportista = "";
+		if(transportista != null) {
+			filterComprobanteTransportista += transportista.getIdentificacion();
+			filterComprobanteTransportista += transportista.getRazonsocial();
+		}
+		if(numdocumento != null) {
+			filterComprobanteTransportista += numdocumento;
+		}
+		return filterComprobanteTransportista;
+	}
+
+	/**
+	 * @param filterComprobanteTransportista the filterComprobanteTransportista to set
+	 */
+	public void setFilterComprobanteTransportista(String filterComprobanteTransportista) {
+		this.filterComprobanteTransportista = filterComprobanteTransportista;
 	}
 }

@@ -20,54 +20,49 @@
 		
 	</style>
 	
-	<p:dialog header="#{msg['label.guiaremision']}" widgetVar="dlgResGuiaRemision" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="#{msg['label.guiaremision']}" 
+		widgetVar="dlgResGuiaRemision" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:90rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 	
 	
 		<h:form id="frmDetGR">
 			
 			<!-- OPCIONES -->
-			<!-- <div class="formgroup-inline">
-				<p:commandButton id="cmdCerrar"
-						value="CERRAR" icon="fa fa-close" styleClass="ui-button-flat min-width-100" 
-						onclick="PF('dlgResGuiaRemision').hide()" immediate="true"/>
-			</div> -->
-			
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmDetGR"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<div class="w-full overflow-auto heightDetGr contenedorFormulario mt-2 pr-1">
+			<div class="overflow-auto heightDetGr contenedorFormulario">
 				
 				<div class="grid align-content-start" style="width:99%!important;">
 					
 					<!-- Transportista -->
 					<div class="col-12 md:col-6 pr-0 md:pr-2">
 						
-						<span class="Fs14 text-black font-semibold">Transportista</span>
-						<div class="EmptyBox10"/>											
+						<span class="fs-14 text-primary-600 font-semibold mb-2">Transportista</span>	
 						<div class="field">
 					        <label class="text-black">Estado</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.guiaRemisionSelected.estado}"/>
 					    </div>						
 						<div class="field">
-					        <label class="text-black">NUMERO DE COMPROBANTE</label>
+					        <label class="text-black">Número de comprobante</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.getFormatoNumDocumento(guiaRemCtrl.guiaRemisionSelected.numdocumento)}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">RUC TRANSPORTISTA</label>
+					        <label class="text-black">RUC transportista</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.guiaRemisionSelected.transportista.identificacion}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">TRANSPORTISTA</label>
+					        <label class="text-black">Transportista</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.guiaRemisionSelected.transportista.razonsocial}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">DIRECCIÓN DE SALIDA</label>
+					        <label class="text-black">Dirección de salida</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.guiaRemisionSelected.direccionpartida}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">FECHA</label>
+					        <label class="text-black">Fecha</label>
 					        <div class="flex">
 					        	<div class="flex-grow-1 flex"><span class="mr-1 text-gray-800">Inicio</span>
 									<h:outputText value="#{guiaRemCtrl.guiaRemisionSelected.fechainiciotransporte}">
@@ -82,50 +77,46 @@
 					        	</div>
 					        </div>
 					    </div>
-					    						
-						<div class="EmptyBox10"/>
-						<span class="Fs14 text-black font-semibold">Destinatario</span>
-						<div class="EmptyBox10"/>
-						
+						<span class="fs-14 text-primary-600 font-semibold my-2">Destinatario</span>
 						<div class="field">
-					        <label class="text-black">IDENTIFICACIÓN</label>
+					        <label class="text-black">Identificación</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.destinatarioSelected.identificaciondestinatario}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">NOMBRES</label>
+					        <label class="text-black">Nombres</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.destinatarioSelected.razonsocialdestinatario}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">DESTINO</label>
+					        <label class="text-black">Destino</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.destinatarioSelected.dirdestinatario}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">MOTIVO</label>
+					        <label class="text-black">Motivo</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.destinatarioSelected.motivotraslado}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">CÓDIGO ESTABLECIMIENTO</label>
+					        <label class="text-black">Código de establecimiento</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.destinatarioSelected.codestabdestino==null?'N/A':guiaRemCtrl.destinatarioSelected.codestabdestino}"/>
 					    </div>
 					    <div class="field">
 					        <label class="text-black">
-					        	<span class="mr-1">COMPROBANTE</span>
+					        	<span class="mr-1">Comprobante : </span>
 					        	<h:outputText value="#{guiaRemCtrl.destinatarioSelected.tipocomprobante!=null?guiaRemCtrl.destinatarioSelected.tipocomprobante.comprobante:'-'}"/> 
 					        </label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.getFormatoNumDocumento(guiaRemCtrl.destinatarioSelected.numdocsustento)}"/>
 					    </div>
 						<div class="field">
-					        <label class="text-black">FECHA EMISIÓN</label>
+					        <label class="text-black">Fecha de emisión</label>
 					        <h:outputText value="#{guiaRemCtrl.destinatarioSelected.fechaemisiondocsustento}" styleClass="FontBold DispBlock">
 								<f:convertDateTime pattern="dd/MM/yyyy"/>
 							</h:outputText>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">DOCUMENTO ADUANERO</label>
+					        <label class="text-black">Documento aduanero</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.destinatarioSelected.docaduanerounico}"/>
 					    </div>
 					    <div class="field">
-					        <label class="text-black">RUTA</label>
+					        <label class="text-black">Ruta</label>
 					        <p:inputText styleClass="w-full" readonly="true" value="#{guiaRemCtrl.destinatarioSelected.ruta}"/>
 					    </div>
 					
@@ -133,22 +124,22 @@
 					
 					<!-- Destinatario -->
 					<div class="col-12 md:col-6">
-						<span class="Fs14 text-black font-semibold">Detalle de Ítems</span>
-						<div class="EmptyBox10"/>
+						<span class="fs-14 text-primary-600 font-semibold">Detalle de Ítems</span>
+						
 						<div class="h-full overflow-auto">
 							
 							<c:forEach items="#{guiaRemCtrl.detalledestinatarioList}" var="det" varStatus="metadata">								
 								<div class="flex border-1 border-gray-400 p-2 border-round mb-2">
 									<div class="flex-grow-1 flex flex-column">
-										<span class="text-black Fs12 mb-1">#{det.descripcion}</span>
+										<span class="text-black fs-12 mb-1">#{det.descripcion}</span>
 										<div>
 											<i class="fa fa-barcode Fs10 mr-1"></i>
 											<h:outputText value="#{det.codigointerno}"/>
 										</div>
 									</div>
 									<div class="flex-grow-0 flex justify-content-center align-items-center" style="min-width: 80px;">
-										<span class="Fs16 text-blue-600 font-bold">
-											<h:outputText value="#{det.cantidad}"  styleClass="DispBlock FontBold">
+										<span class="fs-16 text-blue-600 font-bold">
+											<h:outputText value="#{det.cantidad}" >
 												<f:convertNumber pattern="#,##0"/>
 											</h:outputText>
 										</span>

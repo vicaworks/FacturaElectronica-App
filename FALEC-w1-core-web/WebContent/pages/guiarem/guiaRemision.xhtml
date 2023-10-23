@@ -14,31 +14,7 @@
 			
 			.guiaRemDT .ui-datatable-scrollable-body{
 				min-height: 40vh !important;
-				height: calc(100vh - 310px);
-			}
-			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				vertical-align: top;
-			}
-			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
-			
-			/* file upload */
-			body .ui-fileupload .ui-fileupload-buttonbar {
-			 border: none;
-			 padding: 0px !important;
-			}	
-			
-			body .ui-fileupload .ui-fileupload-content {
-				/* display: none; */
-				border: none;
-				padding: 0px;
-				border-top: 0 none;
-				line-height: 1.5;
+				height: calc(100vh - 270px);
 			}
 			
         </style>
@@ -52,28 +28,17 @@
     
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf" /> 
-		    <p:menuitem value="Lista de #{msg['label.guiaremision']}" url="#{request.contextPath}/pages/guiarem/guiaRemision.jsf"/>
+		    <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf" />
 		</p:breadCrumb>
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
-	    	
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px!important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-	    	
-	    	
-			<div class="card card-w-title mt-1">
-			
-				
-				<div class="grid justify-content-between">
-	    			<div class="col-4 md:col-4">
-						<h3 class="cardTitle">Guía de Remisión</h3>
-	    			</div>
-					
-					<div class="col-8 md:col-4 align-self-center" style="text-align: right;">						
+	    
+	    
+	    	<div class="card mt-1">              
+				<div class="flex justify-content-between align-items-baseline">
+					<h3 class="card__heading card__heading--noBorder fw-4">Guía de remisión</h3>
+					<div class="flex justify-content-end" style="gap: .4rem;">
 						<p:selectOneMenu id="somEstablecimientoMain"
 							value="#{guiaRemCtrl.establecimientoMain}"
 							converter="omnifaces.SelectItemsConverter"
@@ -85,18 +50,18 @@
 							
 							<p:ajax event="valueChange" listener="#{guiaRemCtrl.buscar()}" update="@form"/>
 								
-						</p:selectOneMenu>		                
-					</div>	                
-	    		</div>
+						</p:selectOneMenu>
+					</div>
+				</div>
 				
-				<div class="grid">
-					<div class="col-12 md:col-6">
-						<div class="flex">
-							<div class="flex-grow-0 flex flex-column min-width-130 pr-1">
-								<span>Estado</span>
-								<p:selectOneMenu  value="#{guiaRemCtrl.estado}" 
-												 styleClass="w-full" 
-												 required="false" requiredMessage="REQUERIDO">
+				<div class="grid ui-fluid main__opciones px-2">
+					<div class="col-12 md:col-2">
+						<div class="field">
+							<label class="text-gray-800">Estado</label>
+							<p:selectOneMenu  value="#{guiaRemCtrl.estado}" 
+									 styleClass="overflow-x-hidden"
+								 	 style="width: calc(100% - 0.1rem)" 
+									 required="false" requiredMessage="Requerido">
 									<f:selectItem itemLabel="TODOS" itemValue="#{null}" />
 									<f:selectItem itemLabel="BORRADOR" itemValue="BORRADOR" />			 
 									<f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE" />
@@ -107,93 +72,92 @@
 									<f:selectItem itemLabel="ERROR" itemValue="ERROR" />
 									<f:selectItem itemLabel="ANULADO" itemValue="ANULADO" />
 								</p:selectOneMenu>
-							</div>
-							<div class="flex-grow-1 flex flex-column min-width-150">
-								<span>Fechas</span>
-								<div class="flex">
-									<div class="flex-grow-1 flex pr-1">
-										<p:calendar id="calDesde" value="#{guiaRemCtrl.desde}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										</p:calendar>
-									</div>
-									<div class="flex-grow-1 flex">
-										<p:calendar id="calHasta" value="#{guiaRemCtrl.hasta}"
-											pattern="dd/MM/yyyy"
-											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
-										</p:calendar>
-									</div>
-								</div>
+						</div>
+					</div>
+					<div class="col-12 md:col-3">
+						<div class="field">
+							<label class="text-gray-800">Fechas</label>
+							<div class="flex gap-2">
+								
+								<p:calendar id="calDesde" value="#{guiaRemCtrl.desde}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								
+								<p:calendar id="calHasta" value="#{guiaRemCtrl.hasta}"
+									pattern="dd/MM/yyyy"
+									locale="es" 
+									requiredMessage="Requerido" required="true" placeholder="dd/MM/yyyy">
+								</p:calendar>
+								
 							</div>
 						</div>
 					</div>
 					
-					<div class="col-12 md:col-6">
-						<div class="flex">
-							<div class="flex-grow-1 flex flex-column pr-1">
-								<span>Criterio</span>
-								<p:inputText value="#{guiaRemCtrlcriterioBusqueda}" placeholder="Num comprobante, RUC, Nombre Transportista, Nombre, R.U.C., C.I. Destinatario" styleClass="w-full"/>
-							</div>
-							<div class="flex-grow-0 flex flex-column">
-								<span class="text-white">OP</span>
-								<div>
-									
-									<p:commandButton id="cmdRtnRefrecar"
-										value="Buscar" icon="fa fa-search" 
-										action="#{guiaRemCtrl.buscar()}" styleClass="ui-button-outlined mr-1" update="@form"
-									/>
-				   				
-				   					<p:commandButton id="cmdRtnNuevo"
-										value="Nuevo" icon="fa fa-plus" 
-										action="#{guiaRemCtrl.nuevaGuiaRemision()}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_nuevo')?'ui-state-disabled':''} ui-button-success" update="@form">
-										<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>							
-										<f:setPropertyActionListener value="#{guiaRemCtrl.establecimientoMain}" target="#{guiaRemFormCtrl.establecimientoMain}"/>
-				   					</p:commandButton>
-				   					
-								</div>
-							</div>
-							
+					<div class="col-12 md:col-4">
+						<div class="field">
+							<label class="text-gray-800">Criterio de búsqueda</label>
+							<p:inputText value="#{guiaRemCtrl.criterioBusqueda}" placeholder="Num comprobante, Transportista: Ruc, Nombre, Destinatario: Ruc, Ci, Nombre"/>
 						</div>
 					</div>
 					
-				</div>				
+					<div class="mt-2 col-12 md:col-3 md:mt-0">
+						<div class="inline-flex gap-2 h-full align-items-end">
+							<p:commandButton id="cmdRtnRefrecar"
+								value="Buscar" 
+								icon="fa fa-search" 
+								action="#{guiaRemCtrl.buscar()}" styleClass="ui-button-outlined" 
+								update="@form"
+							/>
+		   				
+		   					<p:commandButton id="cmdRtnNuevo"
+								value="Nuevo" 
+								icon="fa fa-plus" 
+								action="#{guiaRemCtrl.nuevaGuiaRemision()}" 
+								styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_nuevo')?'ui-state-disabled':''} ui-button-success" 
+								update="@form">
+								<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>							
+								<f:setPropertyActionListener value="#{guiaRemCtrl.establecimientoMain}" target="#{guiaRemFormCtrl.establecimientoMain}"/>
+		   					</p:commandButton>
+						</div>
+					</div>
+				</div>
 				
-				<div class="flex mt-2 align-items-center">
-					<i class="fa fa-ellipsis-v Fs14 mr-2"/> 
-					<p:commandLink id="cmlDtGREmitidasSeleccion" disabled="#{empty guiaRemCtrl.destinatarioList}" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Selección</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+				<div class="flex my-2 align-items-end gap-2">
+					<i class="fa fa-ellipsis-v fs-14"/> 
+					<p:commandLink id="cmlDtGREmitidasSeleccion" disabled="#{empty guiaRemCtrl.destinatarioList}" styleClass="min-width-80">
+						<div class="flex gap-1">
+							<span class="text-gray-900 fs-12">Selección</span>
+							<i class="fa fa-angle-down fs-14 text-gray-900" />
 						</div>
 					</p:commandLink>
 					<p:menu overlay="true" trigger="cmlDtGREmitidasSeleccion" my="left top" at="left bottom">								
-						<p:menuitem value="Enviar Email" action="#{guiaRemCtrl.enviarEmail}" icon="fa fa-envelope-o" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_email')?'ui-state-disabled':''}">
+						<p:menuitem value="Enviar Email" action="#{guiaRemCtrl.enviarEmail}" icon="fa-regular fa-envelope fs-12" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_email')?'ui-state-disabled':''}">
 						</p:menuitem>
-						<p:menuitem value="Firmar y enviar" action="#{guiaRemCtrl.firmarEnviar()}" icon="fa fa-envelope" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_emailfirmar')?'ui-state-disabled':''}">
+						<p:menuitem value="Firmar y enviar" action="#{guiaRemCtrl.firmarEnviar()}" icon="fa fa-envelope fs-12" update="@form" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_emailfirmar')?'ui-state-disabled':''}">
 						</p:menuitem>						
 					</p:menu>
 					
-					<p:commandLink id="cmdGlobalExcel" disabled="#{empty guiaRemCtrl.destinatarioList}" styleClass="min-width-80 mr-1">
-						<div class="flex w-full">
-							<span class="mr-1 text-black Fs12 font-light">Exportar</span>
-							<i class="fa fa-angle-down Fs18 text-black font-semibold" />
+					<p:commandLink id="cmdGlobalExcel" disabled="#{empty guiaRemCtrl.destinatarioList}" styleClass="min-width-80">
+						<div class="flex gap-1">
+							<span class="text-gray-900 fs-12">Exportar</span>
+							<i class="fa fa-angle-down fs-14 text-gray-900" />
 						</div>
 					</p:commandLink>
 					
 					<p:menu overlay="true" trigger="cmdGlobalExcel" my="left top" at="left bottom" style="width:250px !important;">
-						<p:menuitem value="Exportar excel" icon="fa fa-file-excel-o" ajax="false">
+						<p:menuitem value="Exportar excel" icon="fa-regular fa-file-excel fs-12" ajax="false">
 							<p:fileDownload value="#{guiaRemCtrl.fileGR}" contentDisposition="inline"/>
 						</p:menuitem>						
 					</p:menu>
 					
 				</div>
-				<div class="EmptyBox5"/>				
+				
 				<p:dataTable id="guiaRemDT" var="r"
 					value="#{guiaRemCtrl.destinatarioList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="guiaRemDT Fs11"  
+					styleClass="guiaRemDT fs-11"  
 					rowKey="#{r.iddestinatario}"
 					paginator="true"
 	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -202,10 +166,10 @@
 					rows="7"
 					rowsPerPageTemplate="7,10,15,20,25,30,35,40">
 					
-					<p:column style="width:15px;" styleClass="text-center">
+					<p:column style="width:25px;" styleClass="text-center">
 						<f:facet name="header">
 							<p:selectBooleanCheckbox value="#{guiaRemCtrl.seleccion}">
-								<p:ajax event="change" listener="#{guiaRemCtrl.changeSeleccion()}" update="@form:msgFormMain @form:guiaRemDT"/>
+								<p:ajax event="change" listener="#{guiaRemCtrl.changeSeleccion()}" update="@form:guiaRemDT"/>
 							</p:selectBooleanCheckbox>
 						</f:facet>
 						<p:selectBooleanCheckbox value="#{r.seleccion}" rendered="#{r.cabecera.estado!='ANULADO' and r.cabecera.estado!='BORRADOR'}">
@@ -213,43 +177,43 @@
 						</p:selectBooleanCheckbox>
 					</p:column>
 					
-					<p:column headerText="OPC" style="width:20px;" styleClass="TexAlCenter">
+					<p:column headerText="Opc" style="width:20px;">
 					
 						<p:commandLink id="cmlDtRetencion">
-							<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+							<i class="fa fa-chevron-circle-down fs-18 text-gray-800" />
 						</p:commandLink>
 						
 						<p:menu overlay="true" trigger="cmlDtRetencion" my="left top" at="left bottom">
 							
 							
-							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye" rendered="#{r.cabecera.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_ver')?'ui-state-disabled':''}">
+							<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye fs-14" rendered="#{r.cabecera.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_ver')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa fa-file-pdf-o" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_ride')?'ui-state-disabled':''}">
+							<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa-regular fa-file-pdf fs-14" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_ride')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="GUIAREM-" target="#{rideCtrl.inicialComprobante}"/>
 								<f:setPropertyActionListener value="#{facEmitidaCtrl.getFormatoNumDocumento(r.numdocsustento)}" target="#{rideCtrl.numComprobante}"/>
 							</p:menuitem>
 							
-							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope-o" disabled="#{appSessionCtrl.isEnviarEmail(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_email')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
+							<p:menuitem value="Enviar Email" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa-regular fa-envelope fs-14" disabled="#{appSessionCtrl.isEnviarEmail(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_email')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
 								<f:setPropertyActionListener value="#{r.cabecera.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>							
 							</p:menuitem>
-							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_emailfirmar')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
+							<p:menuitem value="Firmar y enviar" action="#{enviarDocCtrl.cargarFormulario()}" icon="fa fa-envelope fs-14" disabled="#{appSessionCtrl.isEnviarSri(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_emailfirmar')?'ui-state-disabled':''}" oncomplete="PrimeFaces.focus('formEnvioDoc:intAsunto');">
 								<f:setPropertyActionListener value="#{r.cabecera.estado}" target="#{enviarDocCtrl.estadoComprobante}"/>
 								<f:setPropertyActionListener value="#{r.cabecera.idcabecera}" target="#{enviarDocCtrl.idCabecera}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{enviarDocCtrl.callModule}"/>
 								<f:setPropertyActionListener value=":formMain:guiaRemDT" target="#{enviarDocCtrl.updateView}"/>
 								<f:setPropertyActionListener value="formMain" target="#{enviarDocCtrl.callForm}"/>							
 							</p:menuitem>
-							<p:menuitem value="Editar" action="#{guiaRemCtrl.editarGuiaRem(r.cabecera.idcabecera)}" icon="fa fa-edit" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_editar')?'ui-state-disabled':''}">
+							<p:menuitem value="Editar" action="#{guiaRemCtrl.editarGuiaRem(r.cabecera.idcabecera)}" icon="fa fa-edit fs-14" process="guiaRemDT" update="@form" disabled="#{r.cabecera.estado=='ANULADO'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_editar')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>
 							</p:menuitem>
-							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa fa-trash-o" process="guiaRemDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_anular')?'ui-state-disabled':''}">
+							<p:menuitem value="Anular" action="#{guiaRemCtrl.eliminar()}" icon="fa-regular fa-trash-can fs-14" process="guiaRemDT" update="@form" disabled="#{appSessionCtrl.isAnularFactura(r.cabecera.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_guiarem_anular')?'ui-state-disabled':''}">
 								<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
 								<f:setPropertyActionListener value="GUIA_REMISION" target="#{guiaRemFormCtrl.callModule}"/>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
@@ -259,19 +223,15 @@
 						
 					</p:column>
 					
-					<p:column headerText="NUM COMP" style="width:120px;" filterBy="#{r.cabecera.numdocumento}" filterMatchMode="contains" styleClass="text-right">
-						<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" rendered="#{r.cabecera.estado!='BORRADOR'}"/>
-					</p:column>
-					
-					<p:column headerText="ESTADO" style="width:100px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains" styleClass="text-center">
-						<div class="flex">
+					<p:column headerText="Estado" style="width:100px;" filterBy="#{r.cabecera.estado}" filterMatchMode="contains">
+						<div class="flex gap-1 align-items-center">
 							<div class="flex-grow-1 flex">
-								<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} p-1 border-round block w-full">
+								<h:outputText value="#{r.cabecera.estado}" styleClass="#{r.cabecera.estadoStyle} fs-11 p-1 border-round block w-full text-center">
 								</h:outputText>
 							</div>
 							<div class="flex-grow-0 flex px-1 align-items-center">
 								<p:commandLink action="#{logTransferCtrl.cargarFormulario(r.cabecera.idcabecera)}" process="@this" disabled="#{v.estado=='BORRADOR'}">
-									<i class="fa fa-external-link text-gray-800 Fs14"/>
+									<i class="fa fa-external-link text-gray-800 fs-16"/>
 									<f:setPropertyActionListener value="GUIA_REMISION" target="#{logTransferCtrl.callModule}"/>
 									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.callForm}"/>
 									<f:setPropertyActionListener value="formMain" target="#{logTransferCtrl.updateView}"/>
@@ -280,83 +240,89 @@
 						</div>						
 					</p:column>
 					
-					<p:column headerText="DESTINATARIOS" style="width:250px;" filterBy="#{r.filterDestinatario}" filterMatchMode="contains">
+					<p:column headerText="Comprobante" style="width:20rem;" filterBy="#{r.cabecera.filterComprobanteTransportista}" filterMatchMode="contains">
+						<div class="flex flex-column">
+							<h:outputText value="#{guiaRemCtrl.getFormatoNumDocumento(r.cabecera.numdocumento)}" rendered="#{r.cabecera.estado!='BORRADOR'}" styleClass="fs-12 text-gray-900 fw-5"/>
+							<h:outputText value="#{r.cabecera.transportista.razonsocial}" styleClass="fs-12 text-primary-600 font-semibold"/>
+							<h:outputText value="#{r.cabecera.transportista.identificacion}" styleClass="text-gray-900"/>
+							<div class="flex-inline gap-1">
+								<span class="fs-10">Ruta: </span>
+								<h:outputText value="#{r.cabecera.fechainiciotransporte}" styleClass="text-gray-900">
+									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+								<span class="text-gray-900"> - </span>
+								<h:outputText value="#{r.cabecera.fechafintransporte}" styleClass="text-gray-900">
+									<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</div>
+						</div>
+					</p:column>
+					
+					
+					<p:column headerText="Destinatarios" style="width:250px;" filterBy="#{r.filterDestinatario}" filterMatchMode="contains">
 						
 						<div class="flex flex-column">
-							<span class="Fs11 text-black mb-1">
-								#{r.razonsocialdestinatario}
-							</span>
-							<span class="Fs10 text-black font-semibold mb-1">
+							<span class="fs-10 text-gray-800 font-semibold">
 								#{r.identificaciondestinatario}
 							</span>
-							<span class="Fs11 text-gray-800 mb-1">COMPROBANTE</span>
-							<span class="Fs14 text-black font-semibold mb-1">#{guiaRemCtrl.getFormatoNumDocumento(r.numdocsustento)}</span>
-							<span class="Fs11 text-gray-800 mb-1">RUTA</span>
-							<span class="Fs11 text-black mb-1">#{r.ruta==null?'N/A':'-'}</span>
-							<div>
-								<span class="Fs10 text-gray-800 mr-1">TOTAL DE ÍTEMS</span>
-								<span class="Fs12 markGray mr-2">#{r.detalledestinatarioList.size()}</span>
-								
+							<span class="text-primary-600 font-semibold">
+								#{r.razonsocialdestinatario}
+							</span>
+							<div class="flex-inline gap-1">
+								<span class="fs-10 text-gray-700">Comprobante</span>
+								<span class="fs-12 text-gray-900">#{guiaRemCtrl.getFormatoNumDocumento(r.numdocsustento)}</span>
 							</div>
-							<div class="flex my-1 justify-content-start">
-								<p:commandLink oncomplete="PF('dlgResGuiaRemision').show();" update="@form :frmDetGR" styleClass="text-center inline">
-									<i class="fa fa-list Fs11 mr-1 text-blue-700"></i>
-									<span class="Fs12 text-blue-700">ÍTEMS</span>
+							<span class="text-gray-700">RUTA</span>
+							<span class="text-gray-900">#{r.ruta==null?'N/A':'-'}</span>
+							<div class="flex-inline gap-1">
+								<span class="fs-10 text-gray-700">Total de ítems</span>
+								<span class="fs-12 text-gray-900">#{r.detalledestinatarioList.size()}</span>
+							</div>							
+							<div class="flex my-1 gap-1 align-items-center">
+								<i class="fa fa-ellipsis-v fs-14"/>
+								<p:commandButton styleClass="ui-button-outlined ui-button-secondary min-width-80"
+									oncomplete="PF('dlgResGuiaRemision').show();" 
+									update="@form :frmDetGR"
+									value="Ver ítems">
 									<f:setPropertyActionListener value="#{r.cabecera}" target="#{guiaRemCtrl.guiaRemisionSelected}"/>
 									<f:setPropertyActionListener value="#{r}" target="#{guiaRemCtrl.destinatarioSelected}"/>
 									<f:setPropertyActionListener value="#{r.detalledestinatarioList}" target="#{guiaRemCtrl.detalledestinatarioList}"/>
-								</p:commandLink>
-								<p:divider layout="vertical" styleClass="mx-2  inline"/>
+								</p:commandButton>
+								<!-- <p:commandLink  styleClass="text-center inline">
+									<i class="fa fa-list fs-11 mr-1 text-blue-700"></i>
+									<span class="fs-12 text-blue-700">ÍTEMS</span>
+								</p:commandLink> -->
 							</div>
 						</div>	
 					
 					</p:column>
 					
-					<p:column style="width:30px;">
+					<p:column style="width:2.5rem;" styleClass="text-center">
 						<f:facet name="header">
-							<div class="w-full text-center">
-								<i class="fa fa-envelope Fs14"/>
-							</div>
+							<p:spacer width="3px"/>
+							<i class="fa fa-envelope fs-14"/>
 						</f:facet>
 						<div class="flex pl-3 justify-content-center">
 							<f:subview rendered="#{r.cabecera.envioemail==1}">
-								<i class="fa fa-check Fs14" style="color:black;"/>
+								<i class="fa fa-check fs-14" style="color:black;"/>
 							</f:subview>
 							<f:subview rendered="#{r.cabecera.envioemail==0}">
-								<i class="fa fa-minus Fs14" style="color:#ccc;"/>
+								<i class="fa fa-minus fs-14" style="color:#ccc;"/>
 							</f:subview>
 						</div>
 					</p:column>
 					
-					<p:column headerText="TRANSPORTISTA" style="width:200px;" filterBy="#{r.filterTransportista}" filterMatchMode="contains">
-						<div class="flex flex-column pl-3" >
-							<h:outputText value="#{r.cabecera.transportista.razonsocial}" styleClass="Fs13"/>
-							<h:outputText value="#{r.cabecera.transportista.identificacion}" styleClass="text-gray-800 Fs11 font-semibold"/>							
-							<span class="my-1">FECHA RUTA</span>							
-							<div class="flex justify-content-between flex-wrap">
-								<span class="flex align-items-end">
-									<span class="Fs10 mr-1 ">Desde</span>
-									<h:outputText value="#{r.cabecera.fechainiciotransporte}" styleClass="text-gray-800 Fs12">
-										<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</span>
-								<span class="flex align-items-end">
-									<span class="Fs10 mr-1 ">Hasta</span>
-									<h:outputText value="#{r.cabecera.fechafintransporte}" styleClass="text-gray-800 Fs12">
-										<f:convertDateTime locale="es_EC" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</span>										
-							</div>
-						</div>
-					</p:column>
 										
 				</p:dataTable>
-				<div class="EmptyBox10"/>			
+				
 			</div>
+	    
+	    	
+			
 	    
 	    
 	    </h:form>
-        
+        <!-- DETALLE ITEMS -->
         <ui:include src="incl_gr_det_view.xhtml" />
         <!-- RIDE -->
 		<ui:include src="../common/incl_ride.xhtml" />
