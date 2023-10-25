@@ -18,6 +18,7 @@ import javax.inject.Named;
 
 import org.omnifaces.util.Ajax;
 import org.primefaces.PrimeFaces;
+import org.primefaces.model.ResponsiveOption;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
@@ -70,6 +71,8 @@ public class PagoCompCtrl implements Serializable {
 	private NotaDebitoFrmCtrl notaDebitoFrmCtrl;
 	private LiqCompraFormCtrl liqCompraFormCtrl;
 	
+	private List<ResponsiveOption> responsiveOptions;
+	
 	/**
 	 * 
 	 */
@@ -78,7 +81,14 @@ public class PagoCompCtrl implements Serializable {
 
 	@PostConstruct
 	private void init() {
-		
+		try {
+			responsiveOptions = new ArrayList<>();
+	        responsiveOptions.add(new ResponsiveOption("1024px", 3, 3));
+	        responsiveOptions.add(new ResponsiveOption("768px", 2, 2));
+	        responsiveOptions.add(new ResponsiveOption("560px", 1, 1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void consultarTipoPago() throws DaoException{
@@ -539,6 +549,20 @@ public class PagoCompCtrl implements Serializable {
 	 */
 	public void setLiqCompraFormCtrl(LiqCompraFormCtrl liqCompraFormCtrl) {
 		this.liqCompraFormCtrl = liqCompraFormCtrl;
+	}
+
+	/**
+	 * @return the responsiveOptions
+	 */
+	public List<ResponsiveOption> getResponsiveOptions() {
+		return responsiveOptions;
+	}
+
+	/**
+	 * @param responsiveOptions the responsiveOptions to set
+	 */
+	public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
+		this.responsiveOptions = responsiveOptions;
 	}
 	
 }

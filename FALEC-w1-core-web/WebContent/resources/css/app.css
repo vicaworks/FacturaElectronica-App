@@ -392,6 +392,22 @@ template {
   font-size: 3.5rem !important;
 }
 
+.fs-40 {
+  font-size: 4rem !important;
+}
+
+.fs-45 {
+  font-size: 4.5rem !important;
+}
+
+.fs-50 {
+  font-size: 5rem !important;
+}
+
+.fs-55 {
+  font-size: 5.5rem !important;
+}
+
 .fw-1 {
   font-weight: 100 !important;
 }
@@ -454,6 +470,10 @@ template {
 
 .min-width-80 {
   min-width: 8rem;
+}
+
+.min-width-85 {
+  min-width: 8.5rem;
 }
 
 .min-width-90 {
@@ -1742,7 +1762,24 @@ body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
   margin: 0.5rem auto;
 }
 
+.divisor-full:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #e6e6e6;
+  margin: 0.2rem auto;
+}
+
 .div-upload .ui-fileupload .ui-fileupload-content {
   display: none;
+}
+
+.det-item-hover {
+  transition: all 0.5s;
+}
+
+.det-item-hover:hover {
+  border-color: #007bff !important;
 }
 /*# sourceMappingURL=app.css.map */

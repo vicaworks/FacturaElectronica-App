@@ -36,23 +36,23 @@
 		});
 		function tipoPagoMouse(ojecttRef,evento)
 		{   if(evento=='OVER'){				
-				$(ojecttRef).removeClass('border-gray-300');
-				$(ojecttRef).addClass('border-gray-800');
+				$(ojecttRef).removeClass('border-gray-400');
+				$(ojecttRef).addClass('border-gray-900');
 				
-				$(ojecttRef).children('i').removeClass('text-gray-300');
-				$(ojecttRef).children('i').addClass('text-gray-800');
+				$(ojecttRef).children('i').removeClass('text-gray-400');
+				$(ojecttRef).children('i').addClass('text-gray-900');
 
-				$(ojecttRef).children('span').removeClass('text-gray-300');
-				$(ojecttRef).children('span').addClass('text-gray-800');
+				$(ojecttRef).children('span').removeClass('text-gray-400');
+				$(ojecttRef).children('span').addClass('text-gray-900');
 			}else{
-				$(ojecttRef).removeClass('border-gray-800');
-				$(ojecttRef).addClass('border-gray-300');
+				$(ojecttRef).removeClass('border-gray-900');
+				$(ojecttRef).addClass('border-gray-400');
 
-				$(ojecttRef).children('i').removeClass('text-gray-800');
-				$(ojecttRef).children('i').addClass('text-gray-300');
+				$(ojecttRef).children('i').removeClass('text-gray-900');
+				$(ojecttRef).children('i').addClass('text-gray-400');
 
-				$(ojecttRef).children('span').removeClass('text-gray-800');
-				$(ojecttRef).children('span').addClass('text-gray-300');
+				$(ojecttRef).children('span').removeClass('text-gray-900');
+				$(ojecttRef).children('span').addClass('text-gray-400');
 			}
 			
 		}
@@ -69,113 +69,108 @@
 		}
 	</script>	
 	
-	<p:dialog header="Pago" widgetVar="dlgListaPago" modal="true" responsive="true" width="780px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Pago" 
+		widgetVar="dlgListaPago" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:780px;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmListPago">
 			
+			<!-- OPCIONES -->
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
+				<p:commandButton value="Guardar"
+					icon="fa-regular fa-floppy-disk fs-12"
+					styleClass="min-width-full fs-12"
+					update="@form #{pagoCompCtrl.updateView}" 
+					process="@form" 
+					action="#{pagoCompCtrl.realizarPago()}">
+				</p:commandButton>
+				<p:commandButton value="Cerrar" 
+					icon="fa fa-sign-out fs-12" 
+					styleClass="ui-button-secondary ui-button-outlined min-width-full fs-12" 
+					onclick="PF('dlgListaPago').hide()" 
+					immediate="true"  
+				/>
+			</div>
+			
+			<div class="w-full divisor-full my-2">
+			    <span class="fs-14 text-gray-900">Método de pago</span>
+		    </div>
+			
+			<p:carousel id="tipoPagoDT" value="#{pagoCompCtrl.tipoPagoList}" var="tp" numVisible="3" numScroll="3" responsiveOptions="#{pagoCompCtrl.responsiveOptions}">
+				
+				<p:commandLink 
+					styleClass="w-full" 
+					action="#{pagoCompCtrl.aplicarPago()}" 
+					process="@form" 
+					update="@form" 
+					oncomplete="seleccionarInputLista('.selector-input-monto','.mainPagoDT');">
+					<f:setPropertyActionListener value="#{tp}" target="#{pagoCompCtrl.tipopagoSelected}"/>
+					<div class="flex flex-column align-items-start justify-content-center gap-2 m-1 border-round p-2 #{tp.activo?'border-1 border-gray-900 tp_seleccion':'border-1 border-gray-400'}" 
+						style="height: 6rem;" 
+						onmouseover="if(#{tp.activo==false}){tipoPagoMouse(this,'OVER');}" 
+						onmouseout="if(#{tp.activo==false}){tipoPagoMouse(this,'OUT');}">
+						<i class="block #{tp.icono} fs-20 mr-2 #{tp.activo?'text-primary-600':'text-gray-300'}"/>
+						<span class="fs-14 #{tp.activo?'text-gray-900':'text-gray-400'}">#{tp.nombre}</span>
+					</div>
+				</p:commandLink>
+				
+            </p:carousel>
 			<div class="w-full overflow-auto heightFrmListPago frmAdquisicion">
 				
-				<p:messages id="msgFrmListPago" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmListPago"
-					closable="true" style="margin:0px!important;width:99%!important;">
-					<p:autoUpdate></p:autoUpdate>
-				</p:messages>
-				<div class="grid h-100" style="width:99%!important;">
-					
-					<div class="col-12 md:col-6">
-						<!-- Cliente proveedor -->						
-						<div class="flex flex-column">
-							<span class="Fs16 text-black font-bold">
-								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.razonsocial}" />
-							</span>
-							<span class="Fs12 text-black font-light">
-								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.identificacion}" />
-							</span>
-							<span class="Fs12 text-gray-600">
-								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.direccion}" />
-							</span>
-							<div class="Fs12 text-gray-600">
-								<i class="fa fa-phone mr-1"></i>
-								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.telefono==null?'-':pagoCompCtrl.cabeceraSelected.cliente.telefono}" />
-							</div>
-							<div class="Fs12 text-gray-600">
-								<i class="fa fa-envelope-o mr-1"></i>
-								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.correoelectronico==null?'-':pagoCompCtrl.cabeceraSelected.cliente.correoelectronico}" />
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-12 md:col-4">
-						<!-- total a pagar -->
-						<div class="flex flex-column align-items-end justify-content-center h-full">
-							<div>								
-								<span class="text-gray-800 Fs10 mr-1">VALOR A PAGAR</span>
-								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.valorapagar}" styleClass="Fs24 text-black font-bold">
-				   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-				   				</h:outputText>
-							</div>
-							<div>
-								<span class="text-gray-400 Fs9 mr-1">I.V.A.</span>
-								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.totaliva}" styleClass="Fs12 text-black font-light">
-				   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-				   				</h:outputText>
-							</div>
-						</div>
-					</div>
+				<p:outputPanel id="oupDtPagos" styleClass="grid h-full" style="width:99%!important;">
 					
 					<!-- DETALLE DE PAGO -->
-					<div class="col-12">
-						<div class="EmptyBox20"/>
-						<h:outputText value="Método de Pago" styleClass="Fs14 text-gray-700 font-medium"/>
-						<div class="EmptyBox5"/>
-					</div>
-					<div class="col-12 lg:col-5 tipoPagoDT" id="divTipoPagoDT">
-						
+					
+					<!-- <div class="col-12 tipoPagoDT mt-2" id="divTipoPagoDT">
 						<p:dataScroller id="tipoPagoDT" value="#{pagoCompCtrl.tipoPagoList}" var="tp" chunkSize="10" mode="inline" styleClass="mainTipoPagoDT">
-							
 							<p:commandLink styleClass="w-full" action="#{pagoCompCtrl.aplicarPago()}" process="@form" update="@form" oncomplete="seleccionarInputLista('.selector-input-monto','.mainPagoDT');">
 								<f:setPropertyActionListener value="#{tp}" target="#{pagoCompCtrl.tipopagoSelected}"/>
 								<div class="flex flex-row align-items-center m-1 mb-2 border-round pl-2 #{tp.activo?'border-1 border-gray-800 tp_seleccion':'border-1 border-gray-300'}" style="height: 30px;" onmouseover="if(#{tp.activo==false}){tipoPagoMouse(this,'OVER');}" onmouseout="if(#{tp.activo==false}){tipoPagoMouse(this,'OUT');}">
-									<i class="fa #{tp.icono} Fs14 mr-2 #{tp.activo?'text-gray-800':'text-gray-300'}"/>
-									<span class="Fs14 #{tp.activo?'text-gray-800':'text-gray-300'}">#{tp.nombre}</span>
+									<i class="fa #{tp.icono} fs-14 mr-2 #{tp.activo?'text-gray-800':'text-gray-300'}"/>
+									<span class="fs-14 #{tp.activo?'text-gray-800':'text-gray-300'}">#{tp.nombre}</span>
 								</div>
 							</p:commandLink>
 							
 						</p:dataScroller>
-						
-					</div>
+					</div> -->
 					
-					<div class="col-12 lg:col-7 tipoPagoDT">
-						<div class="EmptyBox20 block lg:hidden"/>
+					<div class="col-12 tipoPagoDT">
 						<div class="w-full overflow-auto p-0 mainPagoDT" style="max-height:230px; min-height: 190px;">
 							 
 							<p:repeat var="p" value="#{pagoCompCtrl.pagoList}">								
 								<!-- efectivo -->
 								<f:subview rendered="#{p.tipopago.subdetalle == '1'}" id="svbLPEMod1">
 									<div class="border-round border-1 border-gray-300 w-full p-1 mb-1">
-										<div class="flex">
-											<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
+										<div class="flex gap-2">
+											<div class="flex-none flex h-100 justify-content-center align-items-center" style="width:30px;">
 												<p:commandLink action="#{pagoCompCtrl.eliminarDetallePago()}" process="@this" update="@form">
 													<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 													<f:setPropertyActionListener value="#{p}" target="#{pagoCompCtrl.pagoSelected}"/>
-													<i class="fa fa-trash-o Fs18 text-gray-500"></i>
+													<i class="fa-regular fa-trash-can fs-18 text-gray-900"></i>
 												</p:commandLink>
 											</div>
-											<div class="flex-grow-1 flex flex-column pr-1">
-												<span class="text-black font-light">Monto</span>
+											<div class="flex-grow-1 flex flex-column">
+												<span class="text-gray-900">Monto</span>
 												<p:inputNumber id="innPlMonto" value="#{p.total}"
 				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" styleClass="selector-input-monto">
 				                            	    <p:ajax event="change" listener="#{pagoCompCtrl.totalizarPagoaction(p)}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
-											<div class="flex-grow-1 flex flex-column pr-1">
-												<span class="text-black font-light">Importe</span>
+											<div class="flex-grow-1 flex flex-column">
+												<span class="text-gray-900">Importe</span>
 												<p:inputNumber id="innPlImporte" value="#{p.valorentrega}"
 				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2">
 				                            	    <p:ajax listener="#{pagoCompCtrl.calcularCambioAction(p)}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
 											<div class="flex-grow-1 flex flex-column resaltar">
-												<span class="text-black font-light">Cambio</span>
+												<span class="text-gray-900">Cambio</span>
 												<p:inputNumber id="innPlCambio" value="#{p.cambio}"
 				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" readonly="true">
 				                            	</p:inputNumber>
@@ -187,28 +182,32 @@
 								<!-- cheque, t credito, t debito, transferencia, deposito, credito -->
 								<f:subview rendered="#{p.tipopago.subdetalle == '2' or p.tipopago.subdetalle == '3'}" id="svbLPEMod2">
 									<div class="border-round border-1 border-gray-300 w-full p-1 mb-1">
-										<div class="flex">
-											<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
+										<div class="flex gap-2">
+											<div class="flex-none flex h-100 justify-content-center align-items-center" style="width:30px;">
 												<p:commandLink action="#{pagoCompCtrl.eliminarDetallePago()}" process="@this" update="@form">
 													<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 													<f:setPropertyActionListener value="#{p}" target="#{pagoCompCtrl.pagoSelected}"/>
-													<i class="fa fa-trash-o Fs18 text-gray-500"></i>
+													<i class="fa-regular fa-trash-can fs-18 text-gray-900"></i>
 												</p:commandLink>
 											</div>
-											<div class="flex-none flex flex-column pr-1" style="width:133px;">
-												<span class="text-black font-light">Monto</span>
+											<div class="flex-grow-1 flex flex-column">
+											<!-- <div class="flex-none flex flex-column pr-1" style="width:133px;"> -->
+												<span class="text-gray-900">Monto</span>
 												<p:inputNumber  id="innPlMonto" value="#{p.total}"
 				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" styleClass="selector-input-monto">
 				                            	    <p:ajax event="change" listener="#{pagoCompCtrl.totalizarPagoaction(p)}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
-											<div class="flex-grow-1 flex flex-column pr-1">
-												<span class="text-black font-light">Número Documento</span>
-												<p:inputText id="innPlNumDocumento" styleClass="w-full Fs14" value="#{p.numerodocumento}" required="false" requiredMessage="REQUERIDO"/>
+											<!-- <div class="flex-grow-1 flex flex-column pr-1"> -->
+											<div class="flex-grow-1 flex flex-column">
+												<span class="text-gray-900">Número Documento</span>
+												<p:inputText id="innPlNumDocumento" styleClass="w-full fs-14" value="#{p.numerodocumento}" required="false" requiredMessage="Requerido"/>
 												<p:message for="innPlNumDocumento" styleClass="block"/>
-												<span class="text-black font-light">Institución Financiera</span>
-												<p:inputText id="innPlBanco" styleClass="w-full Fs14" value="#{p.nombrebanco}"/>
-												<p:message for="innPlBanco" styleClass="block"  required="false" requiredMessage="REQUERIDO"/>
+											</div>
+											<div class="flex-grow-1 flex flex-column">
+												<span class="text-gray-900">Institución Financiera</span>
+												<p:inputText id="innPlBanco" styleClass="w-full fs-14" value="#{p.nombrebanco}"/>
+												<p:message for="innPlBanco" styleClass="block"  required="false" requiredMessage="Requerido"/>
 											</div>
 										</div>
 									</div>
@@ -217,34 +216,37 @@
 								<!-- credito -->
 								<f:subview rendered="#{p.tipopago.subdetalle == '4'}" id="svbLPEMod3">
 									<div class="border-round border-1 border-gray-300 w-full p-1 mb-1">
-										<div class="flex">
-											<div class="flex-none flex h-100 justify-content-center align-items-end" style="width:30px;">
+										<div class="flex gap-2">
+											<div class="flex-none flex h-100 justify-content-center align-items-center" style="width:30px;">
 												<p:commandLink action="#{pagoCompCtrl.eliminarDetallePago()}" process="@this" update="@form">
 													<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 													<f:setPropertyActionListener value="#{p}" target="#{pagoCompCtrl.pagoSelected}"/>
-													<i class="fa fa-trash-o Fs18 text-gray-500"></i>
+													<i class="fa-regular fa-trash-can fs-18 text-gray-900"></i>
 												</p:commandLink>
 											</div>
-											<div class="flex-grow-1 flex flex-column pr-1">
-												<span class="text-black font-light">Monto</span>
+											<!-- <div class="flex-grow-1 flex flex-column pr-1"> -->
+											<div class="flex-grow-1 flex flex-column">
+												<span class="text-gray-900">Monto</span>
 												<p:inputNumber id="innPlMonto" value="#{p.total}"
 				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" styleClass="selector-input-monto">
 				                            	    <p:ajax event="change" listener="#{pagoCompCtrl.totalizarPagoaction(p)}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
-											<div class="flex-grow-1 flex flex-column pr-1">
-												<span class="text-black font-light">Días</span>
+											<!-- <div class="flex-grow-1 flex flex-column pr-1"> -->
+											<div class="flex-grow-1 flex flex-column">
+												<span class="text-gray-900">Días</span>
 												<p:inputNumber id="innPlPlazo" value="#{p.plazo}"
 				                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0">
 				                            	    <p:ajax event="change" listener="#{pagoCompCtrl.calcularFechaAction(p,'PLAZO')}" update="@form" process="@form"/>
 				                            	</p:inputNumber>
 											</div>
+											<!-- <div class="flex-grow-1 flex flex-column resaltar"> -->
 											<div class="flex-grow-1 flex flex-column resaltar">
-												<span class="text-black font-light">Fecha de Pago</span>
+												<span class="text-gray-900">Fecha de Pago</span>
 												<p:calendar  id="innPlFechaPago" value="#{p.fechapago}"
 													pattern="dd/MM/yyyy"
 													locale="es" 
-													requiredMessage="REQUERIDO" required="false" styleClass="w-full">
+													requiredMessage="Requerido" required="false" styleClass="w-full" inputStyleClass="fs-14">
 													<p:ajax event="dateSelect" listener="#{pagoCompCtrl.calcularFechaAction(p,'FECHA')}" update="@form" process="@form"/>
 												</p:calendar>
 											</div>
@@ -255,41 +257,68 @@
 							</p:repeat>
 							
 						</div>
-						<div class="EmptyBox10"/>
-						<div class="wfull text-right">
-							<div class="EmptyBox5"/>
-							<span class="inline Fs10 text-gray-600 mr-1">TOTAL PAGO</span>
-							<h:outputText value="#{pagoCompCtrl.totalPago}" styleClass="Fs24 text-gray-800 font-bold inline">
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
+						
+					</div>
+					
+					<div class="col-12 md:col-6">
+						<!-- Cliente proveedor -->						
+						<div class="flex flex-column gap-1">
+							<span class="fs-16 text-primary-600 font-medium">
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.razonsocial}" />
+							</span>
+							<span class="fs-12 text-gray-900">
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.identificacion}" />
+							</span>
+							<span class="fs-12 text-gray-900">
+								<i class="fa-solid fa-location-dot mr-1"></i>
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.direccion}" />
+							</span>
+							<div class="fs-12 text-gray-900">
+								<i class="fa fa-phone mr-1"></i>
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.telefono==null?'-':pagoCompCtrl.cabeceraSelected.cliente.telefono}" />
+							</div>
+							<div class="fs-12 text-gray-900">
+								<i class="fa-regular fa-envelope mr-1"></i>
+								<h:outputText value="#{pagoCompCtrl.cabeceraSelected.cliente.correoelectronico==null?'-':pagoCompCtrl.cabeceraSelected.cliente.correoelectronico}" />
+							</div>
+						</div>
+					</div>
+				
+					<div class="col-6 md:col-3">
+						<!-- total a pagar -->
+						<div class="flex flex-column align-items-center justify-content-center h-full">
+						
+							<h:outputText value="#{pagoCompCtrl.cabeceraSelected.valorapagar}" styleClass="fs-25 text-gray-900 fw-5">
+			   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+			   				</h:outputText>
+							
+							<div class="flex gap-1 align-items-baseline">
+								<span class="fs-12 text-gray-700">Valor a</span>
+								<span class="fs-14 text-gray-800 fw-5">Pagar</span>
+							</div>
+							
+						</div>
+					</div>
+					
+					<div class="col-6 md:col-3">
+						<!-- total pago -->
+						<div class="flex flex-column align-items-center justify-content-center h-full">
+						
+							<h:outputText value="#{pagoCompCtrl.totalPago}" styleClass="fs-25 text-primary-600 font-medium">
+			   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+			   				</h:outputText>
+							
+							<div class="flex gap-1 align-items-baseline">
+								<span class="fs-12 text-gray-700">Valor</span>
+								<span class="fs-14 text-gray-800 fw-5">Pago</span>
+							</div>
+							
 						</div>
 					</div>
 					
 					
-					
-				</div>
+				</p:outputPanel>
 				
-			</div>
-			<div class="EmptyBox10"/>
-			<div class="grid justify-content-center">
-				<div class="col-6 py-1 px-2">
-					<p:commandLink styleClass="text-white" update="@form #{pagoCompCtrl.updateView}" process="@form" action="#{pagoCompCtrl.realizarPago()}">						
-						<div class="flex border-1 border-gray-800 bg-green-600 justify-content-center p-2">
-							<i class="Fs14 fa fa-dollar mr-1"/>
-							<span class="Fs14">
-								<h:outputText value="PAGAR" /> 
-							</span>
-						</div>
-					</p:commandLink>
-				</div>
-				<div class="col-6 py-1 px-2">
-					<p:commandLink styleClass="text-gray-600" process="@this" onclick="PF('dlgListaPago').hide()">
-						<div class="flex border-1 border-gray-800 justify-content-center p-2">
-							<i class="Fs14 fa fa-sign-out mr-1"/>
-							<span class="Fs14">CERRAR</span>
-						</div>
-					</p:commandLink>
-				</div>
 			</div>
 			
 		</h:form>

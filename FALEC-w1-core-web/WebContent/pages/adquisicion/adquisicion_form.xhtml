@@ -13,24 +13,6 @@
         <style type="text/css">			
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;
-			}			
-			.adquisicionDetDT .ui-selectonemenu .ui-selectonemenu-label {
-				text-align: center;
-			}			
-			body .ui-datatable .ui-datatable-data > tr > td	{vertical-align: top;}
-			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}			
-			.card{margin-bottom: 0.25rem!important;}
-			/* file upload */
-			body .ui-fileupload .ui-fileupload-buttonbar {
-			 border: none;
-			 padding: 0px !important;
-			}
-			body .ui-fileupload .ui-fileupload-content {
-				/* display: none; */
-				border: none;
-				padding: 0px;
-				border-top: 0 none;
-				line-height: 1.5;
 			}
         </style>
         <script >
@@ -54,46 +36,47 @@
     	<p:breadCrumb>
 		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
 		    <p:menuitem value="Lista de compras" url="#{request.contextPath}/pages/adquisicion/adquisicion.jsf" />
-		    <p:menuitem value="Compra" url="#{request.contextPath}/pages/adquisicion/adquisicion_form.jsf"/>
+		    <p:menuitem value="Retenciones" url="#{request.contextPath}/pages/adquisicion/retenciones.jsf"/>
 		</p:breadCrumb>
 		
 		
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
-	    	<div class="card card-w-title mt-1">
-	    		
-	    		<div class="grid">	    			
-	    			<div class="col-12">
-		    			<div class="flex flex-inline justify-content-start">
-		    				<p:commandButton id="cmdAdqNuevo"
-									title="Nueva compra" icon="fa fa-file-o" value="Nuevo"
-									action="#{adquisicionFrmCtrl.nuevo()}" styleClass="ui-button-success min-width-70 mr-1" update="@form" immediate="true"/>
-		    				<p:commandButton id="cmdAdqGuardar"
-									title="Guardar compra" icon="fa fa-floppy-o" value="Guardar"
-									action="#{adquisicionFrmCtrl.guardar()}" styleClass="ui-button-outlined min-width-70 mr-1" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
-							<p:commandButton id="cmdAdqRetencion"
-								value="#{msg['label.retencion']}" icon="fa fa-plus" 
-								action="#{retencionMainCtrl.nuevaRetencion()}" 
-								styleClass="ui-button-outlined min-width-100" update="@form" disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
-								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{retencionFrmCtrl.establecimientoMain}"/>
-								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
-								<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
-								<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
-								<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
-								<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
-								
-							</p:commandButton>
-		    			</div>
-	    			</div>
-	    		</div>
-	    		
-	    	</div>			
-	    	<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" style="margin:0px!important;">
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-	    	<div class="grid Fs11">
+	    	<div class="tool-bar mb-2">
+				
+    				<p:commandButton id="cmdAdqNuevo"
+							title="Nueva compra" icon="fa-regular fa-file fs-12" value="Nuevo"
+							action="#{adquisicionFrmCtrl.nuevo()}" 
+							styleClass="ui-button-success min-width-80 fs-12" 
+							update="@form" 
+							immediate="true"/>
+    				<p:commandButton id="cmdAdqGuardar"
+							title="Guardar compra" 
+							icon="fa-regular fa-floppy-disk fs-12" value="Guardar"
+							action="#{adquisicionFrmCtrl.guardar()}" 
+							styleClass="ui-button-outlined min-width-80 fs-12" 
+							update="@form" 
+							disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}"/>
+					<p:commandButton id="cmdAdqRetencion"
+						value="#{msg['label.retencion']}" icon="fa fa-plus fs-12" 
+						action="#{retencionMainCtrl.nuevaRetencion()}" 
+						styleClass="ui-button-outlined ui-button-secondary min-width-100 fs-12" 
+						update="@form" 
+						disabled="#{adquisicionFrmCtrl.adquisicionSelected.idadquisicion==null or adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}">
+						<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{retencionFrmCtrl.establecimientoMain}"/>
+						<f:setPropertyActionListener value="#{adquisicionFrmCtrl.adquisicionSelected}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
+						<f:setPropertyActionListener value="ADQUISICION" target="#{retencionFrmCtrl.callModule}"/>
+						<f:setPropertyActionListener value=":formMain" target="#{retencionFrmCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{retencionMainCtrl.retencionFormCtrl}"/>
+						<f:setPropertyActionListener value="#{retencionMainCtrl}" target="#{retencionFrmCtrl.retencionMainCtrl}"/>
+						
+					</p:commandButton>
+				
+				
+			</div>
+			
+	    	<div class="grid fs-11">
 		    	<div class="col-12 lg:col-7">
 		    		<ui:include src="./incl_compra_detalle.xhtml" />		    		
 		    	</div>

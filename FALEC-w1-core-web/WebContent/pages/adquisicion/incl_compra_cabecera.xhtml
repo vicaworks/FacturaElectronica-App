@@ -15,27 +15,39 @@
 	</style>
 	
 	<!-- consulta proveedor return keycode 13 -->
-	<p:remoteCommand name="buscarProveedor"  action="#{adquisicionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT"/>
+	<p:remoteCommand name="buscarProveedor"  action="#{adquisicionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT"/>
 	
-	<div class="card card-w-title">
+	<div class="card">
 		
 		<div class="flex justify-content-between">
-			<span class="Fs14 text-black font-semibold">Compra</span>
+			<span class="fs-14 text-black font-semibold">Compra</span>
 			<div>
-				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
-				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(compFacCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+				<span class="fs-11 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="fs-12 text-primary-600 font-semibold">#{appSessionCtrl.formatoCadena(compFacCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
 			</div>			
 		</div>
-		
-		<span class="block mt-1 text-gray-700 font-medium Fs11">Proveedor</span>
+		<div class="field col-12">
+        	<div class="flex flex-inline">
+        		<div class="flex-none flex alig-self-center" style="padding: 0px 15px 0 0;">
+        			<p:selectBooleanCheckbox value="#{adquisicionFrmCtrl.adquisicionSelected.esGastoBol}"/>
+        		</div>
+        		<div class="flex-grow-1 flex pl-2 border-left-2 border-gray-400">
+        			<div class="flex flex-column">
+        				<span class="text-gray-900 fs-11 py-1">Registrar cómo gasto</span>
+        				<span class="fs-10 text-gray-700">Permite filtrar en los reportes como gasto.</span>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+		<span class="block mt-1 text-gray-700 font-medium fs-11">Proveedor</span>
 		<div class="flex">
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
                     <p:inputText id="inpCriterioProveedor"
 						value="#{adquisicionFrmCtrl.criterioProveedor}" required="false"
-						requiredMessage="REQUERIDO" styleClass="w-full Fs12"
-						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
-						validatorMessage="SOLO NUMEROS"
+						requiredMessage="Requerido" styleClass="w-full fs-12"
+						maxlength="13" placeholder="C.I. o RUC / Enter para buscar"
+						validatorMessage="Solo números"
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
 						<f:validateRegex pattern="^\d+$" />
 					</p:inputText>
@@ -43,51 +55,52 @@
 						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
 						<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaClienteCtrl.adquisicionFrmCtrl}"/>
 						<f:setPropertyActionListener value="ADQUISICION" target="#{listaClienteCtrl.callModule}"/>
-						<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value=":formMain:msgInpCriterioProveedor :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{listaClienteCtrl.viewUpdate}"/>
 						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
 					</p:commandButton>	
                 </div>
 			</div>
 			<div class="flex-none flex align-items-center px-1">
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(adquisicionFrmCtrl.adquisicionSelected.cliente!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.idcliente:null)}" process="@this" styleClass="ml-1 mr-2 text-gray-900">
-					<i class="fa fa-plus Fs16">
+					<i class="fa fa-plus fs-16">
 					</i>
 					<f:setPropertyActionListener value="ADQUISICION" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=" :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
 				</p:commandLink>								
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(adquisicionFrmCtrl.adquisicionSelected.cliente!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
-					<i class="fa fa-edit Fs16">
+					<i class="fa fa-edit fs-16">
 					</i>
 					<f:setPropertyActionListener value="ADQUISICION" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=" :formMain:gridAdProveedor :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{clienteCtrl.adquisicionFrmCtrl}"/>
 				</p:commandLink>	
 			</div>
 		</div>
 		<div class="w-full">
-			<p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="block"/>
+			<p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="block m-0 p-0"/>
 		</div>
 		<p:outputPanel id="gridAdProveedor" styleClass="w-full my-1 flex " style="height:9rem;">
 			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{adquisicionFrmCtrl.adquisicionSelected.cliente==null}"/>
 			<f:subview rendered="#{adquisicionFrmCtrl.adquisicionSelected.cliente!=null}">
 				<div class="flex align-self-center">
-					<div class="flex flex-column">
-						<span class="Fs16 font-bold text-blue-600 mb-1 block">
+					<div class="flex flex-column text-gray-900">
+						<span class="fs-14 font-medium text-primary-600 mb-1 block">
 							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.razonsocial!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.razonsocial:'-'}" />
 						</span>
-						<span class="Fs12 font-bold text-gray-600 mb-1 block">
+						<span class="fs-12 font-medium mb-1 block">
 							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.identificacion!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.identificacion:'-'}" />
 						</span>
-						<span class="Fs11 mb-1 block">
+						<span class="fs-11 mb-1 block">
+							<i class="fa fa-location-dot mr-1"></i>
 							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.direccion!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.direccion:'-'}" />
 						</span>
-						<span class="Fs11 mb-1 block">
+						<span class="fs-11 mb-1 block">
 							<i class="pi pi-phone mr-1"></i>
 							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.telefono!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.telefono:'-'}" />
 						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="fa fa-envelope-o mr-1 Fs11"></i>
+						<span class="fs-11 mb-1 block">
+							<i class="fa-regular fa-envelope mr-1 fs-11"></i>
 							<h:outputText value="#{adquisicionFrmCtrl.adquisicionSelected.cliente.correoelectronico!=null?adquisicionFrmCtrl.adquisicionSelected.cliente.correoelectronico:'-'}" />
 						</span>
 						
@@ -95,9 +108,9 @@
 				</div>
 			</f:subview>
 		</p:outputPanel>
-		<div class="formgrid grid">
+		<div class="formgrid grid ui-fluid">
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Tipo de Comprobante</label>
+	            <label for="somAdqTipComprobante" class="text-gray-900">Tipo de Comprobante</label>
 	            <p:selectOneMenu id="somAdqTipComprobante"
 							value="#{adquisicionFrmCtrl.adquisicionSelected.tipocomprobante}"
 							converter="omnifaces.SelectItemsConverter"
@@ -112,19 +125,19 @@
 						itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
 						
 				</p:selectOneMenu>
-				<p:message for="somAdqTipComprobante" styleClass="block"/>
+				<!-- <p:message for="somAdqTipComprobante" styleClass="block p-o m-0"/> -->
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="claAdqFechaCompra" class="text-gray-700 font-medium Fs11">Fecha de Emisión</label>
+	            <label for="claAdqFechaCompra" class="text-gray-700 font-medium fs-11">Fecha de Emisión</label>
 	            <p:calendar id="claAdqFechaCompra" value="#{adquisicionFrmCtrl.adquisicionSelected.fecha}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
 					requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
 				</p:calendar>
-				<p:message for="claAdqFechaCompra" styleClass="block"/>
+				<!-- <p:message for="claAdqFechaCompra" styleClass="block m-0 p-0"/> -->
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="inpAdqNumFac" class="text-gray-700 font-medium Fs11">Número de Comprobante</label>
+	            <label for="inpAdqNumFac" class="text-gray-700 font-medium fs-11">Número de Comprobante</label>
 	            <p:inputMask id="inpAdqNumFac"
 					value="#{adquisicionFrmCtrl.adquisicionSelected.numfactura}"
 					mask="999-999-999999999" required="true"
@@ -133,43 +146,30 @@
 					placeholder="FORMATO : 999-999-999999999" >
 					<f:converter converterId="formatoNumComprobanteConverter"/>
 				</p:inputMask>
-				<p:message for="inpAdqNumFac" styleClass="block"/> 	
+				<!-- <p:message for="inpAdqNumFac" styleClass="block m-0 p-0"/> --> 	
             </div>
             <div class="field col-12 md:col-6">
-	            <label for="inpAdqNumAut" class="text-gray-700 font-medium Fs11">Número de Autorización</label>
+	            <label for="inpAdqNumAut" class="text-gray-700 font-medium fs-11">Número de Autorización</label>
 	            <p:inputText id="inpAdqNumAut" value="#{adquisicionFrmCtrl.adquisicionSelected.autorizacion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="150" placeholder="Formato: 1123411234600" validatorMessage="SOLO NUMEROS">
 					<f:validateRegex pattern="^\d+$"/>
 				</p:inputText>
-				<p:message for="inpAdqNumAut" styleClass="block"/>
+				<!-- <p:message for="inpAdqNumAut" styleClass="block m-0 p-0"/> -->
 	        </div>
-	        <div class="field col-12">
-	        	<div class="flex flex-inline">
-	        		<div class="flex-none flex alig-self-center" style="padding: 0px 15px;">
-	        			<p:selectBooleanCheckbox value="#{adquisicionFrmCtrl.adquisicionSelected.esGastoBol}"/>
-	        		</div>
-	        		<div class="flex-grow-1 flex pl-2 border-left-2 border-gray-400">
-	        			<div class="flex flex-column">
-	        				<span class="text-gray-700 font-medium Fs11 py-1">REGISTRAR COMO GASTO</span>
-	        				<span class="Fs10 text-gray-800">Permite filtarr en los reportes como gasto.</span>
-	        			</div>
-	        		</div>
-	        	</div>
-	        </div>
+	        
 	    </div>
 	    
-	    <div class="w-full py-1">
-		    <span class="Fs10 text-gray-600 font-bold mr-1">VALOR</span>
-		    <span class="Fs14 font-bold text-blue-600 mr-1">A PAGAR</span>
+	    <div class="w-full divisor-full">
+		    <span class="fs-14 font-bold text-gray-800 mr-1">Registrar retención</span>
 	    </div>
-	    <p:remoteCommand name="calcularretencionRenta" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta" action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}"/>
-	 	<p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva" action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}"/>
-	    <div class="formgrid grid mt-1">
+	    <p:remoteCommand name="calcularretencionRenta" update=" :formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta" action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}"/>
+	 	<p:remoteCommand name="calcularretencionIva" update=":formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva" action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}"/>
+	    <div class="formgrid grid mt-2">
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Retención Renta</label>	        	
-        		<div class="flex w-full">
-        			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">        				
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium fs-11">Retención Renta</label>	        	
+        		<div class="flex align-items-end">
+        			<div class="flex-none flex " style="padding: 0px 10px;">        				
         				<p:commandLink id="cmlCalValorRenta" title="Calcular">
-							<i class="fa fa-calculator text-gray-900"/>
+							<i class="fa fa-calculator text-gray-900 fs-16"/>
 						</p:commandLink>
 						<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade" id="ovlAdCalValorRenta">
 							<div class="flex">
@@ -179,8 +179,9 @@
 				                	</p:inputNumber>
 								</div>
 								<div class="flex-none flex px-1 align-self-center">
-									<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta">
-									<i class="fa fa-check-circle Fs16 text-green-600 font-semibold"></i>
+									<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}" update=" :formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta">
+									<i class="fa fa-check-circle fs-16 text-green-600 font-semibold"></i>
+									<span class="text-gray-900">Calcular</span>
 								</p:commandLink>  
 								</div>
 							</div>							  
@@ -189,21 +190,21 @@
         			</div>
         			<div class="flex-grow-1 flex pr-1">
         				<p:inputText value="#{adquisicionFrmCtrl.adquisicionSelected.valorretenidorenta}" styleClass="w-full" id="intRetRenta" converterMessage="SOLO NÚMEROS">
-        					<p:ajax listener="#{adquisicionFrmCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+        					<p:ajax listener="#{adquisicionFrmCtrl.totalizarRetencion()}" update=" :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
         				</p:inputText>
         				
         			</div>        			
         		</div>
 	        </div>
 	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Retención I.V.A.</label>
+	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium fs-11">Retención I.V.A.</label>
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">
         				<p:commandLink id="cmlCalValorIva" title="Calcular">
-							<i class="fa fa-calculator text-gray-900" />
+							<i class="fa fa-calculator text-gray-900 fs-16"/>
 						</p:commandLink>
 						<p:overlayPanel for="cmlCalValorIva" hideEffect="fade" id="ovlAdCalValorIva">
-							<div class="flex">
+							<div class="flex gap-1">
 								<div class="flex-grow-1 flex">									
 									<p:inputNumber symbol="%" value="#{adquisicionFrmCtrl.porcentajeIva}" id="intRetIvaPorcentaje"
 			                                symbolPosition="s" emptyValue="always" onkeydown="if(event.keyCode==13){calcularretencionIva();return false;}">  
@@ -211,8 +212,11 @@
 						                
 								</div>
 								<div class="flex-none flex px-1 align-self-center">
-									<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva">
-										<i class="fa fa-check-circle Fs16 text-green-600 font-semibold"></i>
+									<p:commandLink action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}" 
+										update=" :formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva"
+										styleClass="flex gap-2 align-items-baseline">
+										<i class="fa fa-check-circle fs-16 text-green-600 font-semibold"></i>
+										<span class="text-gray-900">Calcular</span>
 									</p:commandLink>  
 								</div>
 							</div>
@@ -221,47 +225,40 @@
         			</div>
         			<div class="flex-grow-1 flex pr-1">
         				<p:inputText value="#{adquisicionFrmCtrl.adquisicionSelected.valorretenidoiva}" styleClass="w-full" id="intRetIva" converterMessage="SOLO NÚMEROS">
-        					<p:ajax listener="#{adquisicionFrmCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+        					<p:ajax listener="#{adquisicionFrmCtrl.totalizarRetencion()}" update=":formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
         				</p:inputText>	        				
         			</div>
         			
         		</div>
 	        </div>
 	    </div>
-	    
-	    <p:outputPanel id="oupPagoDT" styleClass="w-full">
+	    <div class="w-full divisor-full">
+		    <span class="fs-14 font-bold text-gray-800 mr-1">Valor a pagar</span>
+	    </div>
+	    <p:outputPanel id="oupPagoDT" styleClass="w-full mt-3">
 		    <div class="grid">
 		    	<div class="col-6">
-		    		<div class="flex justify-content-center">
-			    		<div class="flex flex-column">
-			    			<div class="py-2">
-			    				<h:outputText  styleClass="Fs18" value="#{adquisicionFrmCtrl.adquisicionSelected.totalretencion}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-			    			</div>
-			    			<div class="py-1">
-			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs14 text-gray-700 font-bold">RETENCIÓN</span>
-			    			</div>
-			    		</div>
+		    		<div class="flex flex-column gap-1 align-items-center justify-content-center h-full">
+	    				<h:outputText  styleClass="fs-18" value="#{adquisicionFrmCtrl.adquisicionSelected.totalretencion}">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+						<div class="flex gap-1 align-items-baseline">
+		    				<span class="fs-10 text-gray-900">Total</span>
+		    				<span class="fs-14 text-gray-900 font-medium">Retención</span>
+						</div>
 		    		</div>
 		    	</div>
 		    	<div class="col-6">
-		    		<div class="flex justify-content-center">
-			    		<div class="flex flex-column">
-			    			<div class="py-2">
-			    				<h:outputText  styleClass="font-bold Fs18" value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-			    			</div>
-			    			<div class="py-1">
-			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs14 text-blue-600 font-bold">A PAGAR</span>
-			    			</div>
-			    		</div>
-			    	</div>
+		    		<div class="flex flex-column gap-1 align-items-center justify-content-center h-full">
+	    				<h:outputText  styleClass="fs-18 text-primary-600 font-medium" value="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar}">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+						<div class="flex gap-1 align-items-baseline">
+		    				<span class="fs-10 text-gray-900">Total</span>
+		    				<span class="fs-14 text-primary-600 font-medium">a Pagar</span>
+						</div>
+		    		</div>
 		    	</div>
-		    <div class="EmptyBox20"/>
 		    	<div class="col-6">
 	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null}">
 	    				
@@ -272,37 +269,31 @@
 	    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
 	    				<f:setPropertyActionListener value=":formMain:oupPagoDT" target="#{pagoCompCtrl.updateView}"/>
 	    				
-			    		<div class="flex align-items-stretch #{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
+			    		<div class="flex align-items-stretch #{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-green-500 text-white border-round" style="height: 100%;">
 			    			<div class="flex align-items-center justify-content-center w-full">
-				    				<div class="flex flex-inline">
-				    					<div class="flex mr-2">
-				    						<i class="fa fa-chevron-circle-right Fs50 text-white"></i>
-				    					</div>
-				    					<div class="flex align-items-center">
-				    						<span class="Fs14 text-white">Pagar</span>
-				    					</div>
+				    				<div class="flex flex-inline gap-2 align-items-center">
+				    					<i class="fa-solid fa-money-check-dollar fs-35"></i>
+			    						<span class="fs-16 text-white font-medium">Pagar</span>
 				    				</div>
 			    			</div>
 			    		</div>
 	    			</p:commandLink>
 		    	</div>
 		    	<div class="col-6">
-		    		<div class="flex justify-content-center">
-			    		<div class="flex flex-column">
-			    			<div class="py-2">
-			    				<h:outputText value="#{adquisicionFrmCtrl.totalPago}" styleClass="font-bold Fs18">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-			    			</div>
-			    			<div class="py-1">
-			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs16 text-green-600 font-bold">PAGO</span>
-			    			</div>	    			
-			    		</div>
-			    	</div>
+		    		
+		    		<div class="flex flex-column gap-1 align-items-center justify-content-center h-full">
+	    				<h:outputText  styleClass="fs-18 text-green-700 font-medium" value="#{adquisicionFrmCtrl.totalPago}">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+						<div class="flex gap-1 align-items-baseline">
+		    				<span class="fs-10 text-gray-900">Total</span>
+		    				<span class="fs-14 text-green-700 font-medium">Pago</span>
+						</div>
+		    		</div>
+		    		
 		    	</div>
 		    </div>
-		    <div class="EmptyBox20"/>
+		    
 	    </p:outputPanel>
 	    		
 	</div>
