@@ -66,8 +66,9 @@
 								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
 								<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
 								<f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{listaProductoCtrl.adquisicionFrmCtrl}"/>
-								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/> 
+								<f:setPropertyActionListener value="#{adquisicionFrmCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
 								<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
+								<f:setPropertyActionListener value="#{false}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected.flagCalcularDetForm}"/> 
 							</p:commandLink>
 							
 							<p:commandLink id="clkAdqDelete" 
@@ -87,8 +88,8 @@
             				
             				<div class="flex justify-content-evenly w-full">
             					<div class="min-width-85 mr-1 align-self-center">
-            						<div class="flex w-full">
-	            						<div class="flex flex-column" style="margin-right: 15px;">
+            						<div class="flex w-full gap-2">
+	            						<div class="flex flex-column">
 	            							<span style="color:black;" class="font-light">Cantidad</span>
 	            							<p:inputNumber id="innCantDt" value="#{d.cantidad}"
 			                            	    symbolPosition="s" emptyValue="zero" decimalPlaces="0" 
@@ -109,17 +110,24 @@
 	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 	                                		</p:inputNumber>
 	            						</div>
+	            						<div class="hidden md:flex flex-column">
+	            							<span style="color:black;" class="font-light">Descuento</span>
+	            							<p:inputNumber id="innPuDesct" value="#{d.descuento}" symbol="$"
+	                                			symbolPosition="p" emptyValue="zero" decimalPlaces="2" inputStyleClass="fs-12 p-1">
+	                                			<p:ajax listener="#{adquisicionFrmCtrl.calcularAdquicisioDetalleProductoAction(d,true)}"  update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
+	                                		</p:inputNumber>
+	            						</div>
             						</div>
             					</div>
             					
-            					<div class="min-width-80 hidden md:block">
-            						<div class="flex flex-column align-items-end">
-			           					<div class="flex gap-1 align-items-end">
+            					<div class="min-width-80 hidden md:block ">
+            						<div class="flex flex-column justify-content-center align-items-end h-full">
+			           					<!-- <div class="flex gap-1 align-items-end">
 			           						<h:outputText value="#{d.descuento}" styleClass="fs-11 text-gray-900">
 												<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 											</h:outputText>
 			           						<span class="fs-9 text-gray-600">Desto</span>
-			           					</div>
+			           					</div> -->
 			           					<div class="flex gap-1 align-items-end">
 			           						<h:outputText value="#{d.valorice}" styleClass="fs-11 text-gray-900">
 												<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>

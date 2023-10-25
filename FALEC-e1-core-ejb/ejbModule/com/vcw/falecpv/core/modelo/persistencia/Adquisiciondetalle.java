@@ -125,6 +125,9 @@ public class Adquisiciondetalle implements Serializable {
     @Transient
     private String accion;
     
+    @Transient
+    private boolean flagCalcularDetForm = false;
+    
 	/**
 	 * 
 	 */
@@ -419,6 +422,20 @@ public class Adquisiciondetalle implements Serializable {
 	 */
 	public void setAccion(String accion) {
 		this.accion = accion;
+	}
+
+	/**
+	 * @return the flagCalcularDetForm
+	 */
+	public boolean isFlagCalcularDetForm() {
+		return flagCalcularDetForm;
+	}
+
+	/**
+	 * @param flagCalcularDetForm the flagCalcularDetForm to set
+	 */
+	public void setFlagCalcularDetForm(boolean flagCalcularDetForm) {
+		this.flagCalcularDetForm = flagCalcularDetForm;
 	}
 
 }

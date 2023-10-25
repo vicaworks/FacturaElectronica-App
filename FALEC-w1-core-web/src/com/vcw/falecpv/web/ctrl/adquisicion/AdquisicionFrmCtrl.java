@@ -261,11 +261,19 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	
 	private void calcularAdquicisioDetalleProducto(Adquisiciondetalle a,boolean calcDescuento) {
 		a.setPreciototalsinimpuesto(a.getCantidad().multiply(a.getPreciounitario()));
-		if(a.getPorcentajeDescuento()!=null && a.getPorcentajeDescuento().doubleValue()>0.0d && calcDescuento) {
+		if(!a.isFlagCalcularDetForm() && 
+				a.getPorcentajeDescuento()!=null && 
+				a.getPorcentajeDescuento().doubleValue()>0.0d && 
+				calcDescuento) {
+			
 			a.setDescuento(a.getPreciototalsinimpuesto().multiply(a.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP));
+			
 		}else {
+			
 			a.setPorcentajeDescuento(BigDecimal.ZERO);
+			
 		}
+		
 		a.setPreciototalsinimpuesto(a.getPreciototalsinimpuesto().add(a.getDescuento().negate()).setScale(2, RoundingMode.HALF_UP));
 		a.setPrecioUntarioCalculado(a.getPreciounitario());
 		// ice
@@ -278,6 +286,7 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 	
 	public void calcularAdquicisioDetalleProductoAction(Adquisiciondetalle a,boolean calcDescuento) {
 		try {
+			a.setFlagCalcularDetForm(true);
 			calcularAdquicisioDetalleProducto(a,calcDescuento);
 			limpiarTotales();
 			totalizarCompra();
