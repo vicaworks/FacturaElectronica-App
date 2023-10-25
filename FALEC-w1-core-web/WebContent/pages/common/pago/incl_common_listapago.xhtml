@@ -10,10 +10,10 @@
 	<style type="text/css">
 		
 		.heightFrmListPago {			
-			height: 430px;
+			/* height: 430px; */
 		}		
 		
-		.tipoPagoDT .ui-datascroller .ui-datascroller-content {height: 190px!important;}
+		.tipoPagoDT .ui-datascroller .ui-datascroller-content {max-height: 190px!important;min-height: 80px!important;}
 		
 		.tp_seleccion {
 			background-color: #E3F2FD85;
@@ -141,7 +141,7 @@
 					</div> -->
 					
 					<div class="col-12 tipoPagoDT">
-						<div class="w-full overflow-auto p-0 mainPagoDT" style="max-height:230px; min-height: 190px;">
+						<div class="w-full overflow-auto p-0 mainPagoDT" style="max-height:230px; min-height: 80px;">
 							 
 							<p:repeat var="p" value="#{pagoCompCtrl.pagoList}">								
 								<!-- efectivo -->
