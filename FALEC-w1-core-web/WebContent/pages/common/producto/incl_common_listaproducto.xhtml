@@ -17,10 +17,26 @@
 			background-color: #E3F2FD85;
 		}
 		
+		.product-image-busqueda {
+			max-width: 7rem;
+			max-height: 7rem;
+			object-fit: cover;
+			object-position: center top;
+			margin: .3rem;
+		}
+		
 	</style>	
 	
 	
-	<p:dialog header="Productos" widgetVar="dlgListaProducto" modal="true" responsive="true" width="600px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog 
+		header="Productos" 
+		widgetVar="dlgListaProducto" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:60rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmListProducto">
 			<!-- <p:focus for=":frmListProducto:intListProBusqueda"/> -->			
@@ -28,7 +44,7 @@
 			
 			<div class="flex mb-1">
 				<div class="flex-none flex min-width-70">
-					<p:selectOneMenu id="somLPTipoRegistro" styleClass="w-full" tabindex="2" value="#{listaProductoCtrl.tipoRegistro}">
+					<p:selectOneMenu id="somLPTipoRegistro" styleClass="w-full"   tabindex="2" value="#{listaProductoCtrl.tipoRegistro}">
 						<f:selectItem itemLabel="Producto" itemValue="1"/>
 						<f:selectItem itemLabel="Otro Concepto" itemValue="2"/>
 						<p:ajax event="change" update="@form" listener="#{listaProductoCtrl.cambioTipoRegistro()}" process="@this :frmListProducto:somLPTipoRegistro"/>
@@ -52,7 +68,7 @@
 			
 			<p:tabView activeIndex="#{listaProductoCtrl.tabIndex}" id="tvPLmain">
 				<p:ajax event="tabChange" listener="#{listaProductoCtrl.onTabChange}"/>
-            	<p:tab title="Selección" id="tabLP_0">
+            	<p:tab title="Selección" id="tabLP_0" titleStyleClass="fs-14">
             	
             		<f:subview rendered="#{listaProductoCtrl.callModule=='ADQUISICION'}" id="fsvAdquisicion">
             			<ui:include src="../../common/producto/incl_common_listaproducto_formcompra.xhtml" />
@@ -70,10 +86,10 @@
             			<ui:include src="../../common/producto/incl_common_listaproducto_formcotizacion.xhtml" />
             		</f:subview>
             	</p:tab>
-            	<p:tab title="Busqueda" id="tabLP_1">
+            	<p:tab title="Búsqueda" id="tabLP_1" titleStyleClass="fs-14">
             		<p:outputPanel id="opuPLLista" styleClass="w-full">
-	           			<div class="flex flex-row">
-	           				<div class="flex-grow-1 flex flex-column pr-1">
+	           			<div class="flex flex-row gap-2">
+	           				<div class="flex-grow-1">
 	           					<p:selectOneMenu id="somPLProductoCategoria"
 									value="#{listaProductoCtrl.categoriaSelected}"
 									converter="omnifaces.SelectItemsConverter"
@@ -99,36 +115,59 @@
 	            			<div class="flex mt-1" style="width:99.5%!important;">
 	      						
 	      						<f:subview rendered="#{empty listaProductoCtrl.productoList}">
-	      							<span class="py-2 text-pink-500 text-semibold block w-full">NO EXISTEN PRODUCTOS</span>
+	      							<span class="py-2 text-gray-900 font-semibold block w-full">No existen productos</span>
 	      						</f:subview>
 	      						
 	      						<div class="grid w-full">
 		      						<p:repeat var="lp" value="#{listaProductoCtrl.productoList}">
 		      							<div class="col-12 mx-1 border-bottom-2 border-blue-100 highlight-producto">
-			      							<p:commandLink action="#{listaProductoCtrl.seleccionarProducto()}" styleClass="px-1 w-full" process="@this" update="@form">
-			      								<div class="flex w-full">
-			      									<div class="flex-grow-1 flex flex-column pr-1">
-			      										<span class="Fs12 font-medium" style="color:black;">#{lp.nombre}</span>
-			      										<div>
-				      										<span class="Fs9 mr-1 text-gray-500 fa fa-barcode"/>
-				      										<span class="Fs10 mr-1 text-gray-800">#{lp.codigoprincipal}</span>
-			      										</div>
-			      										<div>
-				      										<span class="Fs9 mr-1 text-gray-500">TIPO VENTA</span>
-				      										<span class="Fs10 mr-1 text-gray-800">#{lp.tipoventa==1?'UNIDAD':lp.tipoventa==2?'A GRANEL':'KIT'}</span>
-			      										</div>
-			      									</div>
-			      									<div class="flex-grow-0 flex min-width-60 flex-column text-right pr-3">
-			      										<span class="Fs10" style="color:black;">STOCK</span>
-			      										<span class="Fs14 text-blue-600 font-bold">
-			      											<h:outputText value="#{lp.stock}" >
-			      												<f:convertNumber pattern="#{lp.tipoventa==2?appSessionCtrl.formatoNumber:appSessionCtrl.formatoInteger}"/>
-			      											</h:outputText>
-			      										</span>
-			      									</div>
-			      								</div>
-			      								<f:setPropertyActionListener value="#{lp}" target="#{listaProductoCtrl.productoSelected}"/>
-			      							</p:commandLink>	
+		      								<div class="flex gap-2">
+		      									<div class="flex-0 text-center" style="min-width:7rem;">
+		      										<p:outputPanel rendered="#{lp.imagen==null}">
+														<i class="fa fa-5x fa-image opacity-40 text-center" style="width: 7rem;height:7rem;"></i>
+													</p:outputPanel>
+													
+													<p:outputPanel rendered="#{lp.imagen!=null}">
+			      										<p:commandLink id="imageProduct">
+				      										<p:graphicImage value="#{productoCtrl.getImageToStream(lp.imagen)}" 
+																stream="false" 
+																styleClass="product-image-busqueda"/>
+			      										</p:commandLink>
+			      										<p:overlayPanel for="imageProduct" showCloseIcon="true" >
+												            <p:imageSwitch effect="fade">
+											                    <p:graphicImage value="#{productoCtrl.getImageToStream(lp.imagen)}" stream="false"/>
+												            </p:imageSwitch>
+												        </p:overlayPanel>
+													</p:outputPanel>
+		      									</div>
+				      							<p:commandLink action="#{listaProductoCtrl.seleccionarProducto()}" 
+				      								styleClass="px-1 flex-1" 
+				      								process="@this" 
+				      								update="@form">
+				      								<div class="flex w-full">
+				      									<div class="flex-grow-1 flex flex-column pr-1">
+				      										<span class="fs-12 font-medium" style="color:black;">#{lp.nombre}</span>
+				      										<div>
+					      										<span class="fs-10 mr-1 text-gray-700 fa fa-barcode"/>
+					      										<span class="fs-10 mr-1 text-gray-900">#{lp.codigoprincipal}</span>
+				      										</div>
+				      										<div>
+					      										<span class="fs-9 mr-1 text-gray-700">Tipo de venta</span>
+					      										<span class="fs-10 mr-1 text-gray-900">#{lp.tipoventa==1?'UNIDAD':lp.tipoventa==2?'A GRANEL':'KIT'}</span>
+				      										</div>
+				      									</div>
+				      									<div class="flex-grow-0 flex min-width-60 flex-column text-right pr-3">
+				      										<span class="fs-10" style="color:black;">Stock</span>
+				      										<span class="fs-14 text-blue-600 font-medium">
+				      											<h:outputText value="#{lp.stock}" >
+				      												<f:convertNumber pattern="#{lp.tipoventa==2?appSessionCtrl.formatoNumber:appSessionCtrl.formatoInteger}"/>
+				      											</h:outputText>
+				      										</span>
+				      									</div>
+				      								</div>
+				      								<f:setPropertyActionListener value="#{lp}" target="#{listaProductoCtrl.productoSelected}"/>
+				      							</p:commandLink>
+		      								</div>
 		      							</div>
 		      						</p:repeat>
 	      						</div>

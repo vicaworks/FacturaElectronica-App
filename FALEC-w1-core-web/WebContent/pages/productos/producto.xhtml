@@ -77,8 +77,7 @@
 			                <p:selectOneMenu id="somEstablecimientoMain"
 								value="#{productoCtrl.establecimientoMain}"
 								converter="omnifaces.SelectItemsConverter"
-								styleClass=""
-								style="text-overflow: hidden!important;max-width:200px!important;"
+								style="text-overflow: hidden!important;max-width:200px!important;min-width:200px!important"
 								disabled="#{not productoCtrl.habilitarEstablecimientoMain}">
 								
 								<f:selectItems value="#{productoCtrl.establecimientoMainList}" var="st"
@@ -293,13 +292,6 @@
 								</h:outputText>
 								<h:outputText value="pv-3" styleClass="fs-10"/>
 							</div>
-							<!-- <div class="flex justify-content-end">
-								<h:outputText value="C.U." styleClass="Fs8 mr-1"/>
-								<h:outputText value="#{p.preciounitario}" styleClass="costo-unitario Fs11">
-									<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-								
-							</div> -->
 						</div>	
 					</p:column>
 					<p:column headerText="Imagen" style="width:8rem;" >

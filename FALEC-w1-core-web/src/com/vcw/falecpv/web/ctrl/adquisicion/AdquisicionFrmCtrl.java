@@ -36,6 +36,7 @@ import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.PagoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -104,7 +105,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			consultarTipoComprobante();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -119,7 +123,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -129,7 +136,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			nuevaAdquisicion();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -144,7 +154,9 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 						adquisicionSelected.getEstablecimiento().getIdestablecimiento(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 				
@@ -152,26 +164,34 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 			// sino existe proveedor
 			if(adquisicionSelected.getCliente()==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE PROVEEDOR.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe Proveedor", 
+						Message.ERROR);
 				return;
 			}
 			
 			// si ya existe la factura del mismo proveedor
 			
 			if (adquisicionServicio.getAdquisicionDao().existeFacturaProveedor(establecimientoMain.getIdestablecimiento(), adquisicionSelected.getCliente().getIdcliente(), adquisicionSelected.getIdadquisicion(), adquisicionSelected.getNumfactura())) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "YA EXISTE LA FACTURA :" + adquisicionSelected.getNumfactura() + " DEL PROVEEDOR : " + adquisicionSelected.getCliente().getRazonsocial());
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"YA EXISTE LA FACTURA :" + adquisicionSelected.getNumfactura() + " DEL PROVEEDOR : " + adquisicionSelected.getCliente().getRazonsocial(), 
+						Message.ERROR);
 				return;
 			}
 			
 			// sino existe detale
 			if(adquisiciondetalleList==null || adquisiciondetalleList.size()==0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, NO EXISTE DETALLE DE COMPRA");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"NO SE PUEDE GUARDAR, NO EXISTE DETALLE DE COMPRA", 
+						Message.ERROR);
 				return;
 			}
 			
 			// validar el valor
 			if(totalPago.doubleValue()<adquisicionSelected.getTotalpagar().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR A PAGAR.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"VALOR DE PAGO MENOR AL VALOR A PAGAR.", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -187,11 +207,16 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			AdquisicionMainCtrl adquisicionMainCtrl = (AdquisicionMainCtrl) AppJsfUtil.getManagedBean("adquisicionMainCtrl");
 			adquisicionMainCtrl.consultarAdquisiciones();
 			
-			messageCtrl.cargarMenssage("OK", "COMPRA REGISTRADA CORRECTAMENTE.", "OK");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"COMPRA REGISTRADA CORRECTAMENTE.", 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}	
 	
@@ -292,7 +317,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			totalizarCompra();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -322,7 +350,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			limpiarTotales();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -384,7 +415,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			//AppJsfUtil.executeJavaScript("PrimeFaces.focus('formMain:adquisicionDetDT:0:intDetNombreProducto');");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -406,12 +440,16 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			adquisiciondetalleSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			adquisiciondetalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa()));			
 			if(adquisiciondetalleSelected.getIva()==null) {
-				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO", 
+						Message.ERROR);
 				return;
 			}			
 			adquisiciondetalleSelected.setIce(iceList.stream().filter(x->x.getValor().doubleValue()==0d).findFirst().orElse(null));
 			if(adquisiciondetalleSelected.getIce()==null) {
-				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0.", 
+						Message.ERROR);
 				return;
 			}			
 			adquisiciondetalleSelected.setProducto(null);
@@ -420,7 +458,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -430,12 +471,16 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			if(adquisicionSelected!=null && adquisicionSelected.getIdadquisicion()!=null) {
 				Adquisicion a = adquisicionServicio.consultarByPk(adquisicionSelected.getIdadquisicion());
 				if(a.getEstado().equals("ANU")) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR LA COMPRA, ESTA EN ESTADO ANULADO.");
+					getMessageCommonCtrl().crearMensaje("Error", 
+							"NO SE PUEDE ELIMINAR LA COMPRA, ESTA EN ESTADO ANULADO.", 
+							Message.ERROR);
 					return;
 				}
 				
 				if(a.getEstado().equals("ENV") || a.getEstado().equals("RETENCION")) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE ELIMINAR LA COMPRA, TIENE RETENCION.");
+					getMessageCommonCtrl().crearMensaje("Error", 
+							"NO SE PUEDE ELIMINAR LA COMPRA, TIENE RETENCION.", 
+							Message.ERROR);
 					return;
 				}
 			}
@@ -457,7 +502,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -475,7 +523,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -504,7 +555,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			pagoList = null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -541,7 +595,10 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -569,14 +626,6 @@ public class AdquisicionFrmCtrl extends BaseCtrl {
 		}
 		
 	}
-	
-//	public void establecerFocoDetalle() {
-//		try {
-//			adquisiciondetalleSelected = adquisiciondetalleList.stream().filter(x->x.getIdadquisiciondetalle().equals(FacesUtils.getParameter("idDetalle"))).findFirst().orElse(null);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 	
 	/**
 	 * @return the adquisicionSelected
