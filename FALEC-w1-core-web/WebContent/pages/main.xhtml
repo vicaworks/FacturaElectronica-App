@@ -44,15 +44,15 @@
 							
 					</p:selectOneMenu>
 	    			<p:commandLink action="#{mainCtrl.buscar}"
-	    				styleClass="flex align-items-baseline text-gray-800" 
+	    				styleClass="flex align-items-baseline text-gray-900" 
 	    				style="gap:.4rem"
 	    				update="@all">
-	    				<i class="fa-solid fa-arrow-rotate-right fs-15"></i>
-	    				<span class="font-semibold">Refrescar</span>
+	    				<i class="fa-solid fa-arrow-rotate-right fs-15 text-primary-600"></i>
+	    				<span class="fs-12 text-primary-600">Refrescar</span>
 	    			</p:commandLink>
 	    		</h:form>
 		        <div class="panel__grid contenedor">
-		            <div class="card-forma-1">
+		            <div class="card-forma-1" style="background-color: white;">
 		                <h3 class="card-forma-1__heading-1">Inicie con Mako <i class="fa-solid fa-screwdriver-wrench"></i> </h3>
 		                <h4 class="card-forma-1__heading-2">Configura el sistema para emitir comprobantes electrónicos.</h4>
 		                <nav class="card-forma-1__accesos">
@@ -70,7 +70,7 @@
 		                    </a>
 		                </nav>
 		            </div>
-		            <div class="card-forma-1">
+		            <div class="card-forma-1" style="background-color: white;">
 		                <h3 class="card-forma-1__heading-1">Reportes <i class="fa-solid fa-file-waveform"></i> </h3>
 		                <h4 class="card-forma-1__heading-2">Toda la información de tu negocio, en reportes consolidados..</h4>
 		                <nav class="card-forma-1__accesos">
@@ -92,89 +92,107 @@
 		    </header>
 		
 		    <section class="resumen-valor contenedor">
-		        <div class="card-format-2 card-format-2-bg-blue">
-		            <h2 class="card-format-2__header">Total de ventas</h2>
-		            <div class="card-format-2__contenido">
-		                <span class="card-format-2__valor card-format-2__valor-blue">
-		                	<h:outputText value="#{mainCtrl.totalVentas.totalconimpuestos == null ? 0 : mainCtrl.totalVentas.totalconimpuestos}">
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-		                </span>
-		                <span class="card-format-2__descripcion card-format-2__descripcion-blue">Ventas al día de hoy</span>
+		        <div class="card-format-3">
+		            <div class="card-format-3__aside-contenido">
+		                <div class="card-format-3__header-grid">
+		                    <h2 class="card-format-3__header">Total de ventas</h2>
+		                    <div class="card-format-3__header-subtitulo">
+		                        <i class="fa-solid fa-calendar-days"></i>
+		                        <span class="card-format-3__footer-heading">
+		                        	<h:outputText value="#{mainCtrl.fechaActual}" >
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+		                        </span>
+		                    </div>
+		                </div>
+		                <div class="card-format-3__contenido">
+		                    <span class="card-format-3__contenido-valor ">
+		                    	<h:outputText value="#{mainCtrl.totalVentas.totalconimpuestos == null ? 0 : mainCtrl.totalVentas.totalconimpuestos}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+		                    </span>
+		                    <span class="card-format-3__contenido-descripcion ">Ventas al día de hoy</span>
+		                </div>
+		
 		            </div>
-		            <div class="card-format-2__footer card-format-2__footer-blue">
-		                <i class="fa-solid fa-calendar-days"></i>
-		                <span class="card-format-2__footer-heading">
-		                	<h:outputText value="#{mainCtrl.fechaActual}" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>
-		                </span>
+		            <div class="card-format-3__aside-icono">
+		                <i class="fa-solid fa-cash-register text-primary-600 font-semibold"></i>
 		            </div>
 		        </div>
-		        <div class="card-format-2 card-format-2-bg-gray">
-		            <h2 class="card-format-2__header-black">Forma de pago</h2>
-		            <div class="card-format-2__contenido-grid">
-		                <div class="card-format-2__campo">
-		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
-		                        <h:outputText value="#{mainCtrl.pagoEfectivo}">
+		
+		
+		        <div class="card-format-4">
+		            <div class="box-f1">
+		                <div class="box-f1__grid ">
+		                    <div class="box-f1__valor text-primary-600">
+		                    	<h:outputText value="#{mainCtrl.pagoEfectivo}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
-		                    </span>
-		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Efectivo</span>
+		                    </div>
+		                    <div class="box-f1__resumen">Efectivo</div>
 		                </div>
-		                <div class="card-format-2__campo">
-		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
-		                        <h:outputText value="#{mainCtrl.pagoTransferencia}">
+		            </div>
+		            <div class="box-f1">
+		                <div class="box-f1__grid box-divisor__leftbottom">
+		                    <div class="box-f1__valor">
+		                    	<h:outputText value="#{mainCtrl.pagoTransferencia}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
-		                    </span>
-		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Transferencia</span>
+		                    </div>
+		                    <div class="box-f1__resumen">Transferencias</div>
 		                </div>
-		                <div class="card-format-2__campo">
-		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
+		            </div>
+		            <div class="box-f1">
+		                <div class="box-f1__grid box-divisor__rightbottom">
+		                    <div class="box-f1__valor">
 		                    	<h:outputText value="#{mainCtrl.pagoTarjetas}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
-		                    </span>
-		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Tarjetas</span>
+		                    </div>
+		                    <div class="box-f1__resumen">Tarjetas</div>
 		                </div>
-		                <div class="card-format-2__campo">
-		                    <span class="card-format-2__valor card-format-2__valor--campo text-gray-900">
-		                    	<h:outputText value="#{mainCtrl.pagoCredito}">
+		            </div>
+		            <div class="box-f1">
+		                <div class="box-f1__grid">
+		                    <div class="box-f1__valor text-pink-400">
+           			            <h:outputText value="#{mainCtrl.pagoCredito}">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+		                    </div>
+		                    <div class="box-f1__resumen">Crédito</div>
+		                </div>
+		            </div>
+		        </div>
+		
+		
+		        <div class="card-format-3">
+		            <div class="card-format-3__aside-contenido">
+		                <div class="card-format-3__header-grid">
+		                    <h2 class="card-format-3__header">Caja chica</h2>
+		                    <div class="card-format-3__header-subtitulo">
+		                        <i class="fa-solid fa-calendar-days"></i>
+		                        <span class="card-format-3__footer-heading">
+		                        	<h:outputText value="#{mainCtrl.fechaActual}" >
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+		                        </span>
+		                    </div>
+		                </div>
+		                <div class="card-format-3__contenido">
+		                    <span class="card-format-3__contenido-valor ">
+		                    	<h:outputText value="#{mainCtrl.totalCajaChica}" >
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 		                    </span>
-		                    <span class="card-format-2__descripcion card-format-2__descripcion-black">Crédito</span>
+		                    <span class="card-format-3__contenido-descripcion ">Saldo al día de hoy</span>
 		                </div>
+		
 		            </div>
-		            <div class="card-format-2__footer card-format-2__footer-black">
-		                <i class="fa-solid fa-calendar-days"></i>
-		                <span class="card-format-2__footer-heading">
-		                	<h:outputText value="#{mainCtrl.fechaActual}" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>
-		                </span>
+		            <div class="card-format-3__aside-icono">
+		                <i class="fa-solid fa-money-check-dollar text-pink-600 font-semibold"></i>
 		            </div>
 		        </div>
-		        <div class="card-format-2 card-format-2-bg-lila">
-		            <h2 class="card-format-2__header">Caja chica</h2>
-		            <div class="card-format-2__contenido">
-		                <span class="card-format-2__valor card-format-2__valor-lila">
-		                	<h:outputText value="#{mainCtrl.totalCajaChica}" >
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
-		                </span>
-		                <span class="card-format-2__descripcion card-format-2__descripcion-lila">Saldo al día de hoy</span>
-		            </div>
-		            <div class="card-format-2__footer card-format-2__footer-lila">
-		                <i class="fa-solid fa-calendar-days"></i>
-		                <span class="card-format-2__footer-heading">
-		                	<h:outputText value="#{mainCtrl.fechaActual}" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
-							</h:outputText>
-		                </span>
-		            </div>
-		        </div>
+		
 		    </section>
 		    
 		    <main>

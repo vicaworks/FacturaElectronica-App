@@ -33,7 +33,7 @@
         		</div>
         		<div class="flex-grow-1 flex pl-2 border-left-2 border-gray-400">
         			<div class="flex flex-column">
-        				<span class="text-gray-900 fs-11 py-1">Registrar cómo gasto</span>
+        				<span class="text-gray-900 fs-12 py-1 font-semibold">Registrar cómo gasto</span>
         				<span class="fs-10 text-gray-700">Permite filtrar en los reportes como gasto.</span>
         			</div>
         		</div>
@@ -158,9 +158,12 @@
 	        
 	    </div>
 	    
-	    <div class="w-full divisor-full">
+	    <!-- <div class="w-full divisor-full">
 		    <span class="fs-14 font-bold text-gray-800 mr-1">Registrar retención</span>
-	    </div>
+	    </div> -->
+	    <p:divider align="left">
+            <span class="text-gray-900 fw-5 fs-14">Registrar retención</span>
+	    </p:divider>
 	    <p:remoteCommand name="calcularretencionRenta" update=" :formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta" action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}"/>
 	 	<p:remoteCommand name="calcularretencionIva" update=":formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva" action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}"/>
 	    <div class="formgrid grid mt-2">
@@ -232,9 +235,12 @@
         		</div>
 	        </div>
 	    </div>
-	    <div class="w-full divisor-full">
+	    <!-- <div class="w-full divisor-full">
 		    <span class="fs-14 font-bold text-gray-800 mr-1">Valor a pagar</span>
-	    </div>
+	    </div> -->
+	    <p:divider align="left">
+            <span class="text-gray-900 fw-5 fs-14">Valor a pagar</span>
+	    </p:divider>
 	    <p:outputPanel id="oupPagoDT" styleClass="w-full mt-3">
 		    <div class="grid">
 		    	<div class="col-6">
@@ -282,7 +288,7 @@
 		    	<div class="col-6">
 		    		
 		    		<div class="flex flex-column gap-1 align-items-center justify-content-center h-full">
-	    				<h:outputText  styleClass="fs-18 text-green-700 font-medium" value="#{adquisicionFrmCtrl.totalPago}">
+	    				<h:outputText  styleClass="fs-18 text-gray-900 font-medium" value="#{adquisicionFrmCtrl.totalPago}">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 						<div class="flex gap-1 align-items-baseline">
