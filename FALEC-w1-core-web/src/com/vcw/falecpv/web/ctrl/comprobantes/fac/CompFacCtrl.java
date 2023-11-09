@@ -338,24 +338,17 @@ public class CompFacCtrl extends BaseCtrl {
 	}
 	
 	public void calcularItemActionConDescuento(boolean calcDescuento,Detalle det) {
-		try {
-			detalleSelected = det;
-			detalleSelected.setFlagCalcularDetForm(true);
-			calcularItem(detalleSelected,calcDescuento);
-			totalizar();
-		} catch (Exception e) {
-			e.printStackTrace();
-			getMessageCommonCtrl().crearMensaje("Error", 
-					TextoUtil.imprimirStackTrace(e, 
-							AppConfiguracion.getInteger("stacktrace.length")), 
-					Message.ERROR);
-		}
+		calcularItemActionMain(calcDescuento, det, true);
 	}
 	
 	public void calcularItemAction(boolean calcDescuento,Detalle det) {
+		calcularItemActionMain(calcDescuento, det, false);
+	}
+	
+	public void calcularItemActionMain(boolean calcDescuento,Detalle det, boolean flag) {
 		try {
 			detalleSelected = det;
-			detalleSelected.setFlagCalcularDetForm(false);
+			detalleSelected.setFlagCalcularDetForm(flag);
 			calcularItem(detalleSelected,calcDescuento);
 			totalizar();
 		} catch (Exception e) {
@@ -364,8 +357,9 @@ public class CompFacCtrl extends BaseCtrl {
 					TextoUtil.imprimirStackTrace(e, 
 							AppConfiguracion.getInteger("stacktrace.length")), 
 					Message.ERROR);
-		}
+		}		
 	}
+	
 	
 	
 	private void calcularItem(Detalle dFac,boolean calcDescuento) {
