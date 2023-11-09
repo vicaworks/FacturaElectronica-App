@@ -29,7 +29,7 @@
 	</script>
 	
 	<!-- consulta cliente return keycode 13 -->
-	<p:remoteCommand name="buscarClienteCF"  action="#{compFacCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente :formMain:oupPagoDT"/>
+	<p:remoteCommand name="buscarClienteCF"  action="#{compFacCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgInpCriterioCliente :formMain:gridCliente :formMain:oupPagoDT"/>
 	
 	<div class="card card-w-title">
 		
@@ -115,7 +115,7 @@
 				
 				<p:commandLink styleClass="min-width-100 border-1 border-gray-400" style="height:24px;" action="#{compFacCtrl.buscarConsumidorFinal()}" 
 						immediate="true" 
-						update=":formMain:msgFormMain :formMain:gridCliente :formMain:oupPagoDT">
+						update=":formMain:gridCliente :formMain:oupPagoDT">
 					<div class="flex align-items-center justify-content-evenly" style="height:24px;">
 						<i class="fa fa-users mr-1 text-gray-700"></i>
 						<span class="text-gray-700">CONS. FINAL</span>
@@ -137,7 +137,7 @@
 						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
 						<f:setPropertyActionListener value="#{compFacCtrl}" target="#{listaClienteCtrl.compFacCtrl}"/>
 						<f:setPropertyActionListener value="CompFacCtrl" target="#{listaClienteCtrl.callModule}"/>
-						<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente :formMain:inpCriterioCliente :formMain:oupPagoDT" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value=":formMain:gridCliente :formMain:inpCriterioCliente :formMain:oupPagoDT" target="#{listaClienteCtrl.viewUpdate}"/>
 						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
 					</p:commandButton>
                 </div>
@@ -190,8 +190,8 @@
 				</div>
 			</f:subview>
 		</p:outputPanel>
-		<p:remoteCommand name="calcularretencionRenta" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetRenta" action="#{compFacCtrl.calcularRettencionAction('RENTA')}"/>
-		<p:remoteCommand name="calcularretencionIva" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" action="#{compFacCtrl.calcularRettencionAction('IVA')}"/>
+		<p:remoteCommand name="calcularretencionRenta" update=":formMain:oupPagoDT :formMain:intRetRenta" action="#{compFacCtrl.calcularRettencionAction('RENTA')}"/>
+		<p:remoteCommand name="calcularretencionIva" update=":formMain:oupPagoDT :formMain:intRetIva" action="#{compFacCtrl.calcularRettencionAction('IVA')}"/>
 		<div class="formgrid grid mt-2">
 	        <div class="field col-12 md:col-6">
 	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Retención Renta</label>	        	
@@ -208,7 +208,7 @@
 				                	</p:inputNumber>
 								</div>
 								<div class="flex-none flex px-1 align-self-center">
-									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('RENTA')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta">
+									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('RENTA')}" update=":formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta">
 									<i class="fa fa-check-circle Fs16 text-green-600 font-semibold"></i>
 								</p:commandLink>  
 								</div>
@@ -218,7 +218,7 @@
         			</div>
         			<div class="flex-grow-1 flex pr-1">
         				<p:inputText value="#{compFacCtrl.cabecerSelected.valorretenidorenta}" styleClass="w-full" id="intRetRenta" converterMessage="SOLO NÚMEROS">
-        					<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+        					<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
         				</p:inputText>
         				
         			</div>        			
@@ -240,7 +240,7 @@
 						                
 								</div>
 								<div class="flex-none flex px-1 align-self-center">
-									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('IVA')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva">
+									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('IVA')}" update=":formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva">
 										<i class="fa fa-check-circle Fs16 text-green-600 font-semibold"></i>
 									</p:commandLink>  
 								</div>
@@ -250,7 +250,7 @@
         			</div>
         			<div class="flex-grow-1 flex pr-1">
         				<p:inputText value="#{compFacCtrl.cabecerSelected.valorretenidoiva}" styleClass="w-full" id="intRetIva" converterMessage="SOLO NÚMEROS">
-        					<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:msgFormMain :formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
+        					<p:ajax listener="#{compFacCtrl.totalizarRetencion()}" update=":formMain:oupPagoDT" process="@this :formMain:oupPagoDT"/>
         				</p:inputText>	        				
         			</div>
         			
@@ -370,7 +370,7 @@
 							<p:message for="inpInfoAdicionalValor" styleClass="block"/>
 						</div>
 						<div class="flex-grow-0 flex px-2">
-							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
+							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
 								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
 								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />

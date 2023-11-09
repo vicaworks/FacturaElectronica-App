@@ -118,6 +118,9 @@ public class Detalle implements Serializable {
     @Transient
     private Integer precioVenta = 1;
     
+    @Transient
+    private boolean flagCalcularDetForm = false;
+    
 	/**
 	 * 
 	 */
@@ -440,6 +443,20 @@ public class Detalle implements Serializable {
 	 */
 	public void setPreciocompra(BigDecimal preciocompra) {
 		this.preciocompra = preciocompra;
+	}
+
+	/**
+	 * @return the flagCalcularDetForm
+	 */
+	public boolean isFlagCalcularDetForm() {
+		return flagCalcularDetForm;
+	}
+
+	/**
+	 * @param flagCalcularDetForm the flagCalcularDetForm to set
+	 */
+	public void setFlagCalcularDetForm(boolean flagCalcularDetForm) {
+		this.flagCalcularDetForm = flagCalcularDetForm;
 	}
 
 	

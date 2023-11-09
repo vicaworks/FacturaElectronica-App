@@ -18,8 +18,6 @@
 	<div class="card ">
 		<p:dataScroller id="adquisicionDetDT" value="#{adquisicionFrmCtrl.adquisiciondetalleList}" var="d" chunkSize="10" mode="inline" styleClass="adquisicionDetDT" >
             <f:facet name="header">
-            	<!-- <i class="fa fa-list mr-1"></i>
-                Lista de Compras -->
                 <div class="flex justify-content-between align-items-end">
                 	<span class="text-gray-900 fs-12">Detalle</span>
                 	<p:commandButton value="Agregar producto" 
@@ -60,7 +58,6 @@
             					action="#{listaProductoCtrl.loadPantalla()}"
             					oncomplete="PrimeFaces.focus('frmListProducto:tvPLmain:fsvAdquisicion:innCantDt');">
 								<i class="fa fa-edit fs-18 text-gray-900"></i>
-								<!-- <span class="fs-12 text-gray-800 font-light">EDITAR</span> -->
 								<f:setPropertyActionListener value="ADQUISICION" target="#{listaProductoCtrl.callModule}"/>
 								<f:setPropertyActionListener value="EDITAR" target="#{listaProductoCtrl.accion}"/>
 								<f:setPropertyActionListener value=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" target="#{listaProductoCtrl.viewUpdate}"/>
@@ -77,7 +74,6 @@
 								update=":formMain:adquisicionDetDT :formMain:oupTotales :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje" process="@this :formMain:adquisicionDetDT" disabled="#{adquisicionFrmCtrl.adquisicionSelected.estado!=ComprobanteEstadoEnum.REGISTRADO}" 
 								styleClass="p-3 det-item-hover" 
             					style="border-radius:100%; border: 1px solid #b3d7ff;width:4.1rem;height:4.1rem;">
-								<!-- <span class="fs-12 text-pink-400">ELIMINAR</span> -->
 								<i class="fa-regular fa-trash-can fs-18 text-gray-900"></i>
 								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 								<f:setPropertyActionListener value="#{d}" target="#{adquisicionFrmCtrl.adquisiciondetalleSelected}"/>
@@ -145,11 +141,13 @@
 			           					</h:outputText> -->
             						</div>
             					</div>
+            					
             					<div class="min-width-80 h-full flex justify-content-end align-items-center">
             						<h:outputText value="#{d.preciototal}" styleClass="fs-16 text-gray-900 font-medium">
 		            					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 		           					</h:outputText>
             					</div>
+            					
             				</div>
             						
             			</div>
@@ -175,7 +173,7 @@
 						<div class="col-12 mt-1">
 							
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
-								<div class="flex flex-grow-1 Fs9">
+								<div class="flex flex-grow-1 fs-9">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
 									<span class="text-gray-800">Sin impuestos</span>
 								</div>						
@@ -189,7 +187,7 @@
 							</div>
 							
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
-								<div class="flex flex-grow-1 Fs9">
+								<div class="flex flex-grow-1 fs-9">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
 									<span class="text-gray-800">Descuento</span>
 								</div>						
@@ -203,7 +201,7 @@
 							</div>
 							
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
-								<div class="flex flex-grow-1 Fs9">
+								<div class="flex flex-grow-1 fs-9">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
 									<span class="text-gray-800">I.C.E.</span>
 								</div>						
@@ -217,7 +215,7 @@
 							</div>
 							
 							<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
-								<div class="flex flex-grow-1 Fs9">
+								<div class="flex flex-grow-1 fs-9">
 									<i class="fa fa-angle-right mr-1 font-bold"></i>
 									<span class="text-gray-800">I.V.A.</span>
 								</div>						

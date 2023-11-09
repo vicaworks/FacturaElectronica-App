@@ -337,9 +337,25 @@ public class CompFacCtrl extends BaseCtrl {
 		
 	}
 	
+	public void calcularItemActionConDescuento(boolean calcDescuento,Detalle det) {
+		try {
+			detalleSelected = det;
+			detalleSelected.setFlagCalcularDetForm(true);
+			calcularItem(detalleSelected,calcDescuento);
+			totalizar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+		}
+	}
+	
 	public void calcularItemAction(boolean calcDescuento,Detalle det) {
 		try {
 			detalleSelected = det;
+			detalleSelected.setFlagCalcularDetForm(false);
 			calcularItem(detalleSelected,calcDescuento);
 			totalizar();
 		} catch (Exception e) {
@@ -353,7 +369,7 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	
 	private void calcularItem(Detalle dFac,boolean calcDescuento) {
-		if(calcDescuento) {
+		if(calcDescuento && !dFac.isFlagCalcularDetForm()) {
 			dFac.setDescuento(dFac.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))
 					.multiply(dFac.getPreciounitario()).multiply(dFac.getCantidad())
 					.setScale(2, RoundingMode.HALF_UP));
@@ -364,8 +380,7 @@ public class CompFacCtrl extends BaseCtrl {
 				.multiply(dFac.getPreciototalsinimpuesto().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
 		dFac.setPreciototal(dFac.getPreciototalsinimpuesto().add(dFac.getValoriva().add(dFac.getValorice())).setScale(2, RoundingMode.HALF_UP));
 		cabecerSelected.setValorretenidoiva(BigDecimal.ZERO);
-		cabecerSelected.setValorretenidorenta(BigDecimal.ZERO);
-		
+		cabecerSelected.setValorretenidorenta(BigDecimal.ZERO);		
 	}
 	
 	private void totalizar() throws DaoException, NumberFormatException, ParametroRequeridoException {

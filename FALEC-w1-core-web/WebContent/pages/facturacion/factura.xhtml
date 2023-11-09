@@ -20,19 +20,18 @@
 				text-align: center;
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td	{vertical-align: top;}
+			/* body .ui-datatable .ui-datatable-data > tr > td	{vertical-align: top;}
 			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}
 			
 			.card{margin-bottom: 0.25rem!important;}
 			
-			/* file upload */
+			
 			body .ui-fileupload .ui-fileupload-buttonbar {
 			 border: none;
 			 padding: 0px !important;
 			}	
 			
 			body .ui-fileupload .ui-fileupload-content {
-				/* display: none; */
 				border: none;
 				padding: 0px;
 				border-top: 0 none;
@@ -46,7 +45,7 @@
 			    .displayButton{
 			    	display: none;
 			    }
-			}
+			} */
 			
         </style>
         <script >
@@ -76,44 +75,75 @@
 		<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	 <!-- Opciones principales -->
-			<div class="card card-w-title mt-1" >
-			
-	    		<div class="flex">	    			
+	    	 <div class="tool-bar mb-2">
+	    	 
     				<p:commandButton id="cmdfacNuevo"
-							value="Nuevo" icon="fa fa-file-o" 
-							action="#{compFacCtrl.nuevo()}" styleClass="ui-button-success min-width-70 mr-1" update="@form" immediate="true">
+							value="Nuevo" icon="fa-regular fa-file fs-12" 
+							action="#{compFacCtrl.nuevo()}" styleClass="ui-button-success min-width-70 fs-12" update="@form" immediate="true">
 					</p:commandButton>
-							
+					
     				<p:commandButton id="cmdGenFactura"
-							value="Guardar" icon="fa fa-floppy-o" 
-							action="#{compFacCtrl.generarFactura()}" styleClass="ui-button-outlined min-width-70 mr-1 #{appSessionCtrl.accesoDisable('mn_compelec_factura_nuevo')?'ui-state-disabled':''}" update="@form" disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
-	    			
+							value="Guardar" 
+							icon="fa-regular fa-floppy-disk fs-12" 
+							action="#{compFacCtrl.generarFactura()}" 
+							styleClass="ui-button-outlined min-width-70 #{appSessionCtrl.accesoDisable('mn_compelec_factura_nuevo')?'ui-state-disabled':''} fs-12" 
+							update="@form" 
+							disabled="#{compFacCtrl.enableAccion or (compFacCtrl.cabecerSelected.comprobanteFactura)}"/>
+					
 	    			<p:commandButton id="cmdImprimir"
-							value="Imprimir" icon="fa fa-print" title="Imprimir Factura"
-							action="#{compFacCtrl.imprimir()}" styleClass="ui-button-outlined min-width-70 mr-1" update="@form">
+							value="Imprimir" 
+							icon="fa fa-print fs-12" 
+							title="Imprimir Factura"
+							action="#{compFacCtrl.imprimir()}" 
+							styleClass="ui-button-secondary min-width-70 fs-12" 
+							update="@form">
 						<f:setPropertyActionListener value="#{rideCtrl}" target="#{compFacCtrl.rideCtrl}"/>		
 					</p:commandButton>
-							
+	    	 
 					<p:commandButton id="cmdfacTools"
-							value="Opciones" icon="fa fa-sort-down Fs11"
-							styleClass="ui-button-outlined min-width-70"/>
+							value="Opciones" 
+							icon="fa fa-sort-down fs-12"
+							styleClass="ui-button-outlined ui-button-secondary min-width-70 fs-12"/>
 							
 					<p:menu overlay="true" trigger="cmdfacTools" my="left top" at="left bottom" style="min-width:200px!important;">
 					
-						<p:menuitem value=" Crear una Copia" action="#{compFacCtrl.crearUnaCopia(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-copy" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null}">
+						<p:menuitem value=" Crear una Copia" 
+							action="#{compFacCtrl.crearUnaCopia(compFacCtrl.cabecerSelected.idcabecera)}" 
+							icon="fa fa-copy fs-14" 
+							update="@form" 
+							disabled="#{compFacCtrl.cabecerSelected.idcabecera==null}"
+							styleClass="fs-12">
 						</p:menuitem>
 						
-						<p:menuitem value=" #{msg['menu.notacredito']}" action="#{facEmitidaCtrl.generarNC(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}">
+						<p:menuitem value=" #{msg['menu.notacredito']}" 
+							action="#{facEmitidaCtrl.generarNC(compFacCtrl.cabecerSelected.idcabecera)}" 
+							icon="fa fa-file fs-14" 
+							update="@form" 
+							disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}"
+							styleClass="fs-12">
 						</p:menuitem>	
 						
-						<p:menuitem value=" #{msg['menu.notadebito']}" action="#{facEmitidaCtrl.generarND(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-file" update="@form" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}">
+						<p:menuitem value=" #{msg['menu.notadebito']}" 
+							action="#{facEmitidaCtrl.generarND(compFacCtrl.cabecerSelected.idcabecera)}" 
+							icon="fa fa-file fs-14" 
+							update="@form" 
+							disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}"
+							styleClass="fs-12">
 						</p:menuitem>
 						
-						<p:menuitem value=" #{msg['label.guiaremision']}" action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(compFacCtrl.cabecerSelected.idcabecera)}" icon="fa fa-truck" disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}">
+						<p:menuitem value=" #{msg['label.guiaremision']}" 
+							action="#{guiaRemFormCtrl.nuevaGuiaRemisionByFactura(compFacCtrl.cabecerSelected.idcabecera)}" 
+							icon="fa fa-truck fs-14" 
+							disabled="#{compFacCtrl.cabecerSelected.idcabecera==null or (appSessionCtrl.isComprobantes(compFacCtrl.cabecerSelected.estado) or compFacCtrl.cabecerSelected.tipocomprobante.identificador=='00')}"
+							styleClass="fs-12">
 							<f:setPropertyActionListener value="FACTURA" target="#{guiaRemFormCtrl.callModule}"/>
 						</p:menuitem>
 						
-						<p:menuitem value=" Buscar y Remplazar" onclick="PF('wModalFacRemplazar').show()" update="frmFacRemplazar" icon="fa fa-search">
+						<p:menuitem value=" Buscar y Remplazar" 
+							onclick="PF('wModalFacRemplazar').show()" 
+							update="frmFacRemplazar" 
+							icon="fa fa-search fs-14"
+							styleClass="fs-12">
 							<f:setPropertyActionListener value="" target="#{buscarRemplazarCtrl.cadenaBuscar}"/>
 							<f:setPropertyActionListener value="" target="#{buscarRemplazarCtrl.cadenaRemplazar}"/>
 							<f:setPropertyActionListener value="#{true}" target="#{buscarRemplazarCtrl.palabraCompleta}"/>
@@ -124,16 +154,7 @@
 						</p:menuitem>
 					
 					</p:menu>
-	    			
-	    		</div>
-			
-			</div>		    	
-	    	
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
+	    	 </div>
 	    	
 	    	<div class="grid">
 	    		<div class="col-12 lg:col-7">	    			
