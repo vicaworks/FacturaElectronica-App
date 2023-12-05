@@ -29,90 +29,99 @@
 	</script>
 	
 	<!-- consulta cliente return keycode 13 -->
-	<p:remoteCommand name="buscarClienteCF"  action="#{compFacCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgInpCriterioCliente :formMain:gridCliente :formMain:oupPagoDT"/>
+	<p:remoteCommand name="buscarClienteCF"  action="#{compFacCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:gridCliente :formMain:oupPagoDT"/>
 	
-	<div class="card card-w-title">
+	<div class="card">
 		
 		<div class="flex justify-content-between">
-			<span class="Fs14 text-black font-semibold">Factura</span>
+			<span class="fs-14 text-gray-900 font-semibold">Factura</span>
 			<div>
-				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
-				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(compFacCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+				<span class="fs-11 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="fs-12 text-primary-600 font-semibold">#{appSessionCtrl.formatoCadena(compFacCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
 			</div>			
 		</div>
 		
-		<p:outputPanel id="gridSecuencial" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}" styleClass="mb-2 mt-2">
-			<div class="flex">
-				<div class="flex-grow-0 flex min-width-50 justify-content-start">
-					<p:toggleSwitch value="#{compFacCtrl.cabecerSelected.borrador}" style="height:24px;">
-			            <p:ajax  
-							process="@this :formMain:gridSecuencial" 
-							update=":formMain:gridSecuencial" 
-							listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
-						</p:ajax>
-			        </p:toggleSwitch>
-				</div>
-				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-					<span class="Fs12 text-black font-semibold">Borrador</span>
-					<span class="Fs10 text-gray-400">La factura se guarda como borrador y permite modificaciones</span>
-				</div>
-			</div>
+		<div class="grid">
+		
+			<div class="col-12 md:col-6">
 			
-			<p:outputPanel rendered="#{not compFacCtrl.cabecerSelected.borrador}" styleClass="gridSecuencial">
-				<div class="EmptyBox5"/>
-				<div class="flex">
-					<div class="flex-grow-0 flex min-width-50 justify-content-start">
-						<p:toggleSwitch value="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
-				            <p:ajax event="change" 
+				<p:outputPanel id="gridSecuencial" rendered="#{compFacCtrl.cabecerSelected.estadoBorrador}" styleClass="mb-2 mt-2">
+					<div class="flex">
+						<div class="flex-grow-0 flex min-width-50 justify-content-start">
+							<p:toggleSwitch value="#{compFacCtrl.cabecerSelected.borrador}" style="height:24px;">
+					            <p:ajax  
 									process="@this :formMain:gridSecuencial" 
-									update=":formMain:gridSecuencial">
+									update=":formMain:gridSecuencial" 
+									listener="#{compFacCtrl.cambioEstadoBorrador(compFacCtrl.cabecerSelected)}">
 								</p:ajax>
-				        </p:toggleSwitch>
+					        </p:toggleSwitch>
+						</div>
+						<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
+							<span class="fs-12 text-gray-900 font-medium">Borrador</span>
+							<span class="fs-11 text-gray-600">La factura se guarda como borrador y permite modificaciones</span>
+						</div>
 					</div>
-					<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-						<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
-						<span class="Fs10 text-gray-400">Asigna un número de factura de forma manual</span>
-						<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" styleClass="mt-2">
-							<div class="flex align-items-center">
-								<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialEstablecimiento}" styleClass="Fs14"/>
-								<span class="mx-2">-</span>
-								<p:inputMask id="intSecCaja" value="#{compFacCtrl.cabecerSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
-								<span class="mx-2">-</span>
-								<p:inputMask id="intSecDocumento" value="#{compFacCtrl.cabecerSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+					
+					<p:outputPanel rendered="#{not compFacCtrl.cabecerSelected.borrador}" styleClass="gridSecuencial">
+						<div class="EmptyBox5"/>
+						<div class="flex">
+							<div class="flex-grow-0 flex min-width-50 justify-content-start">
+								<p:toggleSwitch value="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
+						            <p:ajax event="change" 
+											process="@this :formMain:gridSecuencial" 
+											update=":formMain:gridSecuencial">
+										</p:ajax>
+						        </p:toggleSwitch>
 							</div>
-							<div class="flex">
-								<p:message styleClass="block" for="intSecCaja" />
-								<p:message styleClass="block" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+							<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
+								<div class="col-12 md:col-6">
+									<span class="fs-12 text-gray-900 font-medium">Asignar Secuencial Comprobante</span>
+									<span class="fs-11 text-gray-600">Asigna un número de factura de forma manual</span>
+									<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" styleClass="mt-2">
+										<div class="flex align-items-center">
+											<h:outputText value="#{compFacCtrl.cabecerSelected.secuencialEstablecimiento}" styleClass="fs-14"/>
+											<span class="mx-2">-</span>
+											<p:inputMask id="intSecCaja" value="#{compFacCtrl.cabecerSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL Requerido"/>
+											<span class="mx-2">-</span>
+											<p:inputMask id="intSecDocumento" value="#{compFacCtrl.cabecerSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL Requerido"/>
+										</div>
+										<div class="flex">
+											<p:message styleClass="block" for="intSecCaja" />
+											<p:message styleClass="block" for="intSecDocumento" rendered="#{compFacCtrl.cabecerSelected.editarSecuencial}"/>
+										</div>
+									</p:outputPanel>								
+								</div>
 							</div>
-						</p:outputPanel>
+						</div>
+					</p:outputPanel>
+					
+				</p:outputPanel>
+				
+				<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado!='BORRADOR'}" styleClass="mt-2">
+					<div class="flex flex-column">
+						<span class="text-gray-900 mb-1 fs-11">Secuencial Comprobante</span>
+						<span class="fs-16 text-gray-900 font-bold">#{compFacCtrl.getFormatoNumDocumento(compFacCtrl.cabecerSelected.numdocumento)}</span>
 					</div>
-				</div>
-			</p:outputPanel>
-			
-		</p:outputPanel>
-		
-		
-		
-		<p:outputPanel rendered="#{compFacCtrl.cabecerSelected.idcabecera!=null and compFacCtrl.cabecerSelected.estado!='BORRADOR'}" styleClass="mt-2">
-			<div class="flex flex-column">
-				<span class="text-black mb-1 Fs11">Secuencial Comprobante</span>
-				<span class="Fs16 text-black font-bold">#{compFacCtrl.getFormatoNumDocumento(compFacCtrl.cabecerSelected.numdocumento)}</span>
+				</p:outputPanel>
+				
 			</div>
-		</p:outputPanel>
+			
+			<div class="col-12 md:col-6">
+				<div class="field mt-2">
+					<label for="claFacFecha" class="text-gray-900">Fecha de Emisión</label>
+					<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
+						pattern="dd/MM/yyyy"
+						locale="es" 
+						requiredMessage="Requerido" required="true" styleClass="w-full" placeholder="Fecha emisión">
+					</p:calendar>
+				</div>			
+			</div>
 		
-		<div class="field mt-2">
-			<h:outputText value="Fecha de Emisión" styleClass="text-gray-700 font-medium Fs11"/>
-			<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
-				pattern="dd/MM/yyyy"
-				locale="es" 
-				requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="FECHA EMISION" style="font-size:14px !important;">
-			</p:calendar>
 		</div>
 		
-		<span class="block mt-1 text-gray-700 font-medium Fs11">Cliente</span>
-		<div class="flex">
-			<div class="flex-grow-0 flex pr-1">
-				
+		<label class="text-gray-900 fs-12">Cliente</label>
+		<div class="flex gap-1">
+			<div class="flex-grow-0 flex">				
 				<p:commandLink styleClass="min-width-100 border-1 border-gray-400" style="height:24px;" action="#{compFacCtrl.buscarConsumidorFinal()}" 
 						immediate="true" 
 						update=":formMain:gridCliente :formMain:oupPagoDT">
@@ -126,9 +135,9 @@
 				<div class="ui-inputgroup w-full">
                     <p:inputText id="inpCriterioCliente"
 						value="#{compFacCtrl.criterioCliente}" required="false"
-						requiredMessage="REQUERIDO" styleClass="w-full Fs12"
-						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
-						validatorMessage="SOLO NUMEROS"
+						requiredMessage="Requerido" styleClass="w-full fs-12"
+						maxlength="13" placeholder="C.I. o RUC / Enter para buscar"
+						validatorMessage="Solo números"
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarClienteCF(); return false;}">
 					<f:validateRegex pattern="^\d+$" />
 					</p:inputText>
@@ -144,14 +153,14 @@
 			</div>
 			<div class="flex-grow-0 flex align-items-center px-1">
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" process="@this" styleClass="ml-1 mr-2 text-gray-900">
-					<i class="fa fa-plus Fs16">
+					<i class="fa fa-plus fs-16">
 					</i>
 					<f:setPropertyActionListener value="CompFacCtrl" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 				</p:commandLink>								
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(compFacCtrl.cabecerSelected.cliente!=null?compFacCtrl.cabecerSelected.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
-					<i class="fa fa-edit Fs16">
+					<i class="fa fa-edit fs-16">
 					</i>
 					<f:setPropertyActionListener value="CompFacCtrl" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupPagoDT" target="#{clienteCtrl.updateView}"/>
@@ -159,46 +168,44 @@
 				</p:commandLink>
 			</div>
 		</div>
-		<div class="flex">
-			<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="w-full block"/>
-		</div>
 		
-		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex " style="height:9rem;">
+		<p:outputPanel id="gridCliente" styleClass="w-full flex " style="height:9rem;">
 			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{compFacCtrl.cabecerSelected.cliente==null}"/>
 			<f:subview rendered="#{compFacCtrl.cabecerSelected.cliente!=null}">
-				<div class="flex align-self-center">
-					<div class="flex flex-column">
-						<span class="Fs16 font-bold text-blue-600 mb-1 block">
-							<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.razonsocial!=null?compFacCtrl.cabecerSelected.cliente.razonsocial:'-'}" />
-						</span>
-						<span class="Fs12 font-bold text-gray-600 mb-1 block">
-							<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.identificacion!=null?compFacCtrl.cabecerSelected.cliente.identificacion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.direccion!=null?compFacCtrl.cabecerSelected.cliente.direccion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="pi pi-phone mr-1"></i>
-							<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.telefono!=null?compFacCtrl.cabecerSelected.cliente.telefono:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="fa fa-envelope-o mr-1 Fs11"></i>
-							<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico!=null?compFacCtrl.cabecerSelected.cliente.correoelectronico:'-'}" />
-						</span>
-						
-					</div>
+				<div class="flex flex-column my-1 gap-1">
+					<span class="fs-16 fw-5 text-primary-600 block">
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.razonsocial!=null?compFacCtrl.cabecerSelected.cliente.razonsocial:'-'}" />
+					</span>
+					<span class="fs-12 font-medium text-gray-900 block">
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.identificacion!=null?compFacCtrl.cabecerSelected.cliente.identificacion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block">
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.direccion!=null?compFacCtrl.cabecerSelected.cliente.direccion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="pi pi-phone"></i>
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.telefono!=null?compFacCtrl.cabecerSelected.cliente.telefono:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="fa-regular fa-envelope"></i>
+						<h:outputText value="#{compFacCtrl.cabecerSelected.cliente.correoelectronico!=null?compFacCtrl.cabecerSelected.cliente.correoelectronico:'-'}" />
+					</span>
+					
 				</div>
 			</f:subview>
 		</p:outputPanel>
+		<p:divider align="left">
+            <span class="text-gray-900 font-medium fs-14">Registrar retención</span>
+	    </p:divider>
 		<p:remoteCommand name="calcularretencionRenta" update=":formMain:oupPagoDT :formMain:intRetRenta" action="#{compFacCtrl.calcularRettencionAction('RENTA')}"/>
 		<p:remoteCommand name="calcularretencionIva" update=":formMain:oupPagoDT :formMain:intRetIva" action="#{compFacCtrl.calcularRettencionAction('IVA')}"/>
 		<div class="formgrid grid mt-2">
-	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Retención Renta</label>	        	
+	        <div class="field col-12 md:col-6 fs-12">
+	            <label for="somAdqTipComprobante" class="text-gray-900">Retención Renta</label>	        	
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">        				
         				<p:commandLink id="cmlCalValorRenta" title="Calcular">
-							<i class="fa fa-calculator text-gray-900"/>
+							<i class="fa fa-calculator text-gray-900 fs-14"/>
 						</p:commandLink>
 						<p:overlayPanel for="cmlCalValorRenta" hideEffect="fade" id="ovlAdCalValorRenta">
 							<div class="flex">
@@ -208,9 +215,13 @@
 				                	</p:inputNumber>
 								</div>
 								<div class="flex-none flex px-1 align-self-center">
-									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('RENTA')}" update=":formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta">
-									<i class="fa fa-check-circle Fs16 text-green-600 font-semibold"></i>
-								</p:commandLink>  
+									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('RENTA')}" 
+										update=":formMain:oupPagoDT :formMain:intRetRenta" 
+										process="@this :formMain:ovlAdCalValorRenta"
+										styleClass="flex gap-2 align-items-baseline">
+										<i class="fa fa-check-circle fs-16 text-green-600 font-semibold"></i>
+										<span class="text-gray-900">Calcular</span>
+									</p:commandLink>  
 								</div>
 							</div>							  
 							<small class="block">Ingrese el % de la retención</small>
@@ -224,12 +235,12 @@
         			</div>        			
         		</div>
 	        </div>
-	        <div class="field col-12 md:col-6">
-	            <label for="somAdqTipComprobante" class="text-gray-700 font-medium Fs11">Retención I.V.A.</label>
+	        <div class="field col-12 md:col-6 fs-12">
+	            <label for="somAdqTipComprobante" class="text-gray-900">Retención I.V.A.</label>
         		<div class="flex w-full">
         			<div class="flex-none flex align-self-center" style="padding: 0px 10px;">
         				<p:commandLink id="cmlCalValorIva" title="Calcular">
-							<i class="fa fa-calculator text-gray-900" />
+							<i class="fa fa-calculator text-gray-900 fs-14" />
 						</p:commandLink>
 						<p:overlayPanel for="cmlCalValorIva" hideEffect="fade" id="ovlAdCalValorIva">
 							<div class="flex">
@@ -240,8 +251,12 @@
 						                
 								</div>
 								<div class="flex-none flex px-1 align-self-center">
-									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('IVA')}" update=":formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva">
-										<i class="fa fa-check-circle Fs16 text-green-600 font-semibold"></i>
+									<p:commandLink action="#{compFacCtrl.calcularRettencionAction('IVA')}" 
+										update=":formMain:oupPagoDT :formMain:intRetIva" 
+										process="@this :formMain:ovlAdCalValorIva"
+										styleClass="flex gap-2 align-items-baseline">
+										<i class="fa fa-check-circle fs-16 text-green-600 font-semibold"></i>
+										<span class="text-gray-900">Calcular</span>
 									</p:commandLink>  
 								</div>
 							</div>
@@ -258,19 +273,22 @@
 	        </div>
 	    </div>
 		
+		<p:divider align="left">
+            <span class="text-gray-900 fw-5 fs-14">Valor a pagar</span>
+	    </p:divider>
 		<p:outputPanel id="oupPagoDT" styleClass="w-full">
 		    <div class="grid">
 		    	<div class="col-6">
 		    		<div class="flex justify-content-center">
 			    		<div class="flex flex-column">
 			    			<div class="py-2">
-			    				<h:outputText  styleClass="Fs18" value="#{compFacCtrl.cabecerSelected.valorretenido}">
+			    				<h:outputText  styleClass="fs-18" value="#{compFacCtrl.cabecerSelected.valorretenido}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 			    			</div>
 			    			<div class="py-1">
-			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs14 text-gray-700 font-bold">RETENCIÓN</span>
+			    				<span class="fs-12 text-gray-900">Total</span>
+			    				<span class="fs-14 text-gray-900 font-medium">Retención</span>
 			    			</div>
 			    		</div>
 		    		</div>
@@ -279,18 +297,18 @@
 		    		<div class="flex justify-content-center">
 			    		<div class="flex flex-column">
 			    			<div class="py-2">
-			    				<h:outputText  styleClass="font-bold Fs18" value="#{compFacCtrl.cabecerSelected.totalpagar}">
+			    				<h:outputText  styleClass="font-bold fs-18" value="#{compFacCtrl.cabecerSelected.totalpagar}">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 			    			</div>
 			    			<div class="py-1">
-			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs14 text-blue-600 font-bold">A PAGAR</span>
+			    				<span class="fs-12 text-gray-900">Total</span>
+			    				<span class="fs-14 text-primary-600 font-medium">a Pagar</span>
 			    			</div>
 			    		</div>
 			    	</div>
 		    	</div>
-		    <div class="EmptyBox20"/>
+		    	
 		    	<div class="col-6">
 	    			<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@form" disabled="#{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null}">
 	    				
@@ -301,31 +319,30 @@
 	    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
 	    				<f:setPropertyActionListener value=":formMain:oupPagoDT" target="#{pagoCompCtrl.updateView}"/>
 	    				
-			    		<div class="flex align-items-stretch #{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
+			    		<div class="flex align-items-stretch #{compFacCtrl.cabecerSelected.totalpagar.doubleValue()==0 or compFacCtrl.cabecerSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-green-500 text-white border-round" style="height: 100%;">
 			    			<div class="flex align-items-center justify-content-center w-full">
 				    				<div class="flex flex-inline">
-				    					<div class="flex mr-2">
-				    						<i class="fa fa-chevron-circle-right Fs50 text-white"></i>
-				    					</div>
-				    					<div class="flex align-items-center">
-				    						<span class="Fs14 text-white">Pago</span>
-				    					</div>
+				    					<div class="flex flex-inline gap-2 align-items-center">
+				    					<i class="fa-solid fa-money-check-dollar fs-35"></i>
+			    						<span class="fs-16 text-white font-medium">Pagar</span>
+				    				</div>
 				    				</div>
 			    			</div>
 			    		</div>
 	    			</p:commandLink>
 		    	</div>
+		    	
 		    	<div class="col-6">
 		    		<div class="flex justify-content-center">
 			    		<div class="flex flex-column">
 			    			<div class="py-2">
-			    				<h:outputText value="#{compFacCtrl.totalPago}" styleClass="font-bold Fs18">
+			    				<h:outputText value="#{compFacCtrl.totalPago}" styleClass="font-bold fs-18">
 									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 								</h:outputText>
 			    			</div>
 			    			<div class="py-1">
-			    				<span class="Fs10 text-gray-600 font-bold">TOTAL</span>
-			    				<span class="Fs16 text-green-600 font-bold">PAGO</span>
+			    				<span class="fs-12 text-gray-900">Total</span>
+			    				<span class="fs-16 text-green-600 font-medium">Pago</span>
 			    			</div>	    			
 			    		</div>
 			    	</div>
@@ -334,51 +351,61 @@
 	    </p:outputPanel>
 	</div>
 	
-	<div class="card card-w-title">	
+	<div class="card">	
 		
-		<span class="block text-black Fs14 font-medium">Información Adicional</span>
+		<span class="block text-gray-900 fs-14 fw-5">Información Adicional</span>
 		
-		<div class="flex my-2">
-			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-			<p:commandLink action="#{compFacCtrl.agregarInfoAdicional()}" update="@form:oupInfoAdicionalMain" process="@this @form:oupInfoAdicionalMain" oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
-				<i class="Fs12 fa fa-plus mr-1 text-gray-700"/>
-				<span class="text-black">Agregar</span>
+		<div class="flex mt-2 gap-2 align-items-end">
+			<i class="fa fa-ellipsis-v fs-14"/>
+			<p:commandLink action="#{compFacCtrl.agregarInfoAdicional()}" 
+				update="@form:oupInfoAdicionalMain" 
+				process="@this @form:oupInfoAdicionalMain" 
+				oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
+				<!-- <i class="fs-12 fa fa-plus mr-1 text-gray-700"/> -->
+				<span class="text-gray-900 fs-12">Agregar</span>
 			</p:commandLink>
 		</div>
 		
 		
-		<p:outputPanel id="oupInfoAdicionalMain">
+		<p:outputPanel id="oupInfoAdicionalMain" styleClass="mt-3">
 			
-			<div class="flex">
-				<div class="flex-grow-1 flex">
-					<span class="text-gray-700 font-medium Fs11">Nombre</span>
+			<div class="grid">
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Nombre</span>
 				</div>
-				<div class="flex-grow-1 flex pl-1">
-					<span class="text-gray-700 font-medium Fs11">Descripción</span>
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Descripción</span>
 				</div>
 			</div>
-			
 			<div class="mainInfoDT overflow-auto mt-1 p-0" style="min-height: 100px;max-height: 200px;">
 				<c:forEach items="#{compFacCtrl.infoadicionalList}" var="info" varStatus="metadata">
-					<div class="flex mb-1">
-						<div class="flex-grow-1 flex flex-column pr-1">
-							<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalNombre" styleClass="block"/>
+					<div class="grid">
+						<div class="col-6">
+							<div class="flex gap-2">
+								<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" 
+									immediate="true" 
+									update=":formMain:oupInfoAdicionalMain" 
+									disabled="#{compFacCtrl.enableAccion}">
+									<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
+									<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+								<div class="flex-1">
+									<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="Requerido"/>
+									<p:message for="inpInfoAdicionalNombre" styleClass="block m-0 p-0"/>
+								</div>
+							</div>
 						</div>
-						<div class="flex-grow-1 flex flex-column">						
-							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalValor" styleClass="block"/>
-						</div>
-						<div class="flex-grow-0 flex px-2">
-							<p:commandLink  action="#{compFacCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:oupInfoAdicionalMain" disabled="#{compFacCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{info}" target="#{compFacCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
+						<div class="col-6">						
+							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="Requerido"/>
+							<p:message for="inpInfoAdicionalValor" styleClass="block m-0 p-0"/>
 						</div>
 					</div>
 				</c:forEach>
 			</div>
+			
+			
+			
 		</p:outputPanel>
 		
 	</div>	

@@ -20,7 +20,7 @@
 	<div class="card">
 		
 		<div class="flex justify-content-between">
-			<span class="fs-14 text-black font-semibold">Compra</span>
+			<span class="fs-14 text-gray-900 font-semibold">Compra</span>
 			<div>
 				<span class="fs-11 text-gray-500 mr-1">Establecimiento - </span>
 				<span class="fs-12 text-primary-600 font-semibold">#{appSessionCtrl.formatoCadena(adquisicionFrmCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
@@ -125,7 +125,6 @@
 						itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
 						
 				</p:selectOneMenu>
-				<!-- <p:message for="somAdqTipComprobante" styleClass="block p-o m-0"/> -->
 	        </div>
 	        <div class="field col-12 md:col-6">
 	            <label for="claAdqFechaCompra" class="text-gray-700 font-medium fs-11">Fecha de Emisión</label>
@@ -134,7 +133,6 @@
 					locale="es" 
 					requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
 				</p:calendar>
-				<!-- <p:message for="claAdqFechaCompra" styleClass="block m-0 p-0"/> -->
 	        </div>
 	        <div class="field col-12 md:col-6">
 	            <label for="inpAdqNumFac" class="text-gray-700 font-medium fs-11">Número de Comprobante</label>
@@ -145,25 +143,20 @@
 					validatorMessage="FORMATO 999-999-999999999"
 					placeholder="FORMATO : 999-999-999999999" >
 					<f:converter converterId="formatoNumComprobanteConverter"/>
-				</p:inputMask>
-				<!-- <p:message for="inpAdqNumFac" styleClass="block m-0 p-0"/> --> 	
+				</p:inputMask> 	
             </div>
             <div class="field col-12 md:col-6">
 	            <label for="inpAdqNumAut" class="text-gray-700 font-medium fs-11">Número de Autorización</label>
 	            <p:inputText id="inpAdqNumAut" value="#{adquisicionFrmCtrl.adquisicionSelected.autorizacion}" required="false" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="150" placeholder="Formato: 1123411234600" validatorMessage="SOLO NUMEROS">
 					<f:validateRegex pattern="^\d+$"/>
 				</p:inputText>
-				<!-- <p:message for="inpAdqNumAut" styleClass="block m-0 p-0"/> -->
 	        </div>
 	        
 	    </div>
-	    
-	    <!-- <div class="w-full divisor-full">
-		    <span class="fs-14 font-bold text-gray-800 mr-1">Registrar retención</span>
-	    </div> -->
 	    <p:divider align="left">
             <span class="text-gray-900 fw-5 fs-14">Registrar retención</span>
 	    </p:divider>
+	    
 	    <p:remoteCommand name="calcularretencionRenta" update=" :formMain:oupPagoDT :formMain:intRetRenta" process="@this :formMain:ovlAdCalValorRenta" action="#{adquisicionFrmCtrl.calcularRettencionAction('RENTA')}"/>
 	 	<p:remoteCommand name="calcularretencionIva" update=":formMain:oupPagoDT :formMain:intRetIva" process="@this :formMain:ovlAdCalValorIva" action="#{adquisicionFrmCtrl.calcularRettencionAction('IVA')}"/>
 	    <div class="formgrid grid mt-2">
@@ -235,9 +228,7 @@
         		</div>
 	        </div>
 	    </div>
-	    <!-- <div class="w-full divisor-full">
-		    <span class="fs-14 font-bold text-gray-800 mr-1">Valor a pagar</span>
-	    </div> -->
+	    
 	    <p:divider align="left">
             <span class="text-gray-900 fw-5 fs-14">Valor a pagar</span>
 	    </p:divider>
@@ -277,10 +268,10 @@
 	    				
 			    		<div class="flex align-items-stretch #{adquisicionFrmCtrl.adquisicionSelected.totalpagar.doubleValue()==0 or adquisicionFrmCtrl.adquisicionSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-green-500 text-white border-round" style="height: 100%;">
 			    			<div class="flex align-items-center justify-content-center w-full">
-				    				<div class="flex flex-inline gap-2 align-items-center">
-				    					<i class="fa-solid fa-money-check-dollar fs-35"></i>
-			    						<span class="fs-16 text-white font-medium">Pagar</span>
-				    				</div>
+			    				<div class="flex flex-inline gap-2 align-items-center">
+			    					<i class="fa-solid fa-money-check-dollar fs-35"></i>
+		    						<span class="fs-16 text-white font-medium">Pagar</span>
+			    				</div>
 			    			</div>
 			    		</div>
 	    			</p:commandLink>
