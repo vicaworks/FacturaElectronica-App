@@ -285,6 +285,9 @@ public class Cabecera implements Serializable {
     private List<Impuestoretencion> impuestoretencionList;
     
     @Transient
+    private List<Cabeceraadjunto> cabeceraadjuntoList; 
+    
+    @Transient
     private BigDecimal total = BigDecimal.ZERO;
     
     @Transient
@@ -1678,5 +1681,19 @@ public class Cabecera implements Serializable {
 	 */
 	public void setFilterComprobanteTransportista(String filterComprobanteTransportista) {
 		this.filterComprobanteTransportista = filterComprobanteTransportista;
+	}
+
+	/**
+	 * @return the cabeceraadjuntoList
+	 */
+	public List<Cabeceraadjunto> getCabeceraadjuntoList() {
+		return cabeceraadjuntoList;
+	}
+
+	/**
+	 * @param cabeceraadjuntoList the cabeceraadjuntoList to set
+	 */
+	public void setCabeceraadjuntoList(List<Cabeceraadjunto> cabeceraadjuntoList) {
+		this.cabeceraadjuntoList = cabeceraadjuntoList;
 	}
 }

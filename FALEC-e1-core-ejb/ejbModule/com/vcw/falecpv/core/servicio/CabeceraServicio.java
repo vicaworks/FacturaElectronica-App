@@ -103,6 +103,9 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 	@Inject
 	private ConfiguracionServicio configuracionServicio;
 	
+	@Inject
+	private CabeceraadjuntoServicio cabeceraadjuntoServicio;
+	
 	private List<ComprobanteEstadoEnum> estadosAnulacion = Arrays.asList(new ComprobanteEstadoEnum[] {ComprobanteEstadoEnum.ANULADO,ComprobanteEstadoEnum.RECIBIDO_SRI,ComprobanteEstadoEnum.PENDIENTE});
 	
 	public CabeceraServicio() {
@@ -391,6 +394,15 @@ public class CabeceraServicio extends AppGenericService<Cabecera, String> {
 			Adquisicion adquisicion = adquisicionServicio.consultarByPk(cabecera.getAdquisicion().getIdadquisicion());
 			adquisicion.setEstado("RETENCION");
 			adquisicionServicio.actualizar(adquisicion);
+		}
+		
+		// 11. Guardar adjuntos de la cabecera 
+		if(cabecera.getCabeceraadjuntoList() != null && !cabecera.getCabeceraadjuntoList().isEmpty()) {
+			cabeceraadjuntoServicio.guardarAdjuntos(
+					cabecera.getIdcabecera(), 
+					cabecera.getEstablecimiento().getIdestablecimiento(), 
+					cabecera.getCabeceraadjuntoList()
+				);
 		}
 		
 		return cabecera;

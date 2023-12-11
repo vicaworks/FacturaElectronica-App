@@ -3,6 +3,7 @@
  */
 package com.vcw.falecpv.web.ctrl.comprobantes.fac;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+
+import org.primefaces.event.FileUploadEvent;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
@@ -27,6 +30,7 @@ import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
 import com.vcw.falecpv.core.exception.ExisteNumDocumentoException;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
+import com.vcw.falecpv.core.modelo.persistencia.Cabeceraadjunto;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Ice;
 import com.vcw.falecpv.core.modelo.persistencia.Iva;
@@ -34,6 +38,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Pago;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.modelo.persistencia.Totalimpuesto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.CabeceraadjuntoServicio;
 import com.vcw.falecpv.core.servicio.ClienteServicio;
 import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.ContadorPkServicio;
@@ -113,6 +118,9 @@ public class CompFacCtrl extends BaseCtrl {
 	
 	@EJB
 	private SriDispacher sriDispacher;
+	
+	@EJB
+	private CabeceraadjuntoServicio cabeceraadjuntoServicio;
 	
 	
 	private Cabecera cabecerSelected;
@@ -902,14 +910,18 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected = cabeceraServicio.consultarByPk(idFactura);
 		
 		if(cabecerSelected==null) {
-			return "NO EXISTE LA FACTURA SELECCIONADA";
-		}
+			return "No existe la factura seleccionada";
+		} 
 		
 		// analizar estado para habilitar crud
 		habilitarCrud(cabecerSelected.getEstado());
 		
 		detalleFacList = detalleServicio.getDetalleDao().getByIdCabecera(idFactura);
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idFactura);
+		// adjuntos
+		cabecerSelected.setCabeceraadjuntoList(
+			cabeceraadjuntoServicio.getCabeceraadjuntoDao().getByCabecera(cabecerSelected.getIdcabecera())
+				);
 		totalizar();
 		pagoList = pagoServicio.getPagoDao().getByIdCabecera(idFactura);
 		pagoList.stream().forEach(x->{
@@ -946,6 +958,26 @@ public class CompFacCtrl extends BaseCtrl {
 		}
 
 		return null;
+	}
+	
+	public void handleUpload(FileUploadEvent event) throws IOException {
+	
+		if(cabecerSelected.getCabeceraadjuntoList() == null) cabecerSelected.setCabeceraadjuntoList(new ArrayList<>());
+		
+		
+		if(cabecerSelected.getCabeceraadjuntoList().stream().
+				filter(x->x.getNombreadjunto().equalsIgnoreCase(
+						event.getFile().getFileName())).count() > 0) {
+			getMessageCommonCtrl().crearMensaje("Error", 
+					"Ya existe el archivo : " + event.getFile().getFileName(), 
+					Message.ERROR);
+			return;			
+		}
+		// agrega el file a la lista
+		Cabeceraadjunto cabeceraadjunto = new Cabeceraadjunto();
+		cabeceraadjunto.setNombreadjunto(event.getFile().getFileName());
+		cabeceraadjunto.setStream(event.getFile().getContent());
+		cabecerSelected.getCabeceraadjuntoList().add(cabeceraadjunto);		
 	}
 	
 	/**
