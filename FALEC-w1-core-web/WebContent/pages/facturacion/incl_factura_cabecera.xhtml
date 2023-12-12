@@ -11,8 +11,19 @@
 		
 		.pvPagoDetalleDT .ui-datatable-scrollable-body{
 			
-		}		
+		}
 		
+		.class-adjuntos .ui-fileupload .ui-fileupload-content {display: none;}		
+		.class-adjuntos .ui-fileupload .ui-fileupload-buttonbar {border: none; padding: 0;}
+		.class-adjuntos .ui-button.ui-button-success.ui-button-outlined,
+		.class-adjuntos .ui-button.ui-button-success.ui-button-outlined.ui-state-hover {
+			border: none;
+			color: #17212f;
+		} 
+		.class-adjuntos .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose .ui-icon {display: none;}
+		.class-adjuntos .ui-button.ui-button-text-icon-left .ui-button-text {
+		    padding: 0.25rem 1rem 0rem 0rem;
+		} 
 	</style>
 	<script >
 		function seleccionarInputListaInfo(clase,mainDiv)
@@ -194,6 +205,15 @@
 				</div>
 			</f:subview>
 		</p:outputPanel>
+		
+		<!--
+			Eliminar estos div si se habilita la retencion 
+			<p:outputPanel id="intRetRenta"></p:outputPanel>
+			<p:outputPanel id="intRetRentaPorcentaje"></p:outputPanel>
+			<p:outputPanel id="intRetIva"></p:outputPanel>
+			<p:outputPanel id="intRetIvaPorcentaje"></p:outputPanel>
+		 -->
+			
 		<p:divider align="left">
             <span class="text-gray-900 font-medium fs-14">Registrar retención</span>
 	    </p:divider>
@@ -408,7 +428,65 @@
 			
 		</p:outputPanel>
 		
-	</div>	
+		
+	</div>
+		
+	<div class="card">	
+	
+		<span class="block text-gray-900 fs-14 fw-5">Documentos Adjuntos</span>
+		<small class="block text-gray-600 fs-11">Archivos anexados al email de envío al cliente</small>
+		
+		<div class="class-adjuntos flex mt-2 gap-2 align-items-end">
+			<i class="fa fa-ellipsis-v fs-14"/>
+			<p:fileUpload id="fileUploadAdjuntosFactura"
+				listener="#{compFacCtrl.handleUpload}"
+				label="Agregar Archivo" 
+				sizeLimit="50485760"
+				invalidSizeMessage="#{msg['file.size']} 4MB" 
+				mode="advanced" 
+				dragDropSupport="true" 
+				auto="true"
+				update="@form:oupAdjuntos"
+				previewWidth="0"
+				chooseButtonStyleClass="ui-button-outlined ui-button-success fs-11"
+				dropZone="@form:oupAdjuntos"
+				multiple="true">
+			</p:fileUpload>
+		</div>
+	
+		<p:outputPanel id="oupAdjuntos" styleClass="mt-3">
+			
+			<div class="grid">
+				<div class="col">
+					<span class="text-gray-900 fs-12">Nombre adjunto</span>
+				</div>
+			</div>
+			<div class="mainInfoDT overflow-auto mt-1 p-0" style="min-height: 100px;max-height: 200px;">
+				<c:forEach items="#{compFacCtrl.cabecerSelected.cabeceraadjuntoList}" var="adj" varStatus="metadata">
+					<div class="grid">
+						<div class="col">
+							<div class="flex gap-2">
+								<p:commandLink  action="#{compFacCtrl.eliminarAdjuntos(adj.nombreadjunto)}" 
+									immediate="true" 
+									update="@form:oupAdjuntos" 
+									disabled="#{compFacCtrl.enableAccion}">
+									<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+								<div class="flex-1">
+									<p:inputText styleClass="w-full" value="#{adj.nombreadjunto}" required="true" requiredMessage="Requerido" readonly="true"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+			
+			
+			
+		</p:outputPanel>
+		
+	</div>
 	
 	
 </ui:composition>

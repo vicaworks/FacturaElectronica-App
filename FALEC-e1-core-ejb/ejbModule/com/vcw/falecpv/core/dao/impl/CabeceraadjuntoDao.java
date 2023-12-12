@@ -36,7 +36,7 @@ public class CabeceraadjuntoDao extends AppGenericDao<Cabeceraadjunto, String> {
 	public List<Cabeceraadjunto> getByCabecera(String idCabecera)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createQuery("SELECT c FROM cabeceraadjunto c WHERE c.cabecera.idcabecera=:id ORDER BY c.nombreadjunto");
+			Query q = getEntityManager().createQuery("SELECT c FROM Cabeceraadjunto c WHERE c.cabecera.idcabecera=:id ORDER BY c.nombreadjunto");
 			q.setParameter("id", idCabecera);
 			
 			return q.getResultList();
@@ -56,7 +56,7 @@ public class CabeceraadjuntoDao extends AppGenericDao<Cabeceraadjunto, String> {
 	public int eliminarByCabecera(String idCabecera)throws DaoException{
 		try {
 			
-			Query q = getEntityManager().createNativeQuery("DELETE FROM cabeceraadjunto WHERE idcabecera=:id");
+			Query q = getEntityManager().createNativeQuery("DELETE FROM Cabeceraadjunto WHERE idcabecera=:id");
 			q.setParameter("id", idCabecera);
 			
 			return q.executeUpdate();

@@ -980,6 +980,27 @@ public class CompFacCtrl extends BaseCtrl {
 		cabecerSelected.getCabeceraadjuntoList().add(cabeceraadjunto);		
 	}
 	
+	public void eliminarAdjuntos(String nombre) {
+		try {
+			if(!cabecerSelected.getCabeceraadjuntoList().isEmpty()) {
+				int index = 0;
+				for (Cabeceraadjunto cabeceraadjunto : cabecerSelected.getCabeceraadjuntoList()) {
+					if(cabeceraadjunto.getNombreadjunto().equalsIgnoreCase(nombre)) {
+						break;
+					}
+					index++;
+				}
+				cabecerSelected.getCabeceraadjuntoList().remove(index);				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+		}
+	}
+	
 	/**
 	 * @return the clienteServicio
 	 */

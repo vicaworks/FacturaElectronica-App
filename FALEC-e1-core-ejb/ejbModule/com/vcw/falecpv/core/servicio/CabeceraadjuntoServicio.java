@@ -26,6 +26,7 @@ public class CabeceraadjuntoServicio extends AppGenericService<Cabeceraadjunto, 
 	@Inject
 	private ContadorPkServicio contadorPkServicio;
 	
+	@Inject
 	private CabeceraadjuntoDao cabeceraadjuntoDao;
 	
 	/**
