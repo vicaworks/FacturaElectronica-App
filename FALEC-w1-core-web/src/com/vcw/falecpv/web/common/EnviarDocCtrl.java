@@ -22,6 +22,7 @@ import com.servitec.common.util.TextoUtil;
 import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Infoadicional;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.CabeceraadjuntoServicio;
 import com.vcw.falecpv.core.servicio.InfoadicionalServicio;
 import com.vcw.falecpv.core.util.HtmlUtil;
 import com.vcw.falecpv.web.ctrl.adquisicion.RetencionMainCtrl;
@@ -52,12 +53,12 @@ public class EnviarDocCtrl extends BaseCtrl {
 	private CabeceraServicio cabeceraServicio;
 	@EJB
 	private InfoadicionalServicio infoadicionalServicio;
-	
 	@EJB
 	private SriDispacher sriDispacher;
-	
 	@EJB
 	private EmailComprobanteServicio emailComprobanteServicio;
+	@EJB
+	private CabeceraadjuntoServicio cabeceraadjuntoServicio;
 	
 	private String idCabecera;
 	private Cabecera cabeceraSelected;
@@ -103,6 +104,8 @@ public class EnviarDocCtrl extends BaseCtrl {
 		cabeceraSelected = cabeceraServicio.consultarByPk(idCabecera);
 		infoadicionalList = null;
 		infoadicionalList = infoadicionalServicio.getInfoadicionalDao().getByIdCabecera(idCabecera);
+		// adjuntos
+		adjuntosMap = cabeceraadjuntoServicio.getByCabecera(idCabecera);
 		// cliente
 		if(!cabeceraSelected.getTipocomprobante().getIdentificador().equals("06")) {
 			if(cabeceraSelected.getCliente()!=null && cabeceraSelected.getCliente().getCorreoelectronico()!=null) {
@@ -156,6 +159,14 @@ public class EnviarDocCtrl extends BaseCtrl {
 			}
 			
 			contenido = contenido!=null?HtmlUtil.sustituirCaracteres(contenido):null;
+			
+			// guardar adjuntos
+			if(adjuntosMap != null && !adjuntosMap.isEmpty()) {
+				cabeceraadjuntoServicio.guardarAdjuntos(
+						cabeceraSelected.getIdcabecera(), 
+						cabeceraSelected.getEstablecimiento().getIdestablecimiento(), 
+						adjuntosMap);
+			}
 			
 			emailComprobanteServicio.enviarComprobanteFacade(null, null, adjuntosMap, idCabecera, null, subject, contenido, correoList,false);
 			actualizarPantalla();

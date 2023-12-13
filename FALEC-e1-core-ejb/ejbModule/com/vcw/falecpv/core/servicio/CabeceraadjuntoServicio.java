@@ -3,7 +3,10 @@
  */
 package com.vcw.falecpv.core.servicio;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -76,4 +79,49 @@ public class CabeceraadjuntoServicio extends AppGenericService<Cabeceraadjunto, 
 		}
 	}
 
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @return
+	 * @throws DaoException
+	 */
+	public Map<String, byte[]> getByCabecera(String idCabecera)throws DaoException{
+		try {
+			Map<String, byte[]> adjuntos = new HashMap<>();
+			List<Cabeceraadjunto> cabeceraadjuntoList = cabeceraadjuntoDao.getByCabecera(idCabecera);
+			for (Cabeceraadjunto cabeceraadjunto : cabeceraadjuntoList) {
+				adjuntos.put(cabeceraadjunto.getNombreadjunto(), cabeceraadjunto.getStream());
+			}
+			return adjuntos;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param idCabecera
+	 * @param idEstablecimiento
+	 * @param adjuntos
+	 * @throws DaoException
+	 * @throws ParametroRequeridoException
+	 */
+	public void guardarAdjuntos(String idCabecera,String idEstablecimiento ,Map<String, byte[]> adjuntos)throws DaoException, ParametroRequeridoException{
+		try {
+			List<Cabeceraadjunto> cabeceraadjuntoList = new ArrayList<>();
+			for (String key : adjuntos.keySet()) {
+				Cabeceraadjunto cabeceraadjunto = new Cabeceraadjunto();
+				cabeceraadjunto.setNombreadjunto(key);
+				cabeceraadjunto.setStream(adjuntos.get(key));
+				cabeceraadjuntoList.add(cabeceraadjunto);
+			}
+			guardarAdjuntos(idCabecera, idEstablecimiento, cabeceraadjuntoList);
+			
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+	
 }
