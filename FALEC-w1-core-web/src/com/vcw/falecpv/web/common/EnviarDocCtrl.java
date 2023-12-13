@@ -173,6 +173,7 @@ public class EnviarDocCtrl extends BaseCtrl {
 			getMessageCommonCtrl().crearMensaje("Ok", 
 					"Enviado correctamente", 
 					Message.INFO);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			getMessageCommonCtrl().crearMensaje("Error", 
