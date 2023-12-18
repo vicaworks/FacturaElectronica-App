@@ -10,22 +10,21 @@
 	<style type="text/css">
 		.retencionDetDT .ui-datascroller-content{
 			min-height: 30vh !important;
-			height: calc(100vh - 335px)!important;
+			height: calc(100vh - 300px)!important;
 		}
-		.oupRTDetalle .ui-inputnumber .ui-inputfield{width: 100%!important;text-align: right;}
 	</style>
 	
 	<p:outputLabel id="oupRTDetalle" styleClass="w-full oupRTDetalle">
-		<div class="card card-w-title">
+		<div class="card ">
 			
-			<span class="text-gray-700 font-medium mb-1">Impuesto</span>
-			<div class="grid mt-1">
+			<span class="text-gray-900 font-medium mb-1 block">Impuesto</span>
+			<div class="grid">
 				<div class="col-12 md:col-4">
 					<p:selectOneMenu id="somRtnImpuesto"
 								value="#{retencionFrmCtrl.retencionimpuesto}"
 								converter="omnifaces.SelectItemsConverter"
 								required="false"
-								requiredMessage="REQUERIDO"
+								requiredMessage="Requerido"
 								style="width:100%;"
 								filter="true" filterMatchMode="contains">
 						<f:selectItem itemLabel="Seleccionar ..."
@@ -36,8 +35,7 @@
 							
 						<p:ajax event="change" listener="#{retencionFrmCtrl.cambioImpuesto()}" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle"/>
 							
-					</p:selectOneMenu>
-					<p:message for="somRtnImpuesto" styleClass="block"/>					
+					</p:selectOneMenu>					
 				</div>
 				<div class="col-12 md:col-8 overflow-hidden">
 					<p:selectOneMenu id="somRtnImpuestoDet"
@@ -45,7 +43,7 @@
 								converter="omnifaces.SelectItemsConverter"
 								required="false"
 								style="width:100%;"
-								requiredMessage="REQUERIDO"
+								requiredMessage="Requerido"
 								filter="true" filterMatchMode="contains" onchange="PrimeFaces.focus('formMain:idRtnBaseImponible');">
 								
 						<f:selectItem itemLabel="Seleccionar ..."
@@ -57,21 +55,19 @@
 						<p:ajax event="change" listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle"/>
 						
 					</p:selectOneMenu>
-					<p:message for="somRtnImpuestoDet" styleClass="block"/>
 				</div>
 			</div>
-			<div class="EmptyBox5"/>
-			<div class="flex">
-				<div class="flex-grow-1 flex flex-column pr-1">
-					<span class="text-gray-700 font-medium mb-1">Base Imponible</span>
+			<div class="flex gap-1 ui-fluid">
+				<div class="flex-grow-1 flex flex-column">
+					<span class="text-gray-900 font-medium mb-1">Base Imponible</span>
 					<p:inputNumber id="idRtnBaseImponible" value="#{retencionFrmCtrl.retenciondetalleSelected.baseimponible}" symbol="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" 
                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
                			<p:ajax listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle"/>
                		</p:inputNumber>
                		<p:message for="idRtnBaseImponible" styleClass="block"/>
 				</div>
-				<div class="flex-grow-1 flex flex-column pr-1">
-					<span class="text-gray-700 font-medium mb-1">% Retención</span>
+				<div class="flex-grow-1 flex flex-column">
+					<span class="text-gray-900 font-medium mb-1">% Retención</span>
 					<p:inputNumber id="idRtnPorcentajeRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.porcentajeretener}" symbol="%" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" 
                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
                			<p:ajax listener="#{retencionFrmCtrl.cambioCalcularImpuesto()}" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle"/>
@@ -79,13 +75,13 @@
                		<p:message for="idRtnPorcentajeRetencion" styleClass="block"/>
 				</div>
 				<div class="flex-grow-1 flex flex-column">
-					<span class="text-gray-700 font-medium mb-1">Valor</span>
+					<span class="text-gray-900 font-medium mb-1">Valor</span>
 					<p:inputNumber id="idRtnValorRetencion" value="#{retencionFrmCtrl.retenciondetalleSelected.valorretenido}" symbol="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}" 
                			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
                		</p:inputNumber>
                		<p:message for="idRtnValorRetencion" styleClass="block"/>
 				</div>
-				<div class="flex-grow-0 flex flex-column pl-1">
+				<div class="flex-grow-0 flex flex-column">
 					<span class="text-white mb-1">OP</span>
 					<p:commandButton  id="cmdAdqAgregarDetalle" 
 						icon="fa fa-plus"
@@ -93,45 +89,52 @@
 						action="#{retencionFrmCtrl.agregarDetalle()}"
 						update=":formMain:oupRTDetalle"
 						process="@this :formMain:oupRTDetalle"
-						styleClass="ui-button-outlined">
+						styleClass="ui-button-primary">
 					</p:commandButton>
 				</div>				
 			</div>
 			<div class="EmptyBox10"/>		
 			<p:dataScroller id="retencionDetDT" value="#{retencionFrmCtrl.retenciondetalleList}" var="d" chunkSize="10" mode="inline" styleClass="retencionDetDT">
 				<f:facet name="header">
-	            	<i class="fa fa-list mr-1"></i>
-	                Detalle Retención
+	            	<div class="flex">
+	            		<span class="text-gray-900 fs-14">Detalle retención</span>
+	            	</div>
 	            </f:facet>
 	            
 	            <div class="flex border-bottom-1 border-gray-100 py-2" style="min-height:75px;">
-	            	<div class="flex-grow-1 flex flex-column pl-1 justify-content-between">
-	            		<div class="flex flex-column pr-2">
-		            		<span class="text-black font-medium">#{d.retencionimpuestodet.nombre}</span>
-		            		<div>
-		            			<span class="text-gray-600 mr-1">Código :</span>
-			            		<span class="text-black font-light">#{d.retencionimpuestodet.codigo}</span>
+	            	<div class="flex-grow-1 flex flex-column pl-1 justify-content-between gap-2">
+	            		<div class="flex flex-column">
+		            		<span class="text-gray-900 font-medium fs-12">#{d.retencionimpuestodet.nombre}</span>
+		            		<div class="flex gap-1">
+		            			<span class="text-gray-600">Código :</span>
+			            		<span class="text-gray-800">#{d.retencionimpuestodet.codigo}</span>
 		            		</div>
 	            		</div>
-	            		<p:commandLink styleClass="mt-3" action="#{retencionFrmCtrl.eliminarDetalle()}" title="ELIMINAR" update=":formMain:oupRTDetalle" process="@this :formMain:oupRTDetalle" disabled="#{retencionFrmCtrl.enableAccion}">
-	            			<i class="fa fa-trash-o Fs11 mr-1 text-pink-400"></i>
-	            			<span class="Fs12 text-pink-400">ELIMINAR</span>
-	            			<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							<f:setPropertyActionListener value="#{d}" target="#{retencionFrmCtrl.retenciondetalleSelected}"/>
-	            		</p:commandLink>
+	            		<p:commandLink id="clkFacDelete" 
+	         						title="Eliminar" 
+	         						action="#{retencionFrmCtrl.eliminarDetalle()}" 
+	         						update=":formMain:oupRTDetalle" 
+	         						process="@this :formMain:oupRTDetalle" 
+	         						disabled="#{retencionFrmCtrl.enableAccion}" 
+	         						styleClass="p-3 det-item-hover" 
+	          						style="border-radius:100%; border: 1px solid #b3d7ff;width:4.1rem;height:4.1rem;">
+	          					<i class="fa-regular fa-trash-can fs-18 text-gray-900"></i>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							<f:setPropertyActionListener value="#{d}" target="#{retencionFrmCtrl.retenciondetalleSelected}"/>								
+						</p:commandLink>
 	            	</div>
-	            	<div class="flex-grow-0 flex flex-column justify-content-top align-items-end pr-2" style="min-width:60px;">
-	            		<span class="Fs9 text-gray-600 mb-1">Base Imponible</span>
-	            		<h:outputText value="#{d.baseimponible}" styleClass="text-gray-900 Fs12 mb-1">
+	            	<div class="flex-grow-0 flex flex-column justify-content-top align-items-end gap-1" style="min-width:60px;">
+	            		<span class="fs-10 text-gray-600">Base Imponible</span>
+	            		<h:outputText value="#{d.baseimponible}" styleClass="text-gray-900 fs-12">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
 						</h:outputText>
-						<span class="Fs9 text-gray-600 mb-1">% Retención</span>
-						<h:outputText value="#{d.porcentajeretener}" styleClass="text-gray-900 Fs12">
+						<span class="fs-10 text-gray-600">% Retención</span>
+						<h:outputText value="#{d.porcentajeretener}" styleClass="text-gray-900 fs-12">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoNumber}"/>
 						</h:outputText>
 	            	</div>
-	            	<div class="flex-grow-0 flex flex-column text-right align-self-center pr-2" style="min-width:100px;">
-	            		<h:outputText value="#{d.valorretenido}" styleClass="Fs16 text-black font-medium">
+	            	<div class="flex-grow-0 flex flex-column text-right align-self-center" style="min-width:150px;">
+	            		<h:outputText value="#{d.valorretenido}" styleClass="fs-16 text-gray-900 font-medium">
 							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 						</h:outputText>
 	            	</div>
@@ -139,15 +142,13 @@
 	            
 	            
 	        </p:dataScroller>
-	        <div class="EmptyBox5"/>
-	        <div class="w-full p-3 text-right">
-	        	<span class="Fs12 text-gray-500 mr-1">TOTAL</span>
-	        	<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="Fs22 text-blue-700 font-bold">
+	        <div class="flex justify-content-end gap-2 align-items-baseline py-3">
+	        	<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.totalretencion}" styleClass="fs-25 text-primary-600 font-medium">
 					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 				</h:outputText>
+	        	<span class="fs-12 text-gray-500">Total</span>
 	        </div>
 		</div>
 	</p:outputLabel>
-	<div class="EmptyBox10"/>
 				
 </ui:composition>

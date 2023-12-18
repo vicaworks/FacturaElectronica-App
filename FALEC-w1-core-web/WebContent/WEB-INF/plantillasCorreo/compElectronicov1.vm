@@ -172,55 +172,57 @@
 	    		</div>
 	    	#end
 	        
-	        <table class="table-base" border="0" cellspacing="0" cellpadding="0">
-	            <tr>
-	                <td class="header">
-	                    mako&reg;
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="emisor">
-	                    <p style="font-weight:400 ;font-size: 20px;">$emisorNombreComercial</p>
-	                    <p>$emisorRazonSocial</p>
-	                    <p style="font-weight:400 ;font-size: 20px;">RUC : $emisorRuc</p> 
-	                    <p>$emisorDireccion</p>                    
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="comp-electronico-header">
-	                    <p class="ce-uno">$receptorRazonSocial</p>
-	                    <p class="ce-dos">Ha recibido un comprobante Electr&oacute;nico :</p>
-	                    <p class="raya"></p>
-	                    <p class="ce-tres">$receptorNumComprobante</p>                    
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="fecha-emision">
-	                    <p>FECHA : $compFecha</p>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="detalle-comprobante">
-	                    <p class="dc-uno">Valor total del comprobante</p>
-	                    <p class="dc-dos">$compValor</p>
-	                    <p class="raya"></p>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="firma-comprobante">
-	                    <p>Favor no responder este correo, el mismo es generado autom&aacute;ticamente.</p>
-	                    <p>Atentamente.</p>
-	                    <p>$emisorRazonSocial</p>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="footer">
-	                    <p>Documento Electr&oacute;nico emitido por: <span style="font-family: 'Orbitron', sans-serif;">mako&reg;</span></p> 
-	                    <p>Contacto: (+593) 0985688861 / 02-3310 115</p> 
-	                    <p>Email : <a href="mailto:cvillarreal@vicaworks.com">info@vicaworks.com</a></p> 
-	                    <p>power by <a href="www.vicaworks.com">vicaworks</a> - derechos reservados $vcwAnio</p> 
-	                </td>
-	            </tr>
+	        <table role="presentation" class="table-base" border="0" cellspacing="0" cellpadding="0">
+	        	<tbody>
+		            <tr>
+		                <td class="header">
+		                    mako&reg;
+		                </td>
+		            </tr>
+		            <tr>
+		                <td class="emisor">
+		                    <p style="font-weight:400 ;font-size: 20px;">$emisorNombreComercial</p>
+		                    <p>$emisorRazonSocial</p>
+		                    <p style="font-weight:400 ;font-size: 20px;">RUC : $emisorRuc</p> 
+		                    <p>$emisorDireccion</p>                    
+		                </td>
+		            </tr>
+		            <tr>
+		                <td class="comp-electronico-header">
+		                    <p class="ce-uno">$receptorRazonSocial</p>
+		                    <p class="ce-dos">Ha recibido un comprobante Electr&oacute;nico :</p>
+		                    <p class="raya"></p>
+		                    <p class="ce-tres">$receptorNumComprobante</p>                    
+		                </td>
+		            </tr>
+		            <tr>
+		                <td class="fecha-emision">
+		                    <p>FECHA : $compFecha</p>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td class="detalle-comprobante">
+		                    <p class="dc-uno">Valor total del comprobante</p>
+		                    <p class="dc-dos">$compValor</p>
+		                    <p class="raya"></p>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td class="firma-comprobante">
+		                    <p>Favor no responder este correo, el mismo es generado autom&aacute;ticamente.</p>
+		                    <p>Atentamente.</p>
+		                    <p>$emisorRazonSocial</p>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td class="footer">
+		                    <p>Documento Electr&oacute;nico emitido por: <span style="font-family: 'Orbitron', sans-serif;">mako&reg;</span></p> 
+		                    <p>Contacto: (+593) 0985688861 / 02-3310 115</p> 
+		                    <p>Email : <a href="mailto:cvillarreal@vicaworks.com">info@vicaworks.com</a></p> 
+		                    <p>power by <a href="www.vicaworks.com">vicaworks</a> - derechos reservados $vcwAnio</p> 
+		                </td>
+		            </tr>
+	        	</tbody>
 	        </table>
 	    </div>
 	    <div style="width: 100%;display: block;height: 150px;"></div>

@@ -5,7 +5,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-				xmlns:pe="http://primefaces.org/ui/extensions">
+				xmlns:pe="http://primefaces.org/ui/extensions"
+				xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 	
 	<style type="text/css">
 		.heightFormEnvioDoc {
@@ -37,7 +38,7 @@
 				<p:commandButton id="cmdEnviarEmail"
 					value="Enviar email" 
 					icon="fa-regular fa-envelope fs-12" 
-					styleClass="ui-button-outlined min-width-100 fs-12" 
+					styleClass="ui-button-success min-width-100 fs-12" 
 					update="@form #{enviarDocCtrl.updateView}"
 					action="#{enviarDocCtrl.enviarCorreo()}"
 					process="@form" disabled="#{appSessionCtrl.isEnviarEmail(enviarDocCtrl.estadoComprobante)}"/>
@@ -45,7 +46,7 @@
 				<p:commandButton id="cmdEnviarFirmarEmail"
 					value="Firmar y enviar" 
 					icon="fa-solid fa-envelope fs-12" 
-					styleClass="ui-button-outlined min-width-100 fs-12" 
+					styleClass="ui-button-primary ui-button-outlined min-width-100 fs-12" 
 					process="@form" 
 					update="@form #{enviarDocCtrl.updateView}"
 					action="#{enviarDocCtrl.firmarEnviarCorreo()}"
@@ -130,39 +131,48 @@
 							
 							<div class="field">
 								<label class="text-gray-900">Adjuntos</label>
-								<div class="div-upload">
-									<p:fileUpload id="fileUploadComponent"
-										listener="#{enviarDocCtrl.handleUpload}"
-										label="Agregar Archivo" 
-										sizeLimit="50485760"
-										invalidSizeMessage="#{msg['file.size']} 4MB" 
-										mode="advanced" 
-										dragDropSupport="true" 
-										auto="true"
-										update="@form:pnlAdjuntos"
-										previewWidth="0"
-										chooseButtonStyleClass="ui-button-outlined ui-button-success fs-11"
-										dropZone="formEnvioDoc:pnlAdjuntos">
-									</p:fileUpload>
-									<p:panel header="Adjuntos" id="pnlAdjuntos">
-								        <div class="grid m-1 align-items-start">
-								        	<p:repeat var="f" value="#{enviarDocCtrl.adjuntosMap}">
-								        		
-								        		<div class="col-2 text-center" >
-								        			<p:commandLink action="#{enviarDocCtrl.eliminarAdjuntos(f.key)}" process="@this @form:pnlAdjuntos" update="@form:pnlAdjuntos">
-								        				<i class="fa-regular fa-trash-can fs-14 text-gray-900" ></i>
-								        			</p:commandLink>
-								        		</div>
-								        		
-								        		<div class="col-10" >
-								        			<h:outputText value="#{f.key}" styleClass="text-gray-900"/>
-								        		</div>
-								        		
-								        	</p:repeat>
-								        </div>
-								    </p:panel>
-								</div>
 							</div>
+							<div class="class-adjuntos flex my-1 gap-2 align-items-end">
+								<i class="fa fa-ellipsis-v fs-14"/>
+								<p:fileUpload id="fileUploadComponent"
+									listener="#{enviarDocCtrl.handleUpload}"
+									label="Agregar Archivo" 
+									sizeLimit="50485760"
+									invalidSizeMessage="#{msg['file.size']} 4MB" 
+									mode="advanced" 
+									dragDropSupport="true" 
+									auto="true"
+									update="@form:oupAdjuntos"
+									previewWidth="0"
+									chooseButtonStyleClass="ui-button-outlined ui-button-success fs-11"
+									dropZone="formEnvioDoc:oupAdjuntos">
+								</p:fileUpload>
+							</div>
+							
+							<p:outputPanel id="oupAdjuntos">
+												
+								<div class="mainInfoDT overflow-auto mt-2 p-0" style="min-height: 20px;max-height: 200px;">
+									<c:forEach items="#{enviarDocCtrl.adjuntosMap}" var="f" varStatus="metadata">
+										<div class="grid">
+											<div class="col">
+												<div class="flex gap-2">
+													<p:commandLink  action="#{enviarDocCtrl.eliminarAdjuntos(f.key)}" 
+														immediate="true" 
+														process="@this @form:oupAdjuntos" 
+														update="@form:oupAdjuntos">
+														<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+														<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+													</p:commandLink>
+													<div class="flex-1">
+														<p:inputText value="#{f.key}" required="true" requiredMessage="Requerido" readonly="true"/>
+													</div>
+												</div>
+											</div>
+										</div>
+									</c:forEach>
+								</div>
+								
+							</p:outputPanel>	
 							
 						</div>
 						

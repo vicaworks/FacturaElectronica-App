@@ -48,6 +48,7 @@ import com.vcw.falecpv.core.servicio.RetencionimpuestodetServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -141,7 +142,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -167,7 +171,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -251,7 +258,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			consultarRetencionDetalleImpuesto();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -260,7 +270,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			determinarPeriodoFiscal();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -279,7 +292,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -290,12 +306,16 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 			// validar cliente
 			if(retencionSeleccion.getCliente()==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL PROVEEDOR");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos del proveedor", 
+						Message.ERROR);
 				return;
 			}
 			
-			if(retencionSeleccion.getTotalretencion().doubleValue()<=0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE DE RETENCIONES.");
+			if(retenciondetalleList == null || retenciondetalleList.isEmpty()) {
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe detalle de retención", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -304,9 +324,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 					retencionSeleccion.getEstablecimiento().getIdestablecimiento(),
 					retencionSeleccion.getCliente().getIdcliente(), retencionSeleccion.getNumfactura())) {
 				
-				AppJsfUtil.addErrorMessage("formMain", "ERROR",
-						"YA EXISTE UNA RETENCION DE LA FACTURA : " + retencionSeleccion.getNumfactura()
-								+ " DEL PROVEEDOR : " + retencionSeleccion.getCliente().getRazonsocial());
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Ya existe la retención de la Factura : " + retencionSeleccion.getNumfactura()
+						+ " del Proveedor : " + retencionSeleccion.getCliente().getRazonsocial(), 
+						Message.ERROR);
 				return;
 				
 			}
@@ -321,7 +342,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			if(retencionSeleccion.getIdcabecera()!=null) {
 				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(retencionSeleccion.getIdcabecera(), "GUARDAR");
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 			}
@@ -333,7 +356,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 				
 				String analisisEstado = adquisicionServicio.analizarEstado(adquisicionSelected.getIdadquisicion(), adquisicionSelected.getEstablecimiento().getIdestablecimiento(), "RETENCION");
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 				
@@ -341,7 +366,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 				Cabecera r = cabeceraRetencionServicio.getByAdquisicionEstado(adquisicionSelected.getIdadquisicion());
 				if(r!=null && retencionSeleccion.getIdcabecera()!=null) {
 					if(!r.getIdcabecera().equals(retencionSeleccion.getIdcabecera())) {
-						AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, YA EXISTE UNA RETENCION DE LA COMPRA CONE DOCUMENTO : " + retencionSeleccion.getNumfactura());
+						getMessageCommonCtrl().crearMensaje("Error", 
+								"Ya eiste una retención de la compra con númerod e docuemnto: " + retencionSeleccion.getNumfactura(), 
+								Message.ERROR);
 						return;
 					}
 				}
@@ -354,7 +381,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 			// si no existe detalle
 			if(retenciondetalleList==null || retenciondetalleList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO SE PUEDE GUARDAR, NO EXISTE DETALLE DE RETENCIONCIONES");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe detalle de rtenciones.", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -392,15 +421,22 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			}
 			
 			if(retencionSeleccion.isBorrador()) {
-				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE LA " + msg.getString("label.retencion") + " GENERADA CORRECTAMENTE.", "WARNING");
+				getMessageCommonCtrl().crearMensaje("Info", 
+						"Borrador de la " + msg.getString("label.retencion") + " generada correctamente.", 
+						Message.WARNING);
 			}else {
-				messageCtrl.cargarMenssage("OK", msg.getString("label.retencion") + " GENERADA CORRECTAMENTE.", "OK");
+				getMessageCommonCtrl().crearMensaje("OK", 
+						"Retención generado correctamente.", 
+						Message.OK);
 			}
 			
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 			retencionSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			retencionSeleccion.setSecuencial(null);
 			retencionSeleccion.setNumdocumento(null);
@@ -408,7 +444,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			retencionSeleccion.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 			retencionSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			retencionSeleccion.setSecuencial(null);
 			retencionSeleccion.setNumdocumento(null);
@@ -489,7 +528,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			nuevaRetencion();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -499,12 +541,12 @@ public class RetencionFrmCtrl extends BaseCtrl {
 		try {
 			
 			if(retencionimpuesto==null) {
-				AppJsfUtil.addErrorMessage("formMain:somRtnImpuesto", "", "REQUERIDO");
+				AppJsfUtil.addErrorMessage("formMain:somRtnImpuesto", "", "Requerido");				
 				return;
 			}
 			
 			if(retenciondetalleSelected.getRetencionimpuestodet()==null) {
-				AppJsfUtil.addErrorMessage("formMain:somRtnImpuestoDet", "", "REQUERIDO");
+				AppJsfUtil.addErrorMessage("formMain:somRtnImpuestoDet", "", "Requerido");
 				return;
 			}
 			
@@ -515,7 +557,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			// validar si ya existe el impuesto
 			for (Impuestoretencion rd : retenciondetalleList) {
 				if(rd.getRetencionimpuestodet().getCodigo().equals(retenciondetalleSelected.getRetencionimpuestodet().getCodigo())) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", "YA EXISTE EL CODIGO DE RETENCION");
+					getMessageCommonCtrl().crearMensaje("Error", 
+							"Ya existe la retención", 
+							Message.ERROR);
 					return;
 				}
 			}
@@ -531,7 +575,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -563,7 +610,9 @@ public class RetencionFrmCtrl extends BaseCtrl {
 				
 				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(retencionSeleccion.getIdcabecera(), "ELIMINAR_DETALLE");
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 				
@@ -576,7 +625,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -588,7 +640,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -599,7 +654,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -609,7 +667,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			if(retencionSeleccion==null) return;
 			
 			if(criterioProveedor==null || criterioProveedor.trim().length()==0) {
-				AppJsfUtil.addErrorMessage("formMain:inpCriterioProveedor", "ERROR", "REQUERIDO");
+				
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe proveedor", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -617,7 +678,10 @@ public class RetencionFrmCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	

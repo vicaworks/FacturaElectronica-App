@@ -1891,4 +1891,27 @@ body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
 .det-item-hover:hover {
   border-color: #007bff !important;
 }
+
+.class-adjuntos .ui-fileupload .ui-fileupload-content {
+  display: none;
+}
+
+.class-adjuntos .ui-fileupload .ui-fileupload-buttonbar {
+  border: none;
+  padding: 0;
+}
+
+.class-adjuntos .ui-button.ui-button-success.ui-button-outlined,
+.class-adjuntos .ui-button.ui-button-success.ui-button-outlined.ui-state-hover {
+  border: none;
+  color: #17212f;
+}
+
+.class-adjuntos .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose .ui-icon {
+  display: none;
+}
+
+.class-adjuntos .ui-button.ui-button-text-icon-left .ui-button-text {
+  padding: 0.25rem 1rem 0rem 0rem;
+}
 /*# sourceMappingURL=app.css.map */

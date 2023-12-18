@@ -12,16 +12,6 @@
     <ui:define name="head">
         <style type="text/css">
 			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td,
-			body .ui-datatable thead th {vertical-align: top;}
-			
-			.card{margin-bottom: 0.25rem!important;}
-			
-			
         </style>
         <script >
 			$(function () {
@@ -63,14 +53,14 @@
 	    <h:form id="formMain">
 	    	
 	    	<!-- OPCIONES -->
-	    	<div class="card card-w-title" style="margin-top:5px;">
-	    		
-	    		
-	    		<div class="flex">
-	    		
+	    	<div class="tool-bar mb-2">
+	    	
     				<p:commandButton id="cmdRtnNuevo"
-							value="Nuevo" icon="fa fa-plus" 
-							action="#{retencionFrmCtrl.nuevo()}" styleClass="ui-button-success mr-1 #{appSessionCtrl.accesoDisable('mn_compelec_retencion_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
+							value="Nuevo" icon="fa-regular fa-file fs-12" 
+							action="#{retencionFrmCtrl.nuevo()}" 
+							styleClass="fs-12 ui-button-success #{appSessionCtrl.accesoDisable('mn_compelec_retencion_nuevo')?'ui-state-disabled':''}" 
+							update="@form" 
+							immediate="true">
 							
 						<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionSelected}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{retencionFrmCtrl.adquisicionFrmCtrl}"/>
@@ -83,26 +73,24 @@
 					</p:commandButton>
 					
     				<p:commandButton id="cmdrtnGuardar"
-							value="Guardar" icon="fa fa-floppy-o" 
-							action="#{retencionFrmCtrl.guardar()}" styleClass="ui-button-outlined mr-1" update="@form" disabled="#{retencionFrmCtrl.enableAccion}"/>
+							value="Guardar" icon="fa-regular fa-floppy-disk fs-12" 
+							action="#{retencionFrmCtrl.guardar()}" 
+							styleClass="fs-12 ui-button-outlined" 
+							update="@form" 
+							disabled="#{retencionFrmCtrl.enableAccion}"/>
 							
 					<p:commandButton id="cmdImprimir"
-							value="Imprimir" icon="fa fa-print Fs11" title="Imprimir Factura"
-							action="#{retencionFrmCtrl.imprimir()}" styleClass="ui-button-outlined" update="@form">
+							value="Imprimir" icon="fa fa-print fs-12" 
+							title="Imprimir Factura"
+							action="#{retencionFrmCtrl.imprimir()}" 
+							styleClass="fs-12 ui-button-secundary" 
+							update="@form">
 						<f:setPropertyActionListener value="#{rideCtrl}" target="#{retencionFrmCtrl.rideCtrl}"/>		
 					</p:commandButton>
-	    		
-	    		</div>
-	    		
+	    	
 	    	</div>
 	    	
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<div class="grid">
+	    	<div class="grid">
 	    		<div class="col-12 lg:col-5">	    			
 	    			<!-- Detalle de la factura -->
 	    			<ui:include src="./incl_retencion_cabecera.xhtml" />	    			

@@ -13,17 +13,6 @@
 			
 		}
 		
-		.class-adjuntos .ui-fileupload .ui-fileupload-content {display: none;}		
-		.class-adjuntos .ui-fileupload .ui-fileupload-buttonbar {border: none; padding: 0;}
-		.class-adjuntos .ui-button.ui-button-success.ui-button-outlined,
-		.class-adjuntos .ui-button.ui-button-success.ui-button-outlined.ui-state-hover {
-			border: none;
-			color: #17212f;
-		} 
-		.class-adjuntos .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose .ui-icon {display: none;}
-		.class-adjuntos .ui-button.ui-button-text-icon-left .ui-button-text {
-		    padding: 0.25rem 1rem 0rem 0rem;
-		} 
 	</style>
 	<script >
 		function seleccionarInputListaInfo(clase,mainDiv)
@@ -118,6 +107,7 @@
 			</div>
 			
 			<div class="col-12 md:col-6">
+			
 				<div class="field mt-2">
 					<label for="claFacFecha" class="text-gray-900 font-bold">Fecha de Emisión</label>
 					<p:calendar id="claFacFecha" value="#{compFacCtrl.cabecerSelected.fechaemision}"
@@ -125,7 +115,8 @@
 						locale="es" 
 						requiredMessage="Requerido" required="true" styleClass="w-full" placeholder="Fecha emisión">
 					</p:calendar>
-				</div>			
+				</div>
+											
 			</div>
 		
 		</div>

@@ -8,7 +8,9 @@
 				xmlns:of="http://omnifaces.org/functions">
 	
 	<style type="text/css">
-		
+		.ui-calendar .ui-inputfield{
+				width: 100% !important;
+			}
 	</style>
 	<script >
 		function seleccionarInputListaInfo(clase,mainDiv)
@@ -25,93 +27,108 @@
 	</script>
 	
 	<!-- consulta cliente return keycode 13 -->
-	<p:remoteCommand name="buscarProveedor"  action="#{retencionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:msgFormMain :formMain:msgInpCriterioProveedor :formMain:gridCliente"/>
+	<p:remoteCommand name="buscarProveedor"  action="#{retencionFrmCtrl.buscarProveedor()}" process="@this :formMain:inpCriterioProveedor" update=":formMain:gridCliente"/>
 	
-	<div class="card card-w-title">
+	<div class="card">
 		
 		<div class="flex justify-content-between">
-			<span class="Fs14 text-black font-semibold">Retención</span>
+			<span class="fs-14 text-black font-semibold">Retención</span>
 			<div>
-				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
-				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(retencionFrmCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+				<span class="fs-11 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="fs-12 text-primary-600 font-semibold">#{appSessionCtrl.formatoCadena(retencionFrmCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
 			</div>			
 		</div>
 		
-		<p:outputPanel id="gridSecuencial" rendered="#{retencionFrmCtrl.retencionSeleccion.estadoBorrador}" styleClass="mb-2 mt-2">
-			<div class="flex">
-				<div class="flex-grow-0 flex min-width-50 justify-content-start">
-					<p:toggleSwitch value="#{retencionFrmCtrl.retencionSeleccion.borrador}" style="height:24px;">
-			            <p:ajax  
-							process="@this :formMain:gridSecuencial" 
-							update=":formMain:gridSecuencial" 
-							listener="#{retencionFrmCtrl.cambioEstadoBorrador(retencionFrmCtrl.retencionSeleccion)}">
-						</p:ajax>
-			        </p:toggleSwitch>
-					
-				</div>
-				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-					<span class="Fs12 text-black font-semibold">Borrador</span>
-					<span class="Fs10 text-gray-400">La retención se guarda como borrador y permite modificaciones</span>
-				</div>
-			</div>
-			
-			<p:outputPanel rendered="#{not retencionFrmCtrl.retencionSeleccion.borrador}" styleClass="gridSecuencial">
-				<div class="EmptyBox5"/>
-				<div class="flex">
-					<div class="flex-grow-0 flex min-width-50 justify-content-start">
-						<p:toggleSwitch value="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
-				            <p:ajax event="change" 
+		<div class="grid">
+		
+			<div class="col-12 md:col-6">
+				
+				<p:outputPanel id="gridSecuencial" rendered="#{retencionFrmCtrl.retencionSeleccion.estadoBorrador}" styleClass="mb-2 mt-2">
+					<div class="flex">
+						<div class="flex-grow-0 flex min-width-50 justify-content-start">
+							<p:toggleSwitch value="#{retencionFrmCtrl.retencionSeleccion.borrador}" style="height:24px;">
+					            <p:ajax  
 									process="@this :formMain:gridSecuencial" 
-									update=":formMain:gridSecuencial">
+									update=":formMain:gridSecuencial" 
+									listener="#{retencionFrmCtrl.cambioEstadoBorrador(retencionFrmCtrl.retencionSeleccion)}">
 								</p:ajax>
-				        </p:toggleSwitch>
+					        </p:toggleSwitch>
+							
+						</div>
+						<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
+							<span class="fs-12 text-black font-semibold">Borrador</span>
+							<span class="fs-10 text-gray-400">La retención se guarda como borrador y permite modificaciones</span>
+						</div>
 					</div>
-					<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-						<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
-						<span class="Fs10 text-gray-400">Asigna un número de factura de forma manual</span>
-						<p:outputPanel rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" styleClass="mt-2">
-							<div class="flex align-items-center">
-								<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.secuencialEstablecimiento}" styleClass="Fs14"/>
-								<span class="mx-2">-</span>
-								<p:inputMask id="intSecCaja" value="#{retencionFrmCtrl.retencionSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
-								<span class="mx-2">-</span>
-								<p:inputMask id="intSecDocumento" value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+					
+					<p:outputPanel rendered="#{not retencionFrmCtrl.retencionSeleccion.borrador}" styleClass="gridSecuencial">
+						<div class="EmptyBox5"/>
+						<div class="flex">
+							<div class="flex-grow-0 flex min-width-50 justify-content-start">
+								<p:toggleSwitch value="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
+						            <p:ajax event="change" 
+											process="@this :formMain:gridSecuencial" 
+											update=":formMain:gridSecuencial">
+										</p:ajax>
+						        </p:toggleSwitch>
 							</div>
-							<div class="flex">
-								<p:message styleClass="block" for="intSecCaja" />
-								<p:message styleClass="block" for="intSecDocumento" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}"/>
+							<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
+								<span class="fs-12 text-black font-semibold">Asignar Secuencial Comprobante</span>
+								<span class="fs-10 text-gray-400">Asigna un número de factura de forma manual</span>
+								<p:outputPanel rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" styleClass="mt-2">
+									<div class="flex align-items-center">
+										<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.secuencialEstablecimiento}" styleClass="fs-14"/>
+										<span class="mx-2">-</span>
+										<p:inputMask id="intSecCaja" value="#{retencionFrmCtrl.retencionSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL Requerido"/>
+										<span class="mx-2">-</span>
+										<p:inputMask id="intSecDocumento" value="#{retencionFrmCtrl.retencionSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL Requerido"/>
+									</div>
+									<div class="flex">
+										<p:message styleClass="block" for="intSecCaja" />
+										<p:message styleClass="block" for="intSecDocumento" rendered="#{retencionFrmCtrl.retencionSeleccion.editarSecuencial}"/>
+									</div>
+								</p:outputPanel>
 							</div>
-						</p:outputPanel>
+						</div>
+					</p:outputPanel>
+					
+				</p:outputPanel>
+				
+				<p:outputPanel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera!=null and retencionFrmCtrl.retencionSeleccion.estado!='BORRADOR'}" styleClass="mt-2">
+					<div class="flex flex-column">
+						<span class="text-black mb-1">Secuencial Comprobante</span>
+						<span class="fs-16 text-black font-bold">#{retencionFrmCtrl.getFormatoNumDocumento(retencionFrmCtrl.retencionSeleccion.numdocumento)}</span>
 					</div>
-				</div>
-			</p:outputPanel>
+				</p:outputPanel>	
 			
-		</p:outputPanel>
-		
-		<p:outputPanel rendered="#{retencionFrmCtrl.retencionSeleccion.idcabecera!=null and retencionFrmCtrl.retencionSeleccion.estado!='BORRADOR'}" styleClass="mt-2">
-			<div class="flex flex-column">
-				<span class="text-black mb-1">Secuencial Comprobante</span>
-				<span class="Fs16 text-black font-bold">#{retencionFrmCtrl.getFormatoNumDocumento(retencionFrmCtrl.retencionSeleccion.numdocumento)}</span>
 			</div>
-		</p:outputPanel>
-		
-		<div class="field mt-2">
-			<h:outputText value="Fecha de Emisión" styleClass="text-gray-700 font-medium"/>
-			<p:calendar id="claFacFecha" value="#{retencionFrmCtrl.retencionSeleccion.fechaemision}"
-				pattern="dd/MM/yyyy"
-				locale="es" 
-				requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="FECHA EMISION" style="font-size:14px !important;">
-			</p:calendar>
+			
+			<div class="col-12 md:col-6">
+				
+				<div class="field mt-2">
+					<label for="claFacFecha" class="text-gray-900 font-bold">Fecha de Emisión</label>
+					<p:calendar id="claFacFecha" value="#{retencionFrmCtrl.retencionSeleccion.fechaemision}"
+						pattern="dd/MM/yyyy"
+						locale="es" 
+						requiredMessage="Requerido" 
+						required="true"  
+						placeholder="Fecha emisión" 
+						style="font-size:14px !important;">
+					</p:calendar>
+				</div>	
+			
+			</div>
+			
 		</div>
 		
-		<span class="block text-gray-700 font-medium">Proveedor</span>
-		<div class="flex">
+		<label class="text-gray-900 fs-12">Proveedor</label>
+		<div class="flex gap-1">
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
                     <p:inputText id="inpCriterioProveedor"
 						value="#{retencionFrmCtrl.criterioProveedor}" required="false"
-						requiredMessage="REQUERIDO" styleClass="w-full Fs12"
-						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						requiredMessage="Requerido" styleClass="w-full fs-12"
+						maxlength="13" placeholder="C.I. o RUC / Enter para buscar"
 						validatorMessage="SOLO NUMEROS"
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProveedor(); return false;}">
 					<f:validateRegex pattern="^\d+$" />
@@ -121,21 +138,21 @@
 						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
 						<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{listaClienteCtrl.retencionFrmCtrl}"/>
 						<f:setPropertyActionListener value="RETENCION" target="#{listaClienteCtrl.callModule}"/>
-						<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value=":formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
 						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
 					</p:commandButton>
                 </div>
 			</div>
 			<div class="flex-grow-0 flex align-items-center px-1">
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}" process="@this" styleClass="ml-1 mr-2 text-gray-900">
-					<i class="fa fa-plus Fs16">
+					<i class="fa fa-plus fs-16">
 					</i>
 					<f:setPropertyActionListener value="RETENCION" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{retencionFrmCtrl}" target="#{clienteCtrl.retencionFrmCtrl}"/>
 				</p:commandLink>								
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(retencionFrmCtrl.retencionSeleccion.cliente!=null?retencionFrmCtrl.retencionSeleccion.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
-					<i class="fa fa-edit Fs16">
+					<i class="fa fa-edit fs-16">
 					</i>
 					<f:setPropertyActionListener value="RETENCION" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
@@ -143,47 +160,43 @@
 				</p:commandLink>
 			</div>
 		</div>
-		<div class="flex">
-			<p:message id="msgInpCriterioProveedor" for="inpCriterioProveedor" styleClass="w-full block"/>
-		</div>
 		
-		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex " style="height:9rem;">
+		<p:outputPanel id="gridCliente" styleClass="w-full flex " style="height:9rem;">
 			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{retencionFrmCtrl.retencionSeleccion.cliente==null}"/>
 			<f:subview rendered="#{retencionFrmCtrl.retencionSeleccion.cliente!=null}">
-				<div class="flex align-self-center">
-					<div class="flex flex-column">
-						<span class="Fs16 font-bold text-blue-600 mb-1 block">
-							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.razonsocial!=null?retencionFrmCtrl.retencionSeleccion.cliente.razonsocial:'-'}" />
-						</span>
-						<span class="Fs12 font-bold text-gray-600 mb-1 block">
-							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.identificacion!=null?retencionFrmCtrl.retencionSeleccion.cliente.identificacion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.direccion!=null?retencionFrmCtrl.retencionSeleccion.cliente.direccion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="pi pi-phone mr-1"></i>
-							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.telefono!=null?retencionFrmCtrl.retencionSeleccion.cliente.telefono:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="fa fa-envelope-o mr-1 Fs11"></i>
-							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.correoelectronico!=null?retencionFrmCtrl.retencionSeleccion.cliente.correoelectronico:'-'}" />
-						</span>
-						
-					</div>
+				<div class="flex flex-column my-1 gap-1">
+					<span class="fs-16 fw-5 font-bold text-primary-600 block">
+						<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.razonsocial!=null?retencionFrmCtrl.retencionSeleccion.cliente.razonsocial:'-'}" />
+					</span>
+					<span class="fs-12 font-medium text-gray-900 block">
+						<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.identificacion!=null?retencionFrmCtrl.retencionSeleccion.cliente.identificacion:'-'}" />
+					</span>
+					<span class="fs-11 block">
+						<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.direccion!=null?retencionFrmCtrl.retencionSeleccion.cliente.direccion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="pi pi-phone"></i>
+						<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.telefono!=null?retencionFrmCtrl.retencionSeleccion.cliente.telefono:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="fa-regular fa-envelope"></i>
+						<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.cliente.correoelectronico!=null?retencionFrmCtrl.retencionSeleccion.cliente.correoelectronico:'-'}" />
+					</span>
+					
 				</div>
 			</f:subview>
 		</p:outputPanel>
-		<span class="Fs14 text-black font-semibold">Documento Asociado</span>
-		<div class="EmptyBox5"/>
+		<p:divider align="left">
+            <span class="text-gray-900 font-medium fs-14">Documento asociado</span>
+	    </p:divider>
 		<div class="formgrid grid">
 	        <div class="field col-6">
-	            <label for="somRtnTipComprobante" class="text-gray-700 font-medium">Tipo de Comprobante</label>
+	            <label for="somRtnTipComprobante" class="text-gray-900">Tipo de Comprobante</label>
 	            <p:selectOneMenu id="somRtnTipComprobante"
 							value="#{retencionFrmCtrl.retencionSeleccion.tipocomprobanteretencion}"
 							converter="omnifaces.SelectItemsConverter"
 							required="true"
-							requiredMessage="REQUERIDO"
+							requiredMessage="Requerido"
 							styleClass="w-full"
 							filter="true" filterMatchMode="contains">
 					<f:selectItem itemLabel="Seleccionar ..."
@@ -196,77 +209,89 @@
 				<p:message for="somRtnTipComprobante" styleClass="block"/>
 	        </div>
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">Número de Comprobante</label>
-				<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
+	        	<label for="inpRtnNumFac" class="text-gray-900">Número de Comprobante</label>
+				<p:inputMask id="inpRtnNumFac" value="#{retencionFrmCtrl.retencionSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
 					<f:converter converterId="formatoNumComprobanteConverter"/>
 				</p:inputMask>
 				<p:message for="inpRtnNumFac" styleClass="block"/>
 	        </div>
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">Fecha de Emisión</label>
+	        	<label for="inpRtnNumFac" class="text-gray-900">Fecha de Emisión</label>
 	        	<p:calendar id="claRtnFechaCompra" value="#{retencionFrmCtrl.retencionSeleccion.fechaemisiondocasociado}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="w-full">
+					requiredMessage="Requerido" required="true" styleClass="w-full">
 					
 					<p:ajax event="dateSelect" listener="#{retencionFrmCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
 					
 				</p:calendar>
 	        </div>
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium">Periodo Fiscal</label>
+	        	<label for="inpRtnNumFac" class="text-gray-900">Periodo Fiscal</label>
         		<div class="flex align-items-end" style="height:24px;">
 		        	<p:outputPanel id="oupPeriodoFiscal" styleClass="w-full text-right">
-							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.periodofiscal}" styleClass="Fs14"/>
+							<h:outputText value="#{retencionFrmCtrl.retencionSeleccion.periodofiscal}" styleClass="fs-14 text-gray-900"/>
 					</p:outputPanel>
         		</div>
 	        </div>
 	   </div>
 		
 	</div>
-	<div class="card card-w-title">	
+	
+	<div class="card">	
 		
-		<span class="block text-black Fs14 font-medium">Información Adicional</span>
+		<span class="block text-gray-900 fs-14 fw-5">Información Adicional</span>
 		
-		<div class="flex my-2">
-			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-			<p:commandLink action="#{retencionFrmCtrl.agregarInfoAdicional()}" update="@form:oupInfoAdicionalMain" process="@this @form:oupInfoAdicionalMain" oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
-				<i class="Fs12 fa fa-plus mr-1 text-gray-700"/>
-				<span class="text-black">Agregar</span>
+		<div class="flex mt-2 gap-2 align-items-end">
+			<i class="fa fa-ellipsis-v fs-14"/>
+			<p:commandLink action="#{retencionFrmCtrl.agregarInfoAdicional()}" 
+				update="@form:oupInfoAdicionalMain" 
+				process="@this @form:oupInfoAdicionalMain" 
+				oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
+				<!-- <i class="fs-12 fa fa-plus mr-1 text-gray-700"/> -->
+				<span class="text-gray-900 fs-12">Agregar</span>
 			</p:commandLink>
 		</div>
 		
 		
-		<p:outputPanel id="oupInfoAdicionalMain">
+		<p:outputPanel id="oupInfoAdicionalMain" styleClass="mt-3">
 			
-			<div class="flex">
-				<div class="flex-grow-1 flex">
-					<span class="text-black Fs12">Nombre</span>
+			<div class="grid">
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Nombre</span>
 				</div>
-				<div class="flex-grow-1 flex pl-1">
-					<span class="text-black Fs12">Descripción</span>
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Descripción</span>
 				</div>
 			</div>
 			
 			<div class="mainInfoDT overflow-auto mt-1 p-0" style="min-height: 100px;max-height: 200px;">
 				<c:forEach items="#{retencionFrmCtrl.infoadicionalList}" var="info" varStatus="metadata">
-					<div class="flex mb-1">
-						<div class="flex-grow-1 flex flex-column pr-1">
-							<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalNombre" styleClass="block"/>
+					
+					<div class="grid">
+						<div class="col-6">
+							<div class="flex gap-2">
+								<p:commandLink  action="#{retencionFrmCtrl.eliminarInfoAdicional()}" 
+									immediate="true" 
+									update=":formMain:oupInfoAdicionalMain" 
+									disabled="#{retencionFrmCtrl.enableAccion}">
+									<f:setPropertyActionListener value="#{info}" target="#{retencionFrmCtrl.infoadicionalSelected}"/>
+									<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+								
+								<div class="flex-1">
+									<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="Requerido"/>
+									<p:message for="inpInfoAdicionalNombre" styleClass="block m-0 p-0"/>									
+								</div>
+							</div>
 						</div>
-						<div class="flex-grow-1 flex flex-column">						
-							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalValor" styleClass="block"/>
-						</div>
-						<div class="flex-grow-0 flex px-2">
-							<p:commandLink  action="#{retencionFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{retencionFrmCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{info}" target="#{retencionFrmCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
+						<div class="col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="Requerido"/>
+							<p:message for="inpInfoAdicionalValor" styleClass="block m-0 p-0"/>													
 						</div>
 					</div>
+					
 				</c:forEach>
 			</div>
 			
