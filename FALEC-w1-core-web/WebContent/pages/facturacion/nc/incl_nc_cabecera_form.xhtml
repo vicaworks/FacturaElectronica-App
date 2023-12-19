@@ -29,15 +29,15 @@
 	</script>
 	
 	<!-- consulta cliente return keycode 13 -->
-	<p:remoteCommand name="buscarClienteNC"  action="#{notaCreditoCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente"/>
+	<p:remoteCommand name="buscarClienteNC"  action="#{notaCreditoCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:gridCliente"/>
 					
-	<div class="card card-w-title">
+	<div class="card ">
 		
 		<div class="flex justify-content-between">
-			<span class="Fs14 text-black font-semibold">Nota Crédito</span>
+			<span class="fs-14 text-gray-900 font-semibold">Nota Crédito</span>
 			<div>
-				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
-				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(notaCreditoCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+				<span class="fs-11 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="fs-12 text-primary-600 font-semibold">#{appSessionCtrl.formatoCadena(notaCreditoCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
 			</div>			
 		</div>
 		
@@ -53,8 +53,8 @@
 			        </p:toggleSwitch>
 				</div>
 				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-					<span class="Fs12 text-black font-semibold">Borrador</span>
-					<span class="Fs10 text-gray-400">La nota de crédito se guarda como borrador y permite modificaciones</span>
+					<span class="fs-12 text-black font-semibold">Borrador</span>
+					<span class="fs-10 text-gray-400">La nota de crédito se guarda como borrador y permite modificaciones</span>
 				</div>
 			</div>
 			
@@ -70,15 +70,15 @@
 				        </p:toggleSwitch>
 					</div>
 					<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-						<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
-						<span class="Fs10 text-gray-400">Asigna un número de factura de forma manual</span>
+						<span class="fs-12 text-black font-semibold">Asignar Secuencial Comprobante</span>
+						<span class="fs-10 text-gray-400">Asigna un número de factura de forma manual</span>
 						<p:outputPanel rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" styleClass="mt-2">
 							<div class="flex align-items-center">
-								<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialEstablecimiento}" styleClass="Fs14"/>
+								<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialEstablecimiento}" styleClass="fs-14"/>
 								<span class="mx-2">-</span>
-								<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+								<p:inputMask id="intSecCaja" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL Requerido"/>
 								<span class="mx-2">-</span>
-								<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+								<p:inputMask id="intSecDocumento" value="#{notaCreditoCtrl.notaCreditoSeleccion.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL Requerido"/>
 							</div>
 							<div class="flex">
 								<p:message styleClass="block" for="intSecCaja" />
@@ -94,68 +94,74 @@
 		
 		<p:outputPanel rendered="#{notaCreditoCtrl.notaCreditoSeleccion.idcabecera!=null and notaCreditoCtrl.notaCreditoSeleccion.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
-				<span class="text-black mb-1 Fs11">Secuencial Comprobante</span>
-				<span class="Fs16 text-black font-bold">#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}</span>
+				<span class="text-black mb-1 fs-11">Secuencial Comprobante</span>
+				<span class="fs-16 text-black font-bold">#{notaCreditoCtrl.getFormatoNumDocumento(notaCreditoCtrl.notaCreditoSeleccion.numdocumento)}</span>
 			</div>
-			<div class="EmptyBox5"/>
 		</p:outputPanel>
 		
 		<div class="formgrid grid">
 			<div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium Fs11">Fecha de Emisión</label>
+	        	<label for="inpRtnNumFac" class="text-gray-900 font-medium">Fecha de Emisión</label>
 	        	<p:calendar id="claRtnFechaCompra" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemision}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="w-full">
-					
+					requiredMessage="Requerido" required="true" styleClass="w-full">
 					<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
-					
 				</p:calendar>
 	        </div>
+	        
 	        <div class="field col-6">
-	        	<label for="inpRtnNumFac" class="text-gray-700 font-medium Fs11">Periodo Fiscal</label>
+	        	<label for="inpRtnNumFac" class="text-gray-900 font-medium">Periodo Fiscal</label>
         		<div class="flex align-items-end" style="height:24px;">
 		        	<p:outputPanel id="oupPeriodoFiscal" styleClass="w-full text-right">
-							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.periodofiscal}" styleClass="Fs14"/>
+							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.periodofiscal}" styleClass="fs-14"/>
 					</p:outputPanel>
         		</div>
 	        </div>
 		</div>
-		<div class="EmptyBox5"/>
-		<span class="Fs14 text-black font-semibold">Documento Asociado</span>
-		<div class="EmptyBox5"/>
+		<p:divider align="left">
+            <span class="text-gray-900 font-medium fs-14">Documento Asociado</span>
+	    </p:divider>
 		<p:outputPanel id="oupNcDocAsociado">
 			<div class="formgrid grid">
 				<div class="field col-12">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label>
-		        	<div class="flex">
-		        		<div class="flex-grow-0 flex pl-1">
+		        	<!-- <label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label> -->
+		        	<div class="flex gap-1">
+		        		<div class="flex-grow-1">
+		        			<p:inputMask id="inpNcNumFac" 
+		        				value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" 
+		        				mask="999-999-999999999" 
+		        				required="true" 
+		        				requiredMessage="Requerido" 
+		        				styleClass="w-full" 
+		        				maxlength="17" 
+		        				validatorMessage="FORMATO 999-999-999999999" 
+		        				placeholder="Comprobante : 999-999-999999999">
+								<f:converter converterId="formatoNumComprobanteConverter"/>
+							</p:inputMask>
+		        		</div>
+		        		<div class="flex-grow-0">
 							<p:commandButton id="cmdNdDocumento"
 								value="Comprobante" icon="fa fa-search" 
-								action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="ui-button-outlined" 
+								action="#{ventasQueryCtrl.cargarFormulario()}" 
+								styleClass="ui-button-outlined" 
 								update="@form" 
 								process="@this">
 								<f:setPropertyActionListener value="#{notaCreditoCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>	
 								<f:setPropertyActionListener value="NOTA_CREDITO" target="#{ventasQueryCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
-								<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente :formMain:oupNcDocAsociado" target="#{ventasQueryCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupNcDocAsociado" target="#{ventasQueryCtrl.viewUpdate}"/>
 							</p:commandButton>
 		        		</div>
-		        		<div class="flex-grow-1 flex">
-		        			<p:inputMask id="inpNcNumFac" value="#{notaCreditoCtrl.notaCreditoSeleccion.numfactura}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
-								<f:converter converterId="formatoNumComprobanteConverter"/>
-							</p:inputMask>
-		        		</div>
-		        		<p:message for="inpNcNumFac" styleClass="block"/>
 		        	</div>
 		        </div>
 				<div class="field col-6">
-		        	<label for="somNcTipComprobante" class="text-gray-700 font-medium">Tipo de Comprobante</label>
+		        	<label for="somNcTipComprobante" class="text-gray-900">Tipo de Comprobante</label>
 		        	<p:selectOneMenu id="somNcTipComprobante"
 								value="#{notaCreditoCtrl.notaCreditoSeleccion.tipocomprobanteretencion}"
 								converter="omnifaces.SelectItemsConverter"
 								required="true"
-								requiredMessage="REQUERIDO"
+								requiredMessage="Requerido"
 								styleClass="w-full"
 								filter="true" filterMatchMode="contains">
 						<f:selectItem itemLabel="Seleccionar ..."
@@ -165,30 +171,28 @@
 							itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
 							
 					</p:selectOneMenu>
-					<p:message for="somNcTipComprobante" />
 		        </div>
 		        <div class="field col-6">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Fecha de Emisión</label>
+		        	<label for="claNcFechaEmisionAsociado" class="text-gray-900">Fecha de Emisión</label>
 		        	<p:calendar id="claNcFechaEmisionAsociado" value="#{notaCreditoCtrl.notaCreditoSeleccion.fechaemisiondocasociado}"
 						pattern="dd/MM/yyyy"
 						locale="es" 
-						requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+						requiredMessage="Requerido" required="true" styleClass="Wid100">
 						
 						<p:ajax event="dateSelect" listener="#{notaCreditoCtrl.cambioFechaEmision}" update="@this :formMain:oupPeriodoFiscal"/>
 						
 					</p:calendar>
-					<p:message for="claNcFechaEmisionAsociado" />
 		        </div>
 			</div>
 		</p:outputPanel>
-		<span class="block mt-1 text-gray-700 font-medium mb-1 Fs11">Cliente</span>
-		<div class="flex">
+		<label class="text-gray-900 fs-12">Cliente</label>
+		<div class="flex gap-1">
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
                     <p:inputText id="inpCriterioCliente"
 						value="#{notaCreditoCtrl.criterioCliente}" required="false"
-						requiredMessage="REQUERIDO" styleClass="w-full Fs12"
-						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						requiredMessage="Requerido" styleClass="w-full fs-12"
+						maxlength="13" placeholder="C.I. o RUC / Enter para buscar"
 						validatorMessage="SOLO NUMEROS"
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarClienteNC(); return false;}">
 					<f:validateRegex pattern="^\d+$" />
@@ -198,111 +202,111 @@
 						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
 						<f:setPropertyActionListener value="#{notaCreditoCtrl}" target="#{listaClienteCtrl.notaCreditoCtrl}"/>
 						<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{listaClienteCtrl.callModule}"/>
-						<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value=":formMain:gridCliente" target="#{listaClienteCtrl.viewUpdate}"/>
 						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
 					</p:commandButton>
                 </div>
 			</div>
 			<div class="flex-grow-0 flex align-items-center px-1">
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}" process="@this" styleClass="ml-1 mr-2 text-gray-900">
-					<i class="fa fa-plus Fs16">
+					<i class="fa fa-plus fs-16">
 					</i>
 					<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 				</p:commandLink>								
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(notaCreditoCtrl.notaCreditoSeleccion.cliente!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
-					<i class="fa fa-edit Fs16">
+					<i class="fa fa-edit fs-16">
 					</i>
 					<f:setPropertyActionListener value="NotaCreditoCtrl" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=":formMain:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 				</p:commandLink>
 			</div>
-		</div>
-		<div class="flex">
-			<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="w-full block"/>
 		</div>
 		
 		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex " style="height:9rem;">
 			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{notaCreditoCtrl.notaCreditoSeleccion.cliente==null}"/>
 			<f:subview rendered="#{notaCreditoCtrl.notaCreditoSeleccion.cliente!=null}">
-				<div class="flex align-self-center">
-					<div class="flex flex-column">
-						<span class="Fs16 font-bold text-blue-600 mb-1 block">
-							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.razonsocial!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.razonsocial:'-'}" />
-						</span>
-						<span class="Fs12 font-bold text-gray-600 mb-1 block">
-							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.identificacion!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.identificacion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.direccion!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.direccion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="pi pi-phone mr-1"></i>
-							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.telefono!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.telefono:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="fa fa-envelope-o mr-1 Fs11"></i>
-							<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.correoelectronico!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.correoelectronico:'-'}" />
-						</span>
-						
-					</div>
+				<div class="flex flex-column my-1 gap-1">
+					<span class="fs-16 font-bold text-primary-600 block">
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.razonsocial!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.razonsocial:'-'}" />
+					</span>
+					<span class="fs-12 font-medium text-gray-900 block">
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.identificacion!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.identificacion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block">
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.direccion!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.direccion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="pi pi-phone"></i>
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.telefono!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.telefono:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="fa-regular fa-envelope"></i>
+						<h:outputText value="#{notaCreditoCtrl.notaCreditoSeleccion.cliente.correoelectronico!=null?notaCreditoCtrl.notaCreditoSeleccion.cliente.correoelectronico:'-'}" />
+					</span>
+					
 				</div>
 			</f:subview>
 		</p:outputPanel>
 		<div class="formgrid grid">
 			<div class="field col-12">
-	        	<label for="intMotivoAnulacion" class="text-gray-700 font-medium">Motivo de Modificación</label>
-	        	<p:inputTextarea rows="2" id="intMotivoAnulacion" value="#{notaCreditoCtrl.notaCreditoSeleccion.motivo}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
+	        	<label for="intMotivoAnulacion" class="text-gray-900 font-medium">Motivo de Modificación</label>
+	        	<p:inputTextarea rows="2" id="intMotivoAnulacion" value="#{notaCreditoCtrl.notaCreditoSeleccion.motivo}" required="true" requiredMessage="Requerido" styleClass="w-full">
 	        		<p:ajax update="@this" process="@this"/>
 	        	</p:inputTextarea>
-				<p:message for="intMotivoAnulacion" styleClass="block"/>
+				<p:message for="intMotivoAnulacion" styleClass="block m-0 p-0"/>
 	        </div>
 		</div>
 	</div>	
 	
-	<div class="card card-w-title">	
+	<div class="card">	
 		
-		<span class="block text-black Fs14 font-medium">Información Adicional</span>
+		<span class="block text-gray-900 fs-14 fw-5">Información Adicional</span>
 		
-		<div class="flex my-2">
-			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-			<p:commandLink action="#{notaCreditoCtrl.agregarInfoAdicional()}" update="@form:oupInfoAdicionalMain" process="@this @form:oupInfoAdicionalMain" oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
-				<i class="Fs12 fa fa-plus mr-1 text-gray-700"/>
-				<span class="text-black">Agregar</span>
+		<div class="flex mt-2 gap-2 align-items-end">
+			<i class="fa fa-ellipsis-v fs-14"/>
+			<p:commandLink action="#{notaCreditoCtrl.agregarInfoAdicional()}" 
+				update="@form:oupInfoAdicionalMain" 
+				process="@this @form:oupInfoAdicionalMain" 
+				oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
+				<!-- <i class="fs-12 fa fa-plus mr-1 text-gray-700"/> -->
+				<span class="text-gray-900 fs-12">Agregar</span>
 			</p:commandLink>
 		</div>
 		
-		
-		<p:outputPanel id="oupInfoAdicionalMain">
+		<p:outputPanel id="oupInfoAdicionalMain" styleClass="mt-3">
 			
-			<div class="flex">
-				<div class="flex-grow-1 flex">
-					<span class="text-gray-700 font-medium Fs11">Nombre</span>
+			<div class="grid">
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Nombre</span>
 				</div>
-				<div class="flex-grow-1 flex pl-1">
-					<span class="text-gray-700 font-medium Fs11">Descripción</span>
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Descripción</span>
 				</div>
 			</div>
 			
-			<div class="mainInfoDT overflow-auto mt-1 p-0" style="min-height: 100px;max-height: 200px;">
+			<div class="mainInfoDT overflow-auto mt-1 p-0" style="min-height: 30px;max-height: 200px;">
 				<c:forEach items="#{notaCreditoCtrl.infoadicionalList}" var="info" varStatus="metadata">
-					<div class="flex mb-1">
-						<div class="flex-grow-1 flex flex-column pr-1">
-							<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalNombre" styleClass="block"/>
+					
+					<div class="grid">
+						<div class="col-6">
+							<div class="flex gap-2">
+								<p:commandLink  action="#{notaCreditoCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:oupInfoAdicionalMain" disabled="#{notaCreditoCtrl.enableAccion}">
+									<f:setPropertyActionListener value="#{info}" target="#{notaCreditoCtrl.infoadicionalSelected}"/>
+									<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>								
+								<div class="flex-1">
+									<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="Requerido"/>
+									<p:message for="inpInfoAdicionalNombre" styleClass="block m-0 p-0"/>
+								</div>
+							</div>
 						</div>
-						<div class="flex-grow-1 flex flex-column">						
-							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalValor" styleClass="block"/>
-						</div>
-						<div class="flex-grow-0 flex px-2">
-							<p:commandLink  action="#{notaCreditoCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{notaCreditoCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{info}" target="#{notaCreditoCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
+						<div class="col-6">						
+							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="Requerido"/>
+							<p:message for="inpInfoAdicionalValor" styleClass="block m-0 p-0"/>
 						</div>
 					</div>
 				</c:forEach>

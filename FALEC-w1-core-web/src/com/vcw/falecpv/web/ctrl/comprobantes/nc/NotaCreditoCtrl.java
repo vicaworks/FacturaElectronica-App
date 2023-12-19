@@ -49,6 +49,7 @@ import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
 import com.vcw.falecpv.web.common.RideCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -136,7 +137,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -165,12 +169,16 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 			// validar cliente
 			if(notaCreditoSeleccion.getCliente()==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe datos del Cliente", 
+						Message.ERROR);
 				return;
 			}
 			
 			if(notaCreditoSeleccion.getTotalconimpuestos().doubleValue()<=0) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE DE PRODUCTOS O SERVICIOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe detalle de productos o servicios", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -180,14 +188,18 @@ public class NotaCreditoCtrl extends BaseCtrl {
 				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(notaCreditoSeleccion.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 				
 			}
 			
 			if(detalleNcList==null || detalleNcList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DETALLE.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe detalle", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -221,15 +233,21 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			}
 			
 			if(notaCreditoSeleccion.isBorrador()) {
-				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE " + "NOTA DE " +  msg.getString("label.credito") + " GENERADA CORRECTAMENTE.", "WARNING");
+				getMessageCommonCtrl().crearMensaje("Aviso", 
+						"Borrador de Nota de crédito generada correctamente.", 
+						Message.WARNING);
 			}else {
-				messageCtrl.cargarMenssage("OK", "NOTA DE " +  msg.getString("label.credito") + " GENERADA CORRECTAMENTE.", "OK");
+				getMessageCommonCtrl().crearMensaje("Ok", 
+						"Comprobanto guardado correctamente.", 
+						Message.OK);
 			}
 			
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			getMessageCommonCtrl().crearMensaje("Error", 
+					e.getMessage(), 
+					Message.ERROR);
 			notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			notaCreditoSeleccion.setSecuencial(null);
 			notaCreditoSeleccion.setNumdocumento(null);
@@ -237,7 +255,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			notaCreditoSeleccion.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 			notaCreditoSeleccion.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			notaCreditoSeleccion.setSecuencial(null);
 			notaCreditoSeleccion.setNumdocumento(null);
@@ -305,7 +326,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			nuevaNotaCredito();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -363,7 +387,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			determinarPeriodoFiscal();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -374,7 +401,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -458,7 +488,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -482,7 +515,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -534,12 +570,16 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			detalleSelected.setIva(ivaServicio.getIvaDao().getDefecto(establecimientoMain.getEmpresa().getIdempresa()));
 			// valida
 			if(detalleSelected.getIva()==null) {
-				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE IVA POR DEFECTO, CONFIGURACION / IVA : SELECCIONAR POR DEFECTO");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe I.V.A. por defecto, ir a configuración / I.V.A. : Seleccionar opor defecto.", 
+						Message.ERROR);
 				return;
 			}
 			detalleSelected.setIce(iceList.stream().filter(x->x.getCodigo().equals("-1")).findFirst().orElse(null));
 			if(detalleSelected.getIce()==null) {
-				AppJsfUtil.addErrorMessage("frmListProducto","ERROR","NO EXISTE ICE CON VALOR 0, CONFIGURACION / ICE : CREAR ICE VALOR 0 Y CODIGO SRI [-1].");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe I.C.E. con valor 0, ir a configuración / ICE : crear I.C.E. valor 0 y código SRI [-1]", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -547,7 +587,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -562,7 +605,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			totalizar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmListProducto", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -608,12 +654,17 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			if(c!=null) {
 				nuevoByFacturaEmitida(c.getIdcabecera());
 			}else {
-				AppJsfUtil.addErrorMessage("formMain:inpNcNumFac", "ERROR", "NO EXISTE");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe comprobante.", 
+						Message.ERROR);
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -624,7 +675,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -635,7 +689,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -645,7 +702,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			if(notaCreditoSeleccion==null) return;
 			
 			if(criterioCliente==null || criterioCliente.trim().length()==0) {
-				AppJsfUtil.addErrorMessage("formMain:inpCriterioCliente", "ERROR", "REQUERIDO");
+				AppJsfUtil.addErrorMessage("formMain:inpCriterioCliente", "ERROR", "Requerido");
 				return;
 			}
 			
@@ -653,7 +710,10 @@ public class NotaCreditoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -663,7 +723,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		notaCreditoSeleccion = cabeceraServicio.consultarByPk(idNotaCredito);
 		
 		if(idNotaCredito==null) {
-			return "NO EXISTE EL REGISTRO SELECCIONADO";
+			return "No existe registro seleccionado";
 		}
 		
 	 	detalleNcList = detalleServicio.getDetalleDao().getByIdCabecera(idNotaCredito);

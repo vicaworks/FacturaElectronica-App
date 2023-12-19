@@ -26,33 +26,40 @@
 	</script>
 	
 	
-	<p:dialog header="Facturas" widgetVar="dlgListaVentas" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Facturas" 
+		widgetVar="dlgListaVentas" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width: 90rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="formVentasQuery">
 			
-			<div class="grid">
+			<div class="grid ui-fluid">
 				<div class="col-12 md:col-6">
-					<span class="mb-1 text-gray-700">FECHAS</span>
+					<span class="mb-1 text-gray-700">Fechas</span>
 					<div class="flex">
 						<div class="flex-grow-1 flex pr-1">
 							<p:calendar value="#{ventasQueryCtrl.desde}"
 								pattern="dd/MM/yyyy"
-								requiredMessage="REQUERIDO" required="false" styleClass="Wid100" showOn="focus">
+								requiredMessage="Requerido" required="false" showOn="focus">
 							</p:calendar>		
 						</div>
 						<div class="flex-grow-1 flex">
 							<p:calendar value="#{ventasQueryCtrl.hasta}"
 								pattern="dd/MM/yyyy"
-								requiredMessage="REQUERIDO" required="false" styleClass="Wid100" tabindex="3">
+								requiredMessage="Requerido" required="false" tabindex="3">
 							</p:calendar>		
 						</div>
 					</div>
 				</div>
 				<div class="col-12 md:col-6">
-					<span class="mb-1 text-gray-700">BUSCAR</span>
+					<span class="mb-1 text-gray-700">Buscar</span>
 					<div class="flex">
 						<div class="flex-grow-1 flex">
-							<p:inputText id="intVentasQueryCriterio" value="#{ventasQueryCtrl.criterio}" styleClass="Wid100" placeholder="#Factura, RUC. CI. Nom. Cliente" tabindex="0"/>
+							<p:inputText id="intVentasQueryCriterio" value="#{ventasQueryCtrl.criterio}" placeholder="#Factura, RUC. CI. Nom. Cliente" tabindex="0"/>
 						</div>
 						<div class="flex-grow-0 flex pl-1">
 							<p:commandButton  
@@ -66,12 +73,6 @@
 					</div>
 				</div>
 			</div>
-			
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formVentasQuery"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
 			
 			<div class="w-full overflow-auto heightFrmVentas contenedorFormulario mt-2">
 				
@@ -92,72 +93,83 @@
 	                	<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>
 					</p:ajax>
 					
-					<p:column headerText=" " style="width:40px;" styleClass="TexAlCenter">
+					<p:column headerText=" " style="width:40px;" styleClass="text-center">
 	                	<p:commandLink action="#{ventasQueryCtrl.guardar()}" update="@form #{ventasQueryCtrl.viewUpdate}">
-							<i class="fa fa-hand-o-right Fs20" style="color:#252529;"></i>
+							<i class="fa-regular fa-hand-point-right fs-20" style="color:#252529;"></i>
 							<f:setPropertyActionListener value="#{v}" target="#{ventasQueryCtrl.resumenCabeceraQuery}"/>
 						</p:commandLink>
 	                </p:column>
 					
-					<p:column headerText="TIPO" style="width:60px;">
-	                	<h:outputText value="FACTURA" rendered="#{v.indentificadorcomprobante=='01'}" styleClass="markOrange Fs10">
-						</h:outputText>
-						<h:outputText value="RECIBO" rendered="#{v.indentificadorcomprobante=='00'}"  styleClass="markBlack Fs10">
-						</h:outputText>
-						<h:outputText value="LIQ COMPRAS" rendered="#{v.indentificadorcomprobante=='03'}"  styleClass="markBlack Fs10">
-						</h:outputText>
+					<p:column headerText="Documento" style="width:100px;">
+						
+						<div class="flex flex-column gap-1">
+		                	<h:outputText value="FACTURA" rendered="#{v.indentificadorcomprobante=='01'}" styleClass="tet-gray-600 fs-10">
+							</h:outputText>
+							<h:outputText value="RECIBO" rendered="#{v.indentificadorcomprobante=='00'}"  styleClass="tet-gray-600 fs-10">
+							</h:outputText>
+							<h:outputText value="LIQ COMPRAS" rendered="#{v.indentificadorcomprobante=='03'}"  styleClass="tet-gray-600 fs-10">
+							</h:outputText>
+		                	<h:outputText value="#{ventasQueryCtrl.getFormatoNumDocumento(v.numdocumento)}" styleClass="text-gray-900 font-medium fs-12">
+							</h:outputText>
+						</div>
+					
+					
 	                </p:column>
 	                
-	                <p:column headerText="# NUM DOC" style="width:110px;">
-	                	<h:outputText value="#{ventasQueryCtrl.getFormatoNumDocumento(v.numdocumento)}" >
-						</h:outputText>
+	                
+	                <p:column headerText="Estado" style="width:80px;" styleClass="px-2">
+	                	<div class="flex gap-1 align-items-center">
+		                	<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} fs-10 p-1 border-round block w-full text-center">
+							</h:outputText>
+						</div>
 	                </p:column>
 	                
-	                <p:column headerText="ESTADO" style="width:70px;">
-	                	<h:outputText value="#{v.estado}" styleClass="#{v.estadoStyle} Fs10">
-						</h:outputText>
+	                <p:column headerText="Cliente" style="width:110px;">
+	                	<div class="flex flex-column">
+		                	<h:outputText value="#{v.clienteidentificacion}" styleClass="text-gray-600 fs-10">
+							</h:outputText>
+		                	<h:outputText value="#{v.cliente}" styleClass="text-primary-600 font-medium fs-12">
+							</h:outputText>
+	                		
+	                	</div>
 	                </p:column>
 	                
-	                <p:column headerText="RUC / CI" style="width:90px;">
-	                	<h:outputText value="#{v.clienteidentificacion}">
-						</h:outputText>
-	                </p:column>
-	                
-	                <p:column headerText="CLIENTE" style="width:110px;">
-	                	<h:outputText value="#{v.cliente}">
-						</h:outputText>
-	                </p:column>
-	                
-	                <p:column style="width:10px;" styleClass="TexAlCenter">
+	                <p:column style="width:20px;" styleClass="text-center">
 	                	<f:facet name="header">
-	                		<div class="Wid100" style="text-align: center;">
-		                		<i class="fa fa-truck Fs18"></i>
+	                		<div class="w-full" style="text-align: center;">
+		                		<i class="fa fa-truck fs-16"></i>
 	                		</div>
 	                	</f:facet>
 	                	<f:subview rendered="#{v.idguiaremision!=null}">
-							<i class="fa fa-check Fs20" style="color:green;"/>
+							<i class="fa fa-check fs-16" style="color:green;"/>
 						</f:subview>
 						<f:subview rendered="#{v.idguiaremision==null}">
-							<i class="fa fa-minus Fs20" style="color:#ccc;"/>
+							<i class="fa fa-minus fs-16" style="color:#ccc;"/>
 						</f:subview>
 	                </p:column>
 	                
-	                <p:column headerText="SUBTOTAL" style="width:60px;" styleClass="TexAlRight">
-	                	<h:outputText value="#{v.totalsinimpuestos}">
-	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+	                <p:column headerText="Sin impuestos" style="width:60px;" styleClass="text-center">
+	                	<div class="flex justify-content-end">
+		                	<h:outputText value="#{v.totalsinimpuestos}">
+		                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+	                	</div>
 	                </p:column>
 	                
-	                <p:column headerText="IMPUESTOS" style="width:60px;" styleClass="TexAlRight">
-	                	<h:outputText value="#{v.totalice.add(v.totaliva)}">
-	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+	                <p:column headerText="Impuestos" style="width:60px;" styleClass="text-center">
+	                	<div class="flex justify-content-end">
+		                	<h:outputText value="#{v.totalice.add(v.totaliva)}">
+		                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
 	                </p:column>
 	            	
-	            	<p:column headerText="TOTAL" style="width:70px;" styleClass="TexAlRight">
-	                	<h:outputText value="#{v.totalconimpuestos}" styleClass="text-black font-medium">
-	                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						</h:outputText>
+	            	<p:column headerText="Total" style="width:70px;" styleClass="text-center">
+	            		<div class="flex justify-content-end">
+		                	<h:outputText value="#{v.totalconimpuestos}" styleClass="text-gray-900 font-medium fs-12">
+		                		<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							</h:outputText>
+						</div>
 	                </p:column>
 	                
 	             </p:dataTable>

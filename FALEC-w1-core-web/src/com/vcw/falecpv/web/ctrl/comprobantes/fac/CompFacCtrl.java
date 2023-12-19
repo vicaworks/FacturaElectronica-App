@@ -708,8 +708,7 @@ public class CompFacCtrl extends BaseCtrl {
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			getMessageCommonCtrl().crearMensaje("Error", 
-					TextoUtil.imprimirStackTrace(e, 
-							AppConfiguracion.getInteger("stacktrace.length")), 
+					e.getMessage(), 
 					Message.ERROR);
 			cabecerSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			cabecerSelected.setSecuencial(null);

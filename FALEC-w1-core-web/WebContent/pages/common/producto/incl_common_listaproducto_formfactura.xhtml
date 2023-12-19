@@ -15,7 +15,7 @@
          <div style="width:98.5%!important;">
 	         <div class="field">	         
 		        <label for="intAdqCodigo" class="text-gray-900 fw-5">Código</label>
-	            <p:inputText id="intFacCodigo" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.codproducto}" styleClass="w-full" required="true" requiredMessage="REQUERIDO" maxlength="25"
+	            <p:inputText id="intFacCodigo" value="#{listaProductoCtrl.compFacCtrl.detalleSelected.codproducto}" styleClass="w-full" required="true" requiredMessage="Requerido" maxlength="25"
 	            	readonly="#{listaProductoCtrl.tipoRegistro==1}">
 	            </p:inputText>		        
 		    </div>
@@ -140,7 +140,7 @@
 								value="#{listaProductoCtrl.compFacCtrl.detalleSelected.ice}"
 								converter="omnifaces.SelectItemsConverter"
 								required="true"
-								requiredMessage="REQUERIDO"
+								requiredMessage="Requerido"
 								styleClass="fs-12 flex-1">
 								<f:selectItems value="#{listaProductoCtrl.compFacCtrl.iceList}" var="ice"
 											itemLabel="#{ice.descripcion}" itemValue="#{ice}" />
@@ -166,7 +166,7 @@
 								value="#{listaProductoCtrl.compFacCtrl.detalleSelected.iva}"
 								converter="omnifaces.SelectItemsConverter"
 								required="true"
-								requiredMessage="REQUERIDO"
+								requiredMessage="Requerido"
 								styleClass="fs-12 flex-1">
 								<f:selectItems value="#{listaProductoCtrl.compFacCtrl.ivaList}" var="iva2"
 										itemLabel="#{iva2.porcentaje}" itemValue="#{iva2}" />
@@ -205,7 +205,7 @@
 			<div class="flex border-1 border-gray-800 bg-green-600 justify-content-center p-2">
 				<i class="fs-14 fa #{listaProductoCtrl.compFacCtrl.detalleSelected.accion=='EDITAR'?'fa-check':'fa-plus'} mr-1"/>
 				<span class="fs-14">
-					<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.accion=='EDITAR'?'ACEPTAR':'Agregar'}" /> 
+					<h:outputText value="#{listaProductoCtrl.compFacCtrl.detalleSelected.accion=='EDITAR'?'Aceptar':'Agregar'}" /> 
 				</span>
 			</div>
 		</p:commandLink>
