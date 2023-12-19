@@ -394,9 +394,18 @@ public class NotaCreditoCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void calcularItemActionConDescuento(boolean calcDescuento,Detalle det) {
+		calcularItemActionMain(calcDescuento, det, true);
+	}
+	
 	public void calcularItemAction(boolean calcDescuento,Detalle det) {
+		calcularItemActionMain(calcDescuento, det, false);
+	}
+	
+	public void calcularItemActionMain(boolean calcDescuento,Detalle det, boolean flag) {
 		try {
 			detalleSelected = det;
+			detalleSelected.setFlagCalcularDetForm(flag);
 			calcularItem(detalleSelected,calcDescuento);
 			totalizar();
 		} catch (Exception e) {
@@ -409,7 +418,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	}
 	
 	private void calcularItem(Detalle dFac,boolean calcDescuento) {
-		if(calcDescuento) {
+		if(calcDescuento && !dFac.isFlagCalcularDetForm()) {
 			dFac.setDescuento(dFac.getPorcentajeDescuento().divide(BigDecimal.valueOf(100))
 					.multiply(dFac.getPreciounitario()).multiply(dFac.getCantidad())
 					.setScale(2, RoundingMode.HALF_UP));

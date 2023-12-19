@@ -115,7 +115,7 @@
 		   					<p:inputNumber id="intAdFrDesc2" value="#{listaProductoCtrl.notaCreditoCtrl.detalleSelected.descuento}"
 		                   	    symbolPosition="s" emptyValue="zero" decimalPlaces="2" 
 		                   	    disabled="#{listaProductoCtrl.notaCreditoCtrl.detalleSelected.preciototalsinimpuesto.doubleValue()==0}">
-		                   	    <p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemAction(true,listaProductoCtrl.notaCreditoCtrl.detalleSelected)}" update="@form" process="@form"/>                   	    
+		                   	    <p:ajax event="change" listener="#{notaCreditoCtrl.calcularItemActionConDescuento(true,listaProductoCtrl.notaCreditoCtrl.detalleSelected)}" update="@form" process="@form"/>                   	    
 		                   	</p:inputNumber>
 		   				</div>
 		   			</div>		   		
