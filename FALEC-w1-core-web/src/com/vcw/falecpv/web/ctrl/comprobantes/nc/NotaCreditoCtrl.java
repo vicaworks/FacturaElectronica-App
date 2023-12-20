@@ -130,6 +130,7 @@ public class NotaCreditoCtrl extends BaseCtrl {
 	private void init() {
 		try {
 			callModule = "NOTACREDITO";
+			establecimientoFacade(establecimientoServicio, false);
 			notaCreditoSeleccion = new Cabecera();
 			consultarTipoComprobante();
 			consultarIce();

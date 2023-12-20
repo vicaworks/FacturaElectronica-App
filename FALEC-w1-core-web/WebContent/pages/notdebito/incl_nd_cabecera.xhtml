@@ -25,120 +25,138 @@
 		}
 	</script>
 	
-	<p:remoteCommand name="buscarCliente"  action="#{buscarClienteNC.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente :formMain:oupNcTotal"/>
+	<p:remoteCommand name="buscarClienteND"  action="#{notaDebitoFrmCtrl.buscarCliente()}" process="@this :formMain:inpCriterioCliente" update=":formMain:gridCliente :formMain:oupNcTotal"/>
 	
-	<div class="card card-w-title">
+	<div class="card ">
 		
 		<div class="flex justify-content-between">
-			<span class="Fs14 text-black font-semibold">Nota Débito</span>
+			<span class="fs-14 text-gray-900 font-semibold">Nota Débito</span>
 			<div>
-				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
-				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(notaDebitoFrmCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+				<span class="fs-12 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="fs-12 text-primary-600 font-semibold">#{appSessionCtrl.formatoCadena(notaDebitoFrmCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
 			</div>			
 		</div>
 		
-		<p:outputPanel id="gridSecuencial" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.estadoBorrador}" styleClass="mb-2 mt-2">
-			<div class="flex">
-				<div class="flex-grow-0 flex min-width-50 justify-content-start">
-					<p:toggleSwitch value="#{notaDebitoFrmCtrl.notDebitoSelected.borrador}" style="height:24px;">
-			            <p:ajax  
-							process="@this :formMain:gridSecuencial" 
-							update=":formMain:gridSecuencial" 
-							listener="#{notaDebitoFrmCtrl.cambioEstadoBorrador(notaDebitoFrmCtrl.notDebitoSelected)}">
-						</p:ajax>
-			        </p:toggleSwitch>
-				</div>
-				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-					<span class="Fs12 text-black font-semibold">Borrador</span>
-					<span class="Fs10 text-gray-400">La factura se guarda como borrador y permite modificaciones</span>
-				</div>
-			</div>
-			
-			<p:outputPanel rendered="#{not notaDebitoFrmCtrl.notDebitoSelected.borrador}" styleClass="gridSecuencial">
-				<div class="EmptyBox5"/>
-				<div class="flex">
-					<div class="flex-grow-0 flex min-width-50 justify-content-start">
-						<p:toggleSwitch value="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
-				            <p:ajax event="change" 
+		<div class="grid">
+		
+			<div class="col-12 md:col-6">
+				
+				<p:outputPanel id="gridSecuencial" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.estadoBorrador}" styleClass="mb-2 mt-2">
+					<div class="flex">
+						<div class="flex-grow-0 flex min-width-50 justify-content-start">
+							<p:toggleSwitch value="#{notaDebitoFrmCtrl.notDebitoSelected.borrador}" style="height:24px;">
+					            <p:ajax  
 									process="@this :formMain:gridSecuencial" 
-									update=":formMain:gridSecuencial">
+									update=":formMain:gridSecuencial" 
+									listener="#{notaDebitoFrmCtrl.cambioEstadoBorrador(notaDebitoFrmCtrl.notDebitoSelected)}">
 								</p:ajax>
-				        </p:toggleSwitch>
+					        </p:toggleSwitch>
+						</div>
+						<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
+							<span class="fs-12 text-gray-900 font-semibold">Borrador</span>
+							<span class="fs-10 text-gray-400">La factura se guarda como borrador y permite modificaciones</span>
+						</div>
 					</div>
-					<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-						<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
-						<span class="Fs10 text-gray-400">Asigna un número de factura de forma manual</span>
-						<p:outputPanel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" styleClass="mt-2">
-							<div class="flex align-items-center">
-								<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialEstablecimiento}" styleClass="Fs14"/>
-								<span class="mx-2">-</span>
-								<p:inputMask id="intSecCaja" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
-								<span class="mx-2">-</span>
-								<p:inputMask id="intSecDocumento" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+					
+					<p:outputPanel rendered="#{not notaDebitoFrmCtrl.notDebitoSelected.borrador}" styleClass="gridSecuencial">
+						<div class="EmptyBox5"/>
+						<div class="flex">
+							<div class="flex-grow-0 flex min-width-50 justify-content-start">
+								<p:toggleSwitch value="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
+						            <p:ajax event="change" 
+											process="@this :formMain:gridSecuencial" 
+											update=":formMain:gridSecuencial">
+										</p:ajax>
+						        </p:toggleSwitch>
 							</div>
-							<div class="flex">
-								<p:message styleClass="block" for="intSecCaja" />
-								<p:message styleClass="block" for="intSecDocumento" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}"/>
+							<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
+								<span class="fs-12 text-gray-900 font-semibold">Asignar Secuencial Comprobante</span>
+								<span class="fs-10 text-gray-400">Asigna un número de factura de forma manual</span>
+								<p:outputPanel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" styleClass="mt-2">
+									<div class="flex align-items-center">
+										<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialEstablecimiento}" styleClass="fs-14"/>
+										<span class="mx-2">-</span>
+										<p:inputMask id="intSecCaja" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL Requerido"/>
+										<span class="mx-2">-</span>
+										<p:inputMask id="intSecDocumento" value="#{notaDebitoFrmCtrl.notDebitoSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL Requerido"/>
+									</div>
+									<div class="flex">
+										<p:message styleClass="block" for="intSecCaja" />
+										<p:message styleClass="block" for="intSecDocumento" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.editarSecuencial}"/>
+									</div>
+								</p:outputPanel>
 							</div>
-						</p:outputPanel>
+						</div>
+					</p:outputPanel>
+					
+				</p:outputPanel>
+				
+				<p:outputPanel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera!=null and notaDebitoFrmCtrl.notDebitoSelected.estado!='BORRADOR'}" styleClass="mt-2">
+					<div class="flex flex-column">
+						<span class="fs-11 text-gray-900 mb-1">Secuencial Comprobante</span>
+						<span class="fs-16 text-gray-900 font-bold">#{notaDebitoFrmCtrl.getFormatoNumDocumento(notaDebitoFrmCtrl.notDebitoSelected.numdocumento)}</span>
 					</div>
-				</div>
-			</p:outputPanel>
-			
-		</p:outputPanel>
-		
-		<p:outputPanel rendered="#{notaDebitoFrmCtrl.notDebitoSelected.idcabecera!=null and notaDebitoFrmCtrl.notDebitoSelected.estado!='BORRADOR'}" styleClass="mt-2">
-			<div class="flex flex-column">
-				<span class="Fs11 text-black mb-1">Secuencial Comprobante</span>
-				<span class="Fs16 text-black font-bold">#{notaDebitoFrmCtrl.getFormatoNumDocumento(notaDebitoFrmCtrl.notDebitoSelected.numdocumento)}</span>
+				</p:outputPanel>
+				
 			</div>
-		</p:outputPanel>
-		
-		<div class="field mt-2">
-			<h:outputText value="FECHA DE EMISIÓN" styleClass="text-gray-700 font-medium Fs11"/>
-			<p:calendar id="claFacFecha" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemision}"
-				pattern="dd/MM/yyyy"
-				locale="es" 
-				requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="FECHA EMISION" style="font-size:14px !important;">
-			</p:calendar>
+			
+			<div class="col-12 md:col-6">
+				<div class="field mt-2">
+					<label for="claFacFecha" class="text-gray-900 font-bold">Fecha de Emisión</label>
+					<p:calendar id="claFacFecha" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemision}"
+						pattern="dd/MM/yyyy"
+						locale="es" 
+						requiredMessage="Requerido" required="true" styleClass="w-full" placeholder="FECHA EMISION" style="font-size:14px !important;">
+					</p:calendar>
+				</div>			
+			</div>
 		</div>
 		
-		<div class="EmptyBox5"/>
-		<span class="Fs14 text-black font-semibold">Comprobante Asociado</span>
-		<div class="EmptyBox5"/>
+		<p:divider align="left">
+            <span class="text-gray-900 font-medium fs-14">Documento Asociado</span>
+	    </p:divider>
 		
 		<p:outputPanel id="oupNcDocAsociado">
 			<div class="formgrid grid">
 				<div class="field col-12">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label>
-		        	<div class="flex">
-		        		<div class="flex-grow-0 flex">
+		        	<!-- <label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Número de Documento</label> -->
+		        	<div class="flex gap-1">
+		        		<div class="flex-grow-1">
+		        			<p:inputMask id="inpNcNumFac" 
+		        				value="#{notaDebitoFrmCtrl.notDebitoSelected.numdocasociado}" 
+		        				mask="999-999-999999999" 
+		        				required="true" 
+		        				requiredMessage="Requerido" 
+		        				styleClass="w-full" 
+		        				maxlength="17" 
+		        				validatorMessage="FORMATO 999-999-999999999" 
+		        				placeholder="Comprobante : 999-999-999999999">
+								<f:converter converterId="formatoNumComprobanteConverter"/>
+							</p:inputMask>
+		        		</div>
+		        		<div class="flex-grow-0">
 		        			<p:commandButton id="cmdNdDocumento"
-								value="Comprobante" icon="fa fa-search" 
-								action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="ui-button-outlined" 
+								value="Comprobante" 
+								icon="fa fa-search" 
+								action="#{ventasQueryCtrl.cargarFormulario()}" 
+								styleClass="ui-button-outlined" 
 								update="@form" 
 								process="@this">
 								<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>	
 								<f:setPropertyActionListener value="NOTA_DEBITO" target="#{ventasQueryCtrl.callModule}"/>
 								<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
-								<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:gridCliente :formMain:oupNcDocAsociado :formMain:oupNcTotal" target="#{ventasQueryCtrl.viewUpdate}"/>
+								<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupNcDocAsociado" target="#{ventasQueryCtrl.viewUpdate}"/>
 							</p:commandButton>
 		        		</div>
-		        		<div class="flex-grow-1 flex">
-		        			<p:inputMask id="inpNcNumFac" value="#{notaDebitoFrmCtrl.notDebitoSelected.numdocasociado}" mask="999-999-999999999" required="true" requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="17" validatorMessage="FORMATO 999-999-999999999" placeholder="FORMATO : 999-999-999999999">
-								<f:converter converterId="formatoNumComprobanteConverter"/>
-							</p:inputMask>
-		        		</div>
-		        		<p:message for="inpNcNumFac" styleClass="block"/>
 		        	</div>
 		        </div>
 				<div class="field col-6">
-		        	<label for="somNcTipComprobante" class="text-gray-700 font-medium">Tipo de Comprobante</label>
+		        	<label for="somNcTipComprobante" class="text-gray-900">Tipo de Comprobante</label>
 		        	<p:selectOneMenu id="somNcTipComprobante"
 								value="#{notaDebitoFrmCtrl.notDebitoSelected.tipocomprobanteretencion}"
 								converter="omnifaces.SelectItemsConverter"
 								required="true"
-								requiredMessage="REQUERIDO"
+								requiredMessage="Requerido"
 								styleClass="w-full"
 								filter="true" filterMatchMode="contains">
 						<f:selectItem itemLabel="Seleccionar ..."
@@ -148,32 +166,30 @@
 							itemLabel="#{tp.comprobante}" itemValue="#{tp}" />
 							
 					</p:selectOneMenu>
-					<p:message for="somNcTipComprobante" styleClass="block"/>
+					<p:message for="somNcTipComprobante" styleClass="block m-0 p-0"/>
 		        </div>
 		        <div class="field col-6">
-		        	<label for="claNcFechaEmisionAsociado" class="text-gray-700 font-medium">Fecha de Emisión</label>
+		        	<label for="claNcFechaEmisionAsociado" class="text-gray-900">Fecha de Emisión</label>
 		        	<p:calendar id="claNcFechaEmisionAsociado" value="#{notaDebitoFrmCtrl.notDebitoSelected.fechaemisiondocasociado}"
 						pattern="dd/MM/yyyy"
 						locale="es" 
-						requiredMessage="REQUERIDO" required="true" styleClass="Wid100">
+						requiredMessage="Requerido" required="true">
 						
 					</p:calendar>
-					<p:message for="claNcFechaEmisionAsociado" styleClass="block"/>
+					<p:message for="claNcFechaEmisionAsociado" styleClass="block m-0 p-0"/>
 		        </div>
 			</div>
 		</p:outputPanel>
-		
-		
-		<span class="block Fs11 text-gray-700 font-medium">Cliente</span>
+		<label class="text-gray-900 fs-12">Cliente</label>
 		<div class="flex mt-1">			
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
                     <p:inputText id="inpCriterioCliente"
 						value="#{notaDebitoFrmCtrl.criterioCliente}" required="false"
-						requiredMessage="REQUERIDO" styleClass="w-full Fs12"
-						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						requiredMessage="Requerido" styleClass="w-full fs-12"
+						maxlength="13" placeholder="C.I. o RUC / Enter para buscar"
 						validatorMessage="SOLO NUMEROS"
-						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarClienteNC(); return false;}">
+						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarClienteND(); return false;}">
 					<f:validateRegex pattern="^\d+$" />
 					</p:inputText>
                     <p:commandButton icon="pi pi-search" styleClass="ui-button-success" 
@@ -181,101 +197,101 @@
 						action="#{listaClienteCtrl.cargarPantalla()}" immediate="true">
 						<f:setPropertyActionListener value="#{notaDebitoFrmCtrl}" target="#{listaClienteCtrl.notaDebitoFrmCtrl}"/>
 						<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{listaClienteCtrl.callModule}"/>
-						<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente :formMain:oupNcTotal" target="#{listaClienteCtrl.viewUpdate}"/>
+						<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupNcTotal" target="#{listaClienteCtrl.viewUpdate}"/>
 						<f:setPropertyActionListener value="formMain" target="#{listaClienteCtrl.formModule}"/>
 					</p:commandButton>
                 </div>
 			</div>
 			<div class="flex-grow-0 flex align-items-center px-1">
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" process="@this" styleClass="ml-1 mr-2 text-gray-900">
-					<i class="fa fa-plus Fs16">
+					<i class="fa fa-plus fs-16">
 					</i>
 					<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente :formMain:oupNcTotal" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupNcTotal" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 				</p:commandLink>								
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(notaDebitoFrmCtrl.notDebitoSelected.cliente!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
-					<i class="fa fa-edit Fs16">
+					<i class="fa fa-edit fs-16">
 					</i>
 					<f:setPropertyActionListener value="NotaDebitoFrmCtrl" target="#{clienteCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:msgFormMain :formMain:msgInpCriterioCliente :formMain:gridCliente :formMain:oupNcTotal" target="#{clienteCtrl.updateView}"/>
+					<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupNcTotal" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 				</p:commandLink>
 			</div>
 		</div>
-		<div class="flex">
-			<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="w-full block"/>
-		</div>
 		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex " style="height:9rem;">
 			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{notaDebitoFrmCtrl.notDebitoSelected.cliente==null}"/>
 			<f:subview rendered="#{notaDebitoFrmCtrl.notDebitoSelected.cliente!=null}">
-				<div class="flex align-self-center">
-					<div class="flex flex-column">
-						<span class="Fs16 font-bold text-blue-600 mb-1 block">
-							<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.razonsocial!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.razonsocial:'-'}" />
-						</span>
-						<span class="Fs12 font-bold text-gray-600 mb-1 block">
-							<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.identificacion!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.identificacion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.direccion!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.direccion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="pi pi-phone mr-1"></i>
-							<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.telefono!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.telefono:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="fa fa-envelope-o mr-1 Fs11"></i>
-							<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.correoelectronico!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.correoelectronico:'-'}" />
-						</span>
-						
-					</div>
+				<div class="flex flex-column my-1 gap-1">
+					<span class="fs-16 font-bold text-primary-600 block">
+						<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.razonsocial!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.razonsocial:'-'}" />
+					</span>
+					<span class="fs-12 font-medium text-gray-900 block">
+						<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.identificacion!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.identificacion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block">
+						<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.direccion!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.direccion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="pi pi-phone mr-1"></i>
+						<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.telefono!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.telefono:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="fa-regular fa-envelope"></i>
+						<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.cliente.correoelectronico!=null?notaDebitoFrmCtrl.notDebitoSelected.cliente.correoelectronico:'-'}" />
+					</span>
+					
 				</div>
 			</f:subview>
 		</p:outputPanel>	
 	</div>
 	
-	<div class="card card-w-title">	
+	<div class="card">	
 		
-		<span class="block text-black Fs14 font-medium">Información Adicional</span>
+		<span class="block text-gray-900 fs-14 fw-5">Información Adicional</span>
 		
-		<div class="flex my-2">
-			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-			<p:commandLink action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" update="@form:oupInfoAdicionalMain" process="@this @form:oupInfoAdicionalMain" oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
-				<i class="Fs12 fa fa-plus mr-1 text-gray-700"/>
-				<span class="text-black">Agregar</span>
+		<div class="flex mt-2 gap-2 align-items-end">
+			<i class="fa fa-ellipsis-v fs-14"/>
+			<p:commandLink action="#{notaDebitoFrmCtrl.agregarInfoAdicional()}" 
+				update="@form:oupInfoAdicionalMain" 
+				process="@this @form:oupInfoAdicionalMain" 
+				oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
+				<!-- <i class="fs-12 fa fa-plus mr-1 text-gray-700"/> -->
+				<span class="text-gray-900 fs-12">Agregar</span>
 			</p:commandLink>
 		</div>
 		
-		
-		<p:outputPanel id="oupInfoAdicionalMain">
+		<p:outputPanel id="oupInfoAdicionalMain" styleClass="mt-3">
 			
-			<div class="flex">
-				<div class="flex-grow-1 flex">
-					<span class="text-gray-700 font-medium Fs11">Nombre</span>
+			<div class="grid">
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Nombre</span>
 				</div>
-				<div class="flex-grow-1 flex pl-1">
-					<span class="text-gray-700 font-medium Fs11">Descripción</span>
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Descripción</span>
 				</div>
 			</div>
 			
 			<div class="mainInfoDT overflow-auto mt-1 p-0" style="min-height: 100px;max-height: 200px;">
 				<c:forEach items="#{notaDebitoFrmCtrl.infoadicionalList}" var="info" varStatus="metadata">
-					<div class="flex mb-1">
-						<div class="flex-grow-1 flex flex-column pr-1">
-							<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalNombre" styleClass="block"/>
+					
+					<div class="grid">
+						<div class="col-6">
+							<div class="flex gap-2">
+								<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:oupInfoAdicionalMain" disabled="#{notaDebitoFrmCtrl.enableAccion}">
+									<f:setPropertyActionListener value="#{info}" target="#{notaDebitoFrmCtrl.infoadicionalSelected}"/>
+									<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+								<div class="flex-1">
+									<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="Requerido"/>
+									<p:message for="inpInfoAdicionalNombre" styleClass="block m-0 p-0"/>
+								</div>
+							</div>
 						</div>
-						<div class="flex-grow-1 flex flex-column">						
-							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalValor" styleClass="block"/>
-						</div>
-						<div class="flex-grow-0 flex px-2">
-							<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{notaDebitoFrmCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{info}" target="#{notaDebitoFrmCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
+						<div class="col-6">
+							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="Requerido"/>
+							<p:message for="inpInfoAdicionalValor" styleClass="block m-0 p-0"/>
 						</div>
 					</div>
 				</c:forEach>

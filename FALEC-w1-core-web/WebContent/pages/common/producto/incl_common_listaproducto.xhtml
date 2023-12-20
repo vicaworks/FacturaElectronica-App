@@ -25,6 +25,8 @@
 			margin: .3rem;
 		}
 		
+		#frmListProducto .ui-selectonemenu-label.ui-inputfield{ font-size: 1.4rem!important;} 
+		
 	</style>	
 	
 	
@@ -44,18 +46,18 @@
 			
 			<div class="flex mb-1">
 				<div class="flex-none flex min-width-70">
-					<p:selectOneMenu id="somLPTipoRegistro" styleClass="w-full"   tabindex="2" value="#{listaProductoCtrl.tipoRegistro}">
+					<p:selectOneMenu id="somLPTipoRegistro" styleClass="fs-14 w-full"   tabindex="2" value="#{listaProductoCtrl.tipoRegistro}">
 						<f:selectItem itemLabel="Producto" itemValue="1"/>
 						<f:selectItem itemLabel="Otro Concepto" itemValue="2"/>
 						<p:ajax event="change" update="@form" listener="#{listaProductoCtrl.cambioTipoRegistro()}" process="@this :frmListProducto:somLPTipoRegistro"/>
 					</p:selectOneMenu>
 				</div>
 				<div class="flex-grow-1 flex px-1">
-					<p:inputText id="intListProBusqueda" value="#{listaProductoCtrl.criterioBusqueda}" styleClass="w-full" tabindex="0" onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}" disabled="#{listaProductoCtrl.tipoRegistro==2}"></p:inputText>
+					<p:inputText id="intListProBusqueda" value="#{listaProductoCtrl.criterioBusqueda}" styleClass="fs-14 w-full" tabindex="0" onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}" disabled="#{listaProductoCtrl.tipoRegistro==2}"></p:inputText>
 				</div>
-				<div class="flex-none flex flex-row" style="width:63px!important;">
-					<p:commandButton styleClass="ui-button-success mr-1" icon="fa fa-search" tabindex="1" action="#{listaProductoCtrl.refrescar()}" update="@form" process="@this :frmListProducto:intListProBusqueda" disabled="#{listaProductoCtrl.tipoRegistro==2}"/>					
-   					<p:commandButton styleClass="ui-button-outlined" icon="fa fa-plus" disabled="#{listaProductoCtrl.tipoRegistro==2}" action="#{productoCtrl.nuevo()}" process="@this" update="@form">
+				<div class="flex-none flex flex-row gap-1" style="width:63px!important;">
+					<p:commandButton styleClass="ui-button-success fs-14" icon="fa fa-search fs-12" tabindex="1" action="#{listaProductoCtrl.refrescar()}" update="@form" process="@this :frmListProducto:intListProBusqueda" disabled="#{listaProductoCtrl.tipoRegistro==2}"/>					
+   					<p:commandButton styleClass="ui-button-outlined fs-14" icon="fa fa-plus fs-12" disabled="#{listaProductoCtrl.tipoRegistro==2}" action="#{productoCtrl.nuevo()}" process="@this" update="@form">
    						<f:setPropertyActionListener value="ADQUISICION" target="#{productoCtrl.callModule}"/>
 						<f:setPropertyActionListener value="#{listaProductoCtrl.establecimientoMain}" target="#{productoCtrl.establecimientoMain}"/>
 						<!-- <f:setPropertyActionListener value="#{adquisicionFrmCtrl}" target="#{productoCtrl.adquisicionFrmCtrl}"/> -->

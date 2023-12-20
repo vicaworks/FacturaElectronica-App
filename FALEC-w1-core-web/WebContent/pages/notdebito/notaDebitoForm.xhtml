@@ -11,30 +11,9 @@
     
     <ui:define name="head">
         <style type="text/css">
-			
-			
 			.ui-calendar .ui-inputfield{
 				width: 100% !important;
-			}			
-			.pvDetalleDT .ui-selectonemenu .ui-selectonemenu-label {
-				text-align: center;
-			}			
-			body .ui-datatable .ui-datatable-data > tr > td	{vertical-align: top;}
-			body .ui-datatable thead th {vertical-align: top;text-align: center!important;}			
-			.card{margin-bottom: 0.25rem!important;}
-			/* file upload */
-			body .ui-fileupload .ui-fileupload-buttonbar {
-			 border: none;
-			 padding: 0px !important;
 			}
-			body .ui-fileupload .ui-fileupload-content {
-				/* display: none; */
-				border: none;
-				padding: 0px;
-				border-top: 0 none;
-				line-height: 1.5;
-			}	
-			
         </style>
         <script >
 			$(function () {
@@ -64,33 +43,34 @@
 		<h:form id="formMain">
 			
 			<!-- Opciones principales -->
-			<div class="card card-w-title mt-1" >
-	    		<div class="flex">
-	    			
-	    				<p:commandButton id="cmdfacNuevo"
-								value="Nuevo" icon="fa fa-plus" 
-								action="#{notaDebitoFrmCtrl.nuevo()}" styleClass="ui-button-success min-width-70 mr-1 #{appSessionCtrl.accesoDisable('mn_compelec_notdebito_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
-						</p:commandButton>
+			<div class="tool-bar mb-2">
+   				<p:commandButton id="cmdfacNuevo"
+						value="Nuevo" 
+						icon="fa fa-plus fs-12" 
+						action="#{notaDebitoFrmCtrl.nuevo()}" 
+						styleClass="fs-12 ui-button-success min-width-70 #{appSessionCtrl.accesoDisable('mn_compelec_notdebito_nuevo')?'ui-state-disabled':''}" 
+						update="@form" 
+						immediate="true">
+				</p:commandButton>
+				
+   				<p:commandButton id="cmduardar"
+						value="Guardar" 
+						icon="fa-regular fa-floppy-disk fs-12"  
+						action="#{notaDebitoFrmCtrl.guardar()}" 
+						styleClass="fs-12 ui-button-outlined ui-button-primary min-width-70" 
+						update="@form"  
+						disabled="#{notaDebitoFrmCtrl.enableAccion}"/>
 						
-	    				<p:commandButton id="cmduardar"
-								value="Guardar" icon="fa fa-floppy-o"  
-								action="#{notaDebitoFrmCtrl.guardar()}" styleClass="ui-button-outlined min-width-70 mr-1" update="@form"  disabled="#{notaDebitoFrmCtrl.enableAccion}"/>
-								
-						<p:commandButton id="cmdImprimir"
-							value="Imprimir" icon="fa fa-print Fs11" title="Imprimir Factura"
-							action="#{notaDebitoFrmCtrl.imprimir()}" styleClass="ui-button-outlined min-width-70 mr-1" update="@form">
-							<f:setPropertyActionListener value="#{rideCtrl}" target="#{notaDebitoFrmCtrl.rideCtrl}"/>		
-						</p:commandButton>
-	    			
-	    		</div>
+				<p:commandButton id="cmdImprimir"
+					value="Imprimir" 
+					icon="fa fa-print fs-12" 
+					title="Imprimir Factura"
+					action="#{notaDebitoFrmCtrl.imprimir()}" 
+					styleClass="fs-12 ui-button-secondary min-width-70" update="@form">
+					<f:setPropertyActionListener value="#{rideCtrl}" target="#{notaDebitoFrmCtrl.rideCtrl}"/>		
+				</p:commandButton>
+			</div>
 			
-			</div>		    	
-	    	
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
 			<div class="grid">
 			
 				<!-- cabecera -->

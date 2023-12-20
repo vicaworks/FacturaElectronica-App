@@ -12,26 +12,31 @@
 				height: calc(100vh - 400px);
 			}
 		
-		.notMotivoDT .ui-inputnumber .ui-inputfield{width: 100%!important;text-align: right;}
+		.notMotivoDT .ui-inputnumber .ui-inputfield{height: 100%!important;text-align: center;font-size: 14px;width: 95px;max-width: 95px;}
 		
-		.oupNcTotal .ui-selectonemenu-label {text-align: right!important;}
+		.oupNcTotal .ui-selectonemenu-label {text-align: right!important;padding-right: 2rem!important;}
 		
 	</style>
 	
 	
-		<div class="card card-w-title">
+		<div class="card">
 			
-			<div class="flex justify-content-start py-1">
-				<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-				<p:commandLink id="cmdNCAgregarDetalle"
-					process="@this :formMain:notMotivoDT"
+			<div class="flex justify-content-end">
+				<p:commandButton id="cmdNCAgregarDetalle" 
+               		process="@this :formMain:notMotivoDT"
 					update=":formMain:notMotivoDT"
 					oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
 					action="#{notaDebitoFrmCtrl.agregarItem()}" 
-					styleClass="Fs12">
-					<i class="fa fa-plus text-gray-800 mr-1"></i>
-					<span class="text-gray-900">Agregar Ítem</span>
-				</p:commandLink>			
+               		value="Agregar detalle" 
+               		styleClass="fs-12 min-width-80" 
+               		icon="fa fa-plus fs-12">
+               		<f:setPropertyActionListener value="NOTA_CREDITO" target="#{listaProductoCtrl.callModule}"/>
+					<f:setPropertyActionListener value="NUEVO" target="#{listaProductoCtrl.accion}"/>
+					<f:setPropertyActionListener value=":formMain:pvDetalleDT :formMain:oupNcTotal" target="#{listaProductoCtrl.viewUpdate}"/>
+					<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+					<f:setPropertyActionListener value="#{notaCreditoCtrl}" target="#{listaProductoCtrl.notaCreditoCtrl}"/>
+					<f:setPropertyActionListener value="#{notaCreditoCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
+               	</p:commandButton>	
 			</div>
 			
 			
@@ -41,151 +46,161 @@
 						styleClass="notMotivoDT Fs11"  
 						rowKey="#{r.idmotivo}">
 						
-				<p:column headerText="MOTIVO" style="width:70%;">
-					<p:inputText id="intNdMotivo" value="#{r.razon}" maxlength="300" required="true" requiredMessage="REQUERIDO" styleClass="Wid100"></p:inputText>
-					<p:message for="intNdMotivo"/>
+								
+				<p:column headerText="Motivo" style="width:80%;">
+				
+					<div class="flex gap-2 align-items-center">
+						<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarDetalle()}" process="@this" update="@form:notMotivoDT @form:oupNcTotal" disabled="#{notaDebitoFrmCtrl.enableAccion}">
+							<f:setPropertyActionListener value="#{r}" target="#{notaDebitoFrmCtrl.motivoSelected}"/>
+							<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+						</p:commandLink>
+						<p:inputText id="intNdMotivo" 
+							value="#{r.razon}" 
+							maxlength="300" 
+							required="true" 
+							requiredMessage="Requerido" 
+							styleClass="flex-1 fs-14"></p:inputText>
+					</div>
+					<p:message for="intNdMotivo" styleClass="block m-0 p-0"/>
 				</p:column>
-				<p:column headerText="VALOR" style="width:20%;">
+				<p:column headerText="Valor" style="width:20%;">
 					
-					<p:inputNumber id="intNdValor" value="#{r.valor}" symbol="$" onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
-                  			symbolPosition="p" emptyValue="zero" decimalPlaces="2">
+					<p:inputNumber id="intNdValor" 
+						value="#{r.valor}" 
+						symbol="$" 
+						onkeydown="if(event.keyCode==13){event.keyCode=9;return false;}"
+                  		symbolPosition="p" 
+                  		emptyValue="zero" 
+                  		decimalPlaces="2"
+                  		styleClass="w-full">
                 		<p:ajax listener="#{notaDebitoFrmCtrl.calcularIvaAction()}" update="@form:notMotivoDT @form:oupNcTotal" process="@this @form:notMotivoDT"/>
                 	</p:inputNumber>	
-					<p:message for="intNdValor" styleClass="block"/>
+					<p:message for="intNdValor" styleClass="block m-0 p-0"/>
 				</p:column>
 				
-				<p:column style="width:10%;" styleClass="TexAlCenter">
-					<p:commandLink  action="#{notaDebitoFrmCtrl.eliminarDetalle()}" process="@this" update="@form:notMotivoDT @form:oupNcTotal" disabled="#{notaDebitoFrmCtrl.enableAccion}">
-						<f:setPropertyActionListener value="#{r}" target="#{notaDebitoFrmCtrl.motivoSelected}"/>
-						<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
-						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-					</p:commandLink>
-				</p:column>
 						
 			</p:dataTable>
-			<div class="EmptyBox10"/>
 			
 			
 			<!-- subtotales -->
-		<p:outputPanel id="oupNcTotal" styleClass="w-full oupNcTotal">
-			<div class="grid">
-				<div class="col-12 md:col-7">
-					<div class="grid grid-nogutter justify-content-between">
-						<div class="col-8 py-1">
-							<div class="w-full">
-								<span class="Fs10 mr-1 text-gray-700 font-semibold">RESUMEN</span>
-								<span class="Fs14 text-blue-600 font-medium">TOTALES</span>
+			<p:outputPanel id="oupNcTotal" styleClass="w-full oupNcTotal">
+				<div class="grid">
+					<div class="col-12 md:col-7">
+						<div class="grid grid-nogutter justify-content-between">
+							<div class="col-8 py-1">
+								<div class="w-full">
+									<span class="fs-12 mr-1 text-gray-700 font-semibold">Resumen</span>
+									<span class="fs-14 text-blue-600 font-medium">TOTALES</span>
+								</div>
 							</div>
-						</div>
-						<div class="col-1 text-center align-self-center">
-							<i class="fa fa-angle-down Fs14"></i>
-						</div>
-						<div class="col-12 mt-1">
-							
-							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
-								<div class="flex flex-grow-1 Fs10">
-									<i class="fa fa-angle-right mr-1 font-bold"></i>
-									<span class="text-gray-800">Subtotal</span>
-								</div>						
-								<div class="flex flex-grow-1">
-									<div class="text-right pr-3 w-full">
-										<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalsinimpuestos}" styleClass="Fs14 text-black font-light">
-						   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						   				</h:outputText>
-									</div>
-								</div>				
+							<div class="col-1 text-center align-self-center">
+								<i class="fa fa-angle-down fs-14"></i>
 							</div>
-							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
-								<div class="flex flex-grow-1 Fs10">
-									<i class="fa fa-angle-right mr-1 font-bold"></i>
-									<span class="text-gray-800 mr-1">Seleccionar I.V.A.</span>
-								</div>						
-								<div class="flex flex-grow-1">
-									<div class="text-right pr-3 w-full">
-										<p:selectOneMenu id="somNdIva"
-											value="#{notaDebitoFrmCtrl.totalimpuesto.iva}"
-											converter="omnifaces.SelectItemsConverter"
-											required="true"
-											requiredMessage="REQUERIDO"
-											styleClass="w-full text-right">
-											<f:selectItem itemLabel="Seleccionar..." itemValue="#{null}"/>	
-											<f:selectItems value="#{notaDebitoFrmCtrl.ivaList}" var="iva"
-												itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
-											
-											<p:ajax event="change" listener="#{notaDebitoFrmCtrl.calcularIvaAction()}" update="@form:oupNcTotal"  process="@this @form:oupNcTotal"/>
-											
-										</p:selectOneMenu>
-										<p:message for="somNdIva" styleClass="block"/>
-									</div>
-								</div>				
-							</div>
-							<div class="flex mt-1 border-bottom-1 border-blue-100 py-1">
-								<div class="flex flex-grow-1 Fs10">
-									<i class="fa fa-angle-right mr-1 font-bold"></i>
-									<span class="text-gray-800 mr-1">I.V.A.</span>
-								</div>						
-								<div class="flex flex-grow-1">
-									<div class="text-right pr-3 w-full">
-										<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totaliva}" styleClass="Fs14 text-black font-light">
-						   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-						   				</h:outputText>
-									</div>
-								</div>				
-							</div>
+							<div class="col-12 mt-1">
 								
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-11">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800">Sin impuestos</span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full">
+											<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalsinimpuestos}" styleClass="fs-14 text-black font-light">
+							   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							   				</h:outputText>
+										</div>
+									</div>				
+								</div>
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-11">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800 mr-1">Seleccionar I.V.A.</span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full">
+											<p:selectOneMenu id="somNdIva"
+												value="#{notaDebitoFrmCtrl.totalimpuesto.iva}"
+												converter="omnifaces.SelectItemsConverter"
+												required="true"
+												requiredMessage="Requerido"
+												styleClass="w-full text-right">
+												<f:selectItem itemLabel="Seleccionar..." itemValue="#{null}"/>	
+												<f:selectItems value="#{notaDebitoFrmCtrl.ivaList}" var="iva"
+													itemLabel="#{iva.porcentaje}" itemValue="#{iva}" />
+												
+												<p:ajax event="change" listener="#{notaDebitoFrmCtrl.calcularIvaAction()}" update="@form:oupNcTotal"  process="@this @form:oupNcTotal"/>
+												
+											</p:selectOneMenu>
+											<p:message for="somNdIva" styleClass="block"/>
+										</div>
+									</div>				
+								</div>
+								<div class="flex mt-1 border-bottom-1 border-blue-100 py-2 align-items-end">
+									<div class="flex flex-grow-1 fs-11">
+										<i class="fa fa-angle-right mr-1 font-bold"></i>
+										<span class="text-gray-800 mr-1">I.V.A.</span>
+									</div>						
+									<div class="flex flex-grow-1">
+										<div class="text-right pr-3 w-full">
+											<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totaliva}" styleClass="fs-14 text-black font-light">
+							   					<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+							   				</h:outputText>
+										</div>
+									</div>				
+								</div>
+									
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-12 md:col-5 align-self-center text-center py-2">
-					<span class="inline Fs10 font-bold mr-1">TOTAL</span>
-					<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalconimpuestos}" styleClass="Fs24 text-blue-600 font-bold inline">
-						<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-					</h:outputText>
-				</div>
-				
-				<div class="col-12 md:col-7">
-					<div class="grid justify-content-end">
-						<div class="col-12 md:col-6">
-							<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" process="@this" disabled="#{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null}">
-	    				
-			    				<f:setPropertyActionListener value="NOTA_DEBITO" target="#{pagoCompCtrl.callModule}"/>
-			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl}" target="#{pagoCompCtrl.notaDebitoFrmCtrl}"/>
-			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.notDebitoSelected}" target="#{pagoCompCtrl.cabeceraSelected}"/>
-			    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.pagoList}" target="#{pagoCompCtrl.pagoList}"/>
-			    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
-			    				<f:setPropertyActionListener value=":formMain:oupNcTotal" target="#{pagoCompCtrl.updateView}"/>
-			    				
-					    		<div class="flex align-items-stretch #{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-gray-900 text-white border-round" style="height: 100%;">
-					    			<div class="flex align-items-center justify-content-center w-full">
+					<div class="col-12 md:col-5 align-self-center text-center py-2">
+						<h:outputText value="#{notaDebitoFrmCtrl.notDebitoSelected.totalconimpuestos}" styleClass="fs-25 text-blue-600 font-bold inline">
+							<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+						</h:outputText>
+						<span class="inline fs-11 font-bold mr-1">TOTAL</span>
+					</div>
+					
+					<div class="col-12 md:col-7">
+						<div class="grid justify-content-end">
+							<div class="col-12 md:col-6">
+								<p:commandLink action="#{pagoCompCtrl.loadPantalla()}" 
+									process="@this" 
+									disabled="#{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null}">
+		    				
+				    				<f:setPropertyActionListener value="NOTA_DEBITO" target="#{pagoCompCtrl.callModule}"/>
+				    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl}" target="#{pagoCompCtrl.notaDebitoFrmCtrl}"/>
+				    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.notDebitoSelected}" target="#{pagoCompCtrl.cabeceraSelected}"/>
+				    				<f:setPropertyActionListener value="#{notaDebitoFrmCtrl.pagoList}" target="#{pagoCompCtrl.pagoList}"/>
+				    				<f:setPropertyActionListener value="formMain" target="#{pagoCompCtrl.callForm}"/>
+				    				<f:setPropertyActionListener value=":formMain:oupNcTotal" target="#{pagoCompCtrl.updateView}"/>
+				    				
+				    				<div class="flex align-items-stretch #{notaDebitoFrmCtrl.notDebitoSelected.totalpagar.doubleValue()==0 or notaDebitoFrmCtrl.notDebitoSelected.cliente==null?'bg-gray-300':'bg-green-500'} border-1 border-green-500 text-white border-round" style="height: 100%;">
+						    			<div class="flex align-items-center justify-content-center w-full">
 						    				<div class="flex flex-inline">
-						    					<div class="flex mr-2">
-						    						<i class="fa fa-chevron-circle-right Fs50 text-white"></i>
-						    					</div>
-						    					<div class="flex align-items-center">
-						    						<span class="Fs14 text-white">Pago</span>
-						    					</div>
+						    					<div class="flex flex-inline gap-2 align-items-center">
+						    					<i class="fa-solid fa-money-check-dollar fs-35"></i>
+					    						<span class="fs-16 text-white font-medium">Pagar</span>
 						    				</div>
-					    			</div>
-					    		</div>
-			    			</p:commandLink>
+						    				</div>
+						    			</div>
+						    		</div>
+				    			</p:commandLink>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-12 md:col-5 align-self-center text-center py-2">
-					<div class="grid grid-nogutter">						
-						<div class="col-12 align-self-center">
-							<span class="inline Fs10 font-bold mr-1">PAGO</span>
-							<h:outputText value="#{notaDebitoFrmCtrl.totalPago}" styleClass="Fs24 text-black font-bold inline">
-								<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-							</h:outputText>
+					<div class="col-12 md:col-5 align-self-center text-center py-2">
+						<div class="grid grid-nogutter">						
+							<div class="col-12 align-self-center">
+								<h:outputText value="#{notaDebitoFrmCtrl.totalPago}" styleClass="fs-25 text-black font-bold inline">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+								<span class="inline fs-11 font-bold mr-1">PAGO</span>
+							</div>
 						</div>
 					</div>
+					
 				</div>
-				
-			</div>
-		</p:outputPanel>
-		<div class="EmptyBox10"/>
+			</p:outputPanel>
 	</div>
-	<div class="EmptyBox10"/>
 	
 </ui:composition>
