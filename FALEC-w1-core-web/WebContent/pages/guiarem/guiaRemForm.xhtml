@@ -16,15 +16,6 @@
 				width: 100% !important;
 			}
 			
-			.pvDetalleDT .ui-selectonemenu .ui-selectonemenu-label {
-				text-align: center;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td,
-			body .ui-datatable thead th {vertical-align: top;}
-			
-			.card{margin-bottom: 0.25rem!important;}
-			
         </style>
         <script >
 			$(function () {
@@ -54,33 +45,36 @@
 		<h:form id="formMain">
 			
 			<!-- Opciones principales -->
-			<div class="card card-w-title" >
-	    		<div class="flex">
+			<div class="tool-bar mb-2">
 	    			
-	    				<p:commandButton id="cmdfacNuevo"
-								value="Nuevo" icon="fa fa-file-o" 
-								action="#{guiaRemFormCtrl.nuevo()}" styleClass="ui-button-success mr-1 #{appSessionCtrl.accesoDisable('mn_compelec_guiarem_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
-						</p:commandButton>
+   				<p:commandButton id="cmdfacNuevo"
+						value="Nuevo" 
+						icon="fa-regular fa-file fs-12" 
+						action="#{guiaRemFormCtrl.nuevo()}" 
+						styleClass="fs-12 ui-button-success #{appSessionCtrl.accesoDisable('mn_compelec_guiarem_nuevo')?'ui-state-disabled':''}" 
+						update="@form" 
+						immediate="true">
+				</p:commandButton>
+				
+   				<p:commandButton id="cmduardar"
+						value="Guardar" 
+						icon="fa-regular fa-floppy-disk fs-12"  
+						action="#{guiaRemFormCtrl.guardar()}" 
+						styleClass="ui-button-outlined ui-button-primary fs-12 " 
+						update=":formMain" 
+						disabled="#{guiaRemFormCtrl.enableAccion}"/>
 						
-	    				<p:commandButton id="cmduardar"
-								value="Guardar" icon="fa fa-floppy-o"  
-								action="#{guiaRemFormCtrl.guardar()}" styleClass="ui-button-outlined mr-1" update=":formMain" disabled="#{guiaRemFormCtrl.enableAccion}"/>
-								
-						<p:commandButton id="cmdImprimir"
-								value="Imprimir" icon="fa fa-print Fs11" title="Imprimir"
-								action="#{guiaRemFormCtrl.imprimir()}" styleClass="ui-button-outlined" update="@form">
-							<f:setPropertyActionListener value="#{rideCtrl}" target="#{guiaRemFormCtrl.rideCtrl}"/>		
-						</p:commandButton>
-	    			
-	    		</div>
+				<p:commandButton id="cmdImprimir"
+						value="Imprimir" 
+						icon="fa fa-print fs-12" 
+						title="Imprimir"
+						action="#{guiaRemFormCtrl.imprimir()}" 
+						styleClass="ui-button-secondary fs-12" 
+						update="@form">
+					<f:setPropertyActionListener value="#{rideCtrl}" target="#{guiaRemFormCtrl.rideCtrl}"/>		
+				</p:commandButton>
 			
-			</div>		    	
-	    	
-	    	<!-- Mensajes -->
-			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
+			</div>
 			
 			<div class="grid">
 			

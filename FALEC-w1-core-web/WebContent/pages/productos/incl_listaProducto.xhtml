@@ -14,7 +14,14 @@
 		
 	</style>
 	
-	<p:dialog header="Productos" widgetVar="dlgListaProducto" modal="true" responsive="true" width="550px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Productos" 
+		widgetVar="dlgListaProducto" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:50.5rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmListProducto">
 			
@@ -24,19 +31,20 @@
 			
 			
 			<!-- OPCIONES -->			
-			<div class="flex">				
+			<div class="flex ui-fluid">				
 				<div class="ui-inputgroup flex flex-grow-1 pr-1">
                     <p:inputText id="intListProCriterioBusqueda"
 						value="#{listaProductoCtrl.criterioBusqueda}" required="false"
-						requiredMessage="REQUERIDO" styleClass="Wid100" maxlength="1000"
-						placeholder="BUSCAR POR : #{msg['label.categoria']}, NOMBRE PRODUCTO, #{msg['label.codigo']} PRODUCTO" 
+						requiredMessage="Requerido" styleClass="Wid100" maxlength="1000"
+						placeholder="Buscar por : #{msg['label.categoria']}, nombre, #{msg['label.codigo']} producto" 
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}">
 					</p:inputText>
                     <p:commandButton icon="pi pi-search" styleClass="ui-button-success" action="#{listaProductoCtrl.refrescar()}" update="@form"/>
                 </div>
                 <div class="flex flex-grow-0 px-2 align-items-center">
-                	<p:commandLink action="#{productoCtrl.nuevo()}" update="@form">
-                		<i class="fa fa-plus Fs16 text-gray-800" ></i>
+                	<p:commandLink action="#{productoCtrl.nuevo()}" update="@form" styleClass="flex gap-2 align-items-baseline fs-14 text-gray-800">
+                		<i class="fa fa-plus" ></i>
+                		<span>Agregar</span>
 						<f:setPropertyActionListener value="LISTA_PRODUCTO" target="#{productoCtrl.callModule}"/>
 						<f:setPropertyActionListener value="frmListProducto" target="#{productoCtrl.formModule}"/>
 						<f:setPropertyActionListener value=":frmListProducto" target="#{productoCtrl.viewUpdate}"/>
@@ -57,7 +65,7 @@
 				<p:dataTable id="listaProductoDT" var="pr"
 					value="#{listaProductoCtrl.productoList}" scrollable="true"
 					emptyMessage="#{msg['mensaje.noexistenDatos']}"
-					styleClass="listaProductoDT Fs11"
+					styleClass="listaProductoDT fs-11 mt-2"
 					style="width: 99.5%!important;"  
 					rowKey="#{pr.idproducto}"
 					rows="11"
@@ -74,14 +82,14 @@
 	                
 	                <p:column style="width:150px;" filterBy="#{pr.filterNombre}" filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="NOMBRE" />
+							<h:outputText value="Producto" />
 						</f:facet>
 						<div class="flex">
 							<div class="flex-grow-1 flex flex-column">
-								<h:outputText value="#{pr.nombregenerico}" />
-								<div class="flex align-items-center">
-									<i class="fa fa-barcode Fs10 text-gray-400 mr-1"/>
-				                	<h:outputText value="#{pr.codigoprincipal}" styleClass="text-blue-700">
+								<h:outputText value="#{pr.nombregenerico}" styleClass="text-gray-900 font-semibold"/>
+								<div class="flex align-items-center gap-2 fs-10 text-gray-700">
+									<i class="fa fa-barcode"/>
+				                	<h:outputText value="#{pr.codigoprincipal}">
 									</h:outputText>									
 								</div>
 							</div>
@@ -96,21 +104,34 @@
 						</div>
 					</p:column>
 					
-					<p:column headerText="CANTIDAD" styleClass="TexAlCenter" style="width:40px;">
-						
-						<p:inputText id="idListProCantidad" value="#{pr.cantidad}" required="true" min="1" converterMessage="SOLO NUMEROS" validatorMessage="MAYOR A 0" requiredMessage="REQUERIDO"  onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])"
-							styleClass="w-full Fs20 text-right">							
-	                		<p:ajax update=":frmListProducto:listaProductoDT">
-	                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
-	                		</p:ajax>
-						</p:inputText>
-	                	<p:message for="idListProCantidad" styleClass="block"/>
+					<p:column headerText="Cantidad"  style="width:40px;">
+						<div class="pr-2">
+							<p:inputText id="idListProCantidad" 
+								value="#{pr.cantidad}" 
+								required="true" 
+								min="1" 
+								converterMessage="Solo números" 
+								validatorMessage="Mayor a 0" 
+								requiredMessage="Requerido"  
+								onkeydown="if(event.keyCode==13){event.keyCode=123;agregarProducto(); return false;}" 
+								onclick="establecerProducto([{name:'idProducto' , value:'#{pr.idproducto}'}])"
+								styleClass="w-full fs-20 text-right">							
+		                		<p:ajax update=":frmListProducto:listaProductoDT">
+		                			<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
+		                		</p:ajax>
+							</p:inputText>
+		                	<p:message for="idListProCantidad" styleClass="block m-0 p-0"/>
+						</div>
 	                	
 	                </p:column>
 					
-	                <p:column headerText="OPC" styleClass="TexAlCenter" style="width:20px;">
-	                	<p:commandLink id="clkListProductoAdd" action="#{listaProductoCtrl.guardar()}" update="@form #{listaProductoCtrl.viewUpdate}">
-							<i class="fa fa-plus Fs20" style="color:#252529;"></i>
+	                <p:column headerText="Opción" style="width:20px;">
+	                	<p:commandLink id="clkListProductoAdd" 
+	                		action="#{listaProductoCtrl.guardar()}" 
+	                		update="@form #{listaProductoCtrl.viewUpdate}"
+	                		styleClass="flex align-items-center justify-content-center"
+	                		style="height:3rem;">
+							<i class="fa fa-plus fs-20 text-primary-600 font-semibold"></i>
 							<f:setPropertyActionListener value="#{pr}" target="#{listaProductoCtrl.productoSelected}"/>
 						</p:commandLink>
 	                </p:column>

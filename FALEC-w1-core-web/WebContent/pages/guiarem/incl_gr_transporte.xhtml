@@ -26,13 +26,13 @@
 	</script>
 	
 	
-	<div class="card card-w-title">
+	<div class="card">
 	
 		<div class="flex justify-content-between">
-			<span class="Fs14 text-black font-semibold">Guía Remisión</span>
+			<span class="fs-14 text-gray-900 font-semibold">Guía Remisión</span>
 			<div>
-				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
-				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(guiaRemFormCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+				<span class="fs-12 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="fs-12 text-primary-600 font-semibold">#{appSessionCtrl.formatoCadena(guiaRemFormCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
 			</div>			
 		</div>
 		
@@ -48,13 +48,12 @@
 			        </p:toggleSwitch>
 				</div>
 				<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-					<span class="Fs12 text-black font-semibold">Borrador</span>
-					<span class="Fs10 text-gray-400">La Guía de Remisión se guarda como borrador y permite modificaciones</span>
+					<span class="fs-12 text-gray-900 font-semibold">Borrador</span>
+					<span class="fs-10 text-gray-600">La Guía de Remisión se guarda como borrador y permite modificaciones</span>
 				</div>
 			</div>
 			
 			<p:outputPanel rendered="#{not guiaRemFormCtrl.guiaRemisionSelected.borrador}" styleClass="gridSecuencial">
-				<div class="EmptyBox5"/>
 				<div class="flex">
 					<div class="flex-grow-0 flex min-width-50 justify-content-start">
 						<p:toggleSwitch value="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" style="height:24px;" onchange="PrimeFaces.focus('formMain:intSecDocumento');">
@@ -65,15 +64,15 @@
 				        </p:toggleSwitch>
 					</div>
 					<div class="flex-grow-1 flex flex-column min-width-60 justify-content-center border-left-2 border-gray-600 py-1 px-2">
-						<span class="Fs12 text-black font-semibold">Asignar Secuencial Comprobante</span>
-						<span class="Fs10 text-gray-400">Asigna un número de factura de forma manual</span>
+						<span class="fs-12 text-gray-900 font-semibold">Asignar Secuencial Comprobante</span>
+						<span class="fs-10 text-gray-400">Asigna un número de factura de forma manual</span>
 						<p:outputPanel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" styleClass="mt-2">
 							<div class="flex align-items-center">
-								<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialEstablecimiento}" styleClass="Fs14"/>
+								<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialEstablecimiento}" styleClass="fs-14"/>
 								<span class="mx-2">-</span>
-								<p:inputMask id="intSecCaja" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+								<p:inputMask id="intSecCaja" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialCaja}" maxlength="3" mask="999" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="SECUENCIAL Requerido"/>
 								<span class="mx-2">-</span>
-								<p:inputMask id="intSecDocumento" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL REQUERIDO"/>
+								<p:inputMask id="intSecDocumento" value="#{guiaRemFormCtrl.guiaRemisionSelected.secuencialNumero}" maxlength="9" mask="999999999" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.editarSecuencial}" style="width:100px;font-size:14px !important;" required="true" requiredMessage="SECUENCIAL Requerido"/>
 							</div>
 							<div class="flex">
 								<p:message styleClass="block" for="intSecCaja" />
@@ -86,24 +85,22 @@
 			
 		</p:outputPanel>
 		
-		
-		
 		<p:outputPanel rendered="#{guiaRemFormCtrl.guiaRemisionSelected.idcabecera!=null and guiaRemFormCtrl.guiaRemisionSelected.estado!='BORRADOR'}" styleClass="mt-2">
 			<div class="flex flex-column">
-				<span class="text-black mb-1 Fs11">Secuencial Comprobante</span>
-				<span class="Fs16 text-black font-bold">#{guiaRemFormCtrl.getFormatoNumDocumento(guiaRemFormCtrl.guiaRemisionSelected.numdocumento)}</span>
+				<span class="text-gray-900 mb-1 fs-11">Secuencial Comprobante</span>
+				<span class="fs-16 text-gray-900 font-bold">#{guiaRemFormCtrl.getFormatoNumDocumento(guiaRemFormCtrl.guiaRemisionSelected.numdocumento)}</span>
 			</div>
 		</p:outputPanel>
 		
 		<p:outputPanel id="gridGrCabecera">
-			<span class="block mt-1 text-gray-700 font-medium Fs11">Transportista</span>
+			<span class="block my-1 text-gray-900 fs-11">Transportista</span>
 			<div class="flex">
 				<div class="flex-grow-1 flex">
 					<p:selectOneMenu id="somGrTransportista"
 							value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista}"
 							converter="omnifaces.SelectItemsConverter"
 							required="true"
-							requiredMessage="REQUERIDO"
+							requiredMessage="Requerido"
 							styleClass="w-full"
 							filter="true" filterMatchMode="contains">
 						<f:selectItem itemLabel="Seleccionar ..."
@@ -112,22 +109,23 @@
 						<f:selectItems value="#{guiaRemFormCtrl.transportistaList}" var="t"
 							itemLabel="#{t.razonsocial}" itemValue="#{t}" />
 						
-						<p:ajax event="change" update=":formMain:msgFormMain :formMain:gridGrCabecera" listener="#{guiaRemFormCtrl.cambioTransportistaAction()}">
+						<p:ajax event="change" update=":formMain:gridGrCabecera" listener="#{guiaRemFormCtrl.cambioTransportistaAction()}">
 						</p:ajax>
 							
 					</p:selectOneMenu>
 				</div>
 				<div class="flex-grow-0 flex">
 					<p:commandLink action="#{transportistaCtrl.nuevoEditar(guiaRemFormCtrl.guiaRemisionSelected.transportista==null?null:guiaRemFormCtrl.guiaRemisionSelected.transportista.idtransportista)}" process="@this" styleClass="ml-2 mr-2 text-gray-900">
-						<i class="fa fa-plus Fs16">
+						<i class="fa fa-plus fs-16">
 						</i>
 						<f:setPropertyActionListener value="#{guiaRemCtrl.guiaRemisionSelected.transportista}" target="#{transportistaCtrl.transportistaSelected}"/>		
 						<f:setPropertyActionListener value="GUIA_REMISION" target="#{transportistaCtrl.callModule}"/>
 						<f:setPropertyActionListener value=":formMain:somGrTransportista :formMain:gridGrCabecera" target="#{transportistaCtrl.viewUpdate}"/>
 					</p:commandLink>								
 					<p:commandLink action="#{transportistaCtrl.nuevoEditar(guiaRemFormCtrl.guiaRemisionSelected.transportista==null?null:guiaRemFormCtrl.guiaRemisionSelected.transportista.idtransportista)}" process="@this" styleClass="text-gray-900">
-						<i class="fa fa-edit Fs16">
+						<i class="fa fa-edit fs-16">
 						</i>
+						<f:setPropertyActionListener value="GUIA_REMISION" target="#{transportistaCtrl.callModule}"/>
 						<f:setPropertyActionListener value="CompFacCtrl" target="#{clienteCtrl.callModule}"/>
 						<f:setPropertyActionListener value=":formMain:gridCliente :formMain:oupPagoDT :formMain:gridGrCabecera" target="#{clienteCtrl.updateView}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
@@ -136,45 +134,42 @@
 			</div>
 			<p:skeleton styleClass="w-full mt-1" height="3rem" rendered="#{guiaRemFormCtrl.guiaRemisionSelected.transportista==null}"/>
 			<f:subview rendered="#{guiaRemFormCtrl.guiaRemisionSelected.transportista!=null}">
-				<div class="EmptyBox5"/>
-				<div class="flex align-self-center">
-					<div class="flex flex-column">
-						<span class="Fs16 font-bold text-blue-600 mb-1 block">
-							<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.razonsocial!=null?guiaRemFormCtrl.guiaRemisionSelected.transportista.razonsocial:'-'}" />
-						</span>
-						<span class="Fs12 font-bold text-gray-600 mb-1 block">
-							<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.identificacion!=null?guiaRemFormCtrl.guiaRemisionSelected.transportista.identificacion:'-'}" />
-						</span>						
-					</div>
+				<div class="flex flex-column mt-1 gap-1">
+					<span class="fs-16 font-semibold text-primary-600 ">
+						<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.razonsocial!=null?guiaRemFormCtrl.guiaRemisionSelected.transportista.razonsocial:'-'}" />
+					</span>
+					<span class="fs-12 text-gray-900 font-semibold">
+						<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.transportista.identificacion!=null?guiaRemFormCtrl.guiaRemisionSelected.transportista.identificacion:'-'}" />
+					</span>						
 				</div>
 			</f:subview>
 			
 			<div class="field mt-2">
-				<label class="text-gray-700 font-medium Fs11">Placa Vehículo</label>
-				<p:inputText id="inpGrPlaca" value="#{guiaRemFormCtrl.guiaRemisionSelected.placa}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20">
+				<label class="text-gray-900">Placa Vehículo</label>
+				<p:inputText id="inpGrPlaca" value="#{guiaRemFormCtrl.guiaRemisionSelected.placa}" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="20">
 				</p:inputText>
-				<p:message for="inpGrPlaca" styleClass="block"/>				
+				<p:message for="inpGrPlaca" styleClass="block m-0 p-0"/>				
 			</div>
 			<div class="field mt-2">
-				<label class="text-gray-700 font-medium Fs11">Punto de Partida</label>
-				<p:inputTextarea rows="2" id="inpGrPuntoPartida" value="#{guiaRemFormCtrl.guiaRemisionSelected.direccionpartida}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300"></p:inputTextarea>				
-				<p:message for="inpGrPuntoPartida" styleClass="block"/>				
+				<label class="text-gray-900">Punto de Partida</label>
+				<p:inputTextarea rows="2" id="inpGrPuntoPartida" value="#{guiaRemFormCtrl.guiaRemisionSelected.direccionpartida}" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="300"></p:inputTextarea>				
+				<p:message for="inpGrPuntoPartida" styleClass="block m-0 p-0"/>				
 			</div>
 			
 			<div class="formgrid grid">
 		        <div class="field col">
-		        	<label class="text-gray-700 font-medium Fs11">Fecha Salida</label>
+		        	<label class="text-gray-900">Fecha Salida</label>
 					<p:calendar id="claGrFechaSalida" value="#{guiaRemFormCtrl.guiaRemisionSelected.fechainiciotransporte}"
 								pattern="dd/MM/yyyy"
 								locale="es" 
-								requiredMessage="REQUERIDO" required="true"/>
+								requiredMessage="Requerido" required="true"/>
 		        </div>
 		        <div class="field col">
-		        	<label class="text-gray-700 font-medium Fs11">Fecha LLegada</label>
+		        	<label class="text-gray-900">Fecha LLegada</label>
 					<p:calendar id="claGrFechaLlegada" value="#{guiaRemFormCtrl.guiaRemisionSelected.fechafintransporte}"
 								pattern="dd/MM/yyyy"
 								locale="es" 
-								requiredMessage="REQUERIDO" required="true"/>
+								requiredMessage="Requerido" required="true"/>
 		        </div>
 			</div>
 			
@@ -183,49 +178,66 @@
 		
 	</div>
 	
-	<div class="card card-w-title">	
+	<div class="card">	
 		
-		<span class="block text-black Fs14 font-medium">Información Adicional</span>
+		<span class="block text-gray-900 fs-14 fw-5">Información Adicional</span>
 		
-		<div class="flex my-2">
-			<i class="fa fa-ellipsis-v Fs14 mr-2"/>
-			<p:commandLink action="#{guiaRemFormCtrl.agregarInfoAdicional()}" update="@form:oupInfoAdicionalMain" process="@this @form:oupInfoAdicionalMain" oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
-				<i class="Fs12 fa fa-plus mr-1 text-gray-700"/>
-				<span class="text-black">Agregar</span>
+		<div class="flex mt-2 gap-2 align-items-end">
+			<i class="fa fa-ellipsis-v fs-14"/>
+			<p:commandLink action="#{guiaRemFormCtrl.agregarInfoAdicional()}" 
+				update="@form:oupInfoAdicionalMain" 
+				process="@this @form:oupInfoAdicionalMain" 
+				oncomplete="seleccionarInputListaInfo('.selector-info-descripcion','.mainInfoDT');">
+				<!-- <i class="fs-12 fa fa-plus mr-1 text-gray-700"/> -->
+				<span class="text-gray-900 fs-12">Agregar</span>
 			</p:commandLink>
 		</div>
 		
-		
-		<p:outputPanel id="oupInfoAdicionalMain">
+		<p:outputPanel id="oupInfoAdicionalMain" styleClass="mt-3">
 			
-			<div class="flex">
-				<div class="flex-grow-1 flex">
-					<span class="text-gray-700 font-medium Fs11">Nombre</span>
+			<div class="grid">
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Nombre</span>
 				</div>
-				<div class="flex-grow-1 flex pl-1">
-					<span class="text-gray-700 font-medium Fs11">Descripción</span>
+				<div class="col-6">
+					<span class="text-gray-900 fs-12">Descripción</span>
 				</div>
 			</div>
 			
 			<div class="mainInfoDT overflow-auto mt-1 p-0" style="min-height: 100px;max-height: 200px;">
 				<c:forEach items="#{guiaRemFormCtrl.infoadicionalList}" var="info" varStatus="metadata">
-					<div class="flex mb-1">
-						<div class="flex-grow-1 flex flex-column pr-1">
-							<p:inputText id="inpInfoAdicionalNombre" styleClass="selector-info-descripcion w-full" value="#{info.nombre}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalNombre" styleClass="block"/>
+					
+					<div class="grid">
+						<div class="col-6">
+							<div class="flex gap-2">
+								<p:commandLink  action="#{guiaRemFormCtrl.eliminarInfoAdicional()}" 
+									immediate="true" 
+									update=":formMain:oupInfoAdicionalMain" 
+									disabled="#{guiaRemFormCtrl.enableAccion}">
+									<f:setPropertyActionListener value="#{info}" target="#{guiaRemFormCtrl.infoadicionalSelected}"/>
+									<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								</p:commandLink>
+								<div class="flex-1">
+									<p:inputText id="inpInfoAdicionalNombre" 
+										styleClass="selector-info-descripcion w-full" 
+										value="#{info.nombre}" 
+										required="true" 
+										requiredMessage="Requerido"/>
+									<p:message for="inpInfoAdicionalNombre" styleClass="block m-0 p-0"/>
+								</div>
+							</div>
 						</div>
-						<div class="flex-grow-1 flex flex-column">						
-							<p:inputText id="inpInfoAdicionalValor" styleClass="w-full" value="#{info.valor}" required="true" requiredMessage="REQUERIDO"/>
-							<p:message for="inpInfoAdicionalValor" styleClass="block"/>
-						</div>
-						<div class="flex-grow-0 flex px-2">
-							<p:commandLink  action="#{guiaRemFormCtrl.eliminarInfoAdicional()}" immediate="true" update=":formMain:msgFormMain :formMain:oupInfoAdicionalMain" disabled="#{guiaRemFormCtrl.enableAccion}">
-								<f:setPropertyActionListener value="#{info}" target="#{guiaRemFormCtrl.infoadicionalSelected}"/>
-								<i class="fa fa-trash-o Fs16" style="color:#2f2f2f;"></i>
-								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-							</p:commandLink>
+						<div class="col-6">						
+							<p:inputText id="inpInfoAdicionalValor" 
+								styleClass="w-full" 
+								value="#{info.valor}" 
+								required="true" 
+								requiredMessage="Requerido"/>
+							<p:message for="inpInfoAdicionalValor" styleClass="block m-0 p-0"/>
 						</div>
 					</div>
+					
 				</c:forEach>
 			</div>
 		</p:outputPanel>

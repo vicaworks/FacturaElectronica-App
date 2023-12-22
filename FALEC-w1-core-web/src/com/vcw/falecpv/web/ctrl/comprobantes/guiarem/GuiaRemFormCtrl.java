@@ -49,6 +49,7 @@ import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetorn
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TransportistaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.facturacion.FacEmitidaCtrl;
 import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
@@ -128,7 +129,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -182,7 +186,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(guiaRemisionSelected.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 				
@@ -213,14 +219,20 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			}
 			
 			if(guiaRemisionSelected.isBorrador()) {
-				messageCtrl.cargarMenssage("AVISO", "BORRADOR DE " + msg.getString("label.guiaremision.upper") + " GENERADA CORRECTAMENTE.", "WARNING");
+				getMessageCommonCtrl().crearMensaje("Aviso", 
+						"Borrador de " + msg.getString("label.guiaremision.upper") + " generada correctamente.", 
+						Message.WARNING);
 			}else {
-				messageCtrl.cargarMenssage("OK", msg.getString("label.guiaremision.upper") + " GENERADA CORRECTAMENTE.", "OK");
+				getMessageCommonCtrl().crearMensaje("Ok", 
+						msg.getString("label.guiaremision.upper") + " generada correctamente.", 
+						Message.OK);
 			}
 			
 		} catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			getMessageCommonCtrl().crearMensaje("Error", 
+					e.getMessage(), 
+					Message.ERROR);
 			guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			guiaRemisionSelected.setSecuencial(null);
 			guiaRemisionSelected.setNumdocumento(null);
@@ -228,7 +240,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			guiaRemisionSelected.setNumeroautorizacion(null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 			guiaRemisionSelected.setEstado(ComprobanteEstadoEnum.BORRADOR.toString());
 			guiaRemisionSelected.setSecuencial(null);
 			guiaRemisionSelected.setNumdocumento(null);
@@ -242,7 +257,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		
 		for (Destinatario d : guiaRemisionSelected.getDestinatarioList()) {
 			if(d.getDetalledestinatarioList()==null || d.getDetalledestinatarioList().isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "DESTINATARIO : " + d.getRazonsocialdestinatario() +  " NO TIENE DETALLE.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Destinatario : " + d.getRazonsocialdestinatario() +  " no tiene detalle.", 
+						Message.ERROR);
 				return true;
 			}
 		}
@@ -294,7 +311,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		try {
 			
 			if(destinatarioSelected.getCliente()==null) {
-				AppJsfUtil.addErrorMessage("frmDestinatario","ERROR","NO EXISTE DESTINATARIO");
+				AppJsfUtil.addErrorMessage("frmDestinatario","ERROR","No existe destinatario");
 				return;
 			}
 			
@@ -305,14 +322,17 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
 	public String guardarDestinatarioByOtros() {
 		try {
 			if(destinatarioSelected.getCliente()==null) {
-				AppJsfUtil.addErrorMessage("frmDestinatario","ERROR","NO EXISTE DESTINATARIO");
+				AppJsfUtil.addErrorMessage("frmDestinatario","ERROR","No existe destinatario");
 				return null;
 			}
 			asignarDestinatario();
@@ -322,7 +342,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -364,7 +387,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -411,7 +437,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -419,7 +448,9 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		try {
 			
 			if(criterioCliente==null || criterioCliente.trim().length()==0) {
-				AppJsfUtil.addErrorMessage("frmDestinatario:inpCriterioCliente", "ERROR", "REQUERIDO");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe criterio de búsqueda", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -432,23 +463,31 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			}else {
 				destinatarioSelected.setIdentificaciondestinatario(null);
 				destinatarioSelected.setRazonsocialdestinatario(null);
-				AppJsfUtil.addErrorMessage("frmDestinatario:inpCriterioCliente", "ERROR", "NO EXISTE");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe cliente", 
+						Message.ERROR);
 				return;
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
 	public void consultarCliente(String identificador) throws DaoException {
 		
+		if(destinatarioSelected==null) destinatarioSelected = new Destinatario();
+		destinatarioSelected.setCliente(null);
+		destinatarioSelected.setDirdestinatario(null);
+		
+		
 		Cliente cl = clienteServicio.getClienteDao().getByIdentificador(identificador,
 				establecimientoMain.getEmpresa().getIdempresa());
 		if(cl!=null) {
-			if(destinatarioSelected==null) destinatarioSelected = new Destinatario();
-			destinatarioSelected.setCliente(null);
 			destinatarioSelected.setCliente(cl);
 		}
 	}
@@ -462,7 +501,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		Cabecera c = cabeceraServicio.consultarByPk(resumenCabeceraQuery.getIdcabecera());
 		// existe ya una factura igual
 		if(guiaRemisionSelected.getDestinatarioList().stream().filter(x->x.getNumdocsustento()!=null && x.getNumdocsustento().replace("-", "").equals(c.getNumdocumento())).collect(Collectors.toList()).size()>0) {
-			return "LA FACTURA : " + c.getNumdocumento() + " YA EXISTE, DESTINATARIO : " + c.getCliente().getRazonsocial();
+			return "La factura : " + c.getNumdocumento() + " Ya existe, Destinatario : " + c.getCliente().getRazonsocial();
 		}
 		
 		destinatarioSelected = new Destinatario();
@@ -494,7 +533,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -510,7 +552,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -528,7 +573,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -570,7 +618,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}	
 	
@@ -582,7 +633,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -599,11 +653,16 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			}
 			
 			totalizarGuiaRemision();
-			AppJsfUtil.addInfoMessage("frmDetDestinatario", "OK","AGREGADO CORRECTAMENTE");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Agregado correctamente.", 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmDetDestinatario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -620,7 +679,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -631,7 +693,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -642,7 +707,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -651,7 +719,10 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 			cambioTransportista();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -666,7 +737,7 @@ public class GuiaRemFormCtrl extends BaseCtrl {
 		guiaRemisionSelected = cabeceraServicio.consultarByPk(idGuiaRem);
 		
 		if(guiaRemisionSelected==null) {
-			return "NO EXISTE EL REGISTRO SELECCIONADO";
+			return "No existe registro seleccionado.";
 		}
 		
 		guiaRemisionSelected.setDestinatarioList(destinatarioServicio.getDestinatarioDao().getByIdCabecera(idGuiaRem));

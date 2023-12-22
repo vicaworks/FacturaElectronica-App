@@ -10,88 +10,93 @@
 		
 		.guiaRemDestinatarioDT .ui-datascroller-content{
 				min-height: 40vh !important;
-				height: calc(100vh - 260px);
+				height: calc(100vh - 210px);
 		}
 		
 	</style>
 	
-	<div class="card card-w-title">
-		<span class="text-black Fs14 font-bold my-1">Destinatarios</span>
-		
-		<div class="flex justify-content-start mb-2 mt-1">
-			
-			<p:commandButton id="cmdGrNuevoDestinatario" process="@this :formMain:guiaRemDestinatarioDT"
-				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
-				action="#{ventasQueryCtrl.cargarFormulario()}" styleClass="ui-button-success min-width-80 mr-1"
-				icon="fa fa-search"
-				value="Facturas">
-				<f:setPropertyActionListener value="#{guiaRemFormCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>
-				<f:setPropertyActionListener value="GUIA_REMISION" target="#{ventasQueryCtrl.callModule}"/>
-				<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
-				<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>
-			</p:commandButton>
-			
-			<p:commandButton id="cmdAdqAgregarDetalle" process="@this :formMain:guiaRemDestinatarioDT"
-				oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
-				action="#{guiaRemFormCtrl.nuevoDestinatario()}" styleClass="ui-button-outlined min-width-80"
-				icon="fa fa-plus"
-				value="Agregar">
-			</p:commandButton>			
-			
-		</div>
-		
+	<div class="card">
 		<p:dataScroller id="guiaRemDestinatarioDT" value="#{guiaRemFormCtrl.guiaRemisionSelected.destinatarioList}" var="d" chunkSize="10" mode="inline" styleClass="guiaRemDestinatarioDT">
 			<f:facet name="header">
-            	<i class="fa fa-list mr-1"></i>
-                Destinatarios
+            	<div class="flex justify-content-between align-items-end">
+            		<span class="fs-14 text-gray-900">Destinatarios</span>
+	                <div class="flex gap-2">
+						<p:commandButton id="cmdGrNuevoDestinatario" process="@this :formMain:guiaRemDestinatarioDT"
+							oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
+							action="#{ventasQueryCtrl.cargarFormulario()}" 
+							styleClass="ui-button-primary min-width-80 fs-12"
+							icon="fa fa-search fs-12"
+							value="Facturas">
+							<f:setPropertyActionListener value="#{guiaRemFormCtrl.establecimientoMain}" target="#{ventasQueryCtrl.establecimientoMain}"/>
+							<f:setPropertyActionListener value="GUIA_REMISION" target="#{ventasQueryCtrl.callModule}"/>
+							<f:setPropertyActionListener value="formMain" target="#{ventasQueryCtrl.callForm}"/>
+							<f:setPropertyActionListener value=":formMain" target="#{ventasQueryCtrl.viewUpdate}"/>
+						</p:commandButton>
+						
+						<p:commandButton id="cmdAdqAgregarDetalle" 
+							process="@this :formMain:guiaRemDestinatarioDT"
+							oncomplete="PrimeFaces.focus('frmListProducto:intListProBusqueda');"
+							action="#{guiaRemFormCtrl.nuevoDestinatario()}" 
+							styleClass="ui-button-outlined ui-button-secondary min-width-80 fs-12"
+							icon="fa fa-plus fs-12"
+							value="Agregar">
+						</p:commandButton>			
+	                </div>
+            	</div>
             </f:facet>
             
             <div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">
             	<div class="col-12">
-            		<div class="flex flex-column mb-1">
-						<span class="Fs14 text-gray-900 font-semibold my-1">#{d.razonsocialdestinatario}</span>
-						<span class="text-gray-700 Fs12">#{d.identificaciondestinatario}</span>
-						<div class="block">
-							<i class="fa fa-map-marker mr-1 mb-1 Fs12"></i>
-							<span class="text-gray-700 Fs10 mb-1">#{d.dirdestinatario}</span>
+            		<div class="flex flex-column mb-1 gap-1">
+						<span class="fs-14 text-primary-600 font-semibold">#{d.razonsocialdestinatario}</span>
+						<span class="text-gray-900 fs-12">#{d.identificaciondestinatario}</span>
+						<div class="flex gap-2 fs-12">
+							<i class="fa-solid fa-location-dot fs-12"></i>
+							<span class="text-gray-900">#{d.dirdestinatario}</span>
 						</div>
-						<span class="text-gray-700 Fs11">MOTIVO DE TRASLADO</span>
-						<span class="text-gray-900 font-semibold Fs11">#{d.motivotraslado}</span>
-						<span class="text-gray-700 Fs11">#{d.tipocomprobante.comprobante}</span>
+						<span class="text-gray-900 fs-11">Motivo de traslado</span>
+						<span class="text-gray-900 fs-12">#{d.motivotraslado}</span>
+						<span class="text-gray-900 font-semibold">#{d.tipocomprobante.comprobante}</span>
 						
 						<div class="flex justify-content-between">
-							<span class="text-gray-900 font-semibold Fs12">#{guiaRemFormCtrl.getFormatoNumDocumento(d.numdocsustento)}</span>
-							<h:outputText value="#{d.fechaemisiondocsustento}"  styleClass="text-gray-600">
+							<span class="text-gray-900 font-semibold fs-12">#{guiaRemFormCtrl.getFormatoNumDocumento(d.numdocsustento)}</span>
+							<h:outputText value="#{d.fechaemisiondocsustento}"  styleClass="text-gray-900">
 								<f:convertDateTime pattern="dd/MM/yyyy"/>
 							</h:outputText>
 						</div>
 						
 						
-						<span class="text-gray-700 Fs11">NÚMERO DE AUTORIZACIÓN</span>
-						<span class="text-gray-800 font-semibold font-semibold Fs10">#{d.numautdocsustento}</span>
-						<span class="text-gray-700 Fs11">CÓDIGO ESTABLECIMEINTO DESTINO</span>
-						<span class="text-gray-800 font-semibold Fs11">#{d.codestabdestino!=null?d.codestabdestino:'-'}</span>
-						<span class="text-gray-700 Fs11">RUTA</span>
-						<span class="text-gray-800 font-semibold Fs11">#{d.ruta!=null?d.ruta:'-'}</span>
-						<span class="text-gray-700 Fs11">DOCUMENTO ADUANERO ÚNICO</span>
-						<span class="text-gray-800 font-semibold Fs11">#{d.docaduanerounico!=null?d.docaduanerounico:'-'}</span>
+						<span class="text-gray-900 fs-11">Número de autorización</span>
+						<span class="text-gray-800 font-semibold font-semibold fs-10">#{d.numautdocsustento}</span>
+						<span class="text-gray-900 fs-11">Código de establecimiento de destino</span>
+						<span class="text-gray-800 font-semibold fs-11">#{d.codestabdestino!=null?d.codestabdestino:'-'}</span>
+						<span class="text-gray-900 fs-11">Ruta</span>
+						<span class="text-gray-800 font-semibold fs-11">#{d.ruta!=null?d.ruta:'-'}</span>
+						<span class="text-gray-900 fs-11">Documento aduanero único</span>
+						<span class="text-gray-800 font-semibold fs-11">#{d.docaduanerounico!=null?d.docaduanerounico:'-'}</span>
 					</div>
-					<div class="flex my-1 justify-content-start">					
-						<p:commandLink action="#{guiaRemFormCtrl.editarDestinatario()}" styleClass="text-center inline" process="@this">
-							<i class="fa fa-edit Fs11 mr-1 text-gray-800"></i>
-							<span class="Fs12 text-gray-800">EDITAR</span>
+					<div class="flex my-1 justify-content-start gap-2">					
+						<p:commandLink action="#{guiaRemFormCtrl.editarDestinatario()}" 
+							styleClass="p-3 det-item-hover" 
+           					style="border-radius:100%; border: 1px solid #b3d7ff;width:4.1rem;height:4.1rem;" 
+							process="@this">
+							<i class="fa fa-edit fs-18 text-gray-900"></i>
 							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
-						<p:divider layout="vertical" styleClass="mx-2  inline"/>
-						<p:commandLink action="#" styleClass="text-center inline" process="@this" update="@form:oupGuiaRemDetalleDT">
-							<i class="fa fa-list Fs11 mr-1 text-gray-800"></i>
-							<span class="Fs12 text-gray-800">PRODUCTOS</span>
+						<p:commandLink action="#" 
+							styleClass="p-3 det-item-hover" 
+           					style="border-radius:100%; border: 1px solid #b3d7ff;width:4.1rem;height:4.1rem;" 
+							process="@this" 
+							update="@form:oupGuiaRemDetalleDT">
+							<i class="fa-regular fa-folder-open fs-18 text-gray-900"></i>
 							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
-						<p:divider layout="vertical" styleClass="mx-2 inline"/>
-						<p:commandLink action="#{guiaRemFormCtrl.eliminarDestinatario()}" styleClass="text-center inline" process="@this" update="@form:guiaRemDestinatarioDT @form:guiaRemDetalleDT @form:oupGuiaRemDetalleDT @form:oupTotDestinatario">
-							<i class="fa fa-trash-o mr-1 text-pink-600 Fs11"></i>
-							<span class="Fs12 text-pink-400">ELIMINAR</span>
+						<p:commandLink action="#{guiaRemFormCtrl.eliminarDestinatario()}" 
+							styleClass="p-3 det-item-hover" 
+           					style="border-radius:100%; border: 1px solid #b3d7ff;width:4.1rem;height:4.1rem;" 
+							process="@this" 
+							update="@form:guiaRemDestinatarioDT @form:guiaRemDetalleDT @form:oupGuiaRemDetalleDT @form:oupTotDestinatario">
+							<i class="fa-regular fa-trash-can fs-18 text-gray-900"></i>
 							<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 							<f:setPropertyActionListener value="#{d}" target="#{guiaRemFormCtrl.destinatarioSelected}"/>
 						</p:commandLink>
@@ -101,26 +106,24 @@
             
             
        </p:dataScroller>		
-		<div class="EmptyBox5"/>
 		<p:outputPanel id="oupTotDestinatario" styleClass="flex justify-content-between">
 			<div>
-				<span class="Fs10 text-gray-800 mr-2n align-self-end">DESTINATARIOS</span>
-				<span class="Fs20 text-blue-600 font-semibold">
-					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.cantidadDestinatario}" styleClass="FontBold Fs20" >
+				<span class="fs-12 text-gray-800 mr-2n align-self-end">Destinatarios</span>
+				<span class="fs-20 text-primary-600 font-semibold">
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.cantidadDestinatario}" styleClass="font-bold" >
 						<f:convertNumber pattern="#,##0"/>
 					</h:outputText>
 				</span>
 			</div>
 			<div>
-				<span class="Fs10 text-gray-800 mr-2n align-self-end">PRODUCTOS</span>
-				<span class="Fs20 text-blue-600 font-semibold">
-					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.total}" styleClass="FontBold Fs20" >
+				<span class="fs-12 text-gray-800 mr-2n align-self-end">Productos</span>
+				<span class="fs-20 text-primary-600 font-semibold">
+					<h:outputText value="#{guiaRemFormCtrl.guiaRemisionSelected.total}" styleClass="font-bold" >
 						<f:convertNumber pattern="#,##0.##"/>
 					</h:outputText>
 				</span>
 			</div>
 		</p:outputPanel>
 	</div>
-	<div class="EmptyBox30"/>
 	
 </ui:composition>

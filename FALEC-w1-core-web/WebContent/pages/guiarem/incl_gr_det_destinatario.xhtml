@@ -10,79 +10,77 @@
 		
 		.guiaRemDetalleDT .ui-datascroller-content{
 				min-height: 40vh !important;
-				height: calc(100vh - 290px);
+				height: calc(100vh - 240px);
 		}
 		
 	</style>
 	
 	
-	<div class="card card-w-title">
+	<div class="card">
 		<p:outputPanel id="oupGuiaRemDetalleDT" styleClass="w-full">
 		
-			<span class="text-black Fs14 font-bold my-1">Destinatario Productos</span>
-			
-			<div class="flex justify-content-start mb-1 mt-1">
-				
-				<p:commandButton id="cmdGrNuevoDetalle" 
-					action="#{listaProductoCtrl.cargarPantalla()}" styleClass="ui-button-outlined min-width-80 mr-1"
-					icon="fa fa-plus"
-					value="Agregar"
-					process="@this @form:oupGuiaRemDetalleDT"
-					disabled="#{guiaRemFormCtrl.destinatarioSelected==null}">
-					<f:setPropertyActionListener value="#{guiaRemFormCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
-					<f:setPropertyActionListener value="GUIA_REMISION" target="#{listaProductoCtrl.callModule}"/>
-					<f:setPropertyActionListener value=":formMain:oupGuiaRemDetalleDT :formMain:oupTotDestinatario" target="#{listaProductoCtrl.viewUpdate}"/>
-					<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
-				</p:commandButton>			
-				
-			</div>
-			
-			<div class="flex" style="height:35px;">
-				<p:skeleton height="30px" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}"/>
-				<f:subview rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}">
-					<div class="flex flex-column mb-1">
-						<span class="Fs14 text-blue-600 font-bold">#{guiaRemFormCtrl.destinatarioSelected.razonsocialdestinatario}</span>
-						<span class="text-black Fs12">#{guiaRemFormCtrl.destinatarioSelected.identificaciondestinatario}</span>
-					</div>
-				</f:subview>
-			</div>
-			
 			<p:dataScroller id="guiaRemDetalleDT" value="#{guiaRemFormCtrl.destinatarioSelected.detalledestinatarioList}" var="det" chunkSize="10" mode="inline" styleClass="guiaRemDetalleDT">
 				<f:facet name="header">
-	            	<i class="fa fa-list mr-1"></i>
-	                Productos
+	            	<div class="flex justify-content-between align-items-start gap-2">
+	            		<div class="flex-1 flex flex-column align-items-start gap-1">
+							<span class="text-gray-900 fs-14 font-bold my-1">Destinatario Productos</span>
+							<p:skeleton height="30px" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}"/>
+							<f:subview rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}">
+								<span class="fs-14 text-primary-600 font-bold">#{guiaRemFormCtrl.destinatarioSelected.razonsocialdestinatario}</span>
+								<span class="text-gray-900 font-light fs-12">#{guiaRemFormCtrl.destinatarioSelected.identificaciondestinatario}</span>
+							</f:subview>
+	            		</div>
+						<p:commandButton id="cmdGrNuevoDetalle" 
+							action="#{listaProductoCtrl.cargarPantalla()}" 
+							styleClass="flex-0 ui-button-primary min-width-80 fs-12"
+							icon="fa fa-plus fs-12"
+							value="Agregar"
+							process="@this @form:oupGuiaRemDetalleDT"
+							disabled="#{guiaRemFormCtrl.destinatarioSelected==null}">
+							<f:setPropertyActionListener value="#{guiaRemFormCtrl.establecimientoMain}" target="#{listaProductoCtrl.establecimientoMain}"/>
+							<f:setPropertyActionListener value="GUIA_REMISION" target="#{listaProductoCtrl.callModule}"/>
+							<f:setPropertyActionListener value=":formMain:oupGuiaRemDetalleDT :formMain:oupTotDestinatario" target="#{listaProductoCtrl.viewUpdate}"/>
+							<f:setPropertyActionListener value="formMain" target="#{listaProductoCtrl.formModule}"/>
+						</p:commandButton>			
+	            		
+	            	</div>
 	            </f:facet>
 	            
 	            <div class="grid border-bottom-1 border-blue-100 mb-1 pb-1">
 	            	<div class="col-9 md:col-10">
 	            		
 	            		<div class="flex flex-column">
-	            			<span style="color: black;" class="block Fs12 font-medium">#{det.descripcion}</span>
+	            			<span style="color: black;" class="block fs-12 font-medium">#{det.descripcion}</span>
 		            		<div>
-		            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="Fs10">#{det.codigointerno} </span>
+		            			<i class="fa fa-barcode Fs9 mr-1"></i><span class="fs-10">#{det.codigointerno} </span>
 		            		</div>
 	            		</div>
 	            		
-	            		<div class="flex flex-column md:flex-row my-1" >
-	            			<div class="flex-grow-1 md:flex-grow-0 flex w-auto md:w-4 flex-order-1 md:flex-order-0 align-self-start md:align-self-end mt-2 md:mt-0">
-	            				<p:commandLink action="#{guiaRemFormCtrl.editarDetalle()}" title="Editar" process="@this">
-									<i class="fa fa-edit Fs11 mr-1 text-gray-800"></i>
-									<span class="Fs12 text-gray-800">EDITAR</span>
-									<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>
-								</p:commandLink>
-	            				<p:divider layout="vertical" styleClass="mx-2  inline"/>
-	            				<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" title="Eliminar" update="@form:oupGuiaRemDetalleDT @form:oupTotDestinatario" process="@this" disabled="#{guiaRemFormCtrl.enableAccion}">	            					
-									<i class="fa fa-trash-o mr-1 text-pink-400 Fs11"></i>
-									<span class="Fs11 text-pink-400">ELIMINAR</span>
-									<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-									<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>
-								</p:commandLink>
-	            			</div>
+	            		<div class="flex gap-2 mt-2" >
+            				<p:commandLink action="#{guiaRemFormCtrl.editarDetalle()}" 
+            					title="Editar" 
+            					process="@this"
+            					styleClass="p-3 det-item-hover" 
+           						style="border-radius:100%; border: 1px solid #b3d7ff;width:4.1rem;height:4.1rem;">
+								<i class="fa fa-edit fs-18 text-gray-900"></i>
+								<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>
+							</p:commandLink>
+            				<p:commandLink action="#{guiaRemFormCtrl.eliminarDetalleDestinatario()}" 
+            					title="Eliminar" 
+            					update="@form:oupGuiaRemDetalleDT @form:oupTotDestinatario" 
+            					process="@this" 
+            					disabled="#{guiaRemFormCtrl.enableAccion}"
+            					styleClass="p-3 det-item-hover" 
+           						style="border-radius:100%; border: 1px solid #b3d7ff;width:4.1rem;height:4.1rem;">	            					
+								<i class="fa-regular fa-trash-can fs-18 text-gray-900"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+								<f:setPropertyActionListener value="#{det}" target="#{guiaRemFormCtrl.detalledestinatarioSeleted}"/>
+							</p:commandLink>
 	            		</div>	            		
 	            	</div>
 	            	<div class="col-3 md:col-2">
 	            		<div class="h-full flex align-items-center justify-content-center w-full">
-	            			<h:outputText value="#{det.cantidad}" styleClass="Fs16 text-black font-medium mb-1 text-right">
+	            			<h:outputText value="#{det.cantidad}" styleClass="fs-18 text-gray-900 font-medium mb-1 text-right">
 	     						<f:convertNumber pattern="#{appSessionCtrl.formatoNumberDecimalOpcional}"/>
 	    					</h:outputText>
 	            		</div>
@@ -94,13 +92,13 @@
 			<div class="EmptyBox5"/>
 			<div class="flex justify-content-end align-items-end">
 				<div>
-					<span class="Fs10 text-gray-800 mr-2">PRODUCTOS</span>
-					<span class="Fs20 text-blue-600 font-semibold">
-						<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.total}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}" >
+					<span class="fs-12 text-gray-800 mr-2n align-self-end">Productos</span>
+					<span class="fs-20 text-primary-600 font-semibold">
+						<h:outputText value="#{guiaRemFormCtrl.destinatarioSelected.total}" styleClass="font-bold" rendered="#{guiaRemFormCtrl.destinatarioSelected!=null}" >
 							<f:convertNumber pattern="#,##0.##"/>
 						</h:outputText>
 						
-						<h:outputText value="#{0}" styleClass="FontBold Fs20" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}" >
+						<h:outputText value="#{0}" styleClass="font-bold" rendered="#{guiaRemFormCtrl.destinatarioSelected==null}" >
 							<f:convertNumber pattern="#,##0.##"/>
 						</h:outputText>
 					</span>
