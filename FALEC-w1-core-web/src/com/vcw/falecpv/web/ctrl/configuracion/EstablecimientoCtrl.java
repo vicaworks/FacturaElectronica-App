@@ -45,6 +45,7 @@ import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -96,7 +97,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			consultarEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -117,7 +121,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			consultarEstablecimiento();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -125,12 +132,16 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			if(establecimientoSelected==null) {
-				AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe registro seleccionado", 
+						Message.ERROR);
 				return;
 			}			
 			//tiene referencias
 			if(establecimientoServicio.tieneDependenciasEst(establecimientoSelected.getIdestablecimiento())) {
-				AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", "NO SE PUEDE ELIMINAR EXISTE REFERENCIAS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No se puede eliminar existen referencias.", 
+						Message.ERROR);
 				return;
 			}
 			//elimina establecimiento
@@ -146,7 +157,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -173,7 +187,9 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			if (establecimientoServicio.getEstablecimientoDao().existeCodEstablecimiento(
 					establecimientoSelected.getIdestablecimiento(),
 					establecimientoSelected.getCodigoestablecimiento(),establecimientoSelected.getEmpresa().getIdempresa())) {
-				AppJsfUtil.addErrorMessage("frmEstable", "ERROR", "CODIGO DUPLICADO");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Código duplicado", 
+						Message.ERROR);
 				return;
 			}
 				
@@ -231,12 +247,16 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 			establecimientoAllList = null;
 			consultarEstablecimiento();
-			AppJsfUtil.addInfoMessage("frmEstable", "OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Registro almacenado correctamente", 
+					Message.OK);
 			file = null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstable", "ERROR",
-					TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 	}
@@ -254,7 +274,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -275,7 +298,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgEstable", "frmEstable");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -291,11 +317,16 @@ public class EstablecimientoCtrl extends BaseCtrl {
 				byte[] bytes;
 		        bytes = IOUtils.toByteArray(file.getInputStream());
 		        establecimientoSelected.setLogo(bytes);
-		        AppJsfUtil.addInfoMessage("frmEstable", "OK", "IMAGEN CARGADA CORRECTAMENTE.");
+				getMessageCommonCtrl().crearMensaje("Ok", 
+						"Imagen cargada correctamente", 
+						Message.OK);
             }
 		} catch (IOException e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmEstable", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -326,8 +357,6 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 			return DefaultStreamedContent.builder().stream(() -> new ByteArrayInputStream(establecimientoSelected.getLogo())).build();
 			
-//			return new DefaultStreamedContent(new ByteArrayInputStream(establecimientoSelected.getLogo()));
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -343,8 +372,6 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 			return DefaultStreamedContent.builder().stream(() -> new ByteArrayInputStream(img)).build();
 			
-//			return  new DefaultStreamedContent(new ByteArrayInputStream(img));
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -359,7 +386,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstable", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -455,7 +485,10 @@ public class EstablecimientoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEstablecimiento", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;
@@ -493,13 +526,4 @@ public class EstablecimientoCtrl extends BaseCtrl {
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
-	
-    
-   
-	
-	
-	
-	
-	
-
 }

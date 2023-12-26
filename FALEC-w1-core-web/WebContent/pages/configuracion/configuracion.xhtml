@@ -15,7 +15,7 @@
     	<style type="text/css">	
 			
 			
-			.tabComprobante{
+			/* .tabComprobante{
  				padding: 0px 2em !important; 
  				border-bottom: solid 5px #F0F3F4;
 			}
@@ -48,7 +48,7 @@
 				background-color: #fff !important;
 			}
 			
-			/* -- card contador -- */
+			
 			
 			.cardContador{
 				border-radius:4px;
@@ -114,7 +114,7 @@
 				vertical-align: top;
 			}
 			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
+			body .ui-datatable thead th {text-align: center!important;vertical-align: top;} */
 			
         </style>
     
@@ -132,53 +132,28 @@
 			    <pe:methodParam name="opcion"/>
 	    	</pe:remoteCommand>
 	    	
-	    	<div class="grid">
-				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='PERFIL'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_perfil')?'ui-state-disabled':''}" onclick="switchOpcion('PERFIL');">
-					
-					<h4>
-						<h:outputText value="01."/>
-					</h4>
-					<h3>
-						<h:outputText value="Perfil"/>
-					</h3>
-					
-					
+	    	
+	    	<div class="menu-head-4-2">
+				<div class="menu-box #{configuracionCtrl.opcionRender=='PERFIL'?'menu-box--seleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_perfil')?'ui-state-disabled':''}" onclick="switchOpcion('PERFIL');">
+					<div class="menu-box__number">01.</div>
+               		<div class="menu-box__titulo">Perfil</div>
 				</div>
-				
-				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_establecimiento')?'ui-state-disabled':''}" onclick="switchOpcion('ESTABLECIMIENTO');">
-					
-					<h4>
-						<h:outputText value="02."/>
-					</h4>
-					<h3>
-						<h:outputText value="Establecimientos"/>
-					</h3>
-					
+				<div class="menu-box #{configuracionCtrl.opcionRender=='ESTABLECIMIENTO'?'menu-box--seleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_establecimiento')?'ui-state-disabled':''}" onclick="switchOpcion('ESTABLECIMIENTO');">
+					<div class="menu-box__number">02.</div>
+               		<div class="menu-box__titulo">Establecimientos</div>
 				</div>
-				
-				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='USUARIOS'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_configuracion')?'ui-state-disabled':''}" onclick="switchOpcion('USUARIOS');">
-					
-					<h4>
-						<h:outputText value="03."/>
-					</h4>
-					<h3>
-						<h:outputText value="Usuarios"/>
-					</h3>
-					
+				<div class="menu-box #{configuracionCtrl.opcionRender=='USUARIOS'?'menu-box--seleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_configuracion')?'ui-state-disabled':''}" onclick="switchOpcion('USUARIOS');">
+					<div class="menu-box__number">03.</div>
+               		<div class="menu-box__titulo">Usuarios</div>
 				</div>
-				
-				<div class="col-6 lg:col-3 tabComprobanteBg tabComprobante #{configuracionCtrl.opcionRender=='CONFIGURACION'?'tabComprobanteSeleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_usuario')?'ui-state-disabled':''}" onclick="switchOpcion('CONFIGURACION');">
-					
-					<h4>
-						<h:outputText value="04."/>
-					</h4>
-					<h3>
-						<h:outputText value="Configuración"/>
-					</h3>
-					
+				<div class="menu-box #{configuracionCtrl.opcionRender=='CONFIGURACION'?'menu-box--seleccion':''} #{appSessionCtrl.accesoDisable('mn_conf_usuario')?'ui-state-disabled':''}" onclick="switchOpcion('CONFIGURACION');">
+					<div class="menu-box__number">04.</div>
+               		<div class="menu-box__titulo">Configuración</div>
 				</div>
-				
-			</div>
+	    	
+	    	
+	    	</div>
+	    	
 	    </h:form>	
 		
 		<p:outputPanel id="opMain">

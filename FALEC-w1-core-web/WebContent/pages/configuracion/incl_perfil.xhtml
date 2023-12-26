@@ -10,102 +10,89 @@
 	<style type="text/css">
 		
 	</style>
-	<!-- Mensajes -->
-	<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmPerfil"
-		closable="true" >
-		<p:autoUpdate></p:autoUpdate>
-	</p:messages>
-	
-	<div class="grid justify-content-center">
+	<div style="width: 50rem;margin: 0 auto;">
 		<!-- Datos de la empresa -->
 		<!-- <div class="col-12 md:col-10 xl:col-7"> -->
-		<div class="col-12 md:col-6">	
-			<div class="card card-w-title">
+			<div class="card">
 				
-				<h3 class="cardTitle">Datos del Negocio</h3>
+				<span class="fs-16 text-gray-900 font-semibold">Datos de tu negocio</span>
 				
-				<div class="p-grid">
-					
-					<div class="col-12">
-						<h:outputText value="Ruc " styleClass="text-gray-900 font-medium"/>
-						<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="20" validatorMessage="SOLO NÚMEROS">
-							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
-						</p:inputText>
-						<p:message for="intRuc" />
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Razón Social " styleClass="text-gray-900 font-medium"/>
-						<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" />
-						<p:message for="intRazonSocial" />
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Nombre Comercial " styleClass="text-gray-900 font-medium"/>
-						<p:inputText id="intNombreComercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-						<p:message for="intNombreComercial" />
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Dirección Matríz " styleClass="text-gray-900 font-medium"/>
-						<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-						<p:message for="intDireccionMatriz" />
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Oblogado a Llevar Contabilidad " styleClass="text-gray-900 font-medium block"/>
-						<p:selectOneMenu id="somObligadoContabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}" styleClass="mt-1">
-							<f:selectItem itemLabel="SI" itemValue="SI"/>
-							<f:selectItem itemLabel="NO" itemValue="NO" />
-						</p:selectOneMenu>
-						<p:message for="somObligadoContabilidad"/>
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Contribuyente régimen RIMPE " styleClass="text-gray-900 font-medium block"/>
-						<p:selectOneMenu id="somRegimenRimpe" value="#{empresaCtrl.empresaSelected.regimenrimpe}" styleClass="mt-1">
-							<f:selectItem itemLabel="SI" itemValue="#{1}"/>
-							<f:selectItem itemLabel="NO" itemValue="#{0}" />
-						</p:selectOneMenu>
-						<p:message for="somRegimenRimpe"/>
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Es Exportador	 " styleClass="text-gray-900 font-medium block"/>
-						<p:selectOneMenu id="somExportador" value="#{empresaCtrl.empresaSelected.exportador}" styleClass="mt-1">
-							<f:selectItem itemLabel="SI" itemValue="SI"/>
-							<f:selectItem itemLabel="NO" itemValue="NO" />
-						</p:selectOneMenu>
-						<p:message for="somExportador"/>
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Email " styleClass="text-gray-700"/>
-						<p:inputText id="intEmail" value="#{empresaCtrl.empresaSelected.email}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="200" converter="omnifaces.ToUpperCaseConverter">
-							<f:validator validatorId="emailSelectItemValidator"/>
-						</p:inputText>
-						<p:message for="intEmail" />
-						
-					</div>
-					
-					<div class="col-12">
-						<h:outputText value="Página Web " styleClass="text-gray-700"/>
-						<p:inputText id="intPaginaWeb" value="#{empresaCtrl.empresaSelected.paginaweb}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="200" converter="omnifaces.ToUpperCaseConverter"/>
-						<p:message for="intPaginaWeb" />
-						
-					</div>
-					
-					<div class="col-12 py-4">
-						<p:commandButton id="cmdGuardarEmp"
-						value="GUARDAR"
-						action="#{empresaCtrl.guardar()}" styleClass="px-3" update="@form"
-						/>
-					</div>
-					
-				</div>			
+				<div class="field mt-2">
+					<label class="text-gray-900 fw-5">Ruc</label>
+					<p:inputText id="intRuc" value="#{empresaCtrl.empresaSelected.ruc}" required="true" requiredMessage="" styleClass="w-full mt-1" maxlength="20" validatorMessage="SOLO NÚMEROS">
+						<f:validateRegex pattern="[0-9]+"></f:validateRegex>
+					</p:inputText>
+					<p:message for="intRuc" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 fw-5">Razón Social</label>
+					<p:inputText id="intRazonSocial" value="#{empresaCtrl.empresaSelected.razonsocial}" required="true" requiredMessage="" styleClass="w-full mt-1" maxlength="300" />
+					<p:message for="intRazonSocial" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 fw-5">Nombre Comercial</label>
+					<p:inputText id="intNombreComercial" value="#{empresaCtrl.empresaSelected.nombrecomercial}" required="true" requiredMessage="" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:message for="intNombreComercial" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 fw-5">Dirección Matríz</label>
+					<p:inputText id="intDireccionMatriz" value="#{empresaCtrl.empresaSelected.direccionmatriz}" required="true" requiredMessage="" styleClass="w-full mt-1" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:message for="intDireccionMatriz" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 fw-5 block">Obligado a llevar contabilidad</label>
+					<p:selectOneMenu id="somObligadoContabilidad" value="#{empresaCtrl.empresaSelected.obligadocontablidad}" styleClass="mt-1">
+						<f:selectItem itemLabel="SI" itemValue="SI"/>
+						<f:selectItem itemLabel="NO" itemValue="NO" />
+					</p:selectOneMenu>
+					<p:message for="somObligadoContabilidad" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 fw-5 block">Contribuyente régimen RIMPE</label>
+					<p:selectOneMenu id="somRegimenRimpe" value="#{empresaCtrl.empresaSelected.regimenrimpe}" styleClass="mt-1">
+						<f:selectItem itemLabel="SI" itemValue="#{1}"/>
+						<f:selectItem itemLabel="NO" itemValue="#{0}" />
+					</p:selectOneMenu>
+					<p:message for="somRegimenRimpe" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 fw-5 block">Es Exportador</label>
+					<p:selectOneMenu id="somExportador" value="#{empresaCtrl.empresaSelected.exportador}" styleClass="mt-1">
+						<f:selectItem itemLabel="SI" itemValue="SI"/>
+						<f:selectItem itemLabel="NO" itemValue="NO" />
+					</p:selectOneMenu>
+					<p:message for="somExportador" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 block">Email</label>
+					<p:inputText id="intEmail" value="#{empresaCtrl.empresaSelected.email}" required="false" requiredMessage="" styleClass="w-full mt-1" maxlength="200" converter="omnifaces.ToUpperCaseConverter">
+						<f:validator validatorId="emailSelectItemValidator"/>
+					</p:inputText>
+					<p:message for="intEmail" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<div class="field mt-1">
+					<label class="text-gray-900 block">Página Web</label>
+					<p:inputText id="intPaginaWeb" value="#{empresaCtrl.empresaSelected.paginaweb}" required="false" requiredMessage="" styleClass="w-full mt-1" maxlength="200" converter="omnifaces.ToUpperCaseConverter"/>
+					<p:message for="intPaginaWeb" styleClass="block m-0 p-0"/>
+				</div>
+				
+				<p:commandButton id="cmdGuardarEmp"
+					value="Guardar"
+					action="#{empresaCtrl.guardar()}" 
+					styleClass="my-3 fs-14 min-width-80"
+					icon="fa-regular fa-floppy-disk fs-12" 
+					update="@form"
+				/>			
 				
 			</div>		
-		</div>		
 	</div>	
     
 

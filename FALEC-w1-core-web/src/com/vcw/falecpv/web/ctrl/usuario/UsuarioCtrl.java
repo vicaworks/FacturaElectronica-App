@@ -33,6 +33,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -74,7 +75,10 @@ public class UsuarioCtrl extends BaseCtrl {
 			consultarUsuario();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -94,7 +98,10 @@ public class UsuarioCtrl extends BaseCtrl {
 			consultarUsuario();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -112,19 +119,25 @@ public class UsuarioCtrl extends BaseCtrl {
 	public void eliminar() {
 		try {
 			if(usuarioSelected==null) {
-				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO EXISTE REGISTRO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe registro seleccionado", 
+						Message.ERROR);
 				return;
 			}
 			
 			// si el usuario es el mismo del de sesion
 			if (usuarioSelected.getIdusuario().equals(AppJsfUtil.getUsuario().getIdusuario())) {
-				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO SE PUEDE ELIMINNAR EL USUARIO DE SESSION.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No se puede eliminar el usuario de sesión", 
+						Message.ERROR);
 				return;
 			}
 			
 			// si tiene dependencias
 			if(usuarioServicio.dependencias(AppJsfUtil.getUsuario().getIdusuario())) {
-				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO SE PUEDE ELIMINNAR EL USUARIO TIENE REGISTROS EN EL SISTEMA REALIZADOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No se puede eliminar el usuario tiene registros en el sistema realizados.", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -132,11 +145,16 @@ public class UsuarioCtrl extends BaseCtrl {
 			usuarioSelected = null;
 			usuarioList = null;
 			consultarUsuario();
-			AppJsfUtil.addInfoMessage("frmMainUsuario","OK", "REGISTRO ELIMINADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Registro eliminado correctamente", 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -146,16 +164,18 @@ public class UsuarioCtrl extends BaseCtrl {
 			
 			if(usuarioSelected.isActualizarCredenciales()) {
 				if(!usuarioSelected.getClave().equals(usuarioSelected.getClave2())) {
-					AppJsfUtil.addErrorMessage("frmUsuario", "ERROR","LAS CREDENCIALES NO COINCIDEN.");
-					AppJsfUtil.addErrorMessage("frmUsuario:intClave1","ERROR CONFIRMACION (LAS CREDENCIALES NO COINCIDEN).");
+					getMessageCommonCtrl().crearMensaje("Error", 
+							"La confirmación de claves no coiciden", 
+							Message.ERROR);
 					return;
 				}
 			}
 			
 			// validar si existe el login
 			if (usuarioServicio.getUsuarioDao().existeLogin(usuarioSelected.getIdusuario(), usuarioSelected.getLogin())) {
-				AppJsfUtil.addErrorMessage("frmUsuario", "ERROR","EL LOGIN YA EXISTE.");
-				AppJsfUtil.addErrorMessage("frmUsuario:intLogin","YA EXISTE.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"El Login ya esiste", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -163,10 +183,15 @@ public class UsuarioCtrl extends BaseCtrl {
 			usuarioSelected = usuarioServicio.guardar(usuarioSelected);
 			usuarioList = null;
 			consultarUsuario();
-			AppJsfUtil.addInfoMessage("frmUsuario","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Registro almacenado correctamente.", 
+					Message.OK);
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -183,7 +208,10 @@ public class UsuarioCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgUsuario", "frmUsuario");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -195,7 +223,10 @@ public class UsuarioCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgUsuario", "frmUsuario");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -205,7 +236,9 @@ public class UsuarioCtrl extends BaseCtrl {
 			
 			
 			if(usuarioList==null || usuarioList.size()==0) {
-				AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", "NO EXISTEN DATOS");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -218,10 +251,6 @@ public class UsuarioCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-//			usuarioList = null;
-//			usuarioList = usuarioServicio.getUsuarioDao().getByEstado(EstadoRegistroEnum.getByInicial(EstadoRegistroEnum.TODOS.getInicial()));
-			
-			@SuppressWarnings("resource")
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(tempXls));
 			// llenaa hoja 1 del archivo
 			HSSFSheet sheet=wb.getSheetAt(0);
@@ -295,7 +324,10 @@ public class UsuarioCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmMainUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		
 		return null;

@@ -22,16 +22,15 @@
 			width: 100%;
 			padding: 0px;
 			font-size: 18px;
-			font-weight: 600px;
 		}
 		
 		.descripcion{
-			margin:0px;
+			margin:5px 0px;
 			width: 100%;
 			padding: 0px;
 			font-size: 14px;
 			color: rgba(0,0,0,0.7);
-			padding-left: 23px !important;
+			padding-left: 18px !important;
 			height: 35px;
 		}
 		
@@ -59,24 +58,27 @@
 		.box_grid_header .header{
 		    grid-area: header;
 		    align-self: center;
-		    padding-top: 15px;
+		    padding-top: 5px;
 		}
 		
 		.box_grid_header .header > h3{
-		    font-size: 15px !important;
+		    font-size: 12px !important;
+		    height: 20px;
+		    font-weight: 900;
 		}
 		
 		.box_grid_header .descripcion{
 		    grid-area: descripcion;
 		    padding: 0px;
-		    margin: 0px;
+		    margin: -10px 0 0 0;
 		    align-self: start;
 		    padding-bottom: 10px !important;
 		    font-size: 14px;
 		}
 		
 		.box_grid_header .descripcion p{
-		    margin: 10px 5px;
+		    /* margin: 10px 5px; */
+		    line-height: 1;
 		    font-size: 14px;
 		    color: rgba(0, 0, 0, 0.8);
 		}
@@ -107,9 +109,9 @@
 			.box_grid_header{
 			    grid-template-rows: 60px 120px; 
 			}
-			.box_grid_header .header > h3{
+			/* .box_grid_header .header > h3{
 			    font-size: 13px !important;
-			}
+			} */
 			
 			.box_grid_header .descripcion{
 			
@@ -125,26 +127,42 @@
 		
 	</style>
 	
-	<p:dialog header="Perfil Usuario" widgetVar="dlgPerfilUsuario" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Perfil Usuario" 
+		widgetVar="dlgPerfilUsuario" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:90rem" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmPerfilUsuario">
 			
 			<!-- OPCIONES -->
-			<div class="formgroup-inline">
+			<div class="tool-bar mb-2">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 			
 				<p:commandButton 
-					value="REFRESCAR" icon="fa fa-repeat" 
-					action="#{perfilUsuarioCtrl.refrescar}" styleClass="ui-button-outlined mr-1 min-width-110" update="@form" process="@this"
+					value="Refrescar" 
+					icon="fa fa-repeat fs-12" 
+					action="#{perfilUsuarioCtrl.refrescar}" 
+					styleClass="ui-button-outlined fs-12 min-width-90" 
+					update="@form" 
+					process="@this"
 					/>
 				
 				<p:commandButton 
-					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{perfilUsuarioCtrl.guardar}" styleClass="mr-1 min-width-110" update="@form"
+					value="Guardar" 
+					icon="fa-regular fa-floppy-disk fs-12" 
+					action="#{perfilUsuarioCtrl.guardar}" 
+					styleClass="ui-button-success min-width-90 fs-12" 
+					update="@form"
 					/>
 					
 				<p:commandButton 
-					value="CERRAR" icon="fa fa-close" styleClass="min-width-110 ui-button-flat" 
-					onclick="PF('dlgPerfilUsuario').hide()" immediate="true"  
+					value="Cerrar" styleClass="fs-12 min-width-90 ui-button-secondary ui-button-outlined" 
+					onclick="PF('dlgPerfilUsuario').hide()" 
+					immediate="true"  
 					/>
 			</div>
 			
@@ -153,32 +171,28 @@
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 			
+			<div class="flex flex-row my-2">
+				<p:toggleSwitch value="#{perfilUsuarioCtrl.usuarioSelected.habilitarestablecimientoBOL}" styleClass="mr-2 flex align-items-center"/>
+				<h:outputText value="Acceso a todos los establecimientos." styleClass="flex align-items-center"/>
+			</div>
+			
 			<!--  wraper del formulario para responsive -->			
-			<div class="form-ui Wid100 OvYScroll heightFrmPerfilUsuario contenedorFormulario mt-2">				
-				<div class="EmptyBox10"/>
+			<div class="w-full overflow-auto heightFrmPerfilUsuario contenedorFormulario mt-2">				
 				<div class="grid align-content-start justify-content-center" style="width: 99.5%!important;">
-					<div class="col-12 ">
-						<div class="flex flex-row ">
-							<p:toggleSwitch value="#{perfilUsuarioCtrl.usuarioSelected.habilitarestablecimientoBOL}" styleClass="mr-2 flex align-items-center"/>
-							<h:outputText value="ACCESO A TODOS LOS ESTABLECIMIENTOS." styleClass="flex align-items-center"/>
-						</div>
-					</div>
-					<div class="EmptyBox5"/>
 					<div class="col-12 lg:col-6 defecto">
 						
-						<div class="titulo-dt">
-							1. PERFILES PREDEFINIDOS.
+						<div class="titulo-dt text-gray-900 fw-5">
+							1. Perfiles predefinidos.
 						</div>
 						
 						<div class="descripcion">
 							Puede seleccionar perfiles con opciones de acceso predefinidos.
 						</div>
 						
-						<div class="EmptyBox5"/>
 						<p:dataScroller id="segPerfilPredefinidoScroll" value="#{perfilUsuarioCtrl.segperfilpredefinidoList}" var="pfd" chunkSize="10" mode="inline"
                         	scrollHeight="470" virtualScroll="true">
                         	<f:facet name="header">
-				                PERFILES PREDEFINIDOS
+                        		<span class="fs-14">Perfiles predefinidos</span>
 				            </f:facet>
 				            
 				            <div class="grid align-content-center">
@@ -214,15 +228,14 @@
 					
 					<div class="col-12 lg:col-6 defecto">
 						
-						<div class="titulo-dt">
-							2. OPCIONES DE ACCESO SELECCIONADAS.
+						<div class="titulo-dt text-gray-900 fw-5">
+							2. Opciones de acceso seleccionados.
 						</div>
 						
 						<div class="descripcion">
 							Puede personalizar el acceso a las opciones del sistema, seleccionando las opciones de acceso.
 						</div>
 						
-						<div class="EmptyBox5"/>						
 						<p:dataTable id="segPerfilScroll" 
 									value="#{perfilUsuarioCtrl.segperfilList}" 
 									var="p"  
@@ -233,7 +246,7 @@
 							<p:column width="100%" style="background-color:#fff !important;border:none!important;" >
 								<f:facet name="header" >
 									<div style="width:100%; text-align: center !important;">
-										OPCIONES DE ACCESO
+		                        		<span class="fs-14">Opciones de acceso</span>
 									</div>
 								</f:facet>
 					            <div class="grid align-content-center">

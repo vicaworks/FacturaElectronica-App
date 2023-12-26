@@ -24,6 +24,7 @@ import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.servicio.DatosEmpresaServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -72,7 +73,10 @@ public class EmpresaCtrl extends BaseCtrl {
 			refrescar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -93,7 +97,10 @@ public class EmpresaCtrl extends BaseCtrl {
 			consultarEmpresa();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -110,7 +117,10 @@ public class EmpresaCtrl extends BaseCtrl {
 			AppJsfUtil.showModalRender("dlgEmpresa", "formMain");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -128,10 +138,15 @@ public class EmpresaCtrl extends BaseCtrl {
 			empresaSelected.setIdusuario(usuarioactual.getIdusuario());
 			empresaSelected = empresaServicio.guardar(empresaSelected);
 			consultarEmpresa();
-			AppJsfUtil.addInfoMessage("frmPerfil","OK", "REGISTRO ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Registro almacenado correctamente", 
+					Message.OK);
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmPerfil", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -146,11 +161,13 @@ public class EmpresaCtrl extends BaseCtrl {
 		        empresaSelected.setNombrearchivo(file.getFileName());
 		        empresaSelected.setArchivofirmaelectronica(bytes);
 		        AppJsfUtil.ajaxUpdate("formMain:gridFE");
-//		        AppJsfUtil.addInfoMessage("formMain", "OK", msg.getString("mensaje.archivofirmaelectronica"));
             }
 		} catch (IOException e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -159,7 +176,10 @@ public class EmpresaCtrl extends BaseCtrl {
 			empresaSelected.setArchivofirmaelectronica(null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	

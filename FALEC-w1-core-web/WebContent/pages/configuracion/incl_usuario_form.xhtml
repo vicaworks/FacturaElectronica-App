@@ -7,7 +7,7 @@
 				xmlns:of="http://omnifaces.org/functions">
 	
 	<style type="text/css">
-		
+		.heightFrmUsuario {height:760px;max-height: 760px;}
 		@media screen and (max-height: 1024px){
 			.heightFrmUsuario {
 				max-height: 800px;
@@ -16,42 +16,49 @@
 		
 	</style>
 	
-	<p:dialog header="Usuario" widgetVar="dlgUsuario" modal="true" responsive="true" width="600px" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Usuario" 
+		widgetVar="dlgUsuario" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:50rem" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmUsuario">
 			<!-- OPCIONES -->
-			<div class="formgroup-inline">			
+			<div class="tool-bar mb-2">
+				<i class="fa-solid fa-ellipsis-vertical"></i>			
 				<p:commandButton id="cmdGuardar"
-					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{usuarioCtrl.guardar()}" styleClass="mr-1 min-width-110 ui-button-outlined" update="@form :fsvUsuario:frmMainUsuario"
+					value="Guardar" icon="fa-regular fa-floppy-disk fs-12" 
+					action="#{usuarioCtrl.guardar()}" 
+					styleClass="fs-12 min-width-110 ui-button-success" 
+					update="@form :fsvUsuario:frmMainUsuario"
 					/>
 					
 				<p:commandButton id="cmdCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
+					value="Cerrar" styleClass="min-width-110 ui-button-secondary ui-button-outlined fs-12" 
 					onclick="PF('dlgUsuario').hide()" immediate="true"  
 					/>
 			</div>
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmUsuario"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
+			
 			<!--  wraper del formulario para responsive -->
-			<div class="form-ui w-full OvYScroll heightFrmUsuario contenedorFormulario mt-2">
+			<div class="w-full overflow-auto heightFrmUsuario contenedorFormulario">
 				
-				<div class="field grid mt-1">
-					<h:outputText value="Empresa" class="col-12 mb-2 md:col-4 md:mb-0 requerido"/>
-			        <div class="col-12 md:col-8">
-						<h:outputText value="#{usuarioCtrl.usuarioSelected.empresa.nombrecomercial}" styleClass="w-full"/>
-			        </div>
-			    </div>
-				<div class="field grid">
-					<h:outputText value="Establecimiento" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-					<div class="col-12 md:col-8">
+				<div style="width: 99.5%!important;" class="ui-fluid">
+				
+					<div class="field">
+						<label class="text-gray-800 fw-5">Empresa</label>
+						<p:inputText readonly="true" value="#{usuarioCtrl.usuarioSelected.empresa.nombrecomercial}"/>
+				    </div>
+				
+					<div class="field">
+						<label class="text-gray-800 fw-5">Establecimiento</label>
 						<p:selectOneMenu id="somEstablecimientos"
 							value="#{usuarioCtrl.usuarioSelected.establecimiento}"
 							converter="omnifaces.SelectItemsConverter"
 							required="true"
-							requiredMessage="REQUERIDO"
+							requiredMessage="Requerido"
 							styleClass="w-full">
 							<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
 									itemValue="#{null}" value="#{null}" noSelectionOption="true" />
@@ -59,111 +66,99 @@
 							<f:selectItems value="#{usuarioCtrl.establecimientoList}" var="a"
 								itemLabel="#{a.nombrecomercial}" itemValue="#{a}" />
 						</p:selectOneMenu>
-						<p:message for="somEstablecimientos" />
-					</div>
-				</div>
+						<p:message for="somEstablecimientos" styleClass="block m-0 p-0"/>
+				    </div>
 				
-				<div class="field grid">
-					<h:outputText value="Nombre Usuario" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intNombre" value="#{usuarioCtrl.usuarioSelected.nombre}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
-						<p:message for="intNombre"/>
+					<div class="field">
+						<label class="text-gray-800 fw-5">Nombre Usuario</label>
+						<p:inputText id="intNombre" value="#{usuarioCtrl.usuarioSelected.nombre}" required="true" requiredMessage="Requerido" maxlength="300" converter="omnifaces.ToUpperCaseConverter"/>
+						<p:message for="intNombre" styleClass="block m-0 p-0"/>
 					</div>
-				</div>
-				<div class="field grid">
-					<h:outputText value="Nombre Corto" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intNombrePantalla" value="#{usuarioCtrl.usuarioSelected.nombrepantalla}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20" converter="omnifaces.ToUpperCaseConverter"/>
-						<p:message for="intNombrePantalla"/>
+				
+					<div class="field">
+						<label class="text-gray-800 fw-5">Nombre Corto</label>
+						<p:inputText id="intNombrePantalla" value="#{usuarioCtrl.usuarioSelected.nombrepantalla}" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="20" converter="omnifaces.ToUpperCaseConverter"/>
+						<small>Nombre de la pantalla</small>
+						<p:message for="intNombrePantalla" styleClass="block m-0 p-0"/>
 					</div>
-				</div>
-				<div class="field grid">
-					<h:outputText value="Identificación" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intIdentifiaccion" value="#{usuarioCtrl.usuarioSelected.identificacion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20"/>
-						<p:message for="intIdentifiaccion"/>
+				
+					<div class="field">
+						<label class="text-gray-800 fw-5">Identificación</label>
+						<p:inputText id="intIdentifiaccion" value="#{usuarioCtrl.usuarioSelected.identificacion}" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="20"/>
+						<p:message for="intIdentifiaccion" styleClass="block m-0 p-0"/>
 					</div>
-				</div>
-				<div class="field grid">
-					<h:outputText value="Teléfono" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intTelefono" value="#{usuarioCtrl.usuarioSelected.telefono}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="20" validatorMessage="SOLO NÚMEROS">
+					
+					<div class="field">
+						<label class="text-gray-900">Teléfono</label>
+						<p:inputText id="intTelefono" value="#{usuarioCtrl.usuarioSelected.telefono}" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="20" validatorMessage="SOLO NÚMEROS">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 						</p:inputText>
-						<p:message for="intTelefono"/>
+						<p:message for="intTelefono" styleClass="block m-0 p-0"/>
 					</div>
-				</div>
-				<div class="field grid">
-					<h:outputText value="Email" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intEmailUsuario" value="#{usuarioCtrl.usuarioSelected.correoelectronico}" required="false" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="100">
+				
+					<div class="field">
+						<label class="text-gray-900">Email</label>
+						<p:inputText id="intEmailUsuario" value="#{usuarioCtrl.usuarioSelected.correoelectronico}" required="false" requiredMessage="Requerido" styleClass="w-full" maxlength="100">
 							<f:validator validatorId="emailSelectItemValidator"/>
 						</p:inputText>
-						<p:message for="intEmailUsuario" />
+						<p:message for="intEmailUsuario" styleClass="block m-0 p-0"/>
 					</div>
-				</div>
-				<div class="field grid">
-					<h:outputText value="Punto Emisión" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
-						<p:inputText id="intPuntoEmision" value="#{usuarioCtrl.usuarioSelected.puntoemision}" required="true" requiredMessage="REQUERIDO" converterMessage="SOLO NÚMEROS" styleClass="w-full" maxlength="3" validatorMessage="SOLO NÚMEROS">
+					<div class="field">
+						<label class="text-gray-800 fw-5">Punto Emisión</label>
+						<p:inputText id="intPuntoEmision" value="#{usuarioCtrl.usuarioSelected.puntoemision}" required="true" requiredMessage="Requerido" converterMessage="SOLO NÚMEROS" styleClass="w-full" maxlength="3" validatorMessage="SOLO NÚMEROS">
 							<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 						</p:inputText>
-						<p:message for="intPuntoEmision"/>
+						<p:message for="intPuntoEmision" styleClass="block m-0 p-0"/>
 					</div>
-				</div>
-				<div class="field grid">
-					<h:outputText value="Firma del Email" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
+					<div class="field">
+						<label class="text-gray-900">Firma email</label>
 						<p:textEditor secure="false" id="teefirmaemail" widgetVar="teefirmaemail" value="#{usuarioCtrl.usuarioSelected.firmaemail}" height="150"  />
-						<p:message for="teefirmaemail" styleClass="block"/>
+						<p:message for="teefirmaemail" styleClass="block m-0 p-0"/>
 					</div>
-				</div>
-				<div class="field grid">
-					<h:outputText value="Actualizar Credenciales" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-					<div class="col-12 md:col-8">
+					<div class="field">
+						<label class="text-gray-900 mr-1">Actualizar Credenciales</label>
 						<p:selectBooleanCheckbox value="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" disabled="#{usuarioCtrl.usuarioSelected.idusuario == null}">
 							<p:ajax update=":frmUsuario:grid2" event="change" process="@this"/>
 						</p:selectBooleanCheckbox>
-					</div>
-				</div>				
-				<p:outputPanel id="grid2">
-					<div class="field grid">
-						<h:outputText value="Login" id="intLogin1" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        	<div class="col-12 md:col-8">
-							<p:inputText id="intLogin" value="#{usuarioCtrl.usuarioSelected.login}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" readonly="#{usuarioCtrl.usuarioSelected.idusuario!=null}"/>
-							<p:message for="intLogin"  id="intLogin2" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
-						</div>
-					</div>
-					<div class="field grid">
-						<h:outputText value="Clave " id="intClave11" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-				        <div class="col-12 md:col-8">
-							<p:password id="intClave1" value="#{usuarioCtrl.usuarioSelected.clave}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
-							<p:message for="intClave1" id="intClave12" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
-						</div>
-					</div>
-					<div class="field grid">
-						<h:outputText value="Confirmación" id="intClave21" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-				        <div class="col-12 md:col-8">
-							<p:password id="intClave2" value="#{usuarioCtrl.usuarioSelected.clave2}" required="true" requiredMessage="REQUERIDO" styleClass="w-full" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
-							<p:message for="intClave2" id="intClave22" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
-						</div>
-					</div>
-				</p:outputPanel>
-				<div class="field grid">
-					<h:outputText value="Estado" styleClass="requerido col-12 mb-2 md:col-4 md:mb-0"/>
-			        <div class="col-12 md:col-8">
+						<small class="block">Obliga actualizar las credenciales al iniciar sesión</small>
+					</div>		
+				
+						
+					<p:outputPanel id="grid2" >
+						<p:outputPanel rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}">
+							<div class="field">
+								<label class="text-gray-900 mr-1">Login</label>
+								<p:inputText id="intLogin" value="#{usuarioCtrl.usuarioSelected.login}" required="true" requiredMessage="Requerido" maxlength="50" readonly="#{usuarioCtrl.usuarioSelected.idusuario!=null}"/>
+								<p:message for="intLogin"  id="intLogin2" styleClass="block m-0 p-0"/>
+							</div>
+							
+							<div class="field">
+								<label class="text-gray-900 mr-1">Clave</label>
+								<p:password id="intClave1" value="#{usuarioCtrl.usuarioSelected.clave}" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="50" />
+								<p:message for="intClave1" id="intClave12" styleClass="block m-0 p-0"/>
+							</div>
+							<div class="field">
+								<label class="text-gray-900 mr-1">Confirmación</label>
+								<p:password id="intClave2" value="#{usuarioCtrl.usuarioSelected.clave2}" required="true" requiredMessage="Requerido" styleClass="w-full" maxlength="50" rendered="#{usuarioCtrl.usuarioSelected.actualizarCredenciales}"/>
+								<p:message for="intClave2" id="intClave22" styleClass="block m-0 p-0"/>
+							</div>
+						</p:outputPanel>
+					</p:outputPanel>
+				
+					<div class="field">
+						<label class="text-gray-900 fw-5">Estado</label>
 						<p:selectOneMenu id="somEstadoUsu"
 							value="#{usuarioCtrl.usuarioSelected.estado}"
 							required="true"
-							requiredMessage="REQUERIDO"
+							requiredMessage="Requerido"
 							styleClass="w-full" disabled="#{usuarioCtrl.usuarioSelected.idusuario==null}">
 							
 							<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
 			    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
 			    			
 						</p:selectOneMenu>
-						<p:message for="somEstadoUsu" />
-					</div>	
+						<p:message for="somEstadoUsu" styleClass="block m-0 p-0"/>
+					</div>
 				</div>
 			</div>
 		</h:form>

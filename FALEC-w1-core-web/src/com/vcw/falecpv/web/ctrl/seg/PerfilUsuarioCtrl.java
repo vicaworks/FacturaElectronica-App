@@ -25,6 +25,7 @@ import com.vcw.falecpv.core.servicio.seg.SegperfilServicio;
 import com.vcw.falecpv.core.servicio.seg.SegperfilpredefinidoServicio;
 import com.vcw.falecpv.core.servicio.seg.SegperfilusuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -101,7 +102,10 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -112,7 +116,10 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -147,7 +154,10 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -178,7 +188,9 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 		try {
 			
 			if(segperfilList.stream().filter(x->x.isSeleccion()).count()==0) {
-				AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", "NO EXISTE PERIL DE ACCESO SELECCIONADO.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe perfil de acceso seleccionado", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -192,11 +204,16 @@ public class PerfilUsuarioCtrl extends BaseCtrl{
 			// refresca todo nuevamente
 			consultarFacade();
 			
-			AppJsfUtil.addInfoMessage("frmPerfilUsuario", "OK","PERFILES DE ACCESO OK.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Perfil de acceso asignado", 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmPerfilUsuario", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	

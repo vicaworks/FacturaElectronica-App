@@ -15,6 +15,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Etiqueta;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.EtiquetaServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.ctrl.configuracion.ConfEmpresaCtrl;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
@@ -72,7 +73,10 @@ public class EtiquetaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -80,12 +84,12 @@ public class EtiquetaCtrl extends BaseCtrl {
 	public void guardar() {
 		try {
 			if(tareaetiquetaSelected.getEtiqueta()==null || tareaetiquetaSelected.getEtiqueta().trim().length()==0) {
-				AppJsfUtil.addErrorMessage("frmCotizacionTareaEtiqueta:t-nuevaetiqueta", "", "REQUERIDO");
+				AppJsfUtil.addErrorMessage("frmCotizacionTareaEtiqueta:t-nuevaetiqueta", "", "Requerido");
 				return;
 			}
 			
 			if (tareaetiquetaServicio.existeEtiquetas(establecimientoMain.getEmpresa().getIdempresa(), tareaetiquetaSelected.getIdetiqueta(),tareaetiquetaSelected.getEtiqueta())) {
-				AppJsfUtil.addErrorMessage("frmCotizacionTareaEtiqueta:t-nuevaetiqueta", "", "YA EXISTE");
+				AppJsfUtil.addErrorMessage("frmCotizacionTareaEtiqueta:t-nuevaetiqueta", "", "Ya existe");
 				return;
 			}
 			
@@ -118,7 +122,10 @@ public class EtiquetaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmCotizacionTareaEtiqueta", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -127,7 +134,9 @@ public class EtiquetaCtrl extends BaseCtrl {
 		try {
 			
 			if(tareaetiquetaServicio.existeReferenciaEtiqueta(tareaetiquetaSelected.getModulo(), tareaetiquetaSelected)) {
-				AppJsfUtil.addErrorMessage(callForm, "ERROR", "NO SE PUEDE ELIMINAR EXISTE REFENCIA A LA ETIQUETA");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No se puede eliminar existe referencia a la etiqueta.", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -151,7 +160,10 @@ public class EtiquetaCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage(callForm, "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 

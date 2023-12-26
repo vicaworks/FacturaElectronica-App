@@ -38,6 +38,7 @@ import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -118,8 +119,11 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 		        AppJsfUtil.ajaxUpdate("fsvConfiguracion:TabConfEmpresa:frmCertificado");
             }
 		} catch (IOException e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmCertificado", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -128,7 +132,10 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			empresaSelected.setArchivofirmaelectronica(null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmCertificado", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -136,17 +143,19 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 		try {
 			
 			if(empresaSelected.getArchivofirmaelectronica()==null) {
-				AppJsfUtil.addErrorMessage("fsvConfiguracion:TabConfEmpresa:frmCertificado:intNameFileFirmaDigital", "ERROR", "NO EXISTE ARCHIVO, DEBE SELECCIONAR.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe archivo debe seleccionar", 
+						Message.ERROR);
 				return;
 			}
 			
 			if(FechaUtil.comparaFechas(empresaSelected.getFechaexpiracion(),new Date())<0) {
-				AppJsfUtil.addErrorMessage("frmCertificado", "ERROR", msg.getString("error.comprarfecha"));
+				AppJsfUtil.addErrorMessage("frmCertificado", "Error", msg.getString("error.comprarfecha"));
 				return;
 			}
 			
 			if(FechaUtil.comparaFechas(empresaSelected.getFechaexpiracion(),empresaSelected.getFechaemision())<0) {
-				AppJsfUtil.addErrorMessage("frmCertificado", "ERROR", msg.getString("error.comprarfecha2"));
+				AppJsfUtil.addErrorMessage("frmCertificado", "Error", msg.getString("error.comprarfecha2"));
 				return;
 			}
 			
@@ -154,10 +163,15 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			Usuario usuarioactual = usuarioServicio.getUsuarioDao().getByLogin(AppJsfUtil.getRemoteUser()); 
 			empresaSelected.setIdusuario(usuarioactual.getIdusuario());
 			empresaSelected = empresaServicio.guardar(empresaSelected);
-			AppJsfUtil.addInfoMessage("frmCertificado","OK", "CERTIFICADO ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Certificado almacenado correctamente", 
+					Message.OK);
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmCertificado", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -174,8 +188,11 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmSMTP", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -185,11 +202,16 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			empresaServicio.guardarSmtp(smtpDto, empresaSelected.getIdempresa());
 			consultarSmtp();
 			
-			AppJsfUtil.addInfoMessage("frmSMTP","OK", "SERVIDOR SMTP ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Servidor SMTP almacendo correctamente", 
+					Message.OK);
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmSMTP", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -201,17 +223,26 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 		try {
 			consultarConfiguracionEstablecimiento();
 		} catch (Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);		
 		}
 	}
 	
 	public void guardarEmailTesting() {
 		try {
 			establecimientoServicio.guardarTestCorreos(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
-			AppJsfUtil.addInfoMessage("frmEstEmailTest","OK", "PRUEBAS EMAIL ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Email de pruebas almacenado correctamente", 
+					Message.OK);
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmEstEmailTest", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -226,10 +257,15 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			}
 			
 			establecimientoServicio.guardarPlantillaEmail(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
-			AppJsfUtil.addInfoMessage("frmEstEmailpl","OK", "PLANTILLA EMAIL ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Plantilla de email almacenada correctamente", 
+					Message.OK);
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmEstEmailpl", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -245,11 +281,16 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			}
 			
 			establecimientoServicio.actualizar(establecimientoMain);
-			AppJsfUtil.addInfoMessage("frmEnvEmail", "OK", "Datos actualizados correctamente.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Datos actualizados correctamente", 
+					Message.OK);
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmEnvEmail", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -262,10 +303,15 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 				return;
 			}
 			establecimientoServicio.guardarPlantillaComprobanteElectronico(establecimientoMain.getIdestablecimiento(), confEstablecimientoDto);
-			AppJsfUtil.addInfoMessage("frmPlantilla","OK", "PLANTILLAS COMPROBANTES ALMACENADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Plantillas de comprobantes almacenados correctamente.", 
+					Message.OK);
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmPlantilla", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -278,8 +324,11 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmEstEmailTest", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -292,8 +341,11 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmEstEmailTest", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -336,8 +388,11 @@ public class ConfEmpresaCtrl extends BaseCtrl {
 			consultarParametrosCotizacion();
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
-			AppJsfUtil.addErrorMessage("frmConfCotizacion", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			e.printStackTrace();
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 

@@ -9,7 +9,7 @@
 	<style type="text/css">
 		
 		.heightFrmEstablecimiento {
-			height: 75vh;
+			height: 60vh;
 		}
 		body .ui-fileupload .ui-fileupload-buttonbar {
 			 border:none;
@@ -33,84 +33,96 @@
 		
 	</style>
 	
-	<p:dialog header="Establecimiento" widgetVar="dlgEstable" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Establecimiento" 
+		widgetVar="dlgEstable" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:80rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmEstable">
 			
-			<div class="formgroup-inline mb-1">
+			<div class="tool-bar mb-2">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				
 				<p:commandButton id="cmdGuardar"
-					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{establecimientoCtrl.guardar()}" styleClass="mr-1 min-width-110 ui-button-outlined" update="@form :fsvEstablecimiento:frmEstablecimiento"
+					value="Guardar" 
+					icon="fa-regular fa-floppy-disk fs-13" 
+					action="#{establecimientoCtrl.guardar()}" 
+					styleClass="fs-13 min-width-110 ui-button-success" 
+					update="@form :fsvEstablecimiento:frmEstablecimiento"
 					ajax="true"
 					/>
 					
 				<p:commandButton id="cmdCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-110 ui-button-flat" 
-					onclick="PF('dlgEstable').hide()" immediate="true"  
+					value="Cerrar" 
+					styleClass="min-width-110 ui-button-secondary ui-button-outlined fs-13" 
+					onclick="PF('dlgEstable').hide()" 
+					immediate="true"  
 					/>
 			</div>
-			
-			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEstable"
-				closable="true" >
-				<p:autoUpdate></p:autoUpdate>
-			</p:messages>
-			
-			<div class="form-ui w-full OvYScroll heightFrmEstablecimiento contenedorFormulario">
+						
+			<div class="w-full overflow-auto heightFrmEstablecimiento contenedorFormulario">
 				
-				<div class="grid align-content-start" style="width: 99.5%!important;">
+				
+				<div class="grid ui-fluid" style="width: 99.5%!important;">
+					
 					<div class="col-12 md:col-8">
 						
-						<span class="text-gray-900 font-medium Fs15 block mt-1 mb-2">Datos Generales</span>
-					    
-					    <div class="field">
-							<h:outputText value="Código " styleClass="requerido" />
+						<div class="field">
+							<label class="text-gray-900 fw-5">Código</label>
 							<p:inputText id="intCodigoEst"
 								value="#{establecimientoCtrl.establecimientoSelected.codigoestablecimiento}"
-								styleClass="w-full mt-1" maxlength="3" validatorMessage="SOLO NÚMEROS">
+								maxlength="3" validatorMessage="Solo números">
 								<f:validateRegex pattern="[0-9]+"></f:validateRegex> 
 							</p:inputText>
-							<p:message for="intCodigoEst" />
+							<p:message for="intCodigoEst" styleClass="block m-0 p-0"/>
+						</div>
+						
+						<div class="field">
+							<label class="text-gray-900 fw-5">Nombre Comercial</label>
+							<p:inputText id="intNombreComerEst"
+								value="#{establecimientoCtrl.establecimientoSelected.nombrecomercial}"
+								required="true" requiredMessage="Requerido"
+								maxlength="300" converter="omnifaces.ToUpperCaseConverter" />
+							<p:message for="intNombreComerEst" styleClass="block m-0 p-0"/>
 					    </div>
 					    
 					    <div class="field">
-							<h:outputText value="Nombre Comercial"	styleClass="requerido" />
-							<p:inputText id="intNombreComerEst"
-								value="#{establecimientoCtrl.establecimientoSelected.nombrecomercial}"
-								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
-								maxlength="300" converter="omnifaces.ToUpperCaseConverter" />
-							<p:message for="intNombreComerEst" />
-					    </div>
-					    <div class="field">
-							<h:outputText value="Dirección" styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Dirección</label>
 							<p:inputText id="intDirreccionEst"
 								value="#{establecimientoCtrl.establecimientoSelected.direccionestablecimiento}"
-								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
+								required="true" requiredMessage="Requerido"
 								maxlength="300" converter="omnifaces.ToUpperCaseConverter" />
-							<p:message for="intDirreccionEst" />	
+							<p:message for="intDirreccionEst" styleClass="block m-0 p-0"/>	
 					    </div>
+					    
 					    <div class="field">
-							<h:outputText value="Punto de Emisión"	styleClass="requerido" />
+					    	<label class="text-gray-900 fw-5">Punto de Emisión</label>
 							<p:inputText id="intPuntoEmisionEst"
 								value="#{establecimientoCtrl.establecimientoSelected.puntoemision}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
 								maxlength="3" validatorMessage="SOLO NÚMEROS">
 								<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 							</p:inputText>
-							<p:message for="intPuntoEmisionEst" />	
+							<p:message for="intPuntoEmisionEst" styleClass="block m-0 p-0"/>	
 					    </div>
+					    
 					    <div class="field">
-							<h:outputText value="Teléfono " styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Teléfono</label>
 							<p:inputText id="intTelefonoEst"
 								value="#{establecimientoCtrl.establecimientoSelected.telefono}"
-								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
-								maxlength="20" validatorMessage="SOLO NÚMEROS">
+								required="true" requiredMessage="Requerido"
+								maxlength="20" validatorMessage="Solo números">
 								<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 							</p:inputText>
-							<p:message for="intTelefonoEst" />
+							<p:message for="intTelefonoEst" styleClass="block m-0 p-0"/>
 					    </div>
-					    <div class="field">
-							<h:outputText value="Email " styleClass="requerido" />
+						
+						<div class="field">
+							<label class="text-gray-900 fw-5">Email</label>
 							<p:inputText id="intCorreoEst"
 								value="#{establecimientoCtrl.establecimientoSelected.correo}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
@@ -118,92 +130,99 @@
 								<f:validateRegex
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"></f:validateRegex>
 							</p:inputText>
-							<p:message for="intCorreoEst" />    	
+							<p:message for="intCorreoEst" styleClass="block m-0 p-0"/>    	
 					    </div>
 					    
 					    <div class="field">
-							<h:outputText value="Es Matríz " styleClass="requerido block" />
-							<p:selectOneMenu id="intMatrizEst" value="#{establecimientoCtrl.establecimientoSelected.matriz}" required="true" requiredMessage="REQUERIDO" styleClass="mt-1">
+							<label class="text-gray-900 fw-5">Es Matríz</label>
+							<p:selectOneMenu id="intMatrizEst" 
+								value="#{establecimientoCtrl.establecimientoSelected.matriz}" 
+								required="true" 
+								requiredMessage="Requerido">
 						            <f:selectItem itemLabel="Seleccione" itemValue="" />
 						            <f:selectItem itemLabel="SI" itemValue="S" />
 						            <f:selectItem itemLabel="NO" itemValue="N" />
 				         	</p:selectOneMenu>
-							<p:message for="intMatrizEst" style="margin:0px!important;"/>
+							<p:message for="intMatrizEst" styleClass="block m-0 p-0"/>
 					    </div>
+					    
 					    <div class="field">
-							<h:outputText value="Ambiente " styleClass="requerido block" />
-							<p:selectOneMenu id="intAmbienteEst" value="#{establecimientoCtrl.establecimientoSelected.ambiente}" required="true" requiredMessage="REQUERIDO" styleClass="mt-1">
+							<label class="text-gray-900 fw-5">Es Matríz</label>
+							<p:selectOneMenu id="intAmbienteEst" 
+								value="#{establecimientoCtrl.establecimientoSelected.ambiente}" 
+								required="true" 
+								requiredMessage="Requerido">
 						            <f:selectItem itemLabel="Seleccione" itemValue="" />
 						            <f:selectItem itemLabel="Pruebas" itemValue="1" />
 						            <f:selectItem itemLabel="Producción" itemValue="2" />
 				         	</p:selectOneMenu>
-							<p:message for="intMatrizEst" />
+							<p:message for="intMatrizEst" styleClass="block m-0 p-0"/>
 					    	
 					    </div>
 					    
-					    <span class="text-gray-900 font-medium Fs15 block my-2">Secuencias de Comprobantes</span>
+					    <span class="text-gray-900 font-medium fs-15 block my-2">Secuencias de Comprobantes</span>
 					    
 					    <div class="field">
-							<h:outputText value="Secuencial Factura" styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Secuencial Factura</label>
 							<p:inputText id="intSecFact"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialfactura}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
 								maxlength="10" converterMessage="SOLO NUMEROS">
 								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							</p:inputText>
-							<p:message for="intSecFact" />
+							<p:message for="intSecFact" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">
-							<h:outputText value="Secuencial Nota Débito" styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Secuencial Nota Débito</label>
 							<p:inputText id="intSecND"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialnotadebito}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
 								maxlength="10"  converterMessage="SOLO NUMEROS">
 								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							</p:inputText>
-							<p:message for="intSecND" />
+							<p:message for="intSecND" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">
-							<h:outputText value="Secuencial Nota Crédito" styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Secuencial Nota Crédito</label>
 							<p:inputText id="intSecNC"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialNotaCredito}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
 								maxlength="10"  converterMessage="SOLO NUMEROS" validatorMessage="MAYOR a 0">
 								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							</p:inputText>
-							<p:message for="intSecNC" />
+							<p:message for="intSecNC" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">
-							<h:outputText value="Secuencial Liquidación de Compra" styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Secuencial Liquidación de Compra</label>
 							<p:inputText id="intSecliqComp"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialliquidacioncompra}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
 								maxlength="10"  converterMessage="SOLO NUMEROS">
 								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							</p:inputText>
-							<p:message for="intSecliqComp" />   	
+							<p:message for="intSecliqComp" styleClass="block m-0 p-0"/>   	
 					    </div>
 					    <div class="field">
-							<h:outputText value="Secuencial Guía de Remisión" styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Secuencial Guía de Remisión</label>
 							<p:inputText id="intSecGuiRem"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialguiaremision}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
 								maxlength="10"  converterMessage="SOLO NUMEROS">
 								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							</p:inputText>
-							<p:message for="intSecGuiRem" />
+							<p:message for="intSecGuiRem" styleClass="block m-0 p-0"/>
 					    </div>
 					    <div class="field">
-							<h:outputText value="Secuencial Retención"	styleClass="requerido" />
+							<label class="text-gray-900 fw-5">Secuencial Retención</label>
 							<p:inputText id="intSecReten"
 								value="#{establecimientoCtrl.establecimientoSelected.secuencialretencion}"
 								required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1"
 								maxlength="10"  converterMessage="SOLO NUMEROS">
 								<o:validator validatorId="javax.faces.LongRange" minimum="0" message="MAYOR a 0"/>
 							</p:inputText>
-							<p:message for="intSecReten" />
+							<p:message for="intSecReten" styleClass="block m-0 p-0"/>
 					    </div>
-					    			 	
+					    
 					</div>
 					
 					<div class="col-12 md:col-4">
@@ -251,11 +270,9 @@
 								<p:graphicImage value="#{establecimientoCtrl.imageEstablecimiento}" stream="false" width="50%" rendered="#{establecimientoCtrl.establecimientoSelected.logo!=null}"/>
 							</div>						
 						</p:outputPanel>
-						<div class="EmptyBox30"/>
 					</div>
+				
 				</div>
-
-					
 			</div>
 		</h:form>
 		

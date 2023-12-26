@@ -17,59 +17,15 @@
 				width: 100% !important;
 			}
 			
-			body .ui-datatable .ui-datatable-data > tr > td {
+			/* body .ui-datatable .ui-datatable-data > tr > td {
 				padding: 0.3em; 
 				border: 0 none;
 				vertical-align: top;
-			}
+			} */
 			
-			body .ui-datatable thead th {text-align: center!important;vertical-align: top;}
+			
 			
 			/* ======================================================================================================================== */
-			
-			/* -- tab -- */
-			
-			.tabProforma{
-				padding: 0px 2em !important; 
- 				border-bottom: solid 5px #F0F3F4;
-			}
-			
-			.tabProforma:hover {
- 				background-color:#ff9800 !important; 
- 				border-bottom: solid 1px #ff9800 !important;
- 				cursor: pointer !important;
- 				color:#1B2631;
-			}
-			
-			.tabProformaSeleccion {
-				border-bottom: solid 5px #34495E;
-			}
-			
-			.tabProforma h3{
-				font-size:14px;
-				margin: 5px 0px !important;
- 				color:#1B2631;
-			}
-			
-			.tabProforma:hover > h3,
-			.tabProforma:hover {
- 				color:#FBFCFC;
- 				cursor: pointer !important;
- 				background-color:#34495E !important;
- 				border-bottom: solid 1px #34495E !important;
-			}
-			
-			.tabProforma h4{
-				
-				font-size:12px;
- 				margin-bottom: 5px;
- 				margin-top: 10px;
-			}
-			
-			
-			.tabProformaBg{
-				background-color: #fff !important;
-			}
 			
 			/* file upload */
 			body .ui-fileupload .ui-fileupload-buttonbar {
@@ -111,53 +67,37 @@
 			    <pe:methodParam name="proforma"/>
 	    	</pe:remoteCommand>
 	    	
-	    	<div class="grid">
+	    	<div class="menu-head-4-2">
 	    	
-				<div class="col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='INICIO'?'tabProformaSeleccion':'tabProformaBg'}" onclick="switchProforma('INICIO');">
+				<div class="menu-box #{cotizacionCtrl.comprobanteRender=='INICIO'?'menu-box--seleccion':''}" onclick="switchProforma('INICIO');">
 					
-					<h4>
-						<h:outputText value="01."/>
-					</h4>
-					<h3>
-						<h:outputText value="Cotizaciones"/>
-					</h3>
+					<div class="menu-box__number">04.</div>
+                	<div class="menu-box__titulo">Cotizaciones</div>
 					
 				</div>
 				
-				<div class="p-col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='FORMULARIO'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_frm')?'ui-state-disabled':''}" onclick="switchProforma('FORMULARIO');">
+				<div class="menu-box #{cotizacionCtrl.comprobanteRender=='FORMULARIO'?'menu-box--seleccion':''} #{appSessionCtrl.accesoDisable('mn_cotizacion_frm')?'ui-state-disabled':''}" onclick="switchProforma('FORMULARIO');">
 					
-					<h4>
-						<h:outputText value="02."/>
-					</h4>
-					<h3>
-						<h:outputText value="Nuevo - Editar"/>
-					</h3>
+					<div class="menu-box__number">02.</div>
+                	<div class="menu-box__titulo">Nuevo - Editar</div>
+					
+				</div>
+	    	
+				<div class="menu-box #{cotizacionCtrl.comprobanteRender=='TAREA'?'menu-box--seleccion':''} #{appSessionCtrl.accesoDisable('mn_cotizacion_tarea')?'ui-state-disabled':''}" onclick="switchProforma('TAREA');">
+					
+					<div class="menu-box__number">03.</div>
+                	<div class="menu-box__titulo">Seguimiento</div>
 					
 				</div>
 				
-				<div class="p-col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='TAREA'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_tarea')?'ui-state-disabled':''}" onclick="switchProforma('TAREA');">
+				<div class="menu-box #{cotizacionCtrl.comprobanteRender=='REPORTE'?'menu-box--seleccion':''} #{appSessionCtrl.accesoDisable('mn_cotizacion_rep')?'ui-state-disabled':''}" onclick="switchProforma('REPORTE');">
 					
-					<h4>
-						<h:outputText value="03."/>
-					</h4>
-					<h3>
-						<h:outputText value="Seguimiento"/>
-					</h3>
+					<div class="menu-box__number">04.</div>
+                	<div class="menu-box__titulo">Reportes</div>
 					
 				</div>
-				
-				<div class="p-col-6 md:col-3 tabProforma #{cotizacionCtrl.comprobanteRender=='REPORTE'?'tabProformaSeleccion':'tabProformaBg'} #{appSessionCtrl.accesoDisable('mn_cotizacion_rep')?'ui-state-disabled':''}" onclick="switchProforma('REPORTE');">
-					
-					<h4>
-						<h:outputText value="04."/>
-					</h4>
-					<h3>
-						<h:outputText value="Reportes"/>
-					</h3>
-					
-				</div>
-				
-			</div>
+	    	</div>
+	    	
 			<f:subview rendered="#{cotizacionCtrl.comprobanteRender=='INICIO'}" id="inicio">
 				<ui:include src="./inicio/incl_proforma_lista.xhtml"/>
 			</f:subview>

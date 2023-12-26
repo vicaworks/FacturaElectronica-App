@@ -15,18 +15,16 @@
 		}
 				
 	</style>
-	<!-- Mensajes -->
-	<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmMainUsuario"
-		closable="true" >
-		<p:autoUpdate></p:autoUpdate>
-	</p:messages>
 	
-	<div class="card card-w-title">
+	<div class="card">
 		
 		<div class="my-1">
 			<div class="formgroup-inline">
     			<div class="field">
-					<p:selectOneMenu id="somUsuario" value="#{usuarioCtrl.estadoRegBusqueda}" style="min-width:110px!important;">
+					<p:selectOneMenu id="somUsuario" 
+						value="#{usuarioCtrl.estadoRegBusqueda}" 
+						style="min-width:110px!important;" 
+						styleClass="fs-12">
 		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.ACTIVO}" itemValue="A" />
 		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.INACTIVO}" itemValue="I" />
 		    			<f:selectItem itemLabel="#{EstadoRegistroEnum.TODOS}" itemValue="T" />
@@ -34,18 +32,20 @@
 		    	</div>
 		    	
 		    	<p:commandButton id="cmdRefrecar"
-					title="Consultar" icon="fa fa-search" value="Buscar" 
-					action="#{usuarioCtrl.refrescar()}" styleClass="ui-button-success mr-1" update="@form"
+					title="Consultar" icon="fa fa-search fs-12" value="Buscar" 
+					action="#{usuarioCtrl.refrescar()}" 
+					styleClass="fs-12 ui-button-success mr-1" update="@form"
 					/>
 				<p:commandButton id="cmdNuevo"
-						title="Nuevo" icon="fa fa-plus" styleClass="ui-button-outlined mr-1" value="Nuevo" 
+						title="Nuevo" icon="fa-regular fa-file fs-12" 
+						styleClass="fs-12 ui-button-outlined mr-1" value="Nuevo" 
 						action="#{usuarioCtrl.nuevo()}" inline="true" 
 						/>
 				<p:commandButton  id="cmdExcel" 
 					title="Exportar excel"
-					icon="fa fa-download"
+					icon="fa fa-download fs-12"
 					ajax="false" onclick="PrimeFaces.monitorDownload(start,stop)"
-					styleClass="ui-button-outlined">
+					styleClass="fs-12 ui-button-outlined">
 					<p:fileDownload value="#{usuarioCtrl.fileUsuarios}"/>
 				</p:commandButton>
 		    	
@@ -59,24 +59,24 @@
 			rowKey="#{u.idusuario}">
 			
 			
-			<p:column headerText="OPC" style="width:10px;" styleClass="TexAlCenter">
+			<p:column headerText="Opc" style="width:10px;" styleClass="TexAlCenter">
 			
 				<p:commandLink id="cmlDtUsuario">
-					<i class="fa fa-chevron-circle-down Fs18" style="color:#252529;"/>
+					<i class="fa fa-chevron-circle-down fs-18" style="color:#252529;"/>
 				</p:commandLink>
 				
 				<p:menu overlay="true" trigger="cmlDtUsuario" my="left top" at="left bottom">
 				
-					<p:menuitem value="Perfil Acceso" action="#{perfilUsuarioCtrl.cargarFormulario}" icon="fa fa-key">
+					<p:menuitem value="Perfil Acceso" action="#{perfilUsuarioCtrl.cargarFormulario}" icon="fa fa-key fs-12">
 						<f:setPropertyActionListener value="frmMainUsuario" target="#{perfilUsuarioCtrl.callForm}"/>
 						<f:setPropertyActionListener value="#{u}" target="#{perfilUsuarioCtrl.usuarioSelected}"/>
 					</p:menuitem>
 					
-					<p:menuitem value="Editar" action="#{usuarioCtrl.editar()}" icon="fa fa-edit">
+					<p:menuitem value="Editar" action="#{usuarioCtrl.editar()}" icon="fa fa-edit fs-12">
 						<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
 					</p:menuitem>
 					
-					<p:menuitem value="Eliminar" action="#{usuarioCtrl.eliminar()}" update="@form" icon="fa fa-trash-o" >
+					<p:menuitem value="Eliminar" action="#{usuarioCtrl.eliminar()}" update="@form" icon="fa-regular fa-trash-can fs-12" >
 						<f:setPropertyActionListener value="#{u}" target="#{usuarioCtrl.usuarioSelected}"/>
 						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
 					</p:menuitem>
@@ -85,34 +85,35 @@
 				
 			</p:column>
 			
-			<p:column headerText="ID" style="width:15px;" styleClass="text-right">
+			<p:column headerText="Id" style="width:15px;">
 				<h:outputText value="#{u.idusuario}" />
 			</p:column>
 
-			<p:column headerText="EST" style="width:20px;" styleClass="text-right">
+			<p:column headerText="Estado" style="width:20px;">
 				<h:outputText value="#{u.estado}" />
 			</p:column>
 
 			<p:column headerText="#{msg['label.identificacion']}"
-				style="width:80px;" filterBy="#{u.identificacion}" filterMatchMode="contains" styleClass="text-right">
+				style="width:80px;" filterBy="#{u.identificacion}" filterMatchMode="contains">
 				<h:outputText value="#{u.identificacion}" />
 			</p:column>
 
-			<p:column headerText="NOMBRE" style="width:150px;"  filterBy="#{u.nombre}" filterMatchMode="contains">
+			<p:column headerText="Nombre" style="width:150px;"  filterBy="#{u.nombre}" filterMatchMode="contains">
 				<h:outputText value="#{u.nombre}" />
 			</p:column>
 			
-			<p:column headerText="CORREO ELECTRÓNICO" style="width:100px;" styleClass="text-right">
+			<p:column headerText="Email" style="width:100px;">
 				<h:outputText value="#{u.correoelectronico}" />
 			</p:column>
 
-			<p:column headerText="ESTABLECIMIENTO" style="width:100px;" filterBy="#{u.establecimiento.nombrecomercial}" filterMatchMode="contains" styleClass="text-right">
-				<h:outputText value="#{appSessionCtrl.formatoCadena(u.establecimiento.codigoestablecimiento,3,'0')}" />
-			</p:column>
-
-			<p:column headerText="#{msg['label.puntoemision']}"
-				style="width:10px;" styleClass="text-right">
-				<h:outputText value="#{u.puntoemision}" />
+			<p:column headerText="Establecimiento" style="width:100px;" filterBy="#{u.establecimiento.nombrecomercial}" filterMatchMode="contains">
+				<div class="flex flex-column gap-1">
+					<h:outputText value="#{appSessionCtrl.formatoCadena(u.establecimiento.codigoestablecimiento,3,'0')}" styleClass="text-gray-900 fw-5"/>
+					<div class="flex gap-1 align-items-baseline">
+						<span class="text-gray-600 fs-10">Punto emisión </span>
+						<h:outputText value="#{appSessionCtrl.formatoCadena(u.puntoemision,3,'0')}" styleClass="fs-12 text-gray-900"/>
+					</div>
+				</div>
 			</p:column>
 
 		</p:dataTable>
