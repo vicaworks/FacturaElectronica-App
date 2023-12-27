@@ -10,67 +10,67 @@
     <style type="text/css">
     	.pvPagoDetalleDT .ui-datatable-scrollable-body{
 		}   	
-		.cpoRequerido{
+		.cpo{
 		}
     </style>
     
     <!-- consulta cliente return keycode 13 -->
 	<p:remoteCommand name="buscarCliente"  action="#{cotizacionFormCtrl.buscarCliente()}" process="@this :formMain:formulario:inpCriterioCliente" update=":formMain:formulario:msgProformaForm :formMain:formulario:msgInpCriterioCliente :formMain:formulario:gridCliente"/>
 	
-	<div class="card card-w-title">
+	<div class="card">
 		
 		<div class="flex justify-content-between">
-			<span class="Fs14 text-black font-semibold">Cotización</span>
+			<span class="fs-14 text-gray-900 font-semibold">Cotización</span>
 			<div>
-				<span class="Fs10 text-gray-500 mr-1">Establecimiento - </span>
-				<span class="Fs12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(cotizacionFormCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
+				<span class="fs-11 text-gray-500 mr-1">Establecimiento - </span>
+				<span class="fs-12 text-blue-600 font-semibold">#{appSessionCtrl.formatoCadena(cotizacionFormCtrl.establecimientoMain.codigoestablecimiento,3,'0')}</span>
 			</div>			
 		</div>
 		
 		<div class="flex flex-column mt-2">
-			<span class="text-gray-700 font-medium mb-1 Fs11">Secuencial Comprobante</span>
+			<span class="text-gray-900 fw-5 mb-1 fs-11">Secuencial Comprobante</span>
 			<p:outputPanel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera!=null}">
-				<span class="Fs16 text-black font-bold">#{cotizacionFormCtrl.getFormatoNumDocumento(cotizacionFormCtrl.cabecerSelected.numdocumento)}</span>
+				<span class="fs-16 text-gray-900 font-bold">#{cotizacionFormCtrl.getFormatoNumDocumento(cotizacionFormCtrl.cabecerSelected.numdocumento)}</span>
 			</p:outputPanel>
 			<p:outputPanel rendered="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">					
-				<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialEstablecimiento}" styleClass="Fs14 text-black font-bold"/>
+				<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialEstablecimiento}" styleClass="fs-14 text-gray-900 font-bold"/>
 				<h:outputText value=" - " />
-				<p:inputText id="intSecCaja" value="#{cotizacionFormCtrl.cabecerSelected.secuencialCaja}" maxlength="3" style="width:50px;font-size:14px !important;"  required="true" requiredMessage="REQUERIDO"/>
+				<p:inputText id="intSecCaja" value="#{cotizacionFormCtrl.cabecerSelected.secuencialCaja}" maxlength="3" style="width:50px;font-size:14px !important;"  required="true" requiredMessage=""/>
 				<h:outputText value=" - " />
-				<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialNumero}" rendered="#{not cotizacionFormCtrl.cabecerSelected.editarSecuencial}" styleClass="Fs14 text-black font-bold"/>
-				<p:message styleClass="Wid100 DispBlock" for="intSecCaja"/>
+				<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.secuencialNumero}" rendered="#{not cotizacionFormCtrl.cabecerSelected.editarSecuencial}" styleClass="fs-14 text-gray-900 font-bold"/>
+				<p:message styleClass="w-full block" for="intSecCaja"/>
 			</p:outputPanel>
 		</div>
 		
 		<div class="flex mt-2">
 			<div class="flex flex-column flex-grow-1 mr-1">
-				<h:outputText value="Fecha de Emisión" styleClass="text-gray-700 font-medium Fs11"/>
+				<h:outputText value="Fecha de Emisión" styleClass="text-gray-900 fw-5 fs-11"/>
 				<p:calendar id="claFacFecha" value="#{cotizacionFormCtrl.cabecerSelected.fechaemision}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="FECHA EMISION" style="font-size:14px !important;">
+					requiredMessage="" required="true" styleClass="w-full" placeholder="FECHA EMISION" style="font-size:14px !important;">
 				</p:calendar>				
 			</div>
 			<div class="flex flex-column flex-grow-1 mr-1">
-				<h:outputText value="Fecha de Vencimiento" styleClass="text-gray-700 font-medium Fs11"/>
+				<h:outputText value="Fecha de Vencimiento" styleClass="text-gray-900 fw-5 fs-11"/>
 				<p:calendar id="claFacFechaVencimiento" value="#{cotizacionFormCtrl.cabecerSelected.fechaVencimiento}"
 					pattern="dd/MM/yyyy"
 					locale="es" 
-					requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="FECHA VENCIMIENTO" style="font-size:14px !important;">
+					requiredMessage="" required="true" styleClass="w-full" placeholder="FECHA VENCIMIENTO" style="font-size:14px !important;">
 				</p:calendar>
 			</div>
-			<p:message for="claFacFecha" styleClass="block"/>
-			<p:message for="claFacFechaVencimiento" styleClass="block"/>
+			<p:message for="claFacFecha" styleClass="block m-0 p-0"/>
+			<p:message for="claFacFechaVencimiento" styleClass="block m-0 p-0"/>
 		</div>		
 		
-		<span class="block mt-1 text-gray-700 font-medium Fs11">Cliente</span>
+		<label class="text-gray-900 fs-12">Cliente</label>
 		<div class="flex">			
 			<div class="flex-grow-1 flex overflow-hidden">
 				<div class="ui-inputgroup w-full">
                     <p:inputText id="inpCriterioCliente"
 						value="#{cotizacionFormCtrl.criterioCliente}" required="false"
-						requiredMessage="REQUERIDO" styleClass="w-full Fs12"
-						maxlength="13" placeholder="C.I. o RUC / ENTER PARA BUSCAR"
+						requiredMessage="" styleClass="w-full fs-12"
+						maxlength="13" placeholder="C.I. o RUC / Enter para buscar"
 						validatorMessage="SOLO NUMEROS"
 						onkeydown="if(event.keyCode==13){event.keyCode=123;buscarCliente(); return false;}">
 						<f:validateRegex pattern="^\d+$" />
@@ -87,14 +87,14 @@
 			</div>
 			<div class="flex-grow-0 flex align-items-center px-1">
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(cotizacionFormCtrl.cabecerSelected.cliente!=null?cotizacionFormCtrl.cabecerSelected.cliente.idcliente:null)}" process="@this" styleClass="ml-1 mr-2 text-gray-900">
-					<i class="fa fa-plus Fs16">
+					<i class="fa fa-plus fs-16">
 					</i>
 					<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
 					<f:setPropertyActionListener value="#{null}" target="#{clienteCtrl.clienteSelected}"/>
 				</p:commandLink>								
 				<p:commandLink action="#{clienteCtrl.nuevoEditar(cotizacionFormCtrl.cabecerSelected.cliente!=null?cotizacionFormCtrl.cabecerSelected.cliente.idcliente:null)}" process="@this" styleClass="text-gray-900">
-					<i class="fa fa-edit Fs16">
+					<i class="fa fa-edit fs-16">
 					</i>
 					<f:setPropertyActionListener value="cotizacionFormCtrl" target="#{clienteCtrl.callModule}"/>
 					<f:setPropertyActionListener value=":formMain:formulario:gridCliente" target="#{clienteCtrl.updateView}"/>
@@ -103,94 +103,96 @@
 			</div>
 		</div>
 		<div class="flex">
-			<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="w-full block"/>
+			<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="w-full block m-0 p-0"/>
 		</div>
 		
 		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex " style="height:9rem;">
 			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{cotizacionFormCtrl.cabecerSelected.cliente==null}"/>
 			<f:subview rendered="#{cotizacionFormCtrl.cabecerSelected.cliente!=null}">
-				<div class="flex align-self-center">
-					<div class="flex flex-column">
-						<span class="Fs16 font-bold text-blue-600 mb-1 block">
-							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.razonsocial!=null?cotizacionFormCtrl.cabecerSelected.cliente.razonsocial:'-'}" />
-						</span>
-						<span class="Fs12 font-bold text-gray-600 mb-1 block">
-							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.identificacion!=null?cotizacionFormCtrl.cabecerSelected.cliente.identificacion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.direccion!=null?cotizacionFormCtrl.cabecerSelected.cliente.direccion:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="pi pi-phone mr-1"></i>
-							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.telefono!=null?cotizacionFormCtrl.cabecerSelected.cliente.telefono:'-'}" />
-						</span>
-						<span class="Fs11 mb-1 block">
-							<i class="fa fa-envelope-o mr-1 Fs11"></i>
-							<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico!=null?cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico:'-'}" />
-						</span>
-						
-					</div>
+				<div class="flex flex-column my-1 gap-1">
+					<span class="fs-16 fw-5 text-primary-600 block">
+						<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.razonsocial!=null?cotizacionFormCtrl.cabecerSelected.cliente.razonsocial:'-'}" />
+					</span>
+					<span class="fs-12 font-medium text-gray-900 block">
+						<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.identificacion!=null?cotizacionFormCtrl.cabecerSelected.cliente.identificacion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block">
+						<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.direccion!=null?cotizacionFormCtrl.cabecerSelected.cliente.direccion:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="pi pi-phone"></i>
+						<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.telefono!=null?cotizacionFormCtrl.cabecerSelected.cliente.telefono:'-'}" />
+					</span>
+					<span class="fs-11 mb-1 block flex gap-2">
+						<i class="fa-regular fa-envelope"></i>
+						<h:outputText value="#{cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico!=null?cotizacionFormCtrl.cabecerSelected.cliente.correoelectronico:'-'}" />
+					</span>
 				</div>
 			</f:subview>
 		</p:outputPanel>
 		
-		<div class="flex mt-3">
-			<div class="flex flex-grow-1 justify-content-evenly mr-1">				
-				<h:outputText value="Requiere Autorización" styleClass="text-gray-700 font-medium Fs11"/>			
+		<div class="flex mt-1 gap-2">
+			<div class="flex flex-grow-1 justify-content-evenly">				
+				<h:outputText value="Requiere Autorización" styleClass="text-gray-900 fw-5 fs-12"/>			
 				<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.autorizacionBol}" offLabel="NO" onLabel="SI" showLabels="true" disabled="#{cotizacionFormCtrl.habilitarAutorizar()}"/>			
 			</div>
-			<div class="flex flex-grow-1 justify-content-evenly mr-1">
-				<h:outputText value="Email Enviado" styleClass="text-gray-700 font-medium Fs11"/>			
+			<div class="flex flex-grow-1 justify-content-evenly">
+				<h:outputText value="Email Enviado" styleClass="text-gray-900 fw-5 fs-12"/>			
 				<p:inputSwitch value="#{cotizacionFormCtrl.cabecerSelected.envioEmailBol}" offLabel="NO" onLabel="SI" showLabels="true"/>				
 			</div>
 		</div>
 		
 		<div class="field mt-2">
-			<h:outputText value="Resumen" styleClass="text-gray-700 font-medium Fs11"/>
+			<label class="text-gray-900 fw-5">Resumen</label>
 			<p:inputText id="inpResumen"
 				value="#{cotizacionFormCtrl.cabecerSelected.resumen}" required="true"
-				requiredMessage="REQUERIDO" styleClass="w-full Fs12"
+				requiredMessage="" styleClass="w-full fs-12"
 				maxlength="500">
 			</p:inputText>
-			<small>Resumen contenido de la cotización</small>
-			<p:message for="inpResumen" styleClass="block"/>
+			<small class="text-gray-700 fs-10 m-0 p-0">Resumen contenido de la cotización</small>
+			<p:message for="inpResumen" styleClass="block m-0 p-0"/>
 		</div>
 	
 	</div>
 	
-	<div class="card card-w-title">	
-		<span class="block text-black Fs14 font-medium mb-2">Impresión</span>
+	<div class="card">	
 		
-		<!-- <p:accordionPanel>
+		<span class="block text-gray-900 fs-14 fw-5 mb-2">Opciones de impresión</span>
+		
+		<p:accordionPanel>
 	        <p:tab title="Comentarios antes del detalle">
-	        	<pe:sunEditor id="edtComentario1" widgetVar="wedtComentario1" value="#{cotizacionFormCtrl.cabecerSelected.contenido1}"
-                  mode="inline" dir="ltr" locale="es"
+	        	<!-- <pe:sunEditor id="sunEditor" widgetVar="sunEditor" value="#{cotizacionFormCtrl.cabecerSelected.contenido1}"
+                  mode="#{basicSunEditorController.mode}" dir="#{basicSunEditorController.rtl ? 'rtl' : 'ltr'}"
+                  locale="#{basicSunEditorController.language}"
                   toolbar="[['font','fontSize','formatBlock'],['paragraphStyle','blockquote'], ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript', 'removeFormat'],
                   '/'
                   ,['fontColor', 'hiliteColor', 'outdent', 'indent', 'align', 'horizontalRule', 'list', 'table'],
                    ['link', 'image', 'audio', 'video', 'fullScreen', 'showBlocks', 'codeView', 'preview', 'print', 'save']]">
-                </pe:sunEditor>
+                </pe:sunEditor> -->
+                <p:textEditor widgetVar="editor1" value="#{cotizacionFormCtrl.cabecerSelected.contenido1}" secure="false"/>
 				
 	        </p:tab>
 	        <p:tab title="Comentarios después del detalle">
-	        	<pe:sunEditor id="edtComentario2" widgetVar="wedtComentario2" value="#{cotizacionFormCtrl.cabecerSelected.contenido2}"
+	        	<!-- <pe:sunEditor id="edtComentario2" widgetVar="wedtComentario2" value="#{cotizacionFormCtrl.cabecerSelected.contenido2}"
                   mode="inline" dir="ltr" locale="es"
                   toolbar="[['font','fontSize','formatBlock'],['paragraphStyle','blockquote'], ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript', 'removeFormat'],
                   '/'
                   ,['fontColor', 'hiliteColor', 'outdent', 'indent', 'align', 'horizontalRule', 'list', 'table'],
                    ['link', 'image', 'audio', 'video', 'fullScreen', 'showBlocks', 'codeView', 'preview', 'print', 'save']]">
-                </pe:sunEditor>	        	
+                </pe:sunEditor>	    -->
+                <p:textEditor widgetVar="editor2" value="#{cotizacionFormCtrl.cabecerSelected.contenido2}" secure="false"/>     	
 	        </p:tab>
 	        <p:tab title="Pie de página">
-	        	<pe:sunEditor id="edtComentario3" widgetVar="wedtComentario3" value="#{cotizacionFormCtrl.cabecerSelected.contenido3}"
+	        	<!-- <pe:sunEditor id="edtComentario3" widgetVar="wedtComentario3" value="#{cotizacionFormCtrl.cabecerSelected.contenido3}"
                   mode="inline" dir="ltr" locale="es"
                   toolbar="[['font','fontSize','formatBlock'],['paragraphStyle','blockquote'], ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript', 'removeFormat'],
                   '/'
                   ,['fontColor', 'hiliteColor', 'outdent', 'indent', 'align', 'horizontalRule', 'list', 'table'],
                    ['link', 'image', 'audio', 'video', 'fullScreen', 'showBlocks', 'codeView', 'preview', 'print', 'save']]">
-                </pe:sunEditor>                
+                </pe:sunEditor> -->                
+                <p:textEditor widgetVar="editor3" value="#{cotizacionFormCtrl.cabecerSelected.contenido3}" secure="false"/>
 	        </p:tab>
-        </p:accordionPanel> -->
+        </p:accordionPanel>
 		
 	</div>
 	

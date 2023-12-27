@@ -11,31 +11,44 @@
        	
     </style>
 	
-	<div class="card card-w-title">
-				
-		<div class="flex">		
-			<p:commandButton id="cmdCotNuevo"
-				value="Nuevo" icon="fa fa-plus" 
-				action="#{cotizacionFormCtrl.nuevo()}" styleClass="min-width-70 mr-1 ui-button-success #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_nuevo')?'ui-state-disabled':''}" update="@form" immediate="true">
-			</p:commandButton>
-			<p:commandButton id="cmdGenCotizacion"
-				value="Guardar" icon="fa fa-floppy-o" 
-				action="#{cotizacionFormCtrl.generarCotizacion()}" styleClass="min-width-70 mr-1 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_guardar')?'ui-state-disabled':''}" update="@form"/>
-			<p:commandButton 
-					value="Imprimir" icon="fa fa-floppy-o" 
-					action="#{cotizacionFormCtrl.imprimir}" styleClass="min-width-70 mr-1 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_imprimir')?'ui-state-disabled':''}" update="@form">
-				<f:setPropertyActionListener value="#{rideCtrl}" target="#{cotizacionFormCtrl.rideCtrl}"/>
-			</p:commandButton>
+	<div class="tool-bar mb-2">
 			
-			<p:commandButton 
-					value="Crear Copia" icon="fa fa-copy" 
-					action="#{cotizacionFormCtrl.crearUnaCopia(cotizacionFormCtrl.cabecerSelected.idcabecera)}" styleClass="min-width-70 mr-1 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}" update="@form" disabled="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
-					<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
-			</p:commandButton>
-			
-		</div>
-	
+		<p:commandButton id="cmdCotNuevo"
+			value="Nuevo" 
+			icon="fa-regular fa-file fs-12" 
+			action="#{cotizacionFormCtrl.nuevo()}" 
+			styleClass="fs-12 min-width-70 ui-button-success #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_nuevo')?'ui-state-disabled':''}" 
+			update="@form" 
+			immediate="true">
+		</p:commandButton>
+		
+		<p:commandButton id="cmdGenCotizacion"
+			value="Guardar" 
+			icon="fa-regular fa-floppy-disk fs-12" 
+			action="#{cotizacionFormCtrl.generarCotizacion()}" 
+			styleClass="min-width-70 fs-12 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_guardar')?'ui-state-disabled':''}" 
+			update="@form"/>
+		<p:commandButton 
+				value="Imprimir" 
+				icon="fa fa-print fs-12" 
+				action="#{cotizacionFormCtrl.imprimir}" 
+				styleClass="min-width-70 ui-button-secondary fs-12 #{appSessionCtrl.accesoDisable('mn_cotizacion_frm_imprimir')?'ui-state-disabled':''}" 
+				update="@form">
+			<f:setPropertyActionListener value="#{rideCtrl}" target="#{cotizacionFormCtrl.rideCtrl}"/>
+		</p:commandButton>
+		
+		<p:commandButton 
+				value="Crear Copia" 
+				icon="fa fa-copy fs-12" 
+				action="#{cotizacionFormCtrl.crearUnaCopia(cotizacionFormCtrl.cabecerSelected.idcabecera)}" 
+				styleClass="min-width-70 fs-12 ui-button-outlined #{appSessionCtrl.accesoDisable('mn_cotizacion_main_copia')?'ui-state-disabled':''}" 
+				update="@form" 
+				disabled="#{cotizacionFormCtrl.cabecerSelected.idcabecera==null}">
+				<f:setPropertyActionListener value="FORMULARIO" target="#{cotizacionCtrl.comprobanteRender}"/>
+		</p:commandButton>
+		
 	</div>
+	
 	<!-- Mensajes -->
 	<p:messages id="msgProformaForm" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain" styleClass="block"
 		closable="true" >
