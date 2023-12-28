@@ -106,7 +106,7 @@
 			<p:message id="msgInpCriterioCliente" for="inpCriterioCliente" styleClass="w-full block m-0 p-0"/>
 		</div>
 		
-		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex " style="height:9rem;">
+		<p:outputPanel id="gridCliente" styleClass="w-full my-1 flex ">
 			<p:skeleton styleClass="w-full mt-1" height="9rem" rendered="#{cotizacionFormCtrl.cabecerSelected.cliente==null}"/>
 			<f:subview rendered="#{cotizacionFormCtrl.cabecerSelected.cliente!=null}">
 				<div class="flex flex-column my-1 gap-1">

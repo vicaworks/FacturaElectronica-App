@@ -264,8 +264,8 @@
                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                 paginatorPosition="bottom"  
 				rowKey="#{v.idcabecera}"
-				rows="20"
-				rowsPerPageTemplate="10,15,20,25,30,35,40">
+				rows="15"
+				rowsPerPageTemplate="15,25,35,45">
 		
 				<p:column headerText="Opc" style="width:25px;">
 					<p:commandLink id="cmlDtProformas">
@@ -349,7 +349,7 @@
 					</div>
 				</p:column>
 				
-				<p:column headerText="Resumen" style="width:100px;">
+				<p:column headerText="Resumen" style="width:180px;" filterBy="#{p.resumen}" filterMatchMode="contains">
 					<h:outputText value="#{p.resumen}" styleClass="fs-10">
 					</h:outputText>
 				</p:column>
