@@ -26,10 +26,12 @@ import org.primefaces.model.charts.pie.PieChartOptions;
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.AppConfiguracion;
 import com.servitec.common.util.TextoUtil;
+import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.query.EstadisticoQuery;
 import com.vcw.falecpv.core.servicio.CotizacionServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -82,13 +84,24 @@ public class CotizacionRepCtrl extends BaseCtrl {
 			consultarFacturadoVendedor();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
+	}
+	
+	public Establecimiento getEstablecimiento() {
+		return ((CotizacionCtrl)AppJsfUtil.getManagedBean("cotizacionCtrl")).getEstablecimientoMain();
 	}
 
 	public void consultarFacturado()throws DaoException{
 		// == facturado contador
-		List<EstadisticoQuery> e1 = cotizacionServicio.getFacturadoContador(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), establecimientoMain.getIdestablecimiento(), desde, hasta);
+		List<EstadisticoQuery> e1 = cotizacionServicio.getFacturadoContador(
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), 
+				getEstablecimiento().getIdestablecimiento(), 
+				desde, 
+				hasta);
 		
 		EstadisticoQuery eArchivado = e1.stream().filter(x->x.getLabel1().equals("ARCHIVADO")).findFirst().orElse(null);
 		if(eArchivado==null) {
@@ -142,7 +155,12 @@ public class CotizacionRepCtrl extends BaseCtrl {
         
 		
 		// == facturado valor
-		e1 = cotizacionServicio.getFacturadoValor(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), establecimientoMain.getIdestablecimiento(), desde, hasta);
+		e1 = cotizacionServicio.getFacturadoValor(
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), 
+				getEstablecimiento().getIdestablecimiento(), 
+				desde, 
+				hasta);
+		
 		eArchivado = e1.stream().filter(x->x.getLabel1().equals("ARCHIVADO")).findFirst().orElse(null);
 		if(eArchivado==null) {
 			eArchivado = new EstadisticoQuery();
@@ -192,7 +210,11 @@ public class CotizacionRepCtrl extends BaseCtrl {
 	public void consultarFacturadoVendedor()throws DaoException{
 		// == facturado vendedor contador
 		barFacturadoVendedorContador = new BarChartModel();
-		facturadoVendedorContadorList = cotizacionServicio.getFacturadoVendedorContador(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), establecimientoMain.getIdestablecimiento(), desde, hasta);
+		facturadoVendedorContadorList = cotizacionServicio.getFacturadoVendedorContador(
+				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), 
+				getEstablecimiento().getIdestablecimiento(), 
+				desde, 
+				hasta);
 		// armar chart
 		ChartSeries facturados = new ChartSeries();
 		facturados.setLabel("FACTURADO");
@@ -231,7 +253,11 @@ public class CotizacionRepCtrl extends BaseCtrl {
         
      // == facturado vendedor valor
  		barFacturadoVendedorValor = new BarChartModel();
- 		facturadoVendedorValorList = cotizacionServicio.getFacturadoVendedorValor(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), establecimientoMain.getIdestablecimiento(), desde, hasta);
+ 		facturadoVendedorValorList = cotizacionServicio.getFacturadoVendedorValor(
+ 				AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(), 
+ 				getEstablecimiento().getIdestablecimiento(), 
+ 				desde, 
+ 				hasta);
  	// armar chart
 		facturados = new ChartSeries();
 		facturados.setLabel("FACTURADO");
@@ -278,7 +304,10 @@ public class CotizacionRepCtrl extends BaseCtrl {
 			consultarFacturadoVendedor();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
