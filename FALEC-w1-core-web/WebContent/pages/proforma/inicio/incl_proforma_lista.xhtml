@@ -11,14 +11,14 @@
        	
        	.pvUnoDT .ui-datatable-scrollable-body{
 			min-height: 40vh !important;
-			height: calc(100vh - 430px)!important;				
+			height: calc(100vh - 435px)!important;				
 		}
        	
     </style>
 
 	<div class="card">
 	
-		<div class="flex justify-content-between">
+		<div class="flex justify-content-between mb-2">
 			<span class="fs-14 text-gray-900 font-semibold">Cotización</span>
 			<p:selectOneMenu id="somEstablecimientoMain"
 				value="#{cotizacionCtrl.establecimientoMain}"
@@ -160,7 +160,7 @@
 								</div>
 								<div class="w-full py-1 pl-2">
 									<span class="fs-9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-									<span class="fs-12 text-gray-600 font-semibold">COTIZACIONES</span>
+									<span class="fs-11 text-gray-600 font-semibold">COTIZACIÓN</span>
 								</div>
 							</div>
 						</div>
@@ -182,7 +182,7 @@
 								</div>
 								<div class="w-full py-1 pl-2">
 									<span class="fs-9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-									<span class="fs-12 text-gray-600 font-semibold">FACTURADOS</span>
+									<span class="fs-11 text-gray-600 font-semibold">FACTURADOS</span>
 								</div>
 							</div>
 						</div>
@@ -204,7 +204,7 @@
 								</div>
 								<div class="w-full py-1 pl-2">
 									<span class="fs-9 mr-1 text-gray-300 font-semibold">EN</span>
-									<span class="fs-12 text-gray-600 font-semibold">SEGUIMIENTO</span>
+									<span class="fs-11 text-gray-600 font-semibold">SEGUIMIENTO</span>
 								</div>
 							</div>
 						</div>
@@ -226,7 +226,7 @@
 								</div>
 								<div class="w-full py-1 pl-2">
 									<span class="fs-9 mr-1 text-gray-300 font-semibold">TOTAL</span>
-									<span class="fs-12 text-gray-600 font-semibold">ARCHIVADOS</span>
+									<span class="fs-11 text-gray-600 font-semibold">ARCHIVADOS</span>
 								</div>
 							</div>
 						</div>
@@ -267,7 +267,7 @@
 				rows="20"
 				rowsPerPageTemplate="10,15,20,25,30,35,40">
 		
-				<p:column headerText="Opc" style="width:15px;">
+				<p:column headerText="Opc" style="width:25px;">
 					<p:commandLink id="cmlDtProformas">
 						<i class="fa fa-chevron-circle-down fs-18" style="color:#252529;"/>
 					</p:commandLink>
@@ -286,7 +286,7 @@
 						<p:menuitem value=" Autorizar" action="#{cotizacionCtrl.autorizar}" icon="fa fa-key fs-14" update=":formMain" disabled="#{cotizacionCtrl.accesoOpciones('AUTORIZAR',p.estado)}" 
 							styleClass="#{appSessionCtrl.accesoDisable('mn_cotizacion_main_autorizar')?'ui-state-disabled':''}">
 							<f:setPropertyActionListener value="#{p}" target="#{cotizacionCtrl.proformaSelected}"/>
-							<p:confirm header="#{msg['label.confirmacion']}" message="ESTÁ SEGURO DE AUTORIZAR ESTA COTIZACIÓN." icon="fa fw-3x fa-exclamation-triangle" />
+							<p:confirm header="#{msg['label.confirmacion']}" message="Está seguro de autorizar esta cotización." icon="fa fw-3x fa-exclamation-triangle" />
 						</p:menuitem>
 						
 						<p:menuitem value=" Editar" action="#{cotizacionFormCtrl.editar(p.idcabecera)}" icon="fa fa-edit fs-14" update="@form" disabled="#{cotizacionCtrl.accesoOpciones('EDITAR',p.estado)}" 
@@ -323,11 +323,11 @@
 						
 				</p:column>	
 				
-				<p:column headerText="Vendedor" style="width:80px;" filterBy="#{p.usuario}" filterMatchMode="contains" styleClass="text-right">
+				<p:column headerText="Vendedor" style="width:80px;" filterBy="#{p.usuario}" filterMatchMode="contains">
 					<h:outputText value="#{p.usuario}"/>
 				</p:column>
 				
-				<p:column headerText="Cotización" style="width:100px;" filterBy="#{p.numdocumento}" filterMatchMode="contains">
+				<p:column headerText="Cotización" style="width:150px;" filterBy="#{p.numdocumento}" filterMatchMode="contains">
 					<div class="flex flex-column gap-1">
 						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(p.numdocumento)}" styleClass="text-gray-900 fw-5"/>
 						<h:outputText value="#{p.fechaemision}" styleClass="text-gray-600">
@@ -336,7 +336,7 @@
 					</div>					
 				</p:column>	
 				
-				<p:column headerText="Estado" style="width:70px;" filterBy="#{p.estado}" filterMatchMode="contains">
+				<p:column headerText="Estado" style="width:100px;" filterBy="#{p.estado}" filterMatchMode="contains">
 					<h:outputText value="#{p.estado}" styleClass="text-gray-900 fw-5">
 					</h:outputText>
 				</p:column>

@@ -20,7 +20,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -55,6 +54,7 @@ import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.servicio.emailcomprobante.EmailCotizacionServicio;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
@@ -145,7 +145,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -220,7 +223,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -233,20 +239,24 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
 	public void switchProforma(String proforma) {
 		comprobanteRender = proforma;
-		System.out.println(proforma);
 	}
 	
 	public StreamedContent getFileResumen() {
 		try {
 			
 			if(proformaList==null || proformaList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -258,7 +268,6 @@ public class CotizacionCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -285,59 +294,45 @@ public class CotizacionCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaVencimiento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getResumen());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEnvioemail()==0?"N":"S");
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalsinimpuestos().add(v.getTotaldescuento()).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotaliva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalice().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalconimpuestos().doubleValue());
 				
 				fila++;
@@ -358,7 +353,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -367,7 +365,9 @@ public class CotizacionCtrl extends BaseCtrl {
 		try {
 			
 			if(proformaList==null || proformaList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"NO existen datos", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -379,7 +379,6 @@ public class CotizacionCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -409,59 +408,45 @@ public class CotizacionCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getNumdocumento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechaVencimiento()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCliente().getRazonsocial());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getResumen());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEnvioemail()==0?"N":"S");
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalsinimpuestos().add(v.getTotaldescuento()).doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotaldescuento().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalsinimpuestos().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotaliva().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalice().doubleValue());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.NUMERIC);
 				cell.setCellValue(v.getTotalconimpuestos().doubleValue());
 				
 				filaDetalle = fila;
@@ -475,47 +460,36 @@ public class CotizacionCtrl extends BaseCtrl {
 					}
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoprincipal():"");
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getProducto()!=null?d.getProducto().getCodigoauxiliar():"");
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.STRING);
 					cell.setCellValue(d.getDescripcion());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getCantidad().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciounitario().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciototalsinimpuesto().add(d.getDescuento()).setScale(2, RoundingMode.HALF_UP).doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getDescuento().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciototalsinimpuesto().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getValoriva().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getValorice().doubleValue());
 					
 					cell = rowCliente.createCell(col++);
-					cell.setCellType(CellType.NUMERIC);
 					cell.setCellValue(d.getPreciototal().doubleValue());
 					
 					filaDetalle++;
@@ -530,27 +504,21 @@ public class CotizacionCtrl extends BaseCtrl {
 							rowCliente = sheet.createRow(filaPago);
 						}
 						cell = rowCliente.createCell(col++);
-						cell.setCellType(CellType.STRING);
 						cell.setCellValue(p.getTipopago().getNombre());
 						
 						cell = rowCliente.createCell(col++);
-						cell.setCellType(CellType.NUMERIC);
 						cell.setCellValue(p.getTotal().doubleValue());
 						
 						cell = rowCliente.createCell(col++);
-						cell.setCellType(CellType.NUMERIC);
 						cell.setCellValue(p.getValorentrega().doubleValue());
 						
 						cell = rowCliente.createCell(col++);
-						cell.setCellType(CellType.NUMERIC);
 						cell.setCellValue(p.getCambio().doubleValue());
 						
 						cell = rowCliente.createCell(col++);
-						cell.setCellType(CellType.STRING);
 						cell.setCellValue(p.getNumerodocumento());
 						
 						cell = rowCliente.createCell(col++);
-						cell.setCellType(CellType.STRING);
 						cell.setCellValue(p.getNombrebanco());
 						
 						filaPago++;
@@ -579,7 +547,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}
@@ -601,7 +572,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -614,7 +588,9 @@ public class CotizacionCtrl extends BaseCtrl {
 		// verifica si ya esxiste el archivo
 		for (FileDto f : emailDto.getFileDtos()) {
 			if(f.getNombre().equals(event.getFile().getFileName())) {
-				AppJsfUtil.addErrorMessage("frmEmailCotizacion", "ERROR", "YA EXISTE EL ARCHIVO : " + event.getFile().getFileName());
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Ya existe el archivo :" + event.getFile().getFileName(), 
+						Message.ERROR);
 				return;
 			}
 		}
@@ -629,11 +605,16 @@ public class CotizacionCtrl extends BaseCtrl {
 	public void enviarEmail() {
 		try {
 			emailCotizacionServicio.enviarCotizacionEmail(AppJsfUtil.getUsuario().getIdusuario(), emailDto, proformaSelected);
-			AppJsfUtil.addInfoMessage("frmEmailCotizacion", "OK", "LOS CORREOS HAN SIDO ENVIADOS CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("OK", 
+					"Los emails han sido enviados correctamente", 
+					Message.OK);
 	        consultar();
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("frmEmailCotizacion", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -694,7 +675,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -712,11 +696,16 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 			cabeceraServicio.actualizar(proformaSelected);
 			consultar();
-			AppJsfUtil.addInfoMessage("frmCotizacionEstado","OK","REGISTRO ACTUALIZADO CORRECTAMENTE.");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+					"Registro actualizado correctamente", 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -729,7 +718,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			consultar();			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -743,7 +735,10 @@ public class CotizacionCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return false;
 	}

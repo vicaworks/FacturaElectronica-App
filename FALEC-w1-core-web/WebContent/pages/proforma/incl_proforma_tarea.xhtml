@@ -8,19 +8,6 @@
 	
 	<style type="text/css">
 		
-		
-		
-		.p-field,
-        	.p-field > label,
-        	.p-field-checkbox, 
-        	.p-field-radiobutton {
-				margin-bottom: 0.15rem !important;
-		}
-		
-		.p-field > small{margin-top: 0px !important;}
-		
-		.calendario .ui-calendar input {padding: 0.3em!important;}
-		
 		.novisible{display:none;}
 		
 		.ui-radiobutton-icon{width: 6rem;}
@@ -33,20 +20,34 @@
 		
 	</style>
 	
-	<p:dialog header="Tarea seguimiento" widgetVar="dlgCotizacionTarea" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo" resizable="true">
+	<p:dialog header="Tarea seguimiento" 
+		widgetVar="dlgCotizacionTarea" 
+		modal="true" 
+		responsive="true" 
+		width="90%"
+		style="max-width:50rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo" 
+		resizable="true">
 		<h:form id="frmCotizacionTarea">
 			
 			<!-- OPCIONES -->
 			
-			<div class="formgroup-inline">
+			<div class="tool-bar mb-2">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton 
-					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{tareaCotCtrl.guardar}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form #{tareaCotCtrl.updateView}"
+					value="Guardar" 
+					icon="fa-regular fa-floppy-disk fs-12" 
+					action="#{tareaCotCtrl.guardar}" 
+					styleClass="fs-12 min-width-100 ui-button-success" 
+					update="@form #{tareaCotCtrl.updateView}"
 					/>
 				
 				<p:commandButton id="cmdListCliCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-100 ui-button-flat" 
-					onclick="PF('dlgCotizacionTarea').hide()" immediate="true"  
+					value="Cerrar" 
+					styleClass="fs-12 min-width-100 ui-button-outlined ui-button-secondary" 
+					onclick="PF('dlgCotizacionTarea').hide()" 
+					immediate="true"  
 					/>
 			
 			</div>
@@ -61,23 +62,23 @@
 			<div class="w-full overflow-auto heightFrmProformaTarea contenedorFormulario mt-2 pr-1">
 				
 				<div class="field grid">			    	
-					<h:outputText value="Proforma" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
+					<h:outputText value="Proforma" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+			    	<div class="col-12 md:col-9">
 						<h:outputText id="t-numproforma" value="#{facEmitidaCtrl.getFormatoNumDocumento(tareaCotCtrl.cotizacionSelected.numdocumento)}"/>
 			    	</div>
 			    </div>
 			    
 			    <div class="field grid">			    	
-					<h:outputText value="Cliente" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
+					<h:outputText value="Cliente" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+			    	<div class="col-12 md:col-9">
 						<h:outputText id="t-cliente" value="#{tareaCotCtrl.cotizacionSelected.cliente.razonsocial}"/>
 			    	</div>
 			    </div>
 			    
 			    
 			    <div class="field grid">			    	
-					<h:outputText value="Resumen" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
+					<h:outputText value="Resumen" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+			    	<div class="col-12 md:col-9">
 						<h:outputText id="t-resumen" value="#{tareaCotCtrl.cotizacionSelected.resumen}"/>
 			    	</div>
 			    </div>
@@ -85,15 +86,15 @@
 			    
 			    
 			    <div class="field grid">			    	
-					<h:outputText value="Etiqueta Tarea" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
+					<h:outputText value="Etiqueta Tarea" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+			    	<div class="col-12 md:col-9">
 			    		<div class="flex">
 			    			<div class="flex flex-grow-1">
 								<p:selectOneMenu id="t-etiqueta"
 									value="#{tareaCotCtrl.tareacabeceraSelected.etiqueta}"
 									converter="omnifaces.SelectItemsConverter"
 									required="false"
-									requiredMessage="REQUERIDO"
+									requiredMessage="Requerido"
 									styleClass="w-full"
 									filter="true" filterMatchMode="contains">
 									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
@@ -106,7 +107,7 @@
 			    			</div>
 			    			<div class="flex flex-grow-0 align-items-center">
 								<p:commandLink id="t-agregartarea" style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}"  disabled="#{tareaCotCtrl.habilitarEtiqueta()}">
-									<i class="fa fa-plus ml-1 mr-2 Fs14"></i>
+									<i class="fa fa-plus ml-1 mr-2 fs-14"></i>
 									<f:setPropertyActionListener value="PROFORMA" target="#{etiquetaCtrl.callModule}"/>
 									<f:setPropertyActionListener value="TAREA_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
 									<f:setPropertyActionListener value="frmCotizacionTarea" target="#{etiquetaCtrl.callForm}"/>
@@ -115,7 +116,7 @@
 									<f:setPropertyActionListener value="#{tareaCotCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
 								</p:commandLink>
 								<p:commandLink id="t-editartarea" style="color:#2f2f2f;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.etiqueta or tareaCotCtrl.habilitarEtiqueta()}">
-									<i class="fa fa-edit Fs14"></i>
+									<i class="fa fa-edit fs-14"></i>
 									<f:setPropertyActionListener value="#{tareaCotCtrl.tareacabeceraSelected.etiqueta}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
 									<f:setPropertyActionListener value="PROFORMA" target="#{etiquetaCtrl.callModule}"/>
 									<f:setPropertyActionListener value="frmCotizacionTarea" target="#{etiquetaCtrl.callForm}"/>
@@ -125,47 +126,47 @@
 								</p:commandLink>			    			
 			    			</div>
 			    		</div>						
-						<p:message for="t-etiqueta" styleClass="block"/>
+						<p:message for="t-etiqueta" styleClass="block m-0 p-0"/>
 			    	</div>
 			    </div>
 			    
 			    <div class="field grid">			    	
-					<h:outputText value="Descripción" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
-					<div class="col-12 md:col-10">
+					<h:outputText value="Descripción" styleClass="col-12 mb-2 md:col-3 md:mb-0 fs-12"/>
+					<div class="col-12 md:col-9">
 						<p:inputTextarea rows="3" id="t-descripcion" value="#{tareaCotCtrl.tareacabeceraSelected.descripcion}" maxlength="1000" styleClass="w-full"/>
 					</div>					
 				</div>
 				<div class="field grid">			    	
-					<h:outputText value="Fecha de Control" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>					
-					<div class="col-12 md:col-10">
+					<h:outputText value="Fecha de Control" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>					
+					<div class="col-12 md:col-9">
 						<p:calendar id="t-fecha" value="#{tareaCotCtrl.tareacabeceraSelected.fechalimite}"
 							pattern="dd/MM/yyyy"
 							locale="es" 
-							requiredMessage="REQUERIDO" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
+							requiredMessage="Requerido" required="true" styleClass="Wid100" placeholder="dd/MM/yyyy">
 						</p:calendar>
-						<p:message for="t-fecha" styleClass="block"/>
+						<p:message for="t-fecha" styleClass="block m-0 p-0"/>
 					</div>
 				</div>			
 				<div class="field grid">			    	
-					<h:outputText value="Prioridad" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-					<div class="col-12 md:col-10">					
+					<h:outputText value="Prioridad" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+					<div class="col-12 md:col-9">					
 						<p:selectOneMenu id="t-prioridad"
 							value="#{tareaCotCtrl.tareacabeceraSelected.prioridad}"
 							required="true"
-							requiredMessage="REQUERIDO"
+							requiredMessage="Requerido"
 							styleClass="w-full">
 							<f:selectItem itemLabel="IMPORTANTE" itemValue="IMPORTANTE"/>
 							<f:selectItem itemLabel="ALTA" itemValue="ALTA"/>
 							<f:selectItem itemLabel="MEDIA" itemValue="MEDIA"/>
 							<f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
 						</p:selectOneMenu>
-						<p:message for="t-prioridad" styleClass="block"/>
+						<p:message for="t-prioridad" styleClass="block m-0 p-0"/>
 					</div>					
 				</div>			
 							
 				<div class="field grid">
-					<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-					<div class="col-12 md:col-10">
+					<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+					<div class="col-12 md:col-9">
 						<p:selectOneRadio id="city2" value="#{tareaCotCtrl.tareacabeceraSelected.estado}" disabled="#{empty tareaCotCtrl.tareacabeceraSelected.idtareacabecera}">
 				            <f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE"/>
 					        <f:selectItem itemLabel="CERRADO" itemValue="CERRADO"/>

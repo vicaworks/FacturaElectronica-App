@@ -17,7 +17,6 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -34,16 +33,18 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.helper.ComprobanteHelper;
 import com.vcw.falecpv.core.modelo.persistencia.Cliente;
+import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
 import com.vcw.falecpv.core.modelo.persistencia.Tareacabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Usuario;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
 import com.vcw.falecpv.core.servicio.CotizacionServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio;
+import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.core.servicio.TareacabeceraServicio;
 import com.vcw.falecpv.core.servicio.UsuarioServicio;
-import com.vcw.falecpv.core.servicio.ParametroGenericoEmpresaServicio.TipoRetornoParametroGenerico;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 import com.vcw.falecpv.web.util.UtilExcel;
 
@@ -115,7 +116,10 @@ public class TareaCotMainCtrl extends BaseCtrl {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 
@@ -135,13 +139,20 @@ public class TareaCotMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
+	}
+	
+	public Establecimiento getEstablecimiento() {
+		return ((CotizacionCtrl)AppJsfUtil.getManagedBean("cotizacionCtrl")).getEstablecimientoMain();
 	}
 	
 	public void consultar() throws DaoException {
 		
-		tareacabeceraServicio.getTareacabeceraDao().actualizarEstadoVencido(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa());
+		tareacabeceraServicio.getTareacabeceraDao().actualizarEstadoVencido(getEstablecimiento().getEmpresa().getIdempresa());
 		
 		AppJsfUtil.limpiarFiltrosDataTable("fomrMain:tarea:pvDosDT");
 		
@@ -194,14 +205,14 @@ public class TareaCotMainCtrl extends BaseCtrl {
 			idClienteList.add(clienteSeleccion.getIdcliente());
 		}else {
 			idClienteList = cabeceraServicio
-					.getClienteByTipoComprobante(establecimientoMain.getEmpresa().getIdempresa(),
+					.getClienteByTipoComprobante(getEstablecimiento().getEmpresa().getIdempresa(),
 							GenTipoDocumentoEnum.COTIZACION)
 					.stream().map(x -> x.getIdcliente()).collect(Collectors.toList());
 		}
 		
 		
-		tareacabeceraList =	tareacabeceraServicio.getTareacabeceraDao().consultarByOpciones(AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
-								establecimientoMain==null?null:establecimientoMain.getIdestablecimiento(), estadoList, prioridadList,
+		tareacabeceraList =	tareacabeceraServicio.getTareacabeceraDao().consultarByOpciones(getEstablecimiento().getEmpresa().getIdempresa(),
+								establecimientoMain==null?null:getEstablecimiento().getIdestablecimiento(), estadoList, prioridadList,
 								usuarioSeleccion == null ? null : usuarioSeleccion.getIdusuario(), idClienteList, numCotizacion,
 								GenTipoDocumentoEnum.COTIZACION);
 		
@@ -224,7 +235,9 @@ public class TareaCotMainCtrl extends BaseCtrl {
 		try {
 			
 			if(tareacabeceraList==null || tareacabeceraList.isEmpty()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTEN DATOS.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos.", 
+						Message.ERROR);
 				return null;
 			}
 			
@@ -236,7 +249,6 @@ public class TareaCotMainCtrl extends BaseCtrl {
 			File template = new File(path);
 			FileUtils.copyFile(template, tempXls);
 			
-			@SuppressWarnings("resource")
 			XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(tempXls));
 			XSSFSheet sheet = wb.getSheetAt(0);
 			
@@ -254,54 +266,42 @@ public class TareaCotMainCtrl extends BaseCtrl {
 				rowCliente = sheet.createRow(fila);
 				
 				Cell cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getFechalimite()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getPrioridad());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getUsuario().getNombrepantalla());
 				
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getEtiqueta().getEtiqueta());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getDescripcion());
 				
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(TextoUtil.leftPadTexto(v.getCabecera().getEstablecimiento().getCodigoestablecimiento(),3,"0"));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(ComprobanteHelper.formatNumDocumento(v.getCabecera().getNumdocumento()));
 				
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(FechaUtil.formatoFecha(v.getCabecera().getFechaemision()));
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCabecera().getEstado());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCabecera().getCliente().getIdentificacion());
 				
 				cell = rowCliente.createCell(col++);
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(v.getCabecera().getCliente().getRazonsocial());
 				
 				fila++;
@@ -322,7 +322,10 @@ public class TareaCotMainCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 		return null;
 	}

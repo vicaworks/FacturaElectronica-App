@@ -14,19 +14,34 @@
 		
 	</style>
 	
-	<p:dialog header="Estado cotización" widgetVar="dlgCotizacionEstado" modal="true" responsive="true" width="60%" closeOnEscape="true" styleClass="modalResponsivo" resizable="true">
+	<p:dialog header="Estado cotización" 
+		widgetVar="dlgCotizacionEstado" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:40rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo" 
+		resizable="true">
+		
 		<h:form id="frmCotizacionEstado">
 			
 			<!-- OPCIONES -->
-			<div class="formgroup-inline">
+			<div class="tool-bar mb-2">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton 
-					value="GUARDAR" icon="fa fa-floppy-o" 
-					action="#{cotizacionCtrl.guardar}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form :formMain"
+					value="Guardar" icon="fa-regular fa-floppy-disk fs-12" 
+					action="#{cotizacionCtrl.guardar}" 
+					styleClass="fs-12 min-width-80 ui-button-success" 
+					update="@form :formMain"
 					/>
 				
 				<p:commandButton id="cmdListCliCerrar"
-					value="CERRAR" icon="fa fa-close" styleClass="ui-button-flat" 
-					onclick="PF('dlgCotizacionEstado').hide()" immediate="true"  
+					value="Cerrar" 
+					icon="fa fa-close fs-12" 
+					styleClass="ui-button-secondary ui-button-outlined fs-12 min-width-80" 
+					onclick="PF('dlgCotizacionEstado').hide()" 
+					immediate="true"  
 					/>			
 			</div>
 			
@@ -38,101 +53,101 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightFrmProformaEstado contenedorFormulario mt-2 pr-1">
+			<div class="w-full overflow-auto heightFrmProformaEstado contenedorFormulario mt-2">
+				<div style="width: 98%!important;">
 				
-				<div class="field grid">			    	
-					<h:outputText value="Proforma" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(cotizacionCtrl.proformaSelected.numdocumento)}" styleClass="mt-1"/>
-			    	</div>
-			    </div>
-			    
-			    <div class="field grid">			    	
-					<h:outputText value="Fecha" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<h:outputText id="t-fechaforma2" value="#{cotizacionCtrl.proformaSelected.fechaemision}">
-							<f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
-			    	</div>
-			    </div>
-			    
-			    <div class="field grid">			    	
-					<h:outputText value="Cliente" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<h:outputText id="t-cliente2" value="#{cotizacionCtrl.proformaSelected.cliente.razonsocial}"/>
-			    	</div>
-			    </div>
-			    
-			    <div class="field grid">			    	
-					<h:outputText value="Resumen" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">						
-						<h:outputText id="t-resumen2" value="#{cotizacionCtrl.proformaSelected.resumen}"/>
-			    	</div>
-			    </div>
+					<div class="field grid">			    	
+						<h:outputText value="Proforma" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+				    	<div class="col-12 md:col-9">
+							<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(cotizacionCtrl.proformaSelected.numdocumento)}" styleClass="mt-1"/>
+				    	</div>
+				    </div>
+				    
+				    <div class="field grid">			    	
+						<h:outputText value="Fecha" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+				    	<div class="col-12 md:col-9">
+							<h:outputText id="t-fechaforma2" value="#{cotizacionCtrl.proformaSelected.fechaemision}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+				    	</div>
+				    </div>
+				    
+				    <div class="field grid">			    	
+						<h:outputText value="Cliente" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+				    	<div class="col-12 md:col-9">
+							<h:outputText id="t-cliente2" value="#{cotizacionCtrl.proformaSelected.cliente.razonsocial}"/>
+				    	</div>
+				    </div>
+				    
+				    <div class="field grid">			    	
+						<h:outputText value="Resumen" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+				    	<div class="col-12 md:col-9">						
+							<h:outputText id="t-resumen2" value="#{cotizacionCtrl.proformaSelected.resumen}"/>
+				    	</div>
+				    </div>
+					
+					
+					<div class="field grid">			    	
+						<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12"/>
+				    	<div class="col-12 md:col-9">
+							<p:selectOneMenu id="somCotEstado2"
+									value="#{cotizacionCtrl.estadoProforma}"
+									required="false"
+									requiredMessage="Requerido"
+									styleClass="w-full">
+								<f:selectItem itemLabel="ARCHIVADO" itemValue="ARCHIVADO"/>
+								<f:selectItem itemLabel="AUTORIZACIÓN" itemValue="AUTORIZACION"/>
+								<f:selectItem itemLabel="FACTURADO" itemValue="FACTURADO"/>	
+								<f:selectItem itemLabel="SEGUIMIENTO" itemValue="SEGUIMIENTO"/>
+								<p:ajax event="valueChange" update="@this @form"/>
+							</p:selectOneMenu>
+				    	</div>
+				    </div>
+				    
+				    <div class="field grid">			    	
+						<h:outputText value="Etiqueta" styleClass="col-12 mb-2 md:col-3 md:mb-0 text-gray-900 fw-5 fs-12" style="#{cotizacionCtrl.estadoProforma!='ARCHIVADO'?'display:none;':''}"/>
+				    	<div class="col-12 md:col-9">
+				    		<div class="flex">
+				    			<div class="flex flex-grow-1 mr-1">
+									<p:selectOneMenu id="t-etiqueta-estado"
+										value="#{cotizacionCtrl.proformaSelected.etiqueta}"
+										converter="omnifaces.SelectItemsConverter"
+										required="true"
+										requiredMessage="Requerido"
+										filter="true" filterMatchMode="contains"
+										rendered="#{cotizacionCtrl.estadoProforma=='ARCHIVADO'}">
+										<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
+												itemValue="#{null}" value="#{null}" noSelectionOption="true" />
 				
-				
-				<div class="field grid">			    	
-					<h:outputText value="Estado" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido"/>
-			    	<div class="col-12 md:col-10">
-						<p:selectOneMenu id="somCotEstado2"
-								value="#{cotizacionCtrl.estadoProforma}"
-								required="false"
-								requiredMessage="REQUERIDO"
-								styleClass="w-full">
-							<f:selectItem itemLabel="ARCHIVADO" itemValue="ARCHIVADO"/>
-							<f:selectItem itemLabel="AUTORIZACIÓN" itemValue="AUTORIZACION"/>
-							<f:selectItem itemLabel="FACTURADO" itemValue="FACTURADO"/>	
-							<f:selectItem itemLabel="SEGUIMIENTO" itemValue="SEGUIMIENTO"/>
-							<p:ajax event="valueChange" update="@this @form"/>
-						</p:selectOneMenu>
-			    	</div>
-			    </div>
-			    
-			    <div class="field grid">			    	
-					<h:outputText value="Etiqueta" styleClass="col-12 mb-2 md:col-2 md:mb-0 requerido" style="#{cotizacionCtrl.estadoProforma!='ARCHIVADO'?'display:none;':''}"/>
-			    	<div class="col-12 md:col-10">
-			    		<div class="flex">
-			    			<div class="flex flex-grow-1 mr-1">
-								<p:selectOneMenu id="t-etiqueta-estado"
-									value="#{cotizacionCtrl.proformaSelected.etiqueta}"
-									converter="omnifaces.SelectItemsConverter"
-									required="true"
-									requiredMessage="REQUERIDO"
-									styleClass="w-full"
-									filter="true" filterMatchMode="contains"
-									rendered="#{cotizacionCtrl.estadoProforma=='ARCHIVADO'}">
-									<f:selectItem itemLabel="#{msg['label.seleccionar']} ..."
-											itemValue="#{null}" value="#{null}" noSelectionOption="true" />
-			
-									<f:selectItems value="#{cotizacionCtrl.etiquetaList}" var="e"
-										itemLabel="#{e.etiqueta}" itemValue="#{e}" />
-									<p:ajax event="valueChange" update="@this @form:t-editaretiqueta-estado"/>	
-								</p:selectOneMenu>
-			    			</div>
-			    			<div class="flex flex-grow-0 mx-2">
-			    				<p:commandLink style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}" rendered="#{cotizacionCtrl.estadoProforma=='ARCHIVADO'}" disabled="#{cotizacionCtrl.habilitarEtiqueta()}">
-									<i class="fa fa-plus p-ml-1 p-mr-2"></i>
-									<f:setPropertyActionListener value="PROFORMA_LISTA" target="#{etiquetaCtrl.callModule}"/>
-									<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
-									<f:setPropertyActionListener value="frmCotizacionEstado" target="#{etiquetaCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":frmCotizacionEstado:t-etiqueta-estado" target="#{etiquetaCtrl.updateView}"/>
-									<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
-								</p:commandLink>
-								<p:commandLink id="t-editaretiqueta-estado" style="color:#2f2f2f;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" disabled="#{empty cotizacionCtrl.proformaSelected.etiqueta or cotizacionCtrl.habilitarEtiqueta()}" rendered="#{cotizacionCtrl.estadoProforma=='ARCHIVADO'}">
-									<i class="fa fa-edit"></i>
-									<f:setPropertyActionListener value="#{cotizacionCtrl.etiquetaSelected}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
-									<f:setPropertyActionListener value="PROFORMA_LISTA" target="#{etiquetaCtrl.callModule}"/>
-									<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
-									<f:setPropertyActionListener value="frmCotizacionEstado" target="#{etiquetaCtrl.callForm}"/>
-									<f:setPropertyActionListener value=":frmCotizacionEstado:t-etiqueta-estado" target="#{etiquetaCtrl.updateView}"/>
-									<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
-								</p:commandLink>
-			    			</div>
-			    		</div>
-						<p:message for="t-etiqueta-estado" styleClass="block"/>
-			    	</div>
-			    </div>
-							
+										<f:selectItems value="#{cotizacionCtrl.etiquetaList}" var="e"
+											itemLabel="#{e.etiqueta}" itemValue="#{e}" />
+										<p:ajax event="valueChange" update="@this @form:t-editaretiqueta-estado"/>	
+									</p:selectOneMenu>
+				    			</div>
+				    			<div class="flex flex-grow-0 mx-2">
+				    				<p:commandLink style="color:#2f2f2f;" process="@this" action="#{etiquetaCtrl.agregarEtiqueta}" rendered="#{cotizacionCtrl.estadoProforma=='ARCHIVADO'}" disabled="#{cotizacionCtrl.habilitarEtiqueta()}">
+										<i class="fa fa-plus p-ml-1 p-mr-2"></i>
+										<f:setPropertyActionListener value="PROFORMA_LISTA" target="#{etiquetaCtrl.callModule}"/>
+										<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
+										<f:setPropertyActionListener value="frmCotizacionEstado" target="#{etiquetaCtrl.callForm}"/>
+										<f:setPropertyActionListener value=":frmCotizacionEstado:t-etiqueta-estado" target="#{etiquetaCtrl.updateView}"/>
+										<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
+									</p:commandLink>
+									<p:commandLink id="t-editaretiqueta-estado" style="color:#2f2f2f;" process="@this" oncomplete="PF('dlgCotizacionTareaEtqueta').show();" update="frmCotizacionTareaEtiqueta" disabled="#{empty cotizacionCtrl.proformaSelected.etiqueta or cotizacionCtrl.habilitarEtiqueta()}" rendered="#{cotizacionCtrl.estadoProforma=='ARCHIVADO'}">
+										<i class="fa fa-edit"></i>
+										<f:setPropertyActionListener value="#{cotizacionCtrl.etiquetaSelected}" target="#{etiquetaCtrl.tareaetiquetaSelected}"/>
+										<f:setPropertyActionListener value="PROFORMA_LISTA" target="#{etiquetaCtrl.callModule}"/>
+										<f:setPropertyActionListener value="ANULAR_COTIZACION" target="#{etiquetaCtrl.etiquetaModulo}"/>
+										<f:setPropertyActionListener value="frmCotizacionEstado" target="#{etiquetaCtrl.callForm}"/>
+										<f:setPropertyActionListener value=":frmCotizacionEstado:t-etiqueta-estado" target="#{etiquetaCtrl.updateView}"/>
+										<f:setPropertyActionListener value="#{cotizacionCtrl.establecimientoMain}" target="#{etiquetaCtrl.establecimientoMain}"/>
+									</p:commandLink>
+				    			</div>
+				    		</div>
+							<p:message for="t-etiqueta-estado" styleClass="block m-0 p-0"/>
+				    	</div>
+				    </div>
+				</div>			
 			</div>
 			
 		</h:form>

@@ -7,18 +7,7 @@
 				xmlns:of="http://omnifaces.org/functions">
 	
 	<style type="text/css">
-		
-		
-		
-		.p-field,
-        	.p-field > label,
-        	.p-field-checkbox, 
-        	.p-field-radiobutton {
-				margin-bottom: 0.15rem !important;
-		}
-		
-		.p-field > small{margin-top: 0px !important;}
-		
+	
 		@media screen and (max-height: 1024px){
 			.heightFrmEmailProforma {
 				max-height: 800px;
@@ -27,31 +16,33 @@
 		
 	</style>
 	
-	<p:dialog header="Email cotización" widgetVar="dlgEmailCotizacion" modal="true" responsive="true" width="90%" closeOnEscape="true" styleClass="modalResponsivo">
+	<p:dialog header="Email cotización" 
+		widgetVar="dlgEmailCotizacion" 
+		modal="true" 
+		responsive="true" 
+		width="99%"
+		style="max-width:80rem;" 
+		closeOnEscape="true" 
+		styleClass="modalResponsivo">
 		
 		<h:form id="frmEmailCotizacion">
 			
 			<!-- OPCIONES -->
-			<div class="formgroup-inline">
+			<div class="tool-bar">
+				<i class="fa-solid fa-ellipsis-vertical"></i>
 				<p:commandButton 
-					value="ENVIAR" icon="fa fa-envelope" 
-					action="#{cotizacionCtrl.enviarEmail}" styleClass="mr-1 min-width-100 ui-button-outlined" update="@form :formMain:inicio:pvUnoDT"
+					value="Enviar" icon="fa fa-envelope fs-12" 
+					action="#{cotizacionCtrl.enviarEmail}" 
+					styleClass="fs-12 min-width-100 ui-button-success" 
+					update="@form :formMain:inicio:pvUnoDT"
 					/>
 				
 				<p:commandButton id="cmdListCliCerrar"
-					value="CERRAR" icon="fa fa-sign-out" styleClass="min-width-100 ui-button-flat" 
+					value="Cerrar" 
+					styleClass="min-width-100 ui-button-outlined ui-button-secondary fs-12" 
 					onclick="PF('dlgEmailCotizacion').hide()" immediate="true"  
 					/>
 			
-			</div>
-			
-			<div class="p-grid toolBarPopUp">
-				
-				<div class="p-col-12 p-md-6" style="text-align:left;">	
-						
-					
-				</div>	
-				
 			</div>
 			
 			<p:messages rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="frmEmailCotizacion" id="msgFrmEmailCotizacion"
@@ -61,18 +52,36 @@
 			
 			<!--  wraper del formulario para responsive -->
 			
-			<div class="w-full overflow-auto heightFrmEmailProforma contenedorFormulario mt-2 pr-1">
+			<div class="w-full overflow-auto heightFrmEmailProforma contenedorFormulario mt-2 pr-1 ui-fluid fs-12">
 				
 				<div class="grid align-items-top justify-content-center pl-1" style="width: 99.5%!important;">
 					
 					
-					<div class="col-12 lg:col-8">
+					<div class="col-12 lg:col-6">
 						
-						<div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Datos email</div>
-						<div class="field">
-							<h:outputText value="#{facEmitidaCtrl.getFormatoNumDocumento(cotizacionCtrl.proformaSelected.numdocumento)}" styleClass="text-gray-700 font-medium Fs14"/>
-	            			<h:outputText id="cliente" value="#{cotizacionCtrl.proformaSelected.cliente.razonsocial}" styleClass="block"/>
+						<div class="flex justify-content-between align-items-baseline mb-1">
+							<span class="fs-14 text-gray-800 fw-5">#{facEmitidaCtrl.getFormatoNumDocumento(cotizacionCtrl.proformaSelected.numdocumento)}</span>
+							<h:outputText value="#{cotizacionCtrl.proformaSelected.fechaemision}" styleClass="fs-14">												
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
 						</div>
+						
+						<span class="block fs-16 text-gray-800 fw-5 mb-1">#{cotizacionCtrl.proformaSelected.establecimiento.nombrecomercial}</span>
+						<span class="block fs-12 text-gray-900 mb-2 divisor"></span>
+						<div class="divisor">
+							<h:outputText value="#{cotizacionCtrl.proformaSelected.cliente.razonsocial}" styleClass="fs-16 text-primary-600 font-semibold block"/>
+							<span class="fs-14 text-gray-800 fw-5 block">#{enviarDocCtrl.cabeceraSelected.cliente.identificacion}</span>
+							<h:outputText value="#{cotizacionCtrl.proformaSelected.cliente.direccion}" styleClass="block text-gray-800"/>
+							<span class="fs-11 block flex gap-2">
+								<i class="pi pi-phone"></i>
+								<h:outputText value="#{cotizacionCtrl.proformaSelected.cliente.telefono!=null?cotizacionCtrl.proformaSelected.cliente.telefono:'-'}" />
+							</span>
+							<span class="fs-11 block flex gap-2">
+								<i class="fa-regular fa-envelope fs-11"></i>
+								<h:outputText value="#{cotizacionCtrl.proformaSelected.cliente.correoelectronico!=null?cotizacionCtrl.proformaSelected.cliente.correoelectronico:'-'}" />
+							</span>
+						</div>
+						
 						<div class="field">
 							<label for="to" class="text-gray-700 font-medium">Destinatarios To</label>
 	            			<p:inputText id="to" value="#{cotizacionCtrl.emailDto.toString}" required="true" requiredMessage="REQUERIDO" styleClass="w-full">
@@ -82,63 +91,84 @@
 	            			<small>Varios correos separar con coma (,)</small>
 						</div>
 						<div class="field">
-							<label for="cc" class="text-gray-700">Con copia Cc </label>
+							<label class="text-gray-800 fw-5">Destinatarios</label>
 	            			<p:inputText id="cc" value="#{cotizacionCtrl.emailDto.ccString}" styleClass="w-full">
 	            				<f:validator validatorId="emailValidator"/>
 	            			</p:inputText>
-	            			<p:message for="cc" styleClass="block"/>
-	            			<small>Varios correos separar con coma (,)</small>
+	            			<small class="fs-10 text-gray-700">Varios correos separar con coma (,)</small>
+	            			<p:message for="cc" styleClass="block m-0 p-0"/>
 						</div>
 						<div class="field">
-							<label for="subject" class="text-gray-700 font-medium">Asunto</label>
+							<label class="text-gray-800 fw-5">Asunto</label>
 	            			<p:inputText id="subject" value="#{cotizacionCtrl.emailDto.asunto}" required="true" requiredMessage="REQUERIDO" styleClass="w-full"></p:inputText> 
-	            			<p:message for="subject" styleClass="block"/>
+	            			<p:message for="subject" styleClass="block m-0 p-0"/>
 						</div>
-						<div class="field">
-							<p:textEditor secure="false" widgetVar="editor1" value="#{cotizacionCtrl.emailDto.contenido}" height="200"  allowFormatting="true" allowBlocks="true" allowImages="true" allowLinks="true" allowStyles="true" />
-						</div>
-					
-					</div>					
-					
-					<div class="col-12 lg:col-4">
-						<div class="w-full titulo"><i class="fa fa-check-circle Fs16"></i> Archivos adjuntos</div>
 						
-						<div class="field-checkbox">
-	            			<p:selectBooleanCheckbox id="cotizacionPdf" class="p-mr-2" value="#{cotizacionCtrl.emailDto.seleccion}"/>
-							<label for="cotizacionPdf" >Adjuntar Cotización (pdf)</label>
-						</div>
-						<div class="field mt-2">
-							<p:fileUpload id="fileUploadComponent"
-									listener="#{cotizacionCtrl.handleUpload}"
-									label="Agregar Archivo" 
-									sizeLimit="50485760"
-									invalidSizeMessage="#{msg['file.size']} 4MB" 
-									mode="advanced" 
-									dragDropSupport="true" 
-									auto="true"
-									update="@form:pnlAdjuntos"
-									previewWidth="0">
-								</p:fileUpload>
-						</div>
 						<div class="field">
-							<p:panel header="Adjuntos" id="pnlAdjuntos">
+							<label class="text-gray-900">Adjuntos</label>
+						</div>
+						<div class="grid ">
+							<div class="col">
+								<div class="class-adjuntos flex my-1 gap-2 align-items-end">
+									<i class="fa fa-ellipsis-v fs-14"/>
+									<p:fileUpload id="fileUploadComponent"
+										listener="#{cotizacionCtrl.handleUpload}"
+										label="Agregar Archivo" 
+										sizeLimit="50485760"
+										invalidSizeMessage="#{msg['file.size']} 4MB" 
+										mode="advanced" 
+										dragDropSupport="true" 
+										auto="true"
+										update="@form:pnlAdjuntos"
+										previewWidth="0"
+										chooseButtonStyleClass="ui-button-outlined ui-button-success fs-11"
+										multiple="true">
+									</p:fileUpload>
+								</div>
+							</div>
+							<div class="col">
+								<div class="field-checkbox h-full">
+			            			<p:selectBooleanCheckbox id="cotizacionPdf" class="p-mr-2" value="#{cotizacionCtrl.emailDto.seleccion}"/>
+									<label for="cotizacionPdf" >Adjuntar Cotización (pdf)</label>
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="field">
+							<p:panel header="Adjuntos" id="pnlAdjuntos" style="min-height: 20px;max-height: 200px;">
 						        <div class="grid m-0 align-items-start">
 						        	<p:repeat var="f" value="#{cotizacionCtrl.emailDto.fileDtos}">
 						        		
-						        		<div class="col-2 TexAlCenter" >
-						        			<p:commandLink action="#{cotizacionCtrl.eliminarAdjuntos(f.nombre)}" process="@this :frmEmailCotizacion:pnlAdjuntos" update=":frmEmailCotizacion:pnlAdjuntos @form:msgFrmEmailCotizacion">
-						        				<i class="fa fa-trash-o Fs14" style="color:#252529;"></i>
-						        			</p:commandLink>
-						        		</div>
-						        		
-						        		<div class="col-10" >
-						        			<h:outputText value="#{f.nombre}" />
-						        		</div>
+						        		<div class="col-12">
+											<div class="flex gap-2">
+												<p:commandLink  action="#{cotizacionCtrl.eliminarAdjuntos(f.nombre)}" 
+													immediate="true" 
+													process="@this :frmEmailCotizacion:pnlAdjuntos" 
+													update=":frmEmailCotizacion:pnlAdjuntos @form:msgFrmEmailCotizacion">
+													<i class="fa-regular fa-trash-can fs-16" style="color:#2f2f2f;"></i>
+													<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+												</p:commandLink>
+												<div class="flex-1">
+													<p:inputText value="#{f.nombre}" required="true" requiredMessage="Requerido" readonly="true"/>
+												</div>
+											</div>
+										</div>
 						        		
 						        	</p:repeat>
 						        </div>
 						    </p:panel>
 						</div>
+						
+					
+					</div>					
+					
+					<div class="col-12 lg:col-6">
+					
+						<div class="field" id="idEmailEditor">
+							<p:textEditor secure="false" widgetVar="editor1" value="#{cotizacionCtrl.emailDto.contenido}" height="255"  allowFormatting="true" allowBlocks="true" allowImages="true" allowLinks="true" allowStyles="true" />
+						</div>
+						
 					</div>
 				
 				</div>
