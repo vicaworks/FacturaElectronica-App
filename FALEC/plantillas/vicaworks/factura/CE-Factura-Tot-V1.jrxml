@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CR-Factura-Tot-V1" pageWidth="210" pageHeight="842" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="089e1cb1-5641-40fa-804a-65ec9d81746c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="VALOR_TOTAL" class="com.vcw.falecpv.core.modelo.xml.XmlTotalComprobante"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigoSri" class="java.lang.String">
+		<fieldDescription><![CDATA[codigoSri]]></fieldDescription>
+	</field>
+	<field name="iva" class="com.vcw.falecpv.core.modelo.persistencia.Iva">
+		<fieldDescription><![CDATA[iva]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<field name="label" class="java.lang.String">
+		<fieldDescription><![CDATA[label]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="0" width="138" height="16" forecolor="#403E3E" uuid="2c2e1420-8147-46e9-8c27-5b16978447af">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="false"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label}.equals("VALOR TOTAL")?"":$F{label}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="138" y="0" width="72" height="16" forecolor="#403E3E" uuid="10a876fd-1f9d-4925-9e13-24c85bc33db4">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label}.equals("VALOR TOTAL")?"":$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="16">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement mode="Transparent" x="0" y="0" width="138" height="16" backcolor="#D9D2D2" uuid="cc6d5f3f-fe83-4d3d-b0e3-08f2bbc04d66">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VALOR_TOTAL}.getLabel()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="138" y="0" width="72" height="16" uuid="4688ce3d-4bcc-4390-99c6-4b9cc13a91c0">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#4F4D4D"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#4F4D4D"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VALOR_TOTAL}.getValor()]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
