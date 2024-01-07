@@ -61,6 +61,8 @@ public class FactMainCtrl extends BaseCtrl {
 	private String separadorDecimal;
 	private String criterioBusqueda;
 	
+	private String comprobanteRender = "PUNTO_VENTA";
+	
 	/**
 	 * 
 	 */
@@ -536,6 +538,10 @@ public class FactMainCtrl extends BaseCtrl {
 		}
 	}
 	
+	public void switchPuntoVenta(String proforma) {
+		comprobanteRender = proforma;
+	}
+	
 	/**
 	 * @return the productoServicio
 	 */
@@ -702,6 +708,20 @@ public class FactMainCtrl extends BaseCtrl {
 	 */
 	public void setCriterioBusqueda(String criterioBusqueda) {
 		this.criterioBusqueda = criterioBusqueda;
+	}
+
+	/**
+	 * @return the comprobanteRender
+	 */
+	public String getComprobanteRender() {
+		return comprobanteRender;
+	}
+
+	/**
+	 * @param comprobanteRender the comprobanteRender to set
+	 */
+	public void setComprobanteRender(String comprobanteRender) {
+		this.comprobanteRender = comprobanteRender;
 	}
 
 }

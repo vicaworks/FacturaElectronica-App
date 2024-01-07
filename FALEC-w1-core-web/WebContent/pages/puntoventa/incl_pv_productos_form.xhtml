@@ -66,7 +66,7 @@
     </style>
 	
 	<!-- consulta los productos al precionar return keycode 13 -->
-	<p:remoteCommand name="buscarProducto"  action="#{factMainCtrl.buscar()}" process="@this :formMain:intCriterioBusqueda" update=":formMain:msgFormMain :formMain:productoDT" partialSubmit="true"/>
+	<p:remoteCommand name="buscarProducto"  action="#{factMainCtrl.buscar()}" process="@this :formMain:puntoVenta:intCriterioBusqueda" update=":formMain:msgFormMain :formMain:puntoVenta:productoDT" partialSubmit="true"/>
 	
 	<div class="card card-w-title">
 		
@@ -91,7 +91,7 @@
 						<div class="p-col-12 p-md-4">
 							<p:commandButton id="cmdConsultarProducto"
 							value="CONSULTAR" icon="fa fa-search" 
-							action="#{factMainCtrl.buscar()}" styleClass="secondary-button Wid100" update=":formMain:msgFormMain :formMain:outProductos" process="@this :formMain:outProductos"/>
+							action="#{factMainCtrl.buscar()}" styleClass="secondary-button Wid100" update=":formMain:msgFormMain :formMain:puntoVenta:outProductos" process="@this :formMain:puntoVenta:outProductos"/>
 						</div>
 					</div>
 					
@@ -104,7 +104,7 @@
 						layout="grid" paginator="true" paginatorPosition="bottom"
 						id="productoDT" rows="12">
 	
-							<p:commandLink action="#{factMainCtrl.agregarProducto()}" update=":formMain:pvDetalleDT :formMain:msgFormMain :formMain:oupTotales :formMain:oupPrecios :formMain:oupCalMenuDerecha" process="@this :formMain:productoDT">
+							<p:commandLink action="#{factMainCtrl.agregarProducto()}" update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios :formMain:puntoVenta:oupCalMenuDerecha" process="@this :formMain:puntoVenta:productoDT">
 								<f:setPropertyActionListener value="#{p}" target="#{factMainCtrl.productoSelected}"/>
 								<div class="pricing-box">
 								

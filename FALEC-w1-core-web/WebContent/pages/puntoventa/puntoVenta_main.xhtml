@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+				xmlns:of="http://omnifaces.org/functions"
+				xmlns:pe="http://primefaces.org/ui/extensions">
+    
+      <style type="text/css">
+		
+		.ui-calendar .ui-inputfield{
+				width: 100% !important;
+		}
+		
+		.cardTitle{
+			margin: 0px 0px 5px 0px !important;
+		}
+		
+		@media (max-width: 896px) {
+			.breadCrumbDisplay {
+		        display: none;
+		    }
+		}
+	
+      </style>
+	
+	<div class="grid">
+	    		
+   		<!-- Datos de la factura -->
+   		<div class="col-12 md:col-7 xl:col-4">
+			
+			<!-- detalle de la factura -->	    		
+   			<ui:include src="incl_pv_detalle_form.xhtml" />
+   		
+   		</div>
+   		
+   		<!-- Lista de productos -->
+   		<div class="col-12 md:col-5 xl:col-8">
+   		
+   			<!-- calculadora, producto -->
+   			<ui:include src="incl_pv_productos_form.xhtml" />
+   		
+   		</div>
+   	
+   	</div>	
+
+</ui:composition>
