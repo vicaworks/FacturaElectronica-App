@@ -24,7 +24,11 @@
 		}
 	
       </style>
-	
+	<script >
+	function scrollToBottom() {
+	    $('.pvDetalleDT .ui-datatable-scrollable-body').scrollTop(100000)
+	}
+	</script>
 	<div class="grid">
 	    		
    		<!-- Datos de la factura -->
@@ -42,6 +46,8 @@
    			<ui:include src="incl_pv_productos_form.xhtml" />
    		
    		</div>
+   		
+   		
    	
    	</div>	
 

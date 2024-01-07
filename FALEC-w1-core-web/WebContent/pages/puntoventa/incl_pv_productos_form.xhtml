@@ -8,149 +8,208 @@
 	
     <style type="text/css">
     	
+    	
+    	body .ui-dataview .ui-dataview-header {display: none;}
     	/* Display Productos */
     	
     	.pricing-box{
-    		background-color: #ffffff;
-			-moz-border-radius: 4px;
-			-webkit-border-radius: 4px;
+    		background-color: #ffffff;			
 			border-radius: 4px;
-			border-top: 12px solid #0772b3;
-			
+			border: 1px solid #d9d9d9;
+			width: 100%;
+			height: 30rem;
+			padding: 1rem;
+			text-decoration: none;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+    	}
+    	.pricing-box:hover{
+    		background-color: #eaeff3;
     	}
     	
-    	.pricing-box .pricing-box-header {
-			padding: 2px;
-			text-align: center;
-			border: 2px solid #ebebef;
-			border-top: 0;
-			border-bottom: 0;
+    	.pricing-box:hover .pricing-box__header {
+    		font-weight:bold!important;
+    	}
+    	
+    	
+    	.pricing-box .pricing-box__header {
+			flex-grow: 0;
+			height: 6rem;
+			max-height: 10rem;
+			font-size: 13px;
+			overflow: hidden;
+			display: block;
+			border: none;
+			padding: 0
 		}
 		
-		.pricing-box .pricing-box-content {
-			padding: 0 5px 5px 5px;
-			position: relative;
-			min-height: 205px;
-			-moz-border-radius: 2px;
-			-webkit-border-radius: 2px;
-			border-radius: 2px;
-			border: 2px solid #ebebef;
-			border-top: 0;
-			text-align: center;
-			color: #8b8b90;
-			/* min-height: 190px; */
+		.pricing-box .pricing-box__content {
+			flex-grow: 0;
+			height: 18rem;
+			max-height: 18rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 		
-		.pricing-box .pricing-box-header .precio,
-		.pricing-box .pricing-box-content p {
-			font-size: 12px;
-			font-weight: 500;
-			color: #8b8b90;
-			padding: 0 0 5px 0;
-			margin: 0;
-			color:gray;
+		.pricing-box .pricing-box__content--image {
+			
 		}
 		
-		.pricing-box .pricing-box-header h2 {
-			color: #252529;
-			font-size: 20px;
-			font-weight: 500;
-			margin: 0 0 0px 0;
+		.pricing-box .pricing-box__content--icon {
+		
 		}
 		
-		.divProductos{
-			min-height: 20vh !important;
-			height: calc(100vh - 460px);
+		.pricing-box .pricing-box__precio--grid {
+			flex-grow: 0;
+			height: 4rem;
+			max-height: 4rem;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			grid-template-rows: repeat(2, 1fr);
+			grid-column-gap: 0px;
+			grid-row-gap: 0px;
+			align-items: center;
+			
 		}
+		
+		
+		.pricing-box .pricing-box__precio-principal{
+			grid-column: 1 / 3;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		.pricing-box .pricing-box__precio{
+			display: flex;
+			gap:0.5rem;
+			justify-content: flex-end;
+			align-items: baseline;
+		}
+		
+		.pricing-box .pricing-box__footer {
+			flex-grow: 0;
+			height: 2rem;
+			max-height: 2rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: stretch;
+		}
+		.divisor{}
+		.divisor::before {
+		  position: absolute;
+	        content: '';
+	        border-bottom: 1px solid #d9d9d9;
+	        bottom: 0;
+	        width: 80%;
+	        margin: 0 auto;
+		}
+		
     	
     </style>
 	
 	<!-- consulta los productos al precionar return keycode 13 -->
-	<p:remoteCommand name="buscarProducto"  action="#{factMainCtrl.buscar()}" process="@this :formMain:puntoVenta:intCriterioBusqueda" update=":formMain:msgFormMain :formMain:puntoVenta:productoDT" partialSubmit="true"/>
+	<p:remoteCommand name="buscarProducto"  
+		action="#{factMainCtrl.buscar()}" 
+		process="@this :formMain:puntoVenta:intCriterioBusqueda" 
+		update=":formMain:msgFormMain :formMain:puntoVenta:productoDT" 
+		partialSubmit="true"/>
 	
-	<div class="card card-w-title">
+	<div class="card">
 		
-		<div class="p-grid">
+		<div class="buscar-producto flex gap-1 mb-1">
+			<p:commandButton id="cmdConsultarProducto"
+				value="Buscar" icon="fs-12 fa fa-search" 
+				action="#{factMainCtrl.buscar()}" 
+				styleClass="flex-0 ui-button-outlines min-width-80 fs-14" 
+				update=":formMain:msgFormMain :formMain:puntoVenta:outProductos" 
+				process="@this :formMain:puntoVenta:outProductos"/>
 				
-			<div class="p-col-12">
-				
-				<p:outputPanel id="outProductos">
-					<!-- <h1 class="cardTitle">Productos</h1> -->
-					<div class="EmptyBox10"/>
-					<div class="p-grid">
-						<div class="p-col-12 p-md-8">
-							<div class="ui-inputgroup">
-			                    <span class="ui-inputgroup-addon">
-			                        <i class="fa fa-search Fs14" style="margin-top: 5px;"></i>
-			                    </span>
-			                    <p:inputText id="intCriterioBusqueda" value="#{factMainCtrl.criterioBusqueda}" placeholder="#{msg['criterio.busquedaproducto']}" styleClass="Wid100 Fs12" onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}" >
-			                    </p:inputText>
-			                </div>	
-		                    <!-- <p:message for="intCriterioBusqueda" styleClass="Wid100"/> -->      
-						</div>
-						<div class="p-col-12 p-md-4">
-							<p:commandButton id="cmdConsultarProducto"
-							value="CONSULTAR" icon="fa fa-search" 
-							action="#{factMainCtrl.buscar()}" styleClass="secondary-button Wid100" update=":formMain:msgFormMain :formMain:puntoVenta:outProductos" process="@this :formMain:puntoVenta:outProductos"/>
-						</div>
-					</div>
-					
-					<div class="EmptyBox10"/>
-					
-					<!-- <div class="Wid100 divProductos OvAuto "> -->
-	
-	
-					<p:dataGrid var="p" value="#{factMainCtrl.productoList}" columns="3"
-						layout="grid" paginator="true" paginatorPosition="bottom"
-						id="productoDT" rows="12">
-	
-							<p:commandLink action="#{factMainCtrl.agregarProducto()}" update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios :formMain:puntoVenta:oupCalMenuDerecha" process="@this :formMain:puntoVenta:productoDT">
-								<f:setPropertyActionListener value="#{p}" target="#{factMainCtrl.productoSelected}"/>
-								<div class="pricing-box">
-								
-										<div class="pricing-box-header">
-											<h2>#{p.stock.intValue()}</h2>
-											<div class="p-grid">
-				
-												<div class="p-col-4">
-													<h:outputText value="#{p.preciounitario}" styleClass="precio">
-														<f:convertNumber locale="es_EC" pattern="$0.##" />
-													</h:outputText>
-												</div>
-												<div class="p-col-4">
-													<h:outputText value="#{p.preciodos}" styleClass="precio">
-														<f:convertNumber locale="es_EC" pattern="$0.##" />
-													</h:outputText>
-												</div>
-												<div class="p-col-4">
-													<h:outputText value="#{p.preciotres}" styleClass="precio">
-														<f:convertNumber locale="es_EC" pattern="$0.##" />
-													</h:outputText>
-												</div>
-											</div>
-										</div>
-				
-										<div class="pricing-box-content">
-												<p:graphicImage
-													value="#{productoCtrl.getImageToStream(p.imagen)}"
-													stream="false" rendered="#{p.imagen!=null}" width="100"
-													height="100"/>
-												<p:graphicImage library="img" name="sinimagen.png"
-													rendered="#{p.imagen==null}" width="100" height="100"/>
-											<p>
-												<h:outputText value="#{p.nombregenerico}" />
-											</p>
-										</div>
-									
-								</div>
-							</p:commandLink>
-							
-					</p:dataGrid>
-				</p:outputPanel>
-								
-			</div>	
+            <p:inputText id="intCriterioBusqueda" value="#{factMainCtrl.criterioBusqueda}" 
+            	placeholder="#{msg['criterio.busquedaproducto']}" 
+            	styleClass="fs-14 w-full" 
+            	onkeydown="if(event.keyCode==13){event.keyCode=123;buscarProducto(); return false;}" >
+            </p:inputText>
 			
-		</div>	
+		</div>
+		
+		<p:outputPanel id="outProductos">
+			
+			<p:dataView id="productoDT" 
+				var="p" 
+				value="#{factMainCtrl.productoList}" 
+				rows="12" 
+				layout="grid" 
+				gridIcon="pi pi-th-large" 
+				gridRowStyleClass="col-12 xl:col-3"
+				paginator="true" paginatorPosition="bottom">
+				
+	            <p:dataViewGridItem>
+	                
+	                <p:commandLink action="#{factMainCtrl.agregarProducto}" 
+	                	update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios :formMain:puntoVenta:oupCalMenuDerecha" 
+	                	process="@this :formMain:puntoVenta:productoDT"
+	                	styleClass="pricing-box"
+	                	oncomplete="scrollToBottom()">
+	                	
+						<f:setPropertyActionListener value="#{p}" target="#{factMainCtrl.productoSelected}"/>
+						
+						<span class="pricing-box__header text-gray-900">#{p.nombregenerico}</span>
+						<div class="pricing-box__content">
+							
+							<p:graphicImage
+								value="#{productoCtrl.getImageToStream(p.imagen)}"
+								stream="false" rendered="#{p.imagen!=null}" width="100"
+								height="100"/>
+							<p:graphicImage library="img" name="sinimagen.png"
+								rendered="#{p.imagen==null}" width="60%"  style="opacity:.5;"/>
+						
+						</div>
+						<div class="pricing-box__precio--grid">
+							<div class="pricing-box__precio-principal">
+								<h:outputText value="#{1525.33}" styleClass="fs-16 text-primary-600 font-semibold">
+									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
+								</h:outputText>
+							</div>
+							<div class="pricing-box__precio">
+								<h:outputText value="#{p.preciodos}" styleClass="fs-13 text-gray-900">
+									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
+								</h:outputText>
+								<span class="fs-11 text-gray-700">Pre-2</span>
+							</div>
+							<div class="pricing-box__precio">
+								<h:outputText value="#{p.preciotres}" styleClass="fs-13 text-gray-900">
+									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
+								</h:outputText>
+								<span class="fs-11 text-gray-700">Pre-3</span>
+							</div>
+						</div>
+						<div class="divisor"/>
+						<div class="pricing-box__footer ">
+							<div class="flex gap-2 align-items-end fs-16 text-gray-900">
+								<i class="fa-solid fa-layer-group"></i>
+								<h:outputText value="#{p.stock}">
+									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
+								</h:outputText>
+							</div>
+							<div class="flex gap-2 align-items-end fs-16 text-gray-900">
+								<h:outputText value="#{p.porcentajedescuento}">
+									<f:convertNumber locale="es_EC" pattern="#,##0.##" />
+								</h:outputText>
+								<i class="fa-solid fa-percent"></i>
+							</div>
+						</div>
+						
+					</p:commandLink>
+	                
+	            </p:dataViewGridItem>
+	            
+	        </p:dataView>
+			
+			
+		</p:outputPanel>					
 	
 	</div>
 		
