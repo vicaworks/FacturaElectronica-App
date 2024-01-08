@@ -237,6 +237,28 @@ public class FactMainCtrl extends BaseCtrl {
 		fp.encerar();
 	}
 
+	public void calcularIva() {
+		try {
+			if(detalleSelected==null || detalleFacList==null || detalleFacList.isEmpty()) {
+				return;
+			}
+			
+			BigDecimal iva = detalleSelected.getProducto().getIva().getValor().divide(BigDecimal.valueOf(100));
+			if(iva.doubleValue() > 0.0) {
+				detalleSelected.setPreciounitario(
+						detalleSelected.getPreciounitario().divide(iva.add(BigDecimal.valueOf(1)),2, RoundingMode.HALF_UP)
+						);
+				
+				calcularItem(detalleSelected);
+				totalizar();
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+		}
+	}
+	
 	public void cambiarPrecio(String precio) {
 		try {
 			

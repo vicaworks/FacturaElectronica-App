@@ -272,15 +272,9 @@
 			<div class="flex-0" style="flex-basis: 25%">
 				<p:commandButton value="Calc IVA" 
 					styleClass="ui-button-help fs-14 w-full" 
-					action="#" 
+					action="#{factMainCtrl.calcularIva()}" 
 					update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios"/>
 			</div>
-			<!-- <p:commandLink action="#{factMainCtrl.registrarPago()}" immediate="true" update=":formMain:msgFormMain">
-				<div class="black-btn" style="padding: 0.75em;">
-					<i class="fa fa-dollar Fs26" style="margin-bottom:4px; color:black;"></i>
-					<h:outputText value="PAGO" styleClass="DispBlock Fs14 FontBold" style="color:black;"/>
-				</div>
-			</p:commandLink> -->
 		</p:outputPanel>
 		
 		<div class="flex">
