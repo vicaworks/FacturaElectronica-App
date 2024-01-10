@@ -161,8 +161,7 @@
 							
 							<p:graphicImage
 								value="#{productoCtrl.getImageToStream(p.imagen)}"
-								stream="false" rendered="#{p.imagen!=null}" width="100"
-								height="100"/>
+								stream="false" rendered="#{p.imagen!=null}" width="100%" style="max-width:12rem;"/>
 							<p:graphicImage library="img" name="sinimagen.png"
 								rendered="#{p.imagen==null}" width="60%"  style="opacity:.5;"/>
 						
@@ -188,11 +187,11 @@
 						</div>
 						<div class="divisor"/>
 						<div class="pricing-box__footer ">
-							<div class="flex gap-2 align-items-end fs-16 text-gray-900">
+							<div class="flex gap-1 align-items-end fs-16 text-gray-900">
 								<i class="fa-solid fa-layer-group"></i>
 								<h:outputText value="#{p.stock}">
-									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
-								</h:outputText>
+									<f:convertNumber locale="es_EC" pattern="#,##0.##" />
+								</h:outputText>								
 							</div>
 							<div class="flex gap-2 align-items-end fs-16 text-gray-900">
 								<h:outputText value="#{p.porcentajedescuento}">

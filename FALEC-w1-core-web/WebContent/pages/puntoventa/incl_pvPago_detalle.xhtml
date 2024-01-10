@@ -9,50 +9,25 @@
 	<style type="text/css">
     	
     	.pvPagoDetalleDT .ui-datatable-scrollable-body{
-			min-height: 20vh !important;
+			min-height: 30vh !important;
 			height: calc(100vh - 480px)!important;
 		}
-		
-		body .ui-datatable thead th {
-			padding: 0px !important;
-		}
-		
-		.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
-			padding: 0px !important;
-		}
-    	
-    	.divValor{
-    		margin: 0px;
-    		/* border-radius: 2px; */
-    		border: 1px solid #252529; 
-    		font-weight: 800;
-    		color: #252529;
-    	}
-    	
-    	.resaltarValor{
-    		background-color: #252529;
-    		color: #fff !important;
-    	}
-    	
-    	.ui-inputgroup .ui-inputgroup-addon{
-    		padding-left: 0.5em !important;
-    		padding-right: 1em !important;
-    		border-color: #252529 !important;
-    	}
     	
     	.digito-btn{
-    		border: 1px solid black;
-    		background-color:#ccc;
-    		border-radius: 2px;
+    		font-family: "Inter UI", sans-serif;
+    		border: 1px solid #264d73;
+    		background-color:#eaeff3;
+    		border-radius: 4px;
     		width: 30.5%;
     		text-align: center;
     		padding: 0.38em;
-    		color:black;
+    		color:#264d73;
     		display: inline-block;
-    		font-size: 24px;
+    		font-size: 22px;
     	}
     	
     	.digito-btn:hover{
+    		border: 1px solid black;
     		background: black;
     		color:#fff;
     	}
@@ -74,7 +49,7 @@
     		color:black;
     		display: inline-block;
     		font-size: 18px;
-    		margin-bottom:4px;
+    		border: 1px solid black;
     	}
     	
     	.back-btn{
@@ -87,40 +62,19 @@
     		color:#fff;
     	}
     	
-    	.valor-btn{
-    		border: 1px solid green;
-    		color:green;
-    	}
-    	
-    	.valor-btn:hover{
-    		background-color:green;
-    		color:#fff;
-    	}
-    	
-    	.valor-btn-seleccion{
-    		background-color:green;
-    		color:#fff;
-    	}
-    	
-    	.valor-btn-seleccion:hover{
-    		/* border: 1px solid green;
-    		background-color:#fff;
-    		color:green; */
-    	}
-    	
     	.documento-btn {
-			border: 1px solid orange;
-			color: orange;
+			border: 1px solid #9C27B0;
+			color: #9C27B0;
 			/* padding: 0.55em !important; */
 		}
     	
     	.documento-btn:hover{
-    		background-color:orange;
+    		background-color:#9C27B0;
     		color:#fff;
     	}
     	
     	.documento-btn-seleccion{
-    		background-color:orange;
+    		background-color:#9C27B0;
     		color:#fff;
     	}
     	
@@ -130,46 +84,11 @@
     		color:orange; */
     	}
     	
-    	.cambio-btn {
-			border: 1px solid #252529;
-			color: #252529;
-			/* padding: 0.55em !important; */
-		}
-    	
-    	.cambio-btn:hover{
-    		background-color:#252529;
-    		color:#fff;
-    	}
-    	
-    	.cambio-btn-seleccion{
-    		background-color:#252529;
-    		color:#fff;
-    	}
-    	
-    	.cambio-btn-seleccion:hover{
-    		/* border: 1px solid #fff;
-    		background-color:#fff;
-    		color:orange; */
-    	}
-    	
 	</style>
 	
 	
-	<div class="card card-w-title">
+	<div class="card ui-fluid">
 		
-		<div class="ui-inputgroup">
-            <span class="ui-inputgroup-addon">
-                <h:outputText value="PAGAR" styleClass="FontBold"/> 
-            </span>
-            
-            <div class="Wid100 Fs25 divValor resaltarValor" style="text-align: center;">
-            	<h:outputText value="#{factMainPagoCtrl.cabecerSelected.totalconimpuestos}" >
-            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-            	</h:outputText>
-            </div>
-                  
-        </div>
-        <div class="EmptyBox5"/>
         <!-- detalle del pago -->
         <p:outputPanel id="oupPagoDT">
 	        <p:dataTable id="pvPagoDetalleDT"
@@ -177,7 +96,7 @@
 	        			value="#{factMainPagoCtrl.pagoList}"
 	        			var="p"
 	        			emptyMessage="#{msg['mensaje.noexistenDatos']}"
-						styleClass="pvPagoDetalleDT Fs11"  
+						styleClass="pvPagoDetalleDT fs-11"  
 						rowKey="#{p.idpago}"
 						selectionMode="single"
 						selection="#{factMainPagoCtrl.pagoSelected}">
@@ -186,122 +105,110 @@
 				<p:ajax event="rowSelect" listener="#{factMainPagoCtrl.seleccionarDetalle()}" update=":formMain:pvPagoDetalleDT :formMain:msgFormMain :formMain:oupInicioOpcionCalculadora :formMain:oupCalMenuDerecha">
 				</p:ajax>
 						
-				<p:column headerText="ITEM" style="width:90%;">
-					<div class="EmptyBox5"/>
-					<div class="p-grid p-align-center vertical-container">
-						
-						<div class="p-col-12 p-md-4">
-							<h:outputText value="#{p.tipopago.nombre}" styleClass="FontBold DispBlock Wid100 Hei100 Fs14"/>
+				<p:column headerText="Pago" style="width:100%;">
+					
+					<div class="flex gap-2 align-items-strech my-2" >
+						<div class="flex-0 flex align-items-center justify-content-center px-4">
+							<p:commandLink  action="#{factMainPagoCtrl.eliminarDetalle()}" 
+								process="@this :formMain:pvPagoDetalleDT" 
+								update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupInicioOpcionCalculadora">
+								<f:setPropertyActionListener value="#{p}" target="#{factMainPagoCtrl.pagoSelected}"/>
+								<i class="fa-regular fa-trash-can fs-20 text-gray-900"></i>
+								<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
+							</p:commandLink>
 						</div>
 						
-						<div class="p-col-12 p-md-8">
-							<div class="EmptyBox10"/>
-							<div class="p-grid Fs10">
-								
-								<div class="p-col-4">
-									<h:outputText value="Valor:" styleClass="FontBold"/>
+						<p:commandLink action="#{factMainPagoCtrl.seleccionarDetalle()}"
+							process="@form"
+							update=":formMain:pvPagoDetalleDT :formMain:msgFormMain :formMain:oupInicioOpcionCalculadora :formMain:oupCalMenuDerecha"
+							styleClass="flex-1 ui-fluid">
+							<f:setPropertyActionListener value="#{p}" target="#{factMainPagoCtrl.pagoSelected}"/>
+							<span class="flex text-gray-900 fs-14">#{p.tipopago.nombre}</span>
+							
+							<div class="flex gap-1">
+								<div class="flex-1 field">
+									<label class="text-gray-900">Valor pago</label>
+									<p:inputNumber value="#{p.total}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:#e6e6e6;"/>
 								</div>
-								<div class="p-col-8">
-									<h:outputText value="#{p.total}" styleClass="FontBold Fs12 markGreen">
-										<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-									</h:outputText>
-								</div>
-								
-								<f:subview rendered="#{p.tipopago.subdetalle=='1'}">
-													
-									<div class="p-col-4">
-										<h:outputText value="Entregado:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
-										<h:outputText value="#{p.valorentrega}" styleClass="FontBold">
-											<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-										</h:outputText>
-									</div>
-									
-									<div class="p-col-4">
-										<h:outputText value="Cambio:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
-										<h:outputText value="#{p.cambio}" styleClass="FontBold markBlack">
-											<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-										</h:outputText>
-									</div>
-									
+								<f:subview rendered="#{p.tipopago.subdetalle == '1'}">
+										<div class="flex-1 field">
+											<label class="text-gray-900">Entregado</label>
+											<p:inputNumber value="#{p.valorentrega}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:#e6e6e6;"/>
+										</div>
+										<div class="flex-1 field">
+											<label class="text-gray-900">Cambio</label>
+											<p:inputNumber value="#{p.cambio}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:#e6e6e6;"/>
+										</div>
 								</f:subview>
 								
-								<f:subview rendered="#{p.tipopago.subdetalle!='1'}">
-									
-									<div class="p-col-4">
-										<h:outputText value="Documento:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
-										<h:outputText value="#{p.numerodocumento}" styleClass="FontBold">
-											<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-										</h:outputText>
-									</div>
-									
-									<div class="p-col-4">
-										<h:outputText value="Banco:" styleClass="FontBold"/>
-									</div>
-									<div class="p-col-8">
+								<f:subview rendered="#{p.tipopago.subdetalle != '1'}">
+									<div class="flex-1 field">
+										<label class="text-gray-900">Banco</label>
 										<p:inputText id="inpDetpagoBanco"
-											value="#{p.nombrebanco}" required="false"
-											requiredMessage="REQUERIDO" styleClass="Wid100 Fs10"
-											maxlength="50" placeholder="NOM. BANCO" converter="omnifaces.ToUpperCaseConverter">
+											value="#{p.nombrebanco}" 
+											required="false"
+											requiredMessage="Reqyerido"
+											maxlength="50" 
+											placeholder="Nombre de banco" 
+											converter="omnifaces.ToUpperCaseConverter"
+											styleClass="fs-14">
 										</p:inputText>
 									</div>
-									
+									<div class="flex-1 field">
+										<label class="text-gray-900 hidden md:block">Número de documento</label>
+										<label class="text-gray-900 block md:hidden"># documento</label>
+										<p:inputText readonly="true"
+											value="#{p.numerodocumento}"
+											style="background-color:#e6e6e6;"
+											styleClass="fs-14"></p:inputText>
+									</div>
 								</f:subview>
-								
 							</div>
-							
-							
-						</div>
+								
+						</p:commandLink>
+						
 					</div>
+					
+					
+					
+					
 					
 				</p:column>
 				
-				<p:column style="width:10%;" styleClass="TexAlCenter">
-					<div class="EmptyBox10"/>
-					<p:commandLink  action="#{factMainPagoCtrl.eliminarDetalle()}" process="@this :formMain:pvPagoDetalleDT" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupInicioOpcionCalculadora">
-						<f:setPropertyActionListener value="#{p}" target="#{factMainPagoCtrl.pagoSelected}"/>
-						<i class="fa fa-trash-o Fs20" style="color:red;"></i>
-						<p:confirm header="#{msg['label.confirmacion']}" message="#{msg['mensaje.confimacion']}" icon="fa fw-3x fa-exclamation-triangle" />
-					</p:commandLink>		
-				</p:column>
-				
 	        </p:dataTable>
-				
-			<div class="EmptyBox5"/>
-			<div class="ui-inputgroup">
-	            <span class="ui-inputgroup-addon">
-	                <i class="fa fa-hand-o-right Fs20"></i> 
-	            </span>
-	            
-	            <div class="Wid100 divValor" style="text-align: center;">
-	            	<p:outputPanel id="oupTotalPagoDT">
-		            	<h:outputText value="#{factMainPagoCtrl.totalPago}" styleClass="Fs20">
-		            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
-		            	</h:outputText>
-			        </p:outputPanel>
-	            </div>
-	                  
-	        </div>
+			
+			<div class="flex justify-content-center align-items-center" style="height: 3rem;margin: 1rem 0;">
+				<div class="flex-1 flex gap-1 align-items-baseline justify-content-center">
+					<h:outputText value="#{factMainPagoCtrl.cabecerSelected.totalconimpuestos}" styleClass="fs-20 text-gray-900 fw-5">
+	            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+	            	</h:outputText>
+					<span class="fs-12 text-gray-900">Factura</span>
+				</div>
+				<p:divider layout="vertical" styleClass="flex-0 px-1">
+	                <b class="fs-20">=</b>
+	            </p:divider>
+				<div class="flex-1 flex gap-1 align-items-baseline justify-content-center">
+					<h:outputText value="#{factMainPagoCtrl.totalPago}" styleClass="fs-20 text-primary-600 font-semibold">
+	            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
+	            	</h:outputText>
+					<span class="fs-12 text-primary-600">Pago</span>
+				</div>
+			</div>
+			
         </p:outputPanel>
         
-		<div class="EmptyBox10"/>
 		<!-- calculadora -->
-		<div class="p-grid p-justify-center">
+		<div class="grid justify-content-center mt-2">
 		
 			<!-- menu izquierda -->
-			<div class="p-col-3">
-				<p:outputPanel id="oupInicioOpcionCalculadora">
+			<div class="col-3">
+				<p:outputPanel id="oupInicioOpcionCalculadora" styleClass="flex gap-1 flex-column">
 					<p:commandLink action="#" update=":formMain:oupInicioOpcionCalculadora">
 						<f:setPropertyActionListener value="VALOR" target="#{factMainPagoCtrl.opcionSeleccionCalculadora}"/>
 						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
 						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='VALOR'?'documento-btn-seleccion':'documento-btn'}">
-							<h:outputText value="VALOR" styleClass="DispBlock FontBold Fs14"/>
+							<h:outputText value="Valor" styleClass="block fw-5 fs-14"/>
 						</div>
 					</p:commandLink>
 					
@@ -310,7 +217,7 @@
 						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
 						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='CAMBIO'?'documento-btn-seleccion':'documento-btn'}">
-							<h:outputText value="IMPORTE" styleClass="DispBlock FontBold Fs14"/>
+							<h:outputText value="Importe" styleClass="block fw-5 fs-14"/>
 						</div>
 					</p:commandLink>
 						
@@ -319,110 +226,109 @@
 						<f:setPropertyActionListener value="#{true}" target="#{factMainPagoCtrl.inicioCalculadora}"/>
 						<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.separadorDecimal}"/>
 						<div class="opcion-btn #{factMainPagoCtrl.opcionSeleccionCalculadora=='DOCUMENTO'?'documento-btn-seleccion':'documento-btn'}">
-							<h:outputText value="#DOCU" styleClass="DispBlock FontBold Fs14"/>
+							<h:outputText value="Num. Doc." styleClass="block fw-5 fs-14"/>
 						</div>
 					</p:commandLink>
 				</p:outputPanel>
 			</div>
 			
 			<!-- numeros -->
-			<div class="p-col-6" style="text-align: center;">
+			<div class="col-6" style="text-align: center;">
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('1')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{1}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{1}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('2')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{2}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{2}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>				
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('3')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{3}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{3}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('4')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{4}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{4}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('5')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{5}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{5}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('6')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{6}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{6}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('7')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{7}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{7}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('8')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{8}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{8}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('9')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{9}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{9}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.seleccionOpcionCalculadora('C')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="C" styleClass="DispBlock FontBold"/>
+						<h:outputText value="C" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#{factMainPagoCtrl.ejecutarCalculadora('0')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="#{0}" styleClass="DispBlock FontBold"/>
+						<h:outputText value="#{0}" styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 				<p:commandLink action="#">
 					<f:setPropertyActionListener value="." target="#{factMainPagoCtrl.separadorDecimal}"/>
 					<div class="digito-btn digito-mrg-righ digito-mrg-bottom">
-						<h:outputText value="." styleClass="DispBlock FontBold"/>
+						<h:outputText value="." styleClass="block fw-5"/>
 					</div>
 				</p:commandLink>
 			</div>
 			
 			<!-- Menu izquierda -->
-			<div class="p-col-3">
-				<p:outputPanel id="oupCalMenuDerecha">
+			<div class="col-3">
+				<p:outputPanel id="oupCalMenuDerecha" styleClass="flex gap-1 flex-column">
 					<p:commandLink action="#{factMainPagoCtrl.seleccionOpcionCalculadora('+1')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 						<div class="opcion-btn borde-gray ">
-							<h:outputText value="+1" styleClass="DispBlock FontBold"/>
+							<h:outputText value="+1" styleClass="block fw-5"/>
 						</div>
 					</p:commandLink>
 					<p:commandLink action="#{factMainPagoCtrl.seleccionOpcionCalculadora('+5')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 						<div class="opcion-btn borde-gray ">
-							<h:outputText value="+5" styleClass="DispBlock FontBold"/>
+							<h:outputText value="+5" styleClass="block fw-5"/>
 						</div>
 					</p:commandLink>
 					<p:commandLink action="#{factMainPagoCtrl.seleccionOpcionCalculadora('+10')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 						<div class="opcion-btn borde-gray ">
-							<h:outputText value="+10" styleClass="DispBlock FontBold"/>
+							<h:outputText value="+10" styleClass="block fw-5"/>
 						</div>
 					</p:commandLink>
 					<p:commandLink action="#{factMainPagoCtrl.seleccionOpcionCalculadora('+20')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 						<div class="opcion-btn borde-gray ">
-							<h:outputText value="+20" styleClass="DispBlock FontBold"/>
+							<h:outputText value="+20" styleClass="block fw-5"/>
 						</div>
 					</p:commandLink>
 					<p:commandLink action="#{factMainPagoCtrl.seleccionOpcionCalculadora('back')}" update=":formMain:msgFormMain :formMain:oupPagoDT :formMain:oupCalMenuDerecha">
 						<div class="opcion-btn back-btn">
-							<i class="fa fa-arrow-circle-left Fs20"></i>
+							<i class="fa fa-arrow-circle-left fs-20"></i>
 						</div>
 					</p:commandLink>
 				</p:outputPanel>		
 			</div>
 				
 		</div>
-		<div class="EmptyBox20"/>
 	</div>
 	
 </ui:composition>

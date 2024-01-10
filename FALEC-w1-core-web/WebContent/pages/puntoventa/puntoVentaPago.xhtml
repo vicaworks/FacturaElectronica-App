@@ -5,88 +5,16 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui"
 				xmlns:of="http://omnifaces.org/functions"
-                template="/WEB-INF/template/template.xhtml">
+				xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template/templateV2.xhtml">
 
     <ui:define name="title">#{msg['title.puntoventa']}</ui:define>
     
     <ui:define name="head">
         <style type="text/css">
 			
-			.ui-calendar .ui-inputfield{
-				width: 100% !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: top;
-			}
-			
-			body .ui-messages,
-			body .ui-message {
-				padding: 0em !important;
-				margin: 0.4em 0 !important;
-				display: block;
-			}
-			
-			/* body .ui-message {
-				padding: 0em !important;
-			} */
-			
-			.cardTitle{
-				margin: 0px 0px 5px 0px !important;
-			}
-			
-			body .ui-datatable .ui-datatable-data > tr > td {
-				padding: 0.3em; 
-				border: 0 none;
-				vertical-align: center;
-			}
-			
-			.p-col-1, .p-col-2, .p-col-3, .p-col-4, .p-col-5, .p-col-6, .p-col-7, .p-col-8, .p-col-9, .p-col-10, .p-col-11, .p-col-12 {
-				padding: 0.2em 0.5em !important;
-			}
-			
-			
-			.command-btn{
-	    		border-radius: 2px;
-	    		width: 100%;
-	    		text-align: center;
-	    		padding: 0.39em 0.42em;
-	    		color:black;
-	    		display: inline-block;
-	    		font-size: 16px;
-	    		/* margin-bottom:4px; */
-	    	}
-	    	
-	    	.borde-secondary{
-	    		background:#0f97c7;
-	    		border: 1px solid #0f97c7;
-	    		color: #fff;
-	    	}
-	    	
-	    	.borde-secondary:hover{
-	    		border: 1px solid #0f97c7;
-	    		background:#fff;
-	    		color: #0f97c7;
-	    	}
-	    	
-	    	.borde-gray{
-	    		border: 1px solid #252529;
-	    		background:#fff;
-	    		color: #252529;
-	    	}
-	    	
-	    	.borde-gray:hover{
-	    		background:#252529;
-	    		border: 1px solid #252529;
-	    		color: #fff;
-	    	}
-			
-			@media (max-width: 896px) {
-				.breadCrumbDisplay {
-			        display: none;
-			    }
+			.contenedor {
+			    width: 100%;
 			}
 			
 			
@@ -99,45 +27,43 @@
     	<o:importConstants type="com.vcw.falecpv.core.constante.EstadoRegistroEnum" var="EstadoRegistroEnum" />
     	<o:importConstants type="com.vcw.falecpv.core.constante.TipoPagoFormularioEnum" var="TipoPagoFormularioEnum" />
     
-    	<p:breadCrumb styleClass="breadCrumbDisplay">
-		    <p:menuitem url="#{request.contextPath}/pages/main.jsf" />
-		    <p:menuitem value="Facturas emitidas" url="#{request.contextPath}/pages/facturacion/facturaEmitida.jsf" />
-		    <p:menuitem value="Punto de venta" url="#{request.contextPath}/pages/puntoventa/puntoVenta.jsf"/>
-		    <p:menuitem value="Pago" url="#{request.contextPath}/pages/puntoventa/puntoVentaPago.jsf"/>
-		</p:breadCrumb>
-		
-		<!-- OPCIONES -->
+    	<!-- OPCIONES -->
 	    <h:form id="formMain">
 	    	
-	    	<div class="EmptyBox10"/>
-	    	<div class="p-grid p-justify-left">
-    			<div class="p-col-12 p-md-2">
-    				<p:commandButton value="ATRAS" icon="fa fa-backward" action="./puntoVenta.jsf?faces-redirect=true" immediate="true" styleClass="secondary-button Wid100"/>
-    			</div>
-    			<div class="p-col-12 p-md-2">
-    				<p:commandButton value="FACTURA" icon="fa fa-floppy-o" action="#{factMainPagoCtrl.generarFactura()}" update=":formMain:msgFormMain" styleClass="Wid100"/>
-    			</div>
-    			<!-- <div class="p-col-12 p-md-2">
-    				<p:commandButton value="RECIBO" icon="fa fa-floppy-o" action="#{factMainPagoCtrl.generarRecibo()}" update=":formMain:msgFormMain" styleClass="secondary-button Wid100"/>
-    			</div> -->
+	    	<div class="tool-bar mb-2 contenedor">
+	    	
+   				<p:commandButton 
+   					value="Atrás" 
+   					icon="fa fa-backward fs-12" 
+   					action="./puntoVenta.jsf?faces-redirect=true" 
+   					immediate="true" 
+   					styleClass="ui-button-secondary ui-button-outlined fs-12 max-width-90"/>
+   					
+   				<p:commandButton 
+   					value="Guardar" 
+   					icon="fa-regular fa-floppy-disk fs-12" 
+   					action="#{factMainPagoCtrl.generarFactura()}" 
+   					update=":formMain:msgFormMain" 
+   					styleClass="ui-button-success fs-12 max-width-90"/>
+	    	
 	    	</div>
-	    	<div class="EmptyBox5"/>
+	    	
 	    	<!-- Mensajes -->
 			<p:messages id="msgFormMain" rendered="#{not facesContext.validationFailed}" showSummary="true" showDetail="true" for="formMain"
 				closable="true" >
 				<p:autoUpdate></p:autoUpdate>
 			</p:messages>
 	    	
-	    	<div class="p-grid">
+	    	<div class="grid contenedor">
 	    		
-	    		<div class="p-col-12 p-lg-5">
+	    		<div class="col-12 lg:col-5">
 	    			
 	    			<!-- Datos de la cabecera -->
 	    			<ui:include src="incl_pvPago_cabecera.xhtml"/>
 	    			
 	    		</div>
 	    		
-	    		<div class="p-col-12 p-lg-7">
+	    		<div class="col-12 lg:col-7">
 	    			
 	    			<!-- Datos del detalle de pago -->
 	    			<ui:include src="incl_pvPago_detalle.xhtml"/>
