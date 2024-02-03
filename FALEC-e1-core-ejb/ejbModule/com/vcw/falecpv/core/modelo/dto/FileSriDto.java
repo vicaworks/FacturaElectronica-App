@@ -37,6 +37,8 @@ public class FileSriDto implements Serializable {
 	private String mensaje;
 	private boolean registrado;
 	private boolean validacion = false;
+	private byte[] xml;
+	private String xmlNombre;
 
 	/**
 	 * 
@@ -312,6 +314,34 @@ public class FileSriDto implements Serializable {
 	 */
 	public void setValidacion(boolean validacion) {
 		this.validacion = validacion;
+	}
+
+	/**
+	 * @return the xml
+	 */
+	public byte[] getXml() {
+		return xml;
+	}
+
+	/**
+	 * @param xml the xml to set
+	 */
+	public void setXml(byte[] xml) {
+		this.xml = xml;
+	}
+
+	/**
+	 * @return the xmlNombre
+	 */
+	public String getXmlNombre() {
+		return xmlNombre;
+	}
+
+	/**
+	 * @param xmlNombre the xmlNombre to set
+	 */
+	public void setXmlNombre(String xmlNombre) {
+		this.xmlNombre = xmlNombre;
 	}
 	
 	

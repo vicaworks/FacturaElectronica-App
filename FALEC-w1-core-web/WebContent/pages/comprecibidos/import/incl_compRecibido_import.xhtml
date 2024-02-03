@@ -10,13 +10,22 @@
      <style type="text/css">
      	
      	.compSriDT .ui-datatable-scrollable-body{
-				min-height: 40vh !important;
-				height: calc(100vh - 240px)!important;
-			}
-     	
+			min-height: 40vh !important;
+			height: calc(100vh - 255px)!important;
+		}
+		
+		.toolbar_upload .ui-fileupload .ui-fileupload-content{
+			display: none;
+		}
+     	.toolbar_upload .ui-fileupload .ui-fileupload-buttonbar {
+     		all: revert!important;
+     	}
      </style>
 	
-	<div class="card mt-2">  
+	<p:remoteCommand process="@this" actionListener="#{compRecibidosCtrl.inicializarUploadXml()}" name="inicializarUploadXml"/>
+	<p:remoteCommand process="@this" actionListener="#{compRecibidosCtrl.showMessageUploadXml()}" name="showMessageUploadXml"/>
+	
+	<div class="card">  
 		
 		
 		<div class="flex justify-content-between align-items-baseline">
@@ -26,34 +35,63 @@
 		    </p:progressBar>
 		</div>
 			
-		<div class="flex gap-2 my-2">
+		<div class="toolbar_upload flex gap-2 my-2 flex-wrap">
 		
-			<p:commandButton id="cmdCRSeleccionarFile" 
-				widgetVar="w_cmdCRSeleccionarFile"
+			<p:commandButton id="cmdCRSeleccionarFileSri" 
+				widgetVar="w_cmdCRSeleccionarFileSri"
 				icon="fa fa-search"
 				process="@this"
 				action="#{compRecibidosCtrl.showUploadFile()}" 
-				styleClass="ui-button-success min-width-60  #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" 
+				styleClass="fs-12 ui-button-success min-width-80 #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" 
 				update="@form" 
 				value="Archivo SRI"
 				title="Seleccionar archivo de comprobantes SRI"/>
 				
-			<p:commandButton id="cmdCRGuardar" widgetVar="w_cmdCRGuardar"
+			<p:fileUpload id="fileUploadCRSeleccionarFileXml"
+				listener="#{compRecibidosCtrl.uploadComprobantesXml}"
+				label="Archivos XML"				
+				sizeLimit="50485760"
+				invalidSizeMessage="#{msg['file.size']} 4MB" 
+				mode="advanced" 
+				dragDropSupport="true" 
+				auto="true"
+				update="@form"
+				previewWidth="0"
+				chooseButtonStyleClass="fs-12 ui-button-success min-width-80 m-0"
+				multiple="true"
+				onstart="inicializarUploadXml();"
+				oncomplete="showMessageUploadXml();">
+			</p:fileUpload>
+				
+			<p:commandButton id="cmdCRGuardarArchivo" widgetVar="w_cmdCRGuardarArchivo"
 				icon="fa fa-floppy-disk"
 				process="@this"
 				onclick="PF('w_cmdCRlimpiar').disable();PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
 				action="#{compRecibidosCtrl.cargarComprobantes()}" 
-				styleClass="ui-button-primary #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" 
+				styleClass="fs-12 ui-button-primary  min-width-60 #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" 
 				update="@form"
 				value="Guardar" 
 				disabled="#{compRecibidosCtrl.fileComprobantes==null}"
+				rendered="#{compRecibidosCtrl.tipoCargar == 'ARCHIVO_SRI'}"
+				title="Guarda los comprobantes"/>
+			
+			<p:commandButton id="cmdCRGuardarArchivoXml" widgetVar="w_cmdCRGuardarArchivo"
+				icon="fa fa-floppy-disk fs-12"
+				process="@this"
+				onclick="PF('w_cmdCRlimpiar').disable();PF('w_cmdCRGuardar').disable();PF('w_cmdCRSeleccionarFile').disable();PF('pbAjax').cancel();PF('pbAjax').start();"
+				action="#{compRecibidosCtrl.cargarComprobantesXML()}" 
+				styleClass="fs-12 ui-button-primary min-width-60 #{appSessionCtrl.accesoDisable('mn_comprecib_importar')?'ui-state-disabled':''}" 
+				update="@form"
+				value="Guardar" 
+				disabled="#{empty compRecibidosCtrl.fileSriDtoList}"
+				rendered="#{compRecibidosCtrl.tipoCargar == 'ARCHIVO_XML'}"
 				title="Guarda los comprobantes"/>
 						
 		    <p:commandButton id="cmdCRlimpiar" 
 		    	widgetVar="w_cmdCRlimpiar"
-				icon="fa fa-eraser"
+				icon="fa fa-eraser fs-12"
 				process="@this"
-				styleClass="ui-button-outlined ui-button-secondary min-width-60" 
+				styleClass="fs-12 ui-button-outlined ui-button-secondary min-width-60" 
 				update="@form"
 				value="Limpiar" 
 				action="#{compRecibidosCtrl.limpiar()}"
@@ -63,8 +101,8 @@
 						
 						
 			<p:linkButton value="Ayuda" 
-				styleClass="min-width-60 ui-button-outlined ui-button-success" 
-				icon="pi pi-tags" 
+				styleClass="fs-12 min-width-60 ui-button-outlined ui-button-success" 
+				icon="pi pi-tags fs-12" 
 				target="_black" 
 				href="#{request.contextPath}/manuales/importComprobante.html" 
 				title="Manual de Usuario">
@@ -79,11 +117,16 @@
 						styleClass="compSriDT fs-12"  
 						rowKey="#{f.id}"
 						rows="30"
+						rowIndexVar="row"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
 		                paginatorPosition="bottom"  
 						rowsPerPageTemplate="20,30,35,40">    
+		    
+		    <p:column style="width:15px;">
+		    	<span class="fs-12 text-gray-900">#{row + 1}</span>
+		    </p:column>
 		    
 		    <p:column headerText="Estado" style="width:90px;">
 		    	<p:outputPanel id="oupestado">		    		

@@ -6,8 +6,12 @@ package com.vcw.falecpv.core.servicio.sriimportarcomp;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
@@ -20,6 +24,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.ws.WebServiceException;
 
 import org.dom4j.DocumentException;
+import org.dom4j.Node;
 
 import com.servitec.common.dao.exception.DaoException;
 import com.servitec.common.util.XmlCommonsUtil;
@@ -272,7 +277,11 @@ public class SriImportarComprobantesServicio {
 		}
 		
 		// populate comprobante
-		Comprobanterecibido comprobanterecibido = populateComprobanteRecibido(fileSriDto,idEmpresa,rc.getAutorizaciones().getAutorizacion().get(0).getComprobante(),idusuario);
+		Comprobanterecibido comprobanterecibido = populateComprobanteRecibido(
+				fileSriDto,
+				idEmpresa,
+				rc.getAutorizaciones().getAutorizacion().get(0).getComprobante(),
+				idusuario);
 		// comprobar si existe comprobante
 		Comprobanterecibido temp = comprobanterecibidoServicio.getByComprobanteEmpresa(idEmpresa,
 				GenTipoDocumentoEnum
@@ -293,8 +302,208 @@ public class SriImportarComprobantesServicio {
 		}
 		
 	}
+	
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param fileSriDto
+	 * @param idEmpresa
+	 * @param idEstablecimiento
+	 * @param idusuario
+	 * @throws WebServiceException
+	 * @throws AccesoWsdlSriException
+	 * @throws UnsupportedEncodingException
+	 * @throws DocumentException
+	 * @throws DaoException
+	 * @throws JAXBException
+	 * @throws ParametroRequeridoException
+	 */
+	@Lock(LockType.WRITE)
+	public void importarComprobanteSriFacade(FileSriDto fileSriDto,
+			String idEmpresa,
+			String idEstablecimiento, 
+			String idusuario) throws WebServiceException, AccesoWsdlSriException, UnsupportedEncodingException, DocumentException, DaoException, JAXBException, ParametroRequeridoException {
+		
+		String xmlAutorizacion = new String(fileSriDto.getXml(), StandardCharsets.UTF_8);
+		String xmlComprobante = XmlCommonsUtil.valorXpath(xmlAutorizacion, "//comprobante");
+		
+		// validar que este autorizado
+		if(!XmlCommonsUtil.valorXpath(xmlAutorizacion, "//estado").equals("AUTORIZADO")) {
+			fileSriDto.setRegistrado(false);
+			fileSriDto.setEstado(ImportComprobanteEnum.NO_AUTORIZADO);
+			fileSriDto.setMensaje("EL COMPROBANTE NO ESTA AUTORIZADO");
+			return;
+		}
+		
+		// revsiar si existen mensajes de error
+		List<Node> mensajeNodos = XmlCommonsUtil.aplicarXpath(
+				XmlCommonsUtil.stringToDocument(xmlAutorizacion),
+				"//mensaje");
+		
+		if(mensajeNodos != null && !mensajeNodos.isEmpty()) {			
+			fileSriDto.setRegistrado(false);
+			fileSriDto.setEstado(ImportComprobanteEnum.ERROR);
+			fileSriDto.setMensaje(mensajeNodos.get(0).getStringValue());
+			return;
+		}
+		
+		// populate comprobante
+		Comprobanterecibido comprobanterecibido = populateComprobanteRecibido(
+				fileSriDto,
+				idEmpresa,
+				xmlComprobante,
+				idusuario);
+		// comprobar si existe comprobante
+		Comprobanterecibido temp = comprobanterecibidoServicio.getByComprobanteEmpresa(idEmpresa,
+				GenTipoDocumentoEnum
+						.getEnumByIdentificador(comprobanterecibido.getTipocomprobante().getIdentificador()),
+				comprobanterecibido.getClaveAcceso(), comprobanterecibido.getSerieComprobante());
+		
+		fileSriDto.setRegistrado(true);
+		if(temp!=null) {
+			// actualizar
+			comprobanterecibido.setIdcomprobanterecibido(temp.getIdcomprobanterecibido());
+			fileSriDto.setEstado(ImportComprobanteEnum.ACTUALIZADO);
+			comprobanterecibidoServicio.actualizar(comprobanterecibido);
+		}else {
+			// nuevo
+			comprobanterecibido.setIdcomprobanterecibido(contadorPkServicio.generarContadorTabla(TCComprobanteRecibido.COMPROBANTERECIBIDO, idEstablecimiento));
+			fileSriDto.setEstado(ImportComprobanteEnum.REGISTRADO);
+			comprobanterecibidoServicio.crear(comprobanterecibido);
+		}
+		
+	}
+	
 		
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param xml
+	 * @return
+	 * @throws DocumentException 
+	 * @throws ParseException 
+	 */
+	public FileSriDto xmlToFileSriDto(byte[] xml, Integer id,String xmlNombre) {
+		
+		FileSriDto fileSriDto = new FileSriDto();
+		fileSriDto.setXml(xml);
+		fileSriDto.setXmlNombre(xmlNombre);
+		try {
+			String xmlAutorizacion = new String(xml, StandardCharsets.UTF_8);
+			String xmlComprobante = XmlCommonsUtil.valorXpath(xmlAutorizacion, "//comprobante");
+			// limpiar comprobante 
+			xmlComprobante = xmlComprobante.replace("<![CDATA[<?xml", "<?xml");
+			xmlComprobante = xmlComprobante.replace(">]]", ">");
+			
+			fileSriDto.setEstado(ImportComprobanteEnum.PENDIENTE);
+			fileSriDto.setId(id);
+			fileSriDto.setComprobante(getNombreComprobante(xmlComprobante));
+			fileSriDto.setSerieComprobante(
+					XmlCommonsUtil.valorXpath(xmlComprobante, "//infoTributaria/estab")
+					+ "-"
+					+ XmlCommonsUtil.valorXpath(xmlComprobante, "//infoTributaria/ptoEmi")
+					+ "-"
+					+ XmlCommonsUtil.valorXpath(xmlComprobante, "//infoTributaria/secuencial")
+					);
+			fileSriDto.setRucEmisor(XmlCommonsUtil.valorXpath(xmlComprobante, "//infoTributaria/ruc"));
+			fileSriDto.setEmisor(XmlCommonsUtil.valorXpath(xmlComprobante, "//infoTributaria/razonSocial"));
+			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+			fileSriDto.setFechaEmision(sf.parse(XmlCommonsUtil.valorXpath(xmlComprobante, "//fechaEmision")));
+			sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			String fechaAut = XmlCommonsUtil.valorXpath(xmlAutorizacion, "//fechaAutorizacion");
+			fechaAut = fechaAut.substring(0,10) + " " + fechaAut.substring(11,16); 
+			fileSriDto.setFechaAutorizacion(sf.parse(fechaAut));
+			fileSriDto.setTipoEmision("NORMAL");
+			fileSriDto.setIdentificacionReceptor(getIdentificacionReceptor(xmlComprobante));
+			fileSriDto.setClaveAcceso(XmlCommonsUtil.valorXpath(xmlComprobante, "//infoTributaria/claveAcceso"));
+			fileSriDto.setNumeroAutorizacion(XmlCommonsUtil.valorXpath(xmlAutorizacion, "//numeroAutorizacion"));
+			fileSriDto.setImporteTotal(getImporteTotal(xmlComprobante));
+			
+			
+		} catch (Exception e) {
+			fileSriDto.setEstado(ImportComprobanteEnum.ERROR);
+			fileSriDto.setMensaje("Error formato XML");
+		}
+		
+		return fileSriDto;
+	}
 	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param xml
+	 * @return
+	 */
+	private String getNombreComprobante(String xml) {
+		
+		if(xml.contains("<factura")) {
+			return "Factura";
+		}else if(xml.contains("<comprobanteRetencion")) {
+			return "Comprobante retenci\u00F3n";
+		}else if(xml.contains("<notaCredito")) {
+			return "Nota de cr\u00E9dito";
+		}else if(xml.contains("<notaDebito")) {
+			return "Nota de d\u00E9bito";
+		}else {
+			return "Gu\u00EDa de remisi\u00F3n";
+		}		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param xml
+	 * @return
+	 * @throws DocumentException
+	 */
+	private String getIdentificacionReceptor(String xml) throws DocumentException {
+		
+		if(xml.contains("<factura")) {
+			return XmlCommonsUtil.valorXpath(xml, "//infoFactura/identificacionComprador");
+		}else if(xml.contains("<comprobanteRetencion")) {
+			return XmlCommonsUtil.valorXpath(xml, "//infoCompRetencion/identificacionSujetoRetenido");
+		}else if(xml.contains("<notaCredito")) {
+			return XmlCommonsUtil.valorXpath(xml, "//infoNotaCredito/identificacionComprador");
+		}else if(xml.contains("<notaDebito")) {
+			return XmlCommonsUtil.valorXpath(xml, "//infoNotaDebito/identificacionComprador");
+		}else {
+			return XmlCommonsUtil.valorXpath(xml, "//infoGuiaRemision/rucTransportista");
+		}		
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * 
+	 * @param xml
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws DocumentException
+	 */
+	private BigDecimal getImporteTotal(String xml) throws NumberFormatException, DocumentException {
+		
+		if(xml.contains("<factura")) {
+			return BigDecimal.valueOf(Double.parseDouble(
+					XmlCommonsUtil.valorXpath(xml, "//infoFactura/importeTotal")
+					)
+				);
+		}else if(xml.contains("<comprobanteRetencion")) {
+			return BigDecimal.ZERO;
+		}else if(xml.contains("<notaCredito")) {
+			return BigDecimal.valueOf(Double.parseDouble(
+					XmlCommonsUtil.valorXpath(xml, "//infoNotaCredito/valorModificacion")
+					)
+				);
+		}else if(xml.contains("<notaDebito")) {
+			return BigDecimal.valueOf(Double.parseDouble(
+					XmlCommonsUtil.valorXpath(xml, "//notaDebito//valorTotal")
+					)
+				);
+		}else {
+			return BigDecimal.ZERO;
+		}
+		
+	}
 	
 }

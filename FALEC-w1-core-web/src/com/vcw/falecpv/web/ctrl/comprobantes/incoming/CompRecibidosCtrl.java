@@ -67,6 +67,9 @@ public class CompRecibidosCtrl extends BaseCtrl {
 	private boolean flagCargando = false;
 	private Comprobanterecibido comprobanterecibidoSelected;
 	private boolean formatoXml;
+	private String tipoCargar = null;
+	private String messageUploadXml = null;
+	
 	
 	/**
 	 * 
@@ -103,6 +106,7 @@ public class CompRecibidosCtrl extends BaseCtrl {
 	
 	public void limpiar() {
 		try {
+			tipoCargar = null;
 			flagCargando = false;
 			fileComprobantes = null;
 			fileSriDtoList=null;
@@ -139,13 +143,16 @@ public class CompRecibidosCtrl extends BaseCtrl {
 			
 			fileSriDtoList = null;
 			if(fileComprobantes==null) {
-				AppJsfUtil.addErrorMessage("formCRFile", "ERROR", "No existe archivo seleccionado.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existe archivo seleccionado.", 
+						Message.ERROR);
 				return;
 			}
 			populateFile();
 			flagCargando = false;
 			AppJsfUtil.hideModal("dlgCRImportFile");
 			AppJsfUtil.updateComponente("formMain");
+			tipoCargar = "ARCHIVO_SRI";
 			
 		} catch (FormatoArchivoException e) {
 			e.printStackTrace();
@@ -217,6 +224,115 @@ public class CompRecibidosCtrl extends BaseCtrl {
 		
 		return fileSriDto;
 	}
+	
+	public void inicializarUploadXml() {
+		try {
+			messageUploadXml = null;
+			establecimientoFacade(establecimientoServicio, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showMessageUploadXml() {
+		if(messageUploadXml != null && messageUploadXml.length() > 0) {
+			messageUploadXml = messageUploadXml.replace("null", "");			
+			getMessageCommonCtrl().crearMensaje("Error", 
+					messageUploadXml, 
+					Message.WARNING);
+			
+		}
+	}
+	
+	public void uploadComprobantesXml(FileUploadEvent event) {
+		flagCargando = true;
+		if(!event.getFile().getFileName().contains(".xml")) {
+			messageUploadXml += "El archivo " + event.getFile().getFileName() + " no es XML, ";
+		}else {
+			if(fileSriDtoList == null) fileSriDtoList = new ArrayList<>();
+			
+			// no se duplique el nombre del archivo
+			if(fileSriDtoList.stream().filter(x -> x.getXmlNombre().equals(
+					event.getFile().getFileName())).count() == 0) {
+				
+				fileSriDtoList.add(
+						sriImportarComprobantesServicio.xmlToFileSriDto(
+								event.getFile().getContent(), 
+								fileSriDtoList.size(),
+								event.getFile().getFileName())
+						);
+			}
+			
+			// ordernar
+//			System.out.println(event.getFile().getFileName());
+//			fileSriDtoList.stream().sorted(Comparator.comparing(FileSriDto::getFechaEmision));
+//			for (int i = 0; i < fileSriDtoList.size(); i++) {
+//				fileSriDtoList.get(i).setId(i);
+//			}
+		}
+		if(fileSriDtoList != null && !fileSriDtoList.isEmpty()) {
+			tipoCargar = "ARCHIVO_XML";
+		}
+	}
+	
+	public void cargarComprobantesXML() {
+		try {
+			
+			flagCargando = true;
+			int cont = 1;
+			for (FileSriDto f : fileSriDtoList) {
+				
+				if(f.getEstado().equals(ImportComprobanteEnum.PENDIENTE)) {
+					validar(f);
+					f.setRegistrado(false);
+					if(f.isValidacion()) {
+						sriImportarComprobantesServicio.importarComprobanteSriFacade(f,
+								AppJsfUtil.getEstablecimiento().getEmpresa().getIdempresa(),
+								AppJsfUtil.getEstablecimiento().getIdestablecimiento(),
+								AppJsfUtil.getUsuario().getIdusuario());
+					}					
+				}
+				
+				if(progress<100) {					
+					progress = ((cont*100)/fileSriDtoList.size());
+					
+				}else {
+					progress = 100;
+				}
+				cont++;
+			}
+			progress = 0;
+			flagCargando = false;
+			
+			int errores = (int) fileSriDtoList.stream().filter(x->x.isValidacion()==false || x.isRegistrado()==false).count();
+			
+			// ordenan la lista primero los errores 
+			List<FileSriDto> listaErrores = fileSriDtoList.stream().filter(x->x.isRegistrado()==false).collect(Collectors.toList());
+			List<FileSriDto> lista = fileSriDtoList.stream().filter(x->x.isRegistrado()).collect(Collectors.toList());
+			listaErrores.addAll(lista);
+			fileSriDtoList = listaErrores;
+			
+			if(errores>0) {
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"existen errores :" + errores  + " en la carga de comprobantes.", 
+						Message.WARNING);
+			}else {
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Todos los comprobantes fueron guardados correctamente.", 
+						Message.OK);
+			}
+			
+		} catch (Exception e) {
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+		} finally {
+			progress = 0;
+			flagCargando = false;
+		}
+	}
+	
 	
 	public void cargarComprobantes() {
 		try {
@@ -405,6 +521,34 @@ public class CompRecibidosCtrl extends BaseCtrl {
 	 */
 	public void setFormatoXml(boolean formatoXml) {
 		this.formatoXml = formatoXml;
+	}
+
+	/**
+	 * @return the tipoCargar
+	 */
+	public String getTipoCargar() {
+		return tipoCargar;
+	}
+
+	/**
+	 * @param tipoCargar the tipoCargar to set
+	 */
+	public void setTipoCargar(String tipoCargar) {
+		this.tipoCargar = tipoCargar;
+	}
+
+	/**
+	 * @return the messageUploadXml
+	 */
+	public String getMessageUploadXml() {
+		return messageUploadXml;
+	}
+
+	/**
+	 * @param messageUploadXml the messageUploadXml to set
+	 */
+	public void setMessageUploadXml(String messageUploadXml) {
+		this.messageUploadXml = messageUploadXml;
 	}
 
 }
