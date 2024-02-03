@@ -317,7 +317,7 @@ public class CompRecibidosCtrl extends BaseCtrl {
 						"existen errores :" + errores  + " en la carga de comprobantes.", 
 						Message.WARNING);
 			}else {
-				getMessageCommonCtrl().crearMensaje("Error", 
+				getMessageCommonCtrl().crearMensaje("Ok", 
 						"Todos los comprobantes fueron guardados correctamente.", 
 						Message.OK);
 			}
