@@ -102,6 +102,7 @@
 						styleClass="compNCSriDT fs-11 text-gray-900"  
 						rowKey="#{nc.idcomprobanterecibido}"
 						rows="30"
+						rowIndexVar="row"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -110,6 +111,10 @@
 						selection="#{compRecNotaCreditoCtrl.comprobanteRecibidoSeleccionList}">
 		    
 		    <p:ajax  event="toggleSelect" listener="#{compRecNotaCreditoCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvNotaCredito:compNCSriDT"/>
+		    
+		    <p:column style="width:15px;">
+		    	<span class="fs-12 text-gray-900">#{row + 1}</span>
+		    </p:column>
 		    
 		    <p:column selectionMode="multiple" style="width:20px" styleClass="text-center"/>
 		    

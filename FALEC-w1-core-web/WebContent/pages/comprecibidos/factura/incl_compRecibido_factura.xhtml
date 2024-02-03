@@ -104,6 +104,7 @@
 						styleClass="compFacSriDT fs-11 text-gray-900"  
 						rowKey="#{fac.idcomprobanterecibido}"
 						rows="30"
+						rowIndexVar="row"
 		                paginator="true"
 		                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -112,6 +113,10 @@
 						selection="#{compRecFacturaCtrl.comprobanteRecibidoSeleccionList}">
 		    
 		    <p:ajax  event="toggleSelect" listener="#{compRecFacturaCtrl.selectAllComprobantesRecibidos}" update=":formMain:fsvFactura:compFacSriDT"/>
+		    
+		    <p:column style="width:15px;">
+		    	<span class="fs-12 text-gray-900">#{row + 1}</span>
+		    </p:column>
 		    
 		    <p:column selectionMode="multiple" style="width:20px" styleClass="text-center"/>
 		    
