@@ -34,6 +34,8 @@ import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.TipocomprobanteServicio;
 import com.vcw.falecpv.core.servicio.TipopagoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
+import com.vcw.falecpv.web.ctrl.common.MessageCommonCtrl.Message;
+import com.vcw.falecpv.web.servicio.SriDispacher;
 import com.vcw.falecpv.web.util.AppJsfUtil;
 
 /**
@@ -67,6 +69,8 @@ public class FactMainPagoCtrl extends BaseCtrl {
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
 	
+	@EJB
+	private SriDispacher sriDispacher;
 	
 	private Cabecera cabecerSelected;
 	private String criterioCliente;
@@ -90,7 +94,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			consultarCliente("9999999999999");
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -100,7 +107,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			if(cabecerSelected==null) return;
 			
 			if(criterioCliente==null || criterioCliente.trim().length()==0) {
-				AppJsfUtil.addErrorMessage("formMain:inpCriterioCliente", "ERROR", "REQUERIDO");
+				AppJsfUtil.addErrorMessage("formMain:inpCriterioCliente", "ERROR", "Requerido");
 				return;
 			}
 			
@@ -108,7 +115,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -191,7 +201,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -239,7 +252,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -434,7 +450,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -455,7 +474,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -487,7 +509,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -497,7 +522,9 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 			// validar cliente
 			if(cabecerSelected.getCliente()==null) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos del Cliente", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -513,7 +540,9 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				String analisisEstado = cabeceraServicio.analizarEstadoRecibo(cabecerSelected.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 				
@@ -521,7 +550,9 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			
 			// validar el valor
 			if(cabecerSelected.getTotalconimpuestos().doubleValue()<totalPago.doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Valor de pago difrenete al valor de la factura", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -534,11 +565,16 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			cabecerSelected.setPagoList(pagoList);
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
 			
-			messageCtrl.cargarMenssage("OK", "RECIBO GENERADO CORRECTAMENTE.", "OK");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+							"Recibo generado correctamente", 
+					Message.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
 		}
 	}
 	
@@ -548,6 +584,16 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			// validar cliente
 			if(cabecerSelected.getCliente()==null) {
 				AppJsfUtil.addErrorMessage("formMain", "ERROR", "NO EXISTE DATOS DEL CLIENTE");
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"No existen datos del Cliente", 
+						Message.ERROR);
+				return;
+			}
+			
+			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Factura sin detalle de productos o servicios", 
+						Message.ERROR);
 				return;
 			}
 			
@@ -557,34 +603,58 @@ public class FactMainPagoCtrl extends BaseCtrl {
 				String analisisEstado = cabeceraServicio.analizarEstadoComprobante(cabecerSelected.getIdcabecera(), "GUARDAR");
 				
 				if(analisisEstado!=null) {
-					AppJsfUtil.addErrorMessage("formMain", "ERROR", analisisEstado);
+					getMessageCommonCtrl().crearMensaje("Error", 
+							analisisEstado, 
+							Message.ERROR);
 					return;
 				}
 				
 			}
 			
 			// validar el valor
-			if(totalPago.doubleValue()<cabecerSelected.getTotalconimpuestos().doubleValue()) {
-				AppJsfUtil.addErrorMessage("formMain", "ERROR", "VALOR DE PAGO MENOR AL VALOR DE LA FACTURA.");
+			if(totalPago.doubleValue() != cabecerSelected.getTotalconimpuestos().doubleValue()) {
+				getMessageCommonCtrl().crearMensaje("Error", 
+						"Valor de pago diferente al valor de la Factura.", 
+						Message.ERROR);
 				return;
 			}
 			
+			cabecerSelected.setBorrador(false);
+			cabecerSelected.setPagoList(pagoList);			
 			cabecerSelected.setGenTipoDocumentoEnum(GenTipoDocumentoEnum.FACTURA);
 			cabecerSelected.setSecuencial(null);
 			populatefactura(GenTipoDocumentoEnum.FACTURA);
 			cabecerSelected.setIdusuario(AppJsfUtil.getUsuario().getIdusuario());
 			cabecerSelected.setUpdated(new Date());
-			cabecerSelected.setPagoList(pagoList);			
 			cabecerSelected = cabeceraServicio.guardarComprobanteFacade(cabecerSelected);
+			cabecerSelected.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
+			sriDispacher.queue_comprobanteSriDispacher(cabecerSelected);
 			
-			messageCtrl.cargarMenssage("OK", "FACTURA GENERADA CORRECTAMENTE.", "OK");
+			getMessageCommonCtrl().crearMensaje("Ok", 
+							"Factura generada correctamente", 
+					Message.OK);
+			
+			// TODO refresca la lista de facturas emitidas 2do tab
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", e.getMessage());
+			getMessageCommonCtrl().crearMensaje("Error", 
+					e.getMessage(), 
+					Message.ERROR);
+			cabecerSelected.setSecuencial(null);
+			cabecerSelected.setNumdocumento(null);
+			cabecerSelected.setClaveacceso(null);
+			cabecerSelected.setNumeroautorizacion(null);
 		}  catch (Exception e) {
 			e.printStackTrace();
-			AppJsfUtil.addErrorMessage("formMain", "ERROR", TextoUtil.imprimirStackTrace(e, AppConfiguracion.getInteger("stacktrace.length")));
+			getMessageCommonCtrl().crearMensaje("Error", 
+					TextoUtil.imprimirStackTrace(e, 
+							AppConfiguracion.getInteger("stacktrace.length")), 
+					Message.ERROR);
+			cabecerSelected.setSecuencial(null);
+			cabecerSelected.setNumdocumento(null);
+			cabecerSelected.setClaveacceso(null);
+			cabecerSelected.setNumeroautorizacion(null);
 		}
 	}
 	

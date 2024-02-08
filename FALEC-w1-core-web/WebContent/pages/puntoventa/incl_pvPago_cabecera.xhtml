@@ -113,12 +113,14 @@
 							style="height:24px;" 
 							action="#{factMainPagoCtrl.buscarConsumidorFinal()}" 
 							immediate="true" 
-							update=":formMain:msgFormMain :formMain:gridCliente">
+							update=":formMain:msgFormMain :formMain:gridCliente @form:inpCriterioCliente">
 							
 							<div class="flex align-items-center justify-content-evenly" style="height:24px;">
 								<i class="fa fa-users mr-1 text-gray-700"></i>
 								<span class="text-gray-700">CONS. FINAL</span>
 							</div>
+							
+							<f:setPropertyActionListener value="#{null}" target="#{factMainPagoCtrl.criterioCliente}"/>
 							
 						</p:commandLink>						
 					</div>
@@ -136,8 +138,7 @@
 		                    <p:commandButton icon="pi pi-search" 
 		                    	styleClass="ui-button-success" 
 		                    	process="@this :formMain:inpCriterioCliente"
-								action="#{factMainPagoCtrl.buscarCliente()}" 
-								immediate="true"
+								action="#{factMainPagoCtrl.buscarCliente()}"
 								update=":formMain:msgFormMain :formMain:gridCliente">
 							</p:commandButton>
 		                </div>

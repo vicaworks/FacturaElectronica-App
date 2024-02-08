@@ -655,7 +655,7 @@ public class CompFacCtrl extends BaseCtrl {
 			
 			if(cabecerSelected.getTotalconimpuestos().doubleValue()<=0) {
 				getMessageCommonCtrl().crearMensaje("Error", 
-						"Factura son detalle de productos o servicios", 
+						"Factura sin detalle de productos o servicios", 
 						Message.ERROR);
 				return;
 			}
@@ -675,7 +675,7 @@ public class CompFacCtrl extends BaseCtrl {
 			
 			// validar el valor
 //			if(!cabecerSelected.isBorrador() && totalPago.doubleValue()!=cabecerSelected.getTotalpagar().doubleValue()) {
-			if(totalPago.doubleValue()!=cabecerSelected.getTotalpagar().doubleValue()) {
+			if(totalPago.doubleValue() != cabecerSelected.getTotalpagar().doubleValue()) {
 				getMessageCommonCtrl().crearMensaje("Error", 
 						"Valor de pago diferente al valor a pagar", 
 						Message.ERROR);

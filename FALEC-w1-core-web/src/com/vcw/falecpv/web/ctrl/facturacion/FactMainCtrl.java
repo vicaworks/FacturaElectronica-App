@@ -131,6 +131,8 @@ public class FactMainCtrl extends BaseCtrl {
 			}
 			
 			detalleSelected = existeProductoLista();
+			// deshabilitar para que agregue a la lista y no acumule
+			detalleSelected = null;
 			boolean existe = false;
 			if(detalleSelected!=null) {
 				detalleSelected.setCantidad(detalleSelected.getCantidad().add(BigDecimal.valueOf(1)));
