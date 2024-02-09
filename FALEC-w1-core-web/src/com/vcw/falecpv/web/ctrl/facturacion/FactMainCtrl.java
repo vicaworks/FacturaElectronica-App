@@ -21,6 +21,7 @@ import com.vcw.falecpv.core.modelo.persistencia.Cabecera;
 import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.vcw.falecpv.core.servicio.CabeceraServicio;
+import com.vcw.falecpv.core.servicio.ConfiguracionServicio;
 import com.vcw.falecpv.core.servicio.EstablecimientoServicio;
 import com.vcw.falecpv.core.servicio.ProductoServicio;
 import com.vcw.falecpv.web.common.BaseCtrl;
@@ -49,6 +50,9 @@ public class FactMainCtrl extends BaseCtrl {
 	
 	@EJB
 	private EstablecimientoServicio establecimientoServicio;
+	
+	@EJB
+	private ConfiguracionServicio configuracionServicio;
 	
 	private Cabecera cabeceraFac;
 	private List<Detalle> detalleFacList;
@@ -139,14 +143,19 @@ public class FactMainCtrl extends BaseCtrl {
 				existe = true;
 			}else {
 				detalleSelected = new Detalle();
-				detalleSelected.setCantidad(BigDecimal.valueOf(1));
-				detalleSelected.setDescripcion(productoSelected.getNombregenerico());
-				detalleSelected.setPreciounitario(productoSelected.getPreciouno());
 				precioOpcionSeleccion = "PRECIO1";
 				detalleSelected.setPrecioOpcionSeleccion(precioOpcionSeleccion);
+				detalleSelected.setCodproducto(productoSelected.getCodigoprincipal());			
+				detalleSelected.setCantidad(BigDecimal.valueOf(1));
+				detalleSelected.setDescripcion(productoSelected.getNombre());
+				detalleSelected.setPreciounitario(productoSelected.getPreciouno());
 				detalleSelected.setProducto(productoSelected);
+				detalleSelected.setPreciounitario(productoSelected.getPreciouno());
+				detalleSelected.setPorcentajeDescuento(productoSelected.getPorcentajedescuento());
+				detalleSelected.setPreciocompra(productoSelected.getPreciounitario());
 				detalleSelected.setIva(productoSelected.getIva());
 				detalleSelected.setIce(productoSelected.getIce());
+				detalleSelected.setPrecioVenta(1);
 			}
 			
 			calcularItem(detalleSelected);
@@ -234,6 +243,7 @@ public class FactMainCtrl extends BaseCtrl {
 		inicioCalculadora = false;
 		separadorDecimal = null;
 		inicializarSecuencia(cabeceraFac);
+		configuracionServicio.populateInformacionAdicional(cabeceraFac);
 		// encerar el pago
 		FactMainPagoCtrl fp = (FactMainPagoCtrl)AppJsfUtil.getManagedBean("factMainPagoCtrl");
 		fp.encerar();

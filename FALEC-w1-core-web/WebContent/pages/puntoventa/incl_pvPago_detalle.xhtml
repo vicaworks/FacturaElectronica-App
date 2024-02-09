@@ -128,16 +128,16 @@
 							<div class="flex gap-1">
 								<div class="flex-1 field">
 									<label class="text-gray-900">Valor pago</label>
-									<p:inputNumber value="#{p.total}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:background-color: rgba(242, 242, 242, 0.8);"/>
+									<p:inputNumber value="#{p.total}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:background-color: rgba(242, 242, 242, 0.1);"/>
 								</div>
 								<f:subview rendered="#{p.tipopago.subdetalle == '1'}">
 										<div class="flex-1 field">
 											<label class="text-gray-900">Entregado</label>
-											<p:inputNumber value="#{p.valorentrega}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:background-color: rgba(242, 242, 242, 0.8);"/>
+											<p:inputNumber value="#{p.valorentrega}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:background-color: rgba(242, 242, 242, 0.1);"/>
 										</div>
 										<div class="flex-1 field">
 											<label class="text-gray-900">Cambio</label>
-											<p:inputNumber value="#{p.cambio}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:background-color: rgba(242, 242, 242, 0.8);"/>
+											<p:inputNumber value="#{p.cambio}" modifyValueOnWheel="false" readonly="true" styleClass="text-right w-full fs-14" inputStyleClass="fs-14" inputStyle="background-color:background-color: rgba(242, 242, 242, 0.1);"/>
 										</div>
 								</f:subview>
 								
@@ -159,7 +159,7 @@
 										<label class="text-gray-900 block md:hidden"># documento</label>
 										<p:inputText readonly="true"
 											value="#{p.numerodocumento}"
-											style="background-color:background-color: rgba(242, 242, 242, 0.8);"
+											style="background-color:background-color: rgba(242, 242, 242, 0.1);"
 											styleClass="fs-14"></p:inputText>
 									</div>
 								</f:subview>
