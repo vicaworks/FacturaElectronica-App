@@ -40,15 +40,15 @@
 		    	
 					<div class="menu-box #{factMainCtrl.comprobanteRender=='PUNTO_VENTA'?'menu-box--seleccion':''}" onclick="switchPuntoVenta('PUNTO_VENTA');">
 						
-						<div class="flex-0 text-2xl md:text-5xl text-gray-900 fw-5">01.</div>
-	                	<div class="flex-1 text-1xl md:text-3xl text-gray-900" style="padding-top: 1rem;">Punto de venta</div>
+						<div class="menu-box__number">01.</div>
+	                	<div class="menu-box__titulo">Punto de venta</div>
 						
 					</div>
 					
 					<div class="menu-box #{factMainCtrl.comprobanteRender=='PUNTO_VENTA_CONSULTA'?'menu-box--seleccion':''}" onclick="switchPuntoVenta('PUNTO_VENTA_CONSULTA');">
 						
-						<div class="flex-0 text-2xl md:text-5xl text-gray-900 fw-5">02.</div>
-	                	<div class="flex-1 text-1xl md:text-3xl text-gray-900" style="padding-top: 1rem;">
+						<div class="menu-box__number">02.</div>
+	                	<div class="menu-box__titulo">
 	                		<span class="hidden md:inline">Facturas emitidas</span>
 	                		<span class="inline md:hidden">Emitidas</span>
 	                	</div>
@@ -72,6 +72,15 @@
 			</f:subview>
 	    	
 	    </h:form>
+	    
+	    <!-- GUIA REMISION DESTINATARIO FORMULARIO -->
+		<ui:include src="/pages/guiarem/incl_gr_destinatarioForm.xhtml" />
+		
+		<!-- LISTA DE PAGOS -->
+		<ui:include src="/pages/common/incl_comprobante_pagos.xhtml" />
+		
+		<!-- RIDE -->
+		<ui:include src="/pages/common/incl_ride.xhtml" />
         
     </ui:define>
 

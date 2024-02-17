@@ -634,8 +634,6 @@ public class FactMainPagoCtrl extends BaseCtrl {
 							"Factura generada correctamente", 
 					Message.OK);
 			
-			// TODO refresca la lista de facturas emitidas 2do tab
-			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
 			getMessageCommonCtrl().crearMensaje("Error", 

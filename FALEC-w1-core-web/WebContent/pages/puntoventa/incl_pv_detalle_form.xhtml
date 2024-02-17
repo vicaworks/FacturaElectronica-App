@@ -27,6 +27,20 @@
     		padding: 0.5em;
     	}
     	
+    	.ui-button.digito-btn--opc{
+    		border: 1px solid #264d73;
+   		    background: #eaeff3;
+		    color:#264d73;
+		    border: 1px solid #9C27B0;
+    	}
+    	
+    	.ui-button.digito-btn--opc.ui-state-hover{
+    		border: 1px solid #000000;
+   		    background: #000000;
+		    color:#ffffff;
+		    border: 1px solid #000000;
+		}
+    	
     	.digito-btn{
     		font-family: "Inter UI", sans-serif;
     		border: 1px solid #264d73;
@@ -112,18 +126,18 @@
     	
     	/* Precio */
     	
-    	.precio-btn{
-    		border: 1px solid #9C27B0;
-    		color:#9C27B0;
+    	.precio-btn{    		
+    		border: 1px solid #264d73;
+    		color:#264d73;	
     	}
     	
     	.precio-btn:hover{
-    		background-color:#9C27B0;
+    		background-color:#264d73;
     		color:#fff;
     	}
     	
     	.precio-btn-seleccion{
-    		background-color:#9C27B0;
+    		background-color:#264d73;
     		color:#fff;
     	}
     	
@@ -226,12 +240,12 @@
 						
 		</p:dataTable>
 		
-		<p:outputPanel id="oupTotales" styleClass="flex align-items-stretch gap-2 my-4">
+		<p:outputPanel id="oupTotales" styleClass="flex align-items-stretch gap-2 my-3">
 			<p:commandLink action="#{factMainCtrl.registrarPago()}" 
 				immediate="true" 
 				update=":formMain:msgFormMain" 
-				styleClass="flex-1 bg-green-500 flex gap-2 justify-content-center align-items-center"
-				style="border-radius: 4px; ">				
+				styleClass="flex-1 bg-primary-600 flex gap-2 justify-content-center align-items-center"
+				style="border-radius: 4px; padding:1rem 0;">				
 				<i class="fa-solid fa-money-check-dollar text-white fs-20"></i>
 				<h:outputText value="Pagar" styleClass="text-white fs-20"/>
 			</p:commandLink>
@@ -254,24 +268,24 @@
 		<p:outputPanel id="oupPrecios" styleClass="flex gap-0 mb-1">
 			<div class="flex-0 flex" style="flex-basis: 75%">
 				<p:commandButton value="Precio1" 
-					styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO1'?'ui-button-help':'ui-button-outlined ui-button-secondary'} fs-14 flex-0" 
+					styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO1'?'ui-button-success':'ui-button-outlined ui-button-success'} fs-14 flex-0" 
 					action="#{factMainCtrl.cambiarPrecio('PRECIO1')}" 
 					update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios"
 					style="flex-basis: 30.5%;margin-right:3px;"/>
 				<p:commandButton value="Precio2" 
-					styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO2'?'ui-button-help':'ui-button-outlined ui-button-secondary'} fs-14 flex-0" 
+					styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO2'?'ui-button-success':'ui-button-outlined ui-button-success'} fs-14 flex-0" 
 					action="#{factMainCtrl.cambiarPrecio('PRECIO2')}" 
 					update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios"
 					style="flex-basis: 30.5%;margin-right:3px;"/>
 				<p:commandButton value="Precio3" 
-					styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO3'?'ui-button-help':'ui-button-outlined ui-button-secondary'} fs-14 flex-0" 
+					styleClass="#{factMainCtrl.precioOpcionSeleccion=='PRECIO3'?'ui-button-success':'ui-button-outlined ui-button-success'} fs-14 flex-0" 
 					action="#{factMainCtrl.cambiarPrecio('PRECIO3')}" 
 					update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios"
 					style="flex-basis: 30.5%;margin-right:3px;"/>
 			</div>
 			<div class="flex-0" style="flex-basis: 25%">
 				<p:commandButton value="Calc IVA" 
-					styleClass="ui-button-help fs-14 w-full" 
+					styleClass="digito-btn--opc fs-14 w-full"
 					action="#{factMainCtrl.calcularIva()}" 
 					update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios"/>
 			</div>
