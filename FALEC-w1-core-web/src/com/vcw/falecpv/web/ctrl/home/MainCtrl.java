@@ -175,22 +175,26 @@ public class MainCtrl extends BaseCtrl {
 		pagoEfectivo = pagoServicio.getTotalPago(new Date(), 
 				Arrays.asList(new String[] {"ANULADO"}), 
 				Arrays.asList(new String[] {"1"}), 
-				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_EFECTIVO, TipoRetornoParametroGenerico.STRING));
+				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_EFECTIVO, TipoRetornoParametroGenerico.STRING),
+				establecimientoMain.getIdestablecimiento());
 		
 		pagoTransferencia = pagoServicio.getTotalPago(new Date(), 
 				Arrays.asList(new String[] {"ANULADO"}), 
 				Arrays.asList(new String[] {"1"}), 
-				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_TRANSFERENCIA, TipoRetornoParametroGenerico.STRING));
+				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_TRANSFERENCIA, TipoRetornoParametroGenerico.STRING),
+				establecimientoMain.getIdestablecimiento());
 		
 		pagoTarjetas = pagoServicio.getTotalPago(new Date(), 
 				Arrays.asList(new String[] {"ANULADO"}), 
 				Arrays.asList(new String[] {"1"}), 
-				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_TARJETA, TipoRetornoParametroGenerico.STRING));
+				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_TARJETA, TipoRetornoParametroGenerico.STRING),
+				establecimientoMain.getIdestablecimiento());
 		
 		pagoCredito = pagoServicio.getTotalPago(new Date(), 
 				Arrays.asList(new String[] {"ANULADO"}), 
 				Arrays.asList(new String[] {"1"}), 
-				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_CREDITO, TipoRetornoParametroGenerico.STRING));
+				parametroGenericoServicio.consultarParametro(PGPagos.PAGOS_CREDITO, TipoRetornoParametroGenerico.STRING),
+				establecimientoMain.getIdestablecimiento());
 		
 	}
 	

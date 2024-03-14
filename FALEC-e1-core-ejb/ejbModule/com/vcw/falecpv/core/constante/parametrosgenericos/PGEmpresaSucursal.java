@@ -13,6 +13,7 @@ public enum PGEmpresaSucursal implements ParametroGenericoBaseEnum {
 	SUCURSAL("2"),
 	ESTADO_BORRADOR("3"),
 	PLANTILLA_FACTURA("4"),
+	PLANTILLA_FACTURA_PUNTO_VENTA("30"),
 	PLANTILLA_RETENCION("5"),
 	PLANTILLA_NOTA_CREDITO("6"),
 	PLANTILLA_NOTA_DEBITO("7"),
@@ -47,6 +48,9 @@ public enum PGEmpresaSucursal implements ParametroGenericoBaseEnum {
 		case "01":
 			// Factura
 			return PGEmpresaSucursal.PLANTILLA_FACTURA;
+		case "-01":
+			// Factura
+			return PGEmpresaSucursal.PLANTILLA_FACTURA_PUNTO_VENTA;
 		case "07":
 			// Retencion
 			return PGEmpresaSucursal.PLANTILLA_RETENCION;

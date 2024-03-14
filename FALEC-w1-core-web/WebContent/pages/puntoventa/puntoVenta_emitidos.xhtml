@@ -170,7 +170,7 @@
 					
 					<p:menu overlay="true" trigger="cmlDtFacEmitidas" my="left top" at="left bottom" style="width: 15rem;">
 							
-						<p:menuitem value="Ver" action="#{rideCtrl.showRide()}" icon="fa fa-eye fs-14" rendered="#{v.estado=='ANULADO' or v.estado=='BORRADOR'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_ver')?'ui-state-disabled':''}">
+						<p:menuitem value="Ver" action="#{rideCtrl.showRidePuntoVenta()}" icon="fa fa-eye fs-14" rendered="#{v.estado=='ANULADO' or v.estado=='BORRADOR'}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_ver')?'ui-state-disabled':''}">
 							<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 						</p:menuitem>
 						

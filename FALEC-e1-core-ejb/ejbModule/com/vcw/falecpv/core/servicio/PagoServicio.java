@@ -219,7 +219,7 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 	 * @return
 	 * @throws DaoException
 	 */
-	public BigDecimal getTotalPago(Date fecha, List<String> noEstados, List<String> idTipoCompobantes, String tipoPagoSplit)throws DaoException{
+	public BigDecimal getTotalPago(Date fecha, List<String> noEstados, List<String> idTipoCompobantes, String tipoPagoSplit, String idestablecimiento)throws DaoException{
 		try {
 			
 			String noEstadosSplit = noEstados == null || noEstados.isEmpty() ? null : 
@@ -230,13 +230,14 @@ public class PagoServicio extends AppGenericService<Pago, String> {
 			
 			String sql = "select " + 	
 						"		c.fechaemision, " +
-						"		sum(p.valorpago) as total " +
+						"		sum(p.total) as total " +
 						"	from cabecera c inner join pago p on c.idcabecera = p.idcabecera " + 
 						"	where  " +
 						(noEstadosSplit != null ? "		c.estado not in (" + noEstadosSplit + ") " : " ") +
 						"		and c.fechaemision = '"  + formatoFecha(fecha) + "' " +
 						(tipoPagoSplit !=null ? "		and p.idtipopago in (" + tipoPagoSplit + ") " : " " ) +
 						(comprobantesSplit != null ? "		and c.idtipocomprobante in (" + comprobantesSplit + ") " : " " ) +
+						"   and c.idestablecimiento='" + idestablecimiento + "' " +
 						"	group by " +
 						"		c.fechaemision ";
 			

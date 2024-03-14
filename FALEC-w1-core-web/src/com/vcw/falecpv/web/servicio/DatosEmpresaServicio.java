@@ -29,8 +29,8 @@ import com.vcw.falecpv.core.servicio.EmpresaServicio;
 import com.vcw.falecpv.core.servicio.IceServicio;
 import com.vcw.falecpv.core.servicio.IvaServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio;
-import com.vcw.falecpv.core.servicio.UsuarioServicio;
 import com.vcw.falecpv.core.servicio.ParametroGenericoServicio.TipoRetornoParametroGenerico;
+import com.vcw.falecpv.core.servicio.UsuarioServicio;
 
 /**
  * @author cristianvillarreal

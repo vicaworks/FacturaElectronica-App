@@ -17,6 +17,13 @@
 				/* height: calc(100vh - 260px); */
 				height: 300px;
 			}
+			.layout-wrapper .layout-main .layout-content {
+			    background-color: #ffffff;
+			}
+			body .ui-button.ui-button-icon-only .ui-icon {
+			    margin-top: -0.8rem;
+			    margin-left: -0.7rem;
+			}
         </style>
         
         <script>
@@ -43,13 +50,9 @@
 						<p:ajax event="valueChange" listener="#{mainCtrl.buscar()}" update="@form"/>
 							
 					</p:selectOneMenu>
-	    			<p:commandLink action="#{mainCtrl.buscar}"
-	    				styleClass="flex align-items-baseline text-gray-900" 
-	    				style="gap:.4rem"
-	    				update="@all">
-	    				<i class="fa-solid fa-arrow-rotate-right fs-15 text-primary-600"></i>
-	    				<span class="fs-12 text-primary-600">Refrescar</span>
-	    			</p:commandLink>
+					<p:commandButton icon="fa-solid fa-arrow-rotate-right fs-15"
+						action="#{mainCtrl.buscar}"
+	    				update="@all"/>
 	    		</h:form>
 		        <div class="panel__grid contenedor">
 		            <div class="card-forma-1" style="background-color: white;">
@@ -91,232 +94,263 @@
 		        </div>
 		    </header>
 		
-		    <section class="resumen-valor contenedor">
-		        <div class="card-format-3">
-		            <div class="card-format-3__aside-contenido">
-		                <div class="card-format-3__header-grid">
-		                    <h2 class="card-format-3__header">Total de ventas</h2>
-		                    <div class="card-format-3__header-subtitulo">
-		                        <i class="fa-solid fa-calendar-days"></i>
-		                        <span class="card-format-3__footer-heading">
-		                        	<h:outputText value="#{mainCtrl.fechaActual}" >
-										<f:convertDateTime pattern="dd/MM/yyyy"/>
+		    <section class="contenedor">
+		    	
+                <div class="grid">
+                    <div class="col-12 md:col-6">
+                        <div class="p-3 text-center bg-purple-500" style="border-radius: .3rem">
+                            <span
+                                class="inline-flex justify-content-center align-items-center bg-purple-600 border-circle mb-3"
+                                style="width:60px; height: 60px">
+                                <i class="fa-solid fa-comments-dollar text-5xl text-white"></i>
+                            </span>
+                            <div class="font-medium text-white mb-2">
+                            	<h:outputText value="#{mainCtrl.totalVentas.totalconimpuestos == null ? 0 : mainCtrl.totalVentas.totalconimpuestos}" styleClass="fs-18">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+                            </div>
+                            <div class="flex align-items-baseline gap-2 justify-content-center">
+	                            <span class="text-purple-100 font-medium">Ventas hoy</span>
+	                            <h:outputText value="#{mainCtrl.fechaActual}" styleClass="text-purple-100 font-medium">
+									<f:convertDateTime pattern="EEEE dd/MM/yyyy" locale="es"/>
+								</h:outputText>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 md:col-6">
+                        <div class="p-3 text-center bg-blue-500" style="border-radius: .3rem;">
+                            <span
+                                class="inline-flex justify-content-center align-items-center bg-blue-600 border-circle mb-3"
+                                style="width:60px; height: 60px">
+                                <i class="fa-solid fa-box text-5xl text-white"></i>
+                            </span>
+                            <div class="font-medium text-white mb-2">
+                            	<h:outputText value="#{mainCtrl.totalCajaChica}" styleClass="fs-18">
+									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+								</h:outputText>
+                            </div>
+                            <div class="flex align-items-baseline gap-2 justify-content-center">
+	                            <span class="text-blue-100 font-medium">Caja chica hoy</span>
+	                            <h:outputText value="#{mainCtrl.fechaActual}" styleClass="text-blue-100 font-medium">
+									<f:convertDateTime pattern="EEEE dd/MM/yyyy" locale="es"/>
+								</h:outputText>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+		    
+		    </section>
+		    
+		    <section class="contenedor">
+		    	<div class="grid mt-1">
+	                <div class="col-12 md:col-6 lg:col-3">
+	                    <div class="surface-card shadow-2 p-3 border-round">
+	                        <div class="flex justify-content-between mb-3">
+	                            <div>
+	                                <span class="block text-900 mb-3">Pagos en efectivo</span>
+	                                <h:outputText value="#{mainCtrl.pagoEfectivo}" styleClass="text-900 font-medium text-3xl">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
-		                        </span>
-		                    </div>
-		                </div>
-		                <div class="card-format-3__contenido">
-		                    <span class="card-format-3__contenido-valor ">
-		                    	<h:outputText value="#{mainCtrl.totalVentas.totalconimpuestos == null ? 0 : mainCtrl.totalVentas.totalconimpuestos}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-		                    </span>
-		                    <span class="card-format-3__contenido-descripcion ">Ventas al día de hoy</span>
-		                </div>
-		
-		            </div>
-		            <div class="card-format-3__aside-icono">
-		                <i class="fa-solid fa-cash-register text-primary-600 font-semibold"></i>
-		            </div>
-		        </div>
-		
-		
-		        <div class="card-format-4">
-		            <div class="box-f1">
-		                <div class="box-f1__grid ">
-		                    <div class="box-f1__valor text-primary-600">
-		                    	<h:outputText value="#{mainCtrl.pagoEfectivo}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-		                    </div>
-		                    <div class="box-f1__resumen">Efectivo</div>
-		                </div>
-		            </div>
-		            <div class="box-f1">
-		                <div class="box-f1__grid box-divisor__leftbottom">
-		                    <div class="box-f1__valor">
-		                    	<h:outputText value="#{mainCtrl.pagoTransferencia}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-		                    </div>
-		                    <div class="box-f1__resumen">Transferencias</div>
-		                </div>
-		            </div>
-		            <div class="box-f1">
-		                <div class="box-f1__grid box-divisor__rightbottom">
-		                    <div class="box-f1__valor">
-		                    	<h:outputText value="#{mainCtrl.pagoTarjetas}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-		                    </div>
-		                    <div class="box-f1__resumen">Tarjetas</div>
-		                </div>
-		            </div>
-		            <div class="box-f1">
-		                <div class="box-f1__grid">
-		                    <div class="box-f1__valor text-pink-600">
-           			            <h:outputText value="#{mainCtrl.pagoCredito}">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-		                    </div>
-		                    <div class="box-f1__resumen">Crédito</div>
-		                </div>
-		            </div>
-		        </div>
-		
-		
-		        <div class="card-format-3">
-		            <div class="card-format-3__aside-contenido">
-		                <div class="card-format-3__header-grid">
-		                    <h2 class="card-format-3__header">Caja chica</h2>
-		                    <div class="card-format-3__header-subtitulo">
-		                        <i class="fa-solid fa-calendar-days"></i>
-		                        <span class="card-format-3__footer-heading">
-		                        	<h:outputText value="#{mainCtrl.fechaActual}" >
-										<f:convertDateTime pattern="dd/MM/yyyy"/>
+	                            </div>
+	                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+	                                style="width:2.5rem;height:2.5rem">
+	                                <i class="fa-solid fa-hand-holding-dollar text-blue-700 text-3xl"></i>
+	                            </div>
+	                        </div>
+	                        <span class="text-green-500 font-medium">Ventas</span>
+	                        <span class="text-500">al día de hoy</span>
+	                    </div>
+	                </div>
+	                
+	                <div class="col-12 md:col-6 lg:col-3">
+	                    <div class="surface-card shadow-2 p-3 border-round">
+	                        <div class="flex justify-content-between mb-3">
+	                            <div>
+	                                <span class="block text-900 mb-3">Pagos en transferencias</span>
+	                                <h:outputText value="#{mainCtrl.pagoTransferencia}" styleClass="text-900 font-medium text-3xl">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
-		                        </span>
-		                    </div>
-		                </div>
-		                <div class="card-format-3__contenido">
-		                    <span class="card-format-3__contenido-valor ">
-		                    	<h:outputText value="#{mainCtrl.totalCajaChica}" >
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-		                    </span>
-		                    <span class="card-format-3__contenido-descripcion ">Saldo al día de hoy</span>
-		                </div>
-		
-		            </div>
-		            <div class="card-format-3__aside-icono">
-		                <i class="fa-solid fa-money-check-dollar text-pink-600 font-semibold"></i>
-		            </div>
-		        </div>
-		
+	                            </div>
+	                            <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+	                                style="width:2.5rem;height:2.5rem">
+	                                <i class="fa-solid fa-money-bill-transfer text-orange-700 text-3xl"></i>
+	                            </div>
+	                        </div>
+	                        <span class="text-green-500 font-medium">Ventas</span>
+	                        <span class="text-500">al día de hoy</span>
+	                    </div>
+	                </div>
+	                
+	                <div class="col-12 md:col-6 lg:col-3">
+	                    <div class="surface-card shadow-2 p-3 border-round">
+	                        <div class="flex justify-content-between mb-3">
+	                            <div>
+	                                <span class="block text-900 mb-3">Pagos en tarjetas</span>
+	                                <h:outputText value="#{mainCtrl.pagoTarjetas}" styleClass="text-900 font-medium text-3xl">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+	                            </div>
+	                            <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+	                                style="width:2.5rem;height:2.5rem">
+	                                <i class="fa-brands fa-cc-visa text-cyan-500 text-3xl"></i>
+	                            </div>
+	                        </div>
+	                        <span class="text-green-500 font-medium">Ventas</span>
+	                        <span class="text-500">al día de hoy</span>
+	                    </div>
+	                </div>
+	                
+	                <div class="col-12 md:col-6 lg:col-3">
+	                    <div class="surface-card shadow-2 p-3 border-round">
+	                        <div class="flex justify-content-between mb-3">
+	                            <div>
+	                                <span class="block text-900 mb-3">Pagos en crédito</span>
+	                                <h:outputText value="#{mainCtrl.pagoCredito}" styleClass="text-900 font-medium text-3xl">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
+									</h:outputText>
+	                            </div>
+	                            <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+	                                style="width:2.5rem;height:2.5rem">
+	                                <i class="fa-solid fa-cedi-sign text-purple-500 text-3xl"></i>
+	                            </div>
+	                        </div>
+	                        <span class="text-green-500 font-medium">Ventas</span>
+	                        <span class="text-500">al día de hoy</span>
+	                    </div>
+	                </div>
+	                
+	            </div>
 		    </section>
 		    
 		    <main>
-		        <div class="panel-resumen contenedor">
-		        
-		            <div class="card h-full">
-		                <h2 class="card__heading card__heading--noBorder">Facturas emitidas</h2>
-		                
-		                
-		                <p:dataTable id="twoDT" var="c"
-							value="#{mainCtrl.resumenVentas}" scrollable="true"
-							emptyMessage="#{msg['mensaje.noexistenDatos']}"
-							styleClass="twoDT mt-1"  
-							rowKey="#{c.idcabecera}"
-							paginator="true"
-			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-			                paginatorPosition="bottom"  
-							rows="10"
-							rowsPerPageTemplate="10,15,20,25,30,35,40">
-							
-							<p:column headerText="NUM" style="width:200px">
-								<div class="pr-2">
-									<div class="flex justify-content-between">
-										<div class="flex align-items-baseline" style="gap: .5rem;">
-											<h:outputText value="#{mainCtrl.getFormatoNumDocumento(c.numdocumento)}" 
-												styleClass="font-semibold" style="color:black;"/>
-											<span class="fs-9 text-gray-400">Factura</span>
+		        <div class="grid contenedor">
+		        	<div class="col-12 lg:col-6">
+			            <div class="card">
+			                <h2 class="card__heading card__heading--noBorder">Facturas emitidas</h2>
+			                
+			                
+			                <p:dataTable id="twoDT" var="c"
+								value="#{mainCtrl.resumenVentas}" scrollable="true"
+								emptyMessage="#{msg['mensaje.noexistenDatos']}"
+								styleClass="twoDT mt-1"  
+								rowKey="#{c.idcabecera}"
+								paginator="true"
+				                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+				                paginatorPosition="bottom"  
+								rows="10"
+								rowsPerPageTemplate="10,15,20,25,30,35,40">
+								
+								<p:column headerText="NUM" style="width:22rem;">
+									<div class="pr-2">
+										<div class="flex justify-content-between">
+											<div class="flex align-items-baseline" style="gap: .5rem;">
+												<h:outputText value="#{mainCtrl.getFormatoNumDocumento(c.numdocumento)}" 
+													styleClass="font-semibold" style="color:black;"/>
+												<span class="fs-10 text-900">Factura</span>
+											</div>
+											<div class="flex align-items-baseline text-900" style="gap: .5rem;">
+												<i class="fa-regular fa-clock"></i>
+												<h:outputText value="#{c.updated}" style="width:3rem;" styleClass="text-right">
+													<f:convertDateTime pattern="HH:mm"/>
+												</h:outputText>
+											</div>
 										</div>
-										<div class="flex align-items-baseline" style="gap: .5rem;">
-											<i class="fa-regular fa-clock"></i>
-											<h:outputText value="#{c.updated}" style="width:3rem;" styleClass="text-right">
-												<f:convertDateTime pattern="HH:mm"/>
-											</h:outputText>
+										<div class="mt-1 flex justify-content-between">
+											<span class="font-semibold fs-14 font-italic">SR<span class="text-pink-500">I</span></span>
+											<span class="#{utilsMakoCtrl.getComprobanteStyle(c.estado)} fs-10 py-1" style="width: 10rem;">#{c.estado}</span>
 										</div>
 									</div>
-									<div class="mt-1 flex justify-content-between">
-										<span class="font-semibold fs-14 font-italic">SR<span class="text-pink-500">I</span></span>
-										<span class="#{utilsMakoCtrl.getComprobanteStyle(c.estado)} fs-9 py-1" style="width: 10rem;">#{c.estado}</span>
+								</p:column>
+								
+								<p:column headerText="CLIENTE" style="width:18rem;">
+									<div class="flex flex-column justify-content-between" style="height: 3.1rem;">
+										<span class="text-blue-600 font-normal">#{c.identificador}</span>
+										<span class="font-normal text-900">#{c.razonsocial}</span>
 									</div>
-								</div>
-							</p:column>
-							
-							<p:column headerText="CLIENTE" style="width:25rem;">
-								<div class="flex flex-column justify-content-between" style="height: 3.1rem;">
-									<span class="text-blue-600 font-normal">#{c.identificador}</span>
-									<span class="font-normal">#{c.razonsocial}</span>
-								</div>
-							</p:column>
-							
-							<p:column headerText="TOTAL"
-								styleClass="text-right" 
-								style="width:8rem;vertical-align: middle;">
-								<h:outputText value="#{c.totalconimpuestos}" 
-									styleClass="text-xl font-semibold">
-									<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
-								</h:outputText>
-							</p:column>
-							
-						</p:dataTable>
-		                
-		                
-		                <div class="card__footer card__footer--noBorder">
-		                    <div class="text-3xl flex justify-content-between font-normal">
-		                        <i class="fa-solid fa-calendar-days"></i>
-		                        <span>
-		                        	<h:outputText value="#{mainCtrl.fechaActual}">
-										<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</p:column>
+								
+								<p:column headerText="TOTAL"
+									styleClass="text-right" 
+									style="width:8rem;vertical-align: middle;">
+									<h:outputText value="#{c.totalconimpuestos}" 
+										styleClass="text-2xl text-900">
+										<f:convertNumber pattern="#{appSessionCtrl.formatoMoneda}"/>
 									</h:outputText>
-		                        </span>
-		                    </div>
-		                </div>
-		
-		            </div>
+								</p:column>
+								
+							</p:dataTable>
+			                
+			                
+			                <div class="card__footer card__footer--noBorder">
+			                    <div class="text-3xl flex justify-content-between font-normal">
+			                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+		                                style="width:2.5rem;height:2.5rem">
+		                                <i class="fa-solid fa-calendar-days text-blue-700 text-2xl"></i>
+		                            </div>
+			                        <span>
+			                        	<h:outputText value="#{mainCtrl.fechaActual}">
+											<f:convertDateTime pattern="EEEE dd/MM/yyyy" locale="es"/>
+										</h:outputText>
+			                        </span>
+			                    </div>
+			                </div>
+			
+			            </div>
+		        	</div>
 		            
-		            
-		            <div class="card h-full">
-		                <h2 class="card__heading card__heading--noBorder">Productos más vendidos</h2>
-		                
-		                
-		                <p:dataTable id="oneDT" var="c"
-							value="#{mainCtrl.productosMasVendidos}" scrollable="true"
-							emptyMessage="#{msg['mensaje.noexistenDatos']}"
-							styleClass="twoDT mt-1"  
-							rowKey="#{c.idproducto}"
-							paginator="true"
-			                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-			                paginatorPosition="bottom"  
-							rows="20"
-							rowsPerPageTemplate="10,15,20,25,30,35,40">
-							
-							<p:column headerText="ITEM">
-								<div class="flex flex-column" style="gap: .5rem;">
-									<h:outputText value="#{c.nombregenerico}" styleClass="font-medium"/>
-									<div class="flex align-items-baseline" style="gap: .5rem;">
-										<i class="fa-solid fa-barcode"></i>
-										<!-- <i class="fa-solid fa-barcode font-normal text-primary-600"></i> -->
-										<span class="text-base">#{c.codigoprincipal}</span>
+		            <div class="col-12 lg:col-6">
+			            <div class="card">
+			                <h2 class="card__heading card__heading--noBorder">Productos más vendidos</h2>
+			                
+			                
+			                <p:dataTable id="oneDT" var="c"
+								value="#{mainCtrl.productosMasVendidos}" scrollable="true"
+								emptyMessage="#{msg['mensaje.noexistenDatos']}"
+								styleClass="twoDT mt-1"  
+								rowKey="#{c.idproducto}"
+								paginator="true"
+				                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+				                paginatorPosition="bottom"  
+								rows="20"
+								rowsPerPageTemplate="10,15,20,25,30,35,40">
+								
+								<p:column headerText="ITEM">
+									<div class="flex flex-column" style="gap: .5rem;">
+										<h:outputText value="#{c.nombregenerico}" styleClass="text-800 fs-12"/>
+										<div class="flex align-items-baseline" style="gap: .5rem;">
+											<i class="fa-solid fa-barcode text-700"></i>
+											<span class="text-700">#{c.codigoprincipal}</span>
+										</div>
 									</div>
-								</div>
-							</p:column>
-							
-							<p:column headerText="CANTIDAD" style="width:150px;vertical-align: middle;">
-								<div class="text-center">
-									<h:outputText value="#{c.cantidad}" 
-										styleClass="text-2xl font-bold text-primary-600">
-										<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
-									</h:outputText>									
-								</div>
-							</p:column>
-							
-							
-						</p:dataTable>	                
-		                
-		                <div class="card__footer card__footer--noBorder">
-		                    <div class="text-3xl flex justify-content-between font-normal">
-		                        <i class="fa-solid fa-calendar-days"></i>
-		                        <span>Últimos 21 días</span>
-		                    </div>
-		                </div>
-		
+								</p:column>
+								
+								<p:column headerText="CANTIDAD" style="width:150px;vertical-align: middle;">
+									<div class="text-center">
+										<h:outputText value="#{c.cantidad}" 
+											styleClass="text-2xl font-bold text-primary-600">
+											<f:convertNumber pattern="#{appSessionCtrl.formatoInteger}"/>
+										</h:outputText>									
+									</div>
+								</p:column>
+								
+								
+							</p:dataTable>	                
+			                
+			                <div class="card__footer card__footer--noBorder">
+			                    <div class="text-3xl flex justify-content-between font-normal">
+			                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+		                                style="width:2.5rem;height:2.5rem">
+		                                <i class="fa-solid fa-calendar-days text-blue-700 text-2xl"></i>
+		                            </div>
+			                        <span>Últimos 21 días</span>
+			                    </div>
+			                </div>
+			
+			            </div>
 		            </div>
-		            
 		        </div>
 		    </main>
     	

@@ -22,6 +22,7 @@
         <title><ui:insert name="title">PrimeFaces Roma</ui:insert></title>
         <h:outputScript name="js/nanoscroller.js" library="roma-layout" />
         <h:outputScript name="js/layout.js" library="roma-layout" />
+        <h:outputScript name="primeblocks.js" library="js" />
         <ui:insert name="head"/>
         <link rel="preconnect" href="https://fonts.googleapis.com"/> 
 		<link rel="preconnect" href="https://fonts.gstatic.com"/> 
@@ -110,14 +111,11 @@
 	            <ui:include src="/pages/common/incl_common_message.xhtml" />
 	        </div>
 	       
-			<h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />			
-	        <h:outputStylesheet name="css/primeicons.css" library="roma-layout" />
-	        <h:outputStylesheet name="primeflex-saga.css" library="css" />
 	        <h:outputStylesheet name="prism.css" library="css" />
-			<!-- Prime Flex Thems -->
-			<link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/themes/saga-blue.css"/>
-		    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/themes/arya-blue.css"/>
-		    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/themes/vela-blue.css"/>
+	        <h:outputStylesheet name="css/primeicons.css" library="roma-layout" />
+			<h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />			
+	        <h:outputStylesheet name="saga-blue.css" library="css" />			
+	        <h:outputStylesheet name="extensions.css" library="css" />
 		    <!-- Roma Layout -->
 	        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="roma-layout" />
 	        <!-- Style mako -->

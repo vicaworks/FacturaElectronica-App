@@ -874,14 +874,14 @@ body.gradient {
   flex: 1;
   padding: 1.5rem;
   border: 1px solid #b3b3b3;
-  border-radius: 1rem;
+  border-radius: 0.3rem;
 }
 .card-forma-1__heading-1 {
   display: flex;
   justify-content: space-between;
   text-transform: none;
   padding: 0;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 1rem 0;
   font-size: 2rem;
 }
 @media (min-width: 768px) {
@@ -898,7 +898,7 @@ body.gradient {
 }
 @media (min-width: 768px) {
   .card-forma-1__heading-2 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 }
 .card-forma-1__accesos {
@@ -1237,7 +1237,7 @@ body.gradient {
   padding: 0.8rem;
   background-color: #FFFFFF;
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 @media (min-width: 768px) {
@@ -1253,6 +1253,7 @@ body.gradient {
   padding: 1rem 0 0 0;
   text-transform: none;
   line-height: 0;
+  margin-bottom: 0.5rem;
 }
 .card__heading::after {
   content: "";

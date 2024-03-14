@@ -99,7 +99,7 @@ public class RideServicio {
 	 * @throws ParametroRequeridoException
 	 * @throws IOException 
 	 */
-	public byte[] generarRideFacade(String idCabecera)throws RideException,DaoException,NoResultException, JAXBException, ResourceException, NumberFormatException, ParametroRequeridoException, IOException{
+	public byte[] generarRideFacade(String idCabecera,String subtipo)throws RideException,DaoException,NoResultException, JAXBException, ResourceException, NumberFormatException, ParametroRequeridoException, IOException{
 		
 		String pathPlantilla = null;
 		byte[] ride = null;
@@ -123,12 +123,27 @@ public class RideServicio {
 		}
 		
 		Establecimiento e = establecimientoServicio.consultarByPk(c.getEstablecimiento().getIdestablecimiento());
-		pathPlantilla = getPathPlantilla(c.getTipocomprobante().getIdentificador(),e);
+		String identificadorTipoComprobante = c.getTipocomprobante().getIdentificador();
+		if(subtipo != null) {
+			switch (subtipo) {
+			case "PUNTO_VENTA":
+				identificadorTipoComprobante = "-" + identificadorTipoComprobante;
+				break;
+
+			default:
+				break;
+			}
+		}
+		pathPlantilla = getPathPlantilla(identificadorTipoComprobante,e);
 		
 		switch (GenTipoDocumentoEnum.getEnumByIdentificador(c.getTipocomprobante().getIdentificador())) {
 		case FACTURA:
 			// Factura		
-			ride = getRideFactura(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
+			if(subtipo == null) {
+				ride = getRideFactura(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
+			}else if(subtipo.equals("PUNTO_VENTA")) {
+				ride = getRideFacturaPuntoVenta(xmlDocElectronico, c, pathPlantilla,getPathLogoEstablecimiento(e));
+			}
 			break;
 		case RETENCION:
 			// Retencion
@@ -234,6 +249,41 @@ public class RideServicio {
 	 * @throws DaoException
 	 */
 	private byte[] getRideFactura(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
+		XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlFactura(),"UTF-8");
+		
+		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());
+		f.setNumeroAutorizacion(cabecera.getNumeroautorizacion());
+		f.setPathLogo(pathLogo);
+		
+		if(f.getInfoFactura().getPagoList()!=null) {
+			for (XmlPago p : f.getInfoFactura().getPagoList()) {
+				p.setDescripcion(tipopagoServicio.tipopagoSri(p.getFormaPago()));
+			}
+		}
+		
+		// totalizar el comprobante
+		f.setTotalComprobanteList(comprobanteUtilServicio.populateTotalesComprobanteFactura(f, cabecera.getEstablecimiento().getEmpresa().getIdempresa(), true));
+		f.getInfoFactura().setTelefonocomprador(cabecera.getCliente().getTelefono()!=null?cabecera.getCliente().getTelefono():"-");
+		
+		// genera el reporte
+		FileUtilApp fileUtilApp = new FileUtilApp();
+		List<XmlFactura> lista = new ArrayList<>();
+		lista.add(f);
+		return fileUtilApp.getReportByReportPath(getNombreReporte(pathPlantilla), lista, ExportarFileEnum.PDF, getDirReporte(pathPlantilla));
+	}
+	
+	/**
+	 * @author cristianvillarreal
+	 * @param xmlRide
+	 * @param cabecera
+	 * @param pathPlantilla
+	 * @param pathLogo
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws JAXBException
+	 * @throws DaoException
+	 */
+	private byte[] getRideFacturaPuntoVenta(String xmlRide,Cabecera cabecera, String pathPlantilla,String pathLogo) throws UnsupportedEncodingException, JAXBException, DaoException {
 		XmlFactura f = XmlCommonsUtil.jaxbunmarshall(xmlRide, new XmlFactura(),"UTF-8");
 		
 		f.setFechaAutorizacion(cabecera.getFechaautorizacion()!=null?cabecera.getFechaautorizacion():cabecera.getFechaemision());

@@ -25,6 +25,7 @@ public class ConfEstablecimientoDto implements Serializable {
 	private String plantillaEmail;
 	
 	private String plantillaFactura;
+	private String plantillaFacturaPuntoVenta;
 	private String plantillaRetencion;
 	private String plantillaNotaCredito;
 	private String plantillaNotaDebito;
@@ -213,6 +214,22 @@ public class ConfEstablecimientoDto implements Serializable {
 	 */
 	public void setPlantillaLiqCompra(String plantillaLiqCompra) {
 		this.plantillaLiqCompra = plantillaLiqCompra;
+	}
+
+
+	/**
+	 * @return the plantillaFacturaPuntoVenta
+	 */
+	public String getPlantillaFacturaPuntoVenta() {
+		return plantillaFacturaPuntoVenta;
+	}
+
+
+	/**
+	 * @param plantillaFacturaPuntoVenta the plantillaFacturaPuntoVenta to set
+	 */
+	public void setPlantillaFacturaPuntoVenta(String plantillaFacturaPuntoVenta) {
+		this.plantillaFacturaPuntoVenta = plantillaFacturaPuntoVenta;
 	}
 	
 }

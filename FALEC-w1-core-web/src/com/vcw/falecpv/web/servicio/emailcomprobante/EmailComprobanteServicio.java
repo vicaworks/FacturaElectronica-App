@@ -103,7 +103,7 @@ public class EmailComprobanteServicio {
 			}
 			
 			if(ride==null) {
-				ride = rideServicio.generarRideFacade(idCabecera);
+				ride = rideServicio.generarRideFacade(idCabecera,null);
 			}
 			
 			EmailDto emailDto = emailService.configurarCorreo(cabecera.getEstablecimiento().getEmpresa().getIdempresa(), cabecera.getIdusuario());

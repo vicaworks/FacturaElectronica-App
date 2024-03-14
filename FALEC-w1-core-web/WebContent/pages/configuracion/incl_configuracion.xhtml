@@ -40,7 +40,7 @@
 		                    	<div class="grid">
 									
 									<div class="col-7 f-upload">
-				                    <span class="requerido">Registrar el certificado de firma electrónica, Certificado formato P12</span>
+				                    <span class="Requerido">Registrar el certificado de firma electrónica, Certificado formato P12</span>
 										
 										
 						           		<p:fileUpload id="fulArchivoFirma"
@@ -56,13 +56,13 @@
 						           					  allowTypes="/(\.|\/)(p12)$/"
 													  invalidFileMessage="SOLO FORMATOS [.p12]"
 													  required="true"
-													  requiredMessage="REQUERIDO">
+													  requiredMessage="Requerido">
 								  		</p:fileUpload>
 									</div>
 									
 									<div class="col-12 md:col-7">
 										<h:outputText value="Archivo de firma elactrónica" styleClass="text-gray-900 fw-5"/>
-										<p:inputText value="#{confEmpresaCtrl.empresaSelected.nombrearchivo}" required="true" requiredMessage="REQUERIDO" readonly="true" id="intNameFileFirmaDigital" styleClass="w-full mt-1"/>
+										<p:inputText value="#{confEmpresaCtrl.empresaSelected.nombrearchivo}" required="true" requiredMessage="Requerido" readonly="true" id="intNameFileFirmaDigital" styleClass="w-full mt-1"/>
 										<h:outputText  />
 										<p:message for="intNameFileFirmaDigital" styleClass="block m-0 p-0"/>											
 									</div>
@@ -72,7 +72,7 @@
 										<p:calendar id="calFechaEmision" value="#{confEmpresaCtrl.empresaSelected.fechaemision}"
 											pattern="dd/MM/yyyy"
 											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+											requiredMessage="Requerido" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
 										</p:calendar>
 										<p:message for="calFechaEmision" styleClass="block m-0 p-0"/>
 									</div>
@@ -82,7 +82,7 @@
 										<p:calendar id="calFechaCaducidad" value="#{confEmpresaCtrl.empresaSelected.fechaexpiracion}"
 											pattern="dd/MM/yyyy"
 											locale="es" 
-											requiredMessage="REQUERIDO" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
+											requiredMessage="Requerido" required="true" styleClass="w-full" placeholder="dd/MM/yyyy">
 										</p:calendar>
 										<p:message for="calFechaCaducidad" styleClass="block m-0 p-0"/>
 									</div>
@@ -90,7 +90,7 @@
 									<div class="col-12 md:col-7">
 									
 										<p:outputLabel value="Clave de firma electrónica" styleClass="text-gray-900 fw-5"/>
-					                    <p:inputText id="intclavefirma" value="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="w-full mt-1" required="true" requiredMessage="REQUERIDO">
+					                    <p:inputText id="intclavefirma" value="#{confEmpresaCtrl.empresaSelected.clavefirmaelectronica}" styleClass="w-full mt-1" required="true" requiredMessage="Requerido">
 					                    </p:inputText> 					                    
 					                    <p:message for="intclavefirma" styleClass="block m-0 p-0"/>
 										
@@ -137,14 +137,14 @@
 			                    <div class="grid mt-1">
 			                    	<div class="col-12 md:col-7">
 										<h:outputText value="Servidor SMTP" styleClass="text-gray-900 fw-5"/>
-										<p:inputText id="intServidopSmtp" value="#{confEmpresaCtrl.smtpDto.servidor}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										<p:inputText id="intServidopSmtp" value="#{confEmpresaCtrl.smtpDto.servidor}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="100">
 										</p:inputText>
 										<p:message for="intServidopSmtp" styleClass="block m-0 p-0"/>
 									</div>
 									
 									<div class="col-12 md:col-7">
 										<h:outputText value="Puerto" styleClass="text-gray-900 fw-5"/>
-										<p:inputText id="intPuertoSmtp" value="#{confEmpresaCtrl.smtpDto.puerto}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="3" validatorMessage="SOLO NÚMEROS">
+										<p:inputText id="intPuertoSmtp" value="#{confEmpresaCtrl.smtpDto.puerto}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="3" validatorMessage="SOLO NÚMEROS">
 											<f:validateRegex pattern="[0-9]+"></f:validateRegex>
 										</p:inputText>
 										<p:message for="intPuertoSmtp" styleClass="block m-0 p-0"/>
@@ -152,21 +152,21 @@
 									
 									<div class="col-12 md:col-7">
 										<h:outputText value="Usuario" styleClass="text-gray-900 fw-5"/>
-										<p:inputText id="intUsuarioSmtp" value="#{confEmpresaCtrl.smtpDto.usuario}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										<p:inputText id="intUsuarioSmtp" value="#{confEmpresaCtrl.smtpDto.usuario}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="100">
 										</p:inputText>
 										<p:message for="intUsuarioSmtp" styleClass="block m-0 p-0"/>
 									</div>
 									
 									<div class="col-12 md:col-7">
 										<h:outputText value="Contraseña" styleClass="text-gray-900 fw-5"/>
-										<p:inputText id="intClaveSmtp" value="#{confEmpresaCtrl.smtpDto.clave}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										<p:inputText id="intClaveSmtp" value="#{confEmpresaCtrl.smtpDto.clave}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="100">
 										</p:inputText>
 										<p:message for="intClaveSmtp" styleClass="block m-0 p-0"/>
 									</div>
 									
 									<div class="col-12 md:col-7">
 										<h:outputText value="Nombre del remitente" styleClass="text-gray-900 fw-5"/>
-										<p:inputText id="intNomRemitenteSmtp" value="#{confEmpresaCtrl.smtpDto.nombreRemitente}" required="false" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="100">
+										<p:inputText id="intNomRemitenteSmtp" value="#{confEmpresaCtrl.smtpDto.nombreRemitente}" required="false" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="100">
 										</p:inputText>
 										<p:message for="intNomRemitenteSmtp" styleClass="block m-0 p-0"/>
 									</div>
@@ -426,7 +426,7 @@
 	                    	
 	                    	<div class="field">
 								<h:outputText value="Email de pruebas" styleClass="text-gray-900 fw-5"/>
-								<p:inputText id="intEmailTest" value="#{confEmpresaCtrl.confEstablecimientoDto.emailsEnvioTest}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
+								<p:inputText id="intEmailTest" value="#{confEmpresaCtrl.confEstablecimientoDto.emailsEnvioTest}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500" placeholder="Para varios correos se puede separar por comas.">
 									<f:validator validatorId="emailSelectItemValidator"/>
 								</p:inputText>
 								<small>Varios correos separar por comas.</small>
@@ -459,41 +459,48 @@
 	                	<h:form id="frmPlantilla">
 	                		
 	                		<div class="field">	                			
-	                    		<h:outputText value="Factura" styleClass="text-gray-900 fw-5"/>
-								<p:inputText id="intplFactura" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaFactura}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+	                    		<h:outputText value="Factura (A4)" styleClass="text-gray-900 fw-5"/>
+								<p:inputText id="intplFactura" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaFactura}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
 								</p:inputText>
 								<p:message for="intplFactura" styleClass="block m-0 p-0"/>
 	                		</div>
 	                		
+	                		<div class="field">	                			
+	                    		<h:outputText value="Factura (Punto de venta)" styleClass="text-gray-900 fw-5"/>
+								<p:inputText id="intplFactura2" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaFacturaPuntoVenta}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
+								</p:inputText>
+								<p:message for="intplFactura2" styleClass="block m-0 p-0"/>
+	                		</div>
+	                		
 	                		<div class="field">	                		
-	                    		<h:outputText value="RETENCIÓN" styleClass="text-gray-900 fw-5"/>
-								<p:inputText id="intplRetencion" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaRetencion}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+	                    		<h:outputText value="Retención" styleClass="text-gray-900 fw-5"/>
+								<p:inputText id="intplRetencion" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaRetencion}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
 								</p:inputText>
 								<p:message for="intplRetencion" styleClass="block m-0 p-0"/>
 	                		</div>
 	                	
 	                		<div class="field">
-	                			<h:outputText value="NOTA DE CRÉDITO" styleClass="text-gray-900 fw-5"/>
-								<p:inputText id="intplNcredito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaCredito}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+	                			<h:outputText value="Nota de crédito" styleClass="text-gray-900 fw-5"/>
+								<p:inputText id="intplNcredito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaCredito}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
 								</p:inputText>
 								<p:message for="intplNcredito" styleClass="block m-0 p-0"/>
 	                		</div>
 	                		<div class="field">
-	                    		<h:outputText value="NOTA DE DÉBITO" styleClass="text-gray-900 fw-5"/>
-								<p:inputText id="intplNdebito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaDebito}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+	                    		<h:outputText value="Nota de débito" styleClass="text-gray-900 fw-5"/>
+								<p:inputText id="intplNdebito" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaNotaDebito}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
 								</p:inputText>
 								<p:message for="intplNdebito" styleClass="block m-0 p-0"/>
 	                		</div>
 	                		<div class="field">
-	                    		<h:outputText value="GUÍA DE REMISIÓN" styleClass="text-gray-900 fw-5"/>
-								<p:inputText id="intplGuiaRem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaGuiaRemision}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+	                    		<h:outputText value="Guía de remisión" styleClass="text-gray-900 fw-5"/>
+								<p:inputText id="intplGuiaRem" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaGuiaRemision}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
 								</p:inputText>
 								<p:message for="intplGuiaRem" styleClass="block m-0 p-0"/>
 	                			
 	                		</div>
 	                		<div class="field">
-	                    		<h:outputText value="LIQUIDACIÓN DE COMPRA" styleClass="text-gray-900 fw-5"/>
-								<p:inputText id="intplliqCompra" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaLiqCompra}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+	                    		<h:outputText value="Liquidación de compra" styleClass="text-gray-900 fw-5"/>
+								<p:inputText id="intplliqCompra" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaLiqCompra}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
 								</p:inputText>
 								<p:message for="intplliqCompra" styleClass="block m-0 p-0"/>
 	                		</div>
@@ -520,7 +527,7 @@
 	                	<h:form id="frmEnvEmail">
 	                		
 	                		<div class="flex align-items-end mb-1">
-	                			<span class="requerido" style="min-width:200px;">Enviar email Factura </span>
+	                			<span class="Requerido" style="min-width:200px;">Enviar email Factura </span>
 	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailfactura}" style="min-width:55px;">
 	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
 	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
@@ -528,7 +535,7 @@
 	                		</div>
 	                		
 	                		<div class="flex align-items-end mb-1">
-	                			<span class="requerido" style="min-width:200px;">Enviar email Retención </span>
+	                			<span class="Requerido" style="min-width:200px;">Enviar email Retención </span>
 	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailretencion}" style="min-width:55px;">
 	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
 	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
@@ -536,7 +543,7 @@
 	                		</div>
 	                		
 	                		<div class="flex align-items-end mb-1">
-	                			<span class="requerido" style="min-width:200px;">Enviar email Nota de Crédito </span>
+	                			<span class="Requerido" style="min-width:200px;">Enviar email Nota de Crédito </span>
 	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailnotacredito}" style="min-width:55px;">
 	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
 	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
@@ -544,7 +551,7 @@
 	                		</div>
 	                		
 	                		<div class="flex align-items-end mb-1">
-	                			<span class="requerido" style="min-width:200px;">Enviar email Nota de Débito </span>
+	                			<span class="Requerido" style="min-width:200px;">Enviar email Nota de Débito </span>
 	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailnotadebito}" style="min-width:55px;">
 	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
 	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
@@ -552,7 +559,7 @@
 	                		</div>
 	                		
 	                		<div class="flex align-items-end mb-1">
-	                			<span class="requerido" style="min-width:200px;">Enviar email Guía de Remisión </span>
+	                			<span class="Requerido" style="min-width:200px;">Enviar email Guía de Remisión </span>
 	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailguiaremision}" style="min-width:55px;">
 	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
 	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
@@ -560,7 +567,7 @@
 	                		</div>
 	                		
 	                		<div class="flex align-items-end mb-1">
-	                			<span class="requerido" style="min-width:200px;">Enviar email Liquidación de Compra </span>
+	                			<span class="Requerido" style="min-width:200px;">Enviar email Liquidación de Compra </span>
 	                			<p:selectOneMenu value="#{confEmpresaCtrl.establecimientoMain.enviaremailliqcompra}" style="min-width:55px;">
 	                				<f:selectItem itemLabel="SI" itemValue="#{1}"/>
 	                				<f:selectItem itemLabel="NO" itemValue="#{0}"/>
@@ -604,8 +611,8 @@
 		                    <p:outputPanel rendered="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmailEstablecimiento}">
 		                    	
 		                    	<div class="field my-1">
-									<h:outputText value="Plantilla contenido email comprobante electrónico" styleClass="requerido"/>
-									<p:inputText id="intEmailPl" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmail}" required="true" requiredMessage="REQUERIDO" styleClass="w-full mt-1" maxlength="500">
+									<h:outputText value="Plantilla contenido email comprobante electrónico" styleClass="Requerido"/>
+									<p:inputText id="intEmailPl" value="#{confEmpresaCtrl.confEstablecimientoDto.plantillaEmail}" required="true" requiredMessage="Requerido" styleClass="w-full mt-1" maxlength="500">
 									</p:inputText>
 									<small>Especificar únicamente el nombre de la plantilla.</small>
 									<p:message for="intEmailPl" styleClass="block m-0 p-0"/>		                    		

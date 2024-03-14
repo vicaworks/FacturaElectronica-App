@@ -16,7 +16,6 @@ import com.vcw.falecpv.core.constante.GenTipoDocumentoEnum;
 import com.vcw.falecpv.core.constante.contadores.TCEstablecimiento;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaEnum;
 import com.vcw.falecpv.core.constante.parametrosgenericos.PGEmpresaSucursal;
-import com.vcw.falecpv.core.constante.parametrosgenericos.PGPlantillasEnum;
 import com.vcw.falecpv.core.dao.impl.EstablecimientoDao;
 import com.vcw.falecpv.core.modelo.dto.ConfEstablecimientoDto;
 import com.vcw.falecpv.core.modelo.persistencia.Establecimiento;
@@ -263,6 +262,7 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			
 			// plantilla comprobantes electronicos
 			conf.setPlantillaFactura(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_FACTURA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
+			conf.setPlantillaFacturaPuntoVenta(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_FACTURA_PUNTO_VENTA, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
 			conf.setPlantillaRetencion(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_RETENCION, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
 			conf.setPlantillaNotaCredito(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_NOTA_CREDITO, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
 			conf.setPlantillaNotaDebito(parametroGenericoEmpresaServicio.consultarParametroEstablecimiento(PGEmpresaSucursal.PLANTILLA_NOTA_DEBITO, TipoRetornoParametroGenerico.STRING, idEstablecimiento));
@@ -335,6 +335,10 @@ public class EstablecimientoServicio extends AppGenericService<Establecimiento, 
 			
 			ParametroGenericoEmpresa parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_FACTURA);
 			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaFactura());
+			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
+			
+			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_FACTURA_PUNTO_VENTA);
+			parametroGenericoEstablecimiento.setValor(confEstablecimientoDto.getPlantillaFacturaPuntoVenta());
 			parametroGenericoEmpresaServicio.actualizar(parametroGenericoEstablecimiento);
 			
 			parametroGenericoEstablecimiento = parametroGenericoEmpresaServicio.getParametroGenericoEmpresaDao().getByEstablecimiento(idEstablecimiento, PGEmpresaSucursal.PLANTILLA_RETENCION);
