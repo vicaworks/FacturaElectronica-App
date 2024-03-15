@@ -98,15 +98,14 @@
 	                <div class="layout-content-mask"></div>
 	            </div>
 	
-	            <p:ajaxStatus styleClass="layout-ajax-loader">
-	                <f:facet name="start">
-	                    <i class="fa fa-circle-o-notch fa-spin layout-ajax-loader-icon Fs30" aria-hidden="true"></i>
-	                </f:facet>
-	
-	                <f:facet name="complete">
-	                    <h:outputText value="" />
-	                </f:facet>
-	            </p:ajaxStatus>
+	            <ui:insert name="evento" >
+					<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />  
+					<p:dialog modal="true" widgetVar="statusDialog" header="Status" showHeader="false"    
+					        draggable="false" closable="false">  
+					    <p:graphicImage name="712.gif" library="img" style="margin:1rem;padding:0px;" width="32" height="32" />  
+					</p:dialog>
+				</ui:insert>
+				
 	            <ui:include src="../../pages/common/incl_message.xhtml" />
 	            <ui:include src="/pages/common/incl_common_message.xhtml" />
 	        </div>
