@@ -162,12 +162,12 @@
 	<div class="card">
 		
 		<div class="flex justify-content-between">
-			<span class="text-gray-900 fw-5">Factura</span>
+			<span class="text-gray-900 fw-5 fs-14">Factura</span>
 			<p:commandButton value="Nueva Factura" 
 				action="#{factMainCtrl.nuevo()}" 
 				immediate="true" 
 				update="@form" 
-				styleClass="ui-button-success min-width-100 fs-12" icon="fa fa-plus fs-12"/>			
+				styleClass="ui-button-success min-width-100 fs-14" icon="fa fa-plus fs-14"/>			
 		</div>
 		
 		<p:dataTable id="pvDetalleDT" var="d"
@@ -244,12 +244,12 @@
 			<p:commandLink action="#{factMainCtrl.registrarPago()}" 
 				immediate="true" 
 				update=":formMain:msgFormMain" 
-				styleClass="flex-1 bg-primary-600 flex gap-2 justify-content-center align-items-center"
+				styleClass="flex-1 bg-primary-600 flex gap-2 justify-content-center align-items-end"
 				style="border-radius: 4px; padding:1rem 0;">				
-				<i class="fa-solid fa-money-check-dollar text-white fs-20"></i>
+				<i class="fa-solid fa-hand-holding-dollar text-white fs-25"></i>
 				<h:outputText value="Pagar" styleClass="text-white fs-20"/>
 			</p:commandLink>
-			<div class="flex-1 flex gap-2 justify-content-end align-items-center">
+			<div class="flex-1 flex gap-2 justify-content-end align-items-baseline">
 				<i class="fa-solid fa-equals fs-20 text-gray-900 fw-5"></i>
 				<h:outputText value="#{factMainCtrl.cabeceraFac!=null?factMainCtrl.cabeceraFac.totalconimpuestos:0}" styleClass="fs-25 text-gray-900 fw-5">
 					<f:convertNumber locale="es_EC" pattern="$ #,##0.00"/>
@@ -285,7 +285,7 @@
 			</div>
 			<div class="flex-0" style="flex-basis: 25%">
 				<p:commandButton value="Calc IVA" 
-					styleClass="digito-btn--opc fs-14 w-full"
+					styleClass="ui-button-success fs-14 w-full"
 					action="#{factMainCtrl.calcularIva()}" 
 					update=":formMain:puntoVenta:pvDetalleDT :formMain:msgFormMain :formMain:puntoVenta:oupTotales :formMain:puntoVenta:oupPrecios"/>
 			</div>

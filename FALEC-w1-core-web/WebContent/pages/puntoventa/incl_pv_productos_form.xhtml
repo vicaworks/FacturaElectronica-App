@@ -166,23 +166,29 @@
 								rendered="#{p.imagen==null}" width="60%"  style="opacity:.5;"/>
 						
 						</div>
-						<div class="pricing-box__precio--grid">
-							<div class="pricing-box__precio-principal">
-								<h:outputText value="#{p.preciouno}" styleClass="fs-16 text-primary-600 font-semibold">
-									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
-								</h:outputText>
-							</div>
-							<div class="pricing-box__precio">
+						<div class="flex justify-content-center">
+							<h:outputText value="#{p.preciouno}" styleClass="fs-16 text-primary-600 font-semibold">
+								<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
+							</h:outputText>
+						</div>
+						<div class="flex justify-content-between">
+							<div class="pricing-box__precio align-items-end">
+								<div style="width:2rem; height: 2rem; border-radius: 50%;" 
+									class="bg-gray-100 flex justify-content-center align-items-center">
+									<span class="fs-12 text-blue-500">2</span>
+								</div>
 								<h:outputText value="#{p.preciodos}" styleClass="fs-13 text-gray-900">
 									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
 								</h:outputText>
-								<span class="fs-11 text-gray-700">Pre-2</span>
 							</div>
-							<div class="pricing-box__precio">
+							<div class="pricing-box__precio align-items-end">
 								<h:outputText value="#{p.preciotres}" styleClass="fs-13 text-gray-900">
 									<f:convertNumber locale="es_EC" pattern="$#,##0.##" />
 								</h:outputText>
-								<span class="fs-11 text-gray-700">Pre-3</span>
+								<div style="width:2rem; height: 2rem; border-radius: 50%;" 
+									class="bg-gray-100 flex justify-content-center align-items-center">
+									<span class="fs-12 text-blue-500">3</span>
+								</div>
 							</div>
 						</div>
 						<div class="divisor"/>
@@ -193,7 +199,7 @@
 									<f:convertNumber locale="es_EC" pattern="#,##0.##" />
 								</h:outputText>								
 							</div>
-							<div class="flex gap-2 align-items-end fs-16 text-gray-900">
+							<div class="flex gap-2 align-items-end fs-16 text-green-500">
 								<h:outputText value="#{p.porcentajedescuento}">
 									<f:convertNumber locale="es_EC" pattern="#,##0.##" />
 								</h:outputText>

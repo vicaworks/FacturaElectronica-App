@@ -43,8 +43,20 @@
    					value="Guardar" 
    					icon="fa-regular fa-floppy-disk fs-12" 
    					action="#{factMainPagoCtrl.generarFactura()}" 
+   					update="@form" 
+   					styleClass="ui-button-success fs-12 max-width-90">
+   					<f:setPropertyActionListener value="#{rideCtrl}" target="#{factMainPagoCtrl.rideCtrl}"/>
+   				</p:commandButton>
+   					
+ 				<p:commandButton 
+   					value="Imprimir" 
+   					icon="fa-solid fa-print fs-12" 
+   					action="#{factMainPagoCtrl.imprimir()}" 
    					update=":formMain:msgFormMain" 
-   					styleClass="ui-button-success fs-12 max-width-90"/>
+   					styleClass="fs-12 max-width-90"
+   					disabled="#{factMainPagoCtrl.cabecerSelected.idcabecera == null}">
+   					<f:setPropertyActionListener value="#{rideCtrl}" target="#{factMainPagoCtrl.rideCtrl}"/>
+   				</p:commandButton>
 	    	
 	    	</div>
 	    	
@@ -77,6 +89,9 @@
 	    
 	    <!-- Form Cliente -->
 	    <ui:include src="../herramientas/incl_cliente_form.xhtml" />
+	    
+	    <!-- RIDE -->
+		<ui:include src="/pages/common/incl_ride.xhtml" />
         
     </ui:define>
 

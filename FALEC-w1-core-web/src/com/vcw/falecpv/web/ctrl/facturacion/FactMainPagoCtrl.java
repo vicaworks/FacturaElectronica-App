@@ -630,9 +630,10 @@ public class FactMainPagoCtrl extends BaseCtrl {
 			cabecerSelected.setIdUsurioTransaccion(AppJsfUtil.getUsuario().getIdusuario());
 			sriDispacher.queue_comprobanteSriDispacher(cabecerSelected);
 			
-			getMessageCommonCtrl().crearMensaje("Ok", 
-							"Factura generada correctamente", 
-					Message.OK);
+			showRide();
+//			getMessageCommonCtrl().crearMensaje("Ok", 
+//							"Factura generada correctamente", 
+//					Message.OK);
 			
 		}  catch (ExisteNumDocumentoException e) {
 			e.printStackTrace();
@@ -688,6 +689,28 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		// infromacion adicional 
 		cabecerSelected.setInfoadicionalList(ComprobanteHelper.determinarInfoAdicional(cabecerSelected));
 		
+	}
+	
+	public void imprimir() {
+		// verifica si solo debe de imprimir
+		if(cabecerSelected.getIdcabecera()!=null) {
+			if(cabeceraServicio.getCabeceraDao().isImprimir(cabecerSelected.getIdcabecera())){
+				showRide();
+				return;
+			}
+		}
+		// pone el nuevo estado
+		generarFactura();
+		AppJsfUtil.ajaxUpdate("formMain");
+		showRide();
+	}
+	
+	private void showRide() {
+		// despliega el comprobante
+		rideCtrl.setIdCabecera(cabecerSelected.getIdcabecera());
+		rideCtrl.setInicialComprobante("FAC-");
+		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(cabecerSelected.getNumdocumento()));
+		rideCtrl.showRide();
 	}
 	
 	/**
