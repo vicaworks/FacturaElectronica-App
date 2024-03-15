@@ -179,19 +179,19 @@
 			
 			<div class="flex justify-content-center align-items-center" style="height: 3rem;margin: 1rem 0;">
 				<div class="flex-1 flex gap-1 align-items-baseline justify-content-center">
-					<h:outputText value="#{factMainPagoCtrl.cabecerSelected.totalconimpuestos}" styleClass="fs-20 text-gray-900 fw-5">
+					<h:outputText value="#{factMainPagoCtrl.cabecerSelected.totalconimpuestos}" styleClass="fs-18 text-gray-900 fw-5">
 	            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 	            	</h:outputText>
-					<span class="fs-12 text-gray-900">Factura</span>
+					<span class="fs-12 text-gray-900">A pagar</span>
 				</div>
 				<p:divider layout="vertical" styleClass="flex-0 px-1">
 	                <b class="fs-20">=</b>
 	            </p:divider>
 				<div class="flex-1 flex gap-1 align-items-baseline justify-content-center">
-					<h:outputText value="#{factMainPagoCtrl.totalPago}" styleClass="fs-20 text-primary-600 font-semibold">
+					<h:outputText value="#{factMainPagoCtrl.totalPago}" styleClass="fs-18 text-green-500 font-semibold">
 	            		<f:convertNumber  pattern="#{appSessionCtrl.formatoMoneda}"/>
 	            	</h:outputText>
-					<span class="fs-12 text-primary-600">Pago</span>
+					<span class="fs-12 text-green-600">Pago</span>
 				</div>
 			</div>
 			
