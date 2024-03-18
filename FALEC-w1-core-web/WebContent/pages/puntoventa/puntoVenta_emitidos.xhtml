@@ -174,7 +174,7 @@
 							<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 						</p:menuitem>
 						
-						<p:menuitem value="RIDE" action="#{rideCtrl.showRide()}" icon="fa-regular fa-file-pdf fs-14" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_ride')?'ui-state-disabled':''}">
+						<p:menuitem value="RIDE" action="#{rideCtrl.showRidePuntoVenta()}" icon="fa-regular fa-file-pdf fs-14" disabled="#{appSessionCtrl.isEnviarSri(v.estado)}" styleClass="#{appSessionCtrl.accesoDisable('mn_compelec_factura_ride')?'ui-state-disabled':''}">
 							<f:setPropertyActionListener value="#{v.idcabecera}" target="#{rideCtrl.idCabecera}"/>
 							<f:setPropertyActionListener value="FAC-" target="#{rideCtrl.inicialComprobante}"/>
 							<f:setPropertyActionListener value="#{punVentaEmitidoCtrl.getFormatoNumDocumento(v.numdocumento)}" target="#{rideCtrl.numComprobante}"/>

@@ -710,7 +710,7 @@ public class FactMainPagoCtrl extends BaseCtrl {
 		rideCtrl.setIdCabecera(cabecerSelected.getIdcabecera());
 		rideCtrl.setInicialComprobante("FAC-");
 		rideCtrl.setNumComprobante(ComprobanteHelper.formatNumDocumento(cabecerSelected.getNumdocumento()));
-		rideCtrl.showRide();
+		rideCtrl.showRidePuntoVenta();
 	}
 	
 	/**
