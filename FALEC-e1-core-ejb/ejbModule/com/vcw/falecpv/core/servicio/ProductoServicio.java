@@ -12,8 +12,10 @@ import javax.inject.Inject;
 import com.servitec.common.dao.DaoGenerico;
 import com.servitec.common.dao.exception.DaoException;
 import com.vcw.falecpv.core.constante.contadores.TCProducto;
+import com.vcw.falecpv.core.dao.impl.DetalleDao;
 import com.vcw.falecpv.core.dao.impl.KardexProductoDao;
 import com.vcw.falecpv.core.dao.impl.ProductoDao;
+import com.vcw.falecpv.core.modelo.persistencia.Detalle;
 import com.vcw.falecpv.core.modelo.persistencia.KardexProducto;
 import com.vcw.falecpv.core.modelo.persistencia.Producto;
 import com.xpert.persistence.query.QueryBuilder;
@@ -30,6 +32,9 @@ public class ProductoServicio extends AppGenericService<Producto, String> {
 	
 	@Inject
 	private KardexProductoDao kardexProductoDao;
+	
+	@EJB
+	private DetalleDao detalleDao;
 	
 	@EJB
 	private ContadorPkServicio contadorPkServicio;
@@ -113,6 +118,14 @@ public class ProductoServicio extends AppGenericService<Producto, String> {
 					.equals("k.producto.idproducto",idProducto).count()>0) {
 				return true;
 			}
+			
+			q = new QueryBuilder(detalleDao.getEntityManager());
+			if(q.select("k")
+					.from(Detalle.class,"k")
+					.equals("k.producto.idproducto",idProducto).count()>0) {
+				return true;
+			}
+			
 			return false;
 			
 		} catch (Exception e) {
