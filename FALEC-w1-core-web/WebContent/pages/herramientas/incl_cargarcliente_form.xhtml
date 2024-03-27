@@ -10,6 +10,7 @@
 	
 		.heightFrmImportCliente {
 			height: 400px;
+			max-width: 99%;
 		}
 
 		.divMensaje{
@@ -31,21 +32,21 @@
 		
 		<h:form id="frmImportCliente">			
 			<!-- wraper del formulario para responsive -->			
-			<div class="w-full overflow-y-scroll heightFrmImportCliente contenedorFormulario">				
+			<div class="w-full overflow-auto heightFrmImportCliente contenedorFormulario">				
 				<div class="flex flex-column Fs14 px-1">
 					<h3>Pasos a Seguir...</h3>
 					<span class="block text-justify"><strong>1. </strong>Llenar los datos con el formato adjunto.</span>
 					<div class="block m-0">
 						<p:commandButton ajax="false" 
 							onclick="PrimeFaces.monitorDownload(start, stop);" 
-							value="Descargar" icon="fa fa-download fs-14" 
-							styleClass="ui-button-outlined min-width-150 my-1 fs-14">
+							value="Descargar" icon="fa fa-download fs-12" 
+							styleClass="ui-button-outlined min-width-150 my-1 fs-12">
 							<p:fileDownload value="#{clienteCtrl.plantillaImportarCliente}" />
 						</p:commandButton>
 					</div>
-					<span class="block text-justify"><strong>2. </strong> Los datos se deben completar desde la fila <strong class="Fs16" style="color:red;">3</strong> de la 1era hoja del libro de excel.</span>
+					<span class="block text-justify mb-2"><strong>2. </strong> Los datos se deben completar desde la fila <strong class="Fs16" style="color:red;">3</strong> de la 1era hoja del libro de excel.</span>
 					<span class="block text-justify"><strong>3. </strong> Seleccionar el archivo a importar.</span>
-					<div class="min-width-100 my-1">
+					<div class="my-1" style="width:15rem;">
 						<p:fileUpload id="filUImportIce"
 							listener="#{clienteCtrl.handleUpload_Clientes}"
 							allowTypes="/(\.|\/)(xls)$/"
@@ -74,8 +75,8 @@
 					<div class="min-width-100 my-1">
 						<p:commandButton id="cmdImportIce"
 							value="Importar Clientes" 
-							icon="fa fa-upload fs-14" 
-							styleClass="ui-button-outlined min-width-150 fs-14 #{clienteCtrl.fileClientes == null ? 'ui-state-disabled' : ''}"
+							icon="fa fa-upload fs-12" 
+							styleClass="ui-button-outlined min-width-150 fs-12 #{clienteCtrl.fileClientes == null ? 'ui-state-disabled' : ''}"
 							action="#{clienteCtrl.importarClientes}"  
 							update="@form, formMain"
 						/>

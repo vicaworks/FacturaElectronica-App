@@ -23,7 +23,7 @@
 					<h3>Pasos a Seguir...</h3>
 					<span class="block text-justify"><strong>1. </strong>Llenar los datos con el formato adjunto.</span>
 					<div class="block m-0">
-						<p:commandButton ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" value="Descargar" icon="fa fa-download" styleClass="ui-button-flat min-width-120 my-1 Fs14">
+						<p:commandButton ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" value="Descargar" icon="fa fa-download" styleClass="ui-button-outlined min-width-150 my-1 fs-12">
 							<p:fileDownload value="#{productoCtrl.plantillaImportarProducto}" />
 						</p:commandButton>
 					</div>
@@ -42,7 +42,7 @@
 						</ul>
 					</div>
 					<span class="block text-justify"><strong>4. </strong> Seleccionar el archivo a importar.</span>
-					<div class="min-width-100 my-1">
+					<div class="my-1" style="width:15rem;">
 						<p:fileUpload id="filUImportProducto"
 							listener="#{productoCtrl.handleUpload_Productos}"
 							allowTypes="/(\.|\/)(xls)$/"
@@ -70,7 +70,7 @@
 					<span class="block text-justify"><strong>5. </strong> El sistema informará si no existe novedades en la importación, en caso de existir novedades en el mismo archivo seleccionado se indicará las novedades existentes.</span>
 					<div class="min-width-100 my-1">
 						<p:commandButton id="cmdImportProducto"
-							value="Importar Productos" icon="fa fa-upload" styleClass="ui-button-flat min-width-120 Fs14"
+							value="Importar Productos" icon="fa fa-upload" styleClass="ui-button-outlined min-width-150 my-1 fs-12"
 							action="#{productoCtrl.importarProductos()}"  
 							update="@form"
 							disabled="#{productoCtrl.fileProductos==null}"

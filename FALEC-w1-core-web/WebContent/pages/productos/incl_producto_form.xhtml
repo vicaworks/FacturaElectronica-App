@@ -8,7 +8,7 @@
 	
 	<style type="text/css">
 		
-		.heightFrmProducto{min-height: 310px!important;height: 310px!important;}
+		.heightFrmProducto{min-height: 330px!important;height: 330px!important;}
 		
 		.product-image-form {
 				/* aspect-radio: 10 / 6; */
@@ -101,12 +101,12 @@
 			</p:messages>
 			
 			<div class="fs-14 text-red-500 m-0 p-0">
-				<o:messages for="frmProducto" message="Existen errores de validación. Por favor debe corregirlos." />
+				<o:messages for="frmProducto" message="Existen errores en el formulario." rendered="#{facesContext.validationFailed}" styleClass="p-0 m-0"/>
 			</div>
 			
 			<div class="w-full overflow-auto contenedorFormulario heightFrmProducto">
 			
-				<p:tabView style="width: 99.5%!important;" id="tabProducto" activeIndex="">		            
+				<p:tabView style="width: 99.5%!important;" id="tabProducto" activeIndex="#{productoCtrl.tabSelected}" >		            
 		            <p:tab title="Datos Generales"  multiViewState="true" titleStyleClass="fs-14 fw-2">
 		                
 		                <div class="grid ui-fluid">
@@ -314,8 +314,8 @@
 								<p:outputPanel id="tieneInventario" styleClass="w-full">
 									
 									<div class="field ">
-										<label class="text-gray-800 fw-5 flex gap-2 align-items-baseline">
-											<span class="text-primary-600 fw-4 fs-12">Administrar inventario : </span>
+										<label class="text-gray-800 fw-5 flex flex-column gap-2 align-items-baseline mb-2">
+											<span class="text-gray-900 fs-12">Importante!</span>
 											<span class="fs-12 text-gray-900 fw-2">
 												Este producto 
 												<span class="fw-5 #{productoCtrl.productoSelected.tipoProducto!=null and productoCtrl.productoSelected.tipoProducto.idtipoproducto=='1'?'text-primary-600':'text-gray-800'}">#{productoCtrl.productoSelected.tipoProducto!=null and productoCtrl.productoSelected.tipoProducto.idtipoproducto=='1'?'SI':'NO'}</span> utiliza inventario.</span>
@@ -324,7 +324,9 @@
 										<div class="flex gap-2 my-2">
 											<div class="field flex-1">
 												<label class="text-gray-800 fw-5">Stock actual</label>
-								    			<span class="fs-18 fw-5 block text-right text-primary-600" style="margin-top: .5rem;">#{productoCtrl.productoSelected.stock}</span>												
+												<h:outputText styleClass="fs-18 fw-5 block text-right text-primary-600" value="#{productoCtrl.productoSelected.stock}" style="margin-top: .5rem;">
+													<f:convertNumber pattern="#,##0.##"></f:convertNumber>
+												</h:outputText>
 											</div>
 											<div class="field flex-1">
 												<label class="text-gray-800 fw-5">Stock mínimo</label>
@@ -344,7 +346,7 @@
 								    			<p:inputText id="intFrmProductoStockMax"
 													value="#{productoCtrl.productoSelected.stockmaximo}"
 													required="true" 
-													requiredMessage="Reuqerido"
+													requiredMessage="Requerido"
 													styleClass="fs-18 text-right" 
 													converterMessage="#{msg['converter.solonumeros']}" 
 													validatorMessage="Valor >= 0"
@@ -357,7 +359,6 @@
 								
 								</p:outputPanel>
 								
-								<div class="hidden md:block" style="margin-top: .7rem;"></div>
 								<div class="flex gap-2">
 									<div class="field flex-1">
 										<label class="text-gray-800 fw-5">Iva %</label>
@@ -488,7 +489,7 @@
 									<p:inputText id="intUniConversionProducto"
 										value="#{productoCtrl.productoSelected.conversionmedida}"
 										required="true" 
-										requiredMessage="Reuqerido" 
+										requiredMessage="Requerido" 
 										styleClass="text-right"
 										maxlength="11" 
 										converterMessage="#{msg['converter.solonumeros']}" 

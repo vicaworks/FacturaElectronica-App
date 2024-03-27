@@ -248,6 +248,7 @@ public class ProductoCtrl extends BaseCtrl {
 	public void nuevoForm() {
 		try {
 			nuevoProducto();
+			tabSelected = 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			getMessageCommonCtrl().crearMensaje("Error", 
@@ -422,7 +423,7 @@ public class ProductoCtrl extends BaseCtrl {
 				break;
 			}
 			
-			AppJsfUtil.addInfoMessage("frmCategoria","OK" ,msg.getString("mensaje.guardado.correctamente"));
+			AppJsfUtil.addInfoMessage("frmProducto","OK" ,msg.getString("mensaje.guardado.correctamente"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -990,6 +991,7 @@ public class ProductoCtrl extends BaseCtrl {
 			FileOutputStream out = new FileOutputStream(fileProductos);
 			wb.write(out);
 			out.close();
+			wb.close();
 			
 			// existe novedades 
 			existeNovedades = importProductoDtoList.stream().filter(x->x.isError()==true).count()>0?true:false;
@@ -1193,6 +1195,7 @@ public class ProductoCtrl extends BaseCtrl {
 			FileOutputStream out = new FileOutputStream(tempXls);
 			wb.write(out);
 			out.close();
+			wb.close();
 			
 			return AppJsfUtil.downloadFile(tempXls,"MAKOPV-listaproducto.xls");
 			
@@ -1202,8 +1205,8 @@ public class ProductoCtrl extends BaseCtrl {
 					TextoUtil.imprimirStackTrace(e, 
 							AppConfiguracion.getInteger("stacktrace.length")), 
 					Message.ERROR);
+			return null;
 		}
-		return null;
 		
 	}
 	/**
