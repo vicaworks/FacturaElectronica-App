@@ -48,6 +48,7 @@ public class RideCtrl extends BaseCtrl {
 	private String idCabecera;
 	private String downloadFileName;
 	private String url;
+	private String urlContexto;
 	private String inicialComprobante;
 	private String numComprobante;
 	
@@ -61,7 +62,7 @@ public class RideCtrl extends BaseCtrl {
 			
 		try {
 			
-			generateRide(null);
+			generateRide(null,true);
 			
 		} catch (NoResultException | ResourceException |  RideException e) {
 			e.printStackTrace();
@@ -79,7 +80,9 @@ public class RideCtrl extends BaseCtrl {
 		
 		try {
 			
-			generateRide("PUNTO_VENTA");
+			generateRide("PUNTO_VENTA",false);
+			System.out.println(getUrlContexto());
+			AppJsfUtil.executeJavaScript("printJS('" + getUrlContexto() +"')");
 			
 		} catch (NoResultException | ResourceException |  RideException e) {
 			e.printStackTrace();
@@ -93,7 +96,7 @@ public class RideCtrl extends BaseCtrl {
 			
 	}
 	
-	private void generateRide(String subtipo) throws NoResultException, 
+	private void generateRide(String subtipo,boolean showModal) throws NoResultException, 
 		NumberFormatException, IOException, 
 		RideException, DaoException, JAXBException, 
 		ResourceException, ParametroRequeridoException {
@@ -104,7 +107,10 @@ public class RideCtrl extends BaseCtrl {
 		FileOutputStream output = new FileOutputStream(new File(pathFile));
 		IOUtils.write(rideServicio.generarRideFacade(idCabecera,subtipo), output);
 		setUrl("../../temp/" + downloadFileName);
-		AppJsfUtil.showModalRender("dlgRide", "formRide");
+		setUrlContexto(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath().concat("/temp/").concat(downloadFileName));
+		if(showModal) {
+			AppJsfUtil.showModalRender("dlgRide", "formRide");
+		}
 	}
 	
 	public void showCotizacion() {
@@ -225,6 +231,20 @@ public class RideCtrl extends BaseCtrl {
 	 */
 	public void setNumComprobante(String numComprobante) {
 		this.numComprobante = numComprobante;
+	}
+
+	/**
+	 * @return the urlContexto
+	 */
+	public String getUrlContexto() {
+		return urlContexto;
+	}
+
+	/**
+	 * @param urlContexto the urlContexto to set
+	 */
+	public void setUrlContexto(String urlContexto) {
+		this.urlContexto = urlContexto;
 	}
 	
 }

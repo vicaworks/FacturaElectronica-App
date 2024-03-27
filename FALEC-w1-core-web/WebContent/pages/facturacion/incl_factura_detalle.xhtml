@@ -105,7 +105,7 @@
 			                            	</p:inputNumber>		                                
 			                            	<p:inputNumber id="innCantDt2" value="#{d.cantidad}"
 			                                	symbolPosition="s" emptyValue="zero" decimalPlaces="3" 
-			                                	rendered="#{d.producto==null or d.producto.tipoventa!=1}" inputStyleClass="fs-12 p-1">
+			                                	rendered="#{d.producto==null or (d.producto.tipoventa!=1 and d.producto.tipoventa!=3)}" inputStyleClass="fs-12 p-1">
 			                                	<p:ajax listener="#{compFacCtrl.calcularItemAction(true,d)}"  
 			                                		update=" :formMain:pvDetalleDT :formMain:oupFacTotal :formMain:oupPagoDT :formMain:intRetRenta :formMain:intRetRentaPorcentaje :formMain:intRetIva :formMain:intRetIvaPorcentaje"/>
 			                                </p:inputNumber>
